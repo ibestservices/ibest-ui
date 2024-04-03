@@ -7,5 +7,3 @@ export const colorData = {
   danger: COLOR.DANGER as string,
   default: COLOR.DEFAULT as string,
 }
-
-

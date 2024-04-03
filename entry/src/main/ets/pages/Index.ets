@@ -21,7 +21,7 @@ struct Index {
         })
 
         IBestButton({
-          type: 'success',
+          type: 'default',
           loading: true,
           text: '普通按钮'
         })

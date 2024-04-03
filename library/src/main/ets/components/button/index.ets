@@ -1,5 +1,5 @@
 import { IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { ColorType, COLOR, COLOR_TYPE } from '../../theme-chalk/src/color.type'
+import { ColorType, COLOR, COLOR_TYPE, GRAY_COLOR } from '../../theme-chalk/src/color.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
 import { IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
 import { SIZE } from '../../theme-chalk/src/size.type';
@@ -173,13 +173,13 @@ export struct IBestButton {
             LoadingProgress()
               .width(this.getBtnSize()?.fontSize)
               .height(this.getBtnSize()?.fontSize)
-              .color(this.getBtnColor(this.plain))
+              .color( this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_8 : this.getBtnColor(this.plain))
               .margin({right: this.text?.length ? this.getBtnSize().padding : 0})
           }
           if(typeof this.iconBuilder === 'function'){
             this.iconBuilder()
           }
-          Text(this.loading ? this.loadingText ?? this.text : this.text).fontSize(this.getBtnSize()?.fontSize).fontColor(this.getBtnColor(this.plain))
+          Text(this.loading ? this.loadingText ?? this.text : this.text).fontSize(this.getBtnSize()?.fontSize).fontColor( this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_8 : this.getBtnColor(this.plain))
         }
       }
 
@@ -188,7 +188,7 @@ export struct IBestButton {
     .borderRadius(this.getBtnBorderRadius())
     .fontColor(this.getBtnColor(this.plain))
     .backgroundColor(this.getBtnColor(!this.plain))
-    .borderColor(this.getBtnColor(this.plain))
+    .borderColor( this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_4 : this.getBtnColor(this.plain))
     .btnSizeStyle(this.getBtnSize())
     .hitTestBehavior( this.loading ? HitTestMode.None : HitTestMode.Default)
     .enabled(!this.disabled)
