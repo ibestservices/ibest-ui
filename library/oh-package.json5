@@ -1,0 +1,19 @@
+{
+  "name": "library",
+  "version": "1.0.0",
+  "description": "一套鸿蒙UI库",
+  "main": "Index.ets",
+  "keywords": [
+  ],
+  "license": "Apache-2.0",
+  "dependencies": {},
+  "author": "ibestservices",
+  "ibestservices": {
+    "org": "opensource"
+  },
+  "tags": [
+  ],
+  "type": "module",
+  "repository": "",
+  "homepage": ""
+}
