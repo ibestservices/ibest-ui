@@ -175,8 +175,7 @@ export struct IBestButton {
               .height(this.getBtnSize()?.fontSize)
               .color( this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_8 : this.getBtnColor(this.plain))
               .margin({right: this.text?.length ? this.getBtnSize().padding : 0})
-          }
-          if(typeof this.iconBuilder === 'function'){
+          }else if(typeof this.iconBuilder === 'function'){
             this.iconBuilder()
           }
           Text(this.loading ? this.loadingText ?? this.text : this.text).fontSize(this.getBtnSize()?.fontSize).fontColor( this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_8 : this.getBtnColor(this.plain))
