@@ -2,7 +2,7 @@ import { IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { ColorType, COLOR, COLOR_TYPE, GRAY_COLOR } from '../../theme-chalk/src/color.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
 import { IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
-import { SIZE } from '../../theme-chalk/src/size.type';
+import { SIZE, SizeType } from '../../theme-chalk/src/size.type';
 
 @Extend(Button)
 function btnSizeStyle(data: {
@@ -26,6 +26,10 @@ export struct IBestButton {
    */
   @BuilderParam iconBuilder?: CustomBuilder = null;
   /**
+   * 加载图标的builder
+   */
+  @BuilderParam loadingIconBuilder?: CustomBuilder = null;
+  /**
    * 类型，可选值为 primary success warning danger
    */
   @Prop type: ColorType = COLOR_TYPE.PRIMARY;
@@ -35,8 +39,9 @@ export struct IBestButton {
   @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IbestUIBaseStyleType = {}
   /**
    * 大小，可选值为 large normal small mini
+   * size是保留字所以没使用size
    */
-  @Prop buttonSize: string = SIZE.NORMAL;
+  @Prop buttonSize: SizeType = SIZE.NORMAL;
   /**
    * 是否为朴素按钮
    */
@@ -69,7 +74,6 @@ export struct IBestButton {
    * 是否禁用
    */
   @Prop disabled: boolean = false;
-
   /**
    * 按钮颜色
    */
@@ -167,15 +171,20 @@ export struct IBestButton {
       } else {
         Row() {
           if (this.loading) {
-            if (typeof this.iconBuilder === 'function') {
-              this.iconBuilder()
+            // 如果有自定义loading
+            if (typeof this.loadingIconBuilder === 'function') {
+              this.loadingIconBuilder()
             } else {
+              // 默认的loading
               LoadingProgress()
                 .width(this.getLoadingSize())
                 .height(this.getLoadingSize())
                 .color(this.getBtnTextColor())
                 .margin({ right: this.text?.length ? this.getBtnSize().padding : 0 })
             }
+            // 加载loading显示的时候不显示图标
+          } else if (typeof this.iconBuilder === 'function') {
+            this.iconBuilder()
           }
           Text(this.loading ? this.loadingText ?? this.text : this.text)
             .fontSize(this.getBtnSize()?.fontSize)

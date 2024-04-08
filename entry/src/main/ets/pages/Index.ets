@@ -1,46 +1,79 @@
-import {IBestButton} from '../../../../../library/Index'
+import router from '@ohos.router'
+import { BACKGROUND_COLOR, SPACE, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, COLOR_GRAY } from '../assets/styles/BaseStyle'
 
 @Entry
 @Component
 struct Index {
-  @State message: string = 'Hello World';
+  @State componentList: {
+    name: string,
+    path: string
+  }[] = [
+    {
+      name: 'Button按钮',
+      path: 'pages/Button'
+    },
+  ]
 
   build() {
-    Row() {
-      Column() {
-        IBestButton({
-          buttonSize: 'mini',
-          text: '超小按钮'
-        })
+    Column() {
+      List() {
+        ForEach(this.componentList, item => {
+          ListItem() {
+            Row() {
+              Text(item.name)
+                .fontSize(FONT_SIZE.BASE)
+                .fontWeight(FONT_WEIGHT.MEDIUM)
+                .textAlign(TextAlign.Start)
+                .fontColor('#34495e')
+                .layoutWeight(1)
 
-        IBestButton({
-          buttonSize: 'small',
-          type: 'warning',
-          loading: true,
-          text: '小按钮'
-        })
-
-        IBestButton({
-          type: 'default',
-          loading: true,
-          text: '普通按钮',
-          hairline: true
-        })
-
-        IBestButton({
-          type: 'danger',
-          loadingSize: 40,
-          loading: true,
-          text: '普通按钮自定义颜色',
-          color: 'blue',
-          loadingText: undefined,
-          onClickBtn(event){
-            console.log('523525', event)
+              Image($r('app.media.title_back'))
+                .width(CONTAINER_SIZE.FORTY_FOUR)
+                .margin({
+                  right: SPACE.BASE
+                })
+                .rotate({
+                  angle: 180
+                })
+            }
           }
+          .width(CONTAINER_SIZE.FULL)
+          .height(CONTAINER_SIZE.EIGHTY)
+          .borderRadius(99)
+          .padding({ left: SPACE.LARGE })
+          .margin({
+            bottom: SPACE.BASE
+          })
+          .backgroundColor(0xFFFFFF)
+          .stateStyles({
+            normal:{
+              .scale({
+                x: 1,
+                y: 1
+              })
+            },
+            pressed:{
+              .scale({
+                x: .98,
+                y: .98
+              })
+            }
+          })
+          .onClick(() => {
+            router.pushUrl({
+              url: item.path,
+              params: {
+                title: item.name
+              }
+            })
+          })
         })
-      }
-      .width('100%')
-    }
-    .height('100%')
+
+      }.listDirection(Axis.Vertical) // 排列方向
+    }.width(CONTAINER_SIZE.FULL)
+    .height(CONTAINER_SIZE.FULL)
+    .backgroundColor(BACKGROUND_COLOR.BASE)
+    .padding(SPACE.LARGE)
+
   }
 }
