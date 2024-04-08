@@ -10,7 +10,7 @@ function btnMargin() {
 }
 
 @Builder function Arrow(){
-  Image($r('app.media.title_back'))
+  Image($r('app.media.startIcon'))
     .width(CONTAINER_SIZE.FORTY_FOUR)
 
 }
