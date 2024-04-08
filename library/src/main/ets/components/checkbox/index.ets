@@ -1,9 +1,12 @@
+import emitter from '@ohos.events.emitter';
 import { IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 import { IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
 import { SPACE } from '../../theme-chalk/src/space.type';
+import { updateCheckboxStoreByKey } from '../checkboxGroup/store';
 
-type BuilderArgData = {
+
+export type BuilderArgData = {
   checked: boolean,
   disabled: boolean
 }
@@ -26,7 +29,7 @@ export struct IBestCheckbox {
    * 标识符，通常为一个唯一的字符串
    * 多选框名称。
    */
-  @Prop name: string = '';
+  @Prop name: string;
   /**
    * 形状
    */
@@ -43,7 +46,7 @@ export struct IBestCheckbox {
   /**
    * 是否选中
    */
-  @Link value: boolean;
+  @Prop value: boolean;
   /**
    * 是否禁用
    */
@@ -61,13 +64,17 @@ export struct IBestCheckbox {
    */
   @Prop labelDisabled: boolean = false;
   /**
+   * 组名
+   */
+  @Prop group: string = ''
+  /**
    * 动画时长
    */
   animationDuration = 200;
   /**
    * 改变的回调
    */
-  onChange?: (checked: boolean)=>void
+  onChange?: (checked: boolean) => void;
 
   /**
    * 获取背景色
@@ -117,6 +124,16 @@ export struct IBestCheckbox {
     return this.labelPosition === 'left'
   }
 
+  isHasGroup(){
+    return typeof this.group === 'string' && this.group.length > 0
+  }
+
+  updateGroupStore(){
+    if(this.isHasGroup()){
+      updateCheckboxStoreByKey(this.group, { name:this.name, checked: this.value})
+    }
+  }
+
   /**
    * 改变选中状态的回调
    */
@@ -126,6 +143,11 @@ export struct IBestCheckbox {
     }
     this.value = !this.value;
     typeof this.onChange === 'function' && this.onChange(this.value)
+    this.updateGroupStore()
+  }
+
+  aboutToAppear(){
+    this.updateGroupStore()
   }
 
   @Builder
