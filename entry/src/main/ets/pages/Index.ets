@@ -12,6 +12,10 @@ struct Index {
       name: 'Button按钮',
       path: 'pages/Button'
     },
+    {
+      name: 'Checkbox复选框',
+      path: 'pages/Checkbox'
+    },
   ]
 
   build() {
