@@ -15,20 +15,20 @@ function btnSizeStyle(data: {
   .width(data.width || 'auto')
 }
 
-@Builder function DefaultBuilder(){}
-
-DefaultBuilder._name = 'defalutBuilder'
-
 @Component
 export struct IBestButton {
+  /**
+   * defaultSlot 默认插槽
+   */
+  @BuilderParam defaultBuilder?: CustomBuilder = null;
+  /**
+   * 图标的builder
+   */
+  @BuilderParam iconBuilder?: CustomBuilder = null;
   /**
    * 类型，可选值为 primary success warning danger
    */
   @Prop type: ColorType = COLOR_TYPE.PRIMARY;
-  /**
-   * defaultSlot 默认插槽
-   */
-  @BuilderParam defaultBuilder?: CustomBuilder = DefaultBuilder;
   /**
    * 全局公共样式
    */
@@ -49,56 +49,39 @@ export struct IBestButton {
    * 是否为圆形按钮
    */
   @Prop round: boolean = false;
-
   /**
    * 是否使用 0.5px 边框
    */
   @Prop hairline: boolean = false;
-
   /**
    * 是否显示为加载状态
    */
   @Prop loading: boolean = false;
-
   /**
    * loading加载的文案
    */
-  @Prop loadingText: string = '加载中...';
-
+  @Prop loadingText: string = null;
   /**
    * 按钮展示的文字
    */
-  @Prop text: string = ''
-
-  /**
-   * 是否使用自定义插槽替换按钮中的内容
-   * 他的builder必须要定义一个默认渲染builder函数 导致没法区分到底有没有传进来
-   * 所以又通过一个prop区分
-   */
-  @Prop useCustomContent: boolean = false;
-
+  @Prop text: string = '';
   /**
    * 是否禁用
    */
   @Prop disabled: boolean = false;
 
   /**
-   * 图标的builder
-   */
-  @BuilderParam iconBuilder?: CustomBuilder = DefaultBuilder
-
-  /**
    * 按钮颜色
    */
-  @Prop color: string = ''
-
+  @Prop color: string = '';
+  /**
+   * 加载图标的大小，默认单位为 lpx 如果为-1就是默认值 默认值跟随字体大小
+   */
+  @Prop loadingSize: number = -1;
   /**
    * 点击按钮，且按钮状态不为加载或禁用时触发
    */
   onClickBtn?: (event: ClickEvent) => void;
-
-
-
   /**
    * 根据buttonSize换对应的按钮尺寸
    */
@@ -161,37 +144,55 @@ export struct IBestButton {
     return isHasColor ? this.getBackgroundColor(this.type) : '#fff'
   }
 
+  /**
+   * 获取按钮文字的颜色
+   * @returns
+   */
+  getBtnTextColor() {
+    return this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_8 : this.getBtnColor(this.plain)
+  }
+
+  /**
+   * 获取loading的大小
+   * @returns
+   */
+  getLoadingSize() {
+    return this.loadingSize != -1 ? `${this.loadingSize}lpx` : this.getBtnSize()?.fontSize
+  }
+
   build() {
     Button({ type: ButtonType.Normal }) {
-      if(this.useCustomContent){
-        if(typeof this.defaultBuilder === 'function'){
-          this.defaultBuilder()
-        }
-      }else{
-        Row(){
-          if(this.loading){
-            LoadingProgress()
-              .width(this.getBtnSize()?.fontSize)
-              .height(this.getBtnSize()?.fontSize)
-              .color( this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_8 : this.getBtnColor(this.plain))
-              .margin({right: this.text?.length ? this.getBtnSize().padding : 0})
-          }else if(typeof this.iconBuilder === 'function'){
-            this.iconBuilder()
+      if (typeof this.defaultBuilder === 'function') {
+        this.defaultBuilder()
+      } else {
+        Row() {
+          if (this.loading) {
+            if (typeof this.iconBuilder === 'function') {
+              this.iconBuilder()
+            } else {
+              LoadingProgress()
+                .width(this.getLoadingSize())
+                .height(this.getLoadingSize())
+                .color(this.getBtnTextColor())
+                .margin({ right: this.text?.length ? this.getBtnSize().padding : 0 })
+            }
           }
-          Text(this.loading ? this.loadingText ?? this.text : this.text).fontSize(this.getBtnSize()?.fontSize).fontColor( this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_8 : this.getBtnColor(this.plain))
+          Text(this.loading ? this.loadingText ?? this.text : this.text)
+            .fontSize(this.getBtnSize()?.fontSize)
+            .fontColor(this.getBtnTextColor())
         }
       }
 
     }
-    .borderWidth( this.hairline ? '1lpx' : '2lpx')
+    .btnSizeStyle(this.getBtnSize())
+    .borderWidth(this.hairline ? '1lpx' : '2lpx')
     .borderRadius(this.getBtnBorderRadius())
     .fontColor(this.getBtnColor(this.plain))
     .backgroundColor(this.getBtnColor(!this.plain))
-    .borderColor( this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_4 : this.getBtnColor(this.plain))
-    .btnSizeStyle(this.getBtnSize())
-    .hitTestBehavior( this.loading ? HitTestMode.None : HitTestMode.Default)
+    .borderColor(this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_4 : this.getBtnColor(this.plain))
+    .hitTestBehavior(this.loading ? HitTestMode.None : HitTestMode.Default)
     .enabled(!this.disabled)
-    .onClick((event)=>{
+    .onClick((event) => {
       typeof this.onClickBtn === 'function' && this.onClickBtn(event)
     })
   }
