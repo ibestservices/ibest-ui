@@ -2,6 +2,7 @@
   "src": [
     "pages/Index",
     "pages/Button",
-    "pages/Checkbox"
+    "pages/Checkbox",
+    "pages/Switch"
   ]
 }

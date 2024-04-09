@@ -13,7 +13,8 @@ export const defaultBaseStyle = {
   ...colorData,
   ...spaceData,
   ...fontSizeData,
-  ...borderRadiusData
+  ...borderRadiusData,
+   animationDuration: 200
 }
 
 /**

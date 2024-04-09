@@ -74,10 +74,6 @@ export struct IBestCheckbox {
    */
   @Prop @Watch('handleIndeterminateChange') indeterminate: boolean = false;
   /**
-   * 动画时长
-   */
-  animationDuration = 200;
-  /**
    * 改变的回调
    */
   onChange?: (checked: boolean) => void;
@@ -231,7 +227,7 @@ export struct IBestCheckbox {
     if(!this.value && !this.indeterminate){
       this.isShowIndeterminateTimeId = setTimeout(()=>{
         this.isShowIndeterminateImg = false
-      }, this.animationDuration)
+      }, this.baseStyle.animationDuration)
       return
     }
     this.isShowIndeterminateImg = this.indeterminate;
@@ -293,7 +289,7 @@ export struct IBestCheckbox {
             .width(`${this.iconSize}lpx`)
             .opacity( this.isShowBackground() ? 1 : 0)
             .animation({
-              duration: this.animationDuration,
+              duration: this.baseStyle.animationDuration,
             })
             .scale({
               x: .9,
@@ -309,7 +305,7 @@ export struct IBestCheckbox {
       .borderRadius(this.shape === 'round' ? `${this.iconSize / 2}lpx` : 0)
       .backgroundColor(this.getBackgroundColor())
       .animation({
-        duration: this.animationDuration,
+        duration: this.baseStyle.animationDuration,
       })
       .onClick(() => {
         this.handleCheckedChange()

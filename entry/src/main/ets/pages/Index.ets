@@ -16,6 +16,10 @@ struct Index {
       name: 'Checkbox复选框',
       path: 'pages/Checkbox'
     },
+    {
+      name: 'Switch开关',
+      path: 'pages/Switch'
+    },
   ]
 
   build() {
@@ -32,7 +36,7 @@ struct Index {
                 .layoutWeight(1)
 
               Image($r('app.media.title_back'))
-                .width(CONTAINER_SIZE.FORTY_FOUR)
+                .width(CONTAINER_SIZE.THIRTY)
                 .margin({
                   right: SPACE.BASE
                 })
