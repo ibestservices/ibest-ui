@@ -1,6 +1,6 @@
 import router from '@ohos.router';
 import { IBestButton, IBestCheckbox, IBestCheckboxGroup, CheckboxGroupContext } from '../../../../../library/Index'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, DISABLE_COLOR, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 
@@ -23,7 +23,19 @@ struct CheckboxPage {
   /**
    * 全选反选的chekboxGroup的this指向
    */
-  checkboxGroupContext: CheckboxGroupContext | null = null
+  checkboxGroupContext: CheckboxGroupContext | null = null;
+  /**
+   * 不确定状态
+   */
+  @State isIndeterminate: boolean = true;
+  /**
+   * 不确定状态数据是否选中了全部
+   */
+  @State isIndeterminateCheckAll: boolean = false;
+  /**
+   * 全选反选的chekboxGroup的this指向
+   */
+  checkboxGroupIndeterminateContext: CheckboxGroupContext | null = null;
 
   build() {
     Column() {
@@ -94,7 +106,6 @@ struct CheckboxPage {
           }
         }
 
-
         ListItem() {
           ComponentShowContainer({ title: '自定义颜色' }) {
               Column() {
@@ -129,7 +140,6 @@ struct CheckboxPage {
             }.btnMargin()
           }
         }
-
 
         ListItem() {
           ComponentShowContainer({ title: '左侧文本' }) {
@@ -297,6 +307,60 @@ struct CheckboxPage {
               }.btnMargin()
             }
 
+          }
+        }
+
+        ListItem() {
+          ComponentShowContainer({ title: '不确定状态' }) {
+            Column() {
+              IBestCheckbox({
+                value: this.isIndeterminateCheckAll,
+                label: '全选',
+                indeterminate: this.isIndeterminate,
+                name: 'checkbox10',
+                onChange: (checked)=>{
+                  this.checkboxGroupIndeterminateContext?.toggleAll(checked)
+                }
+              })
+            }
+            .alignItems(HorizontalAlign.Start)
+            .width(CONTAINER_SIZE.FULL)
+            .padding({
+              bottom: SPACE.BASE
+            })
+            .border({width:  {bottom: '2lpx'}, color: DISABLE_COLOR.VERY_MINI})
+            .margin({
+              bottom: SPACE.BASE
+            })
+
+            IBestCheckboxGroup({
+              group: 'group5',
+              onChange: (checkedNames)=>{
+                const length = checkedNames.length
+                this.isIndeterminate = length < 2 && length > 0;
+                this.isIndeterminateCheckAll = length === 2
+              },
+              onReady: (checkboxGroupContext)=>{
+                this.checkboxGroupIndeterminateContext = checkboxGroupContext
+              }
+            })
+            Column() {
+              IBestCheckbox({
+                value: false,
+                group: 'group5',
+                label: '复选框a',
+                name: 'checkbox10'
+              })
+            }.btnMargin()
+
+            Column() {
+              IBestCheckbox({
+                value: true,
+                group: 'group5',
+                label: '复选框b',
+                name: 'checkbox11',
+              })
+            }.btnMargin()
           }
         }
       }

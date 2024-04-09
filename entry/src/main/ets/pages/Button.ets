@@ -1,6 +1,6 @@
 import router from '@ohos.router';
 import { IBestButton } from '../../../../../library/Index'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import { BACKGROUND_COLOR, COLOR_BLUE, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 
@@ -9,9 +9,10 @@ function btnMargin() {
   .margin({ right: SPACE.BASE, bottom: SPACE.BASE })
 }
 
-@Builder function Arrow(){
-  Image($r('app.media.startIcon'))
+@Builder function Arrow(color = '#fff'){
+  Image($r('app.media.title_back'))
     .width(CONTAINER_SIZE.FORTY_FOUR)
+    .fillColor(color)
 
 }
 
@@ -184,7 +185,7 @@ struct ButtonPage {
                   plain: true,
                   text: '按钮',
                   type: 'default',
-                  iconBuilder: Arrow
+                  iconBuilder: Arrow.bind(this, COLOR_BLUE.MINI)
                 })
               }.btnMargin()
             }

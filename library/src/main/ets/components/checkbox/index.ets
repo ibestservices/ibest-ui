@@ -68,7 +68,11 @@ export struct IBestCheckbox {
   /**
    * 组名
    */
-  @Prop group: string = ''
+  @Prop group: string = '';
+  /**
+   * 是否为不确定状态
+   */
+  @Prop @Watch('handleIndeterminateChange') indeterminate: boolean = false;
   /**
    * 动画时长
    */
@@ -81,7 +85,28 @@ export struct IBestCheckbox {
    * 受checkboxgroup的最大可选数量禁用的
    */
   @State @Watch('getIsDisabled') checkboxGroupMaxDisabled: boolean = false;
+  /**
+   * 合并disabled与checkboxGroupMaxDisabled的最终结果 用来UI渲染
+   */
   @State mergeDisabled: boolean = false;
+  /**
+   * 是否展示不确定状态的按钮
+   * 因为chekbox在切换状态时有动画 但是图片切换没有动画 就会导致有不确定状态切换的时候 会先闪成勾选状态
+   */
+  @State isShowIndeterminateImg: boolean = false;
+  /**
+   * 当不确定图标从显示变隐藏时 等待动画结束后再变
+   */
+  isShowIndeterminateTimeId: number | null = null
+
+  /**
+   * 是否展示背景色
+   * 比如选中了或者需要显示不确定状态时
+   * @returns
+   */
+  isShowBackground(){
+    return this.value || this.indeterminate
+  }
 
   /**
    * 获取背景色
@@ -91,7 +116,7 @@ export struct IBestCheckbox {
     if (this.mergeDisabled) {
       return GRAY_COLOR.GRAY_3
     } else {
-      return this.value ? this.checkedColor : 'transparent'
+      return this.isShowBackground() ? this.checkedColor : 'transparent'
     }
   }
 
@@ -103,7 +128,7 @@ export struct IBestCheckbox {
     if (this.mergeDisabled) {
       return GRAY_COLOR.GRAY_5
     } else {
-      return this.value ? this.checkedColor : GRAY_COLOR.GRAY_5
+      return this.isShowBackground() ? this.checkedColor : GRAY_COLOR.GRAY_5
     }
   }
 
@@ -195,16 +220,33 @@ export struct IBestCheckbox {
     this.handleCheckedChange( isSelectAll ? true : !this.value )
   }
 
+  /**
+   * 当不确定状态发生改变时 响应按钮UI状态图标变化
+   */
+  handleIndeterminateChange(){
+    clearTimeout(this.isShowIndeterminateTimeId)
+    // 当按钮的选中状态变为false时 会触发隐藏动画
+    // 这时候如果直接更改不确定状态的图标为false时
+    // 在隐藏动画执行的过程中图标会变为全选状态 为了避免所以等动画结束后再执行
+    if(!this.value && !this.indeterminate){
+      this.isShowIndeterminateTimeId = setTimeout(()=>{
+        this.isShowIndeterminateImg = false
+      }, this.animationDuration)
+      return
+    }
+    this.isShowIndeterminateImg = this.indeterminate;
+  }
 
   aboutToAppear() {
     this.updateGroupStore()
-    // 如果有组 监听maxchange
+    // 如果有组 监听max change
     if(this.isHasGroup()){
       emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), this.handleMaxChange.bind(this))
       emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), this.handleToggleChange.bind(this))
     }else{
       this.getIsDisabled()
     }
+    this.handleIndeterminateChange()
   }
 
   aboutToDisappear() {
@@ -212,6 +254,7 @@ export struct IBestCheckbox {
       emitter.off(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), this.handleMaxChange.bind(this))
       emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), this.handleToggleChange.bind(this))
     }
+    clearTimeout(this.isShowIndeterminateTimeId)
   }
 
   @Builder
@@ -244,12 +287,11 @@ export struct IBestCheckbox {
         if (typeof this.iconBuilder === 'function') {
           this.iconBuilder({ checked: this.value, disabled: this.mergeDisabled })
         } else {
-          // 图标
-          Image($r('app.media.success'))
+
+          Image(this.isShowIndeterminateImg ? $r('app.media.indeterminate') : $r('app.media.success'))
             .fillColor(this.getIconColor())
             .width(`${this.iconSize}lpx`)
-            .height(`${this.iconSize}lpx`)
-            .opacity(this.value ? 1 : 0)
+            .opacity( this.isShowBackground() ? 1 : 0)
             .animation({
               duration: this.animationDuration,
             })
