@@ -6,4 +6,4 @@ export { IBestButton } from './src/main/ets/components/button/index'
 
 export { IBestCheckbox } from './src/main/ets/components/checkbox/index'
 
-export { IBestCheckboxGroup } from './src/main/ets/components/checkboxGroup/index'
+export { IBestCheckboxGroup, CheckboxGroupContext } from './src/main/ets/components/checkboxGroup/index'

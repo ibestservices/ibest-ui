@@ -1,9 +1,10 @@
-import emitter from '@ohos.events.emitter';
+import { emitter } from '../../assets/ets/EventEmitter';
 import { IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 import { IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
 import { SPACE } from '../../theme-chalk/src/space.type';
-import { updateCheckboxStoreByKey } from '../checkboxGroup/store';
+import { CheckedItem, updateCheckboxStoreByKey } from '../checkboxGroup/store';
+import { CHECKBOX_GROUP_EVENT_NAME, getCheckboxNamespace } from '../checkboxGroup/utils';
 
 
 export type BuilderArgData = {
@@ -44,13 +45,14 @@ export struct IBestCheckbox {
    */
   @Prop iconSize: number = 40;
   /**
-   * 是否选中
+   * 默认是否选中 非双向绑定
+   * 如果要更改数据请从onChange回调中获取最新的值
    */
   @Prop value: boolean;
   /**
    * 是否禁用
    */
-  @Prop disabled: boolean = false
+  @Prop @Watch('getIsDisabled') disabled: boolean = false
   /**
    * 显示的文本
    */
@@ -75,13 +77,18 @@ export struct IBestCheckbox {
    * 改变的回调
    */
   onChange?: (checked: boolean) => void;
+  /**
+   * 受checkboxgroup的最大可选数量禁用的
+   */
+  @State @Watch('getIsDisabled') checkboxGroupMaxDisabled: boolean = false;
+  @State mergeDisabled: boolean = false;
 
   /**
    * 获取背景色
    * @returns
    */
   getBackgroundColor() {
-    if (this.disabled) {
+    if (this.mergeDisabled) {
       return GRAY_COLOR.GRAY_3
     } else {
       return this.value ? this.checkedColor : 'transparent'
@@ -93,7 +100,7 @@ export struct IBestCheckbox {
    * @returns
    */
   getBorderColor() {
-    if (this.disabled) {
+    if (this.mergeDisabled) {
       return GRAY_COLOR.GRAY_5
     } else {
       return this.value ? this.checkedColor : GRAY_COLOR.GRAY_5
@@ -105,7 +112,7 @@ export struct IBestCheckbox {
    * @returns
    */
   getLabelColor() {
-    return this.disabled ? GRAY_COLOR.GRAY_3 : GRAY_COLOR.GRAY_8
+    return this.mergeDisabled ? GRAY_COLOR.GRAY_5 : GRAY_COLOR.GRAY_8
   }
 
   /**
@@ -113,7 +120,7 @@ export struct IBestCheckbox {
    * @returns
    */
   getIconColor() {
-    return this.disabled ? GRAY_COLOR.GRAY_5 : '#fff'
+    return this.mergeDisabled ? GRAY_COLOR.GRAY_5 : '#fff'
   }
 
   /**
@@ -124,46 +131,103 @@ export struct IBestCheckbox {
     return this.labelPosition === 'left'
   }
 
-  isHasGroup(){
+  isHasGroup() {
     return typeof this.group === 'string' && this.group.length > 0
   }
 
-  updateGroupStore(){
-    if(this.isHasGroup()){
-      updateCheckboxStoreByKey(this.group, { name:this.name, checked: this.value})
+  updateGroupStore() {
+    if (this.isHasGroup()) {
+      updateCheckboxStoreByKey(this.group, { name: this.name, checked: this.value })
     }
   }
 
   /**
    * 改变选中状态的回调
    */
-  handleCheckedChange(){
-    if(this.disabled){
+  handleCheckedChange(status = !this.value) {
+    if (this.mergeDisabled) {
       return
     }
-    this.value = !this.value;
+    this.value = status;
     typeof this.onChange === 'function' && this.onChange(this.value)
     this.updateGroupStore()
   }
 
-  aboutToAppear(){
+  /**
+   * 当选中的最大数量变化时 或者选中的数据变化时
+   * @param data
+   */
+  handleMaxChange(data: {
+    max: number,
+    checkedList: CheckedItem[]
+  }) {
+    const {max, checkedList} = data || {};
+    // max是0说明不限制了
+    if( max <= 0){
+      this.checkboxGroupMaxDisabled = false;
+      return
+    }
+    // 是要禁用还是解禁？
+    const length = checkedList.length;
+    const index = checkedList.findIndex(item => item.name === this.name);
+    // 如果是已经选中的了 不执行后续操作
+    if (index > -1) {
+      return
+    }
+    // 如果是没选中的
+    // 并且选中的已经大于等于最大可选中的数量了
+    // 如果当前是没有禁用的 那么就要禁用
+    this.checkboxGroupMaxDisabled = length >= max;
+  }
+
+  /**
+   * 获取是否禁用
+   */
+  getIsDisabled() {
+    this.mergeDisabled = this.disabled || this.checkboxGroupMaxDisabled;
+  }
+
+  /**
+   * 全选反选的响应事件
+   * @param {boolean} [isSelectAll] 传true是全选 传false是反选
+   */
+  handleToggleChange(isSelectAll = true){
+    this.handleCheckedChange( isSelectAll ? true : !this.value )
+  }
+
+
+  aboutToAppear() {
     this.updateGroupStore()
+    // 如果有组 监听maxchange
+    if(this.isHasGroup()){
+      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), this.handleMaxChange.bind(this))
+      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), this.handleToggleChange.bind(this))
+    }else{
+      this.getIsDisabled()
+    }
+  }
+
+  aboutToDisappear() {
+    if(this.isHasGroup()){
+      emitter.off(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), this.handleMaxChange.bind(this))
+      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), this.handleToggleChange.bind(this))
+    }
   }
 
   @Builder
   LabelContain() {
     if (typeof this.defaultBuilder === 'function') {
-      this.defaultBuilder({ checked: this.value, disabled: this.disabled }).onClick(()=>{
-         !this.labelDisabled && this.handleCheckedChange()
+      this.defaultBuilder({ checked: this.value, disabled: this.mergeDisabled }).onClick(() => {
+        !this.labelDisabled && this.handleCheckedChange()
       })
     } else {
       Text(this.label)
         .fontColor(this.getLabelColor())
-        .fontSize(`${this.iconSize * .9}lpx`)
+        .fontSize(`${this.iconSize * .7}lpx`)
         .margin({
           left: this.isLeftLabel() ? 0 : SPACE.XS,
           right: this.isLeftLabel() ? SPACE.XS : 0
-        }).onClick(()=>{
+        }).onClick(() => {
         !this.labelDisabled && this.handleCheckedChange()
       })
     }
@@ -177,9 +241,9 @@ export struct IBestCheckbox {
 
       // checkbox
       Column() {
-        if(typeof this.iconBuilder === 'function'){
-          this.iconBuilder({ checked: this.value, disabled: this.disabled })
-        }else{
+        if (typeof this.iconBuilder === 'function') {
+          this.iconBuilder({ checked: this.value, disabled: this.mergeDisabled })
+        } else {
           // 图标
           Image($r('app.media.success'))
             .fillColor(this.getIconColor())
@@ -205,7 +269,7 @@ export struct IBestCheckbox {
       .animation({
         duration: this.animationDuration,
       })
-      .onClick(()=>{
+      .onClick(() => {
         this.handleCheckedChange()
       })
 
@@ -213,8 +277,7 @@ export struct IBestCheckbox {
         this.LabelContain()
       }
 
-    }.enabled(!this.disabled)
-
+    }.enabled(!this.mergeDisabled)
 
   }
 }

@@ -1,8 +1,8 @@
 import { COLOR_GRAY, FONT_SIZE, SPACE, CONTAINER_SIZE } from '../assets/styles/BaseStyle'
 
 @Component
-export default struct ComponentShowContainer{
-  @Prop title:string = '';
+export default struct ComponentShowContainer {
+  @Prop title: string = '';
   @BuilderParam defaultBuilder: CustomBuilder = null
 
   build(){

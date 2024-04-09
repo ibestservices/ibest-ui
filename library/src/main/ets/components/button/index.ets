@@ -85,7 +85,7 @@ export struct IBestButton {
   /**
    * 点击按钮，且按钮状态不为加载或禁用时触发
    */
-  onClickBtn?: (event: ClickEvent) => void;
+  onClickBtn?: (event?: ClickEvent) => void;
   /**
    * 根据buttonSize换对应的按钮尺寸
    */
