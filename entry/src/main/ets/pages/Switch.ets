@@ -1,20 +1,29 @@
 import router from '@ohos.router';
 import { IBestSwitch } from '../../../../../library/Index'
-import { BACKGROUND_COLOR, COLOR_BLUE, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import { BACKGROUND_COLOR, COLOR_BLUE, COLOR_GRAY, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
-
-@Styles
-function btnMargin() {
-  .margin({ right: SPACE.BASE, bottom: SPACE.BASE })
-}
 
 
 
 @Entry
 @Component
 struct SwitchPage {
-  @State title: string = router.getParams()['title'] || ''
+  @State title: string = router.getParams()['title'] || '';
+  @State arrowDirection: 'left' | 'right' = 'left';
+
+  @Builder Arrow(){
+    Row(){
+      Image($r('app.media.title_back'))
+        .width(CONTAINER_SIZE.THIRTY)
+        .fillColor(this.arrowDirection === 'left' ? '#db3131' : '#e2e3e7')
+        .rotate({
+          angle: this.arrowDirection === 'left' ? 0 : -180
+        }).animation({
+        duration: 200,
+      })
+    }
+  }
 
   build() {
     Column() {
@@ -33,6 +42,13 @@ struct SwitchPage {
         ListItem() {
           ComponentShowContainer({ title: '禁用状态' }) {
             IBestSwitch({
+              loading: true,
+              value: false,
+              disabled: true,
+            }).margin({
+              bottom: SPACE.BASE
+            })
+            IBestSwitch({
               disabled: true,
               value: true
             })
@@ -44,6 +60,16 @@ struct SwitchPage {
             IBestSwitch({
               loading: true,
               value: true
+            }).margin({
+              bottom: SPACE.BASE
+            })
+
+            IBestSwitch({
+              loading: true,
+              value: false,
+              activeColor: '#07c160'
+            }).margin({
+              bottom: SPACE.BASE
             })
           }
         }
@@ -58,10 +84,52 @@ struct SwitchPage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: '自定义颜色' }) {
+          ComponentShowContainer({ title: '自定义按钮' }) {
             IBestSwitch({
               value: true,
-              activeColor: '#db3131'
+              activeColor: '#db3131',
+              nodeBuilder: () => this.Arrow(),
+              onChange: (value) => {
+                this.arrowDirection = value ? 'left' : 'right';
+              }
+            })
+          }
+        }
+
+        ListItem() {
+          ComponentShowContainer({ title: '异步控制' }) {
+            IBestSwitch({
+              value: true,
+              onBeforeChange: ()=>{
+                return new Promise((resolve, reject)=>{
+                  AlertDialog.show(
+                    {
+                      title: '提示',
+                      message: '确定更改状态吗',
+                      autoCancel: true,
+                      alignment: DialogAlignment.Bottom,
+                      offset: { dx: 0, dy: -20 },
+                      gridCount: 3,
+                      primaryButton: {
+                        value: '取消',
+                        fontColor: COLOR_GRAY.BASE as unknown as Color,
+                        action: () => {
+                          reject('')
+                        }
+                      },
+                      secondaryButton: {
+                        value: '确认',
+                        action: () => {
+                          resolve('')
+                        }
+                      },
+                      cancel: () => {
+                        reject('')
+                      }
+                    }
+                  )
+                })
+              }
             })
           }
         }

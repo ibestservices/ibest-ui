@@ -6,7 +6,11 @@ export struct IBestSwitch {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IbestUIBaseStyleType = {}
+  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IbestUIBaseStyleType = {};
+  /**
+   * 自定义按钮的内容
+   */
+  @BuilderParam nodeBuilder?: CustomBuilder;
   /**
    * 开关按钮的尺寸，默认单位为 lpx
    */
@@ -24,20 +28,67 @@ export struct IBestSwitch {
    */
   @Prop value: boolean = false;
   /**
-   * 是否禁用
+   * 是否禁用 禁用状态下开关不可点击
    */
   @Prop disabled: boolean = false;
   /**
-   * 是否为加载状态
+   * 是否为加载状态 加载状态下开关不可点击
    */
   @Prop loading: boolean = false;
+  /**
+   * 打开时的loading颜色
+   */
+  @Prop loadingActiveColor: string = '';
+  /**
+   * 关闭时的loading颜色
+   */
+  @Prop loadingInactiveColor: string = '';
+  /**
+   * 改变的回调
+   */
+  onChange?: (value: boolean) => void;
+  /**
+   * 改变前的回调 接受一个promise 如果promise rejcet了那么将不会改变
+   */
+  onBeforeChange?: (value: boolean) => Promise<any>;
+  /**
+   * 点击的回调
+   */
+  onClickSwitch?: (event: ClickEvent) => void;
+
+  constructor() {
+    super();
+    this.nodeBuilder = null
+  }
+
+  /**
+   * 改变的回调
+   */
+  async handleChange(){
+    const nextValue = !this.value;
+    if(typeof this.onBeforeChange === 'function'){
+      await this.onBeforeChange(nextValue)
+    }
+    if(typeof this.onChange === 'function'){
+      this.onChange(nextValue)
+    }
+    this.value = nextValue;
+  }
+
 
   build(){
     Column(){
       // 圆
       Column(){
-        if(this.loading){
-          LoadingProgress().width(`${this.switchSize / 1.5}lpx`).color(this.baseStyle.primary).transition({})
+        if(typeof this.nodeBuilder === 'function'){
+          this.nodeBuilder()
+        }else{
+          if(this.loading){
+            LoadingProgress()
+              .width(`${this.switchSize / 1.5}lpx`)
+              .color( this.value ? this.loadingActiveColor || this.activeColor : this.loadingInactiveColor || this.activeColor )
+              .transition({})
+          }
         }
       }.width(`${this.switchSize}lpx`)
       .height(`${this.switchSize}lpx`)
@@ -70,9 +121,10 @@ export struct IBestSwitch {
     .opacity(this.disabled ? 0.5 : 1)
     .animation({
       duration: this.baseStyle.animationDuration,
-    }).onClick(()=>{
-      this.value = !this.value
+    }).onClick((event)=>{
+      typeof this.onClickSwitch === 'function' && this.onClickSwitch(event)
+      this.handleChange()
     })
-    .enabled(!this.disabled)
+    .enabled(!this.disabled && !this.loading)
   }
 }
