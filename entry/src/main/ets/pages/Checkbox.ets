@@ -301,6 +301,15 @@ struct CheckboxPage {
                 IBestButton({
                   text: '反选',
                   onClickBtn: ()=>{
+                    this.checkboxGroupContext.toggleAll()
+                  }
+                })
+              }.btnMargin()
+
+              Column(){
+                IBestButton({
+                  text: '取消选中',
+                  onClickBtn: ()=>{
                     this.checkboxGroupContext.toggleAll(false)
                   }
                 })

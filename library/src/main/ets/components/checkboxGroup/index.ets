@@ -6,7 +6,7 @@ import { CHECKBOX_GROUP_EVENT_NAME, getCheckboxNamespace } from './utils';
 export type CheckboxGroupContext = {
   /**
    * 切换全选反选
-   * @param { boolean } [isSelectedAll] 传true是全选 传false是反选
+   * @param { boolean } [isSelectedAll] 切换所有复选框，传 true 为选中，false 为取消选中，不传参为取反
    */
   toggleAll: (isSelectedAll?: boolean)=>void
 }
@@ -77,9 +77,9 @@ export struct IBestCheckboxGroup {
 
   /**
    * 全选与反选
-   * @param {boolean} [isSelectAll] 传true是全选 传false是反选
+   * @param {boolean} [isSelectAll] 切换所有复选框，传 true 为选中，false 为取消选中，不传参为取反
    */
-  async toggleAll(isSelectAll = true) {
+  async toggleAll(isSelectAll?: boolean) {
     emitter.emit(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), isSelectAll)
   }
 

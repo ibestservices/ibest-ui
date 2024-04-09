@@ -214,10 +214,10 @@ export struct IBestCheckbox {
 
   /**
    * 全选反选的响应事件
-   * @param {boolean} [isSelectAll] 传true是全选 传false是反选
+   * @param {boolean} [isSelectAll] 切换所有复选框，传 true 为选中，false 为取消选中，不传参为取反
    */
-  handleToggleChange(isSelectAll = true){
-    this.handleCheckedChange( isSelectAll ? true : !this.value )
+  handleToggleChange(isSelectAll?: boolean){
+    this.handleCheckedChange( typeof isSelectAll === 'boolean' ? isSelectAll : !this.value )
   }
 
   /**
