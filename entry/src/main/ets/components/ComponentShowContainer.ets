@@ -3,6 +3,7 @@ import { COLOR_GRAY, FONT_SIZE, SPACE, CONTAINER_SIZE } from '../assets/styles/B
 @Component
 export default struct ComponentShowContainer {
   @Prop title: string = '';
+  @Prop titlePaddingLeft: string = '';
   @BuilderParam defaultBuilder: CustomBuilder = null
 
   build(){
@@ -12,7 +13,8 @@ export default struct ComponentShowContainer {
         .padding({
           top: SPACE.THIRTY,
           bottom: SPACE.SMALL,
-          right: SPACE.SMALL
+          right: SPACE.SMALL,
+          left: this.titlePaddingLeft
         })
         .textAlign(TextAlign.Start)
         .fontColor(COLOR_GRAY.BASE)

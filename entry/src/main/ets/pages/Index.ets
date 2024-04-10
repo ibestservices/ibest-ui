@@ -24,6 +24,10 @@ struct Index {
       name: 'Tag标签',
       path: 'pages/Tag'
     },
+    {
+      name: 'Cell单元格',
+      path: 'pages/Cell'
+    },
   ]
 
   build() {

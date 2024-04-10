@@ -203,7 +203,7 @@ struct TagPage {
           }
         }
         .margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.MEDIA
         })
 
       }

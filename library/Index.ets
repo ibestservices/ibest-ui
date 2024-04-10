@@ -11,3 +11,5 @@ export { IBestCheckboxGroup, CheckboxGroupContext } from './src/main/ets/compone
 export { IBestSwitch } from './src/main/ets/components/switch/index'
 
 export { IBestTag } from './src/main/ets/components/tag/index'
+
+export { IBestCell } from './src/main/ets/components/cell/index'

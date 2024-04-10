@@ -4,6 +4,7 @@
     "pages/Button",
     "pages/Checkbox",
     "pages/Switch",
-    "pages/Tag"
+    "pages/Tag",
+    "pages/Cell"
   ]
 }
