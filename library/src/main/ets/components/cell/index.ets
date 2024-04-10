@@ -10,11 +10,11 @@ export struct IBestCell {
   /**
    * 全局公共样式
    */
-   @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {};
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {};
   /**
    * title的插槽 优先级大于 title
    */
-   @BuilderParam private titleBuilder: CustomBuilder = null;
+  @BuilderParam private titleBuilder: CustomBuilder = null;
   /**
    * value的插槽 优先级大于 value
    */
@@ -85,6 +85,10 @@ export struct IBestCell {
    * 是否使内容垂直居中
    */
   @Prop private center: boolean = false;
+  /**
+   * 点击单元格的回调
+   */
+  private onClickCell?: (event: ClickEvent) => void;
   /**
    * 根据buttonSize换对应的按钮尺寸
    */
@@ -264,6 +268,9 @@ export struct IBestCell {
     })
     .animation({
       duration: this.baseStyle.animationDuration
+    })
+    .onClick((event) => {
+      typeof this.onClickCell === 'function' && this.onClickCell(event)
     })
 
   }
