@@ -138,7 +138,6 @@ export struct IBestCell {
 
   build() {
     Column() {
-      Column() {
         // 标题与内容
         Row() {
           // 必选符号
@@ -153,31 +152,57 @@ export struct IBestCell {
                 minHeight: '48lpx'
               })
           }
-          // 标题
-          if (typeof this.titleBuilder === 'function') {
-            Row() {
-              this.titleBuilder()
-            }.constraintSize({
-              minHeight: '48lpx'
-            })
-          } else {
-            Row() {
-              if (typeof this.iconBuilder === 'function') {
-                Row() {
-                  this.iconBuilder()
-                }.constraintSize({
-                  minHeight: '48lpx'
-                })
+          // 标题与描述
+          Column(){
+            // 标题
+            if (typeof this.titleBuilder === 'function') {
+              Row() {
+                this.titleBuilder()
+              }.constraintSize({
+                minHeight: '48lpx'
+              })
+            } else {
+              Row() {
+                if (typeof this.iconBuilder === 'function') {
+                  Row() {
+                    this.iconBuilder()
+                  }.constraintSize({
+                    minHeight: '48lpx'
+                  })
+                }
+                // 默认标题内容
+                Text(String(this.title))
+                  .width(CONTAINER_SIZE.FULL)
+                  .lineHeight('48lpx')
+                  .fontSize(this.getCellSize().fontSize)
+                  .fontColor(this.titleColor)
+              }.width(CONTAINER_SIZE.FULL)
+              .alignItems(this.getAlignItems())
+            }
+
+            // 描述信息
+            if (typeof this.labelBuilder === 'function') {
+              Row() {
+                this.labelBuilder()
+              }.constraintSize({
+                minHeight: '36lpx'
+              })
+            } else {
+              if (this.isHasLabel()) {
+                Text(String(this.label))
+                  .width(CONTAINER_SIZE.FULL)
+                  .lineHeight('36lpx')
+                  .fontSize(this.getCellSize().labelFontSize)
+                  .margin({
+                    top: this.baseStyle.spaceBase
+                  })
+                  .fontColor(this.labelColor)
               }
-              // 默认标题内容
-              Text(String(this.title))
-                .layoutWeight(1)
-                .lineHeight('48lpx')
-                .fontSize(this.getCellSize().fontSize)
-                .fontColor(this.titleColor)
-            }.layoutWeight(1)
-            .alignItems(this.getAlignItems())
+            }
           }
+          .layoutWeight(1)
+          .alignItems( this.center ? HorizontalAlign.Center : HorizontalAlign.Start)
+
 
           // 内容
           if (typeof this.valueBuilder === 'function') {
@@ -223,37 +248,18 @@ export struct IBestCell {
             .alignItems(this.getAlignItems())
           }
 
-        }.alignItems(this.getAlignItems())
-
-        // 描述信息
-        if (typeof this.labelBuilder === 'function') {
-          Row() {
-            this.labelBuilder()
-          }.constraintSize({
-            minHeight: '36lpx'
-          })
-        } else {
-          if (this.isHasLabel()) {
-            Text(String(this.label))
-              .width(CONTAINER_SIZE.FULL)
-              .lineHeight('36lpx')
-              .fontSize(this.getCellSize().labelFontSize)
-              .margin({
-                top: this.baseStyle.spaceBase
-              })
-              .fontColor(this.labelColor)
-          }
         }
-      }
-      .width(CONTAINER_SIZE.FULL)
-      .border({
-        width: { bottom: this.hasBorder ? '2lpx' : 0 },
-        color: GRAY_COLOR.GRAY_3,
-      })
-      .padding({
-        top: this.getCellSize().padding,
-        bottom: this.getCellSize().padding,
-      })
+        .alignItems(this.getAlignItems())
+        .width(CONTAINER_SIZE.FULL)
+        .border({
+          width: { bottom: this.hasBorder ? '2lpx' : 0 },
+          color: GRAY_COLOR.GRAY_3,
+        })
+        .padding({
+          top: this.getCellSize().padding,
+          bottom: this.getCellSize().padding,
+        })
+
     }.padding({
       left: '32lpx',
       right: '32lpx'

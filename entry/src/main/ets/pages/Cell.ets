@@ -82,8 +82,8 @@ struct CellPage {
 
         ListItem() {
           ComponentShowContainer({ title: '内容居中', titlePaddingLeft: SPACE.SMALL }) {
-            IBestCell({title: '居中', value: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容', center: true,  iconBuilder: this.StarIcon('32lpx'), isLink: true })
-            IBestCell({title: '居上', value: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容', hasBorder: false, iconBuilder: this.StarIcon('32lpx'), isLink: true })
+            IBestCell({title: '居中', label: '描述内容', value: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容', center: true,  iconBuilder: this.StarIcon('32lpx'), isLink: true })
+            IBestCell({title: '居上', label: '描述内容', value: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容', hasBorder: false, iconBuilder: this.StarIcon('32lpx'), isLink: true })
 
           }
         }
