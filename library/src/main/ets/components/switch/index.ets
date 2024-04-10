@@ -10,7 +10,7 @@ export struct IBestSwitch {
   /**
    * 自定义按钮的内容
    */
-  @BuilderParam nodeBuilder?: CustomBuilder;
+  @BuilderParam nodeBuilder: CustomBuilder = null;
   /**
    * 开关按钮的尺寸，默认单位为 lpx
    */
@@ -55,11 +55,6 @@ export struct IBestSwitch {
    * 点击的回调
    */
   onClickSwitch?: (event: ClickEvent) => void;
-
-  constructor() {
-    super();
-    this.nodeBuilder = null
-  }
 
   /**
    * 改变的回调

@@ -17,11 +17,11 @@ export struct IBestCheckbox {
   /**
    * 自定义文本插槽
    */
-  @BuilderParam defaultBuilder?: (data: BuilderArgData) => any;
+  @BuilderParam defaultBuilder?: (data: BuilderArgData) => any = null;
   /**
    * 自定义图标插槽
    */
-  @BuilderParam iconBuilder?: (data: BuilderArgData) => any;
+  @BuilderParam iconBuilder?: (data: BuilderArgData) => any = null;
   /**
    * 全局公共样式
    */
@@ -94,12 +94,6 @@ export struct IBestCheckbox {
    * 当不确定图标从显示变隐藏时 等待动画结束后再变
    */
   isShowIndeterminateTimeId: number | null = null
-
-  constructor() {
-    super();
-    this.defaultBuilder = null;
-    this.iconBuilder = null;
-  }
 
   /**
    * 是否展示背景色

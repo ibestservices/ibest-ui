@@ -20,15 +20,15 @@ export struct IBestButton {
   /**
    * defaultSlot 默认插槽
    */
-  @BuilderParam defaultBuilder?: CustomBuilder;
+  @BuilderParam defaultBuilder?: CustomBuilder = null;
   /**
    * 图标的builder
    */
-  @BuilderParam iconBuilder?: CustomBuilder;
+  @BuilderParam iconBuilder?: CustomBuilder = null;
   /**
    * 加载图标的builder
    */
-  @BuilderParam loadingIconBuilder?: CustomBuilder;
+  @BuilderParam loadingIconBuilder?: CustomBuilder = null;
   /**
    * 类型，可选值为 primary success warning danger
    */
@@ -113,13 +113,6 @@ export struct IBestButton {
       fontSize: this.baseStyle.fontSizeMd
     },
   };
-
-  constructor() {
-    super();
-    this.defaultBuilder = null;
-    this.iconBuilder = null;
-    this.loadingIconBuilder = null;
-  }
 
   /**
    * 根据颜色type获取背景色
