@@ -41,7 +41,6 @@ export struct IBestCell {
    * 标题的文字颜色 默认 #323233
    */
   @Prop titleColor: string = GRAY_COLOR.GRAY_8;
-
   /**
    * 右侧内容
    */
@@ -102,13 +101,14 @@ export struct IBestCell {
       labelFontSize: this.baseStyle.fontSizeSm,
     },
   };
-
+  /**
+   * 根据arrow direction获取图标旋转角度
+   */
   arrowDirection2RotateDegMap = {
     [ARROW_DIRECTION.RIGHT]: 0,
     [ARROW_DIRECTION.TOP]: -90,
-    [ARROW_DIRECTION.BOTTOM]:90,
+    [ARROW_DIRECTION.BOTTOM]: 90,
     [ARROW_DIRECTION.LEFT]: 180,
-
   }
 
   isHasLabel() {
@@ -124,12 +124,11 @@ export struct IBestCell {
     return this.cellSizeMap[this.cellSize] || this.cellSizeMap.default
   }
 
-  getArrowRotateAngle(){
+  getArrowRotateAngle() {
     return this.arrowDirection2RotateDegMap[this.arrowDirection] || this.arrowDirection2RotateDegMap[ARROW_DIRECTION.RIGHT]
   }
 
-
-  getAlignItems(){
+  getAlignItems() {
     return this.center ? VerticalAlign.Center : VerticalAlign.Top
   }
 
@@ -139,7 +138,7 @@ export struct IBestCell {
         // 标题与内容
         Row() {
           // 必选符号
-          if(this.required){
+          if (this.required) {
             Text('*')
               .margin({
                 right: this.baseStyle.spaceMini
@@ -151,16 +150,16 @@ export struct IBestCell {
               })
           }
           // 标题
-          if(typeof this.titleBuilder === 'function'){
-            Row(){
+          if (typeof this.titleBuilder === 'function') {
+            Row() {
               this.titleBuilder()
             }.constraintSize({
               minHeight: '48lpx'
             })
-          }else{
-            Row(){
-              if(typeof this.iconBuilder === 'function'){
-                Row(){
+          } else {
+            Row() {
+              if (typeof this.iconBuilder === 'function') {
+                Row() {
                   this.iconBuilder()
                 }.constraintSize({
                   minHeight: '48lpx'
@@ -177,35 +176,39 @@ export struct IBestCell {
           }
 
           // 内容
-          if(typeof this.valueBuilder === 'function'){
-            Row(){
+          if (typeof this.valueBuilder === 'function') {
+            Row() {
               this.valueBuilder()
             }.constraintSize({
               minHeight: '48lpx'
             }).layoutWeight(1)
-          }else{
-            Row(){
+          } else {
+            Row() {
               Text(String(this.value))
                 .textAlign(TextAlign.Start)
                 .lineHeight('48lpx')
                 .fontSize(this.getCellSize().fontSize)
                 .fontColor(this.valueColor)
-              if(typeof this.rightIconBuilder === 'function'){
-                Row(){
+              if (typeof this.rightIconBuilder === 'function') {
+                Row() {
                   this.rightIconBuilder()
                 }.constraintSize({
                   minHeight: '48lpx'
                 })
+
                 // 如果是link箭头
-              }else if(this.isLink){
-                Row(){
+              } else if (this.isLink) {
+                Row() {
                   Image($r("app.media.arrow_right"))
                     .width(this.baseStyle.fontSizeSm)
                     .margin({
                       top: '6lpx',
                       left: '8lpx'
                     })
-                    .rotate({angle: this.getArrowRotateAngle()})
+                    .rotate({ angle: this.getArrowRotateAngle() })
+                    .animation({
+                      duration: this.baseStyle.animationDuration
+                    })
                   // 行高会导致对不齐 所以要加个做小高度和行高一样
                 }.constraintSize({
                   minHeight: '48lpx'
@@ -219,13 +222,13 @@ export struct IBestCell {
         }.alignItems(this.getAlignItems())
 
         // 描述信息
-        if (typeof this.labelBuilder === 'function'){
-          Row(){
+        if (typeof this.labelBuilder === 'function') {
+          Row() {
             this.labelBuilder()
           }.constraintSize({
             minHeight: '36lpx'
           })
-        }else{
+        } else {
           if (this.isHasLabel()) {
             Text(String(this.label))
               .width(CONTAINER_SIZE.FULL)
@@ -256,7 +259,7 @@ export struct IBestCell {
         .backgroundColor('#fff')
       },
       pressed: {
-        .backgroundColor( this.isLink || this.clickable ? '#f2f3f5' : '#fff')
+        .backgroundColor(this.isLink || this.clickable ? '#f2f3f5' : '#fff')
       }
     })
     .animation({
