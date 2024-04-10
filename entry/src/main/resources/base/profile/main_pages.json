@@ -3,6 +3,7 @@
     "pages/Index",
     "pages/Button",
     "pages/Checkbox",
-    "pages/Switch"
+    "pages/Switch",
+    "pages/Tag"
   ]
 }

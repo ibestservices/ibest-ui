@@ -1,4 +1,5 @@
 export enum SPACE {
+  MINI = '4lpx',
   BASE = '8lpx',
   XS = '16lpx',
   SM = '24lpx',

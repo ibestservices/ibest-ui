@@ -30,13 +30,13 @@ export struct IBestButton {
    */
   @BuilderParam loadingIconBuilder?: CustomBuilder = null;
   /**
-   * 类型，可选值为 primary success warning danger
-   */
-  @Prop type: ColorType = COLOR_TYPE.PRIMARY;
-  /**
    * 全局公共样式
    */
   @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IbestUIBaseStyleType = {}
+  /**
+   * 类型，可选值为 primary success warning danger
+   */
+  @Prop type: ColorType = COLOR_TYPE.PRIMARY;
   /**
    * 大小，可选值为 large normal small mini
    * size是保留字所以没使用size
@@ -116,11 +116,10 @@ export struct IBestButton {
 
   /**
    * 根据颜色type获取背景色
-   * @param {ColorType} type 颜色类型
    * @returns
    */
-  getBackgroundColor(type: ColorType) {
-    return this.color ? this.color : this.baseStyle[type]
+  getBackgroundColor() {
+    return this.color ? this.color : this.baseStyle[this.type]
   }
 
   /**
@@ -145,7 +144,7 @@ export struct IBestButton {
    * @returns
    */
   getBtnColor(isHasColor: boolean) {
-    return isHasColor ? this.getBackgroundColor(this.type) : '#fff'
+    return isHasColor ? this.getBackgroundColor() : '#fff'
   }
 
   /**

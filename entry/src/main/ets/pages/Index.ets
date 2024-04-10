@@ -20,6 +20,10 @@ struct Index {
       name: 'Switch开关',
       path: 'pages/Switch'
     },
+    {
+      name: 'Tag标签',
+      path: 'pages/Tag'
+    },
   ]
 
   build() {

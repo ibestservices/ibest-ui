@@ -9,3 +9,5 @@ export { IBestCheckbox } from './src/main/ets/components/checkbox/index'
 export { IBestCheckboxGroup, CheckboxGroupContext } from './src/main/ets/components/checkboxGroup/index'
 
 export { IBestSwitch } from './src/main/ets/components/switch/index'
+
+export { IBestTag } from './src/main/ets/components/tag/index'
