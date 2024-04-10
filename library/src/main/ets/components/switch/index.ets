@@ -6,60 +6,60 @@ export struct IBestSwitch {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IbestUIBaseStyleType = {};
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {};
   /**
    * 自定义按钮的内容
    */
-  @BuilderParam nodeBuilder: CustomBuilder = null;
+  @BuilderParam private nodeBuilder: CustomBuilder = null;
   /**
    * 开关按钮的尺寸，默认单位为 lpx
    */
-  @Prop switchSize: number = 52;
+  @Prop private switchSize: number = 52;
   /**
    * 打开时的背景色
    */
-  @Prop activeColor: string = this.baseStyle.primary;
+  @Prop private activeColor: string = this.baseStyle.primary;
   /**
    * 关闭时的背景色
    */
-  @Prop inactiveColor: string = 'rgba(120, 120, 128, 0.16)';
+  @Prop private inactiveColor: string = 'rgba(120, 120, 128, 0.16)';
   /**
    * 开关默认选中的状态
    */
-  @Prop value: boolean = false;
+  @Prop private value: boolean = false;
   /**
    * 是否禁用 禁用状态下开关不可点击
    */
-  @Prop disabled: boolean = false;
+  @Prop private disabled: boolean = false;
   /**
    * 是否为加载状态 加载状态下开关不可点击
    */
-  @Prop loading: boolean = false;
+  @Prop private loading: boolean = false;
   /**
    * 打开时的loading颜色
    */
-  @Prop loadingActiveColor: string = '';
+  @Prop private loadingActiveColor: string = '';
   /**
    * 关闭时的loading颜色
    */
-  @Prop loadingInactiveColor: string = '';
+  @Prop private loadingInactiveColor: string = '';
   /**
    * 改变的回调
    */
-  onChange?: (value: boolean) => void;
+  private onChange?: (value: boolean) => void;
   /**
    * 改变前的回调 接受一个promise 如果promise rejcet了那么将不会改变
    */
-  onBeforeChange?: (value: boolean) => Promise<any>;
+  private onBeforeChange?: (value: boolean) => Promise<any>;
   /**
    * 点击的回调
    */
-  onClickSwitch?: (event: ClickEvent) => void;
+  private onClickSwitch?: (event: ClickEvent) => void;
 
   /**
    * 改变的回调
    */
-  async handleChange(){
+  private async handleChange(){
     const nextValue = !this.value;
     if(typeof this.onBeforeChange === 'function'){
       await this.onBeforeChange(nextValue)

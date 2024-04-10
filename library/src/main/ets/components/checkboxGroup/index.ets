@@ -13,24 +13,24 @@ export type CheckboxGroupContext = {
 
 @Component
 export struct IBestCheckboxGroup {
-  that = this
+  private that = this
   /**
    * 多个相同群组名称的CheckboxGroup，仅第一个CheckboxGroup生效。
    */
-  @Prop group: string;
+  @Prop private group: string;
   /**
    * 最大可选数量 默认0是都可选
    */
-  @Prop @Watch('handleMaxChange') max: number = 0;
+  @Prop @Watch('handleMaxChange') private max: number = 0;
   /**
    * 选中的数据
    */
-  checkedList: CheckedItem[] = [];
+  private checkedList: CheckedItem[] = [];
   /**
    * 选中变化的回调
    * 参数是checkbox子组件的的name值
    */
-  onChange?: (checkedItemNames: string[]) => void;
+  private onChange?: (checkedItemNames: string[]) => void;
   /**
    * 初始化的回调
    */
@@ -38,7 +38,7 @@ export struct IBestCheckboxGroup {
   /**
    * 子组件是否初始化了
    */
-  isChildReady: boolean = false
+  private isChildReady: boolean = false
 
 
   aboutToAppear() {
@@ -55,7 +55,7 @@ export struct IBestCheckboxGroup {
     removeCheckboxStore(this.group)
   }
 
-  initStorage() {
+  private initStorage() {
     initCheckboxStore(this.group, (checkedList) => {
       this.checkedList = checkedList;
       this.handleMaxChange();
@@ -68,7 +68,7 @@ export struct IBestCheckboxGroup {
    * 当选中的变化时
    * 通过emitter通知相同group的子组件更新disabled状态
    */
-  handleMaxChange() {
+  private handleMaxChange() {
     this.max > 0 && emitter.emit(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), {
       max: this.max,
       checkedList: this.checkedList
@@ -79,7 +79,7 @@ export struct IBestCheckboxGroup {
    * 全选与反选
    * @param {boolean} [isSelectAll] 切换所有复选框，传 true 为选中，false 为取消选中，不传参为取反
    */
-  async toggleAll(isSelectAll?: boolean) {
+   public async toggleAll(isSelectAll?: boolean) {
     emitter.emit(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), isSelectAll)
   }
 

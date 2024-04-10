@@ -40,7 +40,10 @@ struct ButtonPage {
             Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
               Column() {
                 IBestButton({
-                  text: '主要按钮'
+                  text: '主要按钮',
+                  onClickBtn: () => {
+                    console.log('点击按钮了')
+                  }
                 })
               }.btnMargin()
 

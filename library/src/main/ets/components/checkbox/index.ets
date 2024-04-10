@@ -17,90 +17,90 @@ export struct IBestCheckbox {
   /**
    * 自定义文本插槽
    */
-  @BuilderParam defaultBuilder?: (data: BuilderArgData) => any = null;
+  @BuilderParam private defaultBuilder?: (data: BuilderArgData) => any = null;
   /**
    * 自定义图标插槽
    */
-  @BuilderParam iconBuilder?: (data: BuilderArgData) => any = null;
+  @BuilderParam private iconBuilder?: (data: BuilderArgData) => any = null;
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IbestUIBaseStyleType = {}
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {}
   /**
    * 标识符，通常为一个唯一的字符串
    * 多选框名称。
    */
-  @Prop name: string;
+  @Prop private name: string;
   /**
    * 形状
    */
-  @Prop shape: 'square' | 'round' = 'round';
+  @Prop private shape: 'square' | 'round' = 'round';
   /**
    * 选中状态颜色
    */
-  @Prop checkedColor: string = this.baseStyle.primary;
+  @Prop private checkedColor: string = this.baseStyle.primary;
   /**
    * 图标大小 单位lpx
    * 默认40lpx
    */
-  @Prop iconSize: number = 40;
+  @Prop private iconSize: number = 40;
   /**
    * 默认是否选中 非双向绑定
    * 如果要更改数据请从onChange回调中获取最新的值
    */
-  @Prop value: boolean;
+  @Prop private value: boolean;
   /**
    * 是否禁用
    */
-  @Prop @Watch('getIsDisabled') disabled: boolean = false
+  @Prop @Watch('getIsDisabled') private disabled: boolean = false
   /**
    * 显示的文本
    */
-  @Prop label: string = ''
+  @Prop private label: string = ''
   /**
    * 文本位置，可选值为 left
    */
-  @Prop labelPosition: 'left' | 'right' = 'right';
+  @Prop private labelPosition: 'left' | 'right' = 'right';
   /**
    * 是否禁用复选框文本点击
    */
-  @Prop labelDisabled: boolean = false;
+  @Prop private labelDisabled: boolean = false;
   /**
    * 组名
    */
-  @Prop group: string = '';
+  @Prop private group: string = '';
   /**
    * 是否为不确定状态
    */
-  @Prop @Watch('handleIndeterminateChange') indeterminate: boolean = false;
+  @Prop @Watch('handleIndeterminateChange') private indeterminate: boolean = false;
   /**
    * 改变的回调
    */
-  onChange?: (checked: boolean) => void;
+  private onChange?: (checked: boolean) => void;
   /**
    * 受checkboxgroup的最大可选数量禁用的
    */
-  @State @Watch('getIsDisabled') checkboxGroupMaxDisabled: boolean = false;
+  @State @Watch('getIsDisabled') private checkboxGroupMaxDisabled: boolean = false;
   /**
    * 合并disabled与checkboxGroupMaxDisabled的最终结果 用来UI渲染
    */
-  @State mergeDisabled: boolean = false;
+  @State private mergeDisabled: boolean = false;
   /**
    * 是否展示不确定状态的按钮
    * 因为chekbox在切换状态时有动画 但是图片切换没有动画 就会导致有不确定状态切换的时候 会先闪成勾选状态
    */
-  @State isShowIndeterminateImg: boolean = false;
+  @State private isShowIndeterminateImg: boolean = false;
   /**
    * 当不确定图标从显示变隐藏时 等待动画结束后再变
    */
-  isShowIndeterminateTimeId: number | null = null
+  private isShowIndeterminateTimeId: number | null = null
 
   /**
    * 是否展示背景色
    * 比如选中了或者需要显示不确定状态时
    * @returns
    */
-  isShowBackground(){
+  private isShowBackground(){
     return this.value || this.indeterminate
   }
 
@@ -108,7 +108,7 @@ export struct IBestCheckbox {
    * 获取背景色
    * @returns
    */
-  getBackgroundColor() {
+  private getBackgroundColor() {
     if (this.mergeDisabled) {
       return GRAY_COLOR.GRAY_3
     } else {
@@ -120,7 +120,7 @@ export struct IBestCheckbox {
    * 获取边框色
    * @returns
    */
-  getBorderColor() {
+  private getBorderColor() {
     if (this.mergeDisabled) {
       return GRAY_COLOR.GRAY_5
     } else {
@@ -132,7 +132,7 @@ export struct IBestCheckbox {
    * 获取label的颜色
    * @returns
    */
-  getLabelColor() {
+  private getLabelColor() {
     return this.mergeDisabled ? GRAY_COLOR.GRAY_5 : GRAY_COLOR.GRAY_8
   }
 
@@ -140,7 +140,7 @@ export struct IBestCheckbox {
    * 获取图标的颜色
    * @returns
    */
-  getIconColor() {
+  private getIconColor() {
     return this.mergeDisabled ? GRAY_COLOR.GRAY_5 : '#fff'
   }
 
@@ -148,15 +148,15 @@ export struct IBestCheckbox {
    * 是否是在左边的label
    * @returns
    */
-  isLeftLabel() {
+  private isLeftLabel() {
     return this.labelPosition === 'left'
   }
 
-  isHasGroup() {
+  private isHasGroup() {
     return typeof this.group === 'string' && this.group.length > 0
   }
 
-  updateGroupStore() {
+  private updateGroupStore() {
     if (this.isHasGroup()) {
       updateCheckboxStoreByKey(this.group, { name: this.name, checked: this.value })
     }
@@ -165,7 +165,7 @@ export struct IBestCheckbox {
   /**
    * 改变选中状态的回调
    */
-  handleCheckedChange(status = !this.value) {
+  private handleCheckedChange(status = !this.value) {
     if (this.mergeDisabled) {
       return
     }
@@ -178,7 +178,7 @@ export struct IBestCheckbox {
    * 当选中的最大数量变化时 或者选中的数据变化时
    * @param data
    */
-  handleMaxChange(data: {
+  private handleMaxChange(data: {
     max: number,
     checkedList: CheckedItem[]
   }) {
@@ -204,7 +204,7 @@ export struct IBestCheckbox {
   /**
    * 获取是否禁用
    */
-  getIsDisabled() {
+  private getIsDisabled() {
     this.mergeDisabled = this.disabled || this.checkboxGroupMaxDisabled;
   }
 
@@ -212,14 +212,14 @@ export struct IBestCheckbox {
    * 全选反选的响应事件
    * @param {boolean} [isSelectAll] 切换所有复选框，传 true 为选中，false 为取消选中，不传参为取反
    */
-  handleToggleChange(isSelectAll?: boolean){
+  private handleToggleChange(isSelectAll?: boolean){
     this.handleCheckedChange( typeof isSelectAll === 'boolean' ? isSelectAll : !this.value )
   }
 
   /**
    * 当不确定状态发生改变时 响应按钮UI状态图标变化
    */
-  handleIndeterminateChange(){
+  private handleIndeterminateChange(){
     clearTimeout(this.isShowIndeterminateTimeId)
     // 当按钮的选中状态变为false时 会触发隐藏动画
     // 这时候如果直接更改不确定状态的图标为false时

@@ -20,60 +20,60 @@ export struct IBestTag {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IbestUIBaseStyleType = {};
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {};
   /**
    * 类型，可选值为 primary success warning danger
    */
-  @Prop type: ColorType = COLOR_TYPE.PRIMARY;
+  @Prop private type: ColorType = COLOR_TYPE.PRIMARY;
   /**
    * 大小，可选值为 large normal small mini
    * size是保留字所以没使用size
    */
-  @Prop tagSize: `${SIZE.LARGE}` | `medium` | `${SIZE.SMALL}` = SIZE.SMALL;
+  @Prop private tagSize: `${SIZE.LARGE}` | `medium` | `${SIZE.SMALL}` = SIZE.SMALL;
   /**
    * 标签内容
    */
-  @Prop text: string = '';
+  @Prop private text: string = '';
   /**
    * 标签颜色
    */
-  @Prop color: string = '';
+  @Prop private color: string = '';
   /**
    * 文本颜色，优先级高于 color 属性
    */
-  @Prop textColor: string = ''
+  @Prop private textColor: string = ''
   /**
    * 是否为空心样式
    */
-  @Prop plain: boolean = false;
+  @Prop private plain: boolean = false;
   /**
    * 是否为圆角样式
    */
-  @Prop round: boolean = false;
+  @Prop private round: boolean = false;
   /**
    * 是否为标记样式
    */
-  @Prop mark: boolean = false;
+  @Prop private mark: boolean = false;
   /**
    * 是否为可关闭标签 关闭标签时会触发 close 事件，在 close 事件中可以执行隐藏标签的逻辑
    */
-  @Prop closeable: boolean = false;
+  @Prop private closeable: boolean = false;
   /**
    * 是否展示标签
    */
-  @Prop show: boolean = true;
+  @Prop private show: boolean = true;
   /**
    * 点击关闭按钮触发的回调
    */
-  onClose?: (event: ClickEvent) => void;
+  private onClose?: (event: ClickEvent) => void;
   /**
    * 点击标签触发的回调
    */
-  onClickTag?: (event: ClickEvent) => void
+  private onClickTag?: (event: ClickEvent) => void
   /**
    * 根据buttonSize换对应的按钮尺寸
    */
-  tagSizeMap = {
+  private tagSizeMap = {
     'medium': {
       padding: '12lpx',
       height: '40lpx',
@@ -99,7 +99,7 @@ export struct IBestTag {
    * 根据颜色type获取背景色
    * @returns
    */
-  getBackgroundColor() {
+  private getBackgroundColor() {
     return this.color ? this.color : this.baseStyle[this.type]
   }
 
@@ -108,7 +108,7 @@ export struct IBestTag {
    * @param {boolean} isHasColor 是否需要展示颜色
    * @returns
    */
-  getTagColor(isHasColor: boolean) {
+  private getTagColor(isHasColor: boolean) {
     return isHasColor ? this.getBackgroundColor() : '#fff'
   }
 
@@ -116,7 +116,7 @@ export struct IBestTag {
    * 获取按钮文字的颜色
    * @returns
    */
-  getTagTextColor() {
+  private getTagTextColor() {
     if (this.textColor) {
       return this.textColor
     }
@@ -127,7 +127,7 @@ export struct IBestTag {
    * 根据size获取按钮的尺寸
    * @returns
    */
-  getTagSize() {
+  private getTagSize() {
     const sizeData = this.tagSizeMap[this.tagSize] || this.tagSizeMap.default
     return {
       ...sizeData,
@@ -140,7 +140,7 @@ export struct IBestTag {
    * @param borderRadius
    * @returns
    */
-  getBorderRadius(borderRadius: string): BorderRadiuses | Length {
+  private getBorderRadius(borderRadius: string): BorderRadiuses | Length {
     if (this.round) {
       return this.baseStyle.borderRadiusMAX
     } else if (this.mark) {

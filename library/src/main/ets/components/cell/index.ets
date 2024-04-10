@@ -10,85 +10,85 @@ export struct IBestCell {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IbestUIBaseStyleType = {};
+   @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {};
   /**
    * title的插槽 优先级大于 title
    */
-  @BuilderParam titleBuilder: CustomBuilder = null;
+   @BuilderParam private titleBuilder: CustomBuilder = null;
   /**
    * value的插槽 优先级大于 value
    */
-  @BuilderParam valueBuilder: CustomBuilder = null;
+  @BuilderParam private valueBuilder: CustomBuilder = null;
   /**
    * value的插槽 优先级大于 label
    */
-  @BuilderParam labelBuilder: CustomBuilder = null;
+  @BuilderParam private labelBuilder: CustomBuilder = null;
   /**
    * 自定义title左侧icon的插槽
    * 使用titleBuilder时，该插槽不生效
    */
-  @BuilderParam iconBuilder: CustomBuilder = null;
+  @BuilderParam private iconBuilder: CustomBuilder = null;
   /**
    * 自定义value右侧icon的插槽
    * 使用valueBuilder时，该插槽不生效
    */
-  @BuilderParam rightIconBuilder: CustomBuilder = null;
+  @BuilderParam private rightIconBuilder: CustomBuilder = null;
   /**
    * 左侧标题
    */
-  @Prop title: number | string = '';
+  @Prop private title: number | string = '';
   /**
    * 标题的文字颜色 默认 #323233
    */
-  @Prop titleColor: string = GRAY_COLOR.GRAY_8;
+  @Prop private titleColor: string = GRAY_COLOR.GRAY_8;
   /**
    * 右侧内容
    */
-  @Prop value: number | string = '';
+  @Prop private value: number | string = '';
   /**
    * 内容的文字颜色 默认 #969799
    */
-  @Prop valueColor: string = GRAY_COLOR.GRAY_6;
+  @Prop private valueColor: string = GRAY_COLOR.GRAY_6;
   /**
    * 标题下方的描述信息
    */
-  @Prop label: number | string = '';
+  @Prop private label: number | string = '';
   /**
    * 描述的文字颜色 默认 #969799
    */
-  @Prop labelColor: string = GRAY_COLOR.GRAY_6;
+  @Prop private labelColor: string = GRAY_COLOR.GRAY_6;
   /**
    * 是否显示内边框
    */
-  @Prop hasBorder: boolean = true;
+  @Prop private hasBorder: boolean = true;
   /**
    * 单元格大小 默认 'normal'
    */
-  @Prop cellSize: `${SIZE.LARGE}` | `${SIZE.NORMAL}` = SIZE.NORMAL;
+  @Prop private cellSize: `${SIZE.LARGE}` | `${SIZE.NORMAL}` = SIZE.NORMAL;
   /**
    * 是否开启点击反馈
    */
-  @Prop clickable: boolean = false;
+  @Prop private clickable: boolean = false;
   /**
    * 是否展示右侧箭头并开启点击反馈
    */
-  @Prop isLink: boolean = false;
+  @Prop private isLink: boolean = false;
   /**
    * 是否展示右侧箭头并开启点击反馈
    */
-  @Prop arrowDirection: `${ARROW_DIRECTION}` = ARROW_DIRECTION.RIGHT;
+  @Prop private arrowDirection: `${ARROW_DIRECTION}` = ARROW_DIRECTION.RIGHT;
   /**
    * 是否显示必填*号
    */
-  @Prop required: boolean = false;
+  @Prop private required: boolean = false;
   /**
    * 是否使内容垂直居中
    */
-  @Prop center: boolean = false;
+  @Prop private center: boolean = false;
   /**
    * 根据buttonSize换对应的按钮尺寸
    */
-  cellSizeMap = {
+  private cellSizeMap = {
     [SIZE.LARGE]: {
       padding: this.baseStyle.spaceSm,
       fontSize: this.baseStyle.fontSizeLg,
@@ -104,14 +104,14 @@ export struct IBestCell {
   /**
    * 根据arrow direction获取图标旋转角度
    */
-  arrowDirection2RotateDegMap = {
+  private arrowDirection2RotateDegMap = {
     [ARROW_DIRECTION.RIGHT]: 0,
     [ARROW_DIRECTION.TOP]: -90,
     [ARROW_DIRECTION.BOTTOM]: 90,
     [ARROW_DIRECTION.LEFT]: 180,
   }
 
-  isHasLabel() {
+  private isHasLabel() {
     const labelText = String(this.label)
     return labelText.length
   }
@@ -120,15 +120,15 @@ export struct IBestCell {
    * 根据size获取单元格的尺寸
    * @returns
    */
-  getCellSize() {
+  private getCellSize() {
     return this.cellSizeMap[this.cellSize] || this.cellSizeMap.default
   }
 
-  getArrowRotateAngle() {
+  private getArrowRotateAngle() {
     return this.arrowDirection2RotateDegMap[this.arrowDirection] || this.arrowDirection2RotateDegMap[ARROW_DIRECTION.RIGHT]
   }
 
-  getAlignItems() {
+  private getAlignItems() {
     return this.center ? VerticalAlign.Center : VerticalAlign.Top
   }
 
