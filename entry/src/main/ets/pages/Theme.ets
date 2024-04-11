@@ -72,9 +72,17 @@ struct ThemePage {
 
         ListItem() {
           ComponentShowContainer({ title: 'Switch组件', titlePaddingLeft: SPACE.SMALL }) {
-            IBestSwitch({
-              value: true
-            })
+            Row(){
+              IBestSwitch({
+                value: true
+              }).margin({
+                right: SPACE.BASE
+              })
+              IBestSwitch({
+                value: true,
+                loading: true
+              })
+            }
           }
         }
 
