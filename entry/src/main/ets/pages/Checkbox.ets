@@ -396,11 +396,8 @@ struct CheckboxPage {
 
         ListItem() {
           ComponentShowContainer({ title: '搭配单元格组件使用', }) {
-            Text( this.cellCehckedNames.join(','))
             IBestCheckboxGroup({ group: 'group17', max: this.cellCheckedMaxNum, onChange: (names)=>{
               // console.log(JSON.stringify(names))
-
-
             } })
             IBestCell({
               clickable: true,
