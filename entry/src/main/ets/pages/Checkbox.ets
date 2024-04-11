@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { IBestButton, IBestCheckbox, IBestCheckboxGroup, CheckboxGroupContext } from '../../../../../library/Index'
+import { IBestButton, IBestCheckbox, IBestCheckboxGroup, CheckboxGroupContext, IBestCell } from '../../../../../library/Index'
 import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, DISABLE_COLOR, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
@@ -9,12 +9,6 @@ function btnMargin() {
   .margin({ right: SPACE.BASE, bottom: SPACE.BASE })
 }
 
-@Builder
-function Arrow() {
-  Image($r('app.media.startIcon'))
-    .width(CONTAINER_SIZE.FORTY_FOUR)
-
-}
 
 @Entry
 @Component
@@ -36,6 +30,33 @@ struct CheckboxPage {
    * 全选反选的chekboxGroup的this指向
    */
   checkboxGroupIndeterminateContext: CheckboxGroupContext | null = null;
+
+  /**
+   * 搭配单元格组件选中的name
+   */
+  @State cellCehckedNames: string[] = [];
+
+  /**
+   * 最大可选数量
+   */
+  cellCheckedMaxNum = 2
+
+  @Builder CellCheckbox(name, group){
+    IBestCheckbox({
+      name,
+      group,
+      value: this.cellCehckedNames.includes(name)
+    })
+  }
+
+  handleClickCell(name){
+    const index = this.cellCehckedNames.indexOf(name)
+    if(index > -1){
+      this.cellCehckedNames.splice(index ,1)
+    }else{
+      (this.cellCheckedMaxNum > this.cellCehckedNames.length) && this.cellCehckedNames.push(name)
+    }
+  }
 
   build() {
     Column() {
@@ -170,7 +191,7 @@ struct CheckboxPage {
         ListItem() {
           ComponentShowContainer({ title: '复选框组', }) {
             IBestCheckboxGroup({ group: 'group1', onChange: (names)=>{
-                // console.log(JSON.stringify(names))
+                console.log(JSON.stringify(names))
               }
             })
             Column() {
@@ -372,6 +393,40 @@ struct CheckboxPage {
             }.btnMargin()
           }
         }
+
+        ListItem() {
+          ComponentShowContainer({ title: '搭配单元格组件使用', }) {
+            Text( this.cellCehckedNames.join(','))
+            IBestCheckboxGroup({ group: 'group17', max: this.cellCheckedMaxNum, onChange: (names)=>{
+              // console.log(JSON.stringify(names))
+
+
+            } })
+            IBestCell({
+              clickable: true,
+              title: '复选框1',
+              rightIconBuilder: ()=>this.CellCheckbox('checkbox1-cell', 'group17'),
+              onClickCell: ()=>this.handleClickCell('checkbox1-cell')
+            })
+            IBestCell({
+              clickable: true,
+              title: '复选框2',
+              rightIconBuilder: ()=>this.CellCheckbox('checkbox2-cell', 'group17'),
+              onClickCell: ()=>this.handleClickCell('checkbox2-cell')
+
+            })
+            IBestCell({
+              clickable: true,
+              title: '复选框3',
+              hasBorder: false,
+              rightIconBuilder: ()=>this.CellCheckbox('checkbox3-cell', 'group17'),
+              onClickCell: ()=>this.handleClickCell('checkbox3-cell')
+            })
+          }
+        }.margin({
+          bottom: SPACE.MEDIA
+        })
+
       }
       .layoutWeight(1)
       .padding({
