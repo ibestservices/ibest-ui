@@ -44,7 +44,8 @@ struct WatermarkPage {
               waterMarkHeight: 40,
               waterMarkZIndex: 1,
               gapX: 40,
-              gapY: 40
+              gapY: 40,
+              rotateDeg: 0
             }){
               Column(){}
               .width(CONTAINER_SIZE.FULL)
@@ -91,11 +92,6 @@ struct WatermarkPage {
         }.margin({
           bottom: SPACE.MEDIA
         })
-
-
-
-
-
       }
       .layoutWeight(1)
 
