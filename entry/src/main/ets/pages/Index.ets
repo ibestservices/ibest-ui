@@ -17,6 +17,10 @@ struct Index {
       path: 'pages/Button'
     },
     {
+      name: 'Radio单选框',
+      path: 'pages/Radio'
+    },
+    {
       name: 'Checkbox复选框',
       path: 'pages/Checkbox'
     },

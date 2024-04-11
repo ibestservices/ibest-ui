@@ -18,3 +18,7 @@ export { IBestCell } from './src/main/ets/components/cell/index'
 export { IBestCellGroup } from './src/main/ets/components/cellGroup/index'
 
 export { IBestWatermark } from './src/main/ets/components/watermark/index'
+
+export { IBestRadio } from './src/main/ets/components/radio/index'
+
+export { IBestRadioGroup } from './src/main/ets/components/radioGroup/index'
