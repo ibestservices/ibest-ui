@@ -65,7 +65,8 @@ struct ThemePage {
           ComponentShowContainer({ title: 'Checkbox组件', titlePaddingLeft: SPACE.SMALL }) {
             IBestCheckbox({
               value: true,
-              name: '1'
+              name: '1',
+              label: '复选框'
             })
           }
         }

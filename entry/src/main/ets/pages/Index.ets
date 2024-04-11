@@ -87,6 +87,9 @@ struct Index {
               }
             })
           })
+          .animation({
+            duration: 200
+          })
         })
 
       }.listDirection(Axis.Vertical) // 排列方向
