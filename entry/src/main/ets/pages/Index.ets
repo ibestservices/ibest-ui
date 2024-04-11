@@ -32,6 +32,10 @@ struct Index {
       name: 'Cell单元格',
       path: 'pages/Cell'
     },
+    {
+      name: 'Watermark水印',
+      path: 'pages/Watermark'
+    },
   ]
 
   build() {

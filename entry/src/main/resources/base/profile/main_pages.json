@@ -6,6 +6,7 @@
     "pages/Switch",
     "pages/Tag",
     "pages/Cell",
-    "pages/Theme"
+    "pages/Theme",
+    "pages/Watermark"
   ]
 }

@@ -16,3 +16,5 @@ export { IBestTag } from './src/main/ets/components/tag/index'
 export { IBestCell } from './src/main/ets/components/cell/index'
 
 export { IBestCellGroup } from './src/main/ets/components/cellGroup/index'
+
+export { IBestWatermark } from './src/main/ets/components/watermark/index'

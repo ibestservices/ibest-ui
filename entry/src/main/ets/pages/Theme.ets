@@ -25,7 +25,7 @@ struct ThemePage {
       List() {
 
         ListItem() {
-          ComponentShowContainer({ title: '更改primary颜色', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '更改primary颜色' }) {
             Row(){
               TextInput({placeholder: '请输入合法颜色值，如red、#07c16', text: this.colorText})
                 .fontSize(FONT_SIZE.MINI)
@@ -53,7 +53,7 @@ struct ThemePage {
 
 
         ListItem() {
-          ComponentShowContainer({ title: 'Button组件', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: 'Button组件' }) {
               IBestButton({
                 type: 'primary',
                 text: '按钮'
@@ -62,7 +62,7 @@ struct ThemePage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: 'Checkbox组件', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: 'Checkbox组件' }) {
             IBestCheckbox({
               value: true,
               name: '1',
@@ -72,7 +72,7 @@ struct ThemePage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: 'Switch组件', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: 'Switch组件' }) {
             Row(){
               IBestSwitch({
                 value: true
@@ -88,7 +88,7 @@ struct ThemePage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: 'Tag组件', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: 'Tag组件' }) {
             IBestTag({
               type: 'primary',
               text: '标签'
