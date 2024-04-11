@@ -49,8 +49,10 @@ struct CellPage {
         ListItem() {
           ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL }) {
             IBestCellGroup() {
-              IBestCell({ title: '标题', value: '内容' })
-              IBestCell({ title: '标题', value: '内容', label: '描述信息', hasBorder: false })
+              Column(){
+                IBestCell({ title: '标题', value: '内容' })
+                IBestCell({ title: '标题', value: '内容', label: '描述信息', hasBorder: false })
+              }
             }
           }
         }
@@ -58,8 +60,11 @@ struct CellPage {
         ListItem() {
           ComponentShowContainer({ title: '卡片风格', titlePaddingLeft: SPACE.SMALL }) {
             IBestCellGroup({ inset: true }) {
-              IBestCell({ title: '标题', value: '内容' })
-              IBestCell({ title: '标题', value: '内容', label: '描述信息', hasBorder: false })
+              Column(){
+                IBestCell({ title: '标题', value: '内容' })
+                IBestCell({ title: '标题', value: '内容', label: '描述信息', hasBorder: false })
+              }
+
             }
           }
         }

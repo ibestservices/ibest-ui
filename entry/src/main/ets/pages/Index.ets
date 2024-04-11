@@ -9,6 +9,10 @@ struct Index {
     path: string
   }[] = [
     {
+      name: 'Theme主题',
+      path: 'pages/Theme'
+    },
+    {
       name: 'Button按钮',
       path: 'pages/Button'
     },

@@ -18,7 +18,9 @@ export struct IBestSwitch {
   /**
    * 打开时的背景色
    */
-  @Prop private activeColor: string = this.baseStyle.primary;
+  // 这里不能赋值一个颜色 而是使用兜底的方式处理
+  // 因为如果给了一个默认色值 会导致主题色切换的逻辑出错
+  @Prop private activeColor: string = '';
   /**
    * 关闭时的背景色
    */
@@ -70,6 +72,15 @@ export struct IBestSwitch {
     this.value = nextValue;
   }
 
+  /**
+   * 获取激活的颜色
+   * 优先使用传进来的颜色 如果没有就使用主题色
+   * @returns
+   */
+  private getActiveColor(){
+    return this.activeColor || this.baseStyle.primary
+  }
+
 
   build(){
     Column(){
@@ -81,7 +92,7 @@ export struct IBestSwitch {
           if(this.loading){
             LoadingProgress()
               .width(`${this.switchSize / 1.5}lpx`)
-              .color( this.value ? this.loadingActiveColor || this.activeColor : this.loadingInactiveColor || this.activeColor )
+              .color( this.value ? this.loadingActiveColor || this.getActiveColor() : this.loadingInactiveColor || this.activeColor )
               .transition({})
           }
         }
@@ -111,7 +122,7 @@ export struct IBestSwitch {
     .justifyContent(FlexAlign.Center)
     .width(`${this.switchSize * 2 + 4}lpx`)
     .height(`${this.switchSize + 4}lpx`)
-    .backgroundColor( this.value ? this.activeColor : this.inactiveColor )
+    .backgroundColor( this.value ? this.getActiveColor() : this.inactiveColor )
     .borderRadius('52lpx')
     .opacity(this.disabled ? 0.5 : 1)
     .animation({

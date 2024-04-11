@@ -203,5 +203,6 @@ export struct IBestButton {
     .onClick((event) => {
       typeof this.onClickBtn === 'function' && this.onClickBtn(event)
     })
+    .animation({ duration: this.baseStyle.animationDuration})
   }
 }

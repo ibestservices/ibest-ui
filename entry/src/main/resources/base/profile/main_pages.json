@@ -5,6 +5,7 @@
     "pages/Checkbox",
     "pages/Switch",
     "pages/Tag",
-    "pages/Cell"
+    "pages/Cell",
+    "pages/Theme"
   ]
 }

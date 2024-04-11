@@ -38,7 +38,7 @@ export struct IBestCheckbox {
   /**
    * 选中状态颜色
    */
-  @Prop private checkedColor: string = this.baseStyle.primary;
+  @Prop private checkedColor: string = '';
   /**
    * 图标大小 单位lpx
    * 默认40lpx
@@ -112,7 +112,7 @@ export struct IBestCheckbox {
     if (this.mergeDisabled) {
       return GRAY_COLOR.GRAY_3
     } else {
-      return this.isShowBackground() ? this.checkedColor : 'transparent'
+      return this.isShowBackground() ? this.checkedColor || this.baseStyle.primary : 'transparent'
     }
   }
 
@@ -124,7 +124,7 @@ export struct IBestCheckbox {
     if (this.mergeDisabled) {
       return GRAY_COLOR.GRAY_5
     } else {
-      return this.isShowBackground() ? this.checkedColor : GRAY_COLOR.GRAY_5
+      return this.isShowBackground() ? this.checkedColor || this.baseStyle.primary : GRAY_COLOR.GRAY_5
     }
   }
 
