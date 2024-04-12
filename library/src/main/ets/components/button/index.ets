@@ -34,9 +34,9 @@ export struct IBestButton {
    */
   @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {}
   /**
-   * 类型，可选值为 primary success warning danger
+   * 类型，可选值为 primary success warning danger 默认值为default
    */
-  @Prop private type: ColorType = COLOR_TYPE.PRIMARY;
+  @Prop private type: ColorType = COLOR_TYPE.DEFAULT;
   /**
    * 大小，可选值为 large normal small mini
    * size是保留字所以没使用size
@@ -77,7 +77,7 @@ export struct IBestButton {
   /**
    * 按钮颜色
    */
-  @Prop private color: string = '';
+  @Prop @Watch('handleColorChange') private color: string = '';
   /**
    * 加载图标的大小，默认单位为 lpx 如果为-1就是默认值 默认值跟随字体大小
    */
@@ -135,7 +135,7 @@ export struct IBestButton {
    * @returns
    */
   private getBtnBorderRadius() {
-    return this.square ? 0 : this.baseStyle[`borderRadius${this.round ? 'MAX' : 'Md'}`]
+    return this.square ? 0 : this.baseStyle[`borderRadius${this.round ? 'Max' : 'Md'}`]
   }
 
   /**
@@ -161,6 +161,19 @@ export struct IBestButton {
    */
   private getLoadingSize() {
     return this.loadingSize != -1 ? `${this.loadingSize}lpx` : this.getBtnSize()?.fontSize
+  }
+
+  /**
+   * 当传入自定义颜色时 设置type保证颜色渲染正常
+   */
+  private handleColorChange(){
+    if(this.color){
+      this.type = 'primary'
+    }
+  }
+
+  aboutToAppear(){
+    this.handleColorChange()
   }
 
   build() {
@@ -200,6 +213,7 @@ export struct IBestButton {
     .borderColor(this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_4 : this.getBtnColor(this.plain))
     .hitTestBehavior(this.loading ? HitTestMode.None : HitTestMode.Default)
     .enabled(!this.disabled)
+    .opacity(this.disabled && this.plain ? 0.5 : 1)
     .onClick((event) => {
       typeof this.onClickBtn === 'function' && this.onClickBtn(event)
     })

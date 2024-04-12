@@ -1,7 +1,9 @@
 import { setIBestUIBaseStyle } from './src/main/ets/theme-chalk/src'
 setIBestUIBaseStyle()
 
-export { setIBestUIBaseStyle } from './src/main/ets/theme-chalk/src'
+export { setIBestUIBaseStyle }
+
+export { IbestUIBaseStyleType } from './src/main/ets/theme-chalk/src/index.type'
 
 export { IBestButton } from './src/main/ets/components/button/index'
 

@@ -22,9 +22,9 @@ export struct IBestTag {
    */
   @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {};
   /**
-   * 类型，可选值为 primary success warning danger
+   * 类型，可选值为 primary success warning danger 默认值为default
    */
-  @Prop private type: ColorType = COLOR_TYPE.PRIMARY;
+  @Prop private type: ColorType = COLOR_TYPE.DEFAULT;
   /**
    * 大小，可选值为 large normal small mini
    * size是保留字所以没使用size
@@ -142,13 +142,13 @@ export struct IBestTag {
    */
   private getBorderRadius(borderRadius: string): BorderRadiuses | Length {
     if (this.round) {
-      return this.baseStyle.borderRadiusMAX
+      return this.baseStyle.borderRadiusMax
     } else if (this.mark) {
       return {
         topLeft: 0,
-        topRight: this.baseStyle.borderRadiusMAX,
+        topRight: this.baseStyle.borderRadiusMax,
         bottomLeft: 0,
-        bottomRight: this.baseStyle.borderRadiusMAX
+        bottomRight: this.baseStyle.borderRadiusMax
       }
     } else {
       return borderRadius

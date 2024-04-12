@@ -41,6 +41,7 @@ struct ButtonPage {
               Column() {
                 IBestButton({
                   text: '主要按钮',
+                  type: 'primary',
                   onClickBtn: () => {
                     console.log('点击按钮了')
                   }
@@ -84,6 +85,7 @@ struct ButtonPage {
               Column() {
                 IBestButton({
                   text: '朴素按钮',
+                  type: 'primary',
                   plain: true
                 })
               }.btnMargin()
@@ -106,6 +108,7 @@ struct ButtonPage {
               Column() {
                 IBestButton({
                   text: '禁用状态',
+                  type: 'primary',
                   disabled: true
                 })
               }.btnMargin()
@@ -127,7 +130,8 @@ struct ButtonPage {
             Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
               Column() {
                 IBestButton({
-                  loading: true
+                  loading: true,
+                  type: 'primary',
                 })
               }.btnMargin()
 
@@ -151,6 +155,7 @@ struct ButtonPage {
               Column() {
                 IBestButton({
                   text: '方形按钮',
+                  type: 'primary',
                   square: true
                 })
               }.btnMargin()
@@ -172,6 +177,7 @@ struct ButtonPage {
               Column() {
                 IBestButton({
                   text: '',
+                  type: 'primary',
                   iconBuilder: Arrow
                 })
               }.btnMargin()
@@ -179,6 +185,7 @@ struct ButtonPage {
               Column() {
                 IBestButton({
                   text: '按钮',
+                  type: 'primary',
                   iconBuilder: Arrow
                 })
               }.btnMargin()
@@ -201,6 +208,7 @@ struct ButtonPage {
             Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap, alignItems: ItemAlign.Center }) {
                 IBestButton({
                   text: '大号按钮',
+                  type: 'primary',
                   buttonSize: 'large'
                 }).margin({
                   bottom: SPACE.BASE
@@ -208,6 +216,7 @@ struct ButtonPage {
 
               Column() {
                 IBestButton({
+                  type: 'primary',
                   text: '普通按钮',
                 })
               }.btnMargin()
@@ -215,6 +224,7 @@ struct ButtonPage {
               Column() {
                 IBestButton({
                   text: '小型按钮',
+                  type: 'primary',
                   buttonSize: 'small'
                 })
               }.btnMargin()
@@ -222,9 +232,42 @@ struct ButtonPage {
               Column() {
                 IBestButton({
                   text: '迷你按钮',
+                  type: 'primary',
                   buttonSize: 'mini'
                 })
               }.btnMargin()
+            }
+          }
+        }
+
+        ListItem() {
+          ComponentShowContainer({ title: '自定义颜色' }) {
+            Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap, alignItems: ItemAlign.Center }) {
+
+              Column() {
+                IBestButton({
+                  text: '自定义颜色按钮',
+                  color: "#7232dd"
+                })
+              }.btnMargin()
+
+              Column() {
+                IBestButton({
+                  text: '自定义颜色按钮',
+                  plain: true,
+                  color: "#7232dd"
+                })
+              }.btnMargin()
+
+              Column() {
+                IBestButton({
+                  text: '自定义颜色按钮',
+                  plain: true,
+                  disabled: true,
+                  color: "#7232dd"
+                })
+              }.btnMargin()
+
             }
           }
         }

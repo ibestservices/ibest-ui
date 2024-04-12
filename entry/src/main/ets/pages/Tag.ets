@@ -94,6 +94,7 @@ struct TagPage {
                   Text('空心样式').fontSize(FONT_SIZE.BASE)
                   IBestTag({
                     text: '标签',
+                    type: 'primary',
                     plain: true
                   })
                 }.rowStyles()
@@ -103,6 +104,7 @@ struct TagPage {
                   Text('圆角样式').fontSize(FONT_SIZE.BASE)
                   IBestTag({
                     text: '标签',
+                    type: 'primary',
                     round: true
                   })
                 }.rowStyles()
@@ -112,6 +114,7 @@ struct TagPage {
                   Text('标记样式').fontSize(FONT_SIZE.BASE)
                   IBestTag({
                     text: '标签',
+                    type: 'primary',
                     mark: true
                   })
                 }.rowStyles()
@@ -121,6 +124,7 @@ struct TagPage {
                   Text('可关闭标签').fontSize(FONT_SIZE.BASE)
                   IBestTag({
                     text: '标签',
+                    type: 'primary',
                     closeable: true,
                     show: this.showTag,
                     onClose: () => {
@@ -141,6 +145,7 @@ struct TagPage {
                 Row(){
                   Text('小号标签').fontSize(FONT_SIZE.BASE)
                   IBestTag({
+                    type: 'primary',
                     text: '标签',
                   })
                 }.rowStyles()
@@ -149,6 +154,7 @@ struct TagPage {
                 Row(){
                   Text('中号标签').fontSize(FONT_SIZE.BASE)
                   IBestTag({
+                    type: 'primary',
                     text: '标签',
                     tagSize: 'medium'
                   })
@@ -158,6 +164,7 @@ struct TagPage {
                 Row(){
                   Text('大号标签').fontSize(FONT_SIZE.BASE)
                   IBestTag({
+                    type: 'primary',
                     text: '标签',
                     tagSize: 'large'
                   })
@@ -175,6 +182,7 @@ struct TagPage {
                   Text('背景颜色').fontSize(FONT_SIZE.BASE)
                   IBestTag({
                     text: '标签',
+                    type: 'primary',
                     color: "#7232dd"
                   })
                 }.rowStyles()
