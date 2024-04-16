@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { IBestWatermark } from 'ibest-ui'
+import { IBestWatermark } from '@ibestservices/ibest-ui'
 import { BACKGROUND_COLOR, CONTAINER_SIZE, FONT_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import TitleBar from '../components/TitleBar';

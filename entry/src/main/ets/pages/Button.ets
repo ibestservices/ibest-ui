@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { IBestButton } from 'ibest-ui'
+import { IBestButton } from '@ibestservices/ibest-ui'
 import { BACKGROUND_COLOR, COLOR_BLUE, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'

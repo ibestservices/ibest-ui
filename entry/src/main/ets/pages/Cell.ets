@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { IBestCell, IBestTag, IBestCellGroup } from 'ibest-ui';
+import { IBestCell, IBestTag, IBestCellGroup } from '@ibestservices/ibest-ui';
 import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'

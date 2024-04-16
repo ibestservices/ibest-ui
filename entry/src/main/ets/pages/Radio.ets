@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { IBestCell, CheckboxGroupContext, IBestRadio, IBestRadioGroup } from 'ibest-ui';
+import { IBestCell, CheckboxGroupContext, IBestRadio, IBestRadioGroup } from '@ibestservices/ibest-ui';
 import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, DISABLE_COLOR, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
