@@ -1,10 +1,5 @@
 import router from '@ohos.router';
-import {
-  IBestCell,
-  CheckboxGroupContext,
-  IBestRadio,
-  IBestRadioGroup
-} from '../../../../../library/Index'
+import { IBestCell, CheckboxGroupContext, IBestRadio, IBestRadioGroup } from 'ibest-ui';
 import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, DISABLE_COLOR, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
@@ -20,7 +15,9 @@ function btnMargin() {
 struct CheckboxPage {
   @State title: string = router.getParams()['title'] || '';
   @State slectedRadioName: string = '';
-  @Builder CellRadio(name, group,){
+
+  @Builder
+  CellRadio(name, group,) {
     IBestRadio({
       name,
       group,
@@ -41,8 +38,9 @@ struct CheckboxPage {
           ComponentShowContainer({ title: '基础用法' }) {
             Column() {
               IBestRadioGroup({ group: 'group1', onChange: val => {
-                console.log('parent', val)
-              } })
+                  console.log('parent', val)
+                }
+              })
               Column() {
                 IBestRadio({
                   value: true,
@@ -69,11 +67,10 @@ struct CheckboxPage {
         ListItem() {
           ComponentShowContainer({ title: '水平排列' }) {
             Row() {
-              IBestRadioGroup({group: 'group3'})
+              IBestRadioGroup({ group: 'group3' })
               Column() {
                 IBestRadio({
                   value: true,
-                  disabled: true,
                   label: '单选框1',
                   name: 'radio2',
                   group: 'group3'
@@ -83,7 +80,6 @@ struct CheckboxPage {
               Column() {
                 IBestRadio({
                   value: false,
-                  disabled: true,
                   label: '单选框2',
                   group: 'group3',
                   name: 'checkbox3'
@@ -96,7 +92,7 @@ struct CheckboxPage {
         ListItem() {
           ComponentShowContainer({ title: '禁用状态' }) {
             Column() {
-              IBestRadioGroup({group: 'group2'})
+              IBestRadioGroup({ group: 'group2' })
               Column() {
                 IBestRadio({
                   value: true,
@@ -123,7 +119,7 @@ struct CheckboxPage {
         ListItem() {
           ComponentShowContainer({ title: '自定义形状' }) {
             Column() {
-              IBestRadioGroup({group: 'group4'})
+              IBestRadioGroup({ group: 'group4' })
               Column() {
                 IBestRadio({
                   value: true,
@@ -147,7 +143,7 @@ struct CheckboxPage {
               })
 
 
-              IBestRadioGroup({group: 'group5'})
+              IBestRadioGroup({ group: 'group5' })
               Column() {
                 IBestRadio({
                   value: true,
@@ -173,7 +169,7 @@ struct CheckboxPage {
 
         ListItem() {
           ComponentShowContainer({ title: '自定义颜色' }) {
-            IBestRadioGroup({group: 'group7'})
+            IBestRadioGroup({ group: 'group7' })
 
             Column() {
               IBestRadio({
@@ -209,7 +205,7 @@ struct CheckboxPage {
 
         ListItem() {
           ComponentShowContainer({ title: '自定义大小' }) {
-            IBestRadioGroup({group: 'group8'})
+            IBestRadioGroup({ group: 'group8' })
 
             Column() {
               IBestRadio({
@@ -234,7 +230,7 @@ struct CheckboxPage {
 
         ListItem() {
           ComponentShowContainer({ title: '左侧文本' }) {
-            IBestRadioGroup({group: 'group9'})
+            IBestRadioGroup({ group: 'group9' })
 
             Column() {
               IBestRadio({
@@ -259,7 +255,7 @@ struct CheckboxPage {
 
         ListItem() {
           ComponentShowContainer({ title: '禁用文本点击' }) {
-            IBestRadioGroup({group: 'group10'})
+            IBestRadioGroup({ group: 'group10' })
 
             Column() {
               IBestRadio({
@@ -284,23 +280,23 @@ struct CheckboxPage {
 
         ListItem() {
           ComponentShowContainer({ title: '搭配单元格组件使用' }) {
-            IBestRadioGroup({group: 'group12'})
+            IBestRadioGroup({ group: 'group12' })
 
             IBestCell({
               title: '单选框1',
-              rightIconBuilder: ()=> this.CellRadio('radio1', 'group12'),
+              rightIconBuilder: () => this.CellRadio('radio1', 'group12'),
               clickable: true,
-              onClickCell: ()=>{
+              onClickCell: () => {
                 this.slectedRadioName = 'radio1'
               }
             })
 
             IBestCell({
               title: '单选框2',
-              rightIconBuilder: ()=> this.CellRadio('radio2', 'group12'),
+              rightIconBuilder: () => this.CellRadio('radio2', 'group12'),
               hasBorder: false,
               clickable: true,
-              onClickCell: ()=>{
+              onClickCell: () => {
                 this.slectedRadioName = 'radio2'
               }
             })

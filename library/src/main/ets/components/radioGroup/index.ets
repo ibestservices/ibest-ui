@@ -20,9 +20,9 @@ export struct IBestRadioGroup {
   private checkedItem: CheckedItem | null = null;
   /**
    * 选中变化的回调
-   * 参数是checkbox子组件的的name值
+   * 参数是radio子组件的的name值
    */
-  private onChange?: (checkedItemName: string) => void;
+  private onChange?: (radioName: string) => void;
 
   handleInitRadio(radioName: string | number){
     emitter.emit(getRadioGroupNamespace(this.group, RADIO_GROUP_EVENT_NAME.ON_INIT), radioName)

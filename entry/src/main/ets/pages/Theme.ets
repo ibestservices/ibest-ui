@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { IBestButton, IBestCheckbox, IBestSwitch, IBestTag, setIBestUIBaseStyle } from '../../../../../library/Index'
+import { IBestButton, IBestCheckbox, IBestSwitch, IBestTag, setIBestUIBaseStyle } from 'ibest-ui';
 import { BACKGROUND_COLOR, CONTAINER_SIZE, FONT_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import TitleBar from '../components/TitleBar';

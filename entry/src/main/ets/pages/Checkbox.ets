@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { IBestButton, IBestCheckbox, IBestCheckboxGroup, CheckboxGroupContext, IBestCell } from '../../../../../library/Index'
+import { IBestButton, IBestCheckbox, IBestCheckboxGroup, CheckboxGroupContext, IBestCell } from 'ibest-ui'
 import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, DISABLE_COLOR, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
@@ -312,6 +312,7 @@ struct CheckboxPage {
               Column(){
                 IBestButton({
                   text: '全选',
+                  type: 'primary',
                   onClickBtn: ()=>{
                     this.checkboxGroupContext.toggleAll(true)
                   }
@@ -321,6 +322,7 @@ struct CheckboxPage {
               Column(){
                 IBestButton({
                   text: '反选',
+                  type: 'warning',
                   onClickBtn: ()=>{
                     this.checkboxGroupContext.toggleAll()
                   }

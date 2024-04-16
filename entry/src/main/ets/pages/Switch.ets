@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { IBestSwitch } from '../../../../../library/Index'
+import { IBestSwitch } from 'ibest-ui'
 import { BACKGROUND_COLOR, COLOR_BLUE, COLOR_GRAY, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'

@@ -1,7 +1,7 @@
 {
-  "name": "library",
+  "name": "ibest-ui",
   "version": "1.0.0",
-  "description": "一套鸿蒙UI库",
+  "description": "一套简单易用的鸿蒙UI库，支持定制主题。",
   "main": "Index.ets",
   "keywords": [
   ],

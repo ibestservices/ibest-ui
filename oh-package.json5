@@ -6,6 +6,7 @@
   "author": "",
   "license": "",
   "dependencies": {
+    "ibest-ui": "file:library"
   },
   "devDependencies": {
     "@ohos/hypium": "1.0.11"
