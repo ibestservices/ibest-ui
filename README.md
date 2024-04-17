@@ -16,7 +16,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 
 ## 文档地址
 
-http://ibestui.ibestservices.com/
+https://ibestui.ibestservices.com/
 
 
 ## 仓库地址
