@@ -22,6 +22,7 @@ http://121.41.123.231:8040/
 
 ## 仓库地址
 https://gitee.com/ibestservices/ibest-ui
+
 https://github.com/ibestservices/ibest-ui
 
 ## 约束与限制
