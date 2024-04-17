@@ -15,9 +15,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 
 
 ## 文档地址
-> 后续会转为gitee和github的page
-
-http://121.41.123.231:8040/
+http://ibestui.ibestservices.com/
 
 
 ## 仓库地址
