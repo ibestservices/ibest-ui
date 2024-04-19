@@ -1,9 +1,12 @@
 {
   "name": "@ibestservices/ibest-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "一套简单易用让前端开发快速上手的鸿蒙UI库，支持定制主题，参考vant实现，更贴近Web端开发习惯。",
   "main": "Index.ets",
   "keywords": [
+    "UI库",
+    "鸿蒙UI库",
+    "HarmonyUI"
   ],
   "license": "Apache-2.0",
   "dependencies": {},
@@ -12,8 +15,9 @@
     "org": "opensource"
   },
   "tags": [
+    "ui",
   ],
   "type": "module",
-  "repository": "",
-  "homepage": ""
+  "repository": "https://github.com/ibestservices/ibest-ui",
+  "homepage": "https://ibestui.ibestservices.com/"
 }
