@@ -196,7 +196,7 @@ export struct IBestRadio {
         this.LabelContain()
       }
 
-      // checkbox
+      // radio
       Column() {
         if (typeof this.iconBuilder === 'function') {
           this.iconBuilder({ checked: this.value, disabled: this.disabled })

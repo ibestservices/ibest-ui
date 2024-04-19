@@ -32,10 +32,10 @@ export struct IBestRadioGroup {
   aboutToAppear() {
     this.initStorage();
     // 这时候子组件还没有初始化 需要等待子组件初始化
-    sleep().then(() => {
-      // 设置默认选中项
-      // this.handleInitRadio(this.value)
-    })
+    // sleep().then(() => {
+    //   // 设置默认选中项
+    //   // this.handleInitRadio(this.value)
+    // })
   }
 
   aboutToDisappear() {
