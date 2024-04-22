@@ -13,7 +13,6 @@ export type CheckboxGroupContext = {
 
 @Component
 export struct IBestCheckboxGroup {
-  private that = this
   /**
    * 多个相同群组名称的CheckboxGroup，仅第一个CheckboxGroup生效。
    */

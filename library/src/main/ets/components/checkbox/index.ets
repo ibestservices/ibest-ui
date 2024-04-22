@@ -48,7 +48,7 @@ export struct IBestCheckbox {
    * 默认是否选中 非双向绑定
    * 如果要更改数据请从onChange回调中获取最新的值
    */
-  @Prop @Watch('handleValueChange') private value: boolean;
+  @Prop @Watch('handleValueChange') @Watch('handleIndeterminateChange') private value: boolean;
   /**
    * 是否禁用
    */
