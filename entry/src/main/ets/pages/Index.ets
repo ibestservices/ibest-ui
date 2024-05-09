@@ -40,6 +40,10 @@ struct Index {
       name: 'Watermark水印',
       path: 'pages/Watermark'
     },
+    {
+      name: 'Empty空状态',
+      path: 'pages/Empty'
+    },
   ]
 
   build() {

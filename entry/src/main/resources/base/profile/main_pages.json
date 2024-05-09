@@ -8,6 +8,7 @@
     "pages/Cell",
     "pages/Theme",
     "pages/Watermark",
-    "pages/Radio"
+    "pages/Radio",
+    "pages/Empty"
   ]
 }
