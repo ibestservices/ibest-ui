@@ -31,11 +31,11 @@ export struct IBestEmpty {
   /**
    * 空占位图的高度
    */
-  @Prop private imageSize: string = '320lpx';
+  @Prop private imageSize: string | number = '320lpx';
   /**
    * 图片类型，可选值为 error network search default 默认default
    */
-  @Prop private emptyImage:  'error' | 'network' | 'search' | 'default'  = 'default';
+  @Prop private emptyImage: 'error' | 'network' | 'search' | 'default' = 'default';
 
   @Builder
   EmptyImg() {
@@ -55,16 +55,16 @@ export struct IBestEmpty {
   build() {
     Column() {
       // 空占位图
-      if(typeof this.emptyImgBuilder === 'function' ){
+      if (typeof this.emptyImgBuilder === 'function') {
         this.emptyImgBuilder()
-      }else{
+      } else {
         this.EmptyImg()
       }
 
       // 描述
-      if(typeof this.descriptionBuilder === 'function'){
+      if (typeof this.descriptionBuilder === 'function') {
         this.descriptionBuilder()
-      }else{
+      } else {
         Text(this.description)
           .margin({
             top: this.description ?? false ? SPACE.MD : 0
@@ -78,7 +78,7 @@ export struct IBestEmpty {
       }
 
       // 底部插槽
-      if(typeof this.defaultBuilder === 'function' ){
+      if (typeof this.defaultBuilder === 'function') {
         this.defaultBuilder()
       }
 

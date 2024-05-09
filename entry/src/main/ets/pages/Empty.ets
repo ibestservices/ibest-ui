@@ -1,6 +1,6 @@
 import TitleBar from '../components/TitleBar'
 import router from '@ohos.router';
-import { BACKGROUND_COLOR,  CONTAINER_SIZE,  SPACE } from '../assets/styles/BaseStyle';
+import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { IBestButton, IBestEmpty } from '@ibestservices/ibest-ui'
 
@@ -16,12 +16,11 @@ struct EmptyPage {
   }
 
   @Builder
-  Btn(){
-    IBestButton({text: '按钮', type: 'primary'}).margin({top: SPACE.BASE})
+  Btn() {
+    IBestButton({ text: '按钮', type: 'primary' }).margin({ top: SPACE.BASE })
   }
 
-
-  build(){
+  build() {
     Column() {
       TitleBar({
         title: this.title
