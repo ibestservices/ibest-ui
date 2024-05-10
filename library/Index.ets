@@ -26,3 +26,5 @@ export { IBestRadio } from './src/main/ets/components/radio/index'
 export { IBestRadioGroup } from './src/main/ets/components/radioGroup/index'
 
 export { IBestEmpty } from './src/main/ets/components/empty/index'
+
+export { IBestDialog } from './src/main/ets/components/dialog/index'

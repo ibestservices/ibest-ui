@@ -2,6 +2,7 @@ import { borderRadiusData } from './border'
 import { colorData } from './color'
 import { fontSizeData } from './font'
 import { IbestUIBaseStyleType } from './index.type'
+import { lineHeightData } from './line-height'
 import { spaceData } from './space'
 
 
@@ -14,7 +15,12 @@ export const defaultBaseStyle = {
   ...spaceData,
   ...fontSizeData,
   ...borderRadiusData,
-   animationDuration: 200
+  ...lineHeightData,
+  // 滚动效果
+  scrollEdgeEffect: EdgeEffect.Fade,
+  // 滚动条颜色
+  scrollBarColor: '#dbdfe6',
+  animationDuration: 200
 }
 
 /**

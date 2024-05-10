@@ -44,6 +44,10 @@ struct Index {
       name: 'Empty空状态',
       path: 'pages/Empty'
     },
+    {
+      name: 'Dialog 弹出框',
+      path: 'pages/Dialog'
+    },
   ]
 
   build() {
