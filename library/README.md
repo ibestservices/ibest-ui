@@ -14,6 +14,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 无
 
 
+
 ## 文档地址
 https://ibestui.ibestservices.com/
 
@@ -22,6 +23,9 @@ https://ibestui.ibestservices.com/
 https://gitee.com/ibestservices/ibest-ui
 
 https://github.com/ibestservices/ibest-ui
+
+## QQ群
+953492584
 
 ## 约束与限制
 在下述版本验证通过：

@@ -24,6 +24,9 @@ https://gitee.com/ibestservices/ibest-ui
 
 https://github.com/ibestservices/ibest-ui
 
+## QQ群
+953492584
+
 ## 约束与限制
 在下述版本验证通过：
 ```text
