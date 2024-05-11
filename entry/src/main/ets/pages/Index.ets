@@ -82,13 +82,13 @@ struct Index {
           })
           .backgroundColor(0xFFFFFF)
           .stateStyles({
-            normal:{
+            normal: {
               .scale({
                 x: 1,
                 y: 1
               })
             },
-            pressed:{
+            pressed: {
               .scale({
                 x: .98,
                 y: .98

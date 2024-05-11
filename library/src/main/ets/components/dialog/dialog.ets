@@ -1,8 +1,10 @@
 import { IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 import { IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { SPACE } from '../../theme-chalk/src/space.type';
 
-@Extend(Button) function defaultBtnStyles(){
+@Extend(Button)
+function defaultBtnStyles() {
   .layoutWeight(1)
   .backgroundColor('transparent')
   .height('96lpx')
@@ -17,15 +19,15 @@ export struct IBestDialogView {
   /**
    * 标题区域的builder
    */
-  @BuilderParam titleBuilder: CustomBuilder | null  = null;
+  @BuilderParam titleBuilder: CustomBuilder | null = null;
   /**
    * 内容区域的builder
    */
-  @BuilderParam defaultBuilder: CustomBuilder | null  = null;
+  @BuilderParam defaultBuilder: CustomBuilder | null = null;
   /**
    * 底部区域的builder
    */
-  @BuilderParam footerBuilder: CustomBuilder | null  = null;
+  @BuilderParam footerBuilder: CustomBuilder | null = null;
   /**
    * 全局公共样式
    */
@@ -50,12 +52,10 @@ export struct IBestDialogView {
    * 标题的padding-top值
    */
   @Consume private provide_titlePaddingTop: string;
-
   /**
    * 标题的padding-left与padding-right值 默认48lpx
    */
   @Consume private provide_titlePaddingX: string;
-
   /**
    * 标题的padding-top值
    */
@@ -87,7 +87,7 @@ export struct IBestDialogView {
   /**
    * 内容区域的fontColor 默认#323233
    */
-  @Consume private provide_messageFontColor: string ;
+  @Consume private provide_messageFontColor: string;
   /**
    * 内容区域的fontSize
    */
@@ -128,25 +128,39 @@ export struct IBestDialogView {
   /**
    * 确认按钮的颜色
    */
-  @Consume private provide_confirmButtonColor: string ;
+  @Consume private provide_confirmButtonColor: string;
   /**
    * 取消按钮的颜色
    */
-  @Consume private provide_cancelButtonColor: string ;
+  @Consume private provide_cancelButtonColor: string;
   /**
    * 是否禁用确认按钮
    */
-  @Consume private provide_confirmButtonDisabled: boolean ;
+  @Consume private provide_confirmButtonDisabled: boolean;
   /**
    * 是否禁用取消按钮
    */
-  @Consume private provide_cancelButtonDisabled: boolean ;
+  @Consume private provide_cancelButtonDisabled: boolean;
   /**
    * 按钮的文字大小
    */
-  @Consume private provide_buttonFontSize: string ;
-
-
+  @Consume private provide_buttonFontSize: string;
+  /**
+   * 确认按钮的loading
+   */
+  @Consume private provide_confirmButtonLoading: boolean;
+  /**
+   * 确认按钮的loading
+   */
+  @Consume private provide_cancelButtonLoading: boolean;
+  /**
+   * 点击取消的回调
+   */
+  private onCancel: (event?: ClickEvent) => void;
+  /**
+   * 点击确认的的回调
+   */
+  private onConfirm: (event?: ClickEvent) => void;
   /**
    * 对齐置换TextAlign
    */
@@ -160,7 +174,7 @@ export struct IBestDialogView {
    * 是否含有title
    * @returns
    */
-  isHasTitle(){
+  isHasTitle() {
     return (typeof this.provide_title === 'string' && !!this.provide_title.length) || typeof this.titleBuilder === 'function'
   }
 
@@ -168,7 +182,7 @@ export struct IBestDialogView {
    * 获取内容区域文字颜色
    * @returns
    */
-  getMsgColor(){
+  getMsgColor() {
     return this.provide_messageFontColor ? this.provide_messageFontColor : this.isHasTitle() ? GRAY_COLOR.GRAY_7 : GRAY_COLOR.GRAY_8;
   }
 
@@ -176,7 +190,7 @@ export struct IBestDialogView {
    * 确认按钮的文字颜色
    * @returns
    */
-  getConfirmBtnFontColor(){
+  getConfirmBtnFontColor() {
     return this.provide_confirmButtonColor ? this.provide_confirmButtonColor : this.baseStyle.primary
   }
 
@@ -184,17 +198,17 @@ export struct IBestDialogView {
    * 确认按钮的文字颜色
    * @returns
    */
-  getCancelBtnFontColor(){
+  getCancelBtnFontColor() {
     return this.provide_cancelButtonColor ? this.provide_cancelButtonColor : GRAY_COLOR.GRAY_7
   }
 
-  build(){
+  build() {
     Column() {
       // title
-      if(typeof this.titleBuilder === 'function'){
+      if (typeof this.titleBuilder === 'function') {
         this.titleBuilder()
-      }else{
-        if(this.isHasTitle){
+      } else {
+        if (this.isHasTitle) {
           Text(this.provide_title)
             .fontSize(this.provide_titleFontSize)
             .fontWeight(FontWeight.Medium)
@@ -211,10 +225,10 @@ export struct IBestDialogView {
 
 
       // content
-      if(typeof this.defaultBuilder === 'function'){
+      if (typeof this.defaultBuilder === 'function') {
         this.defaultBuilder()
-      }else{
-        Scroll(){
+      } else {
+        Scroll() {
           Text(this.provide_message)
             .padding({
               top: this.provide_messagePaddingTop,
@@ -236,30 +250,70 @@ export struct IBestDialogView {
 
 
       // footer
-      if(typeof this.footerBuilder === 'function'){
+      if (typeof this.footerBuilder === 'function') {
         this.footerBuilder()
-      }else{
-        Row(){
+      } else {
+        Row() {
           // 取消按钮
-          if(this.provide_showCancelButton){
-            Button(this.provide_cancelButtonText, {type: ButtonType.Normal})
-              .border({
-                width:{right: this.provide_showConfirmButton  ? '2lpx' : 0},
-                color: '#ecedf0'
-              })
-              .fontColor(this.getCancelBtnFontColor())
-              .fontSize(this.provide_buttonFontSize)
-              .enabled(!this.provide_cancelButtonDisabled)
-              .defaultBtnStyles()
+          if (this.provide_showCancelButton) {
+            Button({ type: ButtonType.Normal }) {
+              Row() {
+                if (this.provide_cancelButtonLoading) {
+                  LoadingProgress()
+                    .width(this.provide_buttonFontSize)
+                    .color(this.getCancelBtnFontColor())
+                    .margin({
+                      right: SPACE.MINI
+                    })
+                    .transition({ type: TransitionType.Insert, opacity: 1 })
+                    .transition({ type: TransitionType.Delete, opacity: 0 })
+                } else {
+                  Text(this.provide_cancelButtonText)
+                    .fontColor(this.getCancelBtnFontColor())
+                    .fontSize(this.provide_buttonFontSize)
+                    .transition({ type: TransitionType.Insert, opacity: 1 })
+                    .transition({ type: TransitionType.Delete, opacity: 0 })
+                }
+              }
+            }
+            .border({
+              width: { right: this.provide_showConfirmButton ? '2lpx' : 0 },
+              color: '#ecedf0'
+            })
+            .enabled(!this.provide_cancelButtonDisabled || !this.provide_cancelButtonLoading)
+            .defaultBtnStyles()
+            .onClick(event => {
+              typeof this.onCancel === 'function' && this.onCancel(event)
+            })
           }
 
           // 确认按钮
-          if(this.provide_showConfirmButton){
-            Button(this.provide_confirmButtonText, {type: ButtonType.Normal})
-              .fontColor(this.getConfirmBtnFontColor())
-              .fontSize(this.provide_buttonFontSize)
-              .enabled(!this.provide_confirmButtonDisabled)
-              .defaultBtnStyles()
+          if (this.provide_showConfirmButton) {
+            Button({ type: ButtonType.Normal }) {
+              Row() {
+                if (this.provide_confirmButtonLoading) {
+                  LoadingProgress()
+                    .width(this.provide_buttonFontSize)
+                    .color(this.getConfirmBtnFontColor())
+                    .margin({
+                      right: SPACE.MINI
+                    })
+                    .transition({ type: TransitionType.Insert, opacity: 1 })
+                    .transition({ type: TransitionType.Delete, opacity: 0 })
+                } else {
+                  Text(this.provide_confirmButtonText)
+                    .fontColor(this.getConfirmBtnFontColor())
+                    .fontSize(this.provide_buttonFontSize)
+                    .transition({ type: TransitionType.Insert, opacity: 1 })
+                    .transition({ type: TransitionType.Delete, opacity: 0 })
+                }
+              }
+            }
+            .enabled(!this.provide_confirmButtonDisabled || !this.provide_confirmButtonLoading)
+            .defaultBtnStyles()
+            .onClick(event => {
+              typeof this.onConfirm === 'function' && this.onConfirm(event)
+            })
           }
 
         }.border({

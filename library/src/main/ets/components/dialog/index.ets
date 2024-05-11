@@ -2,6 +2,7 @@ import { IBestDialogView } from './dialog'
 import { IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 import { IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { sleep } from '../../assets/ets/utils';
 
 const propKeys = [
   'dialogWidth',
@@ -30,26 +31,28 @@ const propKeys = [
   'cancelButtonColor',
   'confirmButtonDisabled',
   'cancelButtonDisabled',
-  'buttonFontSize'
+  'buttonFontSize',
 ]
 
 // 这个坑爹的组件 prop在往这个组件 IBestDialogView 中传递的时候 不会触发组件的页面渲染
+// 直接往弹窗里传prop 弹窗的builder也不进行试图更新 坑爹
 // 试了直接更新IBestDialogView组件的prop 也不更新
 // 通过注入可以更新 遂 写这么麻烦
+// 基于自定义弹窗API封装 没有遮罩层的相关控制
 @CustomDialog
 export struct IBestDialog {
   /**
    * 标题区域的builder
    */
-  @BuilderParam titleBuilder: CustomBuilder | null  = null;
+  @BuilderParam titleBuilder: CustomBuilder | null = null;
   /**
    * 内容区域的builder
    */
-  @BuilderParam defaultBuilder: CustomBuilder | null  = null;
+  @BuilderParam defaultBuilder: CustomBuilder | null = null;
   /**
    * 底部区域的builder
    */
-  @BuilderParam footerBuilder: CustomBuilder | null  = null;
+  @BuilderParam footerBuilder: CustomBuilder | null = null;
   /**
    * 全局公共样式
    */
@@ -59,7 +62,6 @@ export struct IBestDialog {
    */
   @Prop @Watch('handlePropChange') private dialogWidth: string = '640lpx';
   @Provide private provide_dialogWidth: string = '640lpx';
-
   /**
    * 弹窗border-radius 默认 32lpx
    */
@@ -158,8 +160,8 @@ export struct IBestDialog {
   /**
    * 是否展示取消按钮
    */
-  @Prop @Watch('handlePropChange') private showCancelButton: boolean = true;
-  @Provide private provide_showCancelButton: boolean = true;
+  @Prop @Watch('handlePropChange') private showCancelButton: boolean = false;
+  @Provide private provide_showCancelButton: boolean = false;
   /**
    * 确认按钮文案
    */
@@ -195,24 +197,137 @@ export struct IBestDialog {
    */
   @Prop @Watch('handlePropChange') private buttonFontSize: string = this.baseStyle.fontSizeLg;
   @Provide private provide_buttonFontSize: string = this.baseStyle.fontSizeLg;
-
+  /**
+   * 确认按钮的loading
+   */
+  @Provide private provide_confirmButtonLoading: boolean = false;
+  /**
+   * 取消按钮的loading
+   */
+  @Provide private provide_cancelButtonLoading: boolean = false;
+  /**
+   * 是否在点击遮罩层后关闭弹窗
+   */
+  @Prop private closeOnClickOverlay: boolean = false;
+  /**
+   * 弹窗在竖直方向上的对齐方式 默认center
+   */
+  @Prop private alignment: 'center' | 'top' | 'bottom' = 'center';
+  /**
+   * 弹窗相对alignment所在位置的横向偏移量。
+   */
+  @Prop private offsetX: string | number = 0;
+  /**
+   * 弹窗相对alignment所在位置的纵向偏移量。
+   */
+  @Prop private offsetY: string | number = 0;
+  /**
+   * 关闭前的回调函数，返回 false 可阻止关闭，支持返回 Promise
+   */
+  private beforeClose: (action?: 'cancel' | 'confirm') => Promise<boolean> | boolean;
   /**
    * ready事件
    */
   private onReady: (dialogController: CustomDialogController) => void;
+  /**
+   * 点击取消的回调
+   */
+  private onCancel: (event?: ClickEvent) => void;
+  /**
+   * 点击确认的的回调
+   */
+  private onConfirm: (event?: ClickEvent) => void;
+  alignment2DialogAlignment = {
+    center: DialogAlignment.Center,
+    top: DialogAlignment.Top,
+    bottom: DialogAlignment.Bottom
+  }
 
-  initProps(){
+  /**
+   * 组件初始化时透传Prop
+   */
+  initProps() {
     // 这种能拿到key 但是是__key 这样的 怕后续变动 还是手动拿吧
     // const keys = Object.keys(this);
     propKeys.forEach(key => {
-      this[`provide_${key}`] = this[key]
+      this.handlePropChange(key)
     })
   }
 
-  handlePropChange(key){
+  /**
+   * prop change的回调 这里只监听透传的prop
+   * @param key
+   */
+  handlePropChange(key) {
     this[`provide_${key}`] = this[key]
   }
 
+  /**
+   * 结束前的动画
+   * @param from
+   * @returns
+   */
+  async handleBeforeClose(action: 'cancel' | 'confirm') {
+    let status = true
+    try {
+      status = await this.beforeClose(action);
+    } catch (e) {
+      status = false
+    }
+    return status
+  }
+
+  /**
+   * 点击取消的回调
+   */
+  async handleCancel(event?: ClickEvent) {
+    if (this.cancelButtonDisabled || this.provide_cancelButtonLoading) {
+      return
+    }
+    if (typeof this.beforeClose === 'function') {
+      this.provide_cancelButtonLoading = true
+      const status = await this.handleBeforeClose('cancel');
+      this.provide_cancelButtonLoading = false
+      if (!status) {
+        return
+      }
+    }
+    this.cancelButtonDisabled = true
+    this.dialogController.close()
+    // 等待动画结束
+    await sleep()
+    if (typeof this.onCancel === 'function') {
+      this.onCancel(event)
+    }
+    this.cancelButtonDisabled = false
+  }
+
+  /**
+   * 点击确定的回调
+   */
+  async handleConfirm(event?: ClickEvent) {
+    if (this.confirmButtonDisabled || this.provide_confirmButtonLoading) {
+      return
+    }
+
+    if (typeof this.beforeClose === 'function') {
+      this.provide_confirmButtonLoading = true
+      const status = await this.handleBeforeClose('confirm');
+      this.provide_confirmButtonLoading = false
+      if (!status) {
+        return
+      }
+    }
+    this.confirmButtonDisabled = true;
+    this.dialogController.close()
+    // 等待动画结束
+    await sleep()
+    if (typeof this.onConfirm === 'function') {
+      this.onConfirm(event)
+    }
+    this.confirmButtonDisabled = false
+
+  }
 
   dialogController: CustomDialogController = new CustomDialogController({
     // 向下透传
@@ -220,20 +335,31 @@ export struct IBestDialog {
       titleBuilder: this.titleBuilder,
       defaultBuilder: this.defaultBuilder,
       footerBuilder: this.footerBuilder,
+      onCancel: (event) => this.handleCancel(event),
+      onConfirm: (event) => this.handleConfirm(event),
     }),
-    autoCancel: true,
-    alignment: DialogAlignment.Center,
-    customStyle: true
+    // 不转一下就无效了
+    autoCancel: !!this.closeOnClickOverlay,
+    alignment: this.alignment2DialogAlignment[this.alignment],
+    customStyle: true,
+    offset: {
+      dx: this.offsetX,
+      dy: this.offsetY
+    },
+    cancel: () => {
+      this.closeOnClickOverlay && this.handleCancel()
+    }
   })
 
-  aboutToAppear(){
+  aboutToAppear() {
     this.initProps()
     typeof this.onReady === 'function' && this.onReady(this.dialogController)
   }
 
-  aboutToDisappear(){
+  aboutToDisappear() {
     this.dialogController = null;
   }
-  build(){
+
+  build() {
   }
 }
