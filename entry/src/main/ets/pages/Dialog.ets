@@ -2,8 +2,7 @@ import router from '@ohos.router';
 import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, DISABLE_COLOR, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
-import { IBestButton, IBestCell, IBestCellGroup } from '@ibestservices/ibest-ui'
-import { IBestDialog } from '../../../../../library/Index'
+import { IBestDialog, IBestCell, IBestCellGroup } from '@ibestservices/ibest-ui'
 
 const textData = {
   title: '提示',
@@ -176,6 +175,7 @@ struct DialogPage {
                 hasBorder: false,
                 onClickCell: () => {
                   this.formInputError = false;
+                  this.inputValue = '';
                   this.slotDialogController.open()
                 }
               })

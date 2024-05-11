@@ -118,7 +118,7 @@ export struct IBestDialog {
   @Prop @Watch('handlePropChange') private messagePaddingTop: string = '16lpx';
   @Provide private provide_messagePaddingTop: string = '16lpx';
   /**
-   * 内容区域的padding-top值 默认52lpx
+   * 内容区域的padding-bottom值 默认52lpx
    */
   @Prop @Watch('handlePropChange') private messagePaddingBottom: string = '52lpx';
   @Provide private provide_messagePaddingBottom: string = '52lpx';
@@ -236,7 +236,7 @@ export struct IBestDialog {
   /**
    * 点击确认的的回调
    */
-  private onConfirm: (event?: ClickEvent) => void;
+  private onConfirm: (event?: ClickEvent) => void | Promise<void>;
   alignment2DialogAlignment = {
     center: DialogAlignment.Center,
     top: DialogAlignment.Top,
@@ -319,13 +319,21 @@ export struct IBestDialog {
       }
     }
     this.confirmButtonDisabled = true;
+    if (typeof this.onConfirm === 'function') {
+      this.provide_confirmButtonLoading = true;
+      try {
+        await this.onConfirm(event)
+      } catch (e) {
+        this.provide_confirmButtonLoading = false;
+        this.confirmButtonDisabled = false;
+        return
+      }
+    }
     this.dialogController.close()
     // 等待动画结束
     await sleep()
-    if (typeof this.onConfirm === 'function') {
-      this.onConfirm(event)
-    }
-    this.confirmButtonDisabled = false
+    this.confirmButtonDisabled = false;
+    this.provide_confirmButtonLoading = false;
 
   }
 

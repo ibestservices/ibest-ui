@@ -81,7 +81,7 @@ export struct IBestDialogView {
    */
   @Consume private provide_messagePaddingTop: string;
   /**
-   * 内容区域的padding-top值 默认52lpx
+   * 内容区域的padding-bottom 默认52lpx
    */
   @Consume private provide_messagePaddingBottom: string;
   /**
