@@ -3,7 +3,7 @@ import { sleep } from '../../assets/ets/utils';
 import { CheckedItem, initCheckboxStore, removeCheckboxStore } from './store';
 import { CHECKBOX_GROUP_EVENT_NAME, getCheckboxNamespace } from './utils';
 
-export type CheckboxGroupContext = {
+export interface CheckboxGroupContext {
   /**
    * 切换全选反选
    * @param { boolean } [isSelectedAll] 切换所有复选框，传 true 为选中，false 为取消选中，不传参为取反

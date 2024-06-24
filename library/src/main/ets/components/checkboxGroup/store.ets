@@ -1,16 +1,16 @@
-export type CheckedItem = {
+export interface CheckedItem  {
   name: string,
   checked: boolean
 }
 
 type ChangeFuc = (checkedList: CheckedItem[]) => void
 
-const checkboxStore: {
-  [key: string]: {
-    checkedList: CheckedItem[],
-    onChange: ChangeFuc
-  }
-} = {};
+interface CheckBoxStoreItem {
+  checkedList: CheckedItem[],
+  onChange: ChangeFuc
+}
+
+const checkboxStore: Record<string,  CheckBoxStoreItem | null> = {};
 
 export function initCheckboxStore(key: string, onChange: ChangeFuc = () => {
 }) {
@@ -22,7 +22,7 @@ export function initCheckboxStore(key: string, onChange: ChangeFuc = () => {
 }
 
 export function removeCheckboxStore(key: string) {
-  delete checkboxStore[key]
+  checkboxStore[key] = null
 }
 
 export function isCheckboxStoreHasSameKey(key: string) {
@@ -39,7 +39,8 @@ export function updateCheckboxStoreByKey(key: string, data: CheckedItem) {
   if (!checkedData) {
     return
   }
-  const {checkedList, onChange} = checkedData
+  const checkedList = checkedData.checkedList;
+  const onChange = checkedData.onChange
   if (Array.isArray(checkedList)) {
     const index = checkedList.findIndex(item => item.name === data.name);
     if (index > -1) {

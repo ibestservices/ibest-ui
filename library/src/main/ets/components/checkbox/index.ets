@@ -1,31 +1,27 @@
 import { emitter } from '../../assets/ets/EventEmitter';
-import { IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-import { IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { IbestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SPACE } from '../../theme-chalk/src/space.type';
-import { CheckedItem, updateCheckboxStoreByKey } from '../checkboxGroup/store';
+import { updateCheckboxStoreByKey } from '../checkboxGroup/store';
 import { CHECKBOX_GROUP_EVENT_NAME, getCheckboxNamespace } from '../checkboxGroup/utils';
+import { CheckData, MaxChangeArgs, BuilderArgs, CustomerBuilderReturnData } from './index.type';
 
-
-export type BuilderArgData = {
-  checked: boolean,
-  disabled: boolean
-}
 
 @Component
 export struct IBestCheckbox {
   /**
    * 自定义文本插槽
    */
-  @BuilderParam private defaultBuilder?: (data: BuilderArgData) => any = null;
+  @BuilderParam private defaultBuilder?: (data: BuilderArgs) => CustomerBuilderReturnData;
   /**
    * 自定义图标插槽
    */
-  @BuilderParam private iconBuilder?: (data: BuilderArgData) => any = null;
+  @BuilderParam private iconBuilder?: (data: BuilderArgs) => void;
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {}
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle()
   /**
    * 标识符，通常为一个唯一的字符串
    * 多选框名称。
@@ -100,7 +96,7 @@ export struct IBestCheckbox {
    * 比如选中了或者需要显示不确定状态时
    * @returns
    */
-  private isShowBackground(){
+  private isShowBackground() {
     return this.value || this.indeterminate
   }
 
@@ -158,7 +154,7 @@ export struct IBestCheckbox {
 
   private updateGroupStore() {
     if (this.isHasGroup()) {
-      updateCheckboxStoreByKey(this.group, { name: this.name, checked: this.value })
+      updateCheckboxStoreByKey(this.group, { name: this.name, checked: this.value } as CheckData)
     }
   }
 
@@ -173,7 +169,7 @@ export struct IBestCheckbox {
     this.handleValueChange()
   }
 
-  private handleValueChange(){
+  private handleValueChange() {
     typeof this.onChange === 'function' && this.onChange(this.value)
     this.updateGroupStore()
   }
@@ -182,19 +178,15 @@ export struct IBestCheckbox {
    * 当选中的最大数量变化时 或者选中的数据变化时
    * @param data
    */
-  private handleMaxChange(data: {
-    max: number,
-    checkedList: CheckedItem[]
-  }) {
-    const {max, checkedList} = data || {};
+  private handleMaxChange(data: MaxChangeArgs) {
     // max是0说明不限制了
-    if( max <= 0){
+    if (data.max <= 0) {
       this.checkboxGroupMaxDisabled = false;
       return
     }
     // 是要禁用还是解禁？
-    const length = checkedList.length;
-    const index = checkedList.findIndex(item => item.name === this.name);
+    const length = data.checkedList.length;
+    const index = data.checkedList.findIndex(item => item.name === this.name);
     // 如果是已经选中的了 不执行后续操作
     if (index > -1) {
       return
@@ -202,7 +194,7 @@ export struct IBestCheckbox {
     // 如果是没选中的
     // 并且选中的已经大于等于最大可选中的数量了
     // 如果当前是没有禁用的 那么就要禁用
-    this.checkboxGroupMaxDisabled = length >= max;
+    this.checkboxGroupMaxDisabled = length >= data.max;
   }
 
   /**
@@ -216,22 +208,22 @@ export struct IBestCheckbox {
    * 全选反选的响应事件
    * @param {boolean} [isSelectAll] 切换所有复选框，传 true 为选中，false 为取消选中，不传参为取反
    */
-  private handleToggleChange(isSelectAll?: boolean){
-    this.handleCheckedChange( typeof isSelectAll === 'boolean' ? isSelectAll : !this.value )
+  private handleToggleChange(isSelectAll?: boolean) {
+    this.handleCheckedChange(typeof isSelectAll === 'boolean' ? isSelectAll : !this.value)
   }
 
   /**
    * 当不确定状态发生改变时 响应按钮UI状态图标变化
    */
-  private handleIndeterminateChange(){
+  private handleIndeterminateChange() {
     clearTimeout(this.isShowIndeterminateTimeId)
     // 当按钮的选中状态变为false时 会触发隐藏动画
     // 这时候如果直接更改不确定状态的图标为false时
     // 在隐藏动画执行的过程中图标会变为全选状态 为了避免所以等动画结束后再执行
-    if(!this.value && !this.indeterminate){
-      this.isShowIndeterminateTimeId = setTimeout(()=>{
+    if (!this.value && !this.indeterminate) {
+      this.isShowIndeterminateTimeId = setTimeout(() => {
         this.isShowIndeterminateImg = false
-      }, this.baseStyle.animationDuration)
+      }, this.baseStyle.animationDuration as number)
       return
     }
     this.isShowIndeterminateImg = this.indeterminate;
@@ -240,19 +232,23 @@ export struct IBestCheckbox {
   aboutToAppear() {
     this.updateGroupStore()
     // 如果有组 监听max change
-    if(this.isHasGroup()){
-      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), this.handleMaxChange.bind(this))
-      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), this.handleToggleChange.bind(this))
-    }else{
+    if (this.isHasGroup()) {
+      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE),
+        (data: MaxChangeArgs)=>{this.handleMaxChange(data)})
+      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL),
+        this.handleToggleChange.bind(this))
+    } else {
       this.getIsDisabled()
     }
     this.handleIndeterminateChange()
   }
 
   aboutToDisappear() {
-    if(this.isHasGroup()){
-      emitter.off(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), this.handleMaxChange.bind(this))
-      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), this.handleToggleChange.bind(this))
+    if (this.isHasGroup()) {
+      emitter.off(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE),
+        this.handleMaxChange.bind(this))
+      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL),
+        this.handleToggleChange.bind(this))
     }
     clearTimeout(this.isShowIndeterminateTimeId)
   }
@@ -291,9 +287,9 @@ export struct IBestCheckbox {
           Image(this.isShowIndeterminateImg ? $r('app.media.indeterminate') : $r('app.media.success'))
             .fillColor(this.getIconColor())
             .width(`${this.iconSize}lpx`)
-            .opacity( this.isShowBackground() ? 1 : 0)
+            .opacity(this.isShowBackground() ? 1 : 0)
             .animation({
-              duration: this.baseStyle.animationDuration,
+              duration: this.baseStyle.animationDuration as number,
             })
             .scale({
               x: .9,
@@ -309,7 +305,7 @@ export struct IBestCheckbox {
       .borderRadius(this.shape === 'round' ? `${this.iconSize / 2}lpx` : 0)
       .backgroundColor(this.getBackgroundColor())
       .animation({
-        duration: this.baseStyle.animationDuration,
+        duration: this.baseStyle.animationDuration as number,
       })
       .onClick(() => {
         this.handleCheckedChange()
