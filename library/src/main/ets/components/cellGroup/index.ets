@@ -1,18 +1,18 @@
-import { IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
-import { IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { IbestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 
 @Component
 export struct IBestCellGroup {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {};
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle();
   /**
    * 默认插槽
    */
-  @BuilderParam private defaultBuilder: CustomBuilder = null;
+  @BuilderParam private defaultBuilder?: CustomBuilder;
   /**
    * 分组标题
    * title没有设计成builder是因为如果设计成了builder就没法用尾随闭包方式初始化Cell或别的组件了
@@ -41,7 +41,7 @@ export struct IBestCellGroup {
    * @returns
    */
   private getMargin() {
-    return this.inset ? { left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd } : 0
+    return this.inset ? { left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd } as Padding : 0
   }
 
   /**

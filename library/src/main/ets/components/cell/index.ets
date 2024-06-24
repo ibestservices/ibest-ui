@@ -1,38 +1,38 @@
-import { IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
-import { IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { IbestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE } from '../../theme-chalk/src/size.type';
-import { ARROW_DIRECTION } from './index.type';
+import { ARROW_DIRECTION, CellSizeData } from './index.type';
 
 @Component
 export struct IBestCell {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {};
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle();
   /**
    * title的插槽 优先级大于 title
    */
-  @BuilderParam private titleBuilder: CustomBuilder = null;
+  @BuilderParam private titleBuilder?: CustomBuilder;
   /**
    * value的插槽 优先级大于 value
    */
-  @BuilderParam private valueBuilder: CustomBuilder = null;
+  @BuilderParam private valueBuilder?: CustomBuilder;
   /**
    * value的插槽 优先级大于 label
    */
-  @BuilderParam private labelBuilder: CustomBuilder = null;
+  @BuilderParam private labelBuilder?: CustomBuilder;
   /**
    * 自定义title左侧icon的插槽
    * 使用titleBuilder时，该插槽不生效
    */
-  @BuilderParam private iconBuilder: CustomBuilder = null;
+  @BuilderParam private iconBuilder?: CustomBuilder;
   /**
    * 自定义value右侧icon的插槽
    * 使用valueBuilder时，该插槽不生效
    */
-  @BuilderParam private rightIconBuilder: CustomBuilder = null;
+  @BuilderParam private rightIconBuilder?: CustomBuilder;
   /**
    * 左侧标题
    */
@@ -90,25 +90,9 @@ export struct IBestCell {
    */
   private onClickCell?: (event: ClickEvent) => void;
   /**
-   * 根据buttonSize换对应的按钮尺寸
-   */
-  private cellSizeMap = {
-    [SIZE.LARGE]: {
-      padding: this.baseStyle.spaceSm,
-      fontSize: this.baseStyle.fontSizeLg,
-      labelFontSize: this.baseStyle.fontSizeMd,
-    },
-    // 默认尺寸配置
-    default: {
-      padding: '20lpx',
-      fontSize: this.baseStyle.fontSizeMd,
-      labelFontSize: this.baseStyle.fontSizeSm,
-    },
-  };
-  /**
    * 根据arrow direction获取图标旋转角度
    */
-  private arrowDirection2RotateDegMap = {
+  private arrowDirection2RotateDegMap: Record<string, number> = {
     [ARROW_DIRECTION.RIGHT]: 0,
     [ARROW_DIRECTION.TOP]: -90,
     [ARROW_DIRECTION.BOTTOM]: 90,
@@ -125,7 +109,13 @@ export struct IBestCell {
    * @returns
    */
   private getCellSize() {
-    return this.cellSizeMap[this.cellSize] || this.cellSizeMap.default
+    const cellSize = this.cellSize;
+    switch (cellSize){
+        case SIZE.LARGE:
+          return new CellSizeData(this.baseStyle.spaceSm, this.baseStyle.fontSizeLg, this.baseStyle.fontSizeMd)
+      default:
+        return new CellSizeData('20lpx', this.baseStyle.fontSizeMd, this.baseStyle.fontSizeSm)
+    }
   }
 
   private getArrowRotateAngle() {
@@ -236,7 +226,7 @@ export struct IBestCell {
                     })
                     .rotate({ angle: this.getArrowRotateAngle() })
                     .animation({
-                      duration: this.baseStyle.animationDuration
+                      duration: this.baseStyle.animationDuration as number
                     })
                   // 行高会导致对不齐 所以要加个做小高度和行高一样
                 }.constraintSize({
@@ -273,7 +263,7 @@ export struct IBestCell {
       }
     })
     .animation({
-      duration: this.baseStyle.animationDuration
+      duration: this.baseStyle.animationDuration as number
     })
     .onClick((event) => {
       typeof this.onClickCell === 'function' && this.onClickCell(event)

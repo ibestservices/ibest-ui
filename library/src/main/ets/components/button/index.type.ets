@@ -26,5 +26,3 @@ export class ButtonSizeData {
     this.width = width
   }
 }
-
-
