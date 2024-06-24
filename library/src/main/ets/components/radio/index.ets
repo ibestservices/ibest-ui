@@ -1,10 +1,9 @@
 import { emitter } from '../../assets/ets/EventEmitter';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-import { IbestUIBaseStyleObjType, IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { IbestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SPACE } from '../../theme-chalk/src/space.type';
-import { CheckedItem } from '../checkboxGroup/store';
-import { updateRadioGroupStoreByKey } from '../radioGroup/store';
+import { CheckedItem, updateRadioGroupStoreByKey } from '../radioGroup/store';
 import { getRadioGroupNamespace, RADIO_GROUP_EVENT_NAME } from '../radioGroup/utils';
 import { BuilderArgs, CustomerBuilderReturnData } from './index.type';
 
