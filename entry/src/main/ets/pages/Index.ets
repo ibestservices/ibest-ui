@@ -48,6 +48,10 @@ struct Index {
       name: 'Dialog 弹出框',
       path: 'pages/Dialog'
     },
+    {
+      name: 'Stepper 步进器',
+      path: 'pages/Stepper'
+    },
   ]
 
   build() {

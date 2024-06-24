@@ -10,6 +10,7 @@
     "pages/Watermark",
     "pages/Radio",
     "pages/Empty",
-    "pages/Dialog"
+    "pages/Dialog",
+    "pages/Stepper"
   ]
 }
