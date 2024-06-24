@@ -1,3 +1,15 @@
+interface DrawCanvasItemArgs {
+  height:  number,
+  width: number,
+  rotateDeg: number,
+  callback: ()=>void
+}
+
+interface CountData {
+  countX: number,
+  countY: number
+}
+
 @Component
 export struct WatermarkCanvas {
   private settings: RenderingContextSettings = new RenderingContextSettings(true)
@@ -87,10 +99,11 @@ export struct WatermarkCanvas {
     // 避免因为旋转导致有部分留白 所以多渲染点
     countY = countY + 2;
     countX = countX + 2;
-    return {
+    const countData: CountData = {
       countX,
       countY
     }
+    return countData
   }
 
   /**
@@ -100,8 +113,14 @@ export struct WatermarkCanvas {
    * @param {number} rotateDeg 旋转的角度
    * @param {()=>void} callback 每次绘制的内容
    */
-  private drawCanvasItem({width, height, rotateDeg, callback}) {
-    const {countX, countY} = this.getXYCount(width, height);
+  private drawCanvasItem(data: DrawCanvasItemArgs) {
+    const width = data.width;
+    const height = data.height;
+    const rotateDeg = data.rotateDeg;
+    const callback = data.callback;
+    const countData = this.getXYCount(width, height);
+    const countX = countData.countX;
+    const countY = countData.countY
     // 根据计算出的数量创建矩阵
     // i是Y轴
     for (let i = 0; i < countY; i++) {
@@ -141,10 +160,10 @@ export struct WatermarkCanvas {
   private handleLayoutText(rotateDeg: number) {
     this.context.fillStyle = this.fontColor;
     this.context.font = `${vp2px(this.fontSize)}px ${this.fontFamily}`;
-    const {width, height } = this.context.measureText(this.text);
+    const data = this.context.measureText(this.text);
     this.drawCanvasItem({
-      width,
-      height,
+      width: data.width,
+      height: data.height,
       rotateDeg,
       callback: () => {
         this.context.fillText(this.text, 0, 0);
