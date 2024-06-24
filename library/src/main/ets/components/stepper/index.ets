@@ -1,6 +1,6 @@
-import { IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type'
-import { IbestUIBaseStyleType } from '../../theme-chalk/src/index.type'
+import { IbestUIBaseStyleObjType, IbestUIBaseStyleType } from '../../theme-chalk/src/index.type'
 import {IBestStepperBtn} from './stepperBtn'
 import {acc} from '../../assets/ets/utils'
 
@@ -14,7 +14,7 @@ export struct IBestStepper {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {}
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle()
   /**
    * 输入框宽度
    */
@@ -30,7 +30,7 @@ export struct IBestStepper {
   /**
    * 加减按钮图标的左右radius值
    */
-  @Prop private buttonRadius: string = this.baseStyle.borderRadiusSm;
+  @Prop private buttonRadius: string = this.baseStyle.borderRadiusSm as string;
   /**
    * 默认值
    */
@@ -79,7 +79,7 @@ export struct IBestStepper {
   /**
    * 自动纠正的时间
    */
-  validateTimeId = null
+  validateTimeId: number | null = null
 
   /**
    * TextInput变化时赋值
@@ -184,7 +184,7 @@ export struct IBestStepper {
         radiusLeftTop: this.buttonRadius,
         radiusLeftBottom: this.buttonRadius,
         disabled: this.reduceBtnDisabled,
-        onClickBtn: () => this.handleClickStepperBtn(STEPPER_BTN_TYPE.REDUCE)
+        onClickBtn: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.REDUCE)
       }){
         Image($r('app.media.minus')).width(this.iconSize)
       }
@@ -214,7 +214,7 @@ export struct IBestStepper {
         radiusRightTop: this.buttonRadius,
         radiusRightBottom: this.buttonRadius,
         disabled: this.plusBtnDisabled,
-        onClickBtn: () => this.handleClickStepperBtn(STEPPER_BTN_TYPE.PLUS)
+        onClickBtn: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.PLUS)
 
       }){
         Column(){
