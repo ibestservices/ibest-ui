@@ -1,15 +1,12 @@
-import { IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { ColorType, COLOR_TYPE, GRAY_COLOR } from '../../theme-chalk/src/color.type';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
-import { IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { IbestUIBaseStyleObjType, IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
 import { SIZE } from '../../theme-chalk/src/size.type';
+import { TagSizeData } from './index.type';
 
 @Extend(Row)
-function tagSizeStyle(data: {
-  height: string,
-  padding: string,
-  borderRadius: string,
-}) {
+function tagSizeStyle(data: TagSizeData) {
   .padding({ top: 0, right: data.padding, bottom: 0, left: data.padding })
   .height(data.height)
   .borderRadius(data.borderRadius)
@@ -20,7 +17,7 @@ export struct IBestTag {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {};
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle();
   /**
    * 类型，可选值为 primary success warning danger 默认值为default
    */
@@ -70,30 +67,7 @@ export struct IBestTag {
    * 点击标签触发的回调
    */
   private onClickTag?: (event: ClickEvent) => void
-  /**
-   * 根据buttonSize换对应的按钮尺寸
-   */
-  private tagSizeMap = {
-    'medium': {
-      padding: '12lpx',
-      height: '40lpx',
-      fontSize: this.baseStyle.fontSizeSm,
-      borderRadius: '4lpx'
-    },
-    [SIZE.LARGE]: {
-      padding: this.baseStyle.spaceXs,
-      height: '48lpx',
-      fontSize: this.baseStyle.fontSizeMd,
-      borderRadius: '8lpx'
-    },
-    // 默认尺寸配置
-    default: {
-      padding: this.baseStyle.spaceBase,
-      height: '34lpx',
-      fontSize: this.baseStyle.fontSizeSm,
-      borderRadius: '4lpx'
-    },
-  };
+
 
   /**
    * 根据颜色type获取背景色
@@ -123,16 +97,21 @@ export struct IBestTag {
     return this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_8 : this.getTagColor(this.plain)
   }
 
+
   /**
-   * 根据size获取按钮的尺寸
+   * 根据size获取tag的尺寸
    * @returns
    */
   private getTagSize() {
-    const sizeData = this.tagSizeMap[this.tagSize] || this.tagSizeMap.default
-    return {
-      ...sizeData,
-      borderRadius: this.getBorderRadius(sizeData.borderRadius)
-    };
+    const tagSize = this.tagSize;
+    switch (tagSize) {
+      case 'medium':
+        return new TagSizeData('12lpx', '40lpx', this.baseStyle.fontSizeSm, this.getBorderRadius('4lpx') ) ;
+      case SIZE.LARGE:
+        return new TagSizeData(this.baseStyle.spaceXs, '48lpx', this.baseStyle.fontSizeMd,  this.getBorderRadius('8lpx') ) ;
+      default:
+        return new TagSizeData(this.baseStyle.spaceBase, '34lpx', this.baseStyle.fontSizeSm, this.getBorderRadius('4lpx') ) ;
+    }
   }
 
   /**
@@ -170,7 +149,7 @@ export struct IBestTag {
           .alignItems(HorizontalAlign.Center)
           .justifyContent(FlexAlign.Center)
           .onClick((event) => {
-            animateTo({ duration: this.baseStyle.animationDuration }, () => {
+            animateTo({ duration: this.baseStyle.animationDuration as number}, () => {
               typeof this.onClose === 'function' && this.onClose(event)
             })
           })

@@ -5,6 +5,14 @@ import { IbestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE, SizeType } from '../../theme-chalk/src/size.type';
 import { ButtonSizeData } from './index.type'
 
+@Extend(Button)
+function btnSizeStyle(data: ButtonSizeData) {
+  .padding({ top: 0, right: data.padding, bottom: 0, left: data.padding })
+  .height(data.height)
+  .width(data.width || 'auto')
+}
+
+
 @Component
 export struct IBestButton {
   /**
@@ -179,14 +187,7 @@ export struct IBestButton {
       }
 
     }
-    .padding({
-      top: 0,
-      right: this.getBtnSize().padding,
-      bottom: 0,
-      left: this.getBtnSize().padding
-    })
-    .height(this.getBtnSize().height)
-    .width(this.getBtnSize().width || 'auto')
+    .btnSizeStyle(this.getBtnSize())
     .borderWidth(this.hairline ? '1lpx' : '2lpx')
     .borderRadius(this.getBtnBorderRadius())
     .fontColor(this.getBtnColor(this.plain))
