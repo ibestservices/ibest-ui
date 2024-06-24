@@ -1,16 +1,16 @@
-import { IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { IbestUIBaseStyleObjType, IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
 
 @Component
 export struct IBestSwitch {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {};
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle();
   /**
    * 自定义按钮的内容
    */
-  @BuilderParam private nodeBuilder: CustomBuilder = null;
+  @BuilderParam private nodeBuilder?: CustomBuilder
   /**
    * 开关按钮的尺寸，默认单位为 lpx
    */
@@ -52,7 +52,7 @@ export struct IBestSwitch {
   /**
    * 改变前的回调 接受一个promise 如果promise rejcet了那么将不会改变
    */
-  private onBeforeChange?: (value: boolean) => Promise<any>;
+  private onBeforeChange?: (value: boolean) => Promise<void>;
   /**
    * 点击的回调
    */
@@ -115,7 +115,7 @@ export struct IBestSwitch {
         x: this.value ? `${this.switchSize - 4}lpx` : 0
       })
       .animation({
-        duration: this.baseStyle.animationDuration,
+        duration: this.baseStyle.animationDuration as number,
       })
     }
     .alignItems(HorizontalAlign.Start)
@@ -126,7 +126,7 @@ export struct IBestSwitch {
     .borderRadius('52lpx')
     .opacity(this.disabled ? 0.5 : 1)
     .animation({
-      duration: this.baseStyle.animationDuration,
+      duration: this.baseStyle.animationDuration as number,
     }).onClick((event)=>{
       typeof this.onClickSwitch === 'function' && this.onClickSwitch(event)
       this.handleChange()
