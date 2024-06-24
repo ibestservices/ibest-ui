@@ -1,10 +1,5 @@
 import { CheckedItem } from '../checkboxGroup/store'
 
-export interface CheckData {
-  name: string,
-  checked: boolean
-}
-
 export interface MaxChangeArgs {
   max: number,
   checkedList: CheckedItem[]

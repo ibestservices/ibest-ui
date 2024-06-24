@@ -8,7 +8,7 @@ export interface CheckboxGroupContext {
    * 切换全选反选
    * @param { boolean } [isSelectedAll] 切换所有复选框，传 true 为选中，false 为取消选中，不传参为取反
    */
-  toggleAll: (isSelectedAll?: boolean)=>void
+  toggleAll: (isSelectedAll?: boolean) => void
 }
 
 @Component
@@ -38,7 +38,6 @@ export struct IBestCheckboxGroup {
    * 子组件是否初始化了
    */
   private isChildReady: boolean = false
-
 
   aboutToAppear() {
     this.initStorage();
@@ -78,7 +77,7 @@ export struct IBestCheckboxGroup {
    * 全选与反选
    * @param {boolean} [isSelectAll] 切换所有复选框，传 true 为选中，false 为取消选中，不传参为取反
    */
-   public async toggleAll(isSelectAll?: boolean) {
+  public async toggleAll(isSelectAll?: boolean) {
     emitter.emit(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), isSelectAll)
   }
 

@@ -3,9 +3,9 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 import { IbestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SPACE } from '../../theme-chalk/src/space.type';
-import { updateCheckboxStoreByKey } from '../checkboxGroup/store';
+import { CheckedItem, updateCheckboxStoreByKey } from '../checkboxGroup/store';
 import { CHECKBOX_GROUP_EVENT_NAME, getCheckboxNamespace } from '../checkboxGroup/utils';
-import { CheckData, MaxChangeArgs, BuilderArgs, CustomerBuilderReturnData } from './index.type';
+import { MaxChangeArgs, BuilderArgs, CustomerBuilderReturnData } from './index.type';
 
 
 @Component
@@ -154,7 +154,7 @@ export struct IBestCheckbox {
 
   private updateGroupStore() {
     if (this.isHasGroup()) {
-      updateCheckboxStoreByKey(this.group, { name: this.name, checked: this.value } as CheckData)
+      updateCheckboxStoreByKey(this.group, { name: this.name, checked: this.value } as CheckedItem)
     }
   }
 
@@ -234,7 +234,9 @@ export struct IBestCheckbox {
     // 如果有组 监听max change
     if (this.isHasGroup()) {
       emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE),
-        (data: MaxChangeArgs)=>{this.handleMaxChange(data)})
+        (data: MaxChangeArgs) => {
+          this.handleMaxChange(data)
+        })
       emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL),
         this.handleToggleChange.bind(this))
     } else {

@@ -1,7 +1,7 @@
 import { IBestDialogView } from './dialog'
-import { IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-import { IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { IbestUIBaseStyleObjType, IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
 import { sleep } from '../../assets/ets/utils';
 
 const propKeys = [
@@ -44,19 +44,19 @@ export struct IBestDialog {
   /**
    * 标题区域的builder
    */
-  @BuilderParam titleBuilder: CustomBuilder | null = null;
+  @BuilderParam titleBuilder?: CustomBuilder;
   /**
    * 内容区域的builder
    */
-  @BuilderParam defaultBuilder: CustomBuilder | null = null;
+  @BuilderParam defaultBuilder?: CustomBuilder;
   /**
    * 底部区域的builder
    */
-  @BuilderParam footerBuilder: CustomBuilder | null = null;
+  @BuilderParam footerBuilder?: CustomBuilder ;
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {}
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle()
   /**
    * 弹窗宽度
    */
@@ -65,8 +65,8 @@ export struct IBestDialog {
   /**
    * 弹窗border-radius 默认 32lpx
    */
-  @Prop @Watch('handlePropChange') private dialogBorderRadius: string = this.baseStyle.spaceMd;
-  @Provide private provide_dialogBorderRadius: string = this.baseStyle.spaceMd;
+  @Prop @Watch('handlePropChange') private dialogBorderRadius: string = this.baseStyle.spaceMd as string;
+  @Provide private provide_dialogBorderRadius: string = this.baseStyle.spaceMd  as string;
   /**
    * 标题
    */
@@ -95,8 +95,8 @@ export struct IBestDialog {
   /**
    * 标题的fontSize
    */
-  @Prop @Watch('handlePropChange') private titleFontSize: string = this.baseStyle.fontSizeLg;
-  @Provide private provide_titleFontSize: string = this.baseStyle.fontSizeLg;
+  @Prop @Watch('handlePropChange') private titleFontSize: string = this.baseStyle.fontSizeLg as string;
+  @Provide private provide_titleFontSize: string = this.baseStyle.fontSizeLg as string;
   /**
    * 标题的对齐方式
    */
@@ -130,13 +130,13 @@ export struct IBestDialog {
   /**
    * 内容区域的fontSize
    */
-  @Prop @Watch('handlePropChange') private messageFontSize: string = this.baseStyle.fontSizeMd;
-  @Provide private provide_messageFontSize: string = this.baseStyle.fontSizeMd;
+  @Prop @Watch('handlePropChange') private messageFontSize: string = this.baseStyle.fontSizeMd as string;
+  @Provide private provide_messageFontSize: string = this.baseStyle.fontSizeMd as string;
   /**
    * 内容区域的行高 lineHeight 默认 40lpx
    */
-  @Prop @Watch('handlePropChange') private messageLineHeight: string = this.baseStyle.lineHeightMd;
-  @Provide private provide_messageLineHeight: string = this.baseStyle.lineHeightMd;
+  @Prop @Watch('handlePropChange') private messageLineHeight: string = this.baseStyle.lineHeightMd as string;
+  @Provide private provide_messageLineHeight: string = this.baseStyle.lineHeightMd as string;
   /**
    * 内容区域的文字对齐方式
    */
@@ -195,8 +195,8 @@ export struct IBestDialog {
   /**
    * 按钮的文字大小
    */
-  @Prop @Watch('handlePropChange') private buttonFontSize: string = this.baseStyle.fontSizeLg;
-  @Provide private provide_buttonFontSize: string = this.baseStyle.fontSizeLg;
+  @Prop @Watch('handlePropChange') private buttonFontSize: string = this.baseStyle.fontSizeLg as string;
+  @Provide private provide_buttonFontSize: string = this.baseStyle.fontSizeLg as string;
   /**
    * 确认按钮的loading
    */
@@ -224,23 +224,31 @@ export struct IBestDialog {
   /**
    * 关闭前的回调函数，返回 false 可阻止关闭，支持返回 Promise
    */
-  private beforeClose: (action?: 'cancel' | 'confirm') => Promise<boolean> | boolean;
+  private beforeClose?: (action?: 'cancel' | 'confirm') => Promise<boolean> | boolean;
   /**
    * ready事件
    */
-  private onReady: (dialogController: CustomDialogController) => void;
+  private onReady?: (dialogController: CustomDialogController) => void;
   /**
    * 点击取消的回调
    */
-  private onCancel: (event?: ClickEvent) => void;
+  private onCancel?: (event?: ClickEvent) => void;
   /**
    * 点击确认的的回调
    */
-  private onConfirm: (event?: ClickEvent) => void | Promise<void>;
-  alignment2DialogAlignment = {
-    center: DialogAlignment.Center,
-    top: DialogAlignment.Top,
-    bottom: DialogAlignment.Bottom
+  private onConfirm?: (event?: ClickEvent) => void | Promise<void>;
+
+  getAlignment(type: string){
+    switch (type){
+      case 'center':
+        return DialogAlignment.Center
+        case 'top':
+        return DialogAlignment.Top
+      case 'bottom':
+        return DialogAlignment.Bottom
+      default:
+        return DialogAlignment.Center
+    }
   }
 
   /**
@@ -258,7 +266,8 @@ export struct IBestDialog {
    * prop change的回调 这里只监听透传的prop
    * @param key
    */
-  handlePropChange(key) {
+  handlePropChange(key: string) {
+    // TODO 是否更新这个bug？
     this[`provide_${key}`] = this[key]
   }
 
@@ -270,7 +279,9 @@ export struct IBestDialog {
   async handleBeforeClose(action: 'cancel' | 'confirm') {
     let status = true
     try {
-      status = await this.beforeClose(action);
+      if(typeof this.beforeClose === 'function'){
+        status = await this.beforeClose(action);
+      }
     } catch (e) {
       status = false
     }
@@ -343,12 +354,13 @@ export struct IBestDialog {
       titleBuilder: this.titleBuilder,
       defaultBuilder: this.defaultBuilder,
       footerBuilder: this.footerBuilder,
-      onCancel: (event) => this.handleCancel(event),
-      onConfirm: (event) => this.handleConfirm(event),
+      onCancel: (event) => {typeof this.handleCancel === 'function' && this.handleCancel(event)},
+      onConfirm: (event) => {typeof this.handleConfirm === 'function' && this.handleConfirm(event)},
     }),
     // 不转一下就无效了
     autoCancel: !!this.closeOnClickOverlay,
-    alignment: this.alignment2DialogAlignment[this.alignment],
+    // TODO: 是否更新这个bug？
+    alignment: this.getAlignment(this.alignment),
     customStyle: true,
     offset: {
       dx: this.offsetX,
@@ -364,9 +376,9 @@ export struct IBestDialog {
     typeof this.onReady === 'function' && this.onReady(this.dialogController)
   }
 
-  aboutToDisappear() {
-    this.dialogController = null;
-  }
+  // aboutToDisappear() {
+  //   this.dialogController = null;
+  // }
 
   build() {
   }
