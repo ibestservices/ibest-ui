@@ -1,38 +1,28 @@
-import { IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { ColorType, COLOR, COLOR_TYPE, GRAY_COLOR } from '../../theme-chalk/src/color.type'
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { ColorType, COLOR_TYPE, GRAY_COLOR } from '../../theme-chalk/src/color.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
-import { IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { IbestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE, SizeType } from '../../theme-chalk/src/size.type';
-
-@Extend(Button)
-function btnSizeStyle(data: {
-  height: string,
-  padding: string,
-  width?: string
-}) {
-  .padding({ top: 0, right: data.padding, bottom: 0, left: data.padding })
-  .height(data.height)
-  .width(data.width || 'auto')
-}
+import { ButtonSizeData } from './index.type'
 
 @Component
 export struct IBestButton {
   /**
    * defaultSlot 默认插槽
    */
-  @BuilderParam private defaultBuilder?: CustomBuilder = null;
+  @BuilderParam private defaultBuilder?: CustomBuilder;
   /**
    * 图标的builder
    */
-  @BuilderParam private iconBuilder?: CustomBuilder = null;
+  @BuilderParam private iconBuilder?: CustomBuilder;
   /**
    * 加载图标的builder
    */
-  @BuilderParam private loadingIconBuilder?: CustomBuilder = null;
+  @BuilderParam private loadingIconBuilder?: CustomBuilder;
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {}
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle()
   /**
    * 类型，可选值为 primary success warning danger 默认值为default
    */
@@ -65,7 +55,7 @@ export struct IBestButton {
   /**
    * loading加载的文案
    */
-  @Prop private loadingText: string = null;
+  @Prop private loadingText: string | null = null;
   /**
    * 按钮展示的文字
    */
@@ -87,47 +77,31 @@ export struct IBestButton {
    */
   private onClickBtn?: (event?: ClickEvent) => void;
   /**
-   * 根据buttonSize换对应的按钮尺寸
-   */
-  private buttonSizeMap = {
-    [SIZE.SMALL]: {
-      padding: this.baseStyle.spaceXs,
-      height: '64lpx',
-      fontSize: this.baseStyle.fontSizeSm
-    },
-    [SIZE.MINI]: {
-      padding: this.baseStyle.spaceBase,
-      height: '48lpx',
-      fontSize: this.baseStyle.fontSizeXs
-    },
-    [SIZE.LARGE]: {
-      padding: this.baseStyle.spaceXs,
-      width: CONTAINER_SIZE.FULL,
-      height: '100lpx',
-      fontSize: this.baseStyle.fontSizeLg
-    },
-    // 默认尺寸配置
-    default: {
-      padding: '30lpx',
-      height: '88lpx',
-      fontSize: this.baseStyle.fontSizeMd
-    },
-  };
-
-  /**
    * 根据颜色type获取背景色
    * @returns
    */
-  private getBackgroundColor() {
-    return this.color ? this.color : this.baseStyle[this.type]
+  private getBackgroundColor(type = this.type) {
+    return this.color ? this.color : this.baseStyle[type]
   }
 
   /**
+   * 根据buttonSize换对应的按钮尺寸
    * 根据size获取按钮的尺寸
+   * 字典形式写起来校验问题很多 改成switch了
    * @returns
    */
   private getBtnSize() {
-    return this.buttonSizeMap[this.buttonSize] || this.buttonSizeMap.default;
+    const buttonSize = this.buttonSize;
+    switch (buttonSize) {
+      case SIZE.SMALL:
+        return new ButtonSizeData(this.baseStyle.spaceXs, '64lpx', this.baseStyle.fontSizeSm ) ;
+      case SIZE.MINI:
+        return new ButtonSizeData(this.baseStyle.spaceBase, '64lpx', this.baseStyle.fontSizeXs ) ;
+      case SIZE.LARGE:
+        return new ButtonSizeData(this.baseStyle.spaceXs, '100lpx', this.baseStyle.fontSizeLg, CONTAINER_SIZE.FULL ) ;
+      default:
+        return new ButtonSizeData('30lpx', '88lpx', this.baseStyle.fontSizeMd ) ;
+    }
   }
 
   /**
@@ -166,13 +140,13 @@ export struct IBestButton {
   /**
    * 当传入自定义颜色时 设置type保证颜色渲染正常
    */
-  private handleColorChange(){
-    if(this.color){
+  private handleColorChange() {
+    if (this.color) {
       this.type = 'primary'
     }
   }
 
-  aboutToAppear(){
+  aboutToAppear() {
     this.handleColorChange()
   }
 
@@ -205,7 +179,14 @@ export struct IBestButton {
       }
 
     }
-    .btnSizeStyle(this.getBtnSize())
+    .padding({
+      top: 0,
+      right: this.getBtnSize().padding,
+      bottom: 0,
+      left: this.getBtnSize().padding
+    })
+    .height(this.getBtnSize().height)
+    .width(this.getBtnSize().width || 'auto')
     .borderWidth(this.hairline ? '1lpx' : '2lpx')
     .borderRadius(this.getBtnBorderRadius())
     .fontColor(this.getBtnColor(this.plain))
@@ -217,6 +198,6 @@ export struct IBestButton {
     .onClick((event) => {
       typeof this.onClickBtn === 'function' && this.onClickBtn(event)
     })
-    .animation({ duration: this.baseStyle.animationDuration})
+    .animation({ duration: this.baseStyle.animationDuration as number })
   }
 }

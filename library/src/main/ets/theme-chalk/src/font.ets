@@ -1,7 +1,8 @@
-import { FONT_SIZE } from './font.type';
+import { FONT_SIZE, FontSizeData } from './font.type';
 
 
-export const fontSizeData = {
+
+export const fontSizeData: FontSizeData = {
   fontSizeXs: FONT_SIZE.XS as string,
   fontSizeSm: FONT_SIZE.SM as string,
   fontSizeMd: FONT_SIZE.MD as string,

@@ -4,3 +4,10 @@ export enum BORDER_RADIUS {
   LG = '16lpx',
   MAX = '1998lpx'
 }
+
+export interface BorderRadiusData {
+  borderRadiusSm: string;
+  borderRadiusMd: string;
+  borderRadiusLg: string;
+  borderRadiusMax: string;
+}

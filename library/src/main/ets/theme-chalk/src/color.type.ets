@@ -66,3 +66,12 @@ export enum GRAY_COLOR{
  * 颜色的类型
  */
 export type ColorType = `${COLOR_TYPE}`
+
+
+export interface ColorData {
+  primary: string;
+  success: string;
+  warning: string;
+  danger: string;
+  default: string;
+}

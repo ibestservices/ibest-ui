@@ -4,3 +4,10 @@ export enum LINE_HEIGHT {
   MD = '40lpx',
   LG = '44lpx',
 }
+
+export interface LineHeightData {
+  lineHeightXs: string;
+  lineHeightSm: string;
+  lineHeightMd: string;
+  lineHeightLg: string;
+}

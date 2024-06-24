@@ -1,6 +1,6 @@
-import { SPACE } from './space.type'
+import { SPACE, SpaceData } from './space.type'
 
-export const spaceData = {
+export const spaceData: SpaceData = {
   spaceMini: SPACE.MINI as string,
   spaceBase: SPACE.BASE as string,
   spaceXs: SPACE.XS as string,
