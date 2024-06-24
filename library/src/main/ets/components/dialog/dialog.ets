@@ -1,6 +1,6 @@
-import { IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-import { IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { IbestUIBaseStyleObjType, IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
 import { SPACE } from '../../theme-chalk/src/space.type';
 
 @Extend(Button)
@@ -19,19 +19,19 @@ export struct IBestDialogView {
   /**
    * 标题区域的builder
    */
-  @BuilderParam titleBuilder: CustomBuilder | null = null;
+  @BuilderParam titleBuilder?: CustomBuilder ;
   /**
    * 内容区域的builder
    */
-  @BuilderParam defaultBuilder: CustomBuilder | null = null;
+  @BuilderParam defaultBuilder?: CustomBuilder ;
   /**
    * 底部区域的builder
    */
-  @BuilderParam footerBuilder: CustomBuilder | null = null;
+  @BuilderParam footerBuilder?: CustomBuilder;
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {}
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle()
   /**
    * 弹窗宽度
    */
@@ -156,18 +156,25 @@ export struct IBestDialogView {
   /**
    * 点击取消的回调
    */
-  private onCancel: (event?: ClickEvent) => void;
+  private onCancel?: (event?: ClickEvent) => void;
   /**
    * 点击确认的的回调
    */
-  private onConfirm: (event?: ClickEvent) => void;
+  private onConfirm?: (event?: ClickEvent) => void;
   /**
    * 对齐置换TextAlign
    */
-  align2Align = {
-    left: TextAlign.Start,
-    center: TextAlign.Center,
-    right: TextAlign.End
+  getFormatAlign(align: string){
+    switch (align){
+      case 'left':
+        return TextAlign.Start
+        case 'center':
+        return TextAlign.Center
+      case 'right':
+        return TextAlign.End
+      default:
+        return TextAlign.Center
+    }
   }
 
   /**
@@ -208,7 +215,7 @@ export struct IBestDialogView {
       if (typeof this.titleBuilder === 'function') {
         this.titleBuilder()
       } else {
-        if (this.isHasTitle) {
+        if (this.isHasTitle()) {
           Text(this.provide_title)
             .fontSize(this.provide_titleFontSize)
             .fontWeight(FontWeight.Medium)
@@ -218,7 +225,7 @@ export struct IBestDialogView {
               left: this.provide_titlePaddingX,
               right: this.provide_titlePaddingX
             })
-            .textAlign(this.align2Align[this.provide_titleTextAlign])
+            .textAlign(this.getFormatAlign(this.provide_titleTextAlign))
             .fontColor(this.provide_titleColor)
         }
       }
@@ -236,7 +243,7 @@ export struct IBestDialogView {
               right: this.provide_messagePaddingX,
               bottom: this.provide_messagePaddingBottom
             })
-            .textAlign(this.align2Align[this.provide_messageTextAlign])
+            .textAlign(this.getFormatAlign(this.provide_messageTextAlign))
             .lineHeight(this.provide_messageLineHeight)
             .fontSize(this.provide_messageFontSize)
             .fontColor(this.getMsgColor())

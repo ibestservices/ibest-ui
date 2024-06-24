@@ -7,15 +7,15 @@ export struct IBestEmpty {
   /**
    * 描述文字底部的builder
    */
-  @BuilderParam defaultBuilder: CustomBuilder | null = null;
+  @BuilderParam defaultBuilder?: CustomBuilder;
   /**
    * 空状态的builder
    */
-  @BuilderParam emptyImgBuilder: CustomBuilder | null = null;
+  @BuilderParam emptyImgBuilder?: CustomBuilder;
   /**
    * 描述文字的builder
    */
-  @BuilderParam descriptionBuilder: CustomBuilder | null = null;
+  @BuilderParam descriptionBuilder?: CustomBuilder;
   /**
    * 图片下方的描述文字 默认空字符串
    */
