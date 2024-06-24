@@ -3,12 +3,14 @@ import router from '@ohos.router';
 import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { IBestButton, IBestEmpty } from '@ibestservices/ibest-ui'
+import { ComponentRouterParams } from '../assets/global.type';
 
 
 @Entry
 @Component
 struct EmptyPage {
-  @State title: string = router.getParams()['title'] || '';
+  @State title: string = (router.getParams() as ComponentRouterParams).title || ''
+
 
   @Builder
   Arrow() {

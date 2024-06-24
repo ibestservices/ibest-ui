@@ -3,6 +3,7 @@ import { IBestButton } from '@ibestservices/ibest-ui'
 import { BACKGROUND_COLOR, COLOR_BLUE, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
+import { ComponentRouterParams } from '../assets/global.type';
 
 @Styles
 function btnMargin() {
@@ -20,7 +21,7 @@ function btnMargin() {
 @Component
 struct ButtonPage {
   @State message: string = 'Hello World';
-  @State title: string = router.getParams()['title'] || ''
+  @State title: string = (router.getParams() as ComponentRouterParams).title || ''
 
   @Builder
   TextBuilder() {

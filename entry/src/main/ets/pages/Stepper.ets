@@ -4,11 +4,13 @@ import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseSt
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { IBestButton } from '@ibestservices/ibest-ui'
 import {IBestStepper} from '../../../../../library/Index'
+import { ComponentRouterParams } from '../assets/global.type';
 
 @Entry
 @Component
 struct EmptyPage {
-  @State title: string = router.getParams()['title'] || '';
+  @State title: string = (router.getParams() as ComponentRouterParams).title || ''
+
 
   @Builder
   Arrow() {

@@ -43,11 +43,11 @@ export default struct TitleBar {
   /**
    * 中间内容的builder
    */
-  @BuilderParam contentBuilder?: CustomBuilder = null;
+  @BuilderParam contentBuilder?: CustomBuilder;
   /**
    * 右侧按钮的builder
    */
-  @BuilderParam rightIconBuilder?: CustomBuilder = null;
+  @BuilderParam rightIconBuilder?: CustomBuilder;
   /**
    * 标题 如果传入contentBuilder 那么该传参不生效
    */

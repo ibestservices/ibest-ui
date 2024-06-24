@@ -3,6 +3,7 @@ import { IBestButton, IBestCheckbox, IBestCheckboxGroup, CheckboxGroupContext, I
 import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, DISABLE_COLOR, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
+import { ComponentRouterParams } from '../assets/global.type';
 
 @Styles
 function btnMargin() {
@@ -13,7 +14,8 @@ function btnMargin() {
 @Entry
 @Component
 struct CheckboxPage {
-  @State title: string = router.getParams()['title'] || '';
+  @State title: string = (router.getParams() as ComponentRouterParams).title || ''
+
   /**
    * 全选反选的chekboxGroup的this指向
    */
@@ -41,7 +43,7 @@ struct CheckboxPage {
    */
   cellCheckedMaxNum = 2
 
-  @Builder CellCheckbox(name, group){
+  @Builder CellCheckbox(name: string, group: string){
     IBestCheckbox({
       name,
       group,
@@ -49,7 +51,7 @@ struct CheckboxPage {
     })
   }
 
-  handleClickCell(name){
+  handleClickCell(name: string){
     const index = this.cellCehckedNames.indexOf(name)
     if(index > -1){
       this.cellCehckedNames.splice(index ,1)
@@ -314,7 +316,7 @@ struct CheckboxPage {
                   text: '全选',
                   type: 'primary',
                   onClickBtn: ()=>{
-                    this.checkboxGroupContext.toggleAll(true)
+                    this.checkboxGroupContext?.toggleAll(true)
                   }
                 })
               }.btnMargin()
@@ -324,7 +326,7 @@ struct CheckboxPage {
                   text: '反选',
                   type: 'warning',
                   onClickBtn: ()=>{
-                    this.checkboxGroupContext.toggleAll()
+                    this.checkboxGroupContext?.toggleAll()
                   }
                 })
               }.btnMargin()
@@ -333,7 +335,7 @@ struct CheckboxPage {
                 IBestButton({
                   text: '取消选中',
                   onClickBtn: ()=>{
-                    this.checkboxGroupContext.toggleAll(false)
+                    this.checkboxGroupContext?.toggleAll(false)
                   }
                 })
               }.btnMargin()
@@ -405,13 +407,13 @@ struct CheckboxPage {
               clickable: true,
               title: '复选框1',
               rightIconBuilder: ()=>this.CellCheckbox('checkbox1-cell', 'group17'),
-              onClickCell: ()=>this.handleClickCell('checkbox1-cell')
+              onClickCell: (): void => this.handleClickCell('checkbox1-cell')
             })
             IBestCell({
               clickable: true,
               title: '复选框2',
               rightIconBuilder: ()=>this.CellCheckbox('checkbox2-cell', 'group17'),
-              onClickCell: ()=>this.handleClickCell('checkbox2-cell')
+              onClickCell: (): void=>this.handleClickCell('checkbox2-cell')
 
             })
             IBestCell({
@@ -419,7 +421,7 @@ struct CheckboxPage {
               title: '复选框3',
               hasBorder: false,
               rightIconBuilder: ()=>this.CellCheckbox('checkbox3-cell', 'group17'),
-              onClickCell: ()=>this.handleClickCell('checkbox3-cell')
+              onClickCell: (): void=>this.handleClickCell('checkbox3-cell')
             })
           }
         }.margin({

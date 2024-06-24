@@ -4,7 +4,7 @@ import { COLOR_GRAY, FONT_SIZE, SPACE, CONTAINER_SIZE } from '../assets/styles/B
 export default struct ComponentShowContainer {
   @Prop title: string = '';
   @Prop titlePaddingLeft: string = '';
-  @BuilderParam defaultBuilder: CustomBuilder = null
+  @BuilderParam defaultBuilder?: CustomBuilder
 
   build(){
     Column(){

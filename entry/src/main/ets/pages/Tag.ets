@@ -3,6 +3,7 @@ import { IBestTag } from '@ibestservices/ibest-ui'
 import { BACKGROUND_COLOR, COLOR_BLUE, COLOR_GRAY, CONTAINER_SIZE, FONT_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
+import { ComponentRouterParams } from '../assets/global.type';
 
 @Extend(Row) function rowStyles(hasBottomBorder: boolean = true){
   .width(CONTAINER_SIZE.FULL)
@@ -23,7 +24,7 @@ import ComponentShowContainer from '../components/ComponentShowContainer'
 @Entry
 @Component
 struct TagPage {
-  @State title: string = router.getParams()['title'] || '';
+  @State title: string = (router.getParams() as ComponentRouterParams).title || ''
   @State showTag: boolean = true
 
   build() {

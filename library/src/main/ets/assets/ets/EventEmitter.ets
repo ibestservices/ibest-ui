@@ -8,7 +8,7 @@ type EventHandler = (...args: any[]) => void;
  */
 class EventEmitter {
   //用于存储事件及其处理函数
-  private events: { [key: string]: EventHandler[] } = {};
+  private events: Record<string, EventHandler[]> = {};
 
   // 订阅事件
   public on(event: string, listener: EventHandler): void {

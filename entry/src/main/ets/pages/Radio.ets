@@ -3,6 +3,7 @@ import { IBestCell, CheckboxGroupContext, IBestRadio, IBestRadioGroup } from '@i
 import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, DISABLE_COLOR, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
+import { ComponentRouterParams } from '../assets/global.type';
 
 @Styles
 function btnMargin() {
@@ -13,11 +14,12 @@ function btnMargin() {
 @Entry
 @Component
 struct CheckboxPage {
-  @State title: string = router.getParams()['title'] || '';
+  @State title: string = (router.getParams() as ComponentRouterParams).title || ''
+
   @State slectedRadioName: string = '';
 
   @Builder
-  CellRadio(name, group,) {
+  CellRadio(name: string, group: string) {
     IBestRadio({
       name,
       group,

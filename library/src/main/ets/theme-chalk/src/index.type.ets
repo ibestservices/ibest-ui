@@ -17,4 +17,4 @@ export interface IbestUIBaseStyleType extends FontSizeData, ColorData, SpaceData
 
 export type IbestUIBaseStyleValue = string | number | EdgeEffect;
 
-export type IbestUIBaseStyleObjType =  Record<keyof IbestUIBaseStyleType, IbestUIBaseStyleValue>
+export type IbestUIBaseStyleObjType = Record<keyof IbestUIBaseStyleType, IbestUIBaseStyleValue>

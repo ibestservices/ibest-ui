@@ -3,13 +3,13 @@ import { IBestSwitch } from '@ibestservices/ibest-ui'
 import { BACKGROUND_COLOR, COLOR_BLUE, COLOR_GRAY, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
-
+import { ComponentRouterParams } from '../assets/global.type';
 
 
 @Entry
 @Component
 struct SwitchPage {
-  @State title: string = router.getParams()['title'] || '';
+  @State title: string = (router.getParams() as ComponentRouterParams).title || ''
   @State arrowDirection: 'left' | 'right' = 'left';
 
   @Builder Arrow(){
@@ -112,19 +112,19 @@ struct SwitchPage {
                       gridCount: 3,
                       primaryButton: {
                         value: '取消',
-                        fontColor: COLOR_GRAY.BASE as unknown as Color,
+                        fontColor: COLOR_GRAY.BASE,
                         action: () => {
-                          reject('')
+                          reject()
                         }
                       },
                       secondaryButton: {
                         value: '确认',
                         action: () => {
-                          resolve('')
+                          resolve()
                         }
                       },
                       cancel: () => {
-                        reject('')
+                        reject()
                       }
                     }
                   )

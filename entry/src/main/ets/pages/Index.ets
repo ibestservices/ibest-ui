@@ -1,13 +1,15 @@
 import router from '@ohos.router'
-import { BACKGROUND_COLOR, SPACE, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, COLOR_GRAY } from '../assets/styles/BaseStyle'
+import { BACKGROUND_COLOR, SPACE, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT } from '../assets/styles/BaseStyle'
+
+interface ComponentItem {
+  name: string,
+  path: string
+}
 
 @Entry
 @Component
 struct Index {
-  @State componentList: {
-    name: string,
-    path: string
-  }[] = [
+  @State componentList: ComponentItem[] = [
     {
       name: 'Theme主题',
       path: 'pages/Theme'
@@ -57,7 +59,7 @@ struct Index {
   build() {
     Column() {
       List() {
-        ForEach(this.componentList, item => {
+        ForEach(this.componentList, (item: ComponentItem) => {
           ListItem() {
             Row() {
               Text(item.name)

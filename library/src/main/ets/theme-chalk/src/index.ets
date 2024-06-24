@@ -57,14 +57,14 @@ export const IBEST_UI_NAMESPACE = '__IBEST-UI_BASE_STYLE'
  * 设置全局样式
  * @param styleData
  */
-export function setIBestUIBaseStyle(styleData: IbestUIBaseStyleObjType) {
+export function setIBestUIBaseStyle(styleData: Partial<IbestUIBaseStyleType>) {
   if (!styleData || styleData === null) {
     return
   }
   const newStyleData = getDefaultBaseStyle();
   Object.keys(styleData).forEach(item => {
     if (newStyleData[item]) {
-      newStyleData[item] = styleData[item] || newStyleData[item]
+      newStyleData[item] = (styleData as IbestUIBaseStyleObjType )[item] ?? newStyleData[item]
     }
   })
   AppStorage.SetOrCreate(IBEST_UI_NAMESPACE, newStyleData)

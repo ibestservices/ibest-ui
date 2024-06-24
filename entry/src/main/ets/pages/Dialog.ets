@@ -3,8 +3,16 @@ import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, DISABLE_COLOR, SPACE } fr
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { IBestDialog, IBestCell, IBestCellGroup } from '@ibestservices/ibest-ui'
+import { ComponentRouterParams } from '../assets/global.type';
 
-const textData = {
+export interface TextData {
+  title: string,
+  code: string,
+  life: string
+  program: string
+}
+
+const textData: TextData = {
   title: '提示',
   code: '代码是写出来给人看的，附带能在机器上运行。',
   life: '生命远不止连轴转和忙到极限，人类的体验远比这辽阔、丰富得多。',
@@ -14,16 +22,16 @@ const textData = {
 @Entry
 @Component
 struct DialogPage {
-  @State title: string = router.getParams()['title'] || '';
+  @State title: string = (router.getParams() as ComponentRouterParams).title || ''
   @State disabled: boolean = false;
   @State dialogTitle: string = '';
   @State dialogMsg: string = '';
   @State showDialogCancelBtn: boolean = false;
   @State inputValue: string = '';
   @State formInputError: boolean = false;
-  basicDialogController: CustomDialogController = null;
-  asyncDialogController: CustomDialogController = null;
-  slotDialogController: CustomDialogController = null;
+  basicDialogController: CustomDialogController | null = null;
+  asyncDialogController: CustomDialogController | null = null;
+  slotDialogController: CustomDialogController | null = null;
 
   @Builder
   FormInputContain() {
@@ -123,7 +131,7 @@ struct DialogPage {
                 onClickCell: () => {
                   this.dialogTitle = textData.title
                   this.dialogMsg = textData.code
-                  this.basicDialogController.open()
+                  this.basicDialogController?.open()
                 }
               })
               IBestCell({
@@ -132,7 +140,7 @@ struct DialogPage {
                 onClickCell: () => {
                   this.dialogTitle = ''
                   this.dialogMsg = textData.life
-                  this.basicDialogController.open()
+                  this.basicDialogController?.open()
                 }
               })
               IBestCell({
@@ -143,7 +151,7 @@ struct DialogPage {
                   this.dialogTitle = textData.title
                   this.dialogMsg = textData.life
                   this.showDialogCancelBtn = true;
-                  this.basicDialogController.open()
+                  this.basicDialogController?.open()
                 }
               })
             }
@@ -159,7 +167,7 @@ struct DialogPage {
                 isLink: true,
                 hasBorder: false,
                 onClickCell: () => {
-                  this.asyncDialogController.open()
+                  this.asyncDialogController?.open()
                 }
               })
             }
@@ -176,7 +184,7 @@ struct DialogPage {
                 onClickCell: () => {
                   this.formInputError = false;
                   this.inputValue = '';
-                  this.slotDialogController.open()
+                  this.slotDialogController?.open()
                 }
               })
             }

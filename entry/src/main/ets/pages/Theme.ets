@@ -3,11 +3,13 @@ import { IBestButton, IBestCheckbox, IBestSwitch, IBestTag, setIBestUIBaseStyle 
 import { BACKGROUND_COLOR, CONTAINER_SIZE, FONT_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import TitleBar from '../components/TitleBar';
+import { ComponentRouterParams } from '../assets/global.type';
 
 @Entry
 @Component
 struct ThemePage {
-  @State title: string = router.getParams()['title'] || '';
+  @State title: string = (router.getParams() as ComponentRouterParams).title || ''
+
   colorText: string = '#07c160';
 
   aboutToDisappear(){

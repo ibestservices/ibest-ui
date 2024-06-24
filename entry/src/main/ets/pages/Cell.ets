@@ -3,12 +3,13 @@ import { IBestCell, IBestTag, IBestCellGroup } from '@ibestservices/ibest-ui';
 import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
+import { ComponentRouterParams } from '../assets/global.type';
 
 
 @Entry
 @Component
 struct CellPage {
-  @State title: string = router.getParams()['title'] || '';
+  @State title: string = (router.getParams() as ComponentRouterParams).title || ''
   @State showTag: boolean = true;
   @State inputValue: string = ''
 
