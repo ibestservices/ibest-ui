@@ -1,8 +1,8 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type'
-import { IbestUIBaseStyleObjType, IbestUIBaseStyleType } from '../../theme-chalk/src/index.type'
+import { IbestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import {IBestStepperBtn} from './stepperBtn'
-import {acc} from '../../assets/ets/utils'
+import {accAdd, accSub} from '../../assets/ets/utils'
 
 enum STEPPER_BTN_TYPE {
   PLUS = 'PLUS',
@@ -153,12 +153,12 @@ export struct IBestStepper {
     let nextValue = '0';
     // 如果增加
     if(btnType === STEPPER_BTN_TYPE.PLUS){
-      nextValue = String(acc.add(this.inputNumValue, this.step));
+      nextValue = String(accAdd(Number(this.inputNumValue), Number(this.step)));
       if(nextValue > this.max){
         nextValue = String(this.max)
       }
     }else{
-      nextValue = String(acc.sub(this.inputNumValue, this.step));
+      nextValue = String(accSub(Number(this.inputNumValue),  Number(this.step)));
       if(nextValue < this.min){
         nextValue = String(this.min)
       }

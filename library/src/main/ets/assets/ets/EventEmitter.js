@@ -1,5 +1,4 @@
-// 定义事件处理函数的类型
-type EventHandler = (...args: any[]) => void;
+
 
 /**
  * 订阅发布模式
@@ -8,10 +7,10 @@ type EventHandler = (...args: any[]) => void;
  */
 class EventEmitter {
   //用于存储事件及其处理函数
-  private events: Record<string, EventHandler[]> = {};
+  events = {};
 
   // 订阅事件
-  public on(event: string, listener: EventHandler): void {
+  on(event, listener) {
     if (!this.events[event]) {
       this.events[event] = [];
     }
@@ -19,13 +18,13 @@ class EventEmitter {
   }
 
   // 取消订阅事件
-  public off(event: string, listener: EventHandler): void {
+  off(event, listener) {
     if (!this.events[event]) return;
     this.events[event] = this.events[event].filter(l => l !== listener);
   }
 
   // 发布事件
-  public emit(event: string, ...args: any[]): void {
+  emit(event, ...args) {
     if (!this.events[event]) return;
     this.events[event].forEach(listener => listener.apply(this, args));
   }

@@ -268,7 +268,7 @@ export struct IBestDialog {
    */
   handlePropChange(key: string) {
     // TODO 是否更新这个bug？
-    this[`provide_${key}`] = this[key]
+    // this[`provide_${key}`] = this[key]
   }
 
   /**
