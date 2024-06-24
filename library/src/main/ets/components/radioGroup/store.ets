@@ -1,16 +1,14 @@
-export type CheckedItem = {
+export interface CheckedItem {
   name: string,
   checked: boolean
 }
 
 type ChangeFuc = (checkedList: CheckedItem) => void
-
-const radioGroupStore: {
-  [key: string]: {
-    checkedItem: CheckedItem | null,
-    onChange: ChangeFuc
-  }
-} = {};
+interface CheckBoxStoreItem {
+  checkedItem: CheckedItem | null,
+  onChange: ChangeFuc
+}
+const radioGroupStore: Record<string, CheckBoxStoreItem | null> = {};
 
 export function initRadioGroupStore(key: string, onChange: ChangeFuc = () => {
 }) {
@@ -22,7 +20,7 @@ export function initRadioGroupStore(key: string, onChange: ChangeFuc = () => {
 }
 
 export function removeRadioGroupStore(key: string) {
-  delete radioGroupStore[key]
+   radioGroupStore[key] = null;
 }
 
 export function isRadioGroupStoreHasSameKey(key: string) {
@@ -39,8 +37,8 @@ export function updateRadioGroupStoreByKey(key: string, data: CheckedItem) {
   if (!checkedData) {
     return
   }
-  const {onChange} = checkedData;
+  const onChange = checkedData.onChange;
   checkedData.checkedItem = data.checked ? data : null
-  onChange(checkedData.checkedItem)
+  checkedData.checkedItem && onChange(checkedData.checkedItem)
 
 }

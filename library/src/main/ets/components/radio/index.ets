@@ -1,31 +1,28 @@
 import { emitter } from '../../assets/ets/EventEmitter';
-import { IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-import { IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { IbestUIBaseStyleObjType, IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
 import { SPACE } from '../../theme-chalk/src/space.type';
+import { CheckedItem } from '../checkboxGroup/store';
 import { updateRadioGroupStoreByKey } from '../radioGroup/store';
 import { getRadioGroupNamespace, RADIO_GROUP_EVENT_NAME } from '../radioGroup/utils';
+import { BuilderArgs, CustomerBuilderReturnData } from './index.type';
 
-
-export type BuilderArgData = {
-  checked: boolean,
-  disabled: boolean
-}
 
 @Component
 export struct IBestRadio {
   /**
    * 自定义文本插槽
    */
-  @BuilderParam private defaultBuilder?: (data: BuilderArgData) => any = null;
+  @BuilderParam private defaultBuilder?: (data: BuilderArgs) => CustomerBuilderReturnData;
   /**
    * 自定义图标插槽
    */
-  @BuilderParam private iconBuilder?: (data: BuilderArgData) => any = null;
+  @BuilderParam private iconBuilder?: (data: BuilderArgs) => void;
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleType = {}
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle()
   /**
    * 标识符，通常为一个唯一的字符串
    * 多选框名称。
@@ -94,7 +91,7 @@ export struct IBestRadio {
     if (this.disabled) {
       return GRAY_COLOR.GRAY_5
     } else {
-      return this.value? this.checkedColor || this.baseStyle.primary : GRAY_COLOR.GRAY_5
+      return this.value ? this.checkedColor || this.baseStyle.primary : GRAY_COLOR.GRAY_5
     }
   }
 
@@ -111,10 +108,10 @@ export struct IBestRadio {
    * @returns
    */
   private getIconColor() {
-    if(this.disabled ){
+    if (this.disabled) {
       return GRAY_COLOR.GRAY_5
     } else {
-      return this.shape === 'dot' ? this.checkedColor || this.baseStyle.primary :'#fff'
+      return this.shape === 'dot' ? this.checkedColor || this.baseStyle.primary : '#fff'
     }
 
   }
@@ -133,7 +130,7 @@ export struct IBestRadio {
 
   private updateGroupStore() {
     if (this.isHasGroup()) {
-      updateRadioGroupStoreByKey(this.group, { name: this.name, checked: this.value })
+      updateRadioGroupStoreByKey(this.group, { name: this.name, checked: this.value } as CheckedItem)
     }
   }
 
@@ -153,21 +150,23 @@ export struct IBestRadio {
    * 当radioGroup初始化时 赋值选中逻辑
    * @param name
    */
-  private handleRadioGroupInit(name){
+  private handleRadioGroupInit(name: string) {
     this.value = name === this.name
   }
 
   aboutToAppear() {
     this.value && this.updateGroupStore()
     // 如果有组 监听max change
-    if(this.isHasGroup()){
-      emitter.on(getRadioGroupNamespace(this.group, RADIO_GROUP_EVENT_NAME.ON_INIT), this.handleRadioGroupInit.bind(this))
+    if (this.isHasGroup()) {
+      emitter.on(getRadioGroupNamespace(this.group, RADIO_GROUP_EVENT_NAME.ON_INIT),
+        this.handleRadioGroupInit.bind(this))
     }
   }
 
   aboutToDisappear() {
-    if(this.isHasGroup()){
-      emitter.off(getRadioGroupNamespace(this.group, RADIO_GROUP_EVENT_NAME.ON_INIT), this.handleRadioGroupInit.bind(this))
+    if (this.isHasGroup()) {
+      emitter.off(getRadioGroupNamespace(this.group, RADIO_GROUP_EVENT_NAME.ON_INIT),
+        this.handleRadioGroupInit.bind(this))
     }
   }
 
@@ -201,8 +200,9 @@ export struct IBestRadio {
         if (typeof this.iconBuilder === 'function') {
           this.iconBuilder({ checked: this.value, disabled: this.disabled })
         } else {
-          if (this.shape === 'dot'){
-            Column(){}
+          if (this.shape === 'dot') {
+            Column() {
+            }
             .margin({
               top: '-2lpx'
             })
@@ -211,19 +211,19 @@ export struct IBestRadio {
             .backgroundColor(this.getIconColor())
             .borderRadius(`${this.iconSize / 2}lpx`)
             .scale({
-              x: this.value ? .618: 0,
+              x: this.value ? .618 : 0,
               y: this.value ? .618 : 0
             })
             .animation({
-              duration: this.baseStyle.animationDuration
+              duration: this.baseStyle.animationDuration as number
             })
-          }else{
+          } else {
             Image($r('app.media.success'))
               .fillColor(this.getIconColor())
               .width(`${this.iconSize}lpx`)
-              .opacity( this.value ? 1 : 0)
+              .opacity(this.value ? 1 : 0)
               .animation({
-                duration: this.baseStyle.animationDuration,
+                duration: this.baseStyle.animationDuration as number,
               })
               .scale({
                 x: .9,
@@ -241,7 +241,7 @@ export struct IBestRadio {
       .borderRadius(['round', 'dot'].includes(this.shape) ? `${this.iconSize / 2}lpx` : 0)
       .backgroundColor(this.getBackgroundColor())
       .animation({
-        duration: this.baseStyle.animationDuration,
+        duration: this.baseStyle.animationDuration as number,
       })
       .onClick(() => {
         this.handleCheckedChange()
