@@ -19,11 +19,11 @@ export struct IBestDialogView {
   /**
    * 标题区域的builder
    */
-  @BuilderParam titleBuilder?: CustomBuilder ;
+  @BuilderParam titleBuilder?: CustomBuilder;
   /**
    * 内容区域的builder
    */
-  @BuilderParam defaultBuilder?: CustomBuilder ;
+  @BuilderParam defaultBuilder?: CustomBuilder;
   /**
    * 底部区域的builder
    */
@@ -35,124 +35,124 @@ export struct IBestDialogView {
   /**
    * 弹窗宽度
    */
-  @Consume private provide_dialogWidth: string;
+  @Link private dialogWidth: string;
   /**
    * 弹窗border-radius 默认 32lpx
    */
-  @Consume private provide_dialogBorderRadius: string;
+  @Link private dialogBorderRadius: string;
   /**
    * 标题
    */
-  @Consume private provide_title: string;
+  @Link private title: string;
   /**
    * 标题颜色
    */
-  @Consume private provide_titleColor: string;
+  @Link private titleColor: string;
   /**
    * 标题的padding-top值
    */
-  @Consume private provide_titlePaddingTop: string;
+  @Link private titlePaddingTop: string;
   /**
    * 标题的padding-left与padding-right值 默认48lpx
    */
-  @Consume private provide_titlePaddingX: string;
+  @Link private titlePaddingX: string;
   /**
    * 标题的padding-top值
    */
-  @Consume private provide_titleLineHeight: string;
+  @Link private titleLineHeight: string;
   /**
    * 标题的fontSize
    */
-  @Consume private provide_titleFontSize: string;
+  @Link private titleFontSize: string;
   /**
    * 标题的对齐方式
    */
-  @Consume private provide_titleTextAlign: 'left' | 'center' | 'right';
+  @Link private titleTextAlign: 'left' | 'center' | 'right';
   /**
    * 文本内容，支持通过 \n 换行
    */
-  @Consume private provide_message: string;
+  @Link private message: string;
   /**
    * 内容区域的padding-left与padding-right值 默认48lpx
    */
-  @Consume private provide_messagePaddingX: string;
+  @Link private messagePaddingX: string;
   /**
    * 内容区域的padding-top值 默认16lpx
    */
-  @Consume private provide_messagePaddingTop: string;
+  @Link private messagePaddingTop: string;
   /**
-   * 内容区域的padding-bottom 默认52lpx
+   * 内容区域的padding-bottom值 默认52lpx
    */
-  @Consume private provide_messagePaddingBottom: string;
+  @Link private messagePaddingBottom: string;
   /**
    * 内容区域的fontColor 默认#323233
    */
-  @Consume private provide_messageFontColor: string;
+  @Link private messageFontColor: string;
   /**
    * 内容区域的fontSize
    */
-  @Consume private provide_messageFontSize: string;
+  @Link private messageFontSize: string;
   /**
    * 内容区域的行高 lineHeight 默认 40lpx
    */
-  @Consume private provide_messageLineHeight: string;
+  @Link private messageLineHeight: string;
   /**
    * 内容区域的文字对齐方式
    */
-  @Consume private provide_messageTextAlign: 'left' | 'center' | 'right';
+  @Link private messageTextAlign: 'left' | 'center' | 'right';
   /**
    * 内容区域的滚动区域最大高度
    */
-  @Consume private provide_messageMaxHeight: string;
+  @Link private messageMaxHeight: string;
   // /**
   //  * 样式风格
   //  * 本期暂不开发
   //  */
-  // @Consume private provide_theme: 'default' | 'round-button';
+  // @Link private theme: 'default' | 'round-button' ';
   /**
    * 是否展示确认按钮
    */
-  @Consume private provide_showConfirmButton: boolean;
+  @Link private showConfirmButton: boolean;
   /**
    * 是否展示取消按钮
    */
-  @Consume private provide_showCancelButton: boolean;
+  @Link private showCancelButton: boolean;
   /**
    * 确认按钮文案
    */
-  @Consume private provide_confirmButtonText: string;
+  @Link private confirmButtonText: string;
   /**
    * 取消按钮的文案
    */
-  @Consume private provide_cancelButtonText: string;
+  @Link private cancelButtonText: string;
   /**
    * 确认按钮的颜色
    */
-  @Consume private provide_confirmButtonColor: string;
+  @Link private confirmButtonColor: string;
   /**
    * 取消按钮的颜色
    */
-  @Consume private provide_cancelButtonColor: string;
+  @Link private cancelButtonColor: string;
   /**
    * 是否禁用确认按钮
    */
-  @Consume private provide_confirmButtonDisabled: boolean;
+  @Link private confirmButtonDisabled: boolean;
   /**
    * 是否禁用取消按钮
    */
-  @Consume private provide_cancelButtonDisabled: boolean;
+  @Link private cancelButtonDisabled: boolean;
   /**
    * 按钮的文字大小
    */
-  @Consume private provide_buttonFontSize: string;
+  @Link private buttonFontSize: string;
   /**
    * 确认按钮的loading
    */
-  @Consume private provide_confirmButtonLoading: boolean;
+  @Link private confirmButtonLoading: boolean;
   /**
-   * 确认按钮的loading
+   * 取消按钮的loading
    */
-  @Consume private provide_cancelButtonLoading: boolean;
+  @Link private cancelButtonLoading: boolean;
   /**
    * 点击取消的回调
    */
@@ -161,14 +161,15 @@ export struct IBestDialogView {
    * 点击确认的的回调
    */
   private onConfirm?: (event?: ClickEvent) => void;
+
   /**
    * 对齐置换TextAlign
    */
-  getFormatAlign(align: string){
-    switch (align){
+  getFormatAlign(align: string) {
+    switch (align) {
       case 'left':
         return TextAlign.Start
-        case 'center':
+      case 'center':
         return TextAlign.Center
       case 'right':
         return TextAlign.End
@@ -182,7 +183,7 @@ export struct IBestDialogView {
    * @returns
    */
   isHasTitle() {
-    return (typeof this.provide_title === 'string' && !!this.provide_title.length) || typeof this.titleBuilder === 'function'
+    return (typeof this.title === 'string' && !!this.title.length) || typeof this.titleBuilder === 'function'
   }
 
   /**
@@ -190,7 +191,7 @@ export struct IBestDialogView {
    * @returns
    */
   getMsgColor() {
-    return this.provide_messageFontColor ? this.provide_messageFontColor : this.isHasTitle() ? GRAY_COLOR.GRAY_7 : GRAY_COLOR.GRAY_8;
+    return this.messageFontColor ? this.messageFontColor : this.isHasTitle() ? GRAY_COLOR.GRAY_7 : GRAY_COLOR.GRAY_8;
   }
 
   /**
@@ -198,7 +199,7 @@ export struct IBestDialogView {
    * @returns
    */
   getConfirmBtnFontColor() {
-    return this.provide_confirmButtonColor ? this.provide_confirmButtonColor : this.baseStyle.primary
+    return this.confirmButtonColor ? this.confirmButtonColor : this.baseStyle.primary
   }
 
   /**
@@ -206,7 +207,7 @@ export struct IBestDialogView {
    * @returns
    */
   getCancelBtnFontColor() {
-    return this.provide_cancelButtonColor ? this.provide_cancelButtonColor : GRAY_COLOR.GRAY_7
+    return this.cancelButtonColor ? this.cancelButtonColor : GRAY_COLOR.GRAY_7
   }
 
   build() {
@@ -216,17 +217,17 @@ export struct IBestDialogView {
         this.titleBuilder()
       } else {
         if (this.isHasTitle()) {
-          Text(this.provide_title)
-            .fontSize(this.provide_titleFontSize)
+          Text(this.title)
+            .fontSize(this.titleFontSize)
             .fontWeight(FontWeight.Medium)
-            .lineHeight(this.provide_titleLineHeight)
+            .lineHeight(this.titleLineHeight)
             .padding({
-              top: this.provide_titlePaddingTop,
-              left: this.provide_titlePaddingX,
-              right: this.provide_titlePaddingX
+              top: this.titlePaddingTop,
+              left: this.titlePaddingX,
+              right: this.titlePaddingX
             })
-            .textAlign(this.getFormatAlign(this.provide_titleTextAlign))
-            .fontColor(this.provide_titleColor)
+            .textAlign(this.getFormatAlign(this.titleTextAlign))
+            .fontColor(this.titleColor)
         }
       }
 
@@ -236,21 +237,22 @@ export struct IBestDialogView {
         this.defaultBuilder()
       } else {
         Scroll() {
-          Text(this.provide_message)
+          Text(this.message)
             .padding({
-              top: this.provide_messagePaddingTop,
-              left: this.provide_messagePaddingX,
-              right: this.provide_messagePaddingX,
-              bottom: this.provide_messagePaddingBottom
+              top: this.messagePaddingTop,
+              left: this.messagePaddingX,
+              right: this.messagePaddingX,
+              bottom: this.messagePaddingBottom
             })
-            .textAlign(this.getFormatAlign(this.provide_messageTextAlign))
-            .lineHeight(this.provide_messageLineHeight)
-            .fontSize(this.provide_messageFontSize)
+            .margin({top: this.isHasTitle() ? 0 : this.messagePaddingBottom})
+            .textAlign(this.getFormatAlign(this.messageTextAlign))
+            .lineHeight(this.messageLineHeight)
+            .fontSize(this.messageFontSize)
             .fontColor(this.getMsgColor())
         }
         .scrollBarColor(this.baseStyle.scrollBarColor)
         .constraintSize({
-          maxHeight: this.provide_messageMaxHeight
+          maxHeight: this.messageMaxHeight
         })
         .edgeEffect(EdgeEffect.Spring)
       }
@@ -262,12 +264,12 @@ export struct IBestDialogView {
       } else {
         Row() {
           // 取消按钮
-          if (this.provide_showCancelButton) {
+          if (this.showCancelButton) {
             Button({ type: ButtonType.Normal }) {
               Row() {
-                if (this.provide_cancelButtonLoading) {
+                if (this.cancelButtonLoading) {
                   LoadingProgress()
-                    .width(this.provide_buttonFontSize)
+                    .width(this.buttonFontSize)
                     .color(this.getCancelBtnFontColor())
                     .margin({
                       right: SPACE.MINI
@@ -275,19 +277,19 @@ export struct IBestDialogView {
                     .transition({ type: TransitionType.Insert, opacity: 1 })
                     .transition({ type: TransitionType.Delete, opacity: 0 })
                 } else {
-                  Text(this.provide_cancelButtonText)
+                  Text(this.cancelButtonText)
                     .fontColor(this.getCancelBtnFontColor())
-                    .fontSize(this.provide_buttonFontSize)
+                    .fontSize(this.buttonFontSize)
                     .transition({ type: TransitionType.Insert, opacity: 1 })
                     .transition({ type: TransitionType.Delete, opacity: 0 })
                 }
               }
             }
             .border({
-              width: { right: this.provide_showConfirmButton ? '2lpx' : 0 },
+              width: { right: this.showConfirmButton ? '2lpx' : 0 },
               color: '#ecedf0'
             })
-            .enabled(!this.provide_cancelButtonDisabled || !this.provide_cancelButtonLoading)
+            .enabled(!this.cancelButtonDisabled || !this.cancelButtonLoading)
             .defaultBtnStyles()
             .onClick(event => {
               typeof this.onCancel === 'function' && this.onCancel(event)
@@ -295,12 +297,12 @@ export struct IBestDialogView {
           }
 
           // 确认按钮
-          if (this.provide_showConfirmButton) {
+          if (this.showConfirmButton) {
             Button({ type: ButtonType.Normal }) {
               Row() {
-                if (this.provide_confirmButtonLoading) {
+                if (this.confirmButtonLoading) {
                   LoadingProgress()
-                    .width(this.provide_buttonFontSize)
+                    .width(this.buttonFontSize)
                     .color(this.getConfirmBtnFontColor())
                     .margin({
                       right: SPACE.MINI
@@ -308,15 +310,15 @@ export struct IBestDialogView {
                     .transition({ type: TransitionType.Insert, opacity: 1 })
                     .transition({ type: TransitionType.Delete, opacity: 0 })
                 } else {
-                  Text(this.provide_confirmButtonText)
+                  Text(this.confirmButtonText)
                     .fontColor(this.getConfirmBtnFontColor())
-                    .fontSize(this.provide_buttonFontSize)
+                    .fontSize(this.buttonFontSize)
                     .transition({ type: TransitionType.Insert, opacity: 1 })
                     .transition({ type: TransitionType.Delete, opacity: 0 })
                 }
               }
             }
-            .enabled(!this.provide_confirmButtonDisabled || !this.provide_confirmButtonLoading)
+            .enabled(!this.confirmButtonDisabled || !this.confirmButtonLoading)
             .defaultBtnStyles()
             .onClick(event => {
               typeof this.onConfirm === 'function' && this.onConfirm(event)
@@ -332,8 +334,8 @@ export struct IBestDialogView {
       }
     }
     .backgroundColor('#fff')
-    .width(this.provide_dialogWidth)
-    .borderRadius(this.provide_dialogBorderRadius)
+    .width(this.dialogWidth)
+    .borderRadius(this.dialogBorderRadius)
     .clip(true)
   }
 }
