@@ -104,6 +104,14 @@ export struct IBestStepper {
    */
   onChange?: (val: number | string) => void;
   /**
+   * 点击增加按钮的回调
+   */
+  onPlus?: () => void;
+  /**
+   * 点击减少按钮的回调
+   */
+  onMinus?: () => void;
+  /**
    * 输入框的值
    * inputNumValue改变会触发绑定的TextInput的change事件
    */
@@ -223,11 +231,13 @@ export struct IBestStepper {
         return
       }
       nextValue = String(accAdd(Number(this.inputNumValue), this.step));
+      typeof this.onPlus === 'function' && this.onPlus()
     } else {
       if (this.disableMinus) {
         return
       }
       nextValue = String(accSub(Number(this.inputNumValue), this.step));
+      typeof this.onMinus === 'function' && this.onMinus()
     }
     this.handleInputNumChange(nextValue, true)
   }
