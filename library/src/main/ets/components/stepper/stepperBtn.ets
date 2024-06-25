@@ -10,6 +10,7 @@ export struct IBestStepperBtn {
   @Prop private radiusRightBottom: string = '0';
   @Prop private disabled: boolean = false;
   private onClickBtn?: () => void;
+  private onLongPress?: () => void;
 
   build() {
     Button() {
@@ -34,5 +35,16 @@ export struct IBestStepperBtn {
     .onClick(() => {
       typeof this.onClickBtn === 'function' && this.onClickBtn()
     })
+    .gesture(
+      // duration时间过段会影响click事件生效
+      LongPressGesture({ repeat: true, duration: 200 })
+        // 由于repeat设置为true，长按动作存在时会连续触发，触发间隔为duration（默认值500ms）
+        .onAction((event: GestureEvent) => {
+          if (event && event.repeat && typeof this.onLongPress === 'function') {
+            this.onLongPress()
+          }
+        })
+
+    )
   }
 }

@@ -37,6 +37,83 @@ struct EmptyPage {
           bottom: SPACE.BASE
         })
 
+        ListItem() {
+          ComponentShowContainer({ title: '步长设置' }) {
+            IBestStepper({
+              step: 2
+            })
+          }
+        }.margin({
+          bottom: SPACE.BASE
+        })
+
+        ListItem() {
+          ComponentShowContainer({ title: '限制输入范围' }) {
+            IBestStepper({
+              defaultValue: 5,
+              min: 5,
+              max: 8
+            })
+          }
+        }.margin({
+          bottom: SPACE.BASE
+        })
+
+        ListItem() {
+          ComponentShowContainer({ title: '限制输入整数' }) {
+            IBestStepper({
+              integer: true
+            })
+          }
+        }.margin({
+          bottom: SPACE.BASE
+        })
+
+        ListItem() {
+          ComponentShowContainer({ title: '禁用状态' }) {
+            IBestStepper({
+              disabled: true
+            })
+          }
+        }.margin({
+          bottom: SPACE.BASE
+        })
+
+        ListItem() {
+          ComponentShowContainer({ title: '禁用输入框' }) {
+            IBestStepper({
+              disableInput: true,
+              defaultValue: 10
+            })
+          }
+        }.margin({
+          bottom: SPACE.BASE
+        })
+
+        ListItem() {
+          ComponentShowContainer({ title: '固定小数位数' }) {
+            IBestStepper({
+              defaultValue: 14,
+              step: 0.2,
+              decimalLength: 1
+            })
+          }
+        }.margin({
+          bottom: SPACE.BASE
+        })
+
+        ListItem() {
+          ComponentShowContainer({ title: '自定义大小' }) {
+            IBestStepper({
+              inputWidth: '80lpx',
+              buttonSize: '64lpx'
+            })
+          }
+        }.margin({
+          bottom: SPACE.BASE
+        })
+
+
       }
       .layoutWeight(1)
       .padding({

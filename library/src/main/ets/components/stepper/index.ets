@@ -1,8 +1,8 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type'
 import { IbestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import {IBestStepperBtn} from './stepperBtn'
-import {accAdd, accSub} from '../../assets/ets/utils'
+import { IBestStepperBtn } from './stepperBtn'
+import { accAdd, accSub } from '../../assets/ets/utils'
 
 enum STEPPER_BTN_TYPE {
   PLUS = 'PLUS',
@@ -34,17 +34,17 @@ export struct IBestStepper {
   /**
    * 默认值
    */
-  @Prop @Watch('handleDefaultValueChange') private defaultValue: string  = '1';
+  @Prop @Watch('handleInputNumChange') private defaultValue: string | number = 1;
   /**
    * 最小值
    */
-  @Prop min: string | number = 1
+  @Prop min: string | number = 1;
   /**
    * 最大值
    */
   @Prop max: string | number = Infinity;
   /**
-   * 多少毫秒触发校验
+   * 多少毫秒触发校验修正 0时不校验
    */
   @Prop validateTime: number = 1000;
   /**
@@ -54,16 +54,60 @@ export struct IBestStepper {
   /**
    * 步长，每次点击时改变的值
    */
-  @Prop step: number | string = 5;
+  @Prop step: number = 1;
   /**
    * 固定显示的小数位数
    */
   @Prop decimalLength: number | string = '';
   /**
+   * 是否只允许输入整数
+   */
+  @Prop integer: boolean = false;
+  /**
+   * 是否禁用步进器
+   */
+  @Prop disabled: boolean = false;
+  /**
+   *  是否禁用增加按钮
+   */
+  @Prop disablePlus: boolean = false;
+  /**
+   *  是否禁用减少按钮
+   */
+  @Prop disableMinus: boolean = false;
+  /**
+   * 是否禁用输入框
+   */
+  @Prop disableInput: boolean = false;
+  /**
+   * 是否显示增加地址
+   */
+  @Prop showPlus: boolean = true;
+  /**
+   * 是否显示增加地址
+   */
+  @Prop showMinus: boolean = true;
+  /**
+   * 是否显示增加地址
+   */
+  @Prop showInput: boolean = true;
+  /**
+   * 是否开启长按手势，开启后可以长按增加和减少按钮
+   */
+  @Prop longPress: boolean = true;
+  /**
+   * TODO 输入值变化前的回调函数，返回 false 可阻止输入，支持返回 Promise
+   */
+  // beforeChange?: (val: number | string) => boolean | Promise<boolean>;
+  /**
+   * 改变的回调
+   */
+  onChange?: (val: number | string) => void;
+  /**
    * 输入框的值
    * inputNumValue改变会触发绑定的TextInput的change事件
    */
-  @State inputNumValue: string = this.defaultValue;
+  @State inputNumValue: string = '';
   /**
    * 减少按钮是否禁用
    */
@@ -73,162 +117,191 @@ export struct IBestStepper {
    */
   @State plusBtnDisabled: boolean = false;
   /**
+   * loading状态
+   */
+  @State loading: boolean = false;
+  /**
    * 上一次输入正确的值
    */
-  preValue: string = this.defaultValue;
+  preValue: string | number = this.defaultValue;
   /**
-   * 自动纠正的时间
+   * 自动纠正的时间id
    */
   validateTimeId: number | null = null
 
   /**
    * TextInput变化时赋值
    * @param val
+   * @param {boolean} validateSameVlue 是否触发相同数值的校验 自动修正时 不触发 换句话说 用户手动触发的改变 才触发
    */
-  handleInputNumChange(val: string){
+  async handleInputNumChange(val: string, validateSameValue = false) {
     clearTimeout(this.validateTimeId)
-    // 避免inputNum变化一致情况
-    if(val === this.inputNumValue){
+    // 避免inputNum变化一致情况 当不触发beforechange时说明是修正 修正时不需要判定是否一致 不然可能会导致不更新
+    if (validateSameValue && val === this.inputNumValue  ) {
       return
     }
     // 超过范围是否自动纠正
-    if(this.autoFixed){
-      if(val > this.max){
+    if (this.autoFixed && val !== '') {
+      if (val > this.max) {
+        // console.log('触发自动修正')
         this.handleInputNumChange(String(this.max))
         return
       }
-      if(val < this.min){
+      if (val < this.min) {
         this.handleInputNumChange(String(this.min))
         return
       }
     }
-
+    // 数据限制展示多少位
+    if (this.decimalLength >= 1) {
+      // console.log('触发decimalLength限制')
+      val = Number(val).toFixed(Number(this.decimalLength))
+    }
+    // 限制整数 如果匹配不到正确的整数
+    if (this.integer && !/^-?\d+$/.test(val)) {
+      // console.log('触发整数限制')
+      const numberArr = val.match(/^(-?\d+)/);
+      if (Array.isArray(numberArr) && numberArr[0]) {
+        val = String(Math.trunc(Number(numberArr[0])))
+      } else {
+        val = String(this.preValue || this.min)
+      }
+    }
+    // console.log('inputNum赋值', val)
+    // 不设置个随机数 UI不更新
+    this.inputNumValue = String(Math.random());
     this.inputNumValue = val;
     this.handleSetStepperBtnStatus()
     // 判定输入是否合法
-    if(/^-?\d+(\.\d+)?$/.test(val)){
+    if (/^-?\d+(\.\d+)?$/.test(val)) {
       this.preValue = val;
-    }else{
+      // console.log('preValue赋值', val)
+      typeof this.onChange === 'function' && this.onChange(val)
+    } else {
       this.handleValidateInputNum()
     }
-
   }
 
   /**
    * 输入值变化时如果不合法使用上一个有效值
    */
-  handleValidateInputNum(){
-    this.validateTimeId = setTimeout(()=>{
-      // 不加这个它不更新 ？？？ 王德发
-      this.inputNumValue = Math.random().toString()
-      this.inputNumValue = this.preValue
+  handleValidateInputNum() {
+    this.validateTimeId = setTimeout(() => {
+      // 校验延迟时间为0时不自动修复
+      if (this.validateTime !== 0) {
+        // 不设置个随机数 UI不更新
+        this.inputNumValue = String(Math.random());
+        this.inputNumValue = String(this.preValue);
+        // console.log('不合法自动修正赋值', this.preValue)
+        typeof this.onChange === 'function' && this.onChange(this.preValue)
+      }
       this.handleSetStepperBtnStatus()
     }, this.validateTime)
   }
 
-
   /**
    * 监听inputNumChange改变按钮状态
    */
-  handleSetStepperBtnStatus(){
+  handleSetStepperBtnStatus() {
     const val = this.inputNumValue;
     this.reduceBtnDisabled = val <= this.min;
     this.plusBtnDisabled = val >= this.max;
   }
 
   /**
-   * 当默认值发生改变时重新赋值
-   */
-  handleDefaultValueChange(){
-    this.inputNumValue = Math.random().toString()
-    this.inputNumValue = this.defaultValue;
-    this.preValue = this.defaultValue;
-  }
-
-  /**
    * 当点击加减按钮时
    * @param { STEPPER_BTN_TYPE } btnType
    */
-  handleClickStepperBtn(btnType: STEPPER_BTN_TYPE){
+  handleClickStepperBtn(btnType: STEPPER_BTN_TYPE) {
+    if (this.disabled || this.loading) {
+      return
+    }
     let nextValue = '0';
     // 如果增加
-    if(btnType === STEPPER_BTN_TYPE.PLUS){
-      nextValue = String(accAdd(Number(this.inputNumValue), Number(this.step)));
-      if(nextValue > this.max){
-        nextValue = String(this.max)
+    if (btnType === STEPPER_BTN_TYPE.PLUS) {
+      if (this.disablePlus) {
+        return
       }
-    }else{
-      nextValue = String(accSub(Number(this.inputNumValue),  Number(this.step)));
-      if(nextValue < this.min){
-        nextValue = String(this.min)
+      nextValue = String(accAdd(Number(this.inputNumValue), this.step));
+    } else {
+      if (this.disableMinus) {
+        return
       }
+      nextValue = String(accSub(Number(this.inputNumValue), this.step));
     }
-    this.handleInputNumChange(nextValue)
+    this.handleInputNumChange(nextValue, true)
   }
 
-  aboutToAppear(){
-    this.handleDefaultValueChange()
-    this.handleSetStepperBtnStatus()
+  aboutToAppear() {
+    this.handleInputNumChange(String(this.defaultValue))
   }
 
-  aboutToDisappear(){
+  aboutToDisappear() {
     clearTimeout(this.validateTimeId)
   }
 
-  build(){
-    Row(){
+  build() {
+    Row() {
 
-      // 减少按钮
-      IBestStepperBtn({
-        buttonSize: this.buttonSize,
-        radiusLeftTop: this.buttonRadius,
-        radiusLeftBottom: this.buttonRadius,
-        disabled: this.reduceBtnDisabled,
-        onClickBtn: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.REDUCE)
-      }){
-        Image($r('app.media.minus')).width(this.iconSize)
+      if (this.showMinus) {
+        // 减少按钮
+        IBestStepperBtn({
+          buttonSize: this.buttonSize,
+          radiusLeftTop: this.buttonRadius,
+          radiusLeftBottom: this.buttonRadius,
+          disabled: this.reduceBtnDisabled || this.disabled || this.disableMinus || this.loading,
+          onClickBtn: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.REDUCE),
+          onLongPress: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.REDUCE)
+        }) {
+          Image($r('app.media.minus')).width(this.iconSize)
+        }
       }
 
+
       // 输入框
+      if (this.showInput) {
         TextInput({ text: this.inputNumValue })
           .width(this.inputWidth)
           .height(this.buttonSize)
           .padding(0)
-          .margin({top: 0, bottom: 0, left: '4lpx', right: '4lpx'})
+          .margin({
+            top: 0,
+            bottom: 0,
+            left: '4lpx',
+            right: '4lpx'
+          })
           .fontSize(this.baseStyle.fontSizeMd)
           .fontColor(GRAY_COLOR.GRAY_8)
           .backgroundColor(GRAY_COLOR.GRAY_2)
           .borderRadius(0)
           .textAlign(TextAlign.Center)
-          .inputFilter('[0-9\.-]')
-          .onChange((val)=>this.handleInputNumChange(val)
-
-          )
-
-
-
-
-      // 增加按钮
-      IBestStepperBtn({
-        buttonSize: this.buttonSize,
-        radiusRightTop: this.buttonRadius,
-        radiusRightBottom: this.buttonRadius,
-        disabled: this.plusBtnDisabled,
-        onClickBtn: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.PLUS)
-
-      }){
-        Column(){
-          Image($r('app.media.minus')).width(this.iconSize)
-          Image($r('app.media.minus'))
-            .width(this.iconSize)
-            .position({})
-            .rotate({
-              angle: '90deg'
-            })
-        }
-
+          .inputFilter(this.integer ? '[0-9-]' : '[0-9\.-]')
+          .onChange((val) => this.handleInputNumChange(val, true))
+          .enabled(!this.disabled && !this.disableInput && !this.loading)
       }
 
+      if (this.showPlus) {
+        // 增加按钮
+        IBestStepperBtn({
+          buttonSize: this.buttonSize,
+          radiusRightTop: this.buttonRadius,
+          radiusRightBottom: this.buttonRadius,
+          disabled: this.plusBtnDisabled || this.disabled || this.disablePlus || this.loading,
+          onClickBtn: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.PLUS),
+          onLongPress: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.PLUS)
+        }) {
+          Column() {
+            Image($r('app.media.minus')).width(this.iconSize)
+            Image($r('app.media.minus'))
+              .width(this.iconSize)
+              .position({ top: 0 })
+              .rotate({
+                angle: '90deg'
+              })
+          }
+
+        }
+      }
     }
   }
 }

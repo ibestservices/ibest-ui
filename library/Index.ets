@@ -29,4 +29,4 @@ export { IBestEmpty } from './src/main/ets/components/empty/index'
 
 export { IBestDialog } from './src/main/ets/components/dialog/index'
 
-// export { IBestStepper } from './src/main/ets/components/stepper/index'
+export { IBestStepper } from './src/main/ets/components/stepper/index'
