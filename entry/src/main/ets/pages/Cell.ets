@@ -51,9 +51,14 @@ struct CellPage {
           ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL }) {
             IBestCellGroup() {
               // 不包个组件就报错 奇怪啊
-              Column(){
+              Column() {
                 IBestCell({ title: '标题', value: '内容' })
-                IBestCell({ title: '标题', value: '内容', label: '描述信息', hasBorder: false })
+                IBestCell({
+                  title: '标题',
+                  value: '内容',
+                  label: '描述信息',
+                  hasBorder: false
+                })
               }
             }
           }
@@ -63,9 +68,14 @@ struct CellPage {
           ComponentShowContainer({ title: '卡片风格', titlePaddingLeft: SPACE.SMALL }) {
             IBestCellGroup({ inset: true }) {
               // 不包个组件就报错 奇怪啊
-              Column(){
+              Column() {
                 IBestCell({ title: '标题', value: '内容' })
-                IBestCell({ title: '标题', value: '内容', label: '描述信息', hasBorder: false })
+                IBestCell({
+                  title: '标题',
+                  value: '内容',
+                  label: '描述信息',
+                  hasBorder: false
+                })
               }
 
             }
@@ -75,11 +85,21 @@ struct CellPage {
         ListItem() {
           ComponentShowContainer({ title: '分组标题', titlePaddingLeft: SPACE.SMALL }) {
             IBestCellGroup({ title: '分组1' }) {
-              IBestCell({ title: '标题', value: '内容', label: '描述信息', hasBorder: false })
+              IBestCell({
+                title: '标题',
+                value: '内容',
+                label: '描述信息',
+                hasBorder: false
+              })
             }
 
             IBestCellGroup({ title: '分组2' }) {
-              IBestCell({ title: '标题', value: '内容', label: '描述信息', hasBorder: false })
+              IBestCell({
+                title: '标题',
+                value: '内容',
+                label: '描述信息',
+                hasBorder: false
+              })
             }
           }
         }
@@ -100,15 +120,32 @@ struct CellPage {
 
         ListItem() {
           ComponentShowContainer({ title: '展示图标', titlePaddingLeft: SPACE.SMALL }) {
-            IBestCell({ title: '标题', value: '内容', iconBuilder: this.StarIcon(), hasBorder: false })
+            IBestCell({
+              title: '标题',
+              value: '内容',
+              iconBuilder: () => {
+                this.StarIcon()
+              },
+              hasBorder: false
+            })
           }
         }
 
         ListItem() {
           ComponentShowContainer({ title: '展示箭头', titlePaddingLeft: SPACE.SMALL }) {
             IBestCell({ title: '标题', value: '箭头朝右', isLink: true })
-            IBestCell({ title: '标题', value: '箭头朝下', isLink: true, arrowDirection: 'bottom' })
-            IBestCell({ title: '标题', value: '箭头朝左', isLink: true, arrowDirection: 'left' })
+            IBestCell({
+              title: '标题',
+              value: '箭头朝下',
+              isLink: true,
+              arrowDirection: 'bottom'
+            })
+            IBestCell({
+              title: '标题',
+              value: '箭头朝左',
+              isLink: true,
+              arrowDirection: 'left'
+            })
             IBestCell({
               title: '标题',
               value: '箭头朝上',
@@ -139,7 +176,7 @@ struct CellPage {
               label: '描述内容',
               value: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容',
               center: true,
-              iconBuilder: this.StarIcon('32lpx'),
+              iconBuilder: () => this.StarIcon('32lpx'),
               isLink: true
             })
             IBestCell({
@@ -147,7 +184,7 @@ struct CellPage {
               label: '描述内容',
               value: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容',
               hasBorder: false,
-              iconBuilder: this.StarIcon('32lpx'),
+              iconBuilder: () => this.StarIcon('32lpx'),
               isLink: true
             })
           }
@@ -158,14 +195,19 @@ struct CellPage {
             IBestCell({
               title: '标题',
               value: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容',
-              iconBuilder: this.StarIcon('32lpx'),
+              iconBuilder: () => this.StarIcon('32lpx'),
               rightIconBuilder: this.Arrow,
               clickable: true
             })
-            IBestCell({ titleBuilder: this.Title, value: '内容', rightIconBuilder: this.Arrow, clickable: true })
+            IBestCell({
+              titleBuilder: this.Title,
+              value: '内容',
+              rightIconBuilder: this.Arrow,
+              clickable: true
+            })
             IBestCell({
               title: '标题',
-              iconBuilder: this.StarIcon(),
+              iconBuilder: () => this.StarIcon(),
               hasBorder: false,
               rightIconBuilder: this.Arrow,
               clickable: true
