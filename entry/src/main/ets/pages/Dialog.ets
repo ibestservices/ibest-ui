@@ -75,10 +75,14 @@ struct DialogPage {
           this.basicDialogController = controller;
         },
         onConfirm: () => {
-          this.showDialogCancelBtn = false
+          setTimeout(()=>{
+            this.showDialogCancelBtn = false
+          }, 400)
         },
         onCancel: () => {
-          this.showDialogCancelBtn = false
+          setTimeout(()=>{
+            this.showDialogCancelBtn = false
+          }, 400)
         }
       })
 

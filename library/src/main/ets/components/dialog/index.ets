@@ -288,7 +288,6 @@ export struct IBestDialog {
     if (this.confirmButtonDisabled || this.confirmButtonLoading) {
       return
     }
-
     if (typeof this.beforeClose === 'function') {
       this.confirmButtonLoading = true
       const status = await this.handleBeforeClose('confirm');
@@ -299,14 +298,7 @@ export struct IBestDialog {
     }
     this.confirmButtonDisabled = true;
     if (typeof this.onConfirm === 'function') {
-      this.confirmButtonLoading = true;
-      try {
-        await this.onConfirm(event)
-      } catch (e) {
-        this.confirmButtonLoading = false;
-        this.confirmButtonDisabled = false;
-        return
-      }
+       this.onConfirm(event)
     }
     this.dialogController?.close()
     // 等待动画结束
