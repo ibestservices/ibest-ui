@@ -14,7 +14,6 @@ interface CountData {
 export struct WatermarkCanvas {
   private settings: RenderingContextSettings = new RenderingContextSettings(true)
   private context: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
-  canvasReadyCount: number = 0;
   /**
    * 图片水印的宽度
    */
@@ -175,12 +174,10 @@ export struct WatermarkCanvas {
    * 绘制水印
    */
   private drawWaterMark() {
-    if (this.canvasReadyCount >= 2) {
       this.context.textBaseline = 'top'
       this.clearCanvas();
       const rotateDeg = this.rotateDeg * Math.PI / 180;
       this.text?.length ? this.handleLayoutText(rotateDeg) : this.handleLayoutImg(rotateDeg);
-    }
   }
 
   build() {
@@ -189,8 +186,6 @@ export struct WatermarkCanvas {
       .height(this.waterMarkContainHeight)
       .backgroundColor('transparent')
       .onReady(() => {
-        // 日志中会ready两次 第二次ready的时候才算初始化完成 有点唐突这样处理 不然的话会因为watch重复初始化
-        this.canvasReadyCount++;
         this.drawWaterMark();
       })
       .enabled(false)
