@@ -208,7 +208,7 @@ export struct IBestDialog {
   /**
    * 自定义蒙层颜色。默认值: 0x33000000 API10以上支持
    */
-  @Prop private overlayColor: string = 'rgba(0, 0, 0, 0.7)'
+  @Prop private overlayColor: string = '0x33000000'
   /**
    * 关闭前的回调函数，返回 false 可阻止关闭，支持返回 Promise
    */
@@ -224,7 +224,7 @@ export struct IBestDialog {
   /**
    * 点击确认的的回调
    */
-  private onConfirm?: (event?: ClickEvent) => void | Promise<void>;
+  private onConfirm?: (event?: ClickEvent) => void;
 
   getAlignment(type: string) {
     switch (type) {
