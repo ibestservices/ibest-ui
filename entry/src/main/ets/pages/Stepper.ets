@@ -7,7 +7,7 @@ import { IBestStepper } from '@ibestservices/ibest-ui';
 
 @Entry
 @Component
-struct EmptyPage {
+struct StepperPage {
   @State title: string = (router.getParams() as ComponentRouterParams).title || ''
 
   build() {
