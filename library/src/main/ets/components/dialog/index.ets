@@ -1,44 +1,9 @@
 import { IBestDialogView } from './dialog'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-import { IbestUIBaseStyleObjType, IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { IbestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { sleep } from '../../assets/ets/utils';
 
-// const propKeys = [
-//   'dialogWidth',
-//   'dialogBorderRadius',
-//   'title',
-//   'titleColor',
-//   'titlePaddingTop',
-//   'titlePaddingX',
-//   'titleLineHeight',
-//   'titleFontSize',
-//   'titleTextAlign',
-//   'message',
-//   'messagePaddingX',
-//   'messagePaddingTop',
-//   'messagePaddingBottom',
-//   'messageFontColor',
-//   'messageFontSize',
-//   'messageLineHeight',
-//   'messageTextAlign',
-//   'messageMaxHeight',
-//   'showConfirmButton',
-//   'showCancelButton',
-//   'confirmButtonText',
-//   'cancelButtonText',
-//   'confirmButtonColor',
-//   'cancelButtonColor',
-//   'confirmButtonDisabled',
-//   'cancelButtonDisabled',
-//   'buttonFontSize',
-// ]
-
-// 这个坑爹的组件 prop在往这个组件 IBestDialogView 中传递的时候 不会触发组件的页面渲染
-// 直接往弹窗里传prop 弹窗的builder也不进行试图更新 坑爹
-// 试了直接更新IBestDialogView组件的prop 也不更新
-// 通过注入可以更新 遂 写这么麻烦
-// 基于自定义弹窗API封装 没有遮罩层的相关控制
 @CustomDialog
 export struct IBestDialog {
   /**
