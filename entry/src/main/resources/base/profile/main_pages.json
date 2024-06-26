@@ -11,6 +11,7 @@
     "pages/Radio",
     "pages/Empty",
     "pages/Dialog",
-    "pages/Stepper"
+    "pages/Stepper",
+    "pages/Loading"
   ]
 }

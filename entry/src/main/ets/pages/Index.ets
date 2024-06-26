@@ -54,6 +54,10 @@ struct Index {
       name: 'Stepper 步进器',
       path: 'pages/Stepper'
     },
+    {
+      name: 'Loading 加载',
+      path: 'pages/Loading'
+    },
   ]
 
   build() {
