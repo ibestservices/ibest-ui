@@ -54,6 +54,10 @@ struct Index {
       name: 'Stepper 步进器',
       path: 'pages/Stepper'
     },
+    {
+      name: 'Calendar 日历',
+      path: 'pages/Calendar'
+    },
   ]
 
   build() {

@@ -1,5 +1,5 @@
 import { borderRadiusData } from './border'
-import { colorData } from './color'
+import { colorData, colorOpacityData } from './color'
 import { fontSizeData } from './font'
 import { IbestUIBaseStyleType, IbestUIBaseStyleObjType } from './index.type'
 import { lineHeightData } from './line-height'
@@ -13,6 +13,10 @@ export function getDefaultBaseStyle(): IbestUIBaseStyleObjType {
     warning: colorData.warning,
     danger: colorData.danger,
     default: colorData.default,
+    primaryOpacity: colorOpacityData.primaryOpacity,
+    successOpacity: colorOpacityData.successOpacity,
+    warningOpacity: colorOpacityData.warningOpacity,
+    dangerOpacity: colorOpacityData.dangerOpacity,
     spaceMini: spaceData.spaceMini,
     spaceBase: spaceData.spaceBase,
     spaceXs: spaceData.spaceXs,

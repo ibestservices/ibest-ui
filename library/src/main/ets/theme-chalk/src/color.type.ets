@@ -61,6 +61,24 @@ export enum GRAY_COLOR{
   GRAY_8 =  '#323233',
 }
 
+export enum COLOR_OPACITY{
+  /**
+   * 主要的
+   */
+  PRIMARY = 'rgba(61, 138, 242, 0.1)',
+  /**
+   * 成功
+   */
+  SUCCESS = 'rgba(88, 219, 107, 0.1)',
+  /**
+   * 危险
+   */
+  DANGER = 'rgba(219, 49, 49, 0.1)',
+  /**
+   * 警告
+   */
+  WARNING = 'rgba(242, 156, 115, 0.1)'
+}
 
 /**
  * 颜色的类型
@@ -74,4 +92,10 @@ export interface ColorData {
   warning: string;
   danger: string;
   default: string;
+}
+export interface ColorOpacityData {
+  primaryOpacity: string;
+  successOpacity: string;
+  warningOpacity: string;
+  dangerOpacity: string;
 }

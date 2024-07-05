@@ -7,9 +7,12 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "@ibestservices/ibest-ui": "file:library"
+    "@ibestservices/ibest-ui": "file:library",
+    "@hview/dayjs": "^1.11.11",
+    "lunar": "^1.0.0"
   },
   "devDependencies": {
     "@ohos/hypium": "1.0.11"
-  }
+  },
+  "dynamicDependencies": {}
 }
