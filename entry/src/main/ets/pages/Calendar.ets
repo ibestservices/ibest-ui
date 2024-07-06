@@ -1,6 +1,6 @@
-import {IBestCalendar, IBestCalendarDialog, IBestCell, IBestCellGroup} from "@ibestservices/ibest-ui"
-import { ConfirmResultType } from '@ibestservices/ibest-ui/src/main/ets/components/calendar/index.type'
+import { CalendarConfirmResultType, IBestCalendar, IBestCalendarDialog, IBestCell, IBestCellGroup} from "@ibestservices/ibest-ui"
 import { router } from '@kit.ArkUI'
+import promptAction from '@ohos.promptAction'
 import { ComponentRouterParams } from '../assets/global.type'
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
@@ -10,21 +10,55 @@ import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseSt
 struct CalendarPage {
     @State title: string = (router.getParams() as ComponentRouterParams).title || ''
     @State singleVisible: boolean = false
-    @State selectDate: string = ""
+    @State selectDate: string = "请选择日期"
     @State multipleVisible: boolean = false
-    @State multipleDateRange: string = ""
+    @State multipleDateRange: string = "请选择日期"
     @State rangeVisible: boolean = false
-    @State rangeDateRange: string = ''
-    onSingleConfirm(value: ConfirmResultType | ConfirmResultType[]): void {
-        console.log("onConfirm", value)
-        this.selectDate = (value as ConfirmResultType).dateStr
-    }
-    onMultipleConfirm(value: ConfirmResultType | ConfirmResultType[]): void {
-        this.multipleDateRange = (value as  ConfirmResultType[]).map(item => item.dateStr).join(",")
-    }
-    onRangeConfirm(value: ConfirmResultType | ConfirmResultType[]): void {
-        this.rangeDateRange = (value as  ConfirmResultType[])[0].dateStr + " - " + (value as  ConfirmResultType[])[1]
-            .dateStr
+    @State rangeDateRange: string = "请选择日期"
+    @State customColorVisible: boolean = false
+    @State customColorDate: string = "请选择日期"
+    @State customRangeVisible: boolean = false
+    @State customRangeDate: string = "请选择日期"
+    @State lunarVisible: boolean = false
+    @State lunarDate: string = "请选择日期"
+    @State customWeekVisible: boolean = false
+    @State customWeekDate: string = "请选择日期"
+    @State rangeNumVisible: boolean = false
+    @State rangeNumDate: string = "请选择日期"
+    @State waterBgVisible: boolean = false
+    @State waterBgDate: string = "请选择日期"
+
+    onDialogConfirm(type: string, value: Array<CalendarConfirmResultType>): void {
+        console.log("onConfirm", type, JSON.stringify(value))
+        switch (type){
+            case "selectDate":
+                this.selectDate = value[0].dateStr
+                break
+            case "multipleDateRange":
+                this.multipleDateRange = value.map(item => item.dateStr).join(",")
+                break
+            case "rangeDateRange":
+                this.rangeDateRange = value[0].dateStr + " - " + value[value.length-1].dateStr
+                break
+            case "customColorDate":
+                this.customColorDate = value.map(item => item.dateStr).join(",")
+                break
+            case "lunarDate":
+                this.lunarDate = value[0].dateStr
+                break
+            case "customRangeDate":
+                this.customRangeDate = value.map(item => item.dateStr).join(",")
+                break
+            case "rangeNumDate":
+                this.rangeNumDate = value[0].dateStr + " - " + value[value.length-1].dateStr
+                break
+            case "customWeekDate":
+                this.customWeekDate = value[0].dateStr
+                break
+            case "waterBgDate":
+                this.waterBgDate = value[0].dateStr
+                break
+        }
     }
     build() {
         Column(){
@@ -38,14 +72,14 @@ struct CalendarPage {
                             Column() {
                                 IBestCell({
                                     title: '选择单个日期',
-                                    value: this.selectDate || "请选择日期",
+                                    value: this.selectDate,
                                     onClickCell: () => {
                                         this.singleVisible = true
                                     }
                                 })
                                 IBestCell({
                                     title: '选择多个日期',
-                                    value: this.multipleDateRange || "请选择日期",
+                                    value: this.multipleDateRange,
                                     onClickCell: () => {
                                         this.multipleVisible = true
                                     }
@@ -53,7 +87,7 @@ struct CalendarPage {
                                 IBestCell({
                                     title: '选择日期区间',
                                     hasBorder: false,
-                                    value: this.rangeDateRange || "请选择日期",
+                                    value: this.rangeDateRange,
                                     onClickCell: () => {
                                         this.rangeVisible = true
                                     }
@@ -62,36 +96,142 @@ struct CalendarPage {
                         }
                     }
                 }
+                ListItem() {
+                    ComponentShowContainer({ title: '自定义日历', titlePaddingLeft: SPACE.SMALL }) {
+                        IBestCellGroup() {
+                            Column() {
+                                IBestCell({
+                                    title: '自定义颜色',
+                                    value: this.customColorDate,
+                                    onClickCell: () => {
+                                        this.customColorVisible = true
+                                    }
+                                })
+                                IBestCell({
+                                    title: '显示农历',
+                                    value: this.lunarDate,
+                                    onClickCell: () => {
+                                        this.lunarVisible = true
+                                    }
+                                })
+                                IBestCell({
+                                    title: '自定义日期范围',
+                                    value: this.customRangeDate,
+                                    onClickCell: () => {
+                                        this.customRangeVisible = true
+                                    }
+                                })
+                                IBestCell({
+                                    title: '日期区间最大范围',
+                                    value: this.rangeNumDate,
+                                    onClickCell: () => {
+                                        this.rangeNumVisible = true
+                                    }
+                                })
+                                IBestCell({
+                                    title: '自定义周起始日期',
+                                    value: this.customWeekDate,
+                                    onClickCell: () => {
+                                        this.customWeekVisible = true
+                                    }
+                                })
+                                IBestCell({
+                                    title: '显示月份背景水印',
+                                    value: this.waterBgDate,
+                                    hasBorder: false,
+                                    onClickCell: () => {
+                                        this.waterBgVisible = true
+                                    }
+                                })
+                            }
+                        }
+                    }
+                }
+                ListItem(){
+                    ComponentShowContainer({ title: '平铺展示', titlePaddingLeft: SPACE.SMALL }) {
+                        IBestCalendar({
+                            isShowLunar: true,
+                            weekFirstDay: "日",
+                            selectedStyleType: "normal",
+                            selectType: "range",
+                            selectedColor: "#ed4040",
+                            maxRange: 5,
+                            isShowMark: true,
+                            onConfirm: (value: Array<CalendarConfirmResultType>) => {
+                                promptAction.showDialog({
+                                    message: `当前日期区间为：${value[0].dateStr} ~ ${value[value.length-1].dateStr}`,
+                                    alignment: DialogAlignment.Center
+                                })
+                            }
+                        })
+                    }
+                }
             }
             .layoutWeight(1)
-            // IBestCalendar({
-            //     isShowLunar: true,
-            //     weekFirstDay: "日",
-            //     selectedStyleType: "normal",
-            //     selectType: "range",
-            //     selectedColor: "#ed4040",
-            //     onConfirm: (value: ConfirmResultType | ConfirmResultType[]): void => this.onConfirm(value)
-            // })
             // 弹框展示
+            // 单选
             IBestCalendarDialog({
                 visible: $singleVisible,
-                onConfirm: (value): void => this.onSingleConfirm(value)
+                type: "danger",
+                onConfirm: (value: Array<CalendarConfirmResultType>): void => this.onDialogConfirm("selectDate", value)
             })
+            // 多选
             IBestCalendarDialog({
                 visible: $multipleVisible,
                 selectType: "multiple",
-                type: "danger",
-                selectedStyleType: "circle",
-                onConfirm: (value): void => this.onMultipleConfirm(value)
+                onConfirm: (value: Array<CalendarConfirmResultType>): void => this.onDialogConfirm("multipleDateRange", value)
             })
+            // 区间选
             IBestCalendarDialog({
                 visible: $rangeVisible,
                 selectType: "range",
+                onConfirm: (value: Array<CalendarConfirmResultType>): void => this.onDialogConfirm("rangeDateRange", value)
+            })
+            // 自定义颜色
+            IBestCalendarDialog({
+                visible: $customColorVisible,
+                selectType: "multiple",
                 selectedColor: "#58DB6B",
-                onConfirm: (value): void => this.onRangeConfirm(value)
+                onConfirm: (value: Array<CalendarConfirmResultType>): void => this.onDialogConfirm("customColorDate", value)
+            })
+            // 显示农历
+            IBestCalendarDialog({
+                visible: $lunarVisible,
+                isShowLunar: true,
+                cornerRadius: 20,
+                onConfirm: (value: Array<CalendarConfirmResultType>): void => this.onDialogConfirm("lunarDate", value)
+            })
+            // 自定义日期范围
+            IBestCalendarDialog({
+                visible: $customRangeVisible,
+                selectType: "multiple",
+                selectedStyleType: "circle",
+                minDate: new Date("2024-07-09"),
+                maxDate: new Date("2024-07-31"),
+                onConfirm: (value: Array<CalendarConfirmResultType>): void => this.onDialogConfirm("customRangeDate", value)
+            })
+            // 日期区间最大范围
+            IBestCalendarDialog({
+                visible: $rangeNumVisible,
+                type: "danger",
+                selectType: "range",
+                maxRange: 7,
+                onConfirm: (value: Array<CalendarConfirmResultType>): void => this.onDialogConfirm("rangeNumDate", value)
+            })
+            // 自定义周起始日期
+            IBestCalendarDialog({
+                visible: $customWeekVisible,
+                weekFirstDay: "日",
+                onConfirm: (value: Array<CalendarConfirmResultType>): void => this.onDialogConfirm("customWeekDate", value)
+            })
+            // 显示月份背景水印
+            IBestCalendarDialog({
+                visible: $waterBgVisible,
+                isShowMark: true,
+                onConfirm: (value: Array<CalendarConfirmResultType>): void => this.onDialogConfirm("waterBgDate", value)
             })
         }
-       . width(CONTAINER_SIZE.FULL)
+        .width(CONTAINER_SIZE.FULL)
         .height(CONTAINER_SIZE.FULL)
         .backgroundColor(BACKGROUND_COLOR.BASE)
     }

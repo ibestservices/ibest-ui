@@ -1,16 +1,13 @@
 import { ColorType, COLOR_TYPE } from '../../theme-chalk/src/color.type'
-import { IBestButton } from '../button'
 import {IBestCalendar} from "./index"
-import { ConfirmResultType, SelectedStyleType, SelectType } from './index.type'
-
-
+import { CalendarConfirmResultType, SelectedStyleType, SelectType, WeekDayType } from './index.type'
 
 @Component
 export struct IBestCalendarDialog {
     /*
      * 已选日期
      */
-    @State selectedDate: ConfirmResultType | Array<ConfirmResultType> = []
+    @State selectedDate: Array<CalendarConfirmResultType> = []
     /*
      * 底部偏移
      */
@@ -28,13 +25,17 @@ export struct IBestCalendarDialog {
      */
     @Link @Watch("visibleChange") visible: boolean
     /*
-		 * 默认选中日期
-		 */
+     * 默认选中日期
+     */
     @Prop defaultSelectedDate: Array<string> = []
+    /*
+     * 每周第一天是周几
+     */
+    @Prop weekFirstDay: WeekDayType = "一"
     /*
      * 是否显示农历
      */
-    @Prop isShowLunar: boolean = true
+    @Prop isShowLunar: boolean = false
     /*
      * 选择类型
      */
@@ -52,28 +53,44 @@ export struct IBestCalendarDialog {
      */
     @Prop selectedColor: string = ""
     /*
+     * 日期区间最多可选天数 默认无限制
+     */
+    @Prop maxRange: number = -1
+    /*
+     * 最小日期
+     */
+    @Prop minDate: Date
+    /*
+     * 最大日期
+     */
+    @Prop maxDate: Date
+    /*
+     * 是否显示月份背景水印
+     */
+    @Prop isShowMark: boolean = false
+    /*
+     * 是否显示头部
+     */
+    @Prop isShowHeader: boolean = true
+    /*
      * 选择回调
      */
-    onConfirm: (value: ConfirmResultType | Array<ConfirmResultType>) => void = () => {}
-
-    @Builder ConfirmBtnBuilder() {
-        IBestButton({
-            text: "确定",
-            onClickBtn: () => {
-                this.confirm()
-            }
-        })
-    }
+    onConfirm: (value: Array<CalendarConfirmResultType>) => void = () => {}
 
     dialogController: CustomDialogController | null = new CustomDialogController({
         builder: IBestCalendar({
-            defaultSelectedDate: this.defaultSelectedDate,
+            defaultSelectedDate: this.selectedDate.length ? this.selectedDate.map(item => item.dateStr) : this.defaultSelectedDate,
             isShowLunar: this.isShowLunar,
             selectType: this.selectType,
             selectedStyleType: this.selectedStyleType,
             type: this.type,
+            weekFirstDay: this.weekFirstDay,
+            minDate: this.minDate,
+            maxDate: this.maxDate,
+            maxRange: this.maxRange,
             selectedColor: this.selectedColor,
-            confirmBtnBuilder: this.ConfirmBtnBuilder,
+            isShowMark: this.isShowMark,
+            isShowConfirmBtn: this.selectType != "single",
             onConfirm: (value): void => this.onGetCalendarResult(value)
         }),
         alignment: DialogAlignment.Bottom,
@@ -92,19 +109,10 @@ export struct IBestCalendarDialog {
         }
     }
     /*
-     * 获取日历选择结果
+     * 获取日历选择结果 触发onConfirm回调函数 并关闭弹框
      */
-    onGetCalendarResult(value: ConfirmResultType | Array<ConfirmResultType>) {
+    onGetCalendarResult(value: Array<CalendarConfirmResultType>) {
         this.selectedDate = value
-        if(this.selectType === "single"){
-            this.confirm()
-        }
-    }
-    /*
-     * 触发onConfirm回调函数 并关闭弹框
-     */
-    confirm(): void {
-        // console.log("confirm")
         typeof this.onConfirm === "function" && this.onConfirm(this.selectedDate)
         this.visible = false
     }
