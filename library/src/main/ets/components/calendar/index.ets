@@ -3,12 +3,12 @@ import {Lunar} from 'lunar'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IbestUIBaseStyleObjType, IbestUIBaseStyleValue } from '../../theme-chalk/src/index.type'
 import { ColorType, COLOR_TYPE } from '../../theme-chalk/src/color.type'
-import { ConfirmResultType } from './index.type'
+import { ConfirmResultType, SelectedStyleType, SelectType } from './index.type'
 import { FONT_SIZE } from '../../theme-chalk/src/font.type'
 import { spaceData } from '../../theme-chalk/src/space'
 import { borderRadiusData } from '../../theme-chalk/src/border'
 import { fontSizeData } from '../../theme-chalk/src/font'
-
+import { IBestButton } from '../button'
 class DayItemObj{
     date: Dayjs = dayjs()
     dateStr: string = ""
@@ -43,8 +43,7 @@ interface HeaderItemType{
     text: string
     key: number
 }
-type SelectType = "single" | "multiple" | "range"
-type SelectedStyleType = "normal" | "circle"
+
 type WeekDayType = "一" | "二" | "三" | "四" | "五" | "六" | "日"
 
 @Extend(Text) function headerStyle(){
@@ -78,7 +77,6 @@ struct CalendarItem {
         if(this.selectType == "range"){ // 范围选择
             let first = this.selectedList[0]
             let last = this.selectedList[this.selectedList.length - 1]
-            // console.log("第一个", first.dateStr, "最后一个", last.dateStr, item.isSelected)
             this.fontColor = item.isSelected ? dateStr == first.dateStr || dateStr == last.dateStr ? "#fff" : this
                 .selectedColor || this.baseStyle[this.type] : item.isCurMonthDay ? "#333" : "#999"
             this.bgColor = item.isSelected ? dateStr == first.dateStr || dateStr == last.dateStr ? this.selectedColor || this.baseStyle[this.type]
@@ -130,6 +128,7 @@ struct CalendarItem {
     }
 }
 
+@CustomDialog
 @Component
 export struct IBestCalendar{
     /*
@@ -218,9 +217,14 @@ export struct IBestCalendar{
      */
     @Provide selectedColor: string = ""
     /*
+     * 底部按钮
+     */
+    @BuilderParam confirmBtnBuilder: () => void
+    /*
      * 选择回调
      */
     onConfirm: (value: ConfirmResultType | Array<ConfirmResultType>) => void = () => {}
+    controller?: CustomDialogController
 
     selectDateChange(){
         this.curYearMonth = dayjs(this.curSelectedDate).format('YYYY-MM')
@@ -230,6 +234,9 @@ export struct IBestCalendar{
         this.init()
         this.initDaysList()
     }
+    /*
+     * 初始化本地数据
+     */
     init(){
         let list: Array<DayItemType> = []
         let index = this.headerList.findIndex(e => e.text == this.weekFirstDay)
@@ -294,6 +301,9 @@ export struct IBestCalendar{
         }
         this.selectedList = list
     }
+    /*
+     * 初始化日历列表
+     */
     initDaysList(){
         this.daysList = []
         let list: Array<DayItemType> = []
@@ -387,24 +397,22 @@ export struct IBestCalendar{
         return dayjs(date).day()
     }
     /*
-     * 切换年份
+     * 切换年、月份
      */
-    changeYear(type: string){
-        if(type == "pre"){
-            this.curYearMonth = dayjs(this.curYearMonth).subtract(1, 'year').format('YYYY-MM')
-        }else{
-            this.curYearMonth = dayjs(this.curYearMonth).add(1, 'year').format('YYYY-MM')
-        }
-        this.initDaysList()
-    }
-    /*
-     * 切换月份
-     */
-    changeMonth(type: string){
-        if(type == "pre"){
-            this.curYearMonth = dayjs(this.curYearMonth).subtract(1, 'month').format('YYYY-MM')
-        }else{
-            this.curYearMonth = dayjs(this.curYearMonth).add(1, 'month').format('YYYY-MM')
+    changeYearMonth(type: string){
+        switch (type){
+            case "preYear":
+                this.curYearMonth = dayjs(this.curYearMonth).subtract(1, 'year').format('YYYY-MM')
+                break
+            case "preMonth":
+                this.curYearMonth = dayjs(this.curYearMonth).subtract(1, 'month').format('YYYY-MM')
+                break
+            case "nextYear":
+                this.curYearMonth = dayjs(this.curYearMonth).add(1, 'year').format('YYYY-MM')
+                break
+            case "nextMonth":
+                this.curYearMonth = dayjs(this.curYearMonth).add(1, 'month').format('YYYY-MM')
+                break
         }
         this.initDaysList()
     }
@@ -425,15 +433,8 @@ export struct IBestCalendar{
                     this.curSelectedDate = item.dateStr
                     this.initDaysList()
                 }
-                let obj: ConfirmResultType = {
-                    date: item.date.toDate(),
-                    dateStr: item.dateStr
-                }
-                if(this.isShowLunar){
-                    obj.lunarMonth = item.lunarMonth
-                    obj.lunarDay = item.lunarDay
-                }
-                this.confirm(obj)
+                this.selectedList = [item]
+                this.confirm()
                 break
             case "multiple":
                 if(item.isCurMonthDay){
@@ -457,17 +458,7 @@ export struct IBestCalendar{
                     }
                     this.initDaysList()
                 }
-                this.confirm(this.selectedList.map(e => {
-                    let obj: ConfirmResultType = {
-                        date: e.date.toDate(),
-                        dateStr: e.dateStr
-                    }
-                    if(this.isShowLunar){
-                        obj.lunarMonth = e.lunarMonth
-                        obj.lunarDay = e.lunarDay
-                    }
-                    return obj
-                }))
+                this.confirm()
                 break
             case "range":
                 this.curSelectedDate = item.dateStr
@@ -477,17 +468,7 @@ export struct IBestCalendar{
                     }else if(item.date.isAfter(this.selectedList[0].date)){
                         this.selectedList = this.getDateListBetween(this.selectedList[0].date, item.date)
                     }
-                    this.confirm(this.selectedList.map(e => {
-                        let obj: ConfirmResultType = {
-                            date: e.date.toDate(),
-                            dateStr: e.dateStr
-                        }
-                        if(this.isShowLunar){
-                            obj.lunarMonth = e.lunarMonth
-                            obj.lunarDay = e.lunarDay
-                        }
-                        return obj
-                    }))
+                    this.confirm()
                 }else{  // 已选结束日期  重选
                     item.isSelected = true
                     this.selectedList = [item]
@@ -528,23 +509,47 @@ export struct IBestCalendar{
     /*
      * 提交
      */
-    confirm(value: ConfirmResultType | Array<ConfirmResultType>){
-        typeof this.onConfirm == 'function' && this.onConfirm(value)
+    confirm(){
+        typeof this.onConfirm == 'function' && this.onConfirm(this.selectedList.map(e => {
+            let obj: ConfirmResultType = {
+                date: e.date.toDate(),
+                dateStr: e.dateStr
+            }
+            if(this.isShowLunar){
+                obj.lunarMonth = e.lunarMonth
+                obj.lunarDay = e.lunarDay
+            }
+            return obj
+        }))
     }
     build() {
         Column(){
             Row(){
-                Image($r("app.media.title_back"))
-                    .width(14)
-                    .onClick(() => {
-                        this.changeMonth("pre")
-                    })
+                Row(){
+                    Image($r("app.media.arrow_left_double"))
+                        .width(14)
+                        .onClick(() => {
+                            this.changeYearMonth("preYear")
+                        })
+                    Image($r("app.media.arrow_left"))
+                        .width(14)
+                        .onClick(() => {
+                            this.changeYearMonth("preMonth")
+                        })
+                }
                 Text(this.curYearMonth)
-                Image($r("app.media.arrow_right"))
-                    .width(14)
-                    .onClick(() => {
-                        this.changeMonth("next")
-                    })
+                Row(){
+                    Image($r("app.media.arrow_right"))
+                        .width(14)
+                        .onClick(() => {
+                            this.changeYearMonth("nextMonth")
+                        })
+                    Image($r("app.media.arrow_right_double"))
+                        .width(14)
+                        .onClick(() => {
+                            this.changeYearMonth("nextYear")
+                        })
+                }
             }
             .width('100%')
             .height(40)
@@ -567,6 +572,7 @@ export struct IBestCalendar{
                             })
                     })  // 这里写 (item: DayItemType) => item.dateStr 渲染会有问题  不知为啥！！！！！
                 }
+                this.confirmBtnBuilder()
             }
             .width('100%')
             .padding({left: 10, right: 10})

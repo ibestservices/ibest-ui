@@ -9,7 +9,10 @@
     "HarmonyUI"
   ],
   "license": "Apache-2.0",
-  "dependencies": {},
+  "dependencies": {
+    "@hview/dayjs": "^1.11.11",
+    "lunar": "^1.0.0"
+  },
   "author": "ibestservices",
   "ibestservices": {
     "org": "opensource"
