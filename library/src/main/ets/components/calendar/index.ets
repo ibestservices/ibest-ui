@@ -485,6 +485,10 @@ export struct IBestCalendar{
                         }
                         this.initDaysList()
                     }
+                    // 排序
+                    this.selectedList.sort((a, b) => {
+                        return dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1
+                    })
                     !this.isShowConfirmBtn && this.confirm()
                     break
                 case "range":

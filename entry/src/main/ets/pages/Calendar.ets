@@ -1,4 +1,5 @@
-import { CalendarConfirmResultType, IBestCalendar, IBestCalendarDialog, IBestCell, IBestCellGroup} from "@ibestservices/ibest-ui"
+import { CalendarConfirmResultType, IBestCalendar, IBestCalendarDialog, IBestCell, IBestCellGroup, SelectType} from
+    "@ibestservices/ibest-ui"
 import { router } from '@kit.ArkUI'
 import promptAction from '@ohos.promptAction'
 import { ComponentRouterParams } from '../assets/global.type'
@@ -27,6 +28,7 @@ struct CalendarPage {
     @State rangeNumDate: string = "请选择日期"
     @State waterBgVisible: boolean = false
     @State waterBgDate: string = "请选择日期"
+    @State tileSelectType: SelectType = "multiple"
 
     onDialogConfirm(type: string, value: Array<CalendarConfirmResultType>): void {
         console.log("onConfirm", type, JSON.stringify(value))
@@ -153,13 +155,15 @@ struct CalendarPage {
                             isShowLunar: true,
                             weekFirstDay: "日",
                             selectedStyleType: "normal",
-                            selectType: "range",
+                            selectType: this.tileSelectType,
                             selectedColor: "#ed4040",
                             maxRange: 5,
                             isShowMark: true,
                             onConfirm: (value: Array<CalendarConfirmResultType>) => {
+                                let text = value.length > 1 && this.tileSelectType === "range" ? `${value[0].dateStr}
+                                ~ ${value[value.length-1].dateStr}` : value.map(item => item.dateStr).join(",")
                                 promptAction.showDialog({
-                                    message: `当前日期区间为：${value[0].dateStr} ~ ${value[value.length-1].dateStr}`,
+                                    message: `当前日期${value.length > 1 && this.tileSelectType === "range" ? '区间' : ''}为：${text}`,
                                     alignment: DialogAlignment.Center
                                 })
                             }
