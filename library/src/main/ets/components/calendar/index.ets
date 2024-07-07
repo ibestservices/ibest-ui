@@ -135,7 +135,7 @@ struct CalendarItem {
         }
         .width(this.itemWidth)
         .aspectRatio(1)
-        .borderRadius(this.selectedStyleType == "circle" ? 100 : borderRadiusData.borderRadiusSm)
+        .borderRadius(this.selectedStyleType == "circle" ? 8888 : borderRadiusData.borderRadiusSm)
         .backgroundColor(this.bgColor)
         .justifyContent(FlexAlign.Center)
         .margin({bottom: 4})
