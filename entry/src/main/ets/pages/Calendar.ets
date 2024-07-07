@@ -208,6 +208,8 @@ struct CalendarPage {
                 selectedStyleType: "circle",
                 minDate: new Date("2024-07-09"),
                 maxDate: new Date("2024-07-31"),
+                confirmBtnColor: "#ed4040",
+                confirmBtnText: "完成",
                 onConfirm: (value: Array<CalendarConfirmResultType>): void => this.onDialogConfirm("customRangeDate", value)
             })
             // 日期区间最大范围

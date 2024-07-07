@@ -259,6 +259,14 @@ export struct IBestCalendar{
      */
     @Prop isShowConfirmBtn: boolean = false
     /*
+     * 确认按钮颜色
+     */
+    @Prop confirmBtnColor: string | IbestUIBaseStyleValue = this.baseStyle[this.type]
+    /*
+     * 确认按钮文案
+     */
+    @Prop confirmBtnText: string = "确认"
+    /*
      * 选择回调
      */
     onConfirm: (value: Array<CalendarConfirmResultType>) => void = () => {}
@@ -559,8 +567,13 @@ export struct IBestCalendar{
             return obj
         }))
     }
-    private getBackgroundColor(type = this.type) {
-        return this.selectedColor ? this.selectedColor : this.baseStyle[type]
+    /*
+     * 获取按钮背景颜色
+     */
+    private getBtnBgColor() {
+        let reg = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/
+        return this.confirmBtnColor && reg.test(this.confirmBtnColor as string) ? this.confirmBtnColor : this
+            .baseStyle[this.type]
     }
     build() {
         Column(){
@@ -604,6 +617,7 @@ export struct IBestCalendar{
                 .width('100%')
                 .height(40)
                 .justifyContent(FlexAlign.SpaceBetween)
+                .visibility(this.isShowHeader ? Visibility.Visible : Visibility.None)
                 Stack(){
                     if(this.daysList.length){
                         Flex({wrap: FlexWrap.Wrap, justifyContent: FlexAlign.SpaceBetween}){
@@ -621,13 +635,13 @@ export struct IBestCalendar{
                         .zIndex(-1)
                         .visibility(this.isShowMark ? Visibility.Visible : Visibility.Hidden)
                 }
-                Button("确定")
+                Button(this.confirmBtnText)
                     .type(ButtonType.Capsule)
                     .width('96%')
                     .height(30)
                     .fontSize(FONT_SIZE.SM)
                     .margin({top: 10})
-                    .backgroundColor(this.getBackgroundColor())
+                    .backgroundColor(this.getBtnBgColor())
                     .visibility(this.isShowConfirmBtn ? Visibility.Visible : Visibility.None)
                     .onClick(() => {
                         this.confirm()

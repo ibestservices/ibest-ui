@@ -1,4 +1,5 @@
 import { ColorType, COLOR_TYPE } from '../../theme-chalk/src/color.type'
+import { IbestUIBaseStyleValue } from '../../theme-chalk/src/index.type'
 import {IBestCalendar} from "./index"
 import { CalendarConfirmResultType, SelectedStyleType, SelectType, WeekDayType } from './index.type'
 
@@ -73,6 +74,14 @@ export struct IBestCalendarDialog {
      */
     @Prop isShowHeader: boolean = true
     /*
+     * 确认按钮颜色，默认type主题色
+     */
+    @Prop confirmBtnColor: string = ""
+    /*
+     * 确认按钮文案
+     */
+    @Prop confirmBtnText: string = "确认"
+    /*
      * 选择回调
      */
     onConfirm: (value: Array<CalendarConfirmResultType>) => void = () => {}
@@ -91,6 +100,9 @@ export struct IBestCalendarDialog {
             selectedColor: this.selectedColor,
             isShowMark: this.isShowMark,
             isShowConfirmBtn: this.selectType != "single",
+            isShowHeader: this.isShowHeader,
+            confirmBtnColor: this.confirmBtnColor,
+            confirmBtnText: this.confirmBtnText,
             onConfirm: (value): void => this.onGetCalendarResult(value)
         }),
         alignment: DialogAlignment.Bottom,
