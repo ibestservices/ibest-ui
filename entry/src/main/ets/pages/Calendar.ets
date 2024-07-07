@@ -157,7 +157,6 @@ struct CalendarPage {
                             selectedStyleType: "normal",
                             selectType: this.tileSelectType,
                             selectedColor: "#ed4040",
-                            maxRange: 5,
                             isShowMark: true,
                             onConfirm: (value: Array<CalendarConfirmResultType>) => {
                                 let text = value.length > 1 && this.tileSelectType === "range" ? `${value[0].dateStr}
