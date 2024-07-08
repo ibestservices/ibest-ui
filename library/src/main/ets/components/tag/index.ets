@@ -1,7 +1,7 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { ColorType, COLOR_TYPE, GRAY_COLOR } from '../../theme-chalk/src/color.type';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
-import { IbestUIBaseStyleObjType, IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { IBestUIBaseStyleObjType, IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
 import { SIZE } from '../../theme-chalk/src/size.type';
 import { TagSizeData } from './index.type';
 
@@ -17,7 +17,7 @@ export struct IBestTag {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle();
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
   /**
    * 类型，可选值为 primary success warning danger 默认值为default
    */

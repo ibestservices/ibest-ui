@@ -1,7 +1,7 @@
 import dayjs, { Dayjs } from "@hview/dayjs"
 import {Lunar} from 'lunar'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { IbestUIBaseStyleObjType, IbestUIBaseStyleValue } from '../../theme-chalk/src/index.type'
+import { IBestUIBaseStyleObjType, IbestUIBaseStyleValue } from '../../theme-chalk/src/index.type'
 import { ColorType, COLOR_TYPE } from '../../theme-chalk/src/color.type'
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type'
 import { CalendarConfirmResultType, SelectedStyleType, SelectType, WeekDayType } from './index.type'
@@ -62,7 +62,7 @@ struct CalendarItem {
     /**
      * 全局公共样式
      */
-    @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle();
+    @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
     @State fontColor: string | IbestUIBaseStyleValue = "#333"
     @State bgColor: string | IbestUIBaseStyleValue = "transparent"
     @ObjectLink @Watch("itemChange") dayItem: DayItemType
@@ -148,7 +148,7 @@ export struct IBestCalendar{
     /**
      * 全局公共样式
      */
-    @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle()
+    @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     /*
      * 默认选中日期
      */

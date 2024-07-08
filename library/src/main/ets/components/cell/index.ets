@@ -1,7 +1,7 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
-import { IbestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE } from '../../theme-chalk/src/size.type';
 import { ARROW_DIRECTION, CellSizeData } from './index.type';
 
@@ -10,7 +10,7 @@ export struct IBestCell {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle();
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
   /**
    * title的插槽 优先级大于 title
    */

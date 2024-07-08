@@ -1,12 +1,12 @@
 import { borderRadiusData } from './border'
 import { colorData, colorOpacityData } from './color'
 import { fontSizeData } from './font'
-import { IbestUIBaseStyleType, IbestUIBaseStyleObjType } from './index.type'
+import { IbestUIBaseStyleType, IBestUIBaseStyleObjType } from './index.type'
 import { lineHeightData } from './line-height'
 import { spaceData } from './space'
 
 
-export function getDefaultBaseStyle(): IbestUIBaseStyleObjType {
+export function getDefaultBaseStyle(): IBestUIBaseStyleObjType {
   const data: IbestUIBaseStyleType = {
     primary: colorData.primary,
     success: colorData.success,
@@ -49,7 +49,7 @@ export function getDefaultBaseStyle(): IbestUIBaseStyleObjType {
 /**
  * 默认的兜底style
  */
-export const defaultBaseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle()
+export const defaultBaseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 
 /**
  * AppStorage命名空间
@@ -66,7 +66,7 @@ export function setIBestUIBaseStyle(styleData?: Partial<IbestUIBaseStyleType>) {
   if (typeof styleData === 'object' && styleData !== null) {
     Object.keys(styleData).forEach(item => {
       if (newStyleData[item]) {
-        newStyleData[item] = (styleData as IbestUIBaseStyleObjType )[item] ?? newStyleData[item]
+        newStyleData[item] = (styleData as IBestUIBaseStyleObjType )[item] ?? newStyleData[item]
       }
     })
   }

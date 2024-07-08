@@ -1,14 +1,14 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
-import { IbestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 
 @Component
 export struct IBestCellGroup {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle();
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
   /**
    * 默认插槽
    */

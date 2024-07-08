@@ -1,7 +1,7 @@
 import { IBestDialogView } from './dialog'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-import { IbestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { sleep } from '../../assets/ets/utils';
 
 @CustomDialog
@@ -21,7 +21,7 @@ export struct IBestDialog {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle()
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
   /**
    * 弹窗宽度
    */

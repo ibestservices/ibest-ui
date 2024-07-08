@@ -18,4 +18,4 @@ LineHeightData {
 
 export type IbestUIBaseStyleValue = string | number | EdgeEffect;
 
-export type IbestUIBaseStyleObjType = Record<keyof IbestUIBaseStyleType, IbestUIBaseStyleValue>
+export type IBestUIBaseStyleObjType = Record<keyof IbestUIBaseStyleType, IbestUIBaseStyleValue>
