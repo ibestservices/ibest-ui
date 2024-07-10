@@ -1,6 +1,6 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-import { IbestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import {IBestLoadingCircular} from './circular'
 import {IBestLoadingSpinner} from './spinner'
 
@@ -9,7 +9,7 @@ export struct IBestLoading {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IbestUIBaseStyleObjType = getDefaultBaseStyle();
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
   /**
    * 默认插槽 loading覆盖的插槽
    */
