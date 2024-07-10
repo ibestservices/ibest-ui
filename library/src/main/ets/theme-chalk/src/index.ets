@@ -1,13 +1,13 @@
 import { borderRadiusData } from './border'
 import { colorData, colorOpacityData } from './color'
 import { fontSizeData } from './font'
-import { IbestUIBaseStyleType, IBestUIBaseStyleObjType } from './index.type'
+import { IBestUIBaseStyleType, IBestUIBaseStyleObjType } from './index.type'
 import { lineHeightData } from './line-height'
 import { spaceData } from './space'
 
 
 export function getDefaultBaseStyle(): IBestUIBaseStyleObjType {
-  const data: IbestUIBaseStyleType = {
+  const data: IBestUIBaseStyleType = {
     primary: colorData.primary,
     success: colorData.success,
     warning: colorData.warning,
@@ -61,7 +61,7 @@ export const IBEST_UI_NAMESPACE = '__IBEST-UI_BASE_STYLE'
  * 设置全局样式
  * @param styleData
  */
-export function setIBestUIBaseStyle(styleData?: Partial<IbestUIBaseStyleType>) {
+export function setIBestUIBaseStyle(styleData?: Partial<IBestUIBaseStyleType>) {
   const newStyleData = getDefaultBaseStyle();
   if (typeof styleData === 'object' && styleData !== null) {
     Object.keys(styleData).forEach(item => {

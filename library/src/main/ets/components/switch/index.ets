@@ -1,5 +1,5 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { IBestUIBaseStyleObjType, IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { IBestUIBaseStyleObjType, IBestUIBaseStyleType } from '../../theme-chalk/src/index.type';
 
 @Component
 export struct IBestSwitch {

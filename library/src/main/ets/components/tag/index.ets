@@ -1,7 +1,7 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { ColorType, COLOR_TYPE, GRAY_COLOR } from '../../theme-chalk/src/color.type';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
-import { IBestUIBaseStyleObjType, IbestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { IBestUIBaseStyleObjType, IBestUIBaseStyleType } from '../../theme-chalk/src/index.type';
 import { SIZE } from '../../theme-chalk/src/size.type';
 import { TagSizeData } from './index.type';
 

@@ -3,7 +3,7 @@ setIBestUIBaseStyle()
 
 export { setIBestUIBaseStyle }
 
-export { IbestUIBaseStyleType } from './src/main/ets/theme-chalk/src/index.type'
+export { IBestUIBaseStyleType } from './src/main/ets/theme-chalk/src/index.type'
 
 export { IBestButton } from './src/main/ets/components/button/index'
 

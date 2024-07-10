@@ -7,7 +7,7 @@ import { SpaceData } from './space.type'
 /**
  * 根据默认的兜底style生成的类型
  */
-export interface IbestUIBaseStyleType extends FontSizeData, ColorData, ColorOpacityData, SpaceData, BorderRadiusData,
+export interface IBestUIBaseStyleType extends FontSizeData, ColorData, ColorOpacityData, SpaceData, BorderRadiusData,
 LineHeightData {
   // 滚动效果
   scrollEdgeEffect: EdgeEffect,
@@ -18,4 +18,4 @@ LineHeightData {
 
 export type IbestUIBaseStyleValue = string | number | EdgeEffect;
 
-export type IBestUIBaseStyleObjType = Record<keyof IbestUIBaseStyleType, IbestUIBaseStyleValue>
+export type IBestUIBaseStyleObjType = Record<keyof IBestUIBaseStyleType, IbestUIBaseStyleValue>
