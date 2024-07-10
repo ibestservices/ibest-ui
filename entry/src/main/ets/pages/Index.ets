@@ -58,6 +58,10 @@ struct Index {
       name: 'Calendar 日历',
       path: 'pages/Calendar'
     },
+    {
+      name: 'Loading 加载',
+      path: 'pages/Loading'
+    }
   ]
 
   build() {

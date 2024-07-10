@@ -32,6 +32,9 @@ export { IBestDialog } from './src/main/ets/components/dialog/index'
 export { IBestStepper } from './src/main/ets/components/stepper/index'
 
 export { IBestCalendar } from './src/main/ets/components/calendar/index'
+
 export { CalendarConfirmResultType, SelectType, SelectedStyleType } from './src/main/ets/components/calendar/index.type'
 
 export { IBestCalendarDialog } from './src/main/ets/components/calendar/calendarDialog'
+
+export { IBestLoading } from './src/main/ets/components/loading/index'
