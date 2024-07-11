@@ -1,7 +1,8 @@
 import { setIBestUIBaseStyle } from './src/main/ets/theme-chalk/src'
+import IBestToast from './src/main/ets/utils/IBestToast'
 setIBestUIBaseStyle()
 
-export { setIBestUIBaseStyle }
+export { setIBestUIBaseStyle, IBestToast }
 
 export { IBestUIBaseStyleType } from './src/main/ets/theme-chalk/src/index.type'
 

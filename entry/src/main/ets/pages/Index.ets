@@ -61,9 +61,12 @@ struct Index {
     {
       name: 'Loading 加载',
       path: 'pages/Loading'
-    }
+    },
+    {
+      name: 'Toast 轻提示',
+      path: 'pages/Toast'
+    },
   ]
-
   build() {
     Column() {
       List() {
@@ -122,11 +125,11 @@ struct Index {
           })
         })
 
-      }.listDirection(Axis.Vertical) // 排列方向
+      }
+      .listDirection(Axis.Vertical) // 排列方向
+      .padding(SPACE.LARGE)
     }.width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)
     .backgroundColor(BACKGROUND_COLOR.BASE)
-    .padding(SPACE.LARGE)
-
   }
 }

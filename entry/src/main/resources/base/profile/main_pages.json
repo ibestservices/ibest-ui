@@ -1,18 +1,19 @@
 {
-  "src": [
-    "pages/Index",
-    "pages/Button",
-    "pages/Checkbox",
-    "pages/Switch",
-    "pages/Tag",
-    "pages/Cell",
-    "pages/Theme",
-    "pages/Watermark",
-    "pages/Radio",
-    "pages/Empty",
-    "pages/Dialog",
-    "pages/Stepper",
-    "pages/Calendar",
-    "pages/Loading"
-  ]
+	"src": [
+		"pages/Index",
+		"pages/Button",
+		"pages/Checkbox",
+		"pages/Switch",
+		"pages/Tag",
+		"pages/Cell",
+		"pages/Theme",
+		"pages/Watermark",
+		"pages/Radio",
+		"pages/Empty",
+		"pages/Dialog",
+		"pages/Stepper",
+		"pages/Calendar",
+		"pages/Loading",
+		"pages/Toast"
+	]
 }
