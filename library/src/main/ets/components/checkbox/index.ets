@@ -297,6 +297,8 @@ export struct IBestCheckbox {
               x: .9,
               y: .9
             })
+              // 升级api11后图形移位了
+            .translate({x: `${this.iconSize * .02}lpx}`})
         }
       }
       .width(`${this.iconSize}lpx`)
