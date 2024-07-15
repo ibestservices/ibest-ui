@@ -52,7 +52,7 @@ export struct IBestLoading {
    */
   @Prop private loadingTextMarginLeft: string | number = this.baseStyle.spaceXs;
   /**
-   * loadingText的marginLeft值 只有在vertical为true 即垂直布局时有效
+   * loadingText的marginTop值 只有在vertical为true 即垂直布局时有效
    */
   @Prop private loadingTextMarginTop: string | number = this.baseStyle.spaceXs;
   /**

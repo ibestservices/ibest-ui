@@ -127,6 +127,7 @@ struct LoadingPage {
           ComponentShowContainer({ title: '包含内容' }) {
             IBestLoading({
               defaultBuilder: this.EmptyContain,
+              loadingMaskColor: 'rgba(0,0,0,0.5)',
               loadingColor: 'rgb(25, 137, 250)'
             })
           }
