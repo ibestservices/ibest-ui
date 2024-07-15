@@ -1,5 +1,6 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { IBestUIBaseStyleObjType, IBestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
+import { IBestLoading } from '../loading'
 
 @Component
 export struct IBestSwitch {
@@ -78,7 +79,7 @@ export struct IBestSwitch {
    * @returns
    */
   private getActiveColor(){
-    return this.activeColor || this.baseStyle.primary
+    return this.activeColor || this.baseStyle.primary as string
   }
 
 
@@ -90,10 +91,14 @@ export struct IBestSwitch {
           this.nodeBuilder()
         }else{
           if(this.loading){
-            LoadingProgress()
-              .width(`${this.switchSize / 1.5}lpx`)
-              .color( this.value ? this.loadingActiveColor || this.getActiveColor() : this.loadingInactiveColor || this.activeColor )
-              .transition({})
+            IBestLoading({
+              loadingSize: `${this.switchSize / 1.5}lpx`,
+              loadingColor: this.value ? this.loadingActiveColor || this.getActiveColor() : this.loadingInactiveColor || this.activeColor
+            }).transition({})
+            // LoadingProgress()
+            //   .width(`${this.switchSize / 1.5}lpx`)
+            //   .color( this.value ? this.loadingActiveColor || this.getActiveColor() : this.loadingInactiveColor || this.activeColor )
+            //   .transition({})
           }
         }
       }.width(`${this.switchSize}lpx`)
