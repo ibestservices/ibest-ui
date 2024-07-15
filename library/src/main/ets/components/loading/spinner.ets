@@ -34,12 +34,12 @@ export struct IBestLoadingSpinner {
 
   aboutToAppear() {
     this.uiContext = this.getUIContext?.();
-    setTimeout(()=>{
+    setTimeout(() => {
       this.handleAnimate()
     }, 100)
   }
 
-  handleAnimate(){
+  handleAnimate() {
     this.uiContext?.keyframeAnimateTo({ iterations: -1 }, [
       {
         duration: 500,
@@ -58,16 +58,17 @@ export struct IBestLoadingSpinner {
     ]);
   }
 
-  build(){
-    Column(){
-      ForEach(this.list, (item: number, index)=>{
-        Column(){
-           Column()
-             .width(this.strokeWidth)
-             .height(this.strokeHeight)
-             .borderRadius('40%')
-             .backgroundColor(this.color)
-        }.position({top: 0, left: 0})
+  build() {
+    Column() {
+      ForEach(this.list, (item: number, index) => {
+        Column() {
+          Column()
+            .width(this.strokeWidth)
+            .height(this.strokeHeight)
+            .borderRadius('2.4lpx')
+            .backgroundColor(this.color)
+        }
+        .position({ top: 0, left: 0 })
         .width(this.spinnerSize)
         .height(this.spinnerSize)
         .rotate({

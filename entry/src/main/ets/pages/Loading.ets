@@ -3,8 +3,7 @@ import router from '@ohos.router';
 import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { ComponentRouterParams } from '../assets/global.type';
-import { IBestLoading } from '@ibestservices/ibest-ui';
-
+import { IBestLoading, IBestEmpty } from '@ibestservices/ibest-ui';
 
 
 @Entry
@@ -12,18 +11,16 @@ import { IBestLoading } from '@ibestservices/ibest-ui';
 struct LoadingPage {
   @State title: string = (router.getParams() as ComponentRouterParams).title || ''
 
-  @Builder Content(){
-    Column(){
-      Text('34124124')
-      Text('34124124')
-      Text('34124124')
-      Text('34124124')
-      Text('34124124')
-      Text('34124124')
-      Text('34124124')
-      Text('34124124')
-    }
+  @Builder
+  EmptyContain() {
+    IBestEmpty()
   }
+
+  @Builder
+  ImageContain() {
+    Image($r('app.media.icon')).width('40lpx')
+  }
+
   build() {
     Column() {
       TitleBar({
@@ -32,37 +29,110 @@ struct LoadingPage {
 
       List() {
         ListItem() {
-          ComponentShowContainer({ title: '基础用法' }) {
-            IBestLoading()
+          ComponentShowContainer({ title: '加载类型' }) {
+            Row() {
+              IBestLoading()
+              IBestLoading({
+                loadingIconType: 'spinner'
+              }).margin({ left: '40lpx' })
+
+            }
           }
         }.margin({
           bottom: SPACE.BASE
         })
 
+        ListItem() {
+          ComponentShowContainer({ title: '自定义颜色' }) {
+            Row() {
+              IBestLoading({
+                loadingColor: 'rgb(25, 137, 250)'
+              })
+              IBestLoading({
+                loadingColor: 'rgb(25, 137, 250)',
+                loadingIconType: 'spinner'
+              }).margin({ left: '40lpx' })
+
+            }
+          }
+        }.margin({
+          bottom: SPACE.BASE
+        })
+
+
+        ListItem() {
+          ComponentShowContainer({ title: '自定义大小' }) {
+            Row() {
+              IBestLoading({
+                loadingSize: '80lpx'
+              })
+              IBestLoading({
+                loadingSize: '80lpx',
+                loadingIconType: 'spinner'
+              }).margin({ left: '40lpx' })
+
+            }
+          }
+        }.margin({
+          bottom: SPACE.BASE
+        })
+
+
+        ListItem() {
+          ComponentShowContainer({ title: '加载文案' }) {
+            Row() {
+              IBestLoading({
+                loadingText: '加载中...'
+              })
+
+            }
+          }
+        }.margin({
+          bottom: SPACE.BASE
+        })
+
+        ListItem() {
+          ComponentShowContainer({ title: '水平排列' }) {
+            Row() {
+              IBestLoading({
+                loadingText: '加载中...',
+                vertical: false
+              })
+
+            }
+          }
+        }.margin({
+          bottom: SPACE.BASE
+        })
+
+        ListItem() {
+          ComponentShowContainer({ title: '自定义文本颜色' }) {
+            Row() {
+              IBestLoading({
+                loadingText: '加载中...',
+                loadingColor: 'rgb(25, 137, 250)',
+                loadingTextColor: 'rgb(25, 137, 250)'
+              })
+              IBestLoading({
+                loadingText: '加载中...',
+                loadingTextColor: 'rgb(25, 137, 250)'
+              }).margin({ left: '40lpx' })
+            }
+          }
+        }.margin({
+          bottom: SPACE.BASE
+        })
 
         ListItem() {
           ComponentShowContainer({ title: '包含内容' }) {
             IBestLoading({
-              defaultBuilder: this.Content,
-              loadingText: '加载中...'
+              defaultBuilder: this.EmptyContain,
+              loadingColor: 'rgb(25, 137, 250)'
             })
           }
         }.margin({
           bottom: SPACE.BASE
         })
-
-        ListItem() {
-          ComponentShowContainer({ title: '横向布局' }) {
-            IBestLoading({
-              defaultBuilder: this.Content,
-              vertical: false,
-              loadingText: '加载中...'
-            })
-          }
-        }.margin({
-          bottom: SPACE.BASE
-        })
-
 
       }
       .layoutWeight(1)

@@ -67,6 +67,7 @@ struct Index {
       path: 'pages/Toast'
     },
   ]
+
   build() {
     Column() {
       List() {
