@@ -94,7 +94,7 @@ export struct IBestTag {
     if (this.textColor) {
       return this.textColor
     }
-    return this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_8 : this.getTagColor(this.plain)
+    return this.type === COLOR_TYPE.DEFAULT && !this.color ? GRAY_COLOR.GRAY_8 : this.getTagColor(this.plain)
   }
 
 
@@ -161,7 +161,7 @@ export struct IBestTag {
       .justifyContent(FlexAlign.Center)
       .borderWidth('2lpx')
       .backgroundColor(this.getTagColor(!this.plain))
-      .borderColor(this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_4 : this.getTagColor(this.plain))
+      .borderColor(this.type === COLOR_TYPE.DEFAULT && !this.textColor && !this.color ? GRAY_COLOR.GRAY_4 : this.getTagColor(this.plain))
       .transition({ type: TransitionType.Insert, opacity: 1 })
       .transition({ type: TransitionType.Delete, opacity: 0 })
       .onClick((event)=>{
