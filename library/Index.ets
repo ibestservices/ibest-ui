@@ -20,7 +20,7 @@ export { IBestCell } from './src/main/ets/components/cell/index'
 
 export { IBestCellGroup } from './src/main/ets/components/cellGroup/index'
 
-export { IBestWatermark } from './src/main/ets/components/watermark/index'
+export { IBestWatermark } from './src/main/ets/components/waterMark/index'
 
 export { IBestRadio } from './src/main/ets/components/radio/index'
 
@@ -39,3 +39,6 @@ export { CalendarConfirmResultType, SelectType, SelectedStyleType } from './src/
 export { IBestCalendarDialog } from './src/main/ets/components/calendar/calendarDialog'
 
 export { IBestLoading } from './src/main/ets/components/loading/index'
+
+export { IBestTabs } from './src/main/ets/components/tab/index'
+export { IBestTabItem, IBestTabController } from './src/main/ets/components/tab/index.type'

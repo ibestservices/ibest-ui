@@ -14,6 +14,7 @@
 		"pages/Stepper",
 		"pages/Calendar",
 		"pages/Loading",
-		"pages/Toast"
+		"pages/Toast",
+		"pages/Tab"
 	]
 }

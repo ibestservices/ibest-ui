@@ -66,6 +66,10 @@ struct Index {
       name: 'Toast 轻提示',
       path: 'pages/Toast'
     },
+    {
+      name: 'Tab 标签页',
+      path: 'pages/Tab'
+    }
   ]
 
   build() {
