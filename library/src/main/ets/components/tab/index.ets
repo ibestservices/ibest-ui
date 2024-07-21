@@ -13,29 +13,95 @@ export struct IBestTabs{
      * 全局公共样式
      */
     @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+    /*
+     * 唯一id
+     */
     @Provide uniId: string = this.getUniId()
+    /*
+     * 样式类型
+     */
     @Provide type: 'line' | 'card' = "line"
+    /*
+     * tab高度
+     */
     @Provide tabHeight: number = 70
+    /*
+     * tab宽度类型
+     */
     @Provide tabWidthType: "auto" | "flex" = "flex"
+    /*
+     * tab列表
+     */
     @Provide tabsList: IBestTabItem[] = []
+    /*
+     * 单个tab内边距，单位lpx
+     */
     @Provide tabPadding: number = 10
+    /*
+     * tab盒子宽度
+     */
     @State tabContentWidth: number = 0
+    /*
+     * tab宽度列表
+     */
     @State tabsWidthList: TabWidthType[] = []
+    /*
+     * 当前激活的tab的name
+     */
     @Provide @Watch("currentNameChange") currentName: string = ""
+    /*
+     * 标记线宽度是否固定
+     */
     @Prop isTabLineWidthFixed: boolean = false
+    /*
+     * 标记线宽度，单位lpx
+     */
     @Provide tabLineWidth: number = 0
+    /*
+     * 标记线高度，单位lpx
+     */
     @Provide tabLineHeight: number = 4
+    /*
+     * 标记块宽度
+     */
     @State tabBoxWidth: number = 0
+    /*
+     * 标记线X偏移量
+     */
     @State translateX: number = this.tabPadding
+    /*
+     * 标记块X偏移量
+     */
     @State tabBoxTranslateX: number = 0
+    /*
+     * 未激活的tab文字颜色
+     */
     @Provide inactiveTextColor: string = "#666"
+    /*
+     * 激活的tab文字颜色
+     */
     @Provide activeTextColor: string = "#333"
-    @Provide activeLineColor: string | IbestUIBaseStyleValue = this.baseStyle.primary
+    /*
+     * 标记线颜色
+     */
+    @Provide tabLineColor: string | IbestUIBaseStyleValue = this.baseStyle.primary
+    /*
+     * 标记线Y偏移量
+     */
     @Provide lineOffsetY: number = 0
+    /*
+     * tab区域背景颜色
+     */
     @Provide tabBgColor: string = "#fff"
+    /*
+     * controller 控制器
+     */
     private tabController: IBestTabController | null = null
     private scroller: Scroller = new Scroller()
-    private context = this.getUIContext()
+    @State context: UIContext = this.getUIContext()
+    /*
+     * onChange事件回调
+     */
     onChange: ((name: string) => void) | null = null
 
     aboutToAppear(): void {
@@ -43,7 +109,9 @@ export struct IBestTabs{
             this.tabController.uniId = this.uniId
         }
         emitter.on(`nameChange_${this.uniId}`, (name: string) => {
-            this.currentName = name
+            if(this.tabsList.some((item: IBestTabItem) => item.name == name)){
+                this.currentName = name
+            }
         })
     }
     aboutToDisappear(): void {
@@ -141,7 +209,7 @@ struct IBestTabContent{
     @Consume tabBgColor: string
     @Consume tabLineWidth: number
     @Consume tabLineHeight: string
-    @Consume activeLineColor: string
+    @Consume tabLineColor: string
     @Consume lineOffsetY: number
     @Prop translateX: number
     @Prop tabBoxTranslateX: number
@@ -152,7 +220,7 @@ struct IBestTabContent{
             Row()
                 .width(`${this.tabLineWidth}lpx`)
                 .height(`${this.tabLineHeight}lpx`)
-                .backgroundColor(this.activeLineColor)
+                .backgroundColor(this.tabLineColor)
                 .translate({ x: this.translateX + "lpx" })
                 .animation({
                     duration: 100,
@@ -164,7 +232,7 @@ struct IBestTabContent{
             Row()
                 .width(`${this.tabBoxWidth + 2}lpx`)
                 .height(`${this.tabHeight}lpx`)
-                .backgroundColor(this.activeLineColor)
+                .backgroundColor(this.tabLineColor)
                 .translate({ x: this.tabBoxTranslateX + "lpx" })
                 .animation({
                     duration: 100,
@@ -179,7 +247,7 @@ struct IBestTabContent{
             .width(this.tabWidthType == "flex" ? "100%" : "")
             .height(this.tabHeight + "lpx")
             .borderRadius(borderRadiusData.borderRadiusSm)
-            .border({ width: this.type == "card" ? "2lpx" : 0, color: this.activeLineColor })
+            .border({ width: this.type == "card" ? "2lpx" : 0, color: this.tabLineColor })
         }
         .width(this.tabWidthType == "flex" ? "100%" : "")
         .backgroundColor(this.tabBgColor)
@@ -197,7 +265,7 @@ struct IBestTab{
     @Consume tabPadding: number
     @Consume inactiveTextColor: number
     @Consume activeTextColor: number
-    @Consume activeLineColor: number
+    @Consume tabLineColor: number
 
     build() {
         Row() {
@@ -217,7 +285,7 @@ struct IBestTab{
             .height("100%")
             .fontSize(fontSizeData.fontSizeSm)
             .fontColor(this.currentName == this.item.name ? this.type == "card" ? "#fff" : this.activeTextColor :
-                this.type == "card" ? this.activeLineColor : this.inactiveTextColor)
+                this.type == "card" ? this.tabLineColor : this.inactiveTextColor)
             .maxLines(1)
             .textOverflow({overflow: TextOverflow.Ellipsis})
             .id(`ibestTab_${this.uniId}_text_${this.item.name}`)
@@ -225,7 +293,7 @@ struct IBestTab{
         .justifyContent(FlexAlign.Center)
         .padding({left: this.tabPadding + "lpx", right: this.tabPadding + "lpx"})
         .layoutWeight(this.tabWidthType == "flex" ? 1 : 0)
-        .border({ width: { left: this.type == "card" && this.index > 0 ? "2lpx" : 0 }, color: this.activeLineColor })
+        .border({ width: { left: this.type == "card" && this.index > 0 ? "2lpx" : 0 }, color: this.tabLineColor })
         .enabled(!this.item.isDisable)
         .opacity(this.item.isDisable ? 0.3 : 1)
         .id(`ibestTab_${this.uniId}_box_${this.item.name}`)

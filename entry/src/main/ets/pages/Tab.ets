@@ -200,10 +200,19 @@ struct Tab {
                 }
                 ListItem() {
                     ComponentShowContainer({ title: '禁用标签' }) {
-                        IBestTabs({
-                            tabsList: this.tabsList2,
-                            currentName: this.curTabName4
-                        })
+                        Column({space: 20}){
+                            IBestTabs({
+                                tabsList: this.tabsList2,
+                                currentName: this.curTabName4
+                            })
+                            IBestButton({
+                                text: "禁用标签3",
+                                buttonSize: "small",
+                                onClickBtn: () => {
+                                    this.tabsList2[2].isDisable = true
+                                }
+                            })
+                        }
                     }
                 }
                 ListItem() {
@@ -219,10 +228,21 @@ struct Tab {
                 }
                 ListItem() {
                     ComponentShowContainer({ title: '自定义标签' }) {
-                        IBestTabs({
-                            tabsList: this.tabsList4,
-                            currentName: this.curTabName6
-                        })
+                        Column({space: 20}){
+                            IBestTabs({
+                                tabsList: this.tabsList4,
+                                currentName: this.curTabName6
+                            })
+                            IBestButton({
+                                text: "修改数字",
+                                buttonSize: "small",
+                                onClickBtn: () => {
+                                    if(this.tabsList4[1].number != undefined){
+                                        this.tabsList4[1].number += 1
+                                    }
+                                }
+                            })
+                        }
                     }
                 }
                 ListItem() {
@@ -235,6 +255,7 @@ struct Tab {
                             })
                             IBestButton({
                                 text: "跳转标签3",
+                                buttonSize: "small",
                                 onClickBtn: () => {
                                     this.tabController.changeTab("3")
                                 }
@@ -247,7 +268,8 @@ struct Tab {
             .layoutWeight(1)
             .padding({
                 left: SPACE.BASE,
-                right: SPACE.BASE
+                right: SPACE.BASE,
+                bottom: SPACE.BASE
             })
         }
         .width(CONTAINER_SIZE.FULL)
