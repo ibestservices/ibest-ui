@@ -18,7 +18,7 @@ export struct IBestTabs{
     @Provide tabHeight: number = 70
     @Provide tabWidthType: "auto" | "flex" = "flex"
     @Provide tabsList: IBestTabItem[] = []
-    @Provide tabPadding: number = 20
+    @Provide tabPadding: number = 10
     @State tabContentWidth: number = 0
     @State tabsWidthList: TabWidthType[] = []
     @Provide @Watch("currentNameChange") currentName: string = ""
@@ -117,11 +117,9 @@ export struct IBestTabs{
                     tabBoxTranslateX: this.tabBoxTranslateX
                 })
             }
-            .width("100%")
             .scrollable(ScrollDirection.Horizontal)
             .scrollBar(BarState.Off)
             .align(Alignment.Start)
-            .backgroundColor(this.tabBgColor)
             .id(`tabContent_${this.uniId}`)
         }else{
             IBestTabContent({

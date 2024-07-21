@@ -1,39 +1,53 @@
 {
-  "app": {
-    "signingConfigs": [],
-    "products": [
-      {
-        "name": "default",
-        "signingConfig": "default",
-        "compatibleSdkVersion": "4.0.0(10)",
-        "runtimeOS": "HarmonyOS"
-      }
-    ],
-    "buildModeSet": [
-      {
-        "name": "debug",
-      },
-      {
-        "name": "release"
-      }
-    ]
-  },
-  "modules": [
-    {
-      "name": "entry",
-      "srcPath": "./entry",
-      "targets": [
-        {
-          "name": "default",
-          "applyToProducts": [
-            "default"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "library",
-      "srcPath": "./library"
-    }
-  ]
+	"app": {
+		"signingConfigs": [
+			{
+				"name": "default",
+				"type": "HarmonyOS",
+				"material": {
+					"certpath": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.cer",
+					"storePassword": "0000001BAC9A01C62FDEAA7F84E249537A055770DE16986AE2A223E701177962B77FDE9C985F81BC2F6534",
+					"keyAlias": "debugKey",
+					"keyPassword": "0000001B58D89D64A79F5B0EFB6012C295A6931F8FE62FE64DD091D0FCC4B0BB5DCBBAF824E1F5419367A7",
+					"profile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p7b",
+					"signAlg": "SHA256withECDSA",
+					"storeFile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p12"
+				}
+			}
+		],
+		"products": [
+			{
+				"name": "default",
+				"signingConfig": "default",
+				"compatibleSdkVersion": "4.0.0(10)",
+				"runtimeOS": "HarmonyOS"
+			}
+		],
+		"buildModeSet": [
+			{
+				"name": "debug",
+			},
+			{
+				"name": "release"
+			}
+		]
+	},
+	"modules": [
+		{
+			"name": "entry",
+			"srcPath": "./entry",
+			"targets": [
+				{
+					"name": "default",
+					"applyToProducts": [
+						"default"
+					]
+				}
+			]
+		},
+		{
+			"name": "library",
+			"srcPath": "./library"
+		}
+	]
 }

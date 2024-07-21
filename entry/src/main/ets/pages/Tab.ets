@@ -183,6 +183,19 @@ struct Tab {
                                 currentName: this.curTabName3
                             })
                         }
+                        .alignItems(HorizontalAlign.Start)
+                    }
+                }
+                ListItem() {
+                    ComponentShowContainer({ title: '固定线宽' }) {
+                        IBestTabs({
+                            tabsList: this.tabsList,
+                            tabHeight: 80,
+                            isTabLineWidthFixed: true,
+                            tabLineWidth: 30,
+                            lineOffsetY: 10,
+                            currentName: this.curTabName
+                        })
                     }
                 }
                 ListItem() {
