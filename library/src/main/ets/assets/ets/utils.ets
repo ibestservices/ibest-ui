@@ -1,11 +1,11 @@
+import { componentUtils, ComponentUtils, window } from '@kit.ArkUI'
+import { ComInfoType, ComAvoidAreaSize } from '../../utils/Global.type'
+import { common } from '@kit.AbilityKit'
 /**
  * 休眠
  * @param {number} time 休眠时间
  * @returns
  */
-import { componentUtils, ComponentUtils } from '@kit.ArkUI'
-import { ComInfoType } from '../../utils/Global.type'
-
 export function sleep(time = 300): Promise<void> {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -116,5 +116,18 @@ export const getComponentsInfo = (context: UIContext, key: string): ComInfoType 
     screenTop: px2lpx(info.screenOffset.y),
     windowLeft: px2lpx(info.windowOffset.x),
     windowTop: px2lpx(info.windowOffset.y)
+  }
+}
+/**
+ * 获取窗口域尺寸信息
+ * */
+export const getWindowAvoidSize = async (context: common.BaseContext): Promise<ComAvoidAreaSize> => {
+  let topWindow: window.Window = await window.getLastWindow(context)
+  let avoidArea = topWindow.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
+  return {
+    topSize: px2lpx(avoidArea.topRect.height),
+    bottomSize: px2lpx(avoidArea.bottomRect.height) || 60, // TODO 暂时没法获取 先写固定值
+    leftSize: px2lpx(avoidArea.leftRect.width),
+    rightSize: px2lpx(avoidArea.rightRect.width)
   }
 }

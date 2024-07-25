@@ -27,6 +27,10 @@ struct Index {
       path: 'pages/Checkbox'
     },
     {
+      name: 'Popup弹出层',
+      path: 'pages/Popup'
+    },
+    {
       name: 'Switch开关',
       path: 'pages/Switch'
     },

@@ -19,3 +19,12 @@ export interface ComInfoType {
     windowTop: number
     windowLeft: number
 }
+/*
+ * 窗口规避尺寸信息
+ */
+export interface ComAvoidAreaSize{
+    topSize: number
+    bottomSize: number
+    leftSize: number
+    rightSize: number
+}

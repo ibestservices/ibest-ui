@@ -15,6 +15,7 @@
 		"pages/Calendar",
 		"pages/Loading",
 		"pages/Toast",
-		"pages/Tab"
+		"pages/Tab",
+		"pages/Popup"
 	]
 }
