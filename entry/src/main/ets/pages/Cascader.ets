@@ -1,0 +1,247 @@
+import { IBestCascader, IBestCascaderOption, IBestCellGroup, IBestCell, IBestToast } from '@ibestservices/ibest-ui'
+import TitleBar from '../components/TitleBar'
+import { ComponentRouterParams } from '../assets/global.type'
+import router from '@ohos.router'
+import { CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
+import ComponentShowContainer from '../components/ComponentShowContainer'
+@Entry
+@Component
+struct CascaderPage {
+	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State visible: boolean = false
+	@State value: string = '请选择地区'
+	@State visible1: boolean = false
+	@State value1: string = '请选择地区'
+	@State visible2: boolean = false
+	@State value2: string = '请选择地区'
+	@State data: IBestCascaderOption[] = [
+		{
+			text: "江苏省",
+			value: "320000",
+			children: [
+				{
+					text: "南京市",
+					value: "320100",
+					children: [
+						{
+							text: "秦淮区",
+							value: "320104"
+						},
+						{
+							text: "雨花台区",
+							value: "320114"
+						}
+					]
+				},
+				{
+					text: "苏州市",
+					value: "320500",
+					children: [
+						{
+							text: "姑苏区",
+							value: "320508"
+						},
+						{
+							text: "昆山市",
+							value: "320583"
+						}
+					]
+				}
+			]
+		},
+		{
+			text: "安徽省",
+			value: "340000",
+			children: [
+				{
+					text: "合肥市",
+					value: "340100",
+					children: [
+						{
+							text: "蜀山区",
+							value: "340104"
+						},
+						{
+							text: "合肥高新技术产业开发区",
+							value: "340171"
+						}
+					]
+				},
+				{
+					text: "黄山市",
+					value: "341000",
+					children: [
+						{
+							text: "屯溪区",
+							value: "341002"
+						},
+						{
+							text: "黄山区",
+							value: "341003"
+						}
+					]
+				}
+			]
+		}
+	]
+
+	@State visible3: boolean = false
+	@State value3: string = '请选择地区'
+	@State data3: IBestCascaderOption[] = [
+		{
+			text: "江苏省",
+			value: "320000"
+		},
+		{
+			text: "安徽省",
+			value: "340000"
+		}
+	]
+	build() {
+		Column() {
+			TitleBar({
+				title: this.title
+			}).backgroundColor('#FFF')
+			List() {
+				ListItem() {
+					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL }) {
+						IBestCellGroup() {
+							Column() {
+								IBestCell({
+									title: '地区',
+									value: this.value,
+									isLink: true,
+									hasBorder: false,
+									onClickCell: () => {
+										this.visible = true
+									}
+								})
+							}
+						}
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '自定义颜色', titlePaddingLeft: SPACE.SMALL }) {
+						IBestCellGroup() {
+							Column() {
+								IBestCell({
+									title: '地区',
+									value: this.value1,
+									isLink: true,
+									hasBorder: false,
+									onClickCell: () => {
+										this.visible1 = true
+									}
+								})
+							}
+						}
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '自定义单项高度', titlePaddingLeft: SPACE.SMALL }) {
+						IBestCellGroup() {
+							Column() {
+								IBestCell({
+									title: '地区',
+									value: this.value2,
+									isLink: true,
+									hasBorder: false,
+									onClickCell: () => {
+										this.visible2 = true
+									}
+								})
+							}
+						}
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '异步加载选项', titlePaddingLeft: SPACE.SMALL }) {
+						IBestCellGroup() {
+							Column() {
+								IBestCell({
+									title: '地区',
+									value: this.value3,
+									isLink: true,
+									hasBorder: false,
+									onClickCell: () => {
+										this.visible3 = true
+									}
+								})
+							}
+						}
+					}
+				}
+			}
+			.layoutWeight(1)
+			// 基础用法
+			IBestCascader({
+				visible: this.visible,
+				options: this.data,
+				onConfirm: (value: IBestCascaderOption[]) => {
+					this.value = value.map(item => item.text).join(',')
+				}
+			})
+			// 自定义颜色
+			IBestCascader({
+				visible: this.visible1,
+				options: this.data,
+				activeColor: '#ee0a24',
+				onConfirm: (value: IBestCascaderOption[]) => {
+					this.value1 = value.map(item => item.text).join(',')
+				}
+			})
+			// 自定义高度
+			IBestCascader({
+				visible: this.visible2,
+				options: this.data,
+				itemHeight: 100,
+				onConfirm: (value: IBestCascaderOption[]) => {
+					this.value2 = value.map(item => item.text).join(',')
+				}
+			})
+			// 异步加载
+			IBestCascader({
+				visible: this.visible3,
+				options: this.data3,
+				lazy: true,
+				lazyLoad: (value: string | number, level: number, cb: (arr: IBestCascaderOption[]) => void) => {
+					IBestToast.show({
+						type: "loading"
+					})
+					setTimeout(() => {
+						IBestToast.hide()
+						cb(value == "320000" ? [
+							{
+								text: "南京市",
+								value: "320100",
+								isEnd: level >= 1
+							},
+							{
+								text: "苏州市",
+								value: "320500",
+								isEnd: level >= 1
+							}
+						] : [
+						  {
+							  text: "合肥市",
+							  value: "340100",
+							  isEnd: level >= 1
+						  },
+						  {
+							  text: "黄山市",
+							  value: "341000",
+							  isEnd: level >= 1
+						  }
+						])
+					}, 2000)
+				},
+				onConfirm: (value: IBestCascaderOption[]) => {
+					this.value3 = value.map(item => item.text).join(',')
+				}
+			})
+		}
+		.width(CONTAINER_SIZE.FULL)
+		.height(CONTAINER_SIZE.FULL)
+		.backgroundColor("#fff")
+	}
+}

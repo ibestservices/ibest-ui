@@ -43,6 +43,10 @@ struct Index {
       path: 'pages/Cell'
     },
     {
+      name: 'Cascader 级联选择',
+      path: 'pages/Cascader'
+    },
+    {
       name: 'Watermark水印',
       path: 'pages/Watermark'
     },

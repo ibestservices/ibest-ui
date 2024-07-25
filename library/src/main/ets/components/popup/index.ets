@@ -236,6 +236,7 @@ export struct IBestPopup{
 			this.dialogController?.open()
 			this.onOpen()
 		}else{
+			this.dialogController?.close()
 			this.close()
 		}
 	}

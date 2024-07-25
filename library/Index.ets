@@ -44,3 +44,6 @@ export { IBestTabs } from './src/main/ets/components/tab/index'
 export { IBestTabItem, IBestTabController } from './src/main/ets/components/tab/index.type'
 
 export { IBestPopup } from './src/main/ets/components/popup/index'
+
+export { IBestCascader } from './src/main/ets/components/cascader/index'
+export { IBestCascaderOption } from './src/main/ets/components/cascader/index.type'
