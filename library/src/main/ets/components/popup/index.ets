@@ -172,7 +172,7 @@ export struct IBestPopup{
 		alignment: this.popupAlign == "left" ? DialogAlignment.TopStart : this.popupAlign == "right" ?
 		DialogAlignment.TopEnd : this.popupAlign == "top" ? DialogAlignment.Top : this.popupAlign == "bottom" ?
 			DialogAlignment.Bottom : DialogAlignment.Center,
-		offset: { dx: 0, dy: this.offsetY },
+		offset: { dx: 0, dy: -this.offsetY },
 		isModal: true,
 		customStyle: true,
 		onWillDismiss:(dismissDialogAction: DismissDialogAction)=> {
@@ -206,11 +206,11 @@ export struct IBestPopup{
 			case "right":
 				this.popupWidth = this.popupWidth === "" ? "60%" : typeof this.popupWidth == "string" ? this
 					.popupWidth : (this.popupWidth + "lpx")
-				this.popupHeight = "100%"
+				this.popupHeight = this.popupHeight || "100%"
 				break
 			case "top":
 			case "bottom":
-				this.popupWidth = "100%"
+				this.popupWidth = this.popupWidth || "100%"
 				this.popupHeight = this.popupHeight === "" ? "40%" : typeof this.popupHeight == "string" ? this.popupHeight : (this.popupHeight + "lpx")
 				break
 			case "center":
