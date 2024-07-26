@@ -40,3 +40,6 @@
 
 ## 1.9.0
 1. 增加Cascader与Popup组件
+
+## 1.9.1
+1. Cascader与Popup组件代码大小写格式纠正
