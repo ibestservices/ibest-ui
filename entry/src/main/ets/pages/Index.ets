@@ -27,6 +27,10 @@ struct Index {
       path: 'pages/Checkbox'
     },
     {
+      name: 'Popup弹出层',
+      path: 'pages/Popup'
+    },
+    {
       name: 'Switch开关',
       path: 'pages/Switch'
     },
@@ -37,6 +41,10 @@ struct Index {
     {
       name: 'Cell单元格',
       path: 'pages/Cell'
+    },
+    {
+      name: 'Cascader 级联选择',
+      path: 'pages/Cascader'
     },
     {
       name: 'Watermark水印',

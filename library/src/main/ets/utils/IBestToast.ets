@@ -13,7 +13,7 @@ class ToastParams{
     /*
      * 展示文本
      */
-    message: string = ""
+    message?: string = ""
     /*
      * 显示时长
      */
@@ -107,10 +107,10 @@ class Toast{
     private loadingDialog: ComponentContent<AnyType> | null = null
     private promptAction: PromptAction
     private timer: number = 0
-    public _message: string = ""
+    public _message?: string = ""
 
     set message(msg: string){
-        console.log("message改变为", msg)
+        // console.log("message改变为", msg)
         if(Toast._instance && Toast._instance.toastOption){
             Toast._instance.toastOption.message = msg
             Toast._instance?.loadingDialog?.update(new ToastOption(Toast._instance.toastOption))
