@@ -33,10 +33,14 @@ struct PopupPage {
 	@State eventVisible: boolean = false
 	@State safeAreaVisible: boolean = false
 
-	@Builder baseBuilder() {
-		Column(){
+	@Builder centerBuilder() {
+		Row() {
 			Text("内容")
 		}
+		.width("300lpx")
+		.aspectRatio(1)
+		.justifyContent(FlexAlign.Center)
+
 	}
 	@Builder safeBuilder() {
 		Column(){
@@ -207,34 +211,39 @@ struct PopupPage {
 			.layoutWeight(1)
 			// 基础展示
 			IBestPopup({
-				visible: this.baseVisible
+				visible: $baseVisible,
+				contentBuilder: this.centerBuilder
 			})
 			// 弹框位置
 			IBestPopup({
-				visible: this.upVisible,
-				popupAlign: "top"
+				visible: $upVisible,
+				popupAlign: "top",
+				popupHeight: "40%"
 			})
 			IBestPopup({
-				visible: this.downVisible,
-				popupAlign: "bottom"
+				visible: $downVisible,
+				popupAlign: "bottom",
+				popupHeight: "40%"
 			})
 			IBestPopup({
-				visible: this.leftVisible,
-				popupAlign: "left"
+				visible: $leftVisible,
+				popupAlign: "left",
+				popupWidth: "40%"
 			})
 			IBestPopup({
-				visible: this.rightVisible,
-				popupAlign: "right"
+				visible: $rightVisible,
+				popupAlign: "right",
+				popupWidth: "40%"
 			})
 			// 关闭图标
 			IBestPopup({
-				visible: this.showHeaderVisible,
+				visible: $showHeaderVisible,
 				popupAlign: "bottom",
 				isShowHeader: true,
 				title: "标题"
 			})
 			IBestPopup({
-				visible: this.cusCloseIconVisible,
+				visible: $cusCloseIconVisible,
 				popupAlign: "bottom",
 				isShowHeader: true,
 				title: "标题",
@@ -242,17 +251,18 @@ struct PopupPage {
 			})
 			// 圆角弹窗
 			IBestPopup({
-				visible: this.centerCornerVisible,
-				cornerRadius: 10
+				visible: $centerCornerVisible,
+				cornerRadius: 10,
+				contentBuilder: this.centerBuilder
 			})
 			IBestPopup({
-				visible: this.bottomCornerVisible,
+				visible: $bottomCornerVisible,
 				popupAlign: "bottom",
 				cornerRadius: 30
 			})
 			// 事件监听
 			IBestPopup({
-				visible: this.eventVisible,
+				visible: $eventVisible,
 				popupAlign: "bottom",
 				onOpen: () => {
 					IBestToast.show("open")
@@ -263,7 +273,7 @@ struct PopupPage {
 			})
 			// 安全区域适配
 			IBestPopup({
-				visible: this.safeAreaVisible,
+				visible: $safeAreaVisible,
 				popupAlign: "left",
 				contentBuilder: this.safeBuilder,
 				safeAreaInsetTop: true,

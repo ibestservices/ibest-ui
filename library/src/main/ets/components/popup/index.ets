@@ -16,11 +16,11 @@ struct IBestPopupBaseContent {
 	/*
 	 * 弹框宽度
 	 */
-	@Prop PopupWidth: string | number = ""
+	@Prop popupWidth: string | number = ""
 	/*
 	 * 弹框高度
 	 */
-	@Prop PopupHeight: string | number = ""
+	@Prop popupHeight: string | number = ""
 	/*
 	 * 是否显示头部
 	 */
@@ -55,8 +55,8 @@ struct IBestPopupBaseContent {
 				.visibility(this.isShowHeader ? Visibility.Visible : Visibility.None)
 			this.contentBuilder()
 		}
-		.width(this.PopupWidth)
-		.height(this.PopupHeight)
+		.width(this.popupWidth)
+		.height(this.popupHeight)
 		.backgroundColor("#fff")
 		.padding({
 			top: this.safeAreaInsetTop && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
@@ -89,11 +89,11 @@ export struct IBestPopup{
 	/*
 	 * 弹框宽度
 	 */
-	@Prop PopupWidth: string | number = ""
+	@Prop popupWidth: string | number = ""
 	/*
 	 * 弹框高度
 	 */
-	@Prop PopupHeight: string | number = ""
+	@Prop popupHeight: string | number = ""
 	/*
 	 * 是否显示头部标题栏
 	 */
@@ -145,16 +145,7 @@ export struct IBestPopup{
 	/*
 	 * 默认弹框内容
 	 */
-	@Builder defaultBuilder() {
-		if (this.popupAlign == "center") {
-			Row() {
-				Text("内容")
-			}
-			.width("100%")
-			.aspectRatio(1)
-			.justifyContent(FlexAlign.Center)
-		}
-	}
+	@Builder defaultBuilder() {}
 	/*
 	 * 自定义内容
 	 */
@@ -172,8 +163,8 @@ export struct IBestPopup{
 		builder: IBestPopupBaseContent({
 			contentBuilder: this.contentBuilder,
 			popupAlign: this.popupAlign,
-			PopupWidth: this.PopupWidth,
-			PopupHeight: this.PopupHeight,
+			popupWidth: this.popupWidth,
+			popupHeight: this.popupHeight,
 			topAvoidSize: this.topAvoidSize,
 			bottomAvoidSize: this.bottomAvoidSize,
 			cornerRadius: this.cornerRadius
@@ -213,19 +204,19 @@ export struct IBestPopup{
 		switch (this.popupAlign){
 			case "left":
 			case "right":
-				this.PopupWidth = this.PopupWidth === "" ? "60%" : typeof this.PopupWidth == "string" ? this
-					.PopupWidth : (this.PopupWidth + "lpx")
-				this.PopupHeight = "100%"
+				this.popupWidth = this.popupWidth === "" ? "60%" : typeof this.popupWidth == "string" ? this
+					.popupWidth : (this.popupWidth + "lpx")
+				this.popupHeight = "100%"
 				break
 			case "top":
 			case "bottom":
-				this.PopupWidth = "100%"
-				this.PopupHeight = this.PopupHeight === "" ? "40%" : typeof this.PopupHeight == "string" ? this.PopupHeight : (this.PopupHeight + "lpx")
+				this.popupWidth = "100%"
+				this.popupHeight = this.popupHeight === "" ? "40%" : typeof this.popupHeight == "string" ? this.popupHeight : (this.popupHeight + "lpx")
 				break
 			case "center":
-				this.PopupWidth = this.PopupWidth ? typeof this.PopupWidth == "string" ? this.PopupWidth : this
-					.PopupWidth + "lpx" : "320lpx"
-				this.PopupHeight = ""
+				this.popupWidth = this.popupWidth ? typeof this.popupWidth == "string" ? this.popupWidth : this
+					.popupWidth + "lpx" : ""
+				this.popupHeight = ""
 				break
 		}
 		this.topAvoidSize = res.topSize
