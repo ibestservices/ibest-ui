@@ -17,6 +17,7 @@
 		"pages/Toast",
 		"pages/Tab",
 		"pages/Popup",
-		"pages/Cascader"
+		"pages/Cascader",
+		"pages/Field"
 	]
 }

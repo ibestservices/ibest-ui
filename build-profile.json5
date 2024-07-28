@@ -1,6 +1,20 @@
 {
 	"app": {
-		"signingConfigs": [],
+		"signingConfigs": [
+			{
+				"name": "default",
+				"type": "HarmonyOS",
+				"material": {
+					"certpath": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.cer",
+					"storePassword": "0000001AF754BB8390549925C6F830BAF6EB9885CB3EA2C0FDC4EC08AD2F427315A68A2F00F8D191AFC6",
+					"keyAlias": "debugKey",
+					"keyPassword": "0000001A98842D54E00A4F446875A85CCB9C1F31845C4E8AC3F481B0CB90B38D54CCF18FA4E8FF423EB2",
+					"profile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p7b",
+					"signAlg": "SHA256withECDSA",
+					"storeFile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p12"
+				}
+			}
+		],
 		"products": [
 			{
 				"name": "default",

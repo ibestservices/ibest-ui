@@ -19,39 +19,57 @@ struct Index {
       path: 'pages/Button'
     },
     {
-      name: 'Radio单选框',
-      path: 'pages/Radio'
-    },
-    {
-      name: 'Checkbox复选框',
-      path: 'pages/Checkbox'
+      name: 'Cell单元格',
+      path: 'pages/Cell'
     },
     {
       name: 'Popup弹出层',
       path: 'pages/Popup'
     },
     {
-      name: 'Switch开关',
-      path: 'pages/Switch'
+      name: 'Toast 轻提示',
+      path: 'pages/Toast'
     },
+
+
     {
-      name: 'Tag标签',
-      path: 'pages/Tag'
-    },
-    {
-      name: 'Cell单元格',
-      path: 'pages/Cell'
+      name: 'Calendar 日历',
+      path: 'pages/Calendar'
     },
     {
       name: 'Cascader 级联选择',
       path: 'pages/Cascader'
     },
     {
-      name: 'Watermark水印',
+      name: 'Checkbox 复选框',
+      path: 'pages/Checkbox'
+    },
+    {
+      name: 'Field 输入框',
+      path: 'pages/Field'
+    },
+    {
+      name: 'Radio 单选框',
+      path: 'pages/Radio'
+    },
+    {
+      name: 'Stepper 步进器',
+      path: 'pages/Stepper'
+    },
+    {
+      name: 'Switch 开关',
+      path: 'pages/Switch'
+    },
+    {
+      name: 'Tag 标签',
+      path: 'pages/Tag'
+    },
+    {
+      name: 'Watermark 水印',
       path: 'pages/Watermark'
     },
     {
-      name: 'Empty空状态',
+      name: 'Empty 空状态',
       path: 'pages/Empty'
     },
     {
@@ -59,20 +77,8 @@ struct Index {
       path: 'pages/Dialog'
     },
     {
-      name: 'Stepper 步进器',
-      path: 'pages/Stepper'
-    },
-    {
-      name: 'Calendar 日历',
-      path: 'pages/Calendar'
-    },
-    {
       name: 'Loading 加载',
       path: 'pages/Loading'
-    },
-    {
-      name: 'Toast 轻提示',
-      path: 'pages/Toast'
     },
     {
       name: 'Tab 标签页',

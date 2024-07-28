@@ -47,3 +47,5 @@ export { IBestPopup } from './src/main/ets/components/popup/index'
 
 export { IBestCascader } from './src/main/ets/components/cascader/index'
 export { IBestCascaderOption } from './src/main/ets/components/cascader/index.type'
+
+export { IBestField } from './src/main/ets/components/field/index'

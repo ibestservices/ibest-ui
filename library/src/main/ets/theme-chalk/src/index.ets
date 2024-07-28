@@ -70,5 +70,5 @@ export function setIBestUIBaseStyle(styleData?: Partial<IBestUIBaseStyleType>) {
       }
     })
   }
-  AppStorage.SetOrCreate(IBEST_UI_NAMESPACE, newStyleData)
+  AppStorage.setOrCreate(IBEST_UI_NAMESPACE, newStyleData)
 }
