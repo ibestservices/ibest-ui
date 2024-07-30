@@ -3,14 +3,19 @@ import { colorData } from '../../theme-chalk/src/color'
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { IBestFormRule } from '../form/index.type'
 import { IBestFieldType, ClearTriggerType, FieldTextAlign } from './index.type'
 
 @Component
 export struct IBestField{
     /*
-     * 当前输入的值
+     * 组件绑定的值
      */
-    @Link value: string
+    @Link value: string | boolean | [string | number]
+    /*
+     * 验证规则
+     */
+    @Provide rules: IBestFormRule[] = []
     /*
      * 文本内容
      */
@@ -112,11 +117,15 @@ export struct IBestField{
      */
     @Provide errorMessage: string = ""
     /*
-     * 按钮builder
+     * 右侧按钮builder
      */
     @BuilderParam buttonBuilder: (() => void) | null
     /*
-     * 格式化触发时机
+     * 自定义右侧内容
+     */
+    @BuilderParam customRightContent: (() => void) | null
+    /*
+     * 执行格式化函数触发时机
      */
     @Provide formatTrigger: 'onChange' | 'onBlur' = 'onChange'
     /*
@@ -164,6 +173,7 @@ export struct IBestField{
                     Content({
                         value: $value,
                         buttonBuilder: this.buttonBuilder,
+                        customRightContent: this.customRightContent,
                         formatter: (value: string): string => this.formatter(value),
                         onChange: (value: string): void => this.onChange(value),
                         onClear: (): void => this.onClear(),
@@ -202,6 +212,7 @@ export struct IBestField{
                     Content({
                         value: $value,
                         buttonBuilder: this.buttonBuilder,
+                        customRightContent: this.customRightContent,
                         formatter: (value: string): string => this.formatter(value),
                         onChange: (value: string): void => this.onChange(value),
                         onClear: (): void => this.onClear(),
@@ -310,6 +321,7 @@ struct Content{
     @Consume clearTrigger: ClearTriggerType
     @Consume errorMessage: string
     @BuilderParam buttonBuilder: (() => void) | null
+    @BuilderParam customRightContent: (() => void) | null
     @Consume formatTrigger: 'onChange' | 'onBlur'
     formatter: (value: string) => string = (value: string): string => value
     onChange: (value: string) => void = () => {}
@@ -352,77 +364,82 @@ struct Content{
     }
     build() {
         Column(){
-            Row(){
-                if(this.autosize){
-                    TextArea({ text: $$this.value, placeholder: this.placeholder })
-                        .inputStyle()
-                        .constraintSize({ minHeight: `${this.rows * 40}lpx` })
-                        .lineHeight("40lpx")
-                        .maxLength(this.maxlength)
-                        .showCounter(this.showWordLimit, {
-                            thresholdPercentage: 1,
-                            highlightBorder: false
-                        })
-                        .enableAutoFill(false)
-                        .onChange((value: string) => {
-                            if(this.formatTrigger == 'onChange'){
-                                this.value = this.formatter(value)
-                            }
-                            this.onChange(this.value)
-                        })
-                        .onFocus(() => {
-                            this.isFocus = true
-                            this.onFieldFocus()
-                        })
-                        .onBlur(() => {
-                            this.isFocus = false
-                            this.onFieldBlur()
-                            if(this.formatTrigger == 'onBlur'){
-                                this.value = this.formatter(this.value)
-                            }
-                        })
-                }else{
-                    TextInput({ text: $$this.value, placeholder: this.placeholder })
-                        .inputStyle()
-                        .height("40lpx")
-                        .lineHeight("40lpx")
-                        .textAlign(this.inputAlign == 'center' ? TextAlign.Center : this.inputAlign == 'right' ? TextAlign.End : TextAlign.Start)
-                        .maxLength(this.maxlength)
-                        .showCounter(this.showWordLimit, {
-                            thresholdPercentage: 1,
-                            highlightBorder: false
-                        })
-                        .selectionMenuHidden(true)
-                        .enableAutoFill(false)
-                        .type(this.getInputType())
-                        .onChange((value: string) => {
-                            if(this.formatTrigger == 'onChange'){
-                                this.value = this.formatter(value)
-                            }
-                            this.onChange(this.value)
-                        })
-                        .onFocus(() => {
-                            this.isFocus = true
-                            this.onFieldFocus()
-                        })
-                        .onBlur(() => {
-                            this.isFocus = false
-                            this.onFieldBlur()
-                            if(this.formatTrigger == 'onBlur'){
-                                this.value = this.formatter(this.value)
-                            }
-                        })
-                }
-                // 清除图标
-                if(this.clearable && this.value && (this.clearTrigger == 'always' || this.isFocus)){
-                    Image($r("app.media.icon_clear"))
-                        .width("40lpx")
-                        .aspectRatio(1)
-                        .margin({left: "8lpx"})
-                        .onClick(() => {
-                            this.value = ''
-                            this.onClear()
-                        })
+            Row() {
+                if (this.customRightContent) {
+                    this.customRightContent()
+                } else {
+                    if (this.autosize) {
+                        TextArea({ text: $$this.value, placeholder: this.placeholder })
+                            .inputStyle()
+                            .constraintSize({ minHeight: `${this.rows * 40}lpx` })
+                            .lineHeight("40lpx")
+                            .maxLength(this.maxlength)
+                            .showCounter(this.showWordLimit, {
+                                thresholdPercentage: 1,
+                                highlightBorder: false
+                            })
+                            .enableAutoFill(false)
+                            .onChange((value: string) => {
+                                if (this.formatTrigger == 'onChange') {
+                                    this.value = this.formatter(value)
+                                }
+                                this.onChange(this.value)
+                            })
+                            .onFocus(() => {
+                                this.isFocus = true
+                                this.onFieldFocus()
+                            })
+                            .onBlur(() => {
+                                this.isFocus = false
+                                this.onFieldBlur()
+                                if (this.formatTrigger == 'onBlur') {
+                                    this.value = this.formatter(this.value)
+                                }
+                            })
+                    } else {
+                        TextInput({ text: $$this.value, placeholder: this.placeholder })
+                            .inputStyle()
+                            .height("40lpx")
+                            .lineHeight("40lpx")
+                            .textAlign(this.inputAlign == 'center' ? TextAlign.Center :
+                                this.inputAlign == 'right' ? TextAlign.End : TextAlign.Start)
+                            .maxLength(this.maxlength)
+                            .showCounter(this.showWordLimit, {
+                                thresholdPercentage: 1,
+                                highlightBorder: false
+                            })
+                            .selectionMenuHidden(true)
+                            .enableAutoFill(false)
+                            .type(this.getInputType())
+                            .onChange((value: string) => {
+                                if (this.formatTrigger == 'onChange') {
+                                    this.value = this.formatter(value)
+                                }
+                                this.onChange(this.value)
+                            })
+                            .onFocus(() => {
+                                this.isFocus = true
+                                this.onFieldFocus()
+                            })
+                            .onBlur(() => {
+                                this.isFocus = false
+                                this.onFieldBlur()
+                                if (this.formatTrigger == 'onBlur') {
+                                    this.value = this.formatter(this.value)
+                                }
+                            })
+                    }
+                    // 清除图标
+                    if (this.clearable && this.value && (this.clearTrigger == 'always' || this.isFocus)) {
+                        Image($r("app.media.icon_clear"))
+                            .width("40lpx")
+                            .aspectRatio(1)
+                            .margin({ left: "8lpx" })
+                            .onClick(() => {
+                                this.value = ''
+                                this.onClear()
+                            })
+                    }
                 }
                 // 按钮
                 if(this.buttonBuilder){
@@ -444,7 +461,7 @@ struct Content{
                     Image($r("app.media.arrow_right"))
                         .width("28lpx")
                         .aspectRatio(1)
-                        .fillColor(GRAY_COLOR.GRAY_6)
+                        .fillColor(this.rightIconColor)
                         .margin({left: "8lpx"})
                 }
             }

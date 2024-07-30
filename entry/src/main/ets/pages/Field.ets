@@ -1,14 +1,29 @@
-import { IBestButton, IBestCellGroup, IBestField, IBestToast } from '@ibestservices/ibest-ui'
+import { IBestButton, IBestCellGroup, IBestField,
+    IBestForm,
+    IBestRadio,
+    IBestRadioGroup, IBestToast,
+    RulesType } from '@ibestservices/ibest-ui'
 import TitleBar from '../components/TitleBar';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import { router } from '@kit.ArkUI';
+import { LengthMetrics, router } from '@kit.ArkUI';
 import { ComponentRouterParams } from '../assets/global.type';
 
 @Entry
 @Component
 struct FieldPage {
     @State title: string = (router.getParams() as ComponentRouterParams).title || ''
+    @State rules: RulesType = {
+        "name": [
+            { required: true, message: '请输入姓名' }
+        ],
+        "phone": [
+            { required: true, message: '请输入手机号' }
+        ]
+    }
+    @State name: string = ''
+    @State phone: string = ''
+
     @State value: string = ''
     @State value1: string = ''
     @State value2: string = ''
@@ -33,7 +48,7 @@ struct FieldPage {
     @State value19: string = ''
     @State value20: string = ''
     @State value21: string = ''
-
+    @State value22: string = ''
 
     @Builder sendCodeButton() {
         IBestButton({
@@ -45,6 +60,28 @@ struct FieldPage {
             }
         })
     }
+    @Builder radioContent() {
+        IBestRadioGroup({
+            group: 'group1',
+            onChange: val => {
+                console.log('group1', val)
+            }
+        })
+        Flex({wrap: FlexWrap.Wrap, space: {main: LengthMetrics.lpx(20), cross: LengthMetrics.lpx(20)}}){
+            IBestRadio({
+                label: '单选框1',
+                name: '1',
+                group: 'group1'
+            })
+            IBestRadio({
+                label: '单选框2',
+                name: '2',
+                group: 'group1'
+            })
+        }
+        .width("100%")
+    }
+
     sendCode() {
         if (this.timer) {
             return
@@ -69,6 +106,28 @@ struct FieldPage {
                 title: this.title
             }).backgroundColor('#FFF')
             List() {
+                ListItem() {
+                    ComponentShowContainer({ title: '表单', titlePaddingLeft: SPACE.SMALL }) {
+                        IBestForm(){
+                            IBestCellGroup({inset: true}) {
+                                IBestField({
+                                    value: $name,
+                                    label: "姓名",
+                                    placeholder: "请输入姓名",
+                                    rules: [
+                                        { required: true, message: '请输入姓名' }
+                                    ]
+                                })
+                                IBestField({
+                                    value: $phone,
+                                    label: "手机号",
+                                    placeholder: "请输入手机号",
+                                    hasBorder: false
+                                })
+                            }
+                        }
+                    }
+                }
                 ListItem() {
                     ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL }) {
                         IBestCellGroup({inset: true}) {
@@ -304,6 +363,18 @@ struct FieldPage {
                                     hasBorder: false
                                 })
                             }
+                        }
+                    }
+                }
+                ListItem() {
+                    ComponentShowContainer({ title: '自定义右侧区域内容', titlePaddingLeft: SPACE.SMALL }) {
+                        IBestCellGroup({inset: true}) {
+                            IBestField({
+                                value: $value22,
+                                label: "文本",
+                                hasBorder: false,
+                                customRightContent: (): void => this.radioContent()
+                            })
                         }
                     }
                 }
