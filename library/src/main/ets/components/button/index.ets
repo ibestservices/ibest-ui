@@ -4,10 +4,16 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE, SizeType } from '../../theme-chalk/src/size.type';
 import { ButtonSizeData } from './index.type'
+import { IBestLoading } from '../loading/index'
 
 @Extend(Button)
 function btnSizeStyle(data: ButtonSizeData) {
-  .padding({ top: 0, right: data.padding, bottom: 0, left: data.padding })
+  .padding({
+    top: 0,
+    right: data.padding,
+    bottom: 0,
+    left: data.padding
+  })
   .height(data.height)
   .width(data.width || 'auto')
 }
@@ -84,12 +90,13 @@ export struct IBestButton {
    * 点击按钮，且按钮状态不为加载或禁用时触发
    */
   private onClickBtn?: (event?: ClickEvent) => void;
+
   /**
    * 根据颜色type获取背景色
    * @returns
    */
   private getBackgroundColor(type = this.type) {
-    return this.color ? this.color : this.baseStyle[type]
+    return this.color ? this.color : this.baseStyle[type] as string
   }
 
   /**
@@ -102,13 +109,13 @@ export struct IBestButton {
     const buttonSize = this.buttonSize;
     switch (buttonSize) {
       case SIZE.SMALL:
-        return new ButtonSizeData(this.baseStyle.spaceXs, '64lpx', this.baseStyle.fontSizeSm ) ;
+        return new ButtonSizeData(this.baseStyle.spaceXs, '64lpx', this.baseStyle.fontSizeSm);
       case SIZE.MINI:
-        return new ButtonSizeData(this.baseStyle.spaceBase, '64lpx', this.baseStyle.fontSizeXs ) ;
+        return new ButtonSizeData(this.baseStyle.spaceBase, '64lpx', this.baseStyle.fontSizeXs);
       case SIZE.LARGE:
-        return new ButtonSizeData(this.baseStyle.spaceXs, '100lpx', this.baseStyle.fontSizeLg, CONTAINER_SIZE.FULL ) ;
+        return new ButtonSizeData(this.baseStyle.spaceXs, '100lpx', this.baseStyle.fontSizeLg, CONTAINER_SIZE.FULL);
       default:
-        return new ButtonSizeData('30lpx', '88lpx', this.baseStyle.fontSizeMd ) ;
+        return new ButtonSizeData('30lpx', '88lpx', this.baseStyle.fontSizeMd);
     }
   }
 
@@ -142,7 +149,7 @@ export struct IBestButton {
    * @returns
    */
   private getLoadingSize() {
-    return this.loadingSize != -1 ? `${this.loadingSize}lpx` : this.getBtnSize()?.fontSize
+    return this.loadingSize != -1 ? `${this.loadingSize}lpx` : this.getBtnSize()?.fontSize as string
   }
 
   /**
@@ -170,11 +177,11 @@ export struct IBestButton {
               this.loadingIconBuilder()
             } else {
               // 默认的loading
-              LoadingProgress()
-                .width(this.getLoadingSize())
-                .height(this.getLoadingSize())
-                .color(this.getBtnTextColor())
-                .margin({ right: this.text?.length ? this.getBtnSize().padding : 0 })
+              IBestLoading({
+                loadingSize: this.getLoadingSize(),
+                loadingColor: this.getBtnTextColor()
+              }).margin({ right: this.text?.length ? this.getBtnSize().padding : 0 })
+
             }
             // 加载loading显示的时候不显示图标
           } else if (typeof this.iconBuilder === 'function') {
