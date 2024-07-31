@@ -1,8 +1,4 @@
-import { IBestButton, IBestCellGroup, IBestField,
-    IBestForm,
-    IBestRadio,
-    IBestRadioGroup, IBestToast,
-    RulesType } from '@ibestservices/ibest-ui'
+import { IBestButton, IBestCellGroup, IBestField, IBestRadio, IBestRadioGroup, IBestToast} from '@ibestservices/ibest-ui'
 import TitleBar from '../components/TitleBar';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
@@ -13,17 +9,6 @@ import { ComponentRouterParams } from '../assets/global.type';
 @Component
 struct FieldPage {
     @State title: string = (router.getParams() as ComponentRouterParams).title || ''
-    @State rules: RulesType = {
-        "name": [
-            { required: true, message: '请输入姓名' }
-        ],
-        "phone": [
-            { required: true, message: '请输入手机号' }
-        ]
-    }
-    @State name: string = ''
-    @State phone: string = ''
-
     @State value: string = ''
     @State value1: string = ''
     @State value2: string = ''
@@ -106,28 +91,6 @@ struct FieldPage {
                 title: this.title
             }).backgroundColor('#FFF')
             List() {
-                ListItem() {
-                    ComponentShowContainer({ title: '表单', titlePaddingLeft: SPACE.SMALL }) {
-                        IBestForm(){
-                            IBestCellGroup({inset: true}) {
-                                IBestField({
-                                    value: $name,
-                                    label: "姓名",
-                                    placeholder: "请输入姓名",
-                                    rules: [
-                                        { required: true, message: '请输入姓名' }
-                                    ]
-                                })
-                                IBestField({
-                                    value: $phone,
-                                    label: "手机号",
-                                    placeholder: "请输入手机号",
-                                    hasBorder: false
-                                })
-                            }
-                        }
-                    }
-                }
                 ListItem() {
                     ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL }) {
                         IBestCellGroup({inset: true}) {

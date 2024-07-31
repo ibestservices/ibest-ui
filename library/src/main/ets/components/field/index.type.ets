@@ -1,4 +1,8 @@
 /*
+ * field 值类型
+ */
+export type IBestFieldValueType = string | boolean | [string | number]
+/*
  * 文本对齐方式
  */
 export type FieldTextAlign = 'left' | 'center' | 'right'

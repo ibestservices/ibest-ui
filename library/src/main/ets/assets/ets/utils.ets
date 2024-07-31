@@ -1,6 +1,7 @@
 import { componentUtils, ComponentUtils, window } from '@kit.ArkUI'
 import { ComInfoType, ComAvoidAreaSize } from '../../utils/Global.type'
 import { common } from '@kit.AbilityKit'
+import { AnyType } from '../../utils/AnyType'
 /**
  * 休眠
  * @param {number} time 休眠时间
@@ -131,3 +132,15 @@ export const getWindowAvoidSize = async (context: common.BaseContext): Promise<C
     rightSize: px2lpx(avoidArea.rightRect.width)
   }
 }
+/*
+ * 是否是对象
+ */
+export const isObject = (val: AnyType): boolean => val !== null && typeof val === 'object'
+/*
+ * 是否是函数
+ */
+export const isFunction = (val: AnyType): boolean => typeof val === 'function'
+/*
+ * 是否是Promise
+ */
+export const isPromise = (val: AnyType): boolean => isObject(val) && isFunction(val.then) && isFunction(val.catch)

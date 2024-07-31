@@ -3,23 +3,36 @@ import { colorData } from '../../theme-chalk/src/color'
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { IBestFormRule } from '../form/index.type'
-import { IBestFieldType, ClearTriggerType, FieldTextAlign } from './index.type'
-
+import { FieldValidateResult, FORM_EVENT_NAME, getFormEventName, IBestFormRuleItem } from '../form/index.type'
+import type { IBestFieldType, ClearTriggerType, FieldTextAlign, IBestFieldValueType } from './index.type'
+import { emitter } from '../../assets/ets/EventEmitter'
+import { runRuleValidator, runSyncRule } from './utils'
 @Component
 export struct IBestField{
     /*
-     * 组件绑定的值
+     * form id 用于验证
      */
-    @Link value: string | boolean | [string | number]
+    @Prop formId: string = ""
+    /*
+     * 表单绑定属性名
+     */
+    @Prop prop: string = ""
     /*
      * 验证规则
      */
-    @Provide rules: IBestFormRule[] = []
+    rules: IBestFormRuleItem[] = []
+    /*
+     * 组件绑定的值
+     */
+    @Link @Watch("valueChange") value: IBestFieldValueType
     /*
      * 文本内容
      */
     @Provide label: string = ""
+    /*
+     * 是否在label后加冒号
+     */
+    @Provide colon: boolean = false
     /*
      * 文本宽度
      */
@@ -113,9 +126,13 @@ export struct IBestField{
      */
     @Provide clearTrigger: ClearTriggerType = 'focus'
     /*
-     * 错误提示文字
+     * 验证状态
      */
-    @Provide errorMessage: string = ""
+    @Provide status: 'passed' | 'failed' | 'unvalidated' = 'unvalidated'
+    /*
+     * 验证信息
+     */
+    @Provide validateMessage: string = ""
     /*
      * 右侧按钮builder
      */
@@ -131,11 +148,11 @@ export struct IBestField{
     /*
      * 格式化函数
      */
-    formatter: (value: string) => string = (value: string): string => value
+    formatter: (value: string) => string = (value: string) => value
     /*
      * value变化回调函数
      */
-    onChange: (value: string) => void = () => {}
+    onChange: (value: IBestFieldValueType) => void = () => {}
     /*
      * 点击清除按钮时触发
      */
@@ -161,8 +178,106 @@ export struct IBestField{
      */
     onRightIconClick: () => void = () => {}
 
-    aboutToAppear(): void {
-
+    onDidBuild(): void {
+        if(this.formId && this.prop){
+            emitter.emit(getFormEventName(this.formId, FORM_EVENT_NAME.SEND_FIELD), {
+                prop: this.prop,
+                validate: (rules: IBestFormRuleItem[]):Promise<void | FieldValidateResult> => this.validate(rules),
+                getValue: (): IBestFieldValueType => this.value,
+                resetValidation: (): void => this.resetValidation()
+            }, (rules: IBestFormRuleItem[]): void => this.saveRule(rules))
+        }
+    }
+    aboutToDisappear(): void {
+        if(this.formId && this.prop) {
+            emitter.off(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), () => {})
+            emitter.off(getFormEventName(this.formId, FORM_EVENT_NAME.RESET_VALIDATE), () => {})
+        }
+    }
+    // 保存规则,并展示必填星号
+    saveRule(rules: IBestFormRuleItem[]){
+        this.rules = this.rules.length ? this.rules : rules
+        this.required = this.rules.some((item: IBestFormRuleItem) => item.required)
+    }
+    // 重置验证
+    resetValidation(){
+        this.status = 'unvalidated'
+        this.validateMessage = ""
+    }
+    // 验证
+    validate(rules: IBestFormRuleItem[]): Promise<FieldValidateResult | void> {
+        return new Promise<FieldValidateResult | void>((resolve) => {
+            this.resetValidation()
+            if (rules) {
+                let value = this.value
+                this.runRules(value, rules).then(() => {
+                    if (this.status === 'failed') {
+                        resolve({
+                            name: this.prop,
+                            message: this.validateMessage
+                        })
+                    } else {
+                        this.status = 'passed'
+                        resolve()
+                    }
+                })
+            } else {
+                resolve()
+            }
+        })
+    }
+    // 执行规则
+    async runRules(value: IBestFieldValueType, rules: IBestFormRuleItem[]){
+        for (let rule of rules) {
+            if (!runSyncRule(value, rule)) {
+                this.status = 'failed'
+                this.validateMessage = rule.message || ''
+                return
+            }
+            if (rule.validator) {
+                await runRuleValidator(value, rule).then(result => {
+                    if (result && typeof result === 'string') {
+                        this.status = 'failed'
+                        this.validateMessage = result
+                        return
+                    } else if (result === false) {
+                        this.status = 'failed'
+                        this.validateMessage = rule.message || ""
+                        return
+                    }
+                })
+            }
+        }
+    }
+    // 通过trigger 判断rules中是否有可触发项
+    getFilteredRule(trigger: 'blur' | 'change') {
+        return this.rules.filter((rule) => {
+            if (!rule.trigger) return true
+            return rule.trigger === trigger
+        })
+    }
+    // value  change变化 执行验证
+    valueChange(){
+        this.sendValidate("change")
+    }
+    // 失焦执行
+    handleBlur(){
+        this.onFieldBlur()
+        this.sendValidate("blur")
+    }
+    // 发送单个验证
+    sendValidate(trigger: 'blur' | 'change'){
+        if(this.formId && this.prop){
+            let rules: IBestFormRuleItem[] = this.getFilteredRule(trigger)
+            if(rules.length) {
+                emitter.emit(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), this.prop, (valid: boolean,
+                    field: FieldValidateResult): void => this.handleValidateFieldCallBack(valid, field))
+            }
+        }
+    }
+    // 处理验证结果
+    handleValidateFieldCallBack(valid: boolean,res: FieldValidateResult){
+        // console.log("handleValidateFieldCallBack", valid, JSON.stringify(res), this.prop, this.value)
     }
 
     build() {
@@ -175,16 +290,16 @@ export struct IBestField{
                         buttonBuilder: this.buttonBuilder,
                         customRightContent: this.customRightContent,
                         formatter: (value: string): string => this.formatter(value),
-                        onChange: (value: string): void => this.onChange(value),
+                        onChange: (value: IBestFieldValueType): void => this.onChange(value),
                         onClear: (): void => this.onClear(),
                         onFieldClick: (): void => this.onFieldClick(),
                         onFieldFocus: (): void => this.onFieldFocus(),
-                        onFieldBlur: (): void => this.onFieldBlur(),
+                        onFieldBlur: (): void => this.handleBlur(),
                         onRightIconClick: (): void => this.onRightIconClick()
                     })
                 }
                 .padding({ top: '20lpx', bottom: '20lpx' })
-                .alignItems((this.showWordLimit || this.autosize) ? VerticalAlign.Top : VerticalAlign.Center)
+                .alignItems((this.showWordLimit || this.autosize || this.validateMessage) ? VerticalAlign.Top : VerticalAlign.Center)
                 .border({
                     width: { bottom: this.hasBorder ? '2lpx' : 0 },
                     color: GRAY_COLOR.GRAY_3
@@ -214,7 +329,7 @@ export struct IBestField{
                         buttonBuilder: this.buttonBuilder,
                         customRightContent: this.customRightContent,
                         formatter: (value: string): string => this.formatter(value),
-                        onChange: (value: string): void => this.onChange(value),
+                        onChange: (value: IBestFieldValueType): void => this.onChange(value),
                         onClear: (): void => this.onClear(),
                         onFieldClick: (): void => this.onFieldClick(),
                         onFieldFocus: (): void => this.onFieldFocus(),
@@ -256,6 +371,7 @@ struct Label{
      */
     @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
     @Consume label: string
+    @Consume colon: string
     @Consume labelPosition: 'left' | 'top'
     @Consume labelAlign: FieldTextAlign
     @Consume labelWidth: number
@@ -284,7 +400,7 @@ struct Label{
                     .fontSize(this.baseStyle.fontSizeSm)
                     .fontColor(this.baseStyle.danger)
             }
-            Text(this.label)
+            Text(this.label + (this.colon ? ":" : ""))
                 .fontSize("28lpx")
                 .layoutWeight(1)
                 .constraintSize({ minHeight: "40lpx" })
@@ -300,7 +416,7 @@ struct Label{
 
 @Component
 struct Content{
-    @Link value: string
+    @Link value: IBestFieldValueType
     @State isFocus: boolean = false
     @Consume type: IBestFieldType
     @Consume autosize: boolean
@@ -319,12 +435,12 @@ struct Content{
     @Consume isLink: boolean
     @Consume clearIcon: string | Resource
     @Consume clearTrigger: ClearTriggerType
-    @Consume errorMessage: string
+    @Consume validateMessage: string
     @BuilderParam buttonBuilder: (() => void) | null
     @BuilderParam customRightContent: (() => void) | null
     @Consume formatTrigger: 'onChange' | 'onBlur'
-    formatter: (value: string) => string = (value: string): string => value
-    onChange: (value: string) => void = () => {}
+    formatter: (value: string) => string = (value: string) => value
+    onChange: (value: IBestFieldValueType) => void = () => {}
     onClear: () => void = () => {}
     onFieldClick: () => void = () => {}
     onFieldFocus: () => void = () => {}
@@ -374,10 +490,10 @@ struct Content{
                             .constraintSize({ minHeight: `${this.rows * 40}lpx` })
                             .lineHeight("40lpx")
                             .maxLength(this.maxlength)
-                            .showCounter(this.showWordLimit, {
-                                thresholdPercentage: 1,
-                                highlightBorder: false
-                            })
+                            // .showCounter(this.showWordLimit, {
+                            //     thresholdPercentage: 1,
+                            //     highlightBorder: false
+                            // })
                             .enableAutoFill(false)
                             .onChange((value: string) => {
                                 if (this.formatTrigger == 'onChange') {
@@ -392,7 +508,7 @@ struct Content{
                             .onBlur(() => {
                                 this.isFocus = false
                                 this.onFieldBlur()
-                                if (this.formatTrigger == 'onBlur') {
+                                if (this.formatTrigger == 'onBlur' && typeof this.value == "string") {
                                     this.value = this.formatter(this.value)
                                 }
                             })
@@ -404,10 +520,10 @@ struct Content{
                             .textAlign(this.inputAlign == 'center' ? TextAlign.Center :
                                 this.inputAlign == 'right' ? TextAlign.End : TextAlign.Start)
                             .maxLength(this.maxlength)
-                            .showCounter(this.showWordLimit, {
-                                thresholdPercentage: 1,
-                                highlightBorder: false
-                            })
+                            // .showCounter(this.showWordLimit, {
+                            //     thresholdPercentage: 1,
+                            //     highlightBorder: false
+                            // })
                             .selectionMenuHidden(true)
                             .enableAutoFill(false)
                             .type(this.getInputType())
@@ -424,7 +540,7 @@ struct Content{
                             .onBlur(() => {
                                 this.isFocus = false
                                 this.onFieldBlur()
-                                if (this.formatTrigger == 'onBlur') {
+                                if (this.formatTrigger == 'onBlur' && typeof this.value == "string") {
                                     this.value = this.formatter(this.value)
                                 }
                             })
@@ -466,8 +582,18 @@ struct Content{
                 }
             }
             .width(CONTAINER_SIZE.FULL)
-            if(this.errorMessage){
-                Text(this.errorMessage)
+            // 限制字数, 官方的showCounter属性在TextInput上正常, 在TextArea上有问题,输入文字后才会显示下面字数
+            if(typeof this.value == "string" && this.maxlength && this.showWordLimit){
+                Text(this.value.length + "/" + this.maxlength)
+                    .width(CONTAINER_SIZE.FULL)
+                    .textAlign(TextAlign.End)
+                    .fontSize("20lpx")
+                    .fontColor(GRAY_COLOR.GRAY_5)
+                    .margin({top: "8lpx"})
+            }
+            // 验证信息
+            if(this.validateMessage){
+                Text(this.validateMessage)
                     .fontSize("24lpx")
                     .fontColor(colorData.danger)
             }
