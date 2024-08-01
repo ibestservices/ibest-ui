@@ -49,6 +49,7 @@ export { IBestCascader } from './src/main/ets/components/cascader/index'
 export { IBestCascaderOption } from './src/main/ets/components/cascader/index.type'
 
 export { IBestField } from './src/main/ets/components/field/index'
+export { IBestFieldValueType } from './src/main/ets/components/field/index.type'
 
 export { IBestForm } from './src/main/ets/components/form/index'
 export { IBestFormController, IBestFormRule } from './src/main/ets/components/form/index.type'

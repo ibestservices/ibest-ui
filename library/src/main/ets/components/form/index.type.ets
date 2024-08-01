@@ -7,7 +7,7 @@ export interface IBestFormRuleItem {
 	required?: boolean
 	message?: string
 	pattern?: RegExp
-	validator?: (value: IBestFieldValueType) => boolean | string | Promise<boolean | string>
+	validator?: (value: string) => boolean | string | Promise<boolean | string>
 	trigger?: 'blur' | 'change'
 	min?: number
 	max?: number
@@ -67,11 +67,11 @@ export class IBestFormController {
 	/*
 	 * 验证整个/某个表单
 	 */
-	public validate: (callBack: (valid: boolean, field?: FieldValidateResult[]) => void) => void = () => {}
+	public validate: (callBack?: (valid: boolean, field: FieldValidateResult[]) => void) => void = () => {}
 	/*
 	 * 验证某个字段
 	 */
-	public validateField: (name: string, callBack: (valid: boolean, field?: FieldValidateResult[]) => void) => void = () => {}
+	public validateField: (name: string, callBack?: (valid: boolean, field?: FieldValidateResult[]) => void) => void = () => {}
 	/*
 	 * 重置校验结果
 	 */
@@ -85,10 +85,10 @@ export class IBestFormController {
 	}
 
 	constructor() {
-		this.validate = (callBack: (valid: boolean, field?: FieldValidateResult[]) => void) => {
+		this.validate = (callBack?: (valid: boolean, field: FieldValidateResult[]) => void) => {
 			emitter.emit(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE), callBack)
 		}
-		this.validateField = (name: string, callBack: (valid: boolean, field?: FieldValidateResult[]) => void) => {
+		this.validateField = (name: string, callBack?: (valid: boolean, field?: FieldValidateResult[]) => void) => {
 			emitter.emit(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), name, callBack)
 		}
 		this.resetValidation = (name?: string | string[]) => {

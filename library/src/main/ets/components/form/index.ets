@@ -30,14 +30,14 @@ export struct IBestForm {
 				if(this.formItems.findIndex((item: IBestFieldItem) => item.prop === data.prop) == -1){
 					this.formItems.push(data)
 				}
-				callBack(this.rules[data.prop])
+				callBack(this.rules[data.prop] || [])
 			})
 			// 监听表单验证
-			emitter.on(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE), (callBack: (valid: boolean, field?: FieldValidateResult[]) => void) => {
+			emitter.on(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE), (callBack?: (valid: boolean, field: FieldValidateResult[]) => void) => {
 				this.validateForm(callBack)
 			})
 			// 监听单个表单验证
-			emitter.on(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (prop: string, callBack: (valid: boolean, field?: FieldValidateResult) => void) => {
+			emitter.on(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (prop: string, callBack?: (valid: boolean, field?: FieldValidateResult) => void) => {
 				this.validateField(prop, callBack)
 			})
 			// 监听重置表单验证
@@ -51,13 +51,13 @@ export struct IBestForm {
 		}
 	}
 	// 验证表单
-	validateForm(callBack: (valid: boolean, field?: FieldValidateResult[]) => void) {
+	validateForm(callBack?: (valid: boolean, field: FieldValidateResult[]) => void) {
 		Promise.all(this.formItems.map((item: IBestFieldItem) => item.validate(this.rules[item.prop]))).then((errors) => {
 			errors = errors.filter(Boolean)
 			if (errors.length) {
-				callBack(false, errors)
+				callBack!(false, errors)
 			} else {
-				callBack(true, [])
+				callBack!(true, [])
 			}
 		})
 	}

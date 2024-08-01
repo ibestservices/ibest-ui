@@ -343,6 +343,7 @@ struct FieldPage {
                 }
             }
             .layoutWeight(1)
+            .padding({bottom: SPACE.MEDIA})
         }
         .width(CONTAINER_SIZE.FULL)
         .height(CONTAINER_SIZE.FULL)

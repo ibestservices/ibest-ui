@@ -7,8 +7,13 @@ import { FieldValidateResult, FORM_EVENT_NAME, getFormEventName, IBestFormRuleIt
 import type { IBestFieldType, ClearTriggerType, FieldTextAlign, IBestFieldValueType } from './index.type'
 import { emitter } from '../../assets/ets/EventEmitter'
 import { runRuleValidator, runSyncRule } from './utils'
+
 @Component
 export struct IBestField{
+    /**
+     * 全局公共样式
+     */
+    @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
     /*
      * form id 用于验证
      */
@@ -136,11 +141,11 @@ export struct IBestField{
     /*
      * 右侧按钮builder
      */
-    @BuilderParam buttonBuilder: (() => void) | null
+    @BuilderParam buttonBuilder?: () => void
     /*
      * 自定义右侧内容
      */
-    @BuilderParam customRightContent: (() => void) | null
+    @BuilderParam customRightContent?: () => void
     /*
      * 执行格式化函数触发时机
      */
@@ -177,6 +182,31 @@ export struct IBestField{
      * 右侧图标点击时触发
      */
     onRightIconClick: () => void = () => {}
+
+    @Styles fieldStyles(){
+        .width(CONTAINER_SIZE.FULL)
+        .backgroundColor(this.baseStyle.default)
+        .padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
+        .stateStyles({
+            normal: {
+                .backgroundColor(this.baseStyle.default)
+            },
+            pressed: {
+                .backgroundColor((this.clickable || this.isLink) ? GRAY_COLOR.GRAY_2 : this.baseStyle.default)
+            }
+        })
+        .onClick(() => {
+            this.onFieldClick()
+        })
+    }
+    @Styles fieldContentStyles(){
+        .padding({ top: '20lpx', bottom: '20lpx' })
+        .border({
+            width: { bottom: this.hasBorder ? '2lpx' : 0 },
+            color: GRAY_COLOR.GRAY_3
+        })
+        .opacity(this.disabled ? 0.5 : 1)
+    }
 
     onDidBuild(): void {
         if(this.formId && this.prop){
@@ -234,7 +264,7 @@ export struct IBestField{
                 this.validateMessage = rule.message || ''
                 return
             }
-            if (rule.validator) {
+            if (rule.validator && typeof value === 'string') {
                 await runRuleValidator(value, rule).then(result => {
                     if (result && typeof result === 'string') {
                         this.status = 'failed'
@@ -298,28 +328,10 @@ export struct IBestField{
                         onRightIconClick: (): void => this.onRightIconClick()
                     })
                 }
-                .padding({ top: '20lpx', bottom: '20lpx' })
                 .alignItems((this.showWordLimit || this.autosize || this.validateMessage) ? VerticalAlign.Top : VerticalAlign.Center)
-                .border({
-                    width: { bottom: this.hasBorder ? '2lpx' : 0 },
-                    color: GRAY_COLOR.GRAY_3
-                })
-                .opacity(this.disabled ? 0.5 : 1)
+                .fieldContentStyles()
             }
-            .width(CONTAINER_SIZE.FULL)
-            .backgroundColor('#fff')
-            .padding({ left: '32lpx', right: '32lpx' })
-            .stateStyles({
-                normal: {
-                    .backgroundColor('#fff')
-                },
-                pressed: {
-                    .backgroundColor((this.clickable || this.isLink) ? '#f2f3f5' : '#fff')
-                }
-            })
-            .onClick(() => {
-                this.onFieldClick()
-            })
+            .fieldStyles()
         }else{
             Column(){
                 Column(){
@@ -337,29 +349,11 @@ export struct IBestField{
                         onRightIconClick: (): void => this.onRightIconClick()
                     })
                 }
-                .padding({ top: '20lpx', bottom: '20lpx' })
                 .alignItems(HorizontalAlign.Start)
-                .border({
-                    width: { bottom: this.hasBorder ? '2lpx' : 0 },
-                    color: GRAY_COLOR.GRAY_3
-                })
-                .opacity(this.disabled ? 0.5 : 1)
+                .fieldContentStyles()
             }
-            .width(CONTAINER_SIZE.FULL)
             .alignItems(HorizontalAlign.Start)
-            .backgroundColor('#fff')
-            .padding({ left: '32lpx', right: '32lpx' })
-            .stateStyles({
-                normal: {
-                    .backgroundColor('#fff')
-                },
-                pressed: {
-                    .backgroundColor((this.clickable || this.isLink) ? '#f2f3f5' : '#fff')
-                }
-            })
-            .onClick(() => {
-                this.onFieldClick()
-            })
+            .fieldStyles()
         }
     }
 }
@@ -387,7 +381,7 @@ struct Label{
                     .width("28lpx")
                     .fillColor(this.leftIconColor)
                     .aspectRatio(1)
-                    .margin({right: "8lpx"})
+                    .margin({right: this.baseStyle.spaceBase})
                     .onClick(() => {
                         this.onLeftIconClick()
                     })
@@ -401,14 +395,14 @@ struct Label{
                     .fontColor(this.baseStyle.danger)
             }
             Text(this.label + (this.colon ? ":" : ""))
-                .fontSize("28lpx")
+                .fontSize(this.baseStyle.fontSizeMd)
                 .layoutWeight(1)
                 .constraintSize({ minHeight: "40lpx" })
-                .lineHeight("40lpx")
+                .lineHeight(this.baseStyle.lineHeightMd)
                 .textAlign(this.labelAlign == "left" ? TextAlign.Start : this.labelAlign == "center" ? TextAlign.Center : TextAlign.End)
         }
         .width(this.labelPosition == "left" ? `${this.labelWidth}lpx` : CONTAINER_SIZE.FULL)
-        .margin({right: "24lpx"})
+        .margin({right: this.baseStyle.spaceSm})
         .alignItems(VerticalAlign.Center)
     }
 }
@@ -416,6 +410,10 @@ struct Label{
 
 @Component
 struct Content{
+    /**
+     * 全局公共样式
+     */
+    @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
     @Link value: IBestFieldValueType
     @State isFocus: boolean = false
     @Consume type: IBestFieldType
@@ -436,8 +434,8 @@ struct Content{
     @Consume clearIcon: string | Resource
     @Consume clearTrigger: ClearTriggerType
     @Consume validateMessage: string
-    @BuilderParam buttonBuilder: (() => void) | null
-    @BuilderParam customRightContent: (() => void) | null
+    @BuilderParam buttonBuilder?: () => void
+    @BuilderParam customRightContent?: () => void
     @Consume formatTrigger: 'onChange' | 'onBlur'
     formatter: (value: string) => string = (value: string) => value
     onChange: (value: IBestFieldValueType) => void = () => {}
@@ -452,7 +450,7 @@ struct Content{
         .padding(0)
         .borderRadius(0)
         .backgroundColor("transparent")
-        .enabled(!(this.disabled || this.readOnly))
+        .enabled(!(this.disabled || this.readOnly || this.isLink))
         .onClick(() => {
             this.onFieldClick()
         })
@@ -487,8 +485,12 @@ struct Content{
                     if (this.autosize) {
                         TextArea({ text: $$this.value, placeholder: this.placeholder })
                             .inputStyle()
+                            .fontSize(this.baseStyle.fontSizeMd)
+                            .placeholderFont({
+                                size: this.baseStyle.fontSizeMd
+                            })
                             .constraintSize({ minHeight: `${this.rows * 40}lpx` })
-                            .lineHeight("40lpx")
+                            .lineHeight(this.baseStyle.lineHeightMd)
                             .maxLength(this.maxlength)
                             // .showCounter(this.showWordLimit, {
                             //     thresholdPercentage: 1,
@@ -515,8 +517,12 @@ struct Content{
                     } else {
                         TextInput({ text: $$this.value, placeholder: this.placeholder })
                             .inputStyle()
-                            .height("40lpx")
-                            .lineHeight("40lpx")
+                            .fontSize(this.baseStyle.fontSizeMd)
+                            .placeholderFont({
+                                size: this.baseStyle.fontSizeMd
+                            })
+                            .height(this.baseStyle.lineHeightMd)
+                            .lineHeight(this.baseStyle.lineHeightMd)
                             .textAlign(this.inputAlign == 'center' ? TextAlign.Center :
                                 this.inputAlign == 'right' ? TextAlign.End : TextAlign.Start)
                             .maxLength(this.maxlength)
@@ -550,7 +556,7 @@ struct Content{
                         Image($r("app.media.icon_clear"))
                             .width("40lpx")
                             .aspectRatio(1)
-                            .margin({ left: "8lpx" })
+                            .margin({ left: this.baseStyle.spaceBase })
                             .onClick(() => {
                                 this.value = ''
                                 this.onClear()
@@ -567,7 +573,7 @@ struct Content{
                         .width("28lpx")
                         .aspectRatio(1)
                         .fillColor(this.rightIconColor)
-                        .margin({left: "8lpx"})
+                        .margin({left: this.baseStyle.spaceBase})
                         .onClick(() => {
                             this.onRightIconClick()
                         })
@@ -578,7 +584,7 @@ struct Content{
                         .width("28lpx")
                         .aspectRatio(1)
                         .fillColor(this.rightIconColor)
-                        .margin({left: "8lpx"})
+                        .margin({left: this.baseStyle.spaceBase})
                 }
             }
             .width(CONTAINER_SIZE.FULL)
@@ -587,15 +593,16 @@ struct Content{
                 Text(this.value.length + "/" + this.maxlength)
                     .width(CONTAINER_SIZE.FULL)
                     .textAlign(TextAlign.End)
-                    .fontSize("20lpx")
+                    .fontSize(this.baseStyle.fontSizeXs)
                     .fontColor(GRAY_COLOR.GRAY_5)
-                    .margin({top: "8lpx"})
+                    .margin({top: this.baseStyle.spaceBase})
             }
             // 验证信息
             if(this.validateMessage){
                 Text(this.validateMessage)
-                    .fontSize("24lpx")
+                    .fontSize(this.baseStyle.fontSizeSm)
                     .fontColor(colorData.danger)
+                    .margin({top: this.baseStyle.spaceBase})
             }
         }
         .width(this.labelPosition == "top" ? CONTAINER_SIZE.FULL : "auto")

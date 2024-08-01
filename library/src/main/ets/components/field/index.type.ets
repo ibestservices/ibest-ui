@@ -1,7 +1,7 @@
 /*
  * field 值类型
  */
-export type IBestFieldValueType = string | boolean | [string | number]
+export type IBestFieldValueType = string | number | boolean | Array<string | number>
 /*
  * 文本对齐方式
  */

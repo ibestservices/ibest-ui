@@ -49,6 +49,10 @@ struct Index {
       path: 'pages/Field'
     },
     {
+      name: 'Form 表单',
+      path: 'pages/Form'
+    },
+    {
       name: 'Radio 单选框',
       path: 'pages/Radio'
     },

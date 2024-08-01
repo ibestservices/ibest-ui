@@ -27,7 +27,7 @@ export function runSyncRule(value: IBestFieldValueType, rule: IBestFormRuleItem)
 	return true
 }
 
-export function runRuleValidator(value: IBestFieldValueType, rule: IBestFormRuleItem) {
+export function runRuleValidator(value: string, rule: IBestFormRuleItem) {
 	return new Promise<string | boolean>((resolve) => {
 		const returnVal = rule.validator!(value)
 		if (typeof returnVal != "boolean" && typeof returnVal != "string") {

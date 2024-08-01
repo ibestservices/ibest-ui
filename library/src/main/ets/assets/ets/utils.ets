@@ -2,6 +2,7 @@ import { componentUtils, ComponentUtils, window } from '@kit.ArkUI'
 import { ComInfoType, ComAvoidAreaSize } from '../../utils/Global.type'
 import { common } from '@kit.AbilityKit'
 import { AnyType } from '../../utils/AnyType'
+import { resourceManager } from '@kit.LocalizationKit'
 /**
  * 休眠
  * @param {number} time 休眠时间
@@ -144,3 +145,9 @@ export const isFunction = (val: AnyType): boolean => typeof val === 'function'
  * 是否是Promise
  */
 export const isPromise = (val: AnyType): boolean => isObject(val) && isFunction(val.then) && isFunction(val.catch)
+/*
+ * 获取是否横屏
+ */
+export const getIsLandscape = (context: Context): boolean => {
+  return context.resourceManager.getConfigurationSync().direction == resourceManager.Direction.DIRECTION_HORIZONTAL
+}

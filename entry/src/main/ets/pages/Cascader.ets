@@ -82,6 +82,40 @@ struct CascaderPage {
 					]
 				}
 			]
+		},
+		{
+			text: "安徽省",
+			value: "340000",
+			children: [
+				{
+					text: "合肥市",
+					value: "340100",
+					children: [
+						{
+							text: "蜀山区",
+							value: "340104"
+						},
+						{
+							text: "合肥高新技术产业开发区",
+							value: "340171"
+						}
+					]
+				},
+				{
+					text: "黄山市",
+					value: "341000",
+					children: [
+						{
+							text: "屯溪区",
+							value: "341002"
+						},
+						{
+							text: "黄山区",
+							value: "341003"
+						}
+					]
+				}
+			]
 		}
 	]
 

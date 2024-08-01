@@ -13,7 +13,7 @@ import { fontSizeData } from '../../theme-chalk/src/font'
 import { IBestButton } from '../button'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type'
 import promptAction from '@ohos.promptAction'
-
+import { getIsLandscape } from '../../assets/ets/utils'
 class DayItemObj{
     date: Dayjs = dayjs()
     dateStr: string = ""
@@ -87,8 +87,8 @@ struct CalendarItem {
             if(this.selectedList.length){
                 let first = this.selectedList[0]
                 let last = this.selectedList[this.selectedList.length - 1]
-                this.fontColor = item.isSelected ? dateStr == first.dateStr || dateStr == last.dateStr ? "#fff" : this
-                    .selectedColor || this.baseStyle[this.type] : item.isCurMonthDay ? "#333" : "#999"
+                this.fontColor = item.isSelected ? dateStr == first.dateStr || dateStr == last.dateStr ? this
+                    .baseStyle.default : this.selectedColor || this.baseStyle[this.type] : item.isCurMonthDay ? "#333" : "#999"
                 this.bgColor = item.isSelected ? dateStr == first.dateStr || dateStr == last.dateStr ? this.selectedColor || this.baseStyle[this.type]
                     : this.selectedColor ? this.set16ToRgb(this.selectedColor) : this.baseStyle[this.type + "Opacity"] :
                     "transparent"
@@ -97,7 +97,7 @@ struct CalendarItem {
                 this.bgColor = item.isSelected ? this.selectedColor ? this.set16ToRgb(this.selectedColor) : this.baseStyle[this.type + "Opacity"] : "transparent"
             }
         }else{
-            this.fontColor = this.dayItem.isCurMonthDay ? this.dayItem.isSelected ? "#fff" : "#333" : "#999"
+            this.fontColor = this.dayItem.isCurMonthDay ? this.dayItem.isSelected ? this.baseStyle.default : "#333" : "#999"
             this.bgColor = this.dayItem.isSelected ? this.selectedColor || this.baseStyle[this.type] : "transparent"
         }
     }
@@ -138,7 +138,7 @@ struct CalendarItem {
         .borderRadius(this.selectedStyleType == "circle" ? 8888 : borderRadiusData.borderRadiusSm)
         .backgroundColor(this.bgColor)
         .justifyContent(FlexAlign.Center)
-        .margin({bottom: 4})
+        .margin({bottom: this.baseStyle.spaceBase})
     }
 }
 
@@ -149,6 +149,8 @@ export struct IBestCalendar{
      * 全局公共样式
      */
     @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+    // 是否横屏
+    @State isLandscape: boolean = getIsLandscape(getContext(this))
     /*
      * 默认选中日期
      */
@@ -325,23 +327,23 @@ export struct IBestCalendar{
         let list: Array<DayItemType> = []
         // 获取当前月份1号是周几
         let firstDayWeekNum = this.getWeekNum(dayjs(this.curYearMonth).date(1))
-        console.log(`本月第一天周${firstDayWeekNum}`)
+        // console.log(`本月第一天周${firstDayWeekNum}`)
         // 获取本月多少天
         let curMonthDays = dayjs(this.curYearMonth).daysInMonth()
         // 获取当前月份最后一天是周几
         let lastDayWeekNum = this.getWeekNum(dayjs(this.curYearMonth).date(curMonthDays))
-        console.log(`本月最后一天周${lastDayWeekNum}`)
+        // console.log(`本月最后一天周${lastDayWeekNum}`)
         // 需补上月多少天
         let preMonthDays: number = this.headerList.findIndex((item) => item.key == firstDayWeekNum)
-        console.log(`需补上月preMonthDays ${preMonthDays}天`)
+        // console.log(`需补上月preMonthDays ${preMonthDays}天`)
         // 需补下月多少天
         let nextMonthDays: number = 42 - preMonthDays - curMonthDays
-        console.log(`需补下月nextMonthDays ${nextMonthDays}天`)
+        // console.log(`需补下月nextMonthDays ${nextMonthDays}天`)
         if(preMonthDays){
             let day = dayjs(this.curYearMonth).subtract(1, 'month')
             // 获取上月多少天
             let preMonthDaysNum = day.daysInMonth()
-            console.log(`上月${preMonthDaysNum}天`)
+            // console.log(`上月${preMonthDaysNum}天`)
             for(let i = preMonthDaysNum - preMonthDays + 1; i <= preMonthDaysNum; i++){
                 let val = day.date(i)
                 let dateStr = val.format('YYYY-MM-DD')
@@ -559,7 +561,7 @@ export struct IBestCalendar{
      * 提交
      */
     confirm(){
-         typeof this.onConfirm == 'function' && this.onConfirm(this.selectedList.map(e => {
+         this.onConfirm(this.selectedList.map(e => {
             let obj: CalendarConfirmResultType = {
                 date: e.date.toDate(),
                 dateStr: e.dateStr
@@ -584,92 +586,80 @@ export struct IBestCalendar{
             Row(){
                 Row(){
                     Image($r("app.media.arrow_left_double"))
-                        .width(14)
+                        .width("28lpx")
                         .onClick(() => {
                             this.changeYearMonth("preYear")
                         })
                     Image($r("app.media.arrow_left"))
-                        .width(14)
+                        .width("28lpx")
                         .onClick(() => {
                             this.changeYearMonth("preMonth")
                         })
                 }
                 Text(this.curYearMonth)
+                    .fontSize(this.baseStyle.fontSizeMd)
                 Row(){
                     Image($r("app.media.arrow_right"))
-                        .width(14)
+                        .width("28lpx")
                         .onClick(() => {
                             this.changeYearMonth("nextMonth")
                         })
                     Image($r("app.media.arrow_right_double"))
-                        .width(14)
+                        .width("28lpx")
                         .onClick(() => {
                             this.changeYearMonth("nextYear")
                         })
                 }
             }
             .width('100%')
-            .height(40)
-            .padding({left: 12, right: 12})
+            .height(this.isLandscape ? "40lpx" : "80lpx")
+            .padding({left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd})
             .justifyContent(FlexAlign.SpaceBetween)
-            Column(){
-                Row(){
-                    ForEach(this.headerList, (item: HeaderItemType) => {
-                        Text(item.text).headerStyle(this.itemWidth)
-                    }, (item: HeaderItemType) => item.text)
-                }
-                .width('100%')
-                .height(40)
-                .justifyContent(FlexAlign.SpaceBetween)
-                .visibility(this.isShowHeader ? Visibility.Visible : Visibility.None)
-                Stack(){
-                    if(this.daysList.length){
-                        Flex({wrap: FlexWrap.Wrap, justifyContent: FlexAlign.SpaceBetween}){
+            .visibility(this.isShowHeader ? Visibility.Visible : Visibility.None)
+            Row() {
+                ForEach(this.headerList, (item: HeaderItemType) => {
+                    Text(item.text).headerStyle(this.itemWidth)
+                }, (item: HeaderItemType) => item.text)
+            }
+            .width('100%')
+            .height(this.isLandscape ? "40lpx" : "80lpx")
+            .justifyContent(FlexAlign.SpaceBetween)
+            .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
+            Scroll() {
+                Stack() {
+                    if (this.daysList.length) {
+                        Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.SpaceBetween }) {
                             ForEach(this.daysList, (item: DayItemType) => {
-                                CalendarItem({dayItem: item})
+                                CalendarItem({ dayItem: item })
                                     .onClick(() => {
                                         this.selectDate(item)
                                     })
-                            })  // 这里写 (item: DayItemType) => item.dateStr 渲染会有问题  不知为啥！！！！！
+                            }) // 这里写 (item: DayItemType) => item.dateStr 渲染会有问题  不知为啥！！！！！
                         }
                     }
                     Text(this.curMonth)
-                        .fontSize(150)
-                        .fontColor("#f2f3f5")
+                        .fontSize("300lpx")
+                        .fontColor(GRAY_COLOR.GRAY_2)
                         .zIndex(-1)
                         .visibility(this.isShowMark ? Visibility.Visible : Visibility.Hidden)
                 }
-                Button(this.confirmBtnText)
-                    .type(ButtonType.Capsule)
-                    .width('96%')
-                    .height(30)
-                    .fontSize(FONT_SIZE.SM)
-                    .margin({top: 10})
-                    .backgroundColor(this.getBtnBgColor())
-                    .visibility(this.isShowConfirmBtn ? Visibility.Visible : Visibility.None)
-                    .onClick(() => {
-                        this.confirm()
-                    })
-                // 宽高有问题！！！
-                // IBestButton({
-                //     text: "确定",
-                //     type: this.type,
-                //     buttonSize: SIZE.LARGE,
-                //     round: true,
-                //     color: this.selectedColor,
-                //     disabled: !this.selectedList.length,
-                //     onClickBtn: () => {
-                //         this.confirm()
-                //     }
-                // })
-                // .width('100%').height(30)
-                // .visibility(this.isShowConfirmBtn ? Visibility.Visible : Visibility.None)
             }
-            .width('100%')
-            .padding({left: 10, right: 10})
+            .layoutWeight(this.isLandscape ? 1 : 0)
+            .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
+            Button(this.confirmBtnText)
+                .type(ButtonType.Capsule)
+                .width('90%')
+                .height(this.isLandscape ? "40lpx" : "60lpx")
+                .fontSize(this.baseStyle.fontSizeSm)
+                .margin({top: this.baseStyle.spaceXs})
+                .backgroundColor(this.getBtnBgColor())
+                .visibility(this.isShowConfirmBtn ? Visibility.Visible : Visibility.None)
+                .onClick(() => {
+                    this.confirm()
+                })
         }
         .width('100%')
-        .padding({top: 10, bottom: 10})
+        .padding({top: this.baseStyle.spaceXs, bottom: this.baseStyle.spaceXs})
         .backgroundColor("#fff")
     }
 }

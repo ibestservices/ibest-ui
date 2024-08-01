@@ -36,6 +36,7 @@ struct PopupPage {
 	@Builder centerBuilder() {
 		Row() {
 			Text("内容")
+				.fontSize("24lpx")
 		}
 		.width("100%")
 		.aspectRatio(1)
@@ -43,8 +44,8 @@ struct PopupPage {
 	}
 	@Builder safeBuilder() {
 		Column(){
-			Text("内容")
-			Text("内容")
+			Text("内容").fontSize("24lpx")
+			Text("内容").fontSize("24lpx")
 		}
 		.width("100%")
 		.height("100%")
@@ -211,7 +212,7 @@ struct PopupPage {
 			// 基础展示
 			IBestPopup({
 				visible: $baseVisible,
-				popupWidth: 500,
+				popupWidth: 300,
 				contentBuilder: this.centerBuilder
 			})
 			// 弹框位置
@@ -234,7 +235,7 @@ struct PopupPage {
 			// 关闭图标
 			IBestPopup({
 				visible: $showHeaderVisible,
-				popupWidth: 500,
+				popupWidth: 300,
 				cornerRadius: 20,
 				isShowHeader: true,
 				title: "标题",
@@ -250,7 +251,7 @@ struct PopupPage {
 			// 圆角弹窗
 			IBestPopup({
 				visible: $centerCornerVisible,
-				popupWidth: 500,
+				popupWidth: 300,
 				cornerRadius: 10,
 				contentBuilder: this.centerBuilder
 			})

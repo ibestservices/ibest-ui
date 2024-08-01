@@ -1,10 +1,9 @@
 import { FONT_SIZE } from '../../theme-chalk/src/font.type'
 import { spaceData } from '../../theme-chalk/src/space'
 import { emitter } from '../../assets/ets/EventEmitter'
-import { getWindowAvoidSize } from '../../assets/ets/utils'
+import { getIsLandscape, getWindowAvoidSize } from '../../assets/ets/utils'
 import { common } from '@kit.AbilityKit'
 import { PopupAlign } from './index.type'
-
 
 @CustomDialog
 @Component
@@ -45,9 +44,9 @@ struct IBestPopupBaseContent {
 	 * 底部规避尺寸
 	 */
 	@Prop bottomAvoidSize: number
-
-	@BuilderParam contentBuilder: () => void
-	controller: CustomDialogController
+	@Builder defaultBuilder(){}
+	@BuilderParam contentBuilder: () => void = this.defaultBuilder
+	controller?: CustomDialogController
 
 	build() {
 		Column(){
@@ -77,6 +76,11 @@ struct IBestPopupBaseContent {
 
 @Component
 export struct IBestPopup{
+	// 是否横屏
+	@State isLandscape: boolean = getIsLandscape(getContext(this))
+	/*
+	 * 唯一id
+	 */
 	@Provide uniId: number = 0
 	/*
 	 * 弹框展示状态
@@ -204,18 +208,24 @@ export struct IBestPopup{
 		switch (this.popupAlign){
 			case "left":
 			case "right":
-				this.popupWidth = this.popupWidth === "" ? "60%" : typeof this.popupWidth == "string" ? this
-					.popupWidth : (this.popupWidth + "lpx")
+				if(this.isLandscape){
+					this.popupWidth = this.popupWidth === "" ? "70%" : typeof this.popupWidth == "string" ? this.popupWidth : (this.popupWidth + "lpx")
+				}else{
+					this.popupWidth = this.popupWidth === "" ? "60%" : typeof this.popupWidth == "string" ? this.popupWidth : (this.popupWidth + "lpx")
+				}
 				this.popupHeight = this.popupHeight || "100%"
 				break
 			case "top":
 			case "bottom":
 				this.popupWidth = this.popupWidth || "100%"
-				this.popupHeight = this.popupHeight === "" ? "40%" : typeof this.popupHeight == "string" ? this.popupHeight : (this.popupHeight + "lpx")
+				if(this.isLandscape){
+					this.popupHeight = this.popupHeight === "" ? "70%" : typeof this.popupHeight == "string" ? this.popupHeight : (this.popupHeight + "lpx")
+				}else{
+					this.popupHeight = this.popupHeight === "" ? "40%" : typeof this.popupHeight == "string" ? this.popupHeight : (this.popupHeight + "lpx")
+				}
 				break
 			case "center":
-				this.popupWidth = this.popupWidth ? typeof this.popupWidth == "string" ? this.popupWidth : this
-					.popupWidth + "lpx" : ""
+				this.popupWidth = this.popupWidth ? typeof this.popupWidth == "string" ? this.popupWidth : this.popupWidth + "lpx" : ""
 				this.popupHeight = ""
 				break
 		}
@@ -262,7 +272,7 @@ struct PopupTitle {
 				})
 		}
 		.width("100%")
-		.height("80lpx")
+		.height("60lpx")
 		.padding({ left: spaceData.spaceMd, right: spaceData.spaceMd})
 		.justifyContent(FlexAlign.SpaceBetween)
 		.alignItems(VerticalAlign.Center)

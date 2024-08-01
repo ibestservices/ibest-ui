@@ -18,6 +18,7 @@
 		"pages/Tab",
 		"pages/Popup",
 		"pages/Cascader",
-		"pages/Field"
+		"pages/Field",
+		"pages/Form"
 	]
 }
