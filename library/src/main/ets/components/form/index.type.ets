@@ -1,5 +1,7 @@
 import { emitter } from '../../assets/ets/EventEmitter'
-import { IBestFieldValueType } from '../field/index.type'
+import { FieldTextAlign, IBestFieldValueType,
+	LabelPositionType,
+	RequireAsteriskPositionType } from '../field/index.type'
 /*
  * 验证规则
  */
@@ -44,9 +46,23 @@ export function getFormEventName(formId: string, eventName: string): string {
 	return `IBestForm_${formId}_${eventName}`
 }
 /*
+ * SEND_FIELD 回调参数
+ */
+export interface IBestFormSendFieldCallResult {
+	rules: IBestFormRuleItem[]
+	labelWidth: number
+	labelPosition: LabelPositionType
+	labelAlign: FieldTextAlign
+	colon: boolean
+	requireAsteriskPosition: RequireAsteriskPositionType
+	showMessage: boolean
+	disabled: boolean
+}
+/*
  * 表单验证结果
  */
 export interface FieldValidateResult{
+	label: string
 	name: string
 	message: string
 }

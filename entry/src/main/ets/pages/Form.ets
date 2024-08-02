@@ -28,15 +28,6 @@ struct FieldPage {
 	@State name: string = ""
 	@State phone: string = ""
 	private formId1: string = 'form1'
-	private rules1: IBestFormRule = {
-		"name": [
-			{ required: true, message: '请输入姓名' },
-			{ min: 3, max: 10, message: '姓名长度在3-10个字符之间' }
-		],
-		"phone": [
-			{ required: true, message: '请输入手机号' }
-		]
-	}
 	private controller1: IBestFormController = new IBestFormController()
 
 	@State value1: string = "123"
@@ -243,7 +234,6 @@ struct FieldPage {
 			max: 99,
 			step: 1,
 			onChange: value => {
-				console.log("", value)
 				this.value9 = Number(value)
 			}
 		})
@@ -259,7 +249,6 @@ struct FieldPage {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL }) {
 						IBestForm({
 							formId: this.formId1,
-							rules: this.rules1,
 							controller: this.controller1
 						}){
 							IBestCellGroup({inset: true}) {
@@ -268,7 +257,11 @@ struct FieldPage {
 									prop: 'name',
 									value: $name,
 									label: "姓名",
-									placeholder: "请输入姓名"
+									placeholder: "请输入姓名",
+									rules:[
+										{ required: true, message: '请输入姓名' },
+										{ min: 3, max: 10, message: '姓名长度在3-10个字符之间' }
+									]
 								})
 								IBestField({
 									formId: this.formId1,
@@ -276,7 +269,10 @@ struct FieldPage {
 									value: $phone,
 									label: "手机号",
 									placeholder: "请输入手机号",
-									hasBorder: false
+									hasBorder: false,
+									rules: [
+										{ required: true, message: '请输入手机号' }
+									]
 								})
 								IBestButton({
 									text: "提交",
@@ -287,9 +283,9 @@ struct FieldPage {
 											if (valid) {
 												IBestToast.show("验证成功")
 											} else {
-												let names: string[] = fields.map(item => item.name)
+												let labels: string[] = fields.map(item => item.label)
 												IBestToast.show({
-													message: `${names.join(',')}验证失败`,
+													message: `${labels.join(',')}验证失败`,
 													wordBreak: "break-all"
 												})
 											}
@@ -403,8 +399,10 @@ struct FieldPage {
 									prop: 'value10',
 									value: this.value10,
 									label: "选择城市",
+									placeholder: "请选择城市",
 									isLink: true,
 									onFieldClick: () => {
+										console.log("点击选择城市")
 										this.visible = true
 									}
 								})
@@ -413,6 +411,7 @@ struct FieldPage {
 									prop: 'value11',
 									value: this.value11,
 									label: "日历",
+									placeholder: "请选择日期",
 									isLink: true,
 									onFieldClick: () => {
 										this.visible1 = true

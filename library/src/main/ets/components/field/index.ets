@@ -3,8 +3,12 @@ import { colorData } from '../../theme-chalk/src/color'
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { FieldValidateResult, FORM_EVENT_NAME, getFormEventName, IBestFormRuleItem } from '../form/index.type'
-import type { IBestFieldType, ClearTriggerType, FieldTextAlign, IBestFieldValueType } from './index.type'
+import { FieldValidateResult, FORM_EVENT_NAME, getFormEventName, IBestFormRuleItem,
+    IBestFormSendFieldCallResult } from '../form/index.type'
+import type { IBestFieldType, ClearTriggerType, FieldTextAlign, IBestFieldValueType,
+    RequireAsteriskPositionType,
+    LabelPositionType,
+    FormatTriggerType} from './index.type'
 import { emitter } from '../../assets/ets/EventEmitter'
 import { runRuleValidator, runSyncRule } from './utils'
 
@@ -37,19 +41,19 @@ export struct IBestField{
     /*
      * 是否在label后加冒号
      */
-    @Provide colon: boolean = false
+    @Provide colon?: boolean = undefined
     /*
      * 文本宽度
      */
-    @Provide labelWidth: number = 160
+    @Provide labelWidth: number = 0
     /*
      * 文本位置
      */
-    @Provide labelPosition: 'left' | 'top' = "left"
+    @Provide labelPosition: LabelPositionType = ''
     /*
      * 文本对齐方式
      */
-    @Provide labelAlign: FieldTextAlign = "left"
+    @Provide labelAlign: FieldTextAlign = ''
     /*
      * 输入框占位提示文字
      */
@@ -58,6 +62,14 @@ export struct IBestField{
      * 输入框类型
      */
     @Provide type: IBestFieldType = "normal"
+    /*
+     * 小数点位数
+     */
+    @Provide decimalLength: number = -1
+    /*
+     * 是否显示密码框末尾图标
+     */
+    @Provide showPasswordIcon: boolean = true
     /*
      * 输入框自适应高度
      */
@@ -79,13 +91,17 @@ export struct IBestField{
      */
     @Provide inputAlign: FieldTextAlign = "left"
     /*
-     * 是否必填
+     * 是否必填, 仅控制*显隐
      */
-    @Provide required: boolean = false
+    @Provide required?: boolean = undefined
+    /*
+     * 星号的位置
+     */
+    @Provide requireAsteriskPosition: RequireAsteriskPositionType = ''
     /*
      * 是否禁用
      */
-    @Provide disabled: boolean = false
+    @Provide disabled?: boolean = undefined
     /*
      * 是否只读
      */
@@ -135,6 +151,10 @@ export struct IBestField{
      */
     @Provide status: 'passed' | 'failed' | 'unvalidated' = 'unvalidated'
     /*
+     * 是否显示验证信息
+     */
+    @Provide showMessage?: boolean = undefined
+    /*
      * 验证信息
      */
     @Provide validateMessage: string = ""
@@ -149,11 +169,11 @@ export struct IBestField{
     /*
      * 执行格式化函数触发时机
      */
-    @Provide formatTrigger: 'onChange' | 'onBlur' = 'onChange'
+    @Provide formatTrigger: FormatTriggerType = 'onchange'
     /*
      * 格式化函数
      */
-    formatter: (value: string) => string = (value: string) => value
+    formatter?: ((value: string) => string) | undefined
     /*
      * value变化回调函数
      */
@@ -195,6 +215,8 @@ export struct IBestField{
                 .backgroundColor((this.clickable || this.isLink) ? GRAY_COLOR.GRAY_2 : this.baseStyle.default)
             }
         })
+        .enabled(!(this.disabled || this.readOnly))
+        .opacity(this.disabled ? 0.6 : 1)
         .onClick(() => {
             this.onFieldClick()
         })
@@ -205,29 +227,36 @@ export struct IBestField{
             width: { bottom: this.hasBorder ? '2lpx' : 0 },
             color: GRAY_COLOR.GRAY_3
         })
-        .opacity(this.disabled ? 0.5 : 1)
     }
 
-    onDidBuild(): void {
+    aboutToAppear(): void {
         if(this.formId && this.prop){
             emitter.emit(getFormEventName(this.formId, FORM_EVENT_NAME.SEND_FIELD), {
                 prop: this.prop,
                 validate: (rules: IBestFormRuleItem[]):Promise<void | FieldValidateResult> => this.validate(rules),
                 getValue: (): IBestFieldValueType => this.value,
                 resetValidation: (): void => this.resetValidation()
-            }, (rules: IBestFormRuleItem[]): void => this.saveRule(rules))
+            }, (result: IBestFormSendFieldCallResult): void => this.init(result))
+        }else{
+            this.init()
         }
     }
     aboutToDisappear(): void {
         if(this.formId && this.prop) {
             emitter.off(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), () => {})
-            emitter.off(getFormEventName(this.formId, FORM_EVENT_NAME.RESET_VALIDATE), () => {})
         }
     }
-    // 保存规则,并展示必填星号
-    saveRule(rules: IBestFormRuleItem[]){
-        this.rules = this.rules.length ? this.rules : rules
-        this.required = this.rules.some((item: IBestFormRuleItem) => item.required)
+    // 初始化参数
+    init(results?: IBestFormSendFieldCallResult){
+        this.rules = this.rules.length ? this.rules : (results?.rules || [])
+        this.required = typeof this.required != "undefined" ? this.required : this.rules.length > 0 && this.rules.some((item: IBestFormRuleItem) => item.required)
+        this.labelWidth = this.labelWidth || results?.labelWidth || 160
+        this.labelPosition = this.labelPosition || results?.labelPosition || 'left'
+        this.labelAlign = this.labelAlign || results?.labelAlign || 'left'
+        this.colon = typeof this.colon != "undefined" ? this.colon : results ? results.colon : false
+        this.requireAsteriskPosition = this.requireAsteriskPosition || results?.requireAsteriskPosition || 'left'
+        this.showMessage = typeof this.showMessage != "undefined" ? this.showMessage : results ? results.showMessage : true
+        this.disabled = typeof this.disabled != "undefined" ? this.disabled : results ? results.disabled : false
     }
     // 重置验证
     resetValidation(){
@@ -238,11 +267,13 @@ export struct IBestField{
     validate(rules: IBestFormRuleItem[]): Promise<FieldValidateResult | void> {
         return new Promise<FieldValidateResult | void>((resolve) => {
             this.resetValidation()
-            if (rules) {
+            rules = rules || this.rules
+            if (rules.length) {
                 let value = this.value
                 this.runRules(value, rules).then(() => {
                     if (this.status === 'failed') {
                         resolve({
+                            label: this.label,
                             name: this.prop,
                             message: this.validateMessage
                         })
@@ -319,7 +350,7 @@ export struct IBestField{
                         value: $value,
                         buttonBuilder: this.buttonBuilder,
                         customRightContent: this.customRightContent,
-                        formatter: (value: string): string => this.formatter(value),
+                        formatter: this.formatter,
                         onChange: (value: IBestFieldValueType): void => this.onChange(value),
                         onClear: (): void => this.onClear(),
                         onFieldClick: (): void => this.onFieldClick(),
@@ -340,7 +371,7 @@ export struct IBestField{
                         value: $value,
                         buttonBuilder: this.buttonBuilder,
                         customRightContent: this.customRightContent,
-                        formatter: (value: string): string => this.formatter(value),
+                        formatter: this.formatter,
                         onChange: (value: IBestFieldValueType): void => this.onChange(value),
                         onClear: (): void => this.onClear(),
                         onFieldClick: (): void => this.onFieldClick(),
@@ -369,8 +400,7 @@ struct Label{
     @Consume labelPosition: 'left' | 'top'
     @Consume labelAlign: FieldTextAlign
     @Consume labelWidth: number
-    @Consume autosize: boolean
-    @Consume required: boolean
+    @Consume requireAsteriskPosition: string
     @Consume leftIcon: string | Resource
     @Consume leftIconColor: string
     onLeftIconClick: () => void = () => {}
@@ -386,13 +416,8 @@ struct Label{
                         this.onLeftIconClick()
                     })
             }
-            if(this.required){
-                Text("*")
-                    .margin({
-                        right: this.baseStyle.spaceMini
-                    })
-                    .fontSize(this.baseStyle.fontSizeSm)
-                    .fontColor(this.baseStyle.danger)
+            if(this.requireAsteriskPosition == "left"){
+                Asterisk()
             }
             Text(this.label + (this.colon ? ":" : ""))
                 .fontSize(this.baseStyle.fontSizeMd)
@@ -400,6 +425,9 @@ struct Label{
                 .constraintSize({ minHeight: "40lpx" })
                 .lineHeight(this.baseStyle.lineHeightMd)
                 .textAlign(this.labelAlign == "left" ? TextAlign.Start : this.labelAlign == "center" ? TextAlign.Center : TextAlign.End)
+            if(this.requireAsteriskPosition == "right"){
+                Asterisk()
+            }
         }
         .width(this.labelPosition == "left" ? `${this.labelWidth}lpx` : CONTAINER_SIZE.FULL)
         .margin({right: this.baseStyle.spaceSm})
@@ -407,6 +435,25 @@ struct Label{
     }
 }
 
+@Component
+struct Asterisk{
+    /**
+     * 全局公共样式
+     */
+    @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+    @Consume required: boolean
+    @Consume requireAsteriskPosition: string
+    build() {
+        Text("*")
+            .margin({
+                left: this.requireAsteriskPosition == "right" ? this.baseStyle.spaceMini : 0,
+                right: this.requireAsteriskPosition == "left" ? this.baseStyle.spaceMini : 0
+            })
+            .fontSize(this.baseStyle.fontSizeSm)
+            .fontColor(this.baseStyle.danger)
+            .visibility(this.required ? Visibility.Visible : Visibility.None)
+    }
+}
 
 @Component
 struct Content{
@@ -417,6 +464,8 @@ struct Content{
     @Link value: IBestFieldValueType
     @State isFocus: boolean = false
     @Consume type: IBestFieldType
+    @Consume decimalLength: number
+    @Consume showPasswordIcon: boolean
     @Consume autosize: boolean
     @Consume labelPosition: 'left' | 'top'
     @Consume rows: number
@@ -429,15 +478,15 @@ struct Content{
     @Consume disabled: boolean
     @Consume readOnly: boolean
     @Consume clearable: boolean
-    @Consume clickable: boolean
     @Consume isLink: boolean
     @Consume clearIcon: string | Resource
     @Consume clearTrigger: ClearTriggerType
+    @Consume showMessage: boolean
     @Consume validateMessage: string
     @BuilderParam buttonBuilder?: () => void
     @BuilderParam customRightContent?: () => void
-    @Consume formatTrigger: 'onChange' | 'onBlur'
-    formatter: (value: string) => string = (value: string) => value
+    @Consume formatTrigger: FormatTriggerType
+    formatter?: (value: string) => string
     onChange: (value: IBestFieldValueType) => void = () => {}
     onClear: () => void = () => {}
     onFieldClick: () => void = () => {}
@@ -458,8 +507,6 @@ struct Content{
     // 获取输入框类型
     getInputType(): InputType{
         switch(this.type){
-            case "normal":
-                return InputType.Normal
             case "password":
                 return InputType.NEW_PASSWORD
             case "email":
@@ -474,6 +521,38 @@ struct Content{
                 return InputType.NUMBER_PASSWORD
             case "decimal":
                 return InputType.NUMBER_DECIMAL
+            default:
+                return InputType.Normal
+        }
+    }
+    // 获取textarea类型
+    getTextAreaType(): TextAreaType{
+        switch(this.type){
+            case "number":
+                return TextAreaType.NUMBER
+            case "phone":
+                return TextAreaType.PHONE_NUMBER
+            case "email":
+                return TextAreaType.EMAIL
+            case "decimal":
+                return TextAreaType.NUMBER_DECIMAL
+            default:
+                return TextAreaType.NORMAL
+        }
+    }
+    // 格式化值
+    formatValue(value: string, trigger: string) {
+        if (this.formatter && this.formatTrigger == trigger) {
+            this.value = this.formatter(value)
+        }
+        if(this.type == "decimal" && this.decimalLength > 0){
+            let index = value.indexOf(".")
+            if(index > -1){
+                let decimal = value.substring(index + 1)
+                if(decimal.length > this.decimalLength){
+                    this.value = Number(value).toFixed(this.decimalLength)
+                }
+            }
         }
     }
     build() {
@@ -497,10 +576,9 @@ struct Content{
                             //     highlightBorder: false
                             // })
                             .enableAutoFill(false)
+                            .type(this.getTextAreaType())
                             .onChange((value: string) => {
-                                if (this.formatTrigger == 'onChange') {
-                                    this.value = this.formatter(value)
-                                }
+                                this.formatValue(value, "onchange")
                                 this.onChange(this.value)
                             })
                             .onFocus(() => {
@@ -510,8 +588,8 @@ struct Content{
                             .onBlur(() => {
                                 this.isFocus = false
                                 this.onFieldBlur()
-                                if (this.formatTrigger == 'onBlur' && typeof this.value == "string") {
-                                    this.value = this.formatter(this.value)
+                                if (this.formatTrigger == 'onblur' && typeof this.value == "string") {
+                                    this.formatValue(this.value, "onblur")
                                 }
                             })
                     } else {
@@ -521,6 +599,7 @@ struct Content{
                             .placeholderFont({
                                 size: this.baseStyle.fontSizeMd
                             })
+                            .showPasswordIcon(this.showPasswordIcon)
                             .height(this.baseStyle.lineHeightMd)
                             .lineHeight(this.baseStyle.lineHeightMd)
                             .textAlign(this.inputAlign == 'center' ? TextAlign.Center :
@@ -531,12 +610,9 @@ struct Content{
                             //     highlightBorder: false
                             // })
                             .selectionMenuHidden(true)
-                            .enableAutoFill(false)
                             .type(this.getInputType())
                             .onChange((value: string) => {
-                                if (this.formatTrigger == 'onChange') {
-                                    this.value = this.formatter(value)
-                                }
+                                this.formatValue(value, "onchange")
                                 this.onChange(this.value)
                             })
                             .onFocus(() => {
@@ -546,8 +622,8 @@ struct Content{
                             .onBlur(() => {
                                 this.isFocus = false
                                 this.onFieldBlur()
-                                if (this.formatTrigger == 'onBlur' && typeof this.value == "string") {
-                                    this.value = this.formatter(this.value)
+                                if (typeof this.value == "string") {
+                                    this.formatValue(this.value, "onblur")
                                 }
                             })
                     }
@@ -588,8 +664,8 @@ struct Content{
                 }
             }
             .width(CONTAINER_SIZE.FULL)
-            // 限制字数, 官方的showCounter属性在TextInput上正常, 在TextArea上有问题,输入文字后才会显示下面字数
-            if(typeof this.value == "string" && this.maxlength && this.showWordLimit){
+            // 限制字数, 官方的showCounter属性在TextInput上正常, 在TextArea上有问题,输入内容后才会显示下面字数
+            if(typeof this.value == "string" && this.maxlength > 0 && this.showWordLimit){
                 Text(this.value.length + "/" + this.maxlength)
                     .width(CONTAINER_SIZE.FULL)
                     .textAlign(TextAlign.End)
@@ -598,7 +674,7 @@ struct Content{
                     .margin({top: this.baseStyle.spaceBase})
             }
             // 验证信息
-            if(this.validateMessage){
+            if(this.showMessage && this.validateMessage){
                 Text(this.validateMessage)
                     .fontSize(this.baseStyle.fontSizeSm)
                     .fontColor(colorData.danger)

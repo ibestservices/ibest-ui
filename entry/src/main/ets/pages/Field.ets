@@ -106,56 +106,53 @@ struct FieldPage {
                 ListItem() {
                     ComponentShowContainer({ title: '自定义类型', titlePaddingLeft: SPACE.SMALL }) {
                         IBestCellGroup({inset: true}) {
-                            Column(){
-                                // 密码
-                                IBestField({
-                                    value: $value1,
-                                    label: "密码",
-                                    placeholder: "请输入密码",
-                                    type: "password"
-                                })
-                                // 手机号
-                                IBestField({
-                                    value: $value2,
-                                    label: "手机号",
-                                    placeholder: "请输入手机号",
-                                    type: "phone"
-                                })
-                                // 整数数字
-                                IBestField({
-                                    value: $value3,
-                                    label: "整数",
-                                    placeholder: "请输入整数",
-                                    type: "number"
-                                })
-                                // 小数
-                                IBestField({
-                                    value: $value4,
-                                    label: "小数",
-                                    hasBorder: false,
-                                    placeholder: "请输入小数",
-                                    type: "decimal"
-                                })
-                            }
+                            // 密码
+                            IBestField({
+                                value: $value1,
+                                label: "密码",
+                                placeholder: "请输入密码",
+                                type: "password"
+                            })
+                            // 手机号
+                            IBestField({
+                                value: $value2,
+                                label: "手机号",
+                                placeholder: "请输入手机号",
+                                type: "phone"
+                            })
+                            // 整数数字
+                            IBestField({
+                                value: $value3,
+                                label: "整数",
+                                placeholder: "请输入整数",
+                                type: "number"
+                            })
+                            // 小数
+                            IBestField({
+                                value: $value4,
+                                label: "小数",
+                                hasBorder: false,
+                                placeholder: "请输入小数",
+                                type: "decimal",
+                                decimalLength: 2
+                            })
                         }
                     }
                 }
                 ListItem() {
                     ComponentShowContainer({ title: '禁用输入框', titlePaddingLeft: SPACE.SMALL }) {
                         IBestCellGroup({inset: true}) {
-                            Column(){
-                                IBestField({
-                                    value: $value5,
-                                    label: "文本",
-                                    readOnly: true
-                                })
-                                IBestField({
-                                    value: $value6,
-                                    label: "文本",
-                                    hasBorder: false,
-                                    disabled: true
-                                })
-                            }
+                            IBestField({
+                                value: $value5,
+                                label: "文本",
+                                readOnly: true
+                            })
+                            IBestField({
+                                value: $value6,
+                                label: "文本",
+                                hasBorder: false,
+                                disabled: true
+                            })
                         }
                     }
                 }
@@ -188,7 +185,6 @@ struct FieldPage {
                                 placeholder: "点击选择地区",
                                 hasBorder: false,
                                 isLink: true,
-                                readOnly: true,
                                 onFieldClick: () => {
                                     IBestToast.show("点击")
                                 }
@@ -237,7 +233,7 @@ struct FieldPage {
                                 placeholder: "在失焦时执行格式化",
                                 hasBorder: false,
                                 formatter: (value: string): string => this.formatValue(value),
-                                formatTrigger: "onBlur"
+                                formatTrigger: "onblur"
                             })
                         }
                     }
@@ -259,27 +255,25 @@ struct FieldPage {
                 ListItem() {
                     ComponentShowContainer({ title: '显示字数统计', titlePaddingLeft: SPACE.SMALL }) {
                         IBestCellGroup({inset: true}) {
-                            Column(){
-                                IBestField({
-                                    value: $value15,
-                                    label: "文本",
-                                    placeholder: "请输入文本",
-                                    maxlength: 30,
-                                    clearable: true,
-                                    showWordLimit: true
-                                })
-                                IBestField({
-                                    value: $value16,
-                                    label: "文本",
-                                    placeholder: "请输入文本",
-                                    hasBorder: false,
-                                    autosize: true,
-                                    rows: 3,
-                                    clearable: true,
-                                    maxlength: 100,
-                                    showWordLimit: true
-                                })
-                            }
+                            IBestField({
+                                value: $value15,
+                                label: "文本",
+                                placeholder: "请输入文本",
+                                maxlength: 30,
+                                clearable: true,
+                                showWordLimit: true
+                            })
+                            IBestField({
+                                value: $value16,
+                                label: "文本",
+                                placeholder: "请输入文本",
+                                hasBorder: false,
+                                autosize: true,
+                                rows: 3,
+                                clearable: true,
+                                maxlength: 100,
+                                showWordLimit: true
+                            })
                         }
                     }
                 }
@@ -299,33 +293,31 @@ struct FieldPage {
                 ListItem() {
                     ComponentShowContainer({ title: '输入框文本位置', titlePaddingLeft: SPACE.SMALL }) {
                         IBestCellGroup({inset: true}) {
-                            Column(){
-                                IBestField({
-                                    value: $value18,
-                                    label: "文本",
-                                    placeholder: "顶部对齐",
-                                    labelPosition: "top"
-                                })
-                                IBestField({
-                                    value: $value18,
-                                    label: "文本",
-                                    placeholder: "左对齐",
-                                    labelAlign: "left"
-                                })
-                                IBestField({
-                                    value: $value19,
-                                    label: "文本",
-                                    placeholder: "居中对齐",
-                                    labelAlign: "center"
-                                })
-                                IBestField({
-                                    value: $value20,
-                                    label: "文本",
-                                    placeholder: "右对齐",
-                                    labelAlign: "right",
-                                    hasBorder: false
-                                })
-                            }
+                            IBestField({
+                                value: $value18,
+                                label: "文本",
+                                placeholder: "顶部对齐",
+                                labelPosition: "top"
+                            })
+                            IBestField({
+                                value: $value18,
+                                label: "文本",
+                                placeholder: "左对齐",
+                                labelAlign: "left"
+                            })
+                            IBestField({
+                                value: $value19,
+                                label: "文本",
+                                placeholder: "居中对齐",
+                                labelAlign: "center"
+                            })
+                            IBestField({
+                                value: $value20,
+                                label: "文本",
+                                placeholder: "右对齐",
+                                labelAlign: "right",
+                                hasBorder: false
+                            })
                         }
                     }
                 }
