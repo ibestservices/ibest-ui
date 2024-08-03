@@ -82,6 +82,40 @@ struct CascaderPage {
 					]
 				}
 			]
+		},
+		{
+			text: "安徽省",
+			value: "340000",
+			children: [
+				{
+					text: "合肥市",
+					value: "340100",
+					children: [
+						{
+							text: "蜀山区",
+							value: "340104"
+						},
+						{
+							text: "合肥高新技术产业开发区",
+							value: "340171"
+						}
+					]
+				},
+				{
+					text: "黄山市",
+					value: "341000",
+					children: [
+						{
+							text: "屯溪区",
+							value: "341002"
+						},
+						{
+							text: "黄山区",
+							value: "341003"
+						}
+					]
+				}
+			]
 		}
 	]
 
@@ -97,6 +131,114 @@ struct CascaderPage {
 			value: "340000"
 		}
 	]
+	lazyLoad(value: string | number, level: number, cb: (arr: IBestCascaderOption[]) => void){
+		IBestToast.show({
+			type: "loading"
+		})
+		setTimeout(() => {
+			IBestToast.hide()
+			cb(value == "320000" ? [
+				{
+				text: "南京市",
+				value: "320100",
+				isEnd: level >= 1
+			},
+			{
+				text: "苏州市",
+				value: "320500",
+				isEnd: level >= 1
+			}
+			] : [
+				{
+					text: "合肥市",
+					value: "340100",
+					isEnd: level >= 1
+				},
+				{
+					text: "黄山市",
+					value: "341000",
+					isEnd: level >= 1
+				}
+			])
+		}, 2000)
+	}
+
+	@State visible4: boolean = false
+	@State value4: string = '请选择地区'
+	@State data4: IBestCascaderOption[] = [
+		{
+			text: "江苏省",
+			value: "320000",
+			children: [
+				{
+					text: "南京市",
+					value: "320100",
+					children: [
+						{
+							text: "秦淮区",
+							value: "320104"
+						},
+						{
+							text: "雨花台区",
+							value: "320114"
+						}
+					]
+				},
+				{
+					text: "苏州市",
+					value: "320500",
+					disabled: true,
+					children: [
+						{
+							text: "姑苏区",
+							value: "320508"
+						},
+						{
+							text: "昆山市",
+							value: "320583"
+						}
+					]
+				}
+			]
+		},
+		{
+			text: "安徽省",
+			value: "340000",
+			children: [
+				{
+					text: "合肥市",
+					value: "340100",
+					children: [
+						{
+							text: "蜀山区",
+							value: "340104"
+						},
+						{
+							text: "合肥高新技术产业开发区",
+							value: "340171"
+						}
+					]
+				},
+				{
+					text: "黄山市",
+					value: "341000",
+					disabled: true,
+					children: [
+						{
+							text: "屯溪区",
+							value: "341002"
+						},
+						{
+							text: "黄山区",
+							value: "341003"
+						}
+					]
+				}
+			]
+		}
+	]
+
+
 	build() {
 		Column() {
 			TitleBar({
@@ -171,11 +313,28 @@ struct CascaderPage {
 						}
 					}
 				}
+				ListItem() {
+					ComponentShowContainer({ title: '禁用选项', titlePaddingLeft: SPACE.SMALL }) {
+						IBestCellGroup() {
+							Column() {
+								IBestCell({
+									title: '地区',
+									value: this.value4,
+									isLink: true,
+									hasBorder: false,
+									onClickCell: () => {
+										this.visible4 = true
+									}
+								})
+							}
+						}
+					}
+				}
 			}
 			.layoutWeight(1)
 			// 基础用法
 			IBestCascader({
-				visible: this.visible,
+				visible: $visible,
 				options: this.data,
 				onConfirm: (value: IBestCascaderOption[]) => {
 					this.value = value.map(item => item.text).join(',')
@@ -183,7 +342,7 @@ struct CascaderPage {
 			})
 			// 自定义颜色
 			IBestCascader({
-				visible: this.visible1,
+				visible: $visible1,
 				options: this.data,
 				activeColor: '#ee0a24',
 				onConfirm: (value: IBestCascaderOption[]) => {
@@ -192,7 +351,7 @@ struct CascaderPage {
 			})
 			// 自定义高度
 			IBestCascader({
-				visible: this.visible2,
+				visible: $visible2,
 				options: this.data,
 				itemHeight: 100,
 				onConfirm: (value: IBestCascaderOption[]) => {
@@ -201,42 +360,20 @@ struct CascaderPage {
 			})
 			// 异步加载
 			IBestCascader({
-				visible: this.visible3,
+				visible: $visible3,
 				options: this.data3,
 				lazy: true,
-				lazyLoad: (value: string | number, level: number, cb: (arr: IBestCascaderOption[]) => void) => {
-					IBestToast.show({
-						type: "loading"
-					})
-					setTimeout(() => {
-						IBestToast.hide()
-						cb(value == "320000" ? [
-							{
-								text: "南京市",
-								value: "320100",
-								isEnd: level >= 1
-							},
-							{
-								text: "苏州市",
-								value: "320500",
-								isEnd: level >= 1
-							}
-						] : [
-						  {
-							  text: "合肥市",
-							  value: "340100",
-							  isEnd: level >= 1
-						  },
-						  {
-							  text: "黄山市",
-							  value: "341000",
-							  isEnd: level >= 1
-						  }
-						])
-					}, 2000)
-				},
+				lazyLoad: this.lazyLoad,
 				onConfirm: (value: IBestCascaderOption[]) => {
 					this.value3 = value.map(item => item.text).join(',')
+				}
+			})
+			// 禁用选项
+			IBestCascader({
+				visible: $visible4,
+				options: this.data4,
+				onConfirm: (value: IBestCascaderOption[]) => {
+					this.value4 = value.map(item => item.text).join(',')
 				}
 			})
 		}

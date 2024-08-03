@@ -263,7 +263,6 @@ struct IBestTabContent{
         }
         .width(this.tabWidthType == "flex" ? "100%" : "")
         .backgroundColor(this.tabBgColor)
-        .padding({left: spaceData.spaceXs, right: spaceData.spaceXs})
     }
 }
 

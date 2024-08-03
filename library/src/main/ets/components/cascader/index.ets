@@ -1,4 +1,4 @@
-import { sleep } from '../../assets/ets/utils'
+import { getIsLandscape, sleep } from '../../assets/ets/utils'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { fontSizeData } from '../../theme-chalk/src/font'
 import { IBestUIBaseStyleObjType, IbestUIBaseStyleValue } from '../../theme-chalk/src/index.type'
@@ -7,7 +7,7 @@ import { IBestTabs } from '../tab'
 import { IBestTabController, IBestTabItem } from '../tab/index.type'
 import { IBestCascaderOption, IBestCascaderOptionInstance, IBestCascaderOptionInstanceType } from './index.type'
 import { IBestPopup } from '../popup/index'
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type'
+
 @CustomDialog
 @Component
 struct IBestCascaderContent{
@@ -28,6 +28,8 @@ struct IBestCascaderContent{
 	 * swiper默认显示选项
 	 */
 	@State swiperDefaultIndex: number = 0
+	// 是否横屏
+	@State isLandscape: boolean = getIsLandscape(getContext(this))
 	/*
 	 * 可选项数据源
 	 */
@@ -217,10 +219,12 @@ struct IBestCascaderContent{
 					.width("100%")
 					.height("100%")
 					.align(Alignment.Top)
+					.padding({ bottom: spaceData.spaceMd })
 				}, (item: IBestCascaderOptionInstance[], index: number) => index + "")
 			}
 			.width("100%")
-			.height(`${this.listHeight}lpx`)
+			.height(this.isLandscape ? "" : `${this.listHeight}lpx`)
+			.layoutWeight(this.isLandscape ? 1 : 0)
 			.indicator(false)
 			.loop(false)
 			.duration(100)
@@ -272,7 +276,6 @@ struct CascaderOptionItem{
 		.height(`${this.itemHeight}lpx`)
 		.justifyContent(FlexAlign.SpaceBetween)
 		.alignItems(VerticalAlign.Center)
-		// .border({width: {top: this.index1 > 0 ? 1 : 0}, color: GRAY_COLOR.GRAY_3})
 		.onClick(() => {
 			this.onSelect(this.index, this.index1, this.option)
 		})
@@ -322,7 +325,7 @@ export struct IBestCascader{
 	/*
 	 * 已选项
 	 */
-	@State selectData: IBestCascaderOption[] = []
+	@Prop selectData: IBestCascaderOption[] = []
 	/*
 	 * 选中项变化时回调函数
 	 */
