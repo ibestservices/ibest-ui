@@ -19,6 +19,8 @@
 		"pages/Popup",
 		"pages/Cascader",
 		"pages/Field",
-		"pages/Form"
+		"pages/Form",
+		"pages/Picker",
+		"pages/PickerGroup"
 	]
 }

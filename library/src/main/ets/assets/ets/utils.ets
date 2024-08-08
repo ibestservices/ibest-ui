@@ -133,6 +133,8 @@ export const getWindowAvoidSize = async (context: common.BaseContext): Promise<C
     rightSize: px2lpx(avoidArea.rightRect.width)
   }
 }
+/**  */
+export const clamp = (num: number, min: number, max: number): number => Math.min(Math.max(num, min), max)
 /*
  * 是否是对象
  */

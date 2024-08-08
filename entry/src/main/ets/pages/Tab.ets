@@ -1,4 +1,6 @@
-import { IBestButton, IBestTabController, IBestTabItem, IBestTabs, IBestToast } from '@ibestservices/ibest-ui'
+import { IBestButton, IBestTabController, IBestTabItem,
+    IBestTabItemType,
+    IBestTabs, IBestToast } from '@ibestservices/ibest-ui'
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../assets/global.type'
 import TitleBar from '../components/TitleBar'
@@ -9,69 +11,69 @@ import ComponentShowContainer from '../components/ComponentShowContainer'
 @Component
 struct Tab {
     @State title: string = (router.getParams() as ComponentRouterParams).title || ''
-    @State tabsList: IBestTabItem[] = [
-        new IBestTabItem({
+    @State tabsList: IBestTabItemType[] = [
+        {
             label: "标签一",
             name: "1"
-        }),
-        new IBestTabItem({
+        },
+        {
             label: "标签二",
             name: "2"
-        }),
-        new IBestTabItem({
+        },
+        {
             label: "标签三",
             name: "3"
-        }),
-        new IBestTabItem({
+        },
+        {
             label: "标签四",
             name: "4"
-        }),
-        new IBestTabItem({
+        },
+        {
             label: "标签五",
             name: "5"
-        })
+        }
     ]
-    @State tabsList1: IBestTabItem[] = [
-        new IBestTabItem({
+    @State tabsList1: IBestTabItemType[] = [
+        {
             label: "标签一",
             name: "1"
-        }),
-        new IBestTabItem({
+        },
+        {
             label: "标签二",
             name: "2"
-        }),
-        new IBestTabItem({
+        },
+        {
             label: "标签三",
             name: "3"
-        }),
-        new IBestTabItem({
+        },
+        {
             label: "标签四",
             name: "4"
-        }),
-        new IBestTabItem({
+        },
+        {
             label: "标签五",
             name: "5"
-        }),
-        new IBestTabItem({
+        },
+        {
             label: "标签六",
             name: "6"
-        }),
-        new IBestTabItem({
+        },
+        {
             label: "标签七",
             name: "7"
-        }),
-        new IBestTabItem({
+        },
+        {
             label: "标签八",
             name: "8"
-        }),
-        new IBestTabItem({
+        },
+        {
             label: "标签九",
             name: "9"
-        }),
-        new IBestTabItem({
+        },
+        {
             label: "标签十",
             name: "10"
-        })
+        }
     ]
     @State tabsList2: IBestTabItem[] = [
         new IBestTabItem({
@@ -89,20 +91,6 @@ struct Tab {
         })
     ]
     @State tabsList3: IBestTabItem[] = [
-        new IBestTabItem({
-            label: "标签一",
-            name: "1"
-        }),
-        new IBestTabItem({
-            label: "标签二",
-            name: "2"
-        }),
-        new IBestTabItem({
-            label: "标签三",
-            name: "3"
-        })
-    ]
-    @State tabsList4: IBestTabItem[] = [
         new IBestTabItem({
             label: "标签一",
             name: "1",
@@ -126,7 +114,6 @@ struct Tab {
     @State curTabName4: string = "1"
     @State curTabName5: string = "1"
     @State curTabName6: string = "1"
-    @State curTabName7: string = "1"
 
     private tabController: IBestTabController = new IBestTabController()
 
@@ -149,7 +136,7 @@ struct Tab {
                         IBestTabs({
                             type: "card",
                             tabsList: this.tabsList,
-                            currentName: this.curTabName1
+                            currentName: this.curTabName
                         })
                     }
                 }
@@ -160,7 +147,7 @@ struct Tab {
                                 tabHeight: 60,
                                 tabWidthType: "auto",
                                 tabsList: this.tabsList,
-                                currentName: this.curTabName2
+                                currentName: this.curTabName
                             })
                             IBestTabs({
                                 tabHeight: 60,
@@ -173,14 +160,14 @@ struct Tab {
                                 tabWidthType: "auto",
                                 type: "card",
                                 tabsList: this.tabsList,
-                                currentName: this.curTabName3
+                                currentName: this.curTabName
                             })
                             IBestTabs({
                                 tabHeight: 60,
                                 tabWidthType: "auto",
                                 type: "card",
                                 tabsList: this.tabsList1,
-                                currentName: this.curTabName3
+                                currentName: this.curTabName2
                             })
                         }
                         .alignItems(HorizontalAlign.Start)
@@ -203,7 +190,7 @@ struct Tab {
                         Column({space: 20}){
                             IBestTabs({
                                 tabsList: this.tabsList2,
-                                currentName: this.curTabName4
+                                currentName: this.curTabName3
                             })
                             IBestButton({
                                 text: "禁用标签3",
@@ -219,7 +206,7 @@ struct Tab {
                     ComponentShowContainer({ title: 'change事件' }) {
                         IBestTabs({
                             tabsList: this.tabsList,
-                            currentName: this.curTabName5,
+                            currentName: this.curTabName4,
                             onChange: (name: string) => {
                                 IBestToast.show("当前点击的是：" + name)
                             }
@@ -230,15 +217,15 @@ struct Tab {
                     ComponentShowContainer({ title: '自定义标签' }) {
                         Column({space: 20}){
                             IBestTabs({
-                                tabsList: this.tabsList4,
-                                currentName: this.curTabName6
+                                tabsList: this.tabsList3,
+                                currentName: this.curTabName5
                             })
                             IBestButton({
                                 text: "修改数字",
                                 buttonSize: "small",
                                 onClickBtn: () => {
-                                    if(this.tabsList4[1].number != undefined){
-                                        this.tabsList4[1].number += 1
+                                    if(this.tabsList3[1].number != undefined){
+                                        this.tabsList3[1].number += 1
                                     }
                                 }
                             })
@@ -250,7 +237,7 @@ struct Tab {
                         Column({space: 20}){
                             IBestTabs({
                                 tabsList: this.tabsList,
-                                currentName: this.curTabName7,
+                                currentName: this.curTabName6,
                                 tabController: this.tabController
                             })
                             IBestButton({

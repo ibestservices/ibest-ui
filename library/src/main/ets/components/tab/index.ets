@@ -1,12 +1,12 @@
 import { getComponentsInfo, sleep } from '../../assets/ets/utils'
-import { IBestTabItem, IBestTabController, TabWidthType } from './index.type'
+import { IBestTabItem, IBestTabController, TabWidthType, IBestTabItemType } from './index.type'
 import { emitter } from '../../assets/ets/EventEmitter'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType, IbestUIBaseStyleValue } from '../../theme-chalk/src/index.type';
 import { fontSizeData } from '../../theme-chalk/src/font';
 import { borderRadiusData } from '../../theme-chalk/src/border';
 import { spaceData } from '../../theme-chalk/src/space';
-
+import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 @Component
 export struct IBestTabs{
     /**
@@ -48,7 +48,7 @@ export struct IBestTabs{
     /*
      * 当前激活的tab的name
      */
-    @Provide @Watch("currentNameChange") currentName: string = ""
+    @Link @Watch("currentNameChange") currentName: string
     /*
      * 标记线宽度是否固定
      */
@@ -76,11 +76,11 @@ export struct IBestTabs{
     /*
      * 未激活的tab文字颜色
      */
-    @Provide inactiveTextColor: string = "#666"
+    @Provide inactiveTextColor: string = GRAY_COLOR.GRAY_7
     /*
      * 激活的tab文字颜色
      */
-    @Provide activeTextColor: string = "#333"
+    @Provide activeTextColor: string = GRAY_COLOR.GRAY_8
     /*
      * 标记线颜色
      */
@@ -92,7 +92,7 @@ export struct IBestTabs{
     /*
      * tab区域背景颜色
      */
-    @Provide tabBgColor: string = "#fff"
+    @Provide tabBgColor: string | IbestUIBaseStyleValue = this.baseStyle.default
     /*
      * controller 控制器
      */
@@ -192,6 +192,7 @@ export struct IBestTabs{
         if(this.tabWidthType == "auto"){
             Scroll(this.scroller){
                 IBestTabContent({
+                    currentName: $currentName,
                     translateX: this.translateX,
                     tabBoxWidth: this.tabBoxWidth,
                     tabBoxTranslateX: this.tabBoxTranslateX
@@ -203,6 +204,7 @@ export struct IBestTabs{
             .id(`tabContent_${this.uniId}`)
         }else{
             IBestTabContent({
+                currentName: $currentName,
                 translateX: this.translateX,
                 tabBoxWidth: this.tabBoxWidth,
                 tabBoxTranslateX: this.tabBoxTranslateX
@@ -213,7 +215,7 @@ export struct IBestTabs{
 
 @Component
 struct IBestTabContent{
-    @Consume currentName: string
+    @Link currentName: string
     @Consume type: 'line' | 'card'
     @Consume tabWidthType: "auto" | "flex"
     @Consume tabHeight: number
@@ -253,7 +255,7 @@ struct IBestTabContent{
                 .visibility(this.type == "card" ? Visibility.Visible : Visibility.None)
             Row(){
                 ForEach(this.tabsList, (item: IBestTabItem, index: number) => {
-                    IBestTab({ item: item, index: index })
+                    IBestTab({ item: item, index: index, currentName: $currentName })
                 }, (item: string, index: number) => index+'')
             }
             .width(this.tabWidthType == "flex" ? "100%" : "")
@@ -273,7 +275,7 @@ struct IBestTab{
     @Consume tabWidthType: "auto" | "flex"
     @ObjectLink @Watch("itemChange") item: IBestTabItem
     @Prop index: number
-    @Consume currentName: string
+    @Link currentName: string
     @Consume tabPadding: number
     @Consume inactiveTextColor: number
     @Consume activeTextColor: number

@@ -1,5 +1,11 @@
 import router from '@ohos.router'
 import { BACKGROUND_COLOR, SPACE, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT } from '../assets/styles/BaseStyle'
+import ComponentShowContainer from '../components/ComponentShowContainer'
+
+interface ComponentPart{
+  title: string
+  list: ComponentItem[]
+}
 
 interface ComponentItem {
   name: string,
@@ -9,145 +15,179 @@ interface ComponentItem {
 @Entry
 @Component
 struct Index {
-  @State componentList: ComponentItem[] = [
+  @State componentList: ComponentPart[] = [
     {
-      name: 'Theme主题',
-      path: 'pages/Theme'
+      title: '基础表单',
+      list: [
+        {
+          name: 'Button按钮',
+          path: 'pages/Button'
+        },
+        {
+          name: 'Cell单元格',
+          path: 'pages/Cell'
+        },
+        {
+          name: 'Popup弹出层',
+          path: 'pages/Popup'
+        },
+        {
+          name: 'Theme主题',
+          path: 'pages/Theme'
+        },
+        {
+          name: 'Toast 轻提示',
+          path: 'pages/Toast'
+        }
+      ]
     },
     {
-      name: 'Button按钮',
-      path: 'pages/Button'
+      title: '表单组件',
+      list: [
+        {
+          name: 'Calendar 日历',
+          path: 'pages/Calendar'
+        },
+        {
+          name: 'Cascader 级联选择',
+          path: 'pages/Cascader'
+        },
+        {
+          name: 'Checkbox 复选框',
+          path: 'pages/Checkbox'
+        },
+        {
+          name: 'Field 输入框',
+          path: 'pages/Field'
+        },
+        {
+          name: 'Form 表单',
+          path: 'pages/Form'
+        },
+        {
+          name: 'Picker 选择器',
+          path: 'pages/Picker'
+        },
+        {
+          name: 'PickerGroup 选择器组',
+          path: 'pages/PickerGroup'
+        },
+        {
+          name: 'Radio 单选框',
+          path: 'pages/Radio'
+        },
+        {
+          name: 'Stepper 步进器',
+          path: 'pages/Stepper'
+        },
+        {
+          name: 'Switch 开关',
+          path: 'pages/Switch'
+        }
+      ]
     },
     {
-      name: 'Cell单元格',
-      path: 'pages/Cell'
+      title: '反馈组件',
+      list: [
+        {
+          name: 'Dialog 弹出框',
+          path: 'pages/Dialog'
+        },
+        {
+          name: 'Loading 加载',
+          path: 'pages/Loading'
+        }
+      ]
     },
     {
-      name: 'Popup弹出层',
-      path: 'pages/Popup'
+      title: '展示组件',
+      list: [
+        {
+          name: 'Empty 空状态',
+          path: 'pages/Empty'
+        },
+        {
+          name: 'Tag 标签',
+          path: 'pages/Tag'
+        },
+        {
+          name: 'Watermark 水印',
+          path: 'pages/Watermark'
+        },
+      ]
     },
     {
-      name: 'Toast 轻提示',
-      path: 'pages/Toast'
-    },
-
-
-    {
-      name: 'Calendar 日历',
-      path: 'pages/Calendar'
-    },
-    {
-      name: 'Cascader 级联选择',
-      path: 'pages/Cascader'
-    },
-    {
-      name: 'Checkbox 复选框',
-      path: 'pages/Checkbox'
-    },
-    {
-      name: 'Field 输入框',
-      path: 'pages/Field'
-    },
-    {
-      name: 'Form 表单',
-      path: 'pages/Form'
-    },
-    {
-      name: 'Radio 单选框',
-      path: 'pages/Radio'
-    },
-    {
-      name: 'Stepper 步进器',
-      path: 'pages/Stepper'
-    },
-    {
-      name: 'Switch 开关',
-      path: 'pages/Switch'
-    },
-    {
-      name: 'Tag 标签',
-      path: 'pages/Tag'
-    },
-    {
-      name: 'Watermark 水印',
-      path: 'pages/Watermark'
-    },
-    {
-      name: 'Empty 空状态',
-      path: 'pages/Empty'
-    },
-    {
-      name: 'Dialog 弹出框',
-      path: 'pages/Dialog'
-    },
-    {
-      name: 'Loading 加载',
-      path: 'pages/Loading'
-    },
-    {
-      name: 'Tab 标签页',
-      path: 'pages/Tab'
+      title: '导航组件',
+      list: [
+        {
+          name: 'Tab 标签页',
+          path: 'pages/Tab'
+        }
+      ]
     }
   ]
 
   build() {
     Column() {
       List() {
-        ForEach(this.componentList, (item: ComponentItem) => {
+        ForEach(this.componentList, (part: ComponentPart) => {
           ListItem() {
-            Row() {
-              Text(item.name)
-                .fontSize(FONT_SIZE.BASE)
-                .fontWeight(FONT_WEIGHT.MEDIUM)
-                .textAlign(TextAlign.Start)
-                .fontColor('#34495e')
-                .layoutWeight(1)
+            ComponentShowContainer({ title: part.title, titlePaddingLeft: SPACE.SMALL }) {
+              ForEach(part.list, (item: ComponentItem) => {
+                Row() {
+                  Text(item.name)
+                    .fontSize(FONT_SIZE.BASE)
+                    .fontWeight(FONT_WEIGHT.MEDIUM)
+                    .textAlign(TextAlign.Start)
+                    .fontColor('#34495e')
+                    .layoutWeight(1)
 
-              Image($r('app.media.title_back'))
-                .width(CONTAINER_SIZE.THIRTY)
+                  Image($r('app.media.title_back'))
+                    .width(CONTAINER_SIZE.THIRTY)
+                    .margin({
+                      right: SPACE.BASE
+                    })
+                    .rotate({
+                      angle: 180
+                    })
+                }
+                .width(CONTAINER_SIZE.FULL)
+                .height(CONTAINER_SIZE.EIGHTY)
+                .borderRadius(99)
+                .padding({ left: SPACE.LARGE })
                 .margin({
-                  right: SPACE.BASE
+                  bottom: SPACE.BASE
                 })
-                .rotate({
-                  angle: 180
+                .backgroundColor(0xFFFFFF)
+                .stateStyles({
+                  normal: {
+                    .scale({
+                      x: 1,
+                      y: 1
+                    })
+                  },
+                  pressed: {
+                    .scale({
+                      x: .98,
+                      y: .98
+                    })
+                  }
                 })
+                .animation({
+                  duration: 200
+                })
+                .onClick(() => {
+                  router.pushUrl({
+                    url: item.path,
+                    params: {
+                      title: item.name
+                    }
+                  })
+                })
+              })
             }
           }
-          .width(CONTAINER_SIZE.FULL)
-          .height(CONTAINER_SIZE.EIGHTY)
-          .borderRadius(99)
-          .padding({ left: SPACE.LARGE })
-          .margin({
-            bottom: SPACE.BASE
-          })
-          .backgroundColor(0xFFFFFF)
-          .stateStyles({
-            normal: {
-              .scale({
-                x: 1,
-                y: 1
-              })
-            },
-            pressed: {
-              .scale({
-                x: .98,
-                y: .98
-              })
-            }
-          })
-          .onClick(() => {
-            router.pushUrl({
-              url: item.path,
-              params: {
-                title: item.name
-              }
-            })
-          })
-          .animation({
-            duration: 200
-          })
         })
-
       }
       .listDirection(Axis.Vertical) // 排列方向
       .padding(SPACE.LARGE)
