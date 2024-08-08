@@ -1,20 +1,6 @@
 {
 	"app": {
-		"signingConfigs": [
-			{
-				"name": "default",
-				"type": "HarmonyOS",
-				"material": {
-					"certpath": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.cer",
-					"storePassword": "0000001BE0826D71B3CFEDBB0ACAC1A7308CDF79E69641CB10BDC6582D79ED015107F20C7505170C9186EE",
-					"keyAlias": "debugKey",
-					"keyPassword": "0000001B6B0A26AE06755D8AA91BB73D7D4EEA4ED88FC64CC6D4481A8D15E52106CECCCC9372871C586E2C",
-					"profile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p7b",
-					"signAlg": "SHA256withECDSA",
-					"storeFile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p12"
-				}
-			}
-		],
+		"signingConfigs": [],
 		"products": [
 			{
 				"name": "default",

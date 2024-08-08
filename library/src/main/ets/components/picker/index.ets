@@ -4,6 +4,7 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { IBestPickerOption } from './index.type';
+import { matrix4 } from '@kit.ArkUI'
 
 @Extend(Text) function pickerItemStyle(itemHeight: number){
 	.width(CONTAINER_SIZE.FULL)
@@ -18,7 +19,7 @@ import { IBestPickerOption } from './index.type';
 // 惯性滑动思路:
 // 在手指离开屏幕时，如果和上一次 move 时的间隔小于 `MOMENTUM_TIME` 且 move
 // 距离大于 `MOMENTUM_DISTANCE` 时，执行惯性滑动
-const MOMENTUM_TIME = 300;
+const MOMENTUM_TIME = 300
 const MOMENTUM_DISTANCE = 30
 
 
@@ -76,23 +77,21 @@ export struct IBestPicker{
 	@State indexArr: Array<number> = []
 	// 触摸滑动相关参数
 	@State touchStartTime: number = 0
+	@State startOffset: number = 0
 	@State momentumOffset: number = 0
 	@State startY: number = 0
 	/*
 	 * 第一列当前偏移量
 	 */
 	@State curOffset1: number = 0
-	@State startOffset1: number = 0
 	/*
 	 * 第二列当前偏移量
 	 */
 	@State curOffset2: number = 0
-	@State startOffset2: number = 0
 	/*
 	 * 第三列当前偏移量
 	 */
 	@State curOffset3: number = 0
-	@State startOffset3: number = 0
 	@State list: IBestPickerOption[] = []
 	@State list1: IBestPickerOption[] = []
 	@State list2: IBestPickerOption[] = []
@@ -100,10 +99,6 @@ export struct IBestPicker{
 	@Styles columnItemStyle(){
 		.height(CONTAINER_SIZE.FULL)
 		.layoutWeight(1)
-		.animation({
-			duration: 2000,
-			curve: Curve.Ease
-		})
 	}
 
 	aboutToAppear(): void {
@@ -186,7 +181,6 @@ export struct IBestPicker{
 	updateOffsetByIndex(columnIndex: number, index: number){
 		const offset = - index * this.itemHeight
 		this.updateOffset(columnIndex, offset)
-		this.updateStartOffset(columnIndex)
 	}
 	// 重置列表数据
 	resetColumnOptions(columnIndex: number, index: number){
@@ -194,12 +188,10 @@ export struct IBestPicker{
 		if(columnIndex == 0){
 			if(this.list1.length){
 				this.curOffset2 = 0
-				this.startOffset2 = 0
 				this.list1 = (this.options as IBestPickerOption[])[index].children || []
 				this.indexArr[1] = 0
 				if(this.list2.length){
 					this.curOffset3 = 0
-					this.startOffset3 = 0
 					this.indexArr[2] = 0
 					this.list2 = this.list1[0].children || []
 				}
@@ -207,7 +199,6 @@ export struct IBestPicker{
 		}else if(columnIndex == 1){
 			if(this.list2.length){
 				this.curOffset3 = 0
-				this.startOffset3 = 0
 				this.indexArr[2] = 0
 				this.list2 = this.list1[index].children || []
 			}
@@ -233,31 +224,16 @@ export struct IBestPicker{
 			return this.curOffset3
 		}
 	}
-	// 获取某一列startOffset
-	getStartOffset(columnIndex: number): number{
-		if(columnIndex == 0){
-			return this.startOffset1
-		}else if(columnIndex == 1){
-			return this.startOffset2
-		}else{
-			return this.startOffset3
-		}
-	}
-	// 更新某一列startOffset
-	updateStartOffset(columnIndex: number){
-		let offset = this.getOffset(columnIndex)
-		if(columnIndex == 0){
-			this.startOffset1 = offset
-		}else if(columnIndex == 1){
-			this.startOffset2 = offset
-		}else{
-			this.startOffset3 = offset
-		}
+	// 手指接触屏幕
+	onTouchStart(columnIndex: number){
+		this.startOffset = this.getOffset(columnIndex)
+		this.touchStartTime = Date.now()
+		this.momentumOffset = this.startOffset
 	}
 	// 手指移动
 	onTouchMove(event: GestureEvent, columnIndex: number): void {
 		let bl = px2lpx(vp2px(event.offsetY))
-		let newOffset = this.getStartOffset(columnIndex) + bl
+		let newOffset = this.startOffset + bl
 		let list = columnIndex == 0 ? this.list : columnIndex == 1 ? this.list1 : this.list2
 		if(bl > 0 && newOffset > this.itemHeight){
 			newOffset = this.itemHeight
@@ -274,13 +250,12 @@ export struct IBestPicker{
 	// 手指离开
 	onTouchEnd(columnIndex: number): void {
 		let offset = this.getOffset(columnIndex)
-		const distance = offset - this.momentumOffset
+		let distance = offset - this.momentumOffset
 		const duration = Date.now() - this.touchStartTime
 		const startMomentum = duration < MOMENTUM_TIME && Math.abs(distance) > MOMENTUM_DISTANCE
 		if (startMomentum) {
-			console.log("惯性滑动")
 			const speed = Math.abs(distance / duration)
-			offset = this.getOffset(columnIndex) + (speed / 0.003) * (distance < 0 ? -1 : 1)
+			offset = offset + (speed / 0.03) * (distance < 0 ? -1 : 1)
 		}
 		const index = this.getIndexByOffset(columnIndex, offset)
 		this.updateOffsetByIndex(columnIndex, index)
@@ -369,26 +344,38 @@ export struct IBestPicker{
 								.pickerItemStyle(this.itemHeight)
 						})
 					}
-					.columnItemStyle()
 					.translate({ x: 0, y: `${this.curOffset1 + this.getBaseOffset()}lpx`, z: 0 })
+					.columnItemStyle()
+					.animation({
+						duration: 1000,
+						curve: Curve.Ease
+					})
 					Column() {
 						ForEach(this.list1, (item: IBestPickerOption) => {
 							Text(item.text)
 								.pickerItemStyle(this.itemHeight)
 						})
 					}
-					.columnItemStyle()
 					.translate({ x: 0, y: `${this.curOffset2 + this.getBaseOffset()}lpx`, z: 0 })
 					.visibility(this.list1.length ? Visibility.Visible : Visibility.None)
+					.columnItemStyle()
+					.animation({
+						duration: 1000,
+						curve: Curve.Ease
+					})
 					Column() {
 						ForEach(this.list2, (item: IBestPickerOption) => {
 							Text(item.text)
 								.pickerItemStyle(this.itemHeight)
 						})
 					}
-					.columnItemStyle()
 					.translate({ x: 0, y: `${this.curOffset3 + this.getBaseOffset()}lpx`, z: 0 })
 					.visibility(this.list2.length ? Visibility.Visible : Visibility.None)
+					.columnItemStyle()
+					.animation({
+						duration: 1000,
+						curve: Curve.Ease
+					})
 				}
 				.width(CONTAINER_SIZE.FULL)
 				.height(CONTAINER_SIZE.FULL)
@@ -418,6 +405,9 @@ export struct IBestPicker{
 								direction: PanDirection.Vertical,
 								distance: 1
 							})
+								.onActionStart(() => {
+									this.onTouchStart(0)
+								})
 								.onActionUpdate((event: GestureEvent) => {
 									this.onTouchMove(event, 0)
 								})
@@ -434,6 +424,9 @@ export struct IBestPicker{
 								direction: PanDirection.Vertical,
 								distance: 1
 							})
+								.onActionStart(() => {
+									this.onTouchStart(1)
+								})
 								.onActionUpdate((event: GestureEvent) => {
 									this.onTouchMove(event, 1)
 								})
@@ -450,6 +443,9 @@ export struct IBestPicker{
 								direction: PanDirection.Vertical,
 								distance: 1
 							})
+								.onActionStart(() => {
+									this.onTouchStart(2)
+								})
 								.onActionUpdate((event: GestureEvent) => {
 									this.onTouchMove(event, 2)
 								})
