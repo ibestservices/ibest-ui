@@ -63,6 +63,8 @@ struct CalendarItem {
      * 全局公共样式
      */
     @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+    // 是否横屏
+    @State isLandscape: boolean = getIsLandscape(getContext(this))
     @State fontColor: string | IbestUIBaseStyleValue = "#333"
     @State bgColor: string | IbestUIBaseStyleValue = "transparent"
     @ObjectLink @Watch("itemChange") dayItem: DayItemType
@@ -134,7 +136,7 @@ struct CalendarItem {
             }
         }
         .width(this.itemWidth)
-        .aspectRatio(1)
+        .aspectRatio(this.isLandscape ? 0 : 1)
         .borderRadius(this.selectedStyleType == "circle" ? 8888 : borderRadiusData.borderRadiusSm)
         .backgroundColor(this.bgColor)
         .justifyContent(FlexAlign.Center)
@@ -448,7 +450,7 @@ export struct IBestCalendar{
      * 点击选择日期
      */
     selectDate(item: DayItemType){
-        console.log(JSON.stringify(item))
+        // console.log(JSON.stringify(item))
         if(!item.isDisabled){
             switch(this.selectType){
                 case "single":
@@ -626,19 +628,18 @@ export struct IBestCalendar{
             .justifyContent(FlexAlign.SpaceBetween)
             .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
             Scroll() {
-                Stack() {
-                    if (this.daysList.length) {
-                        Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.SpaceBetween }) {
-                            ForEach(this.daysList, (item: DayItemType) => {
-                                CalendarItem({ dayItem: item })
-                                    .onClick(() => {
-                                        this.selectDate(item)
-                                    })
-                            }) // 这里写 (item: DayItemType) => item.dateStr 渲染会有问题  不知为啥！！！！！
-                        }
+                Stack({alignContent: Alignment.Top}) {
+                    Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.SpaceBetween }) {
+                        ForEach(this.daysList, (item: DayItemType) => {
+                            CalendarItem({ dayItem: item })
+                                .onClick(() => {
+                                    this.selectDate(item)
+                                })
+                        }) // 这里写 (item: DayItemType) => item.dateStr 渲染会有问题  不知为啥！！！！！
                     }
                     Text(this.curMonth)
                         .fontSize("300lpx")
+                        .height("100%")
                         .fontColor(GRAY_COLOR.GRAY_2)
                         .zIndex(-1)
                         .visibility(this.isShowMark ? Visibility.Visible : Visibility.Hidden)

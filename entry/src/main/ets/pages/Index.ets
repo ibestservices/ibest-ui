@@ -57,6 +57,10 @@ struct Index {
           path: 'pages/Checkbox'
         },
         {
+          name: 'DatePicker 日期选择器',
+          path: 'pages/DatePicker'
+        },
+        {
           name: 'Field 输入框',
           path: 'pages/Field'
         },

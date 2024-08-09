@@ -23,7 +23,11 @@ struct PickerPage {
 		IBestPicker({
 			options: this.options1,
 			title: "标题",
+			visibleItemCount: 5,
 			value: this.selectValue1,
+			onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => {
+				IBestToast.show(selectTexts.join('-'))
+			},
 			onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => {
 				this.visible = false
 				this.filedValue = selectTexts.join('-')
@@ -124,7 +128,6 @@ struct PickerPage {
 	]
 	@State selectValue4: string[] = []
 
-
 	build() {
 		Column() {
 			TitleBar({
@@ -140,7 +143,7 @@ struct PickerPage {
 							onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => {
 								IBestToast.show(selectTexts.join('-'))
 							},
-							onChange: (selectedValues: Array<string>, selectTexts: Array<string>) => {
+							onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => {
 								IBestToast.show(selectTexts.join('-'))
 							}
 						})
@@ -169,7 +172,7 @@ struct PickerPage {
 							onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => {
 								IBestToast.show(selectTexts.join('-'))
 							},
-							onChange: (selectedValues: Array<string>, selectTexts: Array<string>) => {
+							onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => {
 								IBestToast.show(selectTexts.join('-'))
 							}
 						})
@@ -184,7 +187,7 @@ struct PickerPage {
 							onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => {
 								IBestToast.show(selectTexts.join('-'))
 							},
-							onChange: (selectedValues: Array<string>, selectTexts: Array<string>) => {
+							onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => {
 								IBestToast.show(selectTexts.join('-'))
 							}
 						})
@@ -199,7 +202,7 @@ struct PickerPage {
 							onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => {
 								IBestToast.show(selectTexts.join('-'))
 							},
-							onChange: (selectedValues: Array<string>, selectTexts: Array<string>) => {
+							onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => {
 								IBestToast.show(selectTexts.join('-'))
 							}
 						})

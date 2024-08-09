@@ -4,6 +4,7 @@ setIBestUIBaseStyle()
 
 export { setIBestUIBaseStyle, IBestToast }
 export { Throttle } from './src/main/ets/utils/Throttle'
+export { Debounce } from './src/main/ets/utils/Debounce'
 
 export { IBestUIBaseStyleType } from './src/main/ets/theme-chalk/src/index.type'
 
@@ -59,3 +60,5 @@ export { IBestPicker } from './src/main/ets/components/picker/index'
 export { IBestPickerOption } from './src/main/ets/components/picker/index.type'
 
 export { IBestPickerGroup } from './src/main/ets/components/pickerGroup/index'
+
+export { IBestDatePicker } from './src/main/ets/components/datePicker/index'

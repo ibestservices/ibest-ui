@@ -1,11 +1,10 @@
-import { IBestButton, IBestPicker, IBestPickerGroup, IBestPickerOption, IBestToast,
+import { IBestButton, IBestPicker, IBestPickerGroup, IBestPickerOption, IBestDatePicker, IBestToast,
 	Throttle } from '@ibestservices/ibest-ui'
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../assets/global.type'
-
 
 @Entry
 @Component
@@ -26,6 +25,7 @@ struct PickerGroupPage {
 		{ text: '周五', value: '周五' }
 	]
 	@State tabs: string[] = ["选择日期", "选择日期"]
+	@State groupId: string = "1"
 	@State selectValue1: string[] = []
 	@State selectValue2: string[] = []
 	@State currentName: string = "0"
@@ -84,6 +84,30 @@ struct PickerGroupPage {
 							IBestPicker({
 								showToolBar: false,
 								options: this.options2,
+								value: this.selectValue2
+							})
+						}
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '选择日期范围', titlePaddingLeft: SPACE.SMALL, card: true }) {
+						IBestPickerGroup({
+							groupId: this.groupId,
+							title: "预约日期",
+							tabs: this.tabs,
+							nextStepText: "下一步",
+							onConfirm: () => {
+								IBestToast.show({
+									message: `${this.selectValue1[0]} ${this.selectValue2[0]}`
+								})
+							}
+						}){
+							IBestDatePicker({
+								groupId: this.groupId,
+								value: this.selectValue1
+							})
+							IBestDatePicker({
+								groupId: this.groupId,
 								value: this.selectValue2
 							})
 						}

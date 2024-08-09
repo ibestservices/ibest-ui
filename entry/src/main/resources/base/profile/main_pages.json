@@ -21,6 +21,7 @@
 		"pages/Field",
 		"pages/Form",
 		"pages/Picker",
-		"pages/PickerGroup"
+		"pages/PickerGroup",
+		"pages/DatePicker"
 	]
 }
