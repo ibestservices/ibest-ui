@@ -62,3 +62,6 @@ export { IBestPickerOption } from './src/main/ets/components/picker/index.type'
 export { IBestPickerGroup } from './src/main/ets/components/pickerGroup/index'
 
 export { IBestDatePicker } from './src/main/ets/components/datePicker/index'
+export { IBestDatePickerResultType } from './src/main/ets/components/datePicker/index.type'
+
+export { IBestTimePicker } from './src/main/ets/components/timePicker/index'

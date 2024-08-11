@@ -29,9 +29,9 @@ export class IBestTabItem implements IBestTabItemType{
     constructor(value: IBestTabItemType) {
         this.label = value.label
         this.name = value.name
-        this.number = value.number
-        this.icon = value.icon
-        this.isDisable = value.isDisable
+        this.number = value.number ?? undefined
+        this.icon = value.icon ?? undefined
+        this.isDisable = value.isDisable ?? false
     }
 }
 /*

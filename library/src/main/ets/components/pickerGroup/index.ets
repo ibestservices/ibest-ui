@@ -59,6 +59,10 @@ export struct IBestPickerGroup{
 	 * 取消按钮点击事件
 	 */
 	onCancel: () => void = () => {}
+	/*
+	 * currentName变化事件
+	 */
+	onTabNameChange: (name: string) => void = () => {}
 	private tabController: IBestTabController = new IBestTabController()
 	private swiperController: SwiperController = new SwiperController()
 
@@ -82,11 +86,13 @@ export struct IBestPickerGroup{
 	// tab切换
 	tabChange(index: number){
 		this.swiperController.changeIndex(index, true)
+		this.onTabNameChange(this.currentName)
 	}
 	// 确认按钮点击
 	onConfirmClick(){
 		if(this.nextStepText && this.swiperIndex < this.tabsList.length - 1){
-			this.swiperIndex++
+			this.currentName = `${this.swiperIndex+1}`
+			this.tabChange(this.swiperIndex+1)
 		}else{
 			this.onConfirm()
 		}
@@ -149,9 +155,6 @@ export struct IBestPickerGroup{
 			.loop(false)
 			.duration(100)
 			.index($$this.swiperIndex)
-			.onChange((index: number) => {
-				this.tabController.changeTab(`${index}`)
-			})
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.alignItems(HorizontalAlign.Start)

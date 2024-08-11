@@ -24,10 +24,17 @@ struct PickerGroupPage {
 		{ text: '周四', value: '周四' },
 		{ text: '周五', value: '周五' }
 	]
-	@State tabs: string[] = ["选择日期", "选择日期"]
-	@State groupId: string = "1"
+	@State tabs: string[] = ["选择地点", "选择星期"]
+	@State tabs1: string[] = ["开始日期", "结束日期"]
 	@State selectValue1: string[] = []
 	@State selectValue2: string[] = []
+	@State selectValue3: string[] = []
+	@State selectValue4: string[] = []
+
+	@State groupId: string = "1"
+	@State selectValue5: string[] = []
+	@State selectValue6: string[] = []
+
 	@State currentName: string = "0"
 	@Throttle(1000)
 	changeName(){
@@ -43,7 +50,7 @@ struct PickerGroupPage {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL, card: true }) {
 						IBestPickerGroup({
-							title: "预约日期",
+							title: "选择地点时间",
 							tabs: this.tabs,
 							onConfirm: () => {
 								IBestToast.show({
@@ -54,12 +61,12 @@ struct PickerGroupPage {
 							IBestPicker({
 								showToolBar: false,
 								options: this.options1,
-								value: this.selectValue1
+								value: $selectValue1
 							})
 							IBestPicker({
 								showToolBar: false,
 								options: this.options2,
-								value: this.selectValue2
+								value: $selectValue2
 							})
 						}
 					}
@@ -67,24 +74,24 @@ struct PickerGroupPage {
 				ListItem() {
 					ComponentShowContainer({ title: '下一步按钮', titlePaddingLeft: SPACE.SMALL, card: true }) {
 						IBestPickerGroup({
-							title: "预约日期",
+							title: "选择地点时间",
 							tabs: this.tabs,
 							nextStepText: "下一步",
 							onConfirm: () => {
 								IBestToast.show({
-									message: `${this.selectValue1[0]} ${this.selectValue2[0]}`
+									message: `${this.selectValue3[0]} ${this.selectValue4[0]}`
 								})
 							}
 						}){
 							IBestPicker({
 								showToolBar: false,
 								options: this.options1,
-								value: this.selectValue1
+								value: $selectValue3
 							})
 							IBestPicker({
 								showToolBar: false,
 								options: this.options2,
-								value: this.selectValue2
+								value: $selectValue4
 							})
 						}
 					}
@@ -94,21 +101,21 @@ struct PickerGroupPage {
 						IBestPickerGroup({
 							groupId: this.groupId,
 							title: "预约日期",
-							tabs: this.tabs,
+							tabs: this.tabs1,
 							nextStepText: "下一步",
 							onConfirm: () => {
 								IBestToast.show({
-									message: `${this.selectValue1[0]} ${this.selectValue2[0]}`
+									message: `${this.selectValue5.join("-")}-${this.selectValue6.join("-")}`
 								})
 							}
 						}){
 							IBestDatePicker({
 								groupId: this.groupId,
-								value: this.selectValue1
+								value: $selectValue5
 							})
 							IBestDatePicker({
 								groupId: this.groupId,
-								value: this.selectValue2
+								value: $selectValue6
 							})
 						}
 					}
@@ -125,9 +132,13 @@ struct PickerGroupPage {
 								}
 							})
 							IBestPickerGroup({
-								title: "预约日期",
+								title: "选择地点时间",
 								tabs: this.tabs,
+								nextStepText: "下一步",
 								currentName: this.currentName,
+								onTabNameChange: (name: string) => {
+									this.currentName = name
+								},
 								onConfirm: () => {
 									IBestToast.show({
 										message: `${this.selectValue1[0]} ${this.selectValue2[0]}`
@@ -137,12 +148,12 @@ struct PickerGroupPage {
 								IBestPicker({
 									showToolBar: false,
 									options: this.options1,
-									value: this.selectValue1
+									value: $selectValue1
 								})
 								IBestPicker({
 									showToolBar: false,
 									options: this.options2,
-									value: this.selectValue2
+									value: $selectValue2
 								})
 							}
 						}

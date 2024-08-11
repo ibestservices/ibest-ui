@@ -75,7 +75,6 @@ export struct IBestPicker{
 	 */
 	onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => void = () => {}
 
-
 	// 列表类型
 	@State columnType: ColumnType = "multiple"
 	// 每列选中索引
@@ -106,9 +105,9 @@ export struct IBestPicker{
 	init(type?: string){
 		this.columnType = this.getColumnType()
 		this.columns = []
-		this.indexArr = []
 		if(this.columnType == "cascade") {
 			if (this.value.length) {
+				this.indexArr = Array(this.value.length).fill(0)
 				this.offsetList = Array(this.value.length).fill(0)
 				this.initWithSelectValue(0, this.options as IBestPickerOption[])
 			} else {
@@ -120,11 +119,11 @@ export struct IBestPicker{
 	}
 	// 根据已选值 初始化索引位置
 	initWithSelectValue(index: number, children: IBestPickerOption[]){
-		if(this.value[index] != undefined && children.length){
+		if(this.value[index] != undefined && children && children.length){
 			let i = children.findIndex(item => item.value == this.value[index])
 			i = i > -1 ? i : children.length - 1
 			this.columns.push(children)
-			this.indexArr.push(i)
+			this.indexArr[index] = i
 			this.updateOffsetByIndex(index, i)
 			this.initWithSelectValue(index+1, children[i].children!)
 		}
@@ -134,9 +133,9 @@ export struct IBestPicker{
 		if(children && children.length){
 			this.columns.push(children)
 			arr.push(children[0].value)
-			this.indexArr.push(0)
 			this.initWithEmptyValue(arr, children[0].children!)
 		}else{
+			this.indexArr = Array(arr.length).fill(0)
 			this.offsetList = Array(arr.length).fill(0)
 			this.value = arr
 		}
@@ -144,17 +143,18 @@ export struct IBestPicker{
 	// 初始化多列类型
 	initWidthMultiple(type?:string){
 		let options = this.options as IBestPickerOption[][]
+		if(!this.value.length){
+			this.value = Array(options.length).fill(0)
+		}
 		if(!this.offsetList.length){
 			this.offsetList = Array(this.value.length).fill(0)
 		}
-		// TODO: 优化
 		options.forEach((item, index) => {
 			let i = item.findIndex(e => e.value == this.value[index])
-			i = i > -1 ? i : type == "change" ? item.length-1 : 0
-			this.indexArr.push(i)
-			if(i == -1){
-				this.value.push(item[0].value)
-			}else{
+			i = i > -1 ? i : 0
+			this.indexArr[index] = i
+			this.value[index] = item[i].value
+			if(i > -1){
 				if(type == "change"){
 					this.value[index] = item[i].value
 				}

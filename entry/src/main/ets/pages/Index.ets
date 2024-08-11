@@ -17,7 +17,7 @@ interface ComponentItem {
 struct Index {
   @State componentList: ComponentPart[] = [
     {
-      title: '基础表单',
+      title: '基础组件',
       list: [
         {
           name: 'Button按钮',
@@ -87,6 +87,10 @@ struct Index {
         {
           name: 'Switch 开关',
           path: 'pages/Switch'
+        },
+        {
+          name: 'TimePicker 时间选择器',
+          path: 'pages/TimePicker'
         }
       ]
     },
