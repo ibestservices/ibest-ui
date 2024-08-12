@@ -9,11 +9,16 @@ import ComponentShowContainer from '../components/ComponentShowContainer'
 struct CascaderPage {
 	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
 	@State visible: boolean = false
-	@State value: string = '请选择地区'
+	@State fieldValue: string = '请选择地区'
+	@State selectValue: string[] = []
+
 	@State visible1: boolean = false
-	@State value1: string = '请选择地区'
+	@State fieldValue1: string = '请选择地区'
+	@State selectValue1: string[] = []
+
 	@State visible2: boolean = false
-	@State value2: string = '请选择地区'
+	@State fieldValue2: string = '江苏省,南京市,雨花台区'
+	@State selectValue2: string[] = ["320000", "320100", "320114"]
 	@State data: IBestCascaderOption[] = [
 		{
 			text: "江苏省",
@@ -82,45 +87,12 @@ struct CascaderPage {
 					]
 				}
 			]
-		},
-		{
-			text: "安徽省",
-			value: "340000",
-			children: [
-				{
-					text: "合肥市",
-					value: "340100",
-					children: [
-						{
-							text: "蜀山区",
-							value: "340104"
-						},
-						{
-							text: "合肥高新技术产业开发区",
-							value: "340171"
-						}
-					]
-				},
-				{
-					text: "黄山市",
-					value: "341000",
-					children: [
-						{
-							text: "屯溪区",
-							value: "341002"
-						},
-						{
-							text: "黄山区",
-							value: "341003"
-						}
-					]
-				}
-			]
 		}
 	]
 
 	@State visible3: boolean = false
-	@State value3: string = '请选择地区'
+	@State fieldValue3: string = '请选择地区'
+	@State selectValue3: string[] = []
 	@State data3: IBestCascaderOption[] = [
 		{
 			text: "江苏省",
@@ -164,7 +136,8 @@ struct CascaderPage {
 	}
 
 	@State visible4: boolean = false
-	@State value4: string = '请选择地区'
+	@State fieldValue4: string = '请选择地区'
+	@State selectValue4: string[] = []
 	@State data4: IBestCascaderOption[] = [
 		{
 			text: "江苏省",
@@ -238,7 +211,6 @@ struct CascaderPage {
 		}
 	]
 
-
 	build() {
 		Column() {
 			TitleBar({
@@ -251,7 +223,7 @@ struct CascaderPage {
 							Column() {
 								IBestCell({
 									title: '地区',
-									value: this.value,
+									value: this.fieldValue,
 									isLink: true,
 									hasBorder: false,
 									onClickCell: () => {
@@ -268,7 +240,7 @@ struct CascaderPage {
 							Column() {
 								IBestCell({
 									title: '地区',
-									value: this.value1,
+									value: this.fieldValue1,
 									isLink: true,
 									hasBorder: false,
 									onClickCell: () => {
@@ -285,7 +257,7 @@ struct CascaderPage {
 							Column() {
 								IBestCell({
 									title: '地区',
-									value: this.value2,
+									value: this.fieldValue2,
 									isLink: true,
 									hasBorder: false,
 									onClickCell: () => {
@@ -302,7 +274,7 @@ struct CascaderPage {
 							Column() {
 								IBestCell({
 									title: '地区',
-									value: this.value3,
+									value: this.fieldValue3,
 									isLink: true,
 									hasBorder: false,
 									onClickCell: () => {
@@ -319,7 +291,7 @@ struct CascaderPage {
 							Column() {
 								IBestCell({
 									title: '地区',
-									value: this.value4,
+									value: this.fieldValue4,
 									isLink: true,
 									hasBorder: false,
 									onClickCell: () => {
@@ -336,8 +308,9 @@ struct CascaderPage {
 			IBestCascader({
 				visible: $visible,
 				options: this.data,
+				value: $selectValue,
 				onConfirm: (value: IBestCascaderOption[]) => {
-					this.value = value.map(item => item.text).join(',')
+					this.fieldValue = value.map(item => item.text).join(',')
 				}
 			})
 			// 自定义颜色
@@ -345,35 +318,39 @@ struct CascaderPage {
 				visible: $visible1,
 				options: this.data,
 				activeColor: '#ee0a24',
+				value: $selectValue1,
 				onConfirm: (value: IBestCascaderOption[]) => {
-					this.value1 = value.map(item => item.text).join(',')
+					this.fieldValue1 = value.map(item => item.text).join(',')
 				}
 			})
 			// 自定义高度
 			IBestCascader({
 				visible: $visible2,
 				options: this.data,
+				value: $selectValue2,
 				itemHeight: 100,
 				onConfirm: (value: IBestCascaderOption[]) => {
-					this.value2 = value.map(item => item.text).join(',')
+					this.fieldValue2 = value.map(item => item.text).join(',')
 				}
 			})
 			// 异步加载
 			IBestCascader({
 				visible: $visible3,
 				options: this.data3,
+				value: $selectValue3,
 				lazy: true,
 				lazyLoad: this.lazyLoad,
 				onConfirm: (value: IBestCascaderOption[]) => {
-					this.value3 = value.map(item => item.text).join(',')
+					this.fieldValue3 = value.map(item => item.text).join(',')
 				}
 			})
 			// 禁用选项
 			IBestCascader({
 				visible: $visible4,
 				options: this.data4,
+				value: $selectValue4,
 				onConfirm: (value: IBestCascaderOption[]) => {
-					this.value4 = value.map(item => item.text).join(',')
+					this.fieldValue4 = value.map(item => item.text).join(',')
 				}
 			})
 		}

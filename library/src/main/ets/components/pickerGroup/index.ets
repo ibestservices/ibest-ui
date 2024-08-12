@@ -63,7 +63,6 @@ export struct IBestPickerGroup{
 	 * currentName变化事件
 	 */
 	onTabNameChange: (name: string) => void = () => {}
-	private tabController: IBestTabController = new IBestTabController()
 	private swiperController: SwiperController = new SwiperController()
 
 	aboutToAppear(): void {
@@ -138,7 +137,6 @@ export struct IBestPickerGroup{
 					currentName: $currentName,
 					tabsList: this.tabsList,
 					tabWidthType: "auto",
-					tabController: this.tabController,
 					onChange: (name: string) => {
 						this.tabChange(Number(name))
 					}

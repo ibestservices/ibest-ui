@@ -31,6 +31,10 @@ export struct IBestPicker{
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/*
+	 * 分组id
+	 */
+	@Prop groupId: string = ""
+	/*
 	 * 当前选中的值
 	 */
 	@Link value: Array<string>
@@ -264,7 +268,7 @@ export struct IBestPicker{
 	build() {
 		Column() {
 			// 头部
-			if(this.showToolBar){
+			if(!this.groupId && this.showToolBar){
 				Stack({alignContent: Alignment.Center}) {
 					Row(){
 						Text(this.cancelText)

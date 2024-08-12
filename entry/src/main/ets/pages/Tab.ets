@@ -127,7 +127,7 @@ struct Tab {
                     ComponentShowContainer({ title: '基本用法' }) {
                         IBestTabs({
                             tabsList: this.tabsList,
-                            currentName: this.curTabName
+                            currentName: $curTabName
                         })
                     }
                 }
@@ -136,7 +136,7 @@ struct Tab {
                         IBestTabs({
                             type: "card",
                             tabsList: this.tabsList,
-                            currentName: this.curTabName
+                            currentName: $curTabName
                         })
                     }
                 }
@@ -147,27 +147,27 @@ struct Tab {
                                 tabHeight: 60,
                                 tabWidthType: "auto",
                                 tabsList: this.tabsList,
-                                currentName: this.curTabName
+                                currentName: $curTabName
                             })
                             IBestTabs({
                                 tabHeight: 60,
                                 tabWidthType: "auto",
                                 tabsList: this.tabsList1,
-                                currentName: this.curTabName2
+                                currentName: $curTabName2
                             })
                             IBestTabs({
                                 tabHeight: 60,
                                 tabWidthType: "auto",
                                 type: "card",
                                 tabsList: this.tabsList,
-                                currentName: this.curTabName
+                                currentName: $curTabName
                             })
                             IBestTabs({
                                 tabHeight: 60,
                                 tabWidthType: "auto",
                                 type: "card",
                                 tabsList: this.tabsList1,
-                                currentName: this.curTabName2
+                                currentName: $curTabName2
                             })
                         }
                         .alignItems(HorizontalAlign.Start)
@@ -181,7 +181,7 @@ struct Tab {
                             isTabLineWidthFixed: true,
                             tabLineWidth: 30,
                             lineOffsetY: 10,
-                            currentName: this.curTabName
+                            currentName: $curTabName
                         })
                     }
                 }
@@ -190,7 +190,7 @@ struct Tab {
                         Column({space: 20}){
                             IBestTabs({
                                 tabsList: this.tabsList2,
-                                currentName: this.curTabName3
+                                currentName: $curTabName3
                             })
                             IBestButton({
                                 text: "禁用标签3",
@@ -206,7 +206,7 @@ struct Tab {
                     ComponentShowContainer({ title: 'change事件' }) {
                         IBestTabs({
                             tabsList: this.tabsList,
-                            currentName: this.curTabName4,
+                            currentName: $curTabName4,
                             onChange: (name: string) => {
                                 IBestToast.show("当前点击的是：" + name)
                             }
@@ -218,7 +218,7 @@ struct Tab {
                         Column({space: 20}){
                             IBestTabs({
                                 tabsList: this.tabsList3,
-                                currentName: this.curTabName5
+                                currentName: $curTabName5
                             })
                             IBestButton({
                                 text: "修改数字",
@@ -237,7 +237,7 @@ struct Tab {
                         Column({space: 20}){
                             IBestTabs({
                                 tabsList: this.tabsList,
-                                currentName: this.curTabName6,
+                                currentName: $curTabName6,
                                 tabController: this.tabController
                             })
                             IBestButton({

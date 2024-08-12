@@ -10,6 +10,10 @@ import { ComponentRouterParams } from '../assets/global.type'
 @Component
 struct PickerGroupPage {
 	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State groupId: string = "1"
+	@State groupId1: string = "2"
+	@State groupId2: string = "3"
+	@State groupId3: string = "4"
 	@State options1: IBestPickerOption[] = [
 		{ text: '南京', value: '南京' },
 		{ text: '苏州', value: '苏州' },
@@ -30,8 +34,6 @@ struct PickerGroupPage {
 	@State selectValue2: string[] = []
 	@State selectValue3: string[] = []
 	@State selectValue4: string[] = []
-
-	@State groupId: string = "1"
 	@State selectValue5: string[] = []
 	@State selectValue6: string[] = []
 
@@ -50,6 +52,7 @@ struct PickerGroupPage {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL, card: true }) {
 						IBestPickerGroup({
+							groupId: this.groupId,
 							title: "选择地点时间",
 							tabs: this.tabs,
 							onConfirm: () => {
@@ -59,12 +62,12 @@ struct PickerGroupPage {
 							}
 						}){
 							IBestPicker({
-								showToolBar: false,
+								groupId: this.groupId,
 								options: this.options1,
 								value: $selectValue1
 							})
 							IBestPicker({
-								showToolBar: false,
+								groupId: this.groupId,
 								options: this.options2,
 								value: $selectValue2
 							})
@@ -74,6 +77,7 @@ struct PickerGroupPage {
 				ListItem() {
 					ComponentShowContainer({ title: '下一步按钮', titlePaddingLeft: SPACE.SMALL, card: true }) {
 						IBestPickerGroup({
+							groupId: this.groupId1,
 							title: "选择地点时间",
 							tabs: this.tabs,
 							nextStepText: "下一步",
@@ -84,12 +88,12 @@ struct PickerGroupPage {
 							}
 						}){
 							IBestPicker({
-								showToolBar: false,
+								groupId: this.groupId1,
 								options: this.options1,
 								value: $selectValue3
 							})
 							IBestPicker({
-								showToolBar: false,
+								groupId: this.groupId1,
 								options: this.options2,
 								value: $selectValue4
 							})
@@ -99,7 +103,7 @@ struct PickerGroupPage {
 				ListItem() {
 					ComponentShowContainer({ title: '选择日期范围', titlePaddingLeft: SPACE.SMALL, card: true }) {
 						IBestPickerGroup({
-							groupId: this.groupId,
+							groupId: this.groupId2,
 							title: "预约日期",
 							tabs: this.tabs1,
 							nextStepText: "下一步",
@@ -110,11 +114,11 @@ struct PickerGroupPage {
 							}
 						}){
 							IBestDatePicker({
-								groupId: this.groupId,
+								groupId: this.groupId2,
 								value: $selectValue5
 							})
 							IBestDatePicker({
-								groupId: this.groupId,
+								groupId: this.groupId2,
 								value: $selectValue6
 							})
 						}
@@ -132,6 +136,7 @@ struct PickerGroupPage {
 								}
 							})
 							IBestPickerGroup({
+								groupId: this.groupId3,
 								title: "选择地点时间",
 								tabs: this.tabs,
 								nextStepText: "下一步",
@@ -146,12 +151,12 @@ struct PickerGroupPage {
 								}
 							}){
 								IBestPicker({
-									showToolBar: false,
+									groupId: this.groupId3,
 									options: this.options1,
 									value: $selectValue1
 								})
 								IBestPicker({
-									showToolBar: false,
+									groupId: this.groupId3,
 									options: this.options2,
 									value: $selectValue2
 								})
@@ -162,6 +167,7 @@ struct PickerGroupPage {
 				}
 			}
 			.layoutWeight(1)
+			.padding({ bottom: SPACE.LARGE })
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)

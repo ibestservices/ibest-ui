@@ -114,7 +114,7 @@ export struct IBestTimePicker {
 			let list = item == "hour" ? this.getHoursList() : item == "minute" ? this.getMinutesList() : this.getSecondsList()
 			let min = list[0].value
 			let max = list[list.length-1].value
-			let newValue = this.value[index]
+			let newValue = this.value[index] || min
 			let i = list.findIndex((item) => item.value == newValue)
 			if(i == -1){
 				this.value[index] = this.formatValue(clamp(Number(newValue), Number(min), Number(max)))
@@ -206,6 +206,7 @@ export struct IBestTimePicker {
 
 	build() {
 		IBestPicker({
+			groupId: this.groupId,
 			value: $value,
 			options: this.options,
 			showToolBar: !this.groupId && this.showToolBar,

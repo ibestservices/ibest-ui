@@ -221,6 +221,7 @@ export struct IBestDatePicker {
 
 	build() {
 		IBestPicker({
+			groupId: this.groupId,
 			value: $value,
 			options: this.options,
 			showToolBar: !this.groupId && this.showToolBar,

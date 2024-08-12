@@ -11,7 +11,7 @@ struct TimerPickerPage {
     @State title: string = (router.getParams() as ComponentRouterParams).title || ''
     @State selectValue: string[] = ["10", "18", "18"]
     @State selectValue1: string[] = ["10", "18"]
-    @State selectValue2: string[] = ["10", "18", "18"]
+    @State selectValue2: string[] = []
     @State selectValue3: string[] = ["10", "18", "18"]
     @State selectValue4: string[] = ["06", "18", "18"]
     filter(type: string, options: IBestPickerOption[]): IBestPickerOption[]{
@@ -75,8 +75,6 @@ struct TimerPickerPage {
                     ComponentShowContainer({ title: "显示单位", titlePaddingLeft: SPACE.SMALL, card: true }) {
                         IBestTimePicker({
                             title: "选择时间",
-                            minTime: "08:30:00",
-                            maxTime: "18:00:00",
                             showUnit: true,
                             value: $selectValue3,
                             onConfirm: (value: string[]) => {
@@ -104,6 +102,8 @@ struct TimerPickerPage {
                     }
                 }
             }
+            .layoutWeight(1)
+            .padding({ bottom: SPACE.LARGE })
         }
         .width(CONTAINER_SIZE.FULL)
         .height(CONTAINER_SIZE.FULL)

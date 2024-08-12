@@ -45,8 +45,8 @@ struct DatePickerPage {
 					ComponentShowContainer({ title: "选项类型", titlePaddingLeft: SPACE.SMALL, card: true }) {
 						IBestDatePicker({
 							title: "选择年月",
-							minDate: new Date("2020-05-01"),
-							maxDate: new Date("2028-05-01"),
+							minDate: new Date("2020-05"),
+							maxDate: new Date("2028-05"),
 							isShowDay: false,
 							value: $selectValue1,
 							onConfirm: (value: IBestDatePickerResultType) => {
@@ -94,6 +94,8 @@ struct DatePickerPage {
 					}
 				}
 			}
+			.layoutWeight(1)
+			.padding({ bottom: SPACE.LARGE })
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)

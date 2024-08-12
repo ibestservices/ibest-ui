@@ -57,7 +57,7 @@ struct Index {
           path: 'pages/Checkbox'
         },
         {
-          name: 'DatePicker 日期选择器',
+          name: 'DatePicker 日期选择',
           path: 'pages/DatePicker'
         },
         {
@@ -89,7 +89,7 @@ struct Index {
           path: 'pages/Switch'
         },
         {
-          name: 'TimePicker 时间选择器',
+          name: 'TimePicker 时间选择',
           path: 'pages/TimePicker'
         }
       ]

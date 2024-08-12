@@ -24,7 +24,7 @@ struct PickerPage {
 			options: this.options1,
 			title: "标题",
 			visibleItemCount: 5,
-			value: this.selectValue1,
+			value: $selectValue1,
 			onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => {
 				IBestToast.show(selectTexts.join('-'))
 			},
@@ -139,7 +139,7 @@ struct PickerPage {
 						IBestPicker({
 							options: this.options1,
 							title: "标题",
-							value: this.selectValue,
+							value: $selectValue,
 							onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => {
 								IBestToast.show(selectTexts.join('-'))
 							},
@@ -168,7 +168,7 @@ struct PickerPage {
 						IBestPicker({
 							options: this.options1,
 							title: "标题",
-							value: this.selectValue2,
+							value: $selectValue2,
 							onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => {
 								IBestToast.show(selectTexts.join('-'))
 							},
@@ -183,7 +183,7 @@ struct PickerPage {
 						IBestPicker({
 							options: this.options3,
 							title: "标题",
-							value: this.selectValue3,
+							value: $selectValue3,
 							onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => {
 								IBestToast.show(selectTexts.join('-'))
 							},
@@ -198,7 +198,7 @@ struct PickerPage {
 						IBestPicker({
 							options: this.options4,
 							title: "标题",
-							value: this.selectValue4,
+							value: $selectValue4,
 							onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => {
 								IBestToast.show(selectTexts.join('-'))
 							},
@@ -209,6 +209,8 @@ struct PickerPage {
 					}
 				}
 			}
+			.layoutWeight(1)
+			.padding({ bottom: SPACE.LARGE })
 			// 弹出层
 			IBestPopup({
 				visible: $visible,

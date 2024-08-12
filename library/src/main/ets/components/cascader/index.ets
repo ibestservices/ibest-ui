@@ -41,7 +41,7 @@ struct IBestCascaderContent{
 	/*
 	 * 已选中数据
 	 */
-	@Prop selectData: IBestCascaderOption[] = []
+	@Link value: (string | number)[]
 	/*
 	 * 选中颜色
 	 */
@@ -72,7 +72,7 @@ struct IBestCascaderContent{
 	onConfirm: (value: IBestCascaderOption[]) => void = () => {}
 
 	aboutToAppear(): void {
-		if(this.selectData.length){
+		if(this.value.length){
 			this.createAllOptionsInstance([], this.options, 0)
 		}else {
 			this.optionsInstance.push(this.createOptionsInstance(this.options))
@@ -94,8 +94,8 @@ struct IBestCascaderContent{
 	}
 	// 创建全部选项实例
 	createAllOptionsInstance(array: IBestCascaderOptionInstance[][] = [], children: IBestCascaderOption[] = [], index: number){
-		let curData = this.selectData[index]
-		let i = children.findIndex((item: IBestCascaderOption) => item.value === curData.value)
+		let curValue = this.value[index]
+		let i = children.findIndex((item: IBestCascaderOption) => item.value === curValue)
 		array.push(
 			children.map((item: IBestCascaderOption) => {
 				let obj: IBestCascaderOptionInstanceType = {
@@ -103,7 +103,7 @@ struct IBestCascaderContent{
 					value: item.value,
 					disabled: item.disabled,
 					children: item.children || [],
-					actived: curData.value === item.value,
+					actived: curValue === item.value,
 					isEnd: item.isEnd
 				}
 				return new IBestCascaderOptionInstance(obj)
@@ -113,14 +113,15 @@ struct IBestCascaderContent{
 			this.createAllOptionsInstance(array, children[i].children, index + 1)
 		}else{
 			this.optionsInstance = array
-			this.tabList = this.selectData.map((item: IBestCascaderOption, j: number) => {
+			this.tabList = this.value.map((item: string | number, j: number) => {
+				let a = array[j].find((e: IBestCascaderOptionInstance) => e.value == item)
 				return new IBestTabItem({
-					label: item.text,
+					label: a?.text ?? "",
 					name: `${j}`
 				})
 			})
-			this.currentTabName = `${this.selectData.length - 1}`
-			this.swiperDefaultIndex = this.selectData.length - 1
+			this.currentTabName = `${this.value.length - 1}`
+			this.swiperDefaultIndex = this.value.length - 1
 		}
 	}
 	// 顶部tab切换
@@ -167,7 +168,6 @@ struct IBestCascaderContent{
 			label: "请选择",
 			name
 		}))
-		this.currentTabName = name
 		this.optionsInstance.push(this.createOptionsInstance(children))
 		await sleep(30)
 		this.tabController.changeTab(name)
@@ -190,16 +190,19 @@ struct IBestCascaderContent{
 
 	build() {
 		Column({space: 10}){
-			IBestTabs({
-				tabController: this.tabController,
-				tabsList: this.tabList,
-				tabWidthType: "auto",
-				tabLineColor: this.activeColor,
-				currentName: this.currentTabName,
-				onChange: (name: string) => {
-					this.tabChange(Number(name))
-				}
-			})
+			Row(){
+				IBestTabs({
+					tabController: this.tabController,
+					tabsList: this.tabList,
+					tabWidthType: "auto",
+					tabLineColor: this.activeColor,
+					currentName: $currentTabName,
+					onChange: (name: string) => {
+						this.tabChange(Number(name))
+					}
+				})
+			}
+			.padding({ left: spaceData.spaceXs, right: spaceData.spaceXs })
 			Swiper(this.swiperController) {
 				ForEach(this.optionsInstance, (item: IBestCascaderOptionInstance[], index: number) => {
 					Scroll(){
@@ -325,7 +328,7 @@ export struct IBestCascader{
 	/*
 	 * 已选项
 	 */
-	@Prop selectData: IBestCascaderOption[] = []
+	@Link value: (string | number)[]
 	/*
 	 * 选中项变化时回调函数
 	 */
@@ -337,7 +340,7 @@ export struct IBestCascader{
 
 	@Builder baseBuilder() {
 		IBestCascaderContent({
-			selectData: this.selectData,
+			value: $value,
 			lazyLoad: this.lazyLoad,
 			onChange: this.onChange,
 			onConfirm: (value: IBestCascaderOption[]) => {
@@ -346,7 +349,7 @@ export struct IBestCascader{
 		})
 	}
 	onGetResult(value: IBestCascaderOption[]){
-		this.selectData = value
+		this.value = value.map((e: IBestCascaderOption) => e.value)
 		this.onConfirm(value)
 		this.visible = false
 	}
