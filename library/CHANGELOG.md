@@ -46,3 +46,9 @@
 
 ## 1.10.0
 1. 增加Form以及Field组件
+
+## 1.11.0
+1. 增加:
+   Picker、DatePicker、TimePicker、PickerGroup 
+2. Cascader组件支持双向绑定;
+3. Tab组件支持双向绑定, 优化参数声明。
