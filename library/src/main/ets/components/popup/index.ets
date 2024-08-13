@@ -143,7 +143,7 @@ export struct IBestPopup{
 	 */
 	@State topAvoidSize: number = 0
 	/*
-	 * 底部规避尺寸 暂时写死
+	 * TODO 底部规避尺寸 暂时写死
 	 */
 	@State bottomAvoidSize: number = 0
 	/*

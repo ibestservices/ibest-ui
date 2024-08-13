@@ -3,6 +3,8 @@ import IBestToast from './src/main/ets/utils/IBestToast'
 setIBestUIBaseStyle()
 
 export { setIBestUIBaseStyle, IBestToast }
+export { Throttle } from './src/main/ets/utils/Throttle'
+export { Debounce } from './src/main/ets/utils/Debounce'
 
 export { IBestUIBaseStyleType } from './src/main/ets/theme-chalk/src/index.type'
 
@@ -41,7 +43,7 @@ export { IBestCalendarDialog } from './src/main/ets/components/calendar/calendar
 export { IBestLoading } from './src/main/ets/components/loading/index'
 
 export { IBestTabs } from './src/main/ets/components/tab/index'
-export { IBestTabItem, IBestTabController } from './src/main/ets/components/tab/index.type'
+export { IBestTabItem, IBestTabItemType, IBestTabController } from './src/main/ets/components/tab/index.type'
 
 export { IBestPopup } from './src/main/ets/components/popup/index'
 
@@ -53,3 +55,13 @@ export { IBestFieldValueType } from './src/main/ets/components/field/index.type'
 
 export { IBestForm } from './src/main/ets/components/form/index'
 export { IBestFormController, IBestFormRule } from './src/main/ets/components/form/index.type'
+
+export { IBestPicker } from './src/main/ets/components/picker/index'
+export { IBestPickerOption } from './src/main/ets/components/picker/index.type'
+
+export { IBestPickerGroup } from './src/main/ets/components/pickerGroup/index'
+
+export { IBestDatePicker } from './src/main/ets/components/datePicker/index'
+export { IBestDatePickerResultType } from './src/main/ets/components/datePicker/index.type'
+
+export { IBestTimePicker } from './src/main/ets/components/timePicker/index'

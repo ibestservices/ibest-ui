@@ -12,22 +12,26 @@ export interface TabWidthType{
 /*
  * tabItem类型
  */
-class TabItemObj{
-    label: string = ""
-    name: string = ""
+export interface IBestTabItemType{
+    label: string
+    name: string
     number?: number
     icon?: string | Resource
-    isDisable?: boolean = false
+    isDisable?: boolean
 }
 @Observed
-export class IBestTabItem extends TabItemObj{
-    constructor(value: TabItemObj) {
-        super()
+export class IBestTabItem implements IBestTabItemType{
+    label: string
+    name: string
+    number?: number
+    icon?: string | Resource
+    isDisable?: boolean
+    constructor(value: IBestTabItemType) {
         this.label = value.label
         this.name = value.name
-        this.number = value.number
-        this.icon = value.icon
-        this.isDisable = value.isDisable
+        this.number = value.number ?? undefined
+        this.icon = value.icon ?? undefined
+        this.isDisable = value.isDisable ?? false
     }
 }
 /*
