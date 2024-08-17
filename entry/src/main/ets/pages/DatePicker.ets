@@ -12,7 +12,7 @@ struct DatePickerPage {
 	@State selectValue: string[] = ["2024", "08", "10"]
 	@State selectValue1: string[] = ["2024", "08"]
 	@State selectValue2: string[] = ["2024", "08", "10"]
-	@State selectValue3: string[] = ["2024", "08", "10"]
+	@State selectValue3: string[] = ["2024", "08"]
 	filter(type: string, options: IBestPickerOption[]): IBestPickerOption[]{
 		if (type === 'month') {
 			return options.filter((option) => Number(option.value) % 6 === 0)
@@ -78,9 +78,9 @@ struct DatePickerPage {
 				ListItem() {
 					ComponentShowContainer({ title: "过滤选项", titlePaddingLeft: SPACE.SMALL, card: true }) {
 						IBestDatePicker({
-							title: "选择日期",
-							minDate: new Date("2020-05-01"),
-							maxDate: new Date("2028-05-01"),
+							title: "选择年月",
+							minDate: new Date("2020-05"),
+							maxDate: new Date("2028-05"),
 							isShowDay: false,
 							filter: this.filter,
 							value: $selectValue3,
