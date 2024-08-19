@@ -52,3 +52,6 @@
    Picker、DatePicker、TimePicker、PickerGroup 
 2. Cascader组件支持双向绑定;
 3. Tab组件支持双向绑定, 优化参数声明。
+
+## 1.11.1
+1. bug修复
