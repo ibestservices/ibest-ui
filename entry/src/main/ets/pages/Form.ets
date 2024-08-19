@@ -75,6 +75,7 @@ struct FieldPage {
 	@State value8: string = ""
 	@State value9: number = 1
 	@State value10: string = ""
+	@State selectValue: string[] = []
 	@State visible: boolean = false
 	@State value11: string = ''
 	@State visible1: boolean = false
@@ -441,6 +442,7 @@ struct FieldPage {
 			IBestCascader({
 				visible: this.visible,
 				options: this.options,
+				value: this.selectValue,
 				onConfirm: (value: IBestCascaderOption[]) => {
 					this.value10 = value.map(item => item.text).join(',')
 				}

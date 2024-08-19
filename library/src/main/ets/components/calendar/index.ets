@@ -5,15 +5,13 @@ import { IBestUIBaseStyleObjType, IbestUIBaseStyleValue } from '../../theme-chal
 import { ColorType, COLOR_TYPE } from '../../theme-chalk/src/color.type'
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type'
 import { CalendarConfirmResultType, SelectedStyleType, SelectType, WeekDayType } from './index.type'
-import { SIZE } from '../../theme-chalk/src/size.type';
 import { FONT_SIZE } from '../../theme-chalk/src/font.type'
 import { spaceData } from '../../theme-chalk/src/space'
 import { borderRadiusData } from '../../theme-chalk/src/border'
 import { fontSizeData } from '../../theme-chalk/src/font'
-import { IBestButton } from '../button'
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type'
 import promptAction from '@ohos.promptAction'
-import { getIsLandscape } from '../../assets/ets/utils'
+import { getComponentsInfo, getIsLandscape } from '../../assets/ets/utils'
+import { UIContext } from '@kit.ArkUI'
 class DayItemObj{
     date: Dayjs = dayjs()
     dateStr: string = ""
@@ -151,6 +149,8 @@ export struct IBestCalendar{
      * 全局公共样式
      */
     @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+    // 唯一id
+    @State uniId: number = 0
     // 是否横屏
     @State isLandscape: boolean = getIsLandscape(getContext(this))
     /*
@@ -218,6 +218,8 @@ export struct IBestCalendar{
      * 列表日期
      */
     @State daysList: Array<DayItemType> = []
+    // 日期区域高度
+    @State contentHeight: number = 0
     /*
      * 选择类型
      */
@@ -275,6 +277,7 @@ export struct IBestCalendar{
      */
     onConfirm: (value: Array<CalendarConfirmResultType>) => void = () => {}
     controller?: CustomDialogController
+    private context: UIContext = this.getUIContext()
 
     selectDateChange(){
         this.curYearMonth = dayjs(this.curSelectedDate).format('YYYY-MM')
@@ -284,6 +287,7 @@ export struct IBestCalendar{
     }
 
     aboutToAppear(){
+        this.uniId = this.getUniqueId()
         this.init()
         this.initDaysList()
     }
@@ -332,9 +336,6 @@ export struct IBestCalendar{
         // console.log(`本月第一天周${firstDayWeekNum}`)
         // 获取本月多少天
         let curMonthDays = dayjs(this.curYearMonth).daysInMonth()
-        // 获取当前月份最后一天是周几
-        let lastDayWeekNum = this.getWeekNum(dayjs(this.curYearMonth).date(curMonthDays))
-        // console.log(`本月最后一天周${lastDayWeekNum}`)
         // 需补上月多少天
         let preMonthDays: number = this.headerList.findIndex((item) => item.key == firstDayWeekNum)
         // console.log(`需补上月preMonthDays ${preMonthDays}天`)
@@ -403,6 +404,17 @@ export struct IBestCalendar{
         }
         this.daysList = list
         this.selectedList = this.refreshListParam(this.selectedList)
+        this.getDateAreaHeight()
+    }
+    /*
+     * 获取日期区域高度
+     */
+    getDateAreaHeight(){
+        if(this.isShowMark){
+            setTimeout(()=>{
+                this.contentHeight = getComponentsInfo(this.context, `calender_${this.uniId}`).height
+            }, 0)
+        }
     }
     /*
      * 刷新字段
@@ -637,14 +649,16 @@ export struct IBestCalendar{
                                 })
                         }) // 这里写 (item: DayItemType) => item.dateStr 渲染会有问题  不知为啥！！！！！
                     }
+                    .id(`calender_${this.uniId}`)
                     Text(this.curMonth)
                         .fontSize("300lpx")
-                        .height("100%")
+                        .height(`${this.contentHeight}lpx`)
                         .fontColor(GRAY_COLOR.GRAY_2)
                         .zIndex(-1)
                         .visibility(this.isShowMark ? Visibility.Visible : Visibility.Hidden)
                 }
             }
+            .scrollable(this.isLandscape ? ScrollDirection.Vertical : ScrollDirection.None)
             .layoutWeight(this.isLandscape ? 1 : 0)
             .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
             Button(this.confirmBtnText)

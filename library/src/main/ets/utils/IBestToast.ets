@@ -60,6 +60,7 @@ class ToastOption extends ToastParams{
         this.loadingType = value.loadingType || "circular"
         this.position = value.position || "center"
         this.offsetY = value.offsetY || 0
+        this.onOpened = value.onOpened
     }
 }
 
@@ -177,6 +178,7 @@ class Toast{
     static hide(){
         if(Toast._instance){
             Toast._instance.promptAction.closeCustomDialog(Toast._instance.loadingDialog)
+            Toast._instance.loadingDialog?.dispose()
             Toast._instance.uiObserver?.off("routerPageUpdate")
             clearTimeout(Toast._instance?.timer)
             Toast._instance = null
