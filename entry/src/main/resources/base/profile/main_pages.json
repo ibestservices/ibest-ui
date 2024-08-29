@@ -23,6 +23,8 @@
 		"pages/Picker",
 		"pages/PickerGroup",
 		"pages/DatePicker",
-		"pages/TimePicker"
+		"pages/TimePicker",
+		"pages/NumberKeyboard",
+		"pages/PasswordInput"
 	]
 }

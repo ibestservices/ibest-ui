@@ -3,6 +3,7 @@ import { ComInfoType, ComAvoidAreaSize } from '../../utils/Global.type'
 import { common } from '@kit.AbilityKit'
 import { AnyType } from '../../utils/AnyType'
 import { resourceManager } from '@kit.LocalizationKit'
+import GlobalStore from '../../utils/GlobalStore'
 /**
  * 休眠
  * @param {number} time 休眠时间
@@ -124,13 +125,17 @@ export const getComponentsInfo = (context: UIContext, key: string): ComInfoType 
  * 获取窗口域尺寸信息
  * */
 export const getWindowAvoidSize = async (context: common.BaseContext): Promise<ComAvoidAreaSize> => {
-  let topWindow: window.Window = await window.getLastWindow(context)
-  let avoidArea = topWindow.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
+  let windowStage = GlobalStore.windowStage
+  let mainWindow: window.Window = windowStage ? windowStage.getMainWindowSync() : await window.getLastWindow(context)
+  let avoidArea = mainWindow.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
+  let systemDht = mainWindow.getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR)
+  // console.log("avoidArea", JSON.stringify(avoidArea.bottomRect), JSON.stringify(systemDht.bottomRect))
   return {
     topSize: px2lpx(avoidArea.topRect.height),
-    bottomSize: px2lpx(avoidArea.bottomRect.height) || 60, // TODO 暂时没法获取 先写固定值
+    bottomSize: px2lpx(avoidArea.bottomRect.height),
     leftSize: px2lpx(avoidArea.leftRect.width),
-    rightSize: px2lpx(avoidArea.rightRect.width)
+    rightSize: px2lpx(avoidArea.rightRect.width),
+    navigationSize: px2lpx(systemDht.bottomRect.height)
   }
 }
 /**  */

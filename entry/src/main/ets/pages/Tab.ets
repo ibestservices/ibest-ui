@@ -9,7 +9,7 @@ import ComponentShowContainer from '../components/ComponentShowContainer'
 
 @Entry
 @Component
-struct Tab {
+struct TabPage {
     @State title: string = (router.getParams() as ComponentRouterParams).title || ''
     @State tabsList: IBestTabItemType[] = [
         {

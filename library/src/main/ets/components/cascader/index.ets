@@ -355,7 +355,7 @@ export struct IBestCascader{
 	}
 	build() {
 		IBestPopup({
-			visible: this.visible,
+			visible: $visible,
 			title: this.title,
 			isShowHeader: true,
 			popupAlign: "bottom",

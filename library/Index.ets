@@ -1,8 +1,11 @@
 import { setIBestUIBaseStyle } from './src/main/ets/theme-chalk/src'
 import IBestToast from './src/main/ets/utils/IBestToast'
+import GlobalStore from './src/main/ets/utils/GlobalStore'
+const init = GlobalStore.init
+
 setIBestUIBaseStyle()
 
-export { setIBestUIBaseStyle, IBestToast }
+export { setIBestUIBaseStyle, IBestToast, init as IBestInit }
 export { Throttle } from './src/main/ets/utils/Throttle'
 export { Debounce } from './src/main/ets/utils/Debounce'
 
@@ -65,3 +68,7 @@ export { IBestDatePicker } from './src/main/ets/components/datePicker/index'
 export { IBestDatePickerResultType } from './src/main/ets/components/datePicker/index.type'
 
 export { IBestTimePicker } from './src/main/ets/components/timePicker/index'
+
+export { IBestNumberKeyboard } from './src/main/ets/components/numberKeyboard/index'
+
+export { IBestPasswordInput } from './src/main/ets/components/passwordInput/index'
