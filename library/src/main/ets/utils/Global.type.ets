@@ -27,4 +27,5 @@ export interface ComAvoidAreaSize{
     bottomSize: number
     leftSize: number
     rightSize: number
+    navigationSize: number
 }

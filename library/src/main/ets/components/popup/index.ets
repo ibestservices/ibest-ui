@@ -3,6 +3,7 @@ import { spaceData } from '../../theme-chalk/src/space'
 import { emitter } from '../../assets/ets/EventEmitter'
 import { getIsLandscape, getWindowAvoidSize } from '../../assets/ets/utils'
 import { common } from '@kit.AbilityKit'
+import { uiObserver as observer } from '@kit.ArkUI'
 import { PopupAlign } from './index.type'
 
 @CustomDialog
@@ -111,6 +112,10 @@ export struct IBestPopup{
 	 */
 	@Prop offsetY: number = 0
 	/*
+	 * 蒙层颜色
+	 */
+	@Prop maskColor: string = "0x33000000"
+	/*
 	 * 背板的圆角半径
 	 */
 	@Prop cornerRadius: number = 0
@@ -178,6 +183,7 @@ export struct IBestPopup{
 			DialogAlignment.Bottom : DialogAlignment.Center,
 		offset: { dx: 0, dy: -this.offsetY },
 		isModal: true,
+		maskColor: this.maskColor,
 		customStyle: true,
 		onWillDismiss:(dismissDialogAction: DismissDialogAction)=> {
 			// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
@@ -198,9 +204,13 @@ export struct IBestPopup{
 		emitter.on(`IBestPopupClose_${this.uniId}`, () => {
 			this.close()
 		})
+		// observer.on('routerPageUpdate', this.getUIContext(), () => {
+		// 	this.close()
+		// })
 	}
 	aboutToDisappear(){
 		emitter.off(`IBestPopupClose_${this.uniId}`, () => {})
+		// observer.off('routerPageUpdate', this.getUIContext())
 	}
 	// 初始化尺寸
 	async initSize(){
@@ -273,7 +283,7 @@ struct PopupTitle {
 		}
 		.width("100%")
 		.height("60lpx")
-		.padding({ left: spaceData.spaceMd, right: spaceData.spaceMd})
+		.padding({ left: spaceData.spaceMd, right: spaceData.spaceMd })
 		.justifyContent(FlexAlign.SpaceBetween)
 		.alignItems(VerticalAlign.Center)
 	}

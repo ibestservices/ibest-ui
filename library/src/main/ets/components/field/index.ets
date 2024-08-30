@@ -215,7 +215,7 @@ export struct IBestField{
                 .backgroundColor((this.clickable || this.isLink) ? GRAY_COLOR.GRAY_2 : this.baseStyle.default)
             }
         })
-        .enabled(!(this.disabled || this.readOnly))
+        .enabled(!this.disabled)
         .opacity(this.disabled ? 0.6 : 1)
         .onClick(() => {
             this.onFieldClick()

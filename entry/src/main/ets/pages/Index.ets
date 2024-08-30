@@ -69,6 +69,14 @@ struct Index {
           path: 'pages/Form'
         },
         {
+          name: 'NumberKeyboard 数字键盘',
+          path: 'pages/NumberKeyboard'
+        },
+        {
+          name: 'PasswordInput 密码输入框',
+          path: 'pages/PasswordInput'
+        },
+        {
           name: 'Picker 选择器',
           path: 'pages/Picker'
         },
