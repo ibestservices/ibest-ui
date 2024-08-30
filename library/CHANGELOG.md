@@ -48,10 +48,15 @@
 1. 增加Form以及Field组件
 
 ## 1.11.0
-1. 增加:
-   Picker、DatePicker、TimePicker、PickerGroup 
+1. 增加: Picker、DatePicker、TimePicker、PickerGroup 
 2. Cascader组件支持双向绑定;
 3. Tab组件支持双向绑定, 优化参数声明。
 
 ## 1.11.1
 1. bug修复
+
+## 1.12.0
+1. 新增numberKeyboard、passwordInput组件 ;
+2. popup 新增 maskColor 属性 ;
+3. 新增全局初始化方法 IBestInit ;
+4. 一些样式优化 。
