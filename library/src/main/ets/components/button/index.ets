@@ -86,6 +86,9 @@ export struct IBestButton {
    * 加载图标的大小，默认单位为 lpx 如果为-1就是默认值 默认值跟随字体大小
    */
   @Prop private loadingSize: number = -1;
+  @Prop private btnWidth?: number | string = undefined;
+  @Prop private btnHeight?: number | string = undefined;
+  @Prop private btnFontSize?: number | string = undefined;
   /**
    * 点击按钮，且按钮状态不为加载或禁用时触发
    */
@@ -106,6 +109,10 @@ export struct IBestButton {
    * @returns
    */
   private getBtnSize() {
+    if (this.btnWidth || this.btnHeight) {
+      return new ButtonSizeData(this.btnWidth ? 0 : '30lpx', this.btnHeight || '88lpx',
+        this.btnFontSize || this.baseStyle.fontSizeMd, this.btnWidth)
+    }
     const buttonSize = this.buttonSize;
     switch (buttonSize) {
       case SIZE.SMALL:

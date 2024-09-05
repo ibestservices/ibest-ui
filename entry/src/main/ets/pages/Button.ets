@@ -273,6 +273,25 @@ struct ButtonPage {
           }
         }
 
+        ListItem() {
+          ComponentShowContainer({ title: '自定义大小' }) {
+            Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap, alignItems: ItemAlign.Center }) {
+
+              Column() {
+                IBestButton({
+                  text: '自定义大小按钮',
+                  btnWidth: 200,
+                  btnHeight: 40,
+                  btnFontSize: 16
+                })
+              }.btnMargin()
+
+
+
+            }
+          }
+        }
+
       }
       .layoutWeight(1)
       .padding({
