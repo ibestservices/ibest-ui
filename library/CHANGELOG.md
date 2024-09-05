@@ -60,3 +60,6 @@
 2. popup 新增 maskColor 属性 ;
 3. 新增全局初始化方法 IBestInit ;
 4. 一些样式优化 。
+
+## 1.12.1
+watermark引用文件大小写不一致报错bug修复

@@ -1,4 +1,4 @@
-import { WatermarkCanvas } from './waterMarkCanvas'
+import { WatermarkCanvas } from './watermarkCanvas'
 
 @Component
 export struct IBestWatermark {
