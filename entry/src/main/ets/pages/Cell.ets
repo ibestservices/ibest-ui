@@ -15,7 +15,7 @@ struct CellPage {
 
   @Builder
   StarIcon(height = '48lpx') {
-    Image($r('app.media.startIcon')).height(height).margin({ right: SPACE.MINI })
+    Image($r('app.media.app_icon')).height(height).margin({ right: SPACE.MINI })
   }
 
   @Builder

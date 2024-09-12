@@ -1,5 +1,4 @@
 import { ColorType, COLOR_TYPE } from '../../theme-chalk/src/color.type'
-import { IbestUIBaseStyleValue } from '../../theme-chalk/src/index.type'
 import {IBestCalendar} from "./index"
 import { CalendarConfirmResultType, SelectedStyleType, SelectType, WeekDayType } from './index.type'
 

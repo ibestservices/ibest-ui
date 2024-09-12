@@ -2,7 +2,7 @@ import { getComponentsInfo, sleep } from '../../assets/ets/utils'
 import { IBestTabItem, IBestTabController, TabWidthType, IBestTabItemType } from './index.type'
 import { emitter } from '../../assets/ets/EventEmitter'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { IBestUIBaseStyleObjType, IbestUIBaseStyleValue } from '../../theme-chalk/src/index.type';
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { fontSizeData } from '../../theme-chalk/src/font';
 import { borderRadiusData } from '../../theme-chalk/src/border';
 import { spaceData } from '../../theme-chalk/src/space';
@@ -84,7 +84,7 @@ export struct IBestTabs{
     /*
      * 标记线颜色
      */
-    @Provide tabLineColor: string | IbestUIBaseStyleValue = this.baseStyle.primary
+    @Provide tabLineColor: string = this.baseStyle.primary as string
     /*
      * 标记线Y偏移量
      */
@@ -92,7 +92,7 @@ export struct IBestTabs{
     /*
      * tab区域背景颜色
      */
-    @Provide tabBgColor: string | IbestUIBaseStyleValue = this.baseStyle.default
+    @Provide tabBgColor: string  = this.baseStyle.default as string
     /*
      * controller 控制器
      */
@@ -141,10 +141,12 @@ export struct IBestTabs{
     }
     // tabName 变化
     currentNameChange(){
-        // 获取并改变tabLine的宽度
-        this.getAndSetLineWidth()
-        // 触发回调函数
-        this.onChange && this.onChange(this.currentName)
+        if(this.tabsWidthList.length){
+            // 获取并改变tabLine的宽度
+            this.getAndSetLineWidth()
+            // 触发回调函数
+            this.onChange && this.onChange(this.currentName)
+        }
     }
     // 获取所有tab的宽度
     getTabsWidth(){
@@ -198,6 +200,7 @@ export struct IBestTabs{
                     tabBoxTranslateX: this.tabBoxTranslateX
                 })
             }
+            .layoutWeight(1)
             .scrollable(ScrollDirection.Horizontal)
             .scrollBar(BarState.Off)
             .align(Alignment.Start)

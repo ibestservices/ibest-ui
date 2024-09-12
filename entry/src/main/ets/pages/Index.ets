@@ -89,6 +89,14 @@ struct Index {
           path: 'pages/Radio'
         },
         {
+          name: 'Rate 评分',
+          path: 'pages/Rate'
+        },
+        {
+          name: 'Search 搜索',
+          path: 'pages/Search'
+        },
+        {
           name: 'Stepper 步进器',
           path: 'pages/Stepper'
         },
@@ -206,9 +214,10 @@ struct Index {
         })
       }
       .listDirection(Axis.Vertical) // 排列方向
-      .padding(SPACE.LARGE)
+      .padding(SPACE.MEDIA)
     }.width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)
     .backgroundColor(BACKGROUND_COLOR.BASE)
+    .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM])
   }
 }

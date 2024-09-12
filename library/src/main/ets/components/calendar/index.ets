@@ -267,7 +267,7 @@ export struct IBestCalendar{
     /*
      * 确认按钮颜色
      */
-    @Prop confirmBtnColor: string | IbestUIBaseStyleValue = this.baseStyle[this.type]
+    @Prop confirmBtnColor: string = this.baseStyle[this.type] as string
     /*
      * 确认按钮文案
      */

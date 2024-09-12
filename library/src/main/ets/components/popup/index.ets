@@ -148,7 +148,7 @@ export struct IBestPopup{
 	 */
 	@State topAvoidSize: number = 0
 	/*
-	 * TODO 底部规避尺寸 暂时写死
+	 * 底部规避尺寸
 	 */
 	@State bottomAvoidSize: number = 0
 	/*
@@ -240,7 +240,7 @@ export struct IBestPopup{
 				break
 		}
 		this.topAvoidSize = res.topSize
-		this.bottomAvoidSize = res.bottomSize
+		this.bottomAvoidSize = res.navigationSize
 	}
 	visibleChange(){
 		if(this.visible){
@@ -282,7 +282,7 @@ struct PopupTitle {
 				})
 		}
 		.width("100%")
-		.height("60lpx")
+		.height("80lpx")
 		.padding({ left: spaceData.spaceMd, right: spaceData.spaceMd })
 		.justifyContent(FlexAlign.SpaceBetween)
 		.alignItems(VerticalAlign.Center)

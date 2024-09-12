@@ -1,7 +1,7 @@
 import { getIsLandscape, sleep } from '../../assets/ets/utils'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { fontSizeData } from '../../theme-chalk/src/font'
-import { IBestUIBaseStyleObjType, IbestUIBaseStyleValue } from '../../theme-chalk/src/index.type'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { spaceData } from '../../theme-chalk/src/space'
 import { IBestTabs } from '../tab'
 import { IBestTabController, IBestTabItem } from '../tab/index.type'
@@ -45,7 +45,7 @@ struct IBestCascaderContent{
 	/*
 	 * 选中颜色
 	 */
-	@Consume activeColor: string | IbestUIBaseStyleValue
+	@Consume activeColor: string
 	/*
 	 * 列表区域高度
 	 */
@@ -308,7 +308,7 @@ export struct IBestCascader{
 	/*
 	 * 选中颜色
 	 */
-	@Provide activeColor: string | IbestUIBaseStyleValue = this.baseStyle.primary
+	@Provide activeColor: string = this.baseStyle.primary as string
 	/*
 	 * 列表区域高度
 	 */
