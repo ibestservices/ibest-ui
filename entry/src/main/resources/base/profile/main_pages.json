@@ -25,6 +25,8 @@
 		"pages/DatePicker",
 		"pages/TimePicker",
 		"pages/NumberKeyboard",
-		"pages/PasswordInput"
+		"pages/PasswordInput",
+		"pages/Search",
+		"pages/Rate"
 	]
 }

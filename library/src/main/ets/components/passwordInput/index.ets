@@ -104,7 +104,7 @@ export struct IBestPasswordInput {
 			isRandomKeyOrder: this.numberKeyboardConfig?.isRandomKeyOrder,
 			maxLength: this.inputLength,
 			onClose: () => {
-				this.textInputController.stopEditing()
+				this.stopEdit()
 			}
 		})
 	}
@@ -134,7 +134,10 @@ export struct IBestPasswordInput {
 			this.currentFocusIndex = value.length || 0
 		}
 	}
-
+	// 输入框结束编辑
+	stopEdit(){
+		this.textInputController.stopEditing()
+	}
 	build() {
 		Column({ space: this.baseStyle.spaceMd }){
 			Stack(){
@@ -150,12 +153,13 @@ export struct IBestPasswordInput {
 				}else{
 					TextInput({ text: $$this.value, controller: this.textInputController })
 						.passwordInputStyle(this.uniId, this.inputLength)
-						.customKeyboard(this.numberKeyboardBuilder)
+						.customKeyboard(this.numberKeyboardBuilder, { supportAvoidance: true })
 						.onFocus(() => {
 							this.focused = true
 						})
 						.onBlur(() => {
 							this.focused = false
+							this.stopEdit()
 						})
 				}
 				Row({ space: `${this.space}lpx` }){

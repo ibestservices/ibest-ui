@@ -499,7 +499,7 @@ struct Content{
         .padding(0)
         .borderRadius(0)
         .backgroundColor("transparent")
-        .enabled(!(this.disabled || this.readOnly || this.isLink))
+        .focusable(!(this.disabled || this.readOnly || this.isLink))
         .onClick(() => {
             this.onFieldClick()
         })

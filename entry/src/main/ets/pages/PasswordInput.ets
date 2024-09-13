@@ -31,7 +31,7 @@ struct PasswordInputPage {
 			}).backgroundColor('#FFF')
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '基本用法' }) {
+					ComponentShowContainer({ title: '基础用法' }) {
 						IBestPasswordInput({
 							value: $value,
 							numberKeyboardConfig:{

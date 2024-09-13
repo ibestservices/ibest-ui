@@ -203,6 +203,9 @@ export struct NumberKeyboard{
 						.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
 						.fontSize(this.baseStyle.fontSizeMd)
 						.fontColor(this.baseStyle.primary)
+						.onClick(() => {
+							this.selectKey({ type: 'close' })
+						})
 				}
 				.width(CONTAINER_SIZE.FULL)
 				.height("80lpx")

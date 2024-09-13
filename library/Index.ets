@@ -72,3 +72,7 @@ export { IBestTimePicker } from './src/main/ets/components/timePicker/index'
 export { IBestNumberKeyboard } from './src/main/ets/components/numberKeyboard/index'
 
 export { IBestPasswordInput } from './src/main/ets/components/passwordInput/index'
+
+export { IBestSearch } from './src/main/ets/components/search/index'
+
+export { IBestRate } from './src/main/ets/components/rate/index'
