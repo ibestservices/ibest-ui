@@ -65,6 +65,6 @@
 watermark引用文件大小写不一致报错bug修复
 
 ## 1.13.0
-1. 增加search组件
+1. 增加search rate组件
 2. watermark组件使用stack包裹
 3. button组件增加宽高设置
