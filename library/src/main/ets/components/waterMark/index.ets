@@ -64,7 +64,7 @@ export struct IBestWatermark {
   @State private waterMarkContainWidth: number = 0;
 
   build() {
-    Row() {
+    Stack() {
       WatermarkCanvas({
         waterMarkContainHeight: this.waterMarkContainHeight,
         waterMarkContainWidth: this.waterMarkContainWidth,
