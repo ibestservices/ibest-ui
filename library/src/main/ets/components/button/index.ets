@@ -110,8 +110,8 @@ export struct IBestButton {
    */
   private getBtnSize() {
     if (this.btnWidth || this.btnHeight) {
-      return new ButtonSizeData(this.btnWidth ? 0 : '30lpx', this.btnHeight || '88lpx',
-        this.btnFontSize || this.baseStyle.fontSizeMd, this.btnWidth)
+      return new ButtonSizeData(this.btnWidth ? 0 : '30lpx', typeof this.btnHeight != undefined ? `${this.btnHeight}${typeof this.btnHeight == 'number' ? 'lpx' : ''}` : '88lpx',
+        typeof this.btnFontSize != undefined ? `${this.btnFontSize}${typeof this.btnFontSize == 'number' ? 'lpx' : ''}` : this.baseStyle.fontSizeMd, typeof this.btnWidth != undefined ? `${this.btnWidth}${typeof this.btnWidth == 'number' ? 'lpx' : ''}` : '')
     }
     const buttonSize = this.buttonSize;
     switch (buttonSize) {

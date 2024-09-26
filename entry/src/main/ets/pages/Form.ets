@@ -442,7 +442,7 @@ struct FieldPage {
 			IBestCascader({
 				visible: this.visible,
 				options: this.options,
-				value: this.selectValue,
+				value: $selectValue,
 				onConfirm: (value: IBestCascaderOption[]) => {
 					this.value10 = value.map(item => item.text).join(',')
 				}

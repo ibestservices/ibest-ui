@@ -129,7 +129,8 @@ export const getWindowAvoidSize = async (context: common.BaseContext): Promise<C
   let mainWindow: window.Window = windowStage ? windowStage.getMainWindowSync() : await window.getLastWindow(context)
   let avoidArea = mainWindow.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
   let systemDht = mainWindow.getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR)
-  // console.log("avoidArea", JSON.stringify(avoidArea.bottomRect), JSON.stringify(systemDht.bottomRect))
+  // console.log("avoidArea", JSON.stringify(avoidArea))
+  // console.log("systemDht.bottomRect", JSON.stringify(systemDht))
   return {
     topSize: px2lpx(avoidArea.topRect.height),
     bottomSize: px2lpx(avoidArea.bottomRect.height),
@@ -157,4 +158,10 @@ export const isPromise = (val: AnyType): boolean => isObject(val) && isFunction(
  */
 export const getIsLandscape = (context: Context): boolean => {
   return context.resourceManager.getConfigurationSync().direction == resourceManager.Direction.DIRECTION_HORIZONTAL
+}
+/*
+ * 生成随机id
+ */
+export function generateId(){
+  return Math.random().toString(36).substring(2, 9)
 }

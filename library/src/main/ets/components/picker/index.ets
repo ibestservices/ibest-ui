@@ -96,6 +96,7 @@ export struct IBestPicker{
 	@Styles columnItemStyle(){
 		.height(CONTAINER_SIZE.FULL)
 		.layoutWeight(1)
+		.monopolizeEvents(true)
 	}
 
 	aboutToAppear(): void {

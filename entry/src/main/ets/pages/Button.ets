@@ -280,9 +280,9 @@ struct ButtonPage {
               Column() {
                 IBestButton({
                   text: '自定义大小按钮',
-                  btnWidth: 200,
-                  btnHeight: 40,
-                  btnFontSize: 16
+                  btnWidth: 300,
+                  btnHeight: 80,
+                  btnFontSize: 32
                 })
               }.btnMargin()
 

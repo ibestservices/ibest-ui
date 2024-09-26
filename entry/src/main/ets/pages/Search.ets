@@ -10,6 +10,12 @@ import ComponentShowContainer from '../components/ComponentShowContainer'
 struct SearchPage {
 	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
 	@State value: string = ''
+	@Builder customBtn(){
+		Text("自定义按钮")
+			.height("100%")
+			.padding({ left: 10, right: 10 })
+			.backgroundColor("#eee")
+	}
 
 	build() {
 		Column(){
@@ -75,12 +81,19 @@ struct SearchPage {
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '自定义按钮' }) {
-						IBestSearch({
-							value: $value,
-							label: "地址",
-							showRightButton: true,
-							rightButtonText: "搜索"
-						})
+						Column({ space: 20 }){
+							IBestSearch({
+								value: $value,
+								label: "地址",
+								showRightButton: true,
+								rightButtonText: "搜索"
+							})
+							IBestSearch({
+								value: $value,
+								label: "地址",
+								customRightButton: (): void => this.customBtn()
+							})
+						}
 					}
 				}
 			}

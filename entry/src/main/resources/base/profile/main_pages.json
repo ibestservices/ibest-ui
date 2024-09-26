@@ -27,6 +27,8 @@
 		"pages/NumberKeyboard",
 		"pages/PasswordInput",
 		"pages/Search",
-		"pages/Rate"
+		"pages/Rate",
+		"pages/ActionSheet",
+		"pages/Signature"
 	]
 }
