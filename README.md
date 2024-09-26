@@ -27,6 +27,9 @@ https://github.com/ibestservices/ibest-ui
 ## QQ群
 953492584
 
+## 微信群
+先进QQ群，拉你进微信群
+
 ## 约束与限制
 在下述版本验证通过：
 ```text
