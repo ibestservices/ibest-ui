@@ -68,3 +68,9 @@ watermark引用文件大小写不一致报错bug修复
 1. 增加search rate组件
 2. watermark组件使用stack包裹
 3. button组件增加宽高设置
+
+## 1.14.0
+1. Search 组件增加 customRightButton 属性
+2. 增加 IBestActionSheet API
+3. 增加 IBestSignature 组件
+4. 组件库初始化变更
