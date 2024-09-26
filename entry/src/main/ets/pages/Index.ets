@@ -97,6 +97,10 @@ struct Index {
           path: 'pages/Search'
         },
         {
+          name: 'Signature 签名',
+          path: 'pages/Signature'
+        },
+        {
           name: 'Stepper 步进器',
           path: 'pages/Stepper'
         },
@@ -113,6 +117,10 @@ struct Index {
     {
       title: '反馈组件',
       list: [
+        {
+          name: "ActionSheet 动作面板",
+          path: "pages/ActionSheet"
+        },
         {
           name: 'Dialog 弹出框',
           path: 'pages/Dialog'

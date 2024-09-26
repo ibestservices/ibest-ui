@@ -93,6 +93,10 @@ export struct IBestSearch {
 	 */
 	@Prop enterKeyType: EnterKeyType = EnterKeyType.Search
 	/*
+	 * 自定义右侧按钮
+	 */
+	@BuilderParam customRightButton?: CustomBuilder
+	/*
 	 * 输入回调
 	 */
 	onInput: (value: string) => void = () => {}
@@ -180,7 +184,9 @@ export struct IBestSearch {
 			.borderRadius(this.radius ? `${this.radius}lpx` : this.isRound ? 999999 : 0)
 			.padding({ left:  this.baseStyle.spaceSm })
 			.alignItems(VerticalAlign.Center)
-			if(this.showRightButton){
+			if(this.customRightButton){
+				this.customRightButton()
+			}else if(this.showRightButton){
 				Text(this.rightButtonText)
 					.width("88lpx")
 					.height(CONTAINER_SIZE.FULL)
@@ -201,7 +207,7 @@ export struct IBestSearch {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(`${this.contentHeight}lpx`)
-		.padding({ left: this.baseStyle.spaceSm, right: this.showRightButton ? 0 : this.baseStyle.spaceSm, top: "20lpx", bottom: "20lpx" })
+		.padding({ left: this.baseStyle.spaceSm, right: this.customRightButton || this.showRightButton ? 0 : this.baseStyle.spaceSm, top: "20lpx", bottom: "20lpx" })
 		.backgroundColor(this.outBgColor)
 		.enabled(!this.disabled)
 	}

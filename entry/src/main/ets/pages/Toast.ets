@@ -119,7 +119,7 @@ struct ToastPage {
           }
         }
         ListItem() {
-          ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '自定义图标', titlePaddingLeft: SPACE.SMALL }) {
             IBestCellGroup() {
               Column() {
                 IBestCell({

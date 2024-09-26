@@ -1,11 +1,12 @@
 import { setIBestUIBaseStyle } from './src/main/ets/theme-chalk/src'
 import IBestToast from './src/main/ets/utils/IBestToast'
+import IBestActionSheet from './src/main/ets/utils/IBestActionSheet'
 import GlobalStore from './src/main/ets/utils/GlobalStore'
 const init = GlobalStore.init
 
 setIBestUIBaseStyle()
 
-export { setIBestUIBaseStyle, IBestToast, init as IBestInit }
+export { setIBestUIBaseStyle, IBestToast, IBestActionSheet, init as IBestInit }
 export { Throttle } from './src/main/ets/utils/Throttle'
 export { Debounce } from './src/main/ets/utils/Debounce'
 
@@ -76,3 +77,6 @@ export { IBestPasswordInput } from './src/main/ets/components/passwordInput/inde
 export { IBestSearch } from './src/main/ets/components/search/index'
 
 export { IBestRate } from './src/main/ets/components/rate/index'
+
+export { IBestSignature } from './src/main/ets/components/signature/index'
+export { IBestSignatureController } from './src/main/ets/components/signature/index.type'
