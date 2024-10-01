@@ -200,10 +200,11 @@ export struct IBestTabs{
                     tabBoxTranslateX: this.tabBoxTranslateX
                 })
             }
-            .layoutWeight(1)
             .scrollable(ScrollDirection.Horizontal)
             .scrollBar(BarState.Off)
             .align(Alignment.Start)
+            .layoutWeight(1)
+            .constraintSize({ maxHeight: `${this.tabHeight}lpx` })
             .id(`tabContent_${this.uniId}`)
         }else{
             IBestTabContent({

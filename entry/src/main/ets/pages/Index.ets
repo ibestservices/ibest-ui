@@ -97,6 +97,10 @@ struct Index {
           path: 'pages/Search'
         },
         {
+          name: 'Slider 滑块',
+          path: 'pages/Slider'
+        },
+        {
           name: 'Signature 签名',
           path: 'pages/Signature'
         },

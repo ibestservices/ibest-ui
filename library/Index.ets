@@ -80,3 +80,6 @@ export { IBestRate } from './src/main/ets/components/rate/index'
 
 export { IBestSignature } from './src/main/ets/components/signature/index'
 export { IBestSignatureController } from './src/main/ets/components/signature/index.type'
+
+export { IBestSlider } from './src/main/ets/components/slider/index'
+export { IBestSliderValue } from './src/main/ets/components/slider/index.type'

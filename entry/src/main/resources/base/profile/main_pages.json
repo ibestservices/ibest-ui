@@ -29,6 +29,7 @@
 		"pages/Search",
 		"pages/Rate",
 		"pages/ActionSheet",
-		"pages/Signature"
+		"pages/Signature",
+		"pages/Slider"
 	]
 }

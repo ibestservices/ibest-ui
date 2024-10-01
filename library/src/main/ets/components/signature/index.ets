@@ -2,7 +2,6 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
 import { CONTAINER_SIZE } from "../../theme-chalk/src/container.type"
 import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
 import { IBestButton } from "../button"
-import { ComponentUtils, componentUtils } from "@kit.ArkUI"
 import { IBestSignatureController } from "./index.type"
 @Component
 export struct IBestSignature{

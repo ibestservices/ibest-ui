@@ -105,6 +105,7 @@ export const CONTAINER_SIZE: GeneratedObjectLiteralInterface_3 = {
  * 颜色
  */
 interface GeneratedObjectLiteralInterface_4 {
+  DEFAULT: string;
   PLACEHOLDER: string;
   TEXT: string;
   CANCEL_BTN: string;
@@ -116,6 +117,7 @@ interface GeneratedObjectLiteralInterface_4 {
 }
 
 export const COLOR_BLUE: GeneratedObjectLiteralInterface_4 = {
+  DEFAULT: '#FFFFFF',
   PLACEHOLDER: 'rgba(62,80,113,0.45)',
   TEXT: '#006AE9',
   CANCEL_BTN: '#F2F4FF',

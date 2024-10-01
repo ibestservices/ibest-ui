@@ -165,3 +165,9 @@ export const getIsLandscape = (context: Context): boolean => {
 export function generateId(){
   return Math.random().toString(36).substring(2, 9)
 }
+
+// 加法避免浮点数
+export function addNumber(num1: number, num2: number) {
+  const cardinal = 10 ** 10;
+  return Math.round((num1 + num2) * cardinal) / cardinal;
+}
