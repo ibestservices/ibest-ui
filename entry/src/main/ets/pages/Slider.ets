@@ -16,10 +16,11 @@ struct SliderPage {
 	@State value4: number = 30
 	@State value5: number = 30
 	@State value6: number = 30
-	@State value7: [number, number] = [20, 60]
+	@State value7: number = 30
+	@State value8: [number, number] = [20, 60]
 
 	@Builder customBtn(){
-		Text(this.value5.toString())
+		Text(this.value6.toString())
 			.padding({ left: "10lpx", right: "lpx" })
 			.height("36lpx")
 			.borderRadius(9999)
@@ -90,10 +91,18 @@ struct SliderPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '指定步长' }) {
+					ComponentShowContainer({ title: '禁用' }) {
 						IBestSlider({
 							value: $value3,
-							step: 5,
+							disabled: true
+						})
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '指定步长' }) {
+						IBestSlider({
+							value: $value4,
+							step: 10,
 							onChange: (val) => {
 								IBestToast.show(val.toString())
 							}
@@ -103,7 +112,7 @@ struct SliderPage {
 				ListItem() {
 					ComponentShowContainer({ title: '自定义样式' }) {
 						IBestSlider({
-							value: $value4,
+							value: $value5,
 							barHeight: 8,
 							activeColor: "#ee0a24",
 							onChange: (val) => {
@@ -115,7 +124,7 @@ struct SliderPage {
 				ListItem() {
 					ComponentShowContainer({ title: '自定义按钮' }) {
 						IBestSlider({
-							value: $value5,
+							value: $value6,
 							customButton: (): void => this.customBtn(),
 							onChange: (val) => {
 								IBestToast.show(val.toString())
@@ -128,7 +137,7 @@ struct SliderPage {
 						Row({ space: 80 }){
 							Row({ space: 30 }){
 								IBestSlider({
-									value: $value6,
+									value: $value7,
 									vertical: true,
 									onChange: (val) => {
 										console.log(val.toString())
@@ -136,7 +145,7 @@ struct SliderPage {
 									}
 								})
 								IBestSlider({
-									value: $value6,
+									value: $value7,
 									vertical: true,
 									reverse: true,
 									onChange: (val) => {
@@ -147,7 +156,7 @@ struct SliderPage {
 							}
 							Row({ space: 30 }){
 								IBestSlider({
-									value: $value7,
+									value: $value8,
 									vertical: true,
 									onChange: (val) => {
 										console.log(val.toString())
@@ -155,7 +164,7 @@ struct SliderPage {
 									}
 								})
 								IBestSlider({
-									value: $value7,
+									value: $value8,
 									vertical: true,
 									reverse: true,
 									onChange: (val) => {

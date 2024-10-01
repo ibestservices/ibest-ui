@@ -5,7 +5,6 @@ import { CONTAINER_SIZE } from "../../theme-chalk/src/container.type"
 import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
 import { LengthUnit } from "@kit.ArkUI"
 import { IBestSliderValue } from "./index.type"
-import { IBestToast } from "../../../../../Index"
 @Component
 export struct IBestSlider{
 	/**
@@ -13,7 +12,7 @@ export struct IBestSlider{
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@Provide uniId: number = 0
-	@State space: number = 10
+	@State space: number = 5
 	@State percentage: number = 0
 	@State barOffset: number = 0
 	@State buttonIndex: 0 | 1 = 0
@@ -135,12 +134,15 @@ export struct IBestSlider{
 	// 背景触摸事件
 	onBgTouch(event: TouchEvent){
 		let touch = event.touches[0]
+		if(!touch){
+			return
+		}
 		const scope = this.getScopeValue()
 		let value: number
-		let width = event.target.area.width as number
-		let height = event.target.area.height as number
-		let x = touch.x
-		let y = touch.y
+		const width = event.target.area.width as number
+		const height = event.target.area.height as number
+		const x = touch.x
+		const y = touch.y
 		if(this.reverse){
 			value = (this.vertical ? Math.round((height - y) / height * scope) : Math.round((width - x) / width * scope)) + this.min
 		}else{
@@ -190,12 +192,6 @@ export struct IBestSlider{
 				break
 		}
 	}
-	// 按钮触摸
-	onBarTouch(buttonIndex: 0 | 1, event: TouchEvent){
-		if(event.type == TouchType.Down){
-			this.buttonIndex = buttonIndex
-		}
-	}
 	// 更新值
 	updateValue(value: IBestSliderValue){
 		if (Array.isArray(value)) {
@@ -207,60 +203,65 @@ export struct IBestSlider{
 
 	build() {
 		Row(){
-			Row(){
-				// 底层背景
-				Row()
-					.width(this.vertical ? `${this.barHeight}lpx` : CONTAINER_SIZE.FULL)
-					.height(this.vertical ? CONTAINER_SIZE.FULL : `${this.barHeight}lpx`)
-					.backgroundColor(this.barBgColor)
-					.borderRadius(999999)
+			Stack(){
 				Row(){
-					// 激活条
+					// 底层背景
 					Row()
-						.width(this.vertical ? `${this.barHeight}lpx` : `${this.percentage}%`)
-						.height(this.vertical ? `${this.percentage}%` : `${this.barHeight}lpx`)
-						.backgroundColor(this.activeColor)
-						// .animation({
-						// 	duration: 200
-						// })
-					// 拖动按钮1
-					DragBar({
-						value: this.value,
-						buttonIndex: 0,
-						customButton: this.customButton,
-						onBarTouch: (index: 0 | 1, event: TouchEvent): void => this.onBarTouch(index, event)
-					})
-					// 拖动按钮2
-					if(Array.isArray(this.value)){
+						.width(this.vertical ? `${this.barHeight}lpx` : CONTAINER_SIZE.FULL)
+						.height(this.vertical ? CONTAINER_SIZE.FULL : `${this.barHeight}lpx`)
+						.backgroundColor(this.barBgColor)
+						.borderRadius(999999)
+						.opacity(this.disabled ? 0.5 : 1)
+					// 激活条
+					Row(){
+						Row()
+							.width(this.vertical ? `${this.barHeight}lpx` : `${this.percentage}%`)
+							.height(this.vertical ? `${this.percentage}%` : `${this.barHeight}lpx`)
+							.backgroundColor(this.activeColor)
+							.borderRadius(999999)
+							.opacity(this.disabled ? 0.5 : 1)
+						// 拖动按钮1
 						DragBar({
 							value: this.value,
-							buttonIndex: 1,
-							customButton: this.customButton,
-							onBarTouch: (index: 0 | 1, event: TouchEvent): void => this.onBarTouch(index, event)
+							buttonIndex: 0,
+							customButton: this.customButton
 						})
+						// 拖动按钮2
+						if(Array.isArray(this.value)){
+							DragBar({
+								value: this.value,
+								buttonIndex: 1,
+								customButton: this.customButton
+							})
+						}
 					}
+					.width(this.vertical ? `${(this.buttonWidth || this.buttonSize)}lpx` : "")
+					.height(this.vertical ? "" : `${(this.buttonHeight || this.buttonSize)}lpx`)
+					.justifyContent(FlexAlign.Center)
+					.position(this.getBarPosition())
 				}
-				.width(this.vertical ? `${(this.buttonWidth || this.buttonSize)}lpx` : "")
-				.height(this.vertical ? "" : `${(this.buttonHeight || this.buttonSize)}lpx`)
+				.width(CONTAINER_SIZE.FULL)
+				.height(CONTAINER_SIZE.FULL)
 				.justifyContent(FlexAlign.Center)
-				.position(this.getBarPosition())
+				.alignItems(VerticalAlign.Center)
+				Row()
+					.width(CONTAINER_SIZE.FULL)
+					.height(CONTAINER_SIZE.FULL)
+					.monopolizeEvents(true)
+					.onTouch((event: TouchEvent) => {
+						this.onBgTouch(event)
+					})
 			}
 			.width(this.vertical ? `${(this.buttonWidth || this.buttonSize)}lpx` : CONTAINER_SIZE.FULL)
 			.height(this.vertical ? CONTAINER_SIZE.FULL : `${(this.buttonHeight || this.buttonSize)}lpx`)
-			.justifyContent(FlexAlign.Center)
-			.alignItems(VerticalAlign.Center)
-			.monopolizeEvents(true)
-			.id(`sliderContent_${this.uniId}`)
-			.onTouch((event: TouchEvent) => {
-				this.onBgTouch(event)
-			})
 		}
 		.padding({
 			left: this.vertical ? 0 : `${(this.buttonWidth || this.buttonSize)/2 + this.space}lpx`,
 			right: this.vertical ? 0 : `${(this.buttonWidth || this.buttonSize)/2 + this.space}lpx`,
-			top: this.vertical ? `${(this.buttonHeight || this.buttonSize)/2 + this.space}lpx` : 0,
-			bottom: this.vertical ? `${(this.buttonHeight || this.buttonSize)/2 + this.space}lpx` : 0
+			top: this.vertical ? `${(this.buttonHeight || this.buttonSize)/2 + this.space}lpx` : `${this.space}lpx`,
+			bottom: this.vertical ? `${(this.buttonHeight || this.buttonSize)/2 + this.space}lpx` : `${this.space}lpx`
 		})
+		.enabled(!this.disabled)
 	}
 }
 
@@ -279,7 +280,6 @@ struct DragBar{
 	@Consume reverse: boolean
 	@Prop buttonIndex: 0 | 1 = 0
 	@BuilderParam customButton?: CustomBuilder
-	onBarTouch: (index: 0 | 1, event: TouchEvent) => void = () => {}
 
 	getBarPosition(): LocalizedEdges{
 		let value: LengthMetrics = { value: -(this.buttonWidth || this.buttonSize)/2, unit: LengthUnit.LPX }
@@ -329,10 +329,6 @@ struct DragBar{
 		}
 		.id(`buttonBox_${this.uniId}`)
 		.position(this.getBarPosition())
-		.monopolizeEvents(true)
-		.onTouch((event: TouchEvent) => {
-			this.onBarTouch(this.buttonIndex, event)
-		})
 	}
 }
 
