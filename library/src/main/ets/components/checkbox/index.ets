@@ -5,7 +5,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SPACE } from '../../theme-chalk/src/space.type';
 import { CheckedItem, updateCheckboxStoreByKey } from '../checkboxGroup/store';
 import { CHECKBOX_GROUP_EVENT_NAME, getCheckboxNamespace } from '../checkboxGroup/utils';
-import { MaxChangeArgs, BuilderArgs, CustomerBuilderReturnData } from './index.type';
+import { MaxChangeArgs, BuilderArgs } from './index.type';
 
 
 @Component
@@ -13,7 +13,7 @@ export struct IBestCheckbox {
   /**
    * 自定义文本插槽
    */
-  @BuilderParam private defaultBuilder?: (data: BuilderArgs) => CustomerBuilderReturnData;
+  @BuilderParam private defaultBuilder?: (data: BuilderArgs) => CustomBuilder;
   /**
    * 自定义图标插槽
    */
@@ -258,7 +258,9 @@ export struct IBestCheckbox {
   @Builder
   LabelContain() {
     if (typeof this.defaultBuilder === 'function') {
-      this.defaultBuilder({ checked: this.value, disabled: this.mergeDisabled }).onClick(() => {
+      Row() {
+        this.defaultBuilder({ checked: this.value, disabled: this.mergeDisabled })
+      }.onClick(() => {
         !this.labelDisabled && this.handleCheckedChange()
       })
     } else {
@@ -296,9 +298,8 @@ export struct IBestCheckbox {
             .scale({
               x: .9,
               y: .9
-            })
-              // 升级api11后图形移位了
-            .translate({x: `${this.iconSize * .02}lpx}`})
+            })// 升级api11后图形移位了
+            .translate({ x: `${this.iconSize * .02}lpx}` })
         }
       }
       .width(`${this.iconSize}lpx`)
