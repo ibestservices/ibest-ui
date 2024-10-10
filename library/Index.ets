@@ -1,12 +1,13 @@
 import { setIBestUIBaseStyle } from './src/main/ets/theme-chalk/src'
 import IBestToast from './src/main/ets/utils/IBestToast'
 import IBestActionSheet from './src/main/ets/utils/IBestActionSheet'
+import IBestImagePreview from './src/main/ets/utils/IBestImagePreview'
 import GlobalStore from './src/main/ets/utils/GlobalStore'
 const init = GlobalStore.init
 
 setIBestUIBaseStyle()
 
-export { setIBestUIBaseStyle, IBestToast, IBestActionSheet, init as IBestInit }
+export { setIBestUIBaseStyle, IBestToast, IBestActionSheet, init as IBestInit, IBestImagePreview }
 export { Throttle } from './src/main/ets/utils/Throttle'
 export { Debounce } from './src/main/ets/utils/Debounce'
 

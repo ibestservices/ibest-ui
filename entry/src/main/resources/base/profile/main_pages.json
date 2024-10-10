@@ -30,6 +30,7 @@
 		"pages/Rate",
 		"pages/ActionSheet",
 		"pages/Signature",
-		"pages/Slider"
+		"pages/Slider",
+		"pages/ImagePreview"
 	]
 }

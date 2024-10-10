@@ -45,7 +45,7 @@ class ToastParams{
     /*
      * toast打开后回调
      */
-    onOpened?: (() => void) | null = null
+    onOpened?: () => void
 }
 
 class ToastOption extends ToastParams{
@@ -106,7 +106,7 @@ class Toast{
     private toastOption: ToastParams | null = null
     private uiObserver: UIObserver | null = null
     private loadingDialog: ComponentContent<AnyType> | null = null
-    private promptAction: PromptAction
+    private promptAction: PromptAction | null = null
     private timer: number = 0
     public _message?: string = ""
 
@@ -118,20 +118,18 @@ class Toast{
         }
     }
 
-    private constructor(option: ToastParams, uiObserver: UIObserver, loadingDialog: ComponentContent<AnyType>, promptAction:
-    PromptAction) {
-        this.toastOption = option
-        this._message = option.message
-        this.uiObserver = uiObserver
-        this.loadingDialog = loadingDialog
-        this.promptAction = promptAction
-    }
+    private constructor() {}
 
     private static getInstance(option: ToastParams, uiObserver: UIObserver, loadingDialog: ComponentContent<AnyType>,
         promptAction: PromptAction): Toast{
         if(!Toast._instance){
-            Toast._instance = new Toast(option, uiObserver, loadingDialog, promptAction)
+            Toast._instance = new Toast()
         }
+        Toast._instance.toastOption = option
+        Toast._instance._message = option.message
+        Toast._instance.uiObserver = uiObserver
+        Toast._instance.loadingDialog = loadingDialog
+        Toast._instance.promptAction = promptAction
         return Toast._instance
     }
     /*
@@ -139,7 +137,7 @@ class Toast{
      */
     public static async show(value: string | ToastParams){
         let option: ToastParams = typeof value == "string" ? new ToastOption({ message: value }) : new ToastOption(value)
-        if(Toast._instance){
+        if(Toast._instance?.loadingDialog){
             Toast.hide()
         }
         let windowClass = await window.getLastWindow(getContext())
@@ -148,7 +146,7 @@ class Toast{
         let loadingDialog = new ComponentContent(uiContext, wrapBuilder(toastBuilder), option)
         let promptAction = uiContext.getPromptAction()
         Toast._instance = Toast.getInstance(option, uiObserver, loadingDialog, promptAction)
-        Toast._instance.promptAction.openCustomDialog(Toast._instance.loadingDialog, {
+        promptAction.openCustomDialog(Toast._instance.loadingDialog, {
             alignment: option.position == "top" ? DialogAlignment.Top : option.position == "bottom" ? DialogAlignment.Bottom : DialogAlignment.Center,
             offset: {dx: 0, dy: option.offsetY},
             isModal: option.isShowMask || option.type == "loading",
@@ -177,11 +175,11 @@ class Toast{
      */
     static hide(){
         if(Toast._instance){
-            Toast._instance.promptAction.closeCustomDialog(Toast._instance.loadingDialog)
+            Toast._instance.promptAction?.closeCustomDialog(Toast._instance.loadingDialog)
             Toast._instance.loadingDialog?.dispose()
             Toast._instance.uiObserver?.off("routerPageUpdate")
-            clearTimeout(Toast._instance?.timer)
-            Toast._instance = null
+            clearTimeout(Toast._instance.timer)
+            Toast._instance.loadingDialog = null
         }
     }
 }

@@ -20,6 +20,10 @@ struct Index {
       title: '基础组件',
       list: [
         {
+          name: 'ImagePreview 图片预览',
+          path: 'pages/ImagePreview'
+        },
+        {
           name: 'Button按钮',
           path: 'pages/Button'
         },
@@ -141,6 +145,10 @@ struct Index {
         {
           name: 'Empty 空状态',
           path: 'pages/Empty'
+        },
+        {
+          name: 'ImagePreview 图片预览',
+          path: 'pages/ImagePreview'
         },
         {
           name: 'Tag 标签',

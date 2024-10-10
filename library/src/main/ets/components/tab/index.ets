@@ -1,11 +1,8 @@
 import { getComponentsInfo, sleep } from '../../assets/ets/utils'
-import { IBestTabItem, IBestTabController, TabWidthType, IBestTabItemType } from './index.type'
+import { IBestTabItem, IBestTabController, TabWidthType } from './index.type'
 import { emitter } from '../../assets/ets/EventEmitter'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { fontSizeData } from '../../theme-chalk/src/font';
-import { borderRadiusData } from '../../theme-chalk/src/border';
-import { spaceData } from '../../theme-chalk/src/space';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 @Component
 export struct IBestTabs{
@@ -93,6 +90,10 @@ export struct IBestTabs{
      * tab区域背景颜色
      */
     @Provide tabBgColor: string  = this.baseStyle.default as string
+    /*
+     * 字体大小 单位lpx
+     */
+    @Provide fontSize: number = 28
     /*
      * controller 控制器
      */
@@ -219,6 +220,10 @@ export struct IBestTabs{
 
 @Component
 struct IBestTabContent{
+    /**
+     * 全局公共样式
+     */
+    @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     @Link currentName: string
     @Consume type: 'line' | 'card'
     @Consume tabWidthType: "auto" | "flex"
@@ -264,7 +269,7 @@ struct IBestTabContent{
             }
             .width(this.tabWidthType == "flex" ? "100%" : "")
             .height(this.tabHeight + "lpx")
-            .borderRadius(borderRadiusData.borderRadiusSm)
+            .borderRadius(this.baseStyle.borderRadiusSm)
             .border({ width: this.type == "card" ? "2lpx" : 0, color: this.tabLineColor })
         }
         .width(this.tabWidthType == "flex" ? "100%" : "")
@@ -274,6 +279,10 @@ struct IBestTabContent{
 
 @Component
 struct IBestTab{
+    /**
+     * 全局公共样式
+     */
+    @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     @Consume uniId: string
     @Consume type: 'line' | 'card'
     @Consume tabWidthType: "auto" | "flex"
@@ -284,6 +293,7 @@ struct IBestTab{
     @Consume inactiveTextColor: number
     @Consume activeTextColor: number
     @Consume tabLineColor: number
+    @Consume fontSize: number
     itemChange(){
         emitter.emit("itemChange")
     }
@@ -292,10 +302,10 @@ struct IBestTab{
             Text(){
                 if (this.item.icon) {
                     ImageSpan(this.item.icon)
-                        .width(fontSizeData.fontSizeMd)
+                        .width(`${this.fontSize}lpx`)
                         .aspectRatio(1)
                         .verticalAlign(ImageSpanAlignment.CENTER)
-                        .margin({right: spaceData.spaceBase})
+                        .margin({right: this.baseStyle.spaceBase})
                 }
                 Span(this.item.label)
                 if(typeof this.item.number !== "undefined"){
@@ -303,7 +313,7 @@ struct IBestTab{
                 }
             }
             .height("100%")
-            .fontSize(fontSizeData.fontSizeMd)
+            .fontSize(`${this.fontSize}lpx`)
             .fontColor(this.currentName == this.item.name ? this.type == "card" ? "#fff" : this.activeTextColor :
                 this.type == "card" ? this.tabLineColor : this.inactiveTextColor)
             .maxLines(1)
