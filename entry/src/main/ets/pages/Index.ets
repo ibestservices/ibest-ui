@@ -20,8 +20,8 @@ struct Index {
       title: '基础组件',
       list: [
         {
-          name: 'ImagePreview 图片预览',
-          path: 'pages/ImagePreview'
+          name: 'Uploader 文件上传',
+          path: 'pages/Uploader'
         },
         {
           name: 'Button按钮',
@@ -119,6 +119,10 @@ struct Index {
         {
           name: 'TimePicker 时间选择',
           path: 'pages/TimePicker'
+        },
+        {
+          name: 'Uploader 文件上传',
+          path: 'pages/Uploader'
         }
       ]
     },

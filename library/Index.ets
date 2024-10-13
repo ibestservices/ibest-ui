@@ -84,3 +84,6 @@ export { IBestSignatureController } from './src/main/ets/components/signature/in
 
 export { IBestSlider } from './src/main/ets/components/slider/index'
 export { IBestSliderValue } from './src/main/ets/components/slider/index.type'
+
+export { IBestUploader } from './src/main/ets/components/uploader/index'
+export { IBestUploaderFile } from './src/main/ets/components/uploader/index.type'

@@ -34,7 +34,7 @@ export struct IBestLoading {
   /**
    * loading的颜色
    */
-  @Prop private loadingColor: string = '#c9c9c9';
+  @Prop private loadingColor: ResourceColor = '#c9c9c9';
   /**
    * loading的线条宽度
    */

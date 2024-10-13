@@ -174,7 +174,7 @@ class Toast{
      * 关闭toast
      */
     static hide(){
-        if(Toast._instance){
+        if(Toast._instance && Toast._instance.loadingDialog){
             Toast._instance.promptAction?.closeCustomDialog(Toast._instance.loadingDialog)
             Toast._instance.loadingDialog?.dispose()
             Toast._instance.uiObserver?.off("routerPageUpdate")

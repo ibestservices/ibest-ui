@@ -2,6 +2,7 @@
  * 红色
  */
 interface GeneratedObjectLiteralInterface_1 {
+  DEFAULT?: string;
   BASE: string;
 }
 
@@ -34,9 +35,10 @@ export const DISABLE_COLOR: GeneratedObjectLiteralInterface_2 = {
 };
 
 /**
- * 置灰的颜色
+ * 背景色颜色
  */
 export const BACKGROUND_COLOR:GeneratedObjectLiteralInterface_1 = {
+  DEFAULT: '#FFFFFF',
   BASE: '#F7F8FA'
 };
 

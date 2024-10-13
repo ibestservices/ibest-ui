@@ -22,7 +22,7 @@ export struct IBestLoadingSpinner {
   /**
    * loading的颜色
    */
-  @Prop private color: string | number = GRAY_COLOR.GRAY_6
+  @Prop private color: ResourceColor = GRAY_COLOR.GRAY_6
   /**
    * 循环渲染的数据
    */

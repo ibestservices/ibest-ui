@@ -52,7 +52,7 @@ struct ImagePreviewPage {
 								}
 							})
 							IBestCell({
-								title: '指定初始位置',
+								title: '指定初始索引',
 								isLink: true,
 								onClickCell: () => {
 									IBestImagePreview.show(this.imageList, {

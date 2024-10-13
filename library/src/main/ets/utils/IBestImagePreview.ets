@@ -94,7 +94,7 @@ class IBestImagePreviewParams extends IBestImagePreviewOption {
 		this.maskColor = params?.maskColor || 'rgba(24,24,25,0.95)'
 		this.startIndex = params?.startIndex || 0
 		this.swipeDuration = params?.swipeDuration || 200
-		this.showIndex = params?.showIndex != undefined ? params.showIndex : true
+		this.showIndex = params?.showIndex != undefined ? params.showIndex : list.length > 1
 		this.indexPosition = params?.indexPosition || 'bottom'
 		this.indexOffset = params?.indexOffset || 104
 		this.indexFontColor = params?.indexFontColor != undefined ? params.indexFontColor : baseStyle.default as string
@@ -137,7 +137,7 @@ struct PreviewContent{
 	params: IBestImagePreviewParams = new IBestImagePreviewParams([])
 	private data: MyDataSource = new MyDataSource([])
 	@State active: number = 0
-	@State isMoving: boolean = false
+	@State isDisabledSwiper: boolean = false
 
 	aboutToAppear(): void {
 		this.data = new MyDataSource(this.params.list)
@@ -152,7 +152,7 @@ struct PreviewContent{
 						index: index,
 						active: this.active,
 						params: this.params,
-						isMoving: $isMoving
+						isDisabledSwiper: $isDisabledSwiper
 					})
 				}, (item: IBestPreviewImgType, index: number) => index + "")
 			}
@@ -162,7 +162,7 @@ struct PreviewContent{
 			.indicator(false)
 			.loop(this.params.loop)
 			.duration(this.params.swipeDuration)
-			.disableSwipe(this.isMoving)
+			.disableSwipe(this.isDisabledSwiper)
 			if(this.params.showIndex){
 				Text(`${this.active + 1} / ${this.data.totalCount()}`)
 					.fontColor(this.params.indexFontColor)
@@ -179,7 +179,7 @@ struct SwiperItem{
 	@Prop url: IBestPreviewImgType
 	@Prop index: number
 	@Prop @Watch("reset") active: number
-	@Link isMoving: boolean
+	@Link isDisabledSwiper: boolean
 	@State rootWidth: number = 0
 	@State rootHeight: number = 0
 	@State imgWidth: number = 0
@@ -198,7 +198,9 @@ struct SwiperItem{
 	@State isLongImage: boolean = false
 	@State imgDraggable: boolean = true
 
+	@State isMoving: boolean = false
 	private isImageMoved: boolean = false
+	private isFingerMove: boolean = false
 	private longImageRatio: number = 2.6
 	private lastCenter: CenterLocation = { x: 0, y: 0 }
 
@@ -248,10 +250,27 @@ struct SwiperItem{
 			localTop: (this.rootHeight - scaleHeight) / 2
 		}
 	}
+	// 单击
+	singleClick(type: "img" | "mask"){
+		if(!this.isFingerMove){
+			!this.params.closeOnClickImage && this.params.onImgClick && this.params.onImgClick(this.index)
+			if(type == "img"){
+				this.params.closeOnClickImage && this.params.hide()
+			}else{
+				this.params.closeOnClickOverlay && this.params.hide()
+			}
+		}
+	}
 	// 双击
 	doubleClick(fingers: FingerInfo[]){
-		let scale = this.curScale == 1 ? 2 : 1
-		this.setParams(scale, scale == 2 || this.isLongImage ? { x: fingers[0].localX, y: fingers[0].localY } : undefined)
+		if(!this.isFingerMove){
+			if(this.params.doubleScale){
+				let scale = this.curScale == 1 ? 2 : 1
+				this.setParams(scale, scale == 2 || this.isLongImage ? { x: fingers[0].localX, y: fingers[0].localY } : undefined)
+			}else{
+				this.params.closeOnClickImage && this.params.hide()
+			}
+		}
 	}
 	// 手指移动
 	onFingerMove(event: TouchEvent) {
@@ -263,13 +282,16 @@ struct SwiperItem{
 				this.curX = this.offsetX
 				this.curY = this.offsetY
 				this.isImageMoved = false
+				this.isFingerMove = false
 				break
 			case TouchType.Move:
+				let x = event.touches[0].x - this.startX
+				let y = event.touches[0].y - this.startY
+				this.isFingerMove = x != 0 || y != 0
+				let offsetX = this.curX + x
+				let offsetY = this.curY + y
+				this.isDisabledSwiper = Math.abs(offsetX) <= this.offsetMaxX
 				if(this.isMoving){
-					let x = event.touches[0].x - this.startX
-					let y = event.touches[0].y - this.startY
-					let offsetX = this.curX + x
-					let offsetY = this.curY + y
 					if(Math.abs(offsetX) > this.offsetMaxX && !this.isImageMoved){
 						this.isMoving = false
 						return
@@ -290,7 +312,6 @@ struct SwiperItem{
 		if(scale != this.curScale){
 			const ratio = scale / this.curScale
 			this.curScale = scale
-			this.pinchValue = scale
 			this.offsetMaxX = this.getMaxMoveX()
 			this.offsetMaxY = this.getMaxMoveY()
 			if(lastCenter){
@@ -320,7 +341,7 @@ struct SwiperItem{
 				.translate({ x: this.offsetX, y: this.offsetY, z: 0 })
 				.draggable(this.imgDraggable)
 				.animation({
-					duration: 200
+					duration: 100
 				})
 				.onComplete((event) => {
 					if(event){
@@ -331,40 +352,17 @@ struct SwiperItem{
 					GestureGroup(GestureMode.Exclusive,
 						// 双击
 						TapGesture({ fingers: 1, count: 2 }).onAction((event) => {
-							if(this.params.doubleScale){
-								this.doubleClick(event.fingerList)
-							}else{
-								this.params.closeOnClickImage && this.params.hide()
-							}
+							this.doubleClick(event.fingerList)
 						}),
 						// 单击
 						TapGesture({ fingers: 1, count: 1 }).onAction(() => {
-							!this.params.closeOnClickImage && this.params.onImgClick && this.params.onImgClick(this.index)
-							this.params.closeOnClickImage && !this.isImageMoved && this.params.hide()
+							this.singleClick("img")
 						}),
 						// 长按
 						LongPressGesture({ fingers: 1 }).onAction(() => {
 							this.params.onImgLongPress && this.params.onImgLongPress(this.index)
 						})
 					)
-				)
-				.gesture(
-					// 缩放
-					PinchGesture({ fingers: 2 })
-						.onActionUpdate((event: GestureEvent) => {
-							let scale = Number((this.pinchValue * event.scale).toFixed(1))
-							let lastCenter = this.getCenter(event.fingerList)
-							this.lastCenter = lastCenter
-							this.isMoving = false
-							this.setParams(scale, lastCenter)
-						})
-						.onActionEnd(() => {
-							const maxZoom = +(this.params.maxScale as number)
-							if (this.curScale > maxZoom) {
-								this.setParams(maxZoom, this.lastCenter)
-							}
-							this.pinchValue = this.curScale
-						})
 				)
 		}
 		.justifyContent(FlexAlign.Center)
@@ -376,16 +374,29 @@ struct SwiperItem{
 			GestureGroup(GestureMode.Exclusive,
 				// 双击
 				TapGesture({ fingers: 1, count: 2 }).onAction((event) => {
-					if(this.params.doubleScale){
-						this.doubleClick(event.fingerList)
-					}else{
-						this.params.closeOnClickImage && this.params.hide()
-					}
+					this.doubleClick(event.fingerList)
 				}),
 				// 单击
 				TapGesture({ fingers: 1, count: 1 }).onAction(() => {
-					this.params.closeOnClickOverlay && !this.isImageMoved && this.params.hide()
-				})
+					this.singleClick("mask")
+				}),
+				// 缩放
+				PinchGesture({ fingers: 2 })
+					.onActionUpdate((event: GestureEvent) => {
+						let scale = Number((this.pinchValue * event.scale).toFixed(1))
+						let lastCenter = this.getCenter(event.fingerList)
+						this.lastCenter = lastCenter
+						this.isMoving = false
+						this.isDisabledSwiper = true
+						this.setParams(scale, lastCenter)
+					})
+					.onActionEnd(() => {
+						const maxZoom = +(this.params.maxScale as number)
+						if (this.curScale > maxZoom) {
+							this.setParams(maxZoom, this.lastCenter)
+						}
+						this.pinchValue = Math.min(this.curScale, maxZoom)
+					})
 			)
 		)
 	}
@@ -434,7 +445,7 @@ class ImagePreview{
 	 * 关闭
 	 */
 	static hide(){
-		if(ImagePreview._instance){
+		if(ImagePreview._instance && ImagePreview._instance.contentNode){
 			ImagePreview._instance.promptAction?.closeCustomDialog(ImagePreview._instance.contentNode)
 			ImagePreview._instance.contentNode?.dispose()
 			ImagePreview._instance.contentNode = null
