@@ -168,6 +168,6 @@ export function generateId(){
 
 // 加法避免浮点数
 export function addNumber(num1: number, num2: number) {
-  const cardinal = 10 ** 10;
-  return Math.round((num1 + num2) * cardinal) / cardinal;
+  const cardinal = 10 ** 10
+  return Math.round((num1 + num2) * cardinal) / cardinal
 }

@@ -1,4 +1,8 @@
 /*
+ * 选择类型
+ */
+export type IBestUploaderSelectType = "image" | "file"
+/*
  * 上传文件类型
  */
 class IBestUploaderFileType{
