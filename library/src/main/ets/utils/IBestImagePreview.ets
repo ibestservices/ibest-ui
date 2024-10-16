@@ -17,67 +17,67 @@ interface ScaleImageInfo{
 }
 
 class IBestImagePreviewOption{
-	/*
+	/**
 	 * 遮罩背景色
 	 */
 	maskColor?: ResourceColor = 'rgba(24,24,25,0.95)'
-	/*
+	/**
 	 * 指定初始显示的图片索引
 	 */
 	startIndex?: number = 0
-	/*
+	/**
 	 * 动画时长
 	 */
 	swipeDuration?: number = 200
-	/*
+	/**
 	 * 是否显示页码
 	 */
 	showIndex?: boolean = true
-	/*
+	/**
 	 * 页码位置
 	 */
 	indexPosition?: 'top' | 'bottom' = 'bottom'
-	/*
+	/**
 	 * 页码距离顶部或底部距离
 	 */
 	indexOffset?: number = 104
-	/*
+	/**
 	 * 页码字体颜色
 	 */
 	indexFontColor?: ResourceColor
-	/*
+	/**
 	 * 页码字体大小
 	 */
 	indexFontSize?: number = 28
-	/*
+	/**
 	 * 是否循环
 	 */
 	loop?: boolean = true
-	/*
+	/**
 	 * 是否启用双击缩放手势，禁用后，点击时会立即关闭图片预览
 	 */
 	doubleScale?: boolean = true
-	/*
+	/**
 	 * 是否在点击遮罩层后关闭图片预览
 	 */
 	closeOnClickOverlay?: boolean = true
-	/*
+	/**
 	 * 是否在点击图片后关闭图片预览
 	 */
 	closeOnClickImage?: boolean = true
-	/*
+	/**
 	 * 最大缩放比例
 	 */
 	maxScale?: number = 3
-	/*
+	/**
 	 * 最小缩放比例
 	 */
 	minScale?: number = 1
-	/*
+	/**
 	 * 图片点击事件
 	 */
 	onImgClick?: (index: number) => void
-	/*
+	/**
 	 * 图片长按事件
 	 */
 	onImgLongPress?: (index: number) => void
@@ -419,8 +419,8 @@ class ImagePreview{
 		ImagePreview._instance.promptAction = promptAction
 		return ImagePreview._instance
 	}
-	/*
-	 * 显示
+	/**
+	 * 显示预览
 	 */
 	public static async show(list: IBestPreviewImgType[], option?: IBestImagePreviewOption){
 		let opt: IBestImagePreviewParams = new IBestImagePreviewParams(list, option)
@@ -441,8 +441,8 @@ class ImagePreview{
 		})
 	}
 
-	/*
-	 * 关闭
+	/**
+	 * 关闭预览
 	 */
 	static hide(){
 		if(ImagePreview._instance && ImagePreview._instance.contentNode){

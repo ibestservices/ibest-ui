@@ -18,55 +18,55 @@ export struct IBestSlider{
 	@State buttonIndex: 0 | 1 = 0
 	@Provide buttonWidth: number = 0
 	@Provide buttonHeight: number = 0
-	/*
+	/**
 	 * 当前进度值
 	 */
 	@Link @Watch("calcMainAxis") value: IBestSliderValue
-	/*
+	/**
 	 * 最大值
 	 */
 	@Prop max: number = 100
-	/*
+	/**
 	 * 最小值
 	 */
 	@Prop min: number = 0
-	/*
+	/**
 	 * 步长
 	 */
 	@Prop step: number = 1
-	/*
+	/**
 	 * 进度条高度
 	 */
 	@Prop barHeight: number = 4
-	/*
+	/**
 	 * 滑块大小
 	 */
 	@Provide buttonSize: number = 48
-	/*
+	/**
 	 * 进度条激活态颜色
 	 */
 	@Prop activeColor: ResourceColor = this.baseStyle.primary
-	/*
+	/**
 	 * 进度条背景颜色
 	 */
 	@Prop barBgColor: ResourceColor = GRAY_COLOR.GRAY_3
-	/*
+	/**
 	 * 是否禁用
 	 */
 	@Prop disabled: boolean = false
-	/*
+	/**
 	 * 是否垂直展示
 	 */
 	@Provide vertical: boolean = false
-	/*
+	/**
 	 * 是否反转
 	 */
 	@Provide reverse: boolean = false
-	/*
+	/**
 	 * 自定义滑块
 	 */
-	@BuilderParam customButton?: CustomBuilder
-	/*
+	@BuilderParam customButton: CustomBuilder
+	/**
 	 * 进度变化且拖动结束后触发
 	 */
 	onChange: (value: IBestSliderValue) => void = () => {}
@@ -279,7 +279,7 @@ struct DragBar{
 	@Consume vertical: boolean
 	@Consume reverse: boolean
 	@Prop buttonIndex: 0 | 1 = 0
-	@BuilderParam customButton?: CustomBuilder
+	@BuilderParam customButton: CustomBuilder
 
 	getBarPosition(): LocalizedEdges{
 		let value: LengthMetrics = { value: -(this.buttonWidth || this.buttonSize)/2, unit: LengthUnit.LPX }

@@ -19,15 +19,15 @@ export struct IBestDialogView {
   /**
    * 标题区域的builder
    */
-  @BuilderParam titleBuilder?: CustomBuilder;
+  @BuilderParam titleBuilder: CustomBuilder;
   /**
    * 内容区域的builder
    */
-  @BuilderParam defaultBuilder?: CustomBuilder;
+  @BuilderParam defaultBuilder: CustomBuilder;
   /**
    * 底部区域的builder
    */
-  @BuilderParam footerBuilder?: CustomBuilder;
+  @BuilderParam footerBuilder: CustomBuilder;
   /**
    * 全局公共样式
    */
@@ -35,75 +35,75 @@ export struct IBestDialogView {
   /**
    * 弹窗宽度
    */
-  @Link private dialogWidth: string;
+  @Link dialogWidth: string;
   /**
    * 弹窗border-radius 默认 32lpx
    */
-  @Link private dialogBorderRadius: string;
+  @Link dialogBorderRadius: string;
   /**
    * 标题
    */
-  @Link private title: string;
+  @Link title: string;
   /**
    * 标题颜色
    */
-  @Link private titleColor: string;
+  @Link titleColor: ResourceColor;
   /**
    * 标题的padding-top值
    */
-  @Link private titlePaddingTop: string;
+  @Link titlePaddingTop: string;
   /**
    * 标题的padding-left与padding-right值 默认48lpx
    */
-  @Link private titlePaddingX: string;
+  @Link titlePaddingX: string;
   /**
    * 标题的padding-top值
    */
-  @Link private titleLineHeight: string;
+  @Link titleLineHeight: string;
   /**
    * 标题的fontSize
    */
-  @Link private titleFontSize: string;
+  @Link titleFontSize: string;
   /**
    * 标题的对齐方式
    */
-  @Link private titleTextAlign: 'left' | 'center' | 'right';
+  @Link titleTextAlign: 'left' | 'center' | 'right';
   /**
    * 文本内容，支持通过 \n 换行
    */
-  @Link private message: string;
+  @Link message: string;
   /**
    * 内容区域的padding-left与padding-right值 默认48lpx
    */
-  @Link private messagePaddingX: string;
+  @Link messagePaddingX: string;
   /**
    * 内容区域的padding-top值 默认16lpx
    */
-  @Link private messagePaddingTop: string;
+  @Link messagePaddingTop: string;
   /**
    * 内容区域的padding-bottom值 默认52lpx
    */
-  @Link private messagePaddingBottom: string;
+  @Link messagePaddingBottom: string;
   /**
    * 内容区域的fontColor 默认#323233
    */
-  @Link private messageFontColor: string;
+  @Link messageFontColor: string;
   /**
    * 内容区域的fontSize
    */
-  @Link private messageFontSize: string;
+  @Link messageFontSize: string;
   /**
    * 内容区域的行高 lineHeight 默认 40lpx
    */
-  @Link private messageLineHeight: string;
+  @Link messageLineHeight: string;
   /**
    * 内容区域的文字对齐方式
    */
-  @Link private messageTextAlign: 'left' | 'center' | 'right';
+  @Link messageTextAlign: 'left' | 'center' | 'right';
   /**
    * 内容区域的滚动区域最大高度
    */
-  @Link private messageMaxHeight: string;
+  @Link messageMaxHeight: string;
   // /**
   //  * 样式风格
   //  * 本期暂不开发
@@ -112,47 +112,47 @@ export struct IBestDialogView {
   /**
    * 是否展示确认按钮
    */
-  @Link private showConfirmButton: boolean;
+  @Link showConfirmButton: boolean;
   /**
    * 是否展示取消按钮
    */
-  @Link private showCancelButton: boolean;
+  @Link showCancelButton: boolean;
   /**
    * 确认按钮文案
    */
-  @Link private confirmButtonText: string;
+  @Link confirmButtonText: string;
   /**
    * 取消按钮的文案
    */
-  @Link private cancelButtonText: string;
+  @Link cancelButtonText: string;
   /**
    * 确认按钮的颜色
    */
-  @Link private confirmButtonColor: string;
+  @Link confirmButtonColor: ResourceColor;
   /**
    * 取消按钮的颜色
    */
-  @Link private cancelButtonColor: string;
+  @Link cancelButtonColor: ResourceColor;
   /**
    * 是否禁用确认按钮
    */
-  @Link private confirmButtonDisabled: boolean;
+  @Link confirmButtonDisabled: boolean;
   /**
    * 是否禁用取消按钮
    */
-  @Link private cancelButtonDisabled: boolean;
+  @Link cancelButtonDisabled: boolean;
   /**
    * 按钮的文字大小
    */
-  @Link private buttonFontSize: string;
+  @Link buttonFontSize: string;
   /**
    * 确认按钮的loading
    */
-  @Link private confirmButtonLoading: boolean;
+  @Link confirmButtonLoading: boolean;
   /**
    * 取消按钮的loading
    */
-  @Link private cancelButtonLoading: boolean;
+  @Link cancelButtonLoading: boolean;
   /**
    * 点击取消的回调
    */

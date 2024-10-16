@@ -13,62 +13,62 @@ export struct IBestCheckbox {
   /**
    * 自定义文本插槽
    */
-  @BuilderParam private defaultBuilder?: (data: BuilderArgs) => CustomerBuilderReturnData;
+  @BuilderParam defaultBuilder: (data: BuilderArgs) => CustomerBuilderReturnData;
   /**
    * 自定义图标插槽
    */
-  @BuilderParam private iconBuilder?: (data: BuilderArgs) => void;
+  @BuilderParam iconBuilder: (data: BuilderArgs) => void;
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
   /**
    * 标识符，通常为一个唯一的字符串
    * 多选框名称。
    */
-  @Prop private name: string;
+  @Prop name: string;
   /**
    * 形状
    */
-  @Prop private shape: 'square' | 'round' = 'round';
+  @Prop shape: 'square' | 'round' = 'round';
   /**
    * 选中状态颜色
    */
-  @Prop private checkedColor: string = '';
+  @Prop checkedColor: ResourceColor = '';
   /**
    * 图标大小 单位lpx
    * 默认40lpx
    */
-  @Prop private iconSize: number = 40;
+  @Prop iconSize: number = 40;
   /**
    * 默认是否选中 非双向绑定
    * 如果要更改数据请从onChange回调中获取最新的值
    */
-  @Prop @Watch('handleValueChange') @Watch('handleIndeterminateChange') private value: boolean;
+  @Prop @Watch('handleValueChange') @Watch('handleIndeterminateChange') value: boolean;
   /**
    * 是否禁用
    */
-  @Prop @Watch('getIsDisabled') private disabled: boolean = false
+  @Prop @Watch('getIsDisabled') disabled: boolean = false
   /**
    * 显示的文本
    */
-  @Prop private label: string = ''
+  @Prop label: string = ''
   /**
    * 文本位置，可选值为 left
    */
-  @Prop private labelPosition: 'left' | 'right' = 'right';
+  @Prop labelPosition: 'left' | 'right' = 'right';
   /**
    * 是否禁用复选框文本点击
    */
-  @Prop private labelDisabled: boolean = false;
+  @Prop labelDisabled: boolean = false;
   /**
    * 组名
    */
-  @Prop private group: string = '';
+  @Prop group: string = '';
   /**
    * 是否为不确定状态
    */
-  @Prop @Watch('handleIndeterminateChange') private indeterminate: boolean = false;
+  @Prop @Watch('handleIndeterminateChange') indeterminate: boolean = false;
   /**
    * 改变的回调
    */
@@ -76,16 +76,16 @@ export struct IBestCheckbox {
   /**
    * 受checkboxgroup的最大可选数量禁用的
    */
-  @State @Watch('getIsDisabled') private checkboxGroupMaxDisabled: boolean = false;
+  @State @Watch('getIsDisabled') checkboxGroupMaxDisabled: boolean = false;
   /**
    * 合并disabled与checkboxGroupMaxDisabled的最终结果 用来UI渲染
    */
-  @State private mergeDisabled: boolean = false;
+  @State mergeDisabled: boolean = false;
   /**
    * 是否展示不确定状态的按钮
    * 因为chekbox在切换状态时有动画 但是图片切换没有动画 就会导致有不确定状态切换的时候 会先闪成勾选状态
    */
-  @State private isShowIndeterminateImg: boolean = false;
+  @State isShowIndeterminateImg: boolean = false;
   /**
    * 当不确定图标从显示变隐藏时 等待动画结束后再变
    */
@@ -233,12 +233,8 @@ export struct IBestCheckbox {
     this.updateGroupStore()
     // 如果有组 监听max change
     if (this.isHasGroup()) {
-      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE),
-        (data: MaxChangeArgs) => {
-          this.handleMaxChange(data)
-        })
-      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL),
-        this.handleToggleChange.bind(this))
+      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), (data: MaxChangeArgs): void => this.handleMaxChange(data))
+      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), (isSelectAll: boolean): void => this.handleToggleChange(isSelectAll))
     } else {
       this.getIsDisabled()
     }
@@ -247,10 +243,8 @@ export struct IBestCheckbox {
 
   aboutToDisappear() {
     if (this.isHasGroup()) {
-      emitter.off(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE),
-        this.handleMaxChange.bind(this))
-      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL),
-        this.handleToggleChange.bind(this))
+      emitter.off(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), (data: MaxChangeArgs): void => this.handleMaxChange(data))
+      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), (isSelectAll: boolean): void => this.handleToggleChange(isSelectAll))
     }
     clearTimeout(this.isShowIndeterminateTimeId)
   }

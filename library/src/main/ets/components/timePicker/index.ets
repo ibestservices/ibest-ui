@@ -6,75 +6,75 @@ import { clamp } from '../../assets/ets/utils'
 
 @Component
 export struct IBestTimePicker {
-	/*
+	/**
 	 * 分组id
 	 */
 	@Prop groupId: string = ""
-	/*
+	/**
 	 * 唯一id
 	 */
 	@State uniId: number = 0
-	/*
+	/**
 	 * 已选择的值
 	 */
 	@Link value: Array<string>
-	/*
+	/**
 	 * 选项列表
 	 */
 	@State options: IBestPickerOption[][] = []
-	/*
+	/**
 	 * 最小时间
 	 */
 	@Prop minTime: string = "00:00:00"
-	/*
+	/**
 	 * 最大时间
 	 */
 	@Prop maxTime: string = "23:59:59"
-	/*
+	/**
 	 * 列表类型
      */
 	@Prop listType: Array<TimePickerColumnType> = ["hour", "minute", "second"]
-	/*
+	/**
 	 * 是否显示单位
 	 */
 	@Prop showUnit: boolean = false
-	/*
+	/**
 	 * 标题
 	 */
 	@Prop title: string = ""
-	/*
+	/**
 	 * 单项高度
 	 */
 	@Prop itemHeight: number = 88
-	/*
+	/**
 	 * 确认按钮文字
 	 */
 	@Prop confirmText: string = "确定"
-	/*
+	/**
 	 * 取消按钮文字
 	 */
 	@Prop cancelText: string = "取消"
-	/*
+	/**
 	 * 是否显示顶部栏
 	 */
 	@Prop showToolBar: boolean = true
-	/*
+	/**
 	 * 可见选项数量
   	 */
 	@Prop visibleItemCount: number = 6
-	/*
+	/**
 	 * 过滤器
 	 */
 	filter: (type: TimePickerColumnType, options: IBestPickerOption[]) => IBestPickerOption[] = (type: TimePickerColumnType, options: IBestPickerOption[]) => options
-	/*
+	/**
 	 * 确认按钮点击事件
 	 */
 	onConfirm: (value: string[]) => void = () => {}
-	/*
+	/**
 	 * 取消按钮点击事件
 	 */
 	onCancel: () => void = () => {}
-	/*
+	/**
 	 * 选中项改变事件
 	 */
 	onChange: (value: string[]) => void = () => {}
@@ -84,21 +84,13 @@ export struct IBestTimePicker {
 		this.init()
 		if(this.groupId){
 			// 监听日期picker变化
-			emitter.on(getPickerEventName(this.groupId, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>) => {
-				if(this.uniId > uniId){
-					// console.log("监听到同组前一个datePicker值变化", `当前组件${this.uniId}`, uniId, selectedValues.join("-"))
-					let selectTime = selectedValues.join(":")
-					this.minTime = selectTime
-					if(selectTime > this.maxTime || selectTime < this.minTime){
-						this.value = selectedValues
-					}
-					this.init()
-				}
-			})
+			emitter.on(getPickerEventName(this.groupId, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>): void => this.handleGroupTimeChange(uniId, selectedValues))
 		}
 	}
 	aboutToDisappear(): void {
-		emitter.off(getPickerEventName(this.groupId, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE), () => {})
+		if(this.groupId) {
+			emitter.off(getPickerEventName(this.groupId, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>): void => this.handleGroupTimeChange(uniId, selectedValues))
+		}
 	}
 	// 初始化
 	init(){
@@ -201,6 +193,18 @@ export struct IBestTimePicker {
 		this.onChange(this.value)
 		if(this.groupId) {
 			emitter.emit(getPickerEventName(this.groupId, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE), this.uniId, this.value)
+		}
+	}
+	// 处理同组时间变化
+	handleGroupTimeChange(uniId: number, selectedValues: Array<string>) {
+		if(this.uniId > uniId){
+			// console.log("监听到同组前一个datePicker值变化", `当前组件${this.uniId}`, uniId, selectedValues.join("-"))
+			let selectTime = selectedValues.join(":")
+			this.minTime = selectTime
+			if(selectTime > this.maxTime || selectTime < this.minTime){
+				this.value = selectedValues
+			}
+			this.init()
 		}
 	}
 

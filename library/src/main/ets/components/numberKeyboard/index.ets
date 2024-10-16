@@ -7,7 +7,7 @@ import { KeyboardType } from './index.type';
 import { IBestPopup } from '../popup';
 import { getWindowAvoidSize } from '../../assets/ets/utils';
 import { common } from '@kit.AbilityKit';
-// import { emitter } from '../../assets/ets/EventEmitter';
+
 @Extend(Row) function keyBoxStyle(fullWidth?: boolean){
 	.width(fullWidth ? "calc((100% - 24lpx)/3*2 + 12lpx)" : "calc((100% - 24lpx)/3)")
 	.height("96lpx")
@@ -49,51 +49,51 @@ export struct NumberKeyboard{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
-	/*
+	/**
 	 * 值
 	 */
 	@Link value: string
-	/*
+	/**
 	 * 标题
 	 */
 	@Prop title: string = ''
-	/*
+	/**
 	 * 关闭按钮文字
 	 */
 	@Prop closeBtnText: string = '完成'
-	/*
+	/**
 	 * 额外按键
 	 */
 	@Prop extraKey: string | string[] = ''
-	/*
+	/**
 	 * 删除文字
 	 */
 	@Prop deleteButtonText: string = ''
-	/*
+	/**
 	 * 样式风格
 	 */
 	@Prop styleType: 'default' | 'custom' = 'default'
-	/*
+	/**
 	 * 是否随机排序
 	 */
 	@Prop isRandomKeyOrder: boolean = false
-	/*
+	/**
 	 *  最大长度
 	 */
 	@Prop maxLength: number = -1
-	/*
+	/**
 	 * 底部规避尺寸
 	 */
 	@State navigationSize: number = 0
-	/*
+	/**
 	 * 输入回调
 	 */
 	onInput: (value: string) => void = () => {}
-	/*
+	/**
 	 * 删除回调
 	 */
 	onDelete: () => void = () => {}
-	/*
+	/**
 	 * 关闭回调
 	 */
 	onClose: () => void = () => {}
@@ -275,53 +275,51 @@ struct ExtraButton{
 
 @Component
 export struct IBestNumberKeyboard{
-	// 唯一id
-	// @State uniId: number = 0
-	/*
+	/**
 	 * 弹框展示状态
 	 */
 	@Link visible: boolean
-	/*
+	/**
 	 * 值
 	 */
 	@Link value: string
-	/*
+	/**
 	 * 标题
 	 */
 	@Prop title: string = ''
-	/*
+	/**
 	 * 关闭按钮文字
 	 */
 	@Prop closeBtnText: string = '完成'
-	/*
+	/**
 	 * 额外按键
 	 */
 	@Prop extraKey: string | string[] = ''
-	/*
+	/**
 	 * 删除文字
 	 */
 	@Prop deleteButtonText: string = ''
-	/*
+	/**
 	 * 样式风格
 	 */
 	@Prop styleType: 'default' | 'custom' = 'default'
-	/*
+	/**
 	 * 是否随机排序
 	 */
 	@Prop isRandomKeyOrder: boolean = false
-	/*
+	/**
 	 *  最大长度
 	 */
 	@Prop maxLength: number = -1
-	/*
+	/**
 	 * 输入回调
 	 */
 	onInput: (value: string) => void = () => {}
-	/*
+	/**
 	 * 删除回调
 	 */
 	onDelete: () => void = () => {}
-	/*
+	/**
 	 * 关闭回调
 	 */
 	onClose: () => void = () => {}
@@ -342,23 +340,6 @@ export struct IBestNumberKeyboard{
 		})
 	}
 
-	// aboutToAppear(): void {
-	// 	this.uniId = this.getUniqueId()
-	// 	emitter.on("numberKeyboardClose", (uniId: number) => {
-	// 		if(this.uniId != uniId){
-	// 			this.visible = false
-	// 		}
-	// 	})
-	// }
-
-	// aboutToDisappear(): void {
-	// 	emitter.off("numberKeyboardClose", () => {})
-	// }
-	// visibleChange(){
-	// 	if(this.visible){
-	// 		emitter.emit("numberKeyboardClose", this.uniId)
-	// 	}
-	// }
 	// 关闭
 	close(){
 		this.visible = false

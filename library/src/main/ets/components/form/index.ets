@@ -14,94 +14,94 @@ import {
 
 @Component
 export struct IBestForm {
-	/*
+	/**
      * form id 用于验证
      */
 	@Prop formId: string = ""
-	/*
+	/**
 	 * 表单子项信息
 	 */
 	@State formItems: IBestFieldItem[] = []
-	/*
+	/**
 	 * 表单验证规则
 	 */
 	rules: IBestFormRule = {}
-	/*
+	/**
 	 * 表单项间距
   	 */
 	@Prop space: number = 20
-	/*
+	/**
      * 文本宽度
      */
 	@Provide labelWidth: number = 160
-	/*
+	/**
      * 文本位置
      */
 	@Provide labelPosition: LabelPositionType = "left"
-	/*
+	/**
      * 文本对齐方式
      */
 	@Provide labelAlign: FieldTextAlign = "left"
-	/*
+	/**
 	 * 是否显示文本后冒号
 	 */
 	@Provide colon: boolean = false
-	/*
+	/**
      * 星号的位置
      */
 	@Provide requireAsteriskPosition: RequireAsteriskPositionType = 'left'
-	/*
+	/**
      * 是否显示验证信息
      */
 	@Provide showMessage: boolean = true
-	/*
+	/**
      * 是否禁用
      */
 	@Provide disabled: boolean = false
-	/*
+	/**
 	 * 表单内容
 	 */
 	@BuilderParam defaultBuilder: () => void
-	/*
+	/**
 	 * 表单控制器
 	 */
 	controller: IBestFormController | null = null
 	aboutToAppear(): void {
 		if(this.controller){
-			this.controller.formId = this.formId
-			// 初始化收集表单项信息
-			emitter.on(getFormEventName(this.formId, FORM_EVENT_NAME.SEND_FIELD), (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void) => {
-				if(this.formItems.findIndex((item: IBestFieldItem) => item.prop === data.prop) == -1){
-					this.formItems.push(data)
-				}
-				callBack({
-					rules: this.rules[data.prop],
-					labelWidth: this.labelWidth,
-					labelPosition: this.labelPosition,
-					labelAlign: this.labelAlign,
-					colon: this.colon,
-					requireAsteriskPosition: this.requireAsteriskPosition,
-					showMessage: this.showMessage,
-					disabled: this.disabled
-				})
-			})
-			// 监听表单验证
-			emitter.on(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE), (callBack?: (valid: boolean, field: FieldValidateResult[]) => void) => {
-				this.validateForm(callBack)
-			})
-			// 监听单个表单验证
-			emitter.on(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (prop: string, callBack?: (valid: boolean, field?: FieldValidateResult) => void) => {
-				this.validateField(prop, callBack)
-			})
-			// 监听重置表单验证
-			emitter.on(getFormEventName(this.formId, FORM_EVENT_NAME.RESET_VALIDATE), (prop?: string | string[]) => {
-				this.resetValidation(prop)
-			})
-			// 获取表单结果
-			emitter.on(getFormEventName(this.formId, FORM_EVENT_NAME.GET_VALUES), (callBack: (result: Record<string, IBestFieldValueType>) => void) => {
-				this.getValues(callBack)
-			})
+			this.controller.validate = (callBack?: (valid: boolean, field: FieldValidateResult[]) => void): void => this.validateForm(callBack)
+			this.controller.validateField = (name: string, callBack?: (valid: boolean, field?: FieldValidateResult) => void): void => this.validateField(name, callBack)
+			this.controller.resetValidation = (name?: string | string[]): void => this.resetValidation(name)
+			this.controller.getValues = (): Promise<Record<string, IBestFieldValueType>> => this.getValues()
+			this.controller.getFormValues = (): Record<string, IBestFieldValueType> => this.getFormValues()
 		}
+		if(this.formId){
+			// 初始化收集表单项信息
+			emitter.on(getFormEventName(this.formId, FORM_EVENT_NAME.SEND_FIELD), (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void): void => this.init(data, callBack))
+			// 验证单个表单
+			emitter.on(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (name: string): void => this.validateField(name))
+		}
+	}
+	aboutToDisappear(): void {
+		if(this.formId){
+			emitter.off(getFormEventName(this.formId, FORM_EVENT_NAME.SEND_FIELD), (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void): void => this.init(data, callBack))
+			emitter.off(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (name: string): void => this.validateField(name))
+		}
+	}
+	// 初始化
+	init(data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void){
+		if(this.formItems.findIndex((item: IBestFieldItem) => item.prop === data.prop) == -1){
+			this.formItems.push(data)
+		}
+		callBack({
+			rules: this.rules[data.prop],
+			labelWidth: this.labelWidth,
+			labelPosition: this.labelPosition,
+			labelAlign: this.labelAlign,
+			colon: this.colon,
+			requireAsteriskPosition: this.requireAsteriskPosition,
+			showMessage: this.showMessage,
+			disabled: this.disabled
+		})
 	}
 	// 验证表单
 	validateForm(callBack?: (valid: boolean, field: FieldValidateResult[]) => void) {
@@ -134,12 +134,20 @@ export struct IBestForm {
 		})
 	}
 	// 获取表单值
-	getValues(callBack: (result: Record<string, IBestFieldValueType>) => void){
+	getValues(){
 		let result: Record<string, IBestFieldValueType> = {}
 		this.formItems.forEach((item: IBestFieldItem) => {
 			result[item.prop] = item.getValue()
 		})
-		callBack(result)
+		return Promise.resolve(result)
+	}
+	// 获取表单值
+	getFormValues(){
+		let result: Record<string, IBestFieldValueType> = {}
+		this.formItems.forEach((item: IBestFieldItem) => {
+			result[item.prop] = item.getValue()
+		})
+		return result
 	}
 	build() {
 		Column({ space: this.space + 'lpx' }){

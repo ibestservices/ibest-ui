@@ -6,23 +6,23 @@ export struct IBestLoadingSpinner {
   /**
    * 菊花图尺寸
    */
-  @Prop private spinnerSize: string = '';
+  @Prop spinnerSize: string = '';
   /**
    * 菊花图线的宽度
    */
-  @Prop private strokeWidth: string = '6lpx';
+  @Prop strokeWidth: string = '6lpx';
   /**
    * 滚动的角度
    */
-  @State private rotateAngle: string = '0';
+  @State rotateAngle: string = '0';
   /**
    * 当前菊花图的每条线的长度
    */
-  @Prop private strokeHeight: string | number = '15lpx';
+  @Prop strokeHeight: string | number = '15lpx';
   /**
    * loading的颜色
    */
-  @Prop private color: ResourceColor = GRAY_COLOR.GRAY_6
+  @Prop color: ResourceColor = GRAY_COLOR.GRAY_6
   /**
    * 循环渲染的数据
    */

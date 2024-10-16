@@ -1,8 +1,8 @@
-/*
+/**
  * 选择类型
  */
 export type IBestUploaderSelectType = "image" | "file"
-/*
+/**
  * 上传文件类型
  */
 class IBestUploaderFileType{
@@ -16,7 +16,7 @@ class IBestUploaderFileType{
 	cacheUri?: string
 	// 文件名称
 	name?: string
-	// 文件大小
+	// 文件大小 单位Byte
 	size?: number
 	// 是否是图片
 	isImage?: boolean
@@ -37,10 +37,10 @@ export class IBestUploaderFile extends IBestUploaderFileType{
 		this.status = value.status
 	}
 }
-/*
+/**
  * 文件选择配置项
  */
 export interface FileSelectOptions{
-	defaultFilePathUri: string
-	fileSuffixFilters: string[]
+	defaultFilePathUri?: string
+	fileSuffixFilters?: string[]
 }

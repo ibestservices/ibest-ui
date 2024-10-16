@@ -1,9 +1,9 @@
-/*
+/**
  * 列表显示类型
  */
 export type TimePickerColumnType = "hour" | "minute" | "second"
 
-/*
+/**
  * 选择器事件名称
  */
 export enum TIME_PICKER_EVENT_NAME {
@@ -12,9 +12,9 @@ export enum TIME_PICKER_EVENT_NAME {
      */
     COLUMN_CHANGE = 'COLUMN_CHANGE'
 }
-/*
+/**
  * 获取事件名称
  */
 export function getPickerEventName(id: string, eventName: string): string {
-    return `IBestTIMEPicker_${id}_${eventName}`
+    return `IBestTimePicker_${id}_${eventName}`
 }

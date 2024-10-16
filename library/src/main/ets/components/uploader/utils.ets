@@ -1,6 +1,6 @@
 import { IBestUploaderFile } from "./index.type";
 
-/*
+/**
  * 判断是否是图片
  */
 const IMAGE_REGEXP = /\.(jpeg|jpg|gif|png|svg|webp|jfif|bmp|dpg|avif)/i

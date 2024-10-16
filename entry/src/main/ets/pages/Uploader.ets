@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { IBestUploader, IBestUploaderFile } from '@ibestservices/ibest-ui'
+import { IBestToast, IBestUploader, IBestUploaderFile } from '@ibestservices/ibest-ui'
 import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
@@ -14,20 +14,18 @@ struct UploaderPage {
 	@State imgList1: IBestUploaderFile[] = []
 	@State imgList2: IBestUploaderFile[] = [
 		new IBestUploaderFile({
-			url: "https://img0.baidu.com/it/u=3237306772,3637376846&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=1199",
+			url: "https://img0.baidu.com/it/u=2229144304,3578627907&fm=253&fmt=auto&app=138&f=JPEG?w=467&h=300",
 			isImage: true,
 			status: "uploading"
 		}),
 		new IBestUploaderFile({
-			url: "https://img1.baidu.com/it/u=733418214,3903491350&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313",
-			isImage: true,
+			url: "https://pic1.zhimg.com/80/v2-03cdb3bff2090e98885fe4951799a1f4_1440w.webp",
 			status: "failed"
 		})
 	]
 	@State imgList3: IBestUploaderFile[] = [
 		new IBestUploaderFile({
-			url: "https://img1.baidu.com/it/u=733418214,3903491350&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313",
-			isImage: true
+			url: "https://pic1.zhimg.com/80/v2-03cdb3bff2090e98885fe4951799a1f4_1440w.webp"
 		})
 	]
 	@State imgList4: IBestUploaderFile[] = []
@@ -35,8 +33,13 @@ struct UploaderPage {
 	@State imgList6: IBestUploaderFile[] = []
 	@State imgList7: IBestUploaderFile[] = [
 		new IBestUploaderFile({
-			url: "https://img1.baidu.com/it/u=733418214,3903491350&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313",
-			isImage: true
+			url: "https://pic1.zhimg.com/80/v2-03cdb3bff2090e98885fe4951799a1f4_1440w.webp"
+		})
+	]
+	@State imgList8: IBestUploaderFile[] = []
+	@State imgList9: IBestUploaderFile[] = [
+		new IBestUploaderFile({
+			url: "https://pic1.zhimg.com/80/v2-03cdb3bff2090e98885fe4951799a1f4_1440w.webp"
 		})
 	]
 
@@ -48,6 +51,24 @@ struct UploaderPage {
 			.backgroundColor("#3D8AF2")
 			.fontColor(Color.White)
 			.fontSize(14)
+	}
+
+	@Builder previewItem(file: IBestUploaderFile){
+		Column() {
+			Image(file.url || file.previewUri)
+				.width("100%")
+			Text(file.name)
+				.width("100%")
+				.fontColor("#fff")
+				.fontSize(14)
+				.textAlign(TextAlign.Center)
+				.maxLines(1)
+				.textOverflow({ overflow: TextOverflow.Ellipsis })
+				.position({ left: 0, bottom: 0 })
+		}
+		.width("100%")
+		.height("100%")
+		.justifyContent(FlexAlign.Center)
 	}
 
 	build() {
@@ -110,10 +131,41 @@ struct UploaderPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '自定义预览大小' }) {
+					ComponentShowContainer({ title: '自定义预览样式' }) {
 						IBestUploader({
 							fileList: $imgList7,
-							previewSize: 100
+							previewSize: 120,
+							cornerRadius: 8
+						})
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '自定义预览内容' }) {
+						IBestUploader({
+							fileList: $imgList7,
+							customPreview: (file: IBestUploaderFile): void => this.previewItem(file)
+						})
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '插入前处理' }) {
+						IBestUploader({
+							fileList: $imgList8,
+							onBeforeInsert: (file: IBestUploaderFile): boolean => {
+								if(file.size as number > 10 * 1024){
+									IBestToast.show("请上传10k以下的图片")
+									return false
+								}
+								return true
+							}
+						})
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '禁用' }) {
+						IBestUploader({
+							fileList: $imgList9,
+							disabled: true
 						})
 					}
 				}

@@ -10,81 +10,81 @@ export struct IBestCell {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
   /**
    * title的插槽 优先级大于 title
    */
-  @BuilderParam private titleBuilder?: CustomBuilder;
+  @BuilderParam titleBuilder: CustomBuilder;
   /**
    * value的插槽 优先级大于 value
    */
-  @BuilderParam private valueBuilder?: CustomBuilder;
+  @BuilderParam valueBuilder: CustomBuilder;
   /**
    * value的插槽 优先级大于 label
    */
-  @BuilderParam private labelBuilder?: CustomBuilder;
+  @BuilderParam labelBuilder: CustomBuilder;
   /**
    * 自定义title左侧icon的插槽
    * 使用titleBuilder时，该插槽不生效
    */
-  @BuilderParam private iconBuilder?: CustomBuilder;
+  @BuilderParam iconBuilder: CustomBuilder;
   /**
    * 自定义value右侧icon的插槽
    * 使用valueBuilder时，该插槽不生效
    */
-  @BuilderParam private rightIconBuilder?: CustomBuilder;
+  @BuilderParam rightIconBuilder: CustomBuilder;
   /**
    * 左侧标题
    */
-  @Prop private title: number | string = '';
+  @Prop title: number | string = '';
   /**
    * 标题的文字颜色 默认 #323233
    */
-  @Prop private titleColor: string = GRAY_COLOR.GRAY_8;
+  @Prop titleColor: ResourceColor = GRAY_COLOR.GRAY_8;
   /**
    * 右侧内容
    */
-  @Prop private value: number | string = '';
+  @Prop value: number | string = '';
   /**
    * 内容的文字颜色 默认 #969799
    */
-  @Prop private valueColor: string = GRAY_COLOR.GRAY_6;
+  @Prop valueColor: ResourceColor = GRAY_COLOR.GRAY_6;
   /**
    * 标题下方的描述信息
    */
-  @Prop private label: number | string = '';
+  @Prop label: number | string = '';
   /**
    * 描述的文字颜色 默认 #969799
    */
-  @Prop private labelColor: string = GRAY_COLOR.GRAY_6;
+  @Prop labelColor: ResourceColor = GRAY_COLOR.GRAY_6;
   /**
    * 是否显示内边框
    */
-  @Prop private hasBorder: boolean = true;
+  @Prop hasBorder: boolean = true;
   /**
    * 单元格大小 默认 'normal'
    */
-  @Prop private cellSize: `${SIZE.LARGE}` | `${SIZE.NORMAL}` = SIZE.NORMAL;
+  @Prop cellSize: `${SIZE.LARGE}` | `${SIZE.NORMAL}` = SIZE.NORMAL;
   /**
    * 是否开启点击反馈
    */
-  @Prop private clickable: boolean = false;
+  @Prop clickable: boolean = false;
   /**
    * 是否展示右侧箭头并开启点击反馈
    */
-  @Prop private isLink: boolean = false;
+  @Prop isLink: boolean = false;
   /**
    * 是否展示右侧箭头并开启点击反馈
    */
-  @Prop private arrowDirection: `${ARROW_DIRECTION}` = ARROW_DIRECTION.RIGHT;
+  @Prop arrowDirection: `${ARROW_DIRECTION}` = ARROW_DIRECTION.RIGHT;
   /**
    * 是否显示必填*号
    */
-  @Prop private required: boolean = false;
+  @Prop required: boolean = false;
   /**
    * 是否使内容垂直居中
    */
-  @Prop private center: boolean = false;
+  @Prop center: boolean = false;
   /**
    * 点击单元格的回调
    */

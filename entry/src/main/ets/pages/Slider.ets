@@ -1,4 +1,4 @@
-import { IBestSlider, IBestSliderValue, IBestToast } from '@ibestservices/ibest-ui'
+import { IBestSlider, IBestToast } from '@ibestservices/ibest-ui'
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../assets/global.type'
 import TitleBar from '../components/TitleBar'
@@ -21,7 +21,6 @@ struct SliderPage {
 
 	@Builder customBtn(){
 		Text(this.value6.toString())
-			.padding({ left: "10lpx", right: "lpx" })
 			.height("36lpx")
 			.borderRadius(9999)
 			.padding({ left: 10, right: 10 })
@@ -183,9 +182,9 @@ struct SliderPage {
 			.width(CONTAINER_SIZE.FULL)
 			.layoutWeight(1)
 			.padding({
-				left: SPACE.MEDIA,
-				right: SPACE.MEDIA,
-				bottom: SPACE.MEDIA
+				left: SPACE.SMALL,
+				right: SPACE.SMALL,
+				bottom: SPACE.SMALL
 			})
 		}
 		.width(CONTAINER_SIZE.FULL)

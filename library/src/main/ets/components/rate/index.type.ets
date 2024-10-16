@@ -1,4 +1,4 @@
-/*
+/**
  * rate 选项
  */
 @Observed

@@ -6,43 +6,43 @@ import { fontSizeData } from '../theme-chalk/src/font'
 import { spaceData } from '../theme-chalk/src/space'
 
 class ToastParams{
-    /*
+    /**
      * 展示类型
      */
     type?: "" | "success" | "warning" | "fail" | "loading" = ""
-    /*
+    /**
      * 展示文本
      */
     message?: string = ""
-    /*
+    /**
      * 显示时长
      */
     duration?: number = 1500
-    /*
+    /**
      * 换行方式
      */
     wordBreak?: WordBreakType = "normal"
-    /*
+    /**
      * 自定义图标
      */
     icon?: string | Resource = ""
-    /*
+    /**
      * 是否显示背景遮罩层
      */
     isShowMask?: boolean = false
-    /*
+    /**
      * 加载类型  type为loading时有效
      */
     loadingType?: LoadingIconType = "circular"
-    /*
+    /**
      * 位置
      */
     position?: "top" | "center" | "bottom" = "center"
-    /*
+    /**
      * 偏移量
      */
     offsetY?: number | string = 0
-    /*
+    /**
      * toast打开后回调
      */
     onOpened?: () => void
@@ -132,7 +132,7 @@ class Toast{
         Toast._instance.promptAction = promptAction
         return Toast._instance
     }
-    /*
+    /**
      * 显示toast
      */
     public static async show(value: string | ToastParams){
@@ -170,7 +170,7 @@ class Toast{
         return Toast._instance
     }
 
-    /*
+    /**
      * 关闭toast
      */
     static hide(){

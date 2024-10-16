@@ -5,63 +5,63 @@ export struct IBestWatermark {
   /**
    * 默认的插槽
    */
-  @BuilderParam private defaultSlot: () => void;
+  @BuilderParam defaultSlot: () => void;
   /**
    * 图片水印的宽度
    */
-  @Prop private waterMarkWidth: number = 100;
+  @Prop waterMarkWidth: number = 100;
   /**
    * 图片水印的高度
    */
-  @Prop private waterMarkHeight: number = 100;
+  @Prop waterMarkHeight: number = 100;
   /**
    * 水印透明度
    */
-  @Prop private waterMarkOpacity: number = 0.3;
+  @Prop waterMarkOpacity: number = 0.3;
   /**
    * 水印之间的水平间隔 默认0
    */
-  @Prop private gapX: number = 0;
+  @Prop gapX: number = 0;
   /**
    * 水印之间的垂直间隔 默认0
    */
-  @Prop private gapY: number = 0;
+  @Prop gapY: number = 0;
   /**
    * 旋转角度
    */
-  @Prop private rotateDeg: number = -22;
+  @Prop rotateDeg: number = -22;
   /**
    * 图片水印的链接
    */
-  @Prop private imageUrl: string = '';
+  @Prop imageUrl: string = '';
   /**
    * 文字水印
    */
-  @Prop private text: string = '';
+  @Prop text: string = '';
   /**
    * 文字的大小
    */
-  @Prop private fontSize: number = 30;
+  @Prop fontSize: number = 30;
   /**
    * 文字字体
    */
-  @Prop private fontFamily: string = 'sans-serif';
+  @Prop fontFamily: string = 'sans-serif';
   /**
    * 文字颜色
    */
-  @Prop private fontColor: string = '#000'
+  @Prop fontColor: string | number | CanvasGradient | CanvasPattern = '#000'
   /**
    * 水印的z-index
    */
-  @Prop private waterMarkZIndex: number = -1;
+  @Prop waterMarkZIndex: number = -1;
   /**
    * 水印区域的总高度
    */
-  @State private waterMarkContainHeight: number = 0;
+  @State waterMarkContainHeight: number = 0;
   /**
    * 水印区域的总宽度
    */
-  @State private waterMarkContainWidth: number = 0;
+  @State waterMarkContainWidth: number = 0;
 
   build() {
     Stack() {

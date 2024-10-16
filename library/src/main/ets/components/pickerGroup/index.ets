@@ -10,56 +10,56 @@ export struct IBestPickerGroup{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	/*
+	/**
 	 * 分组id
 	 */
 	@Prop groupId: string = ""
-	/*
+	/**
 	 * 标题
 	 */
 	@Prop title: string = ""
-	/*
+	/**
 	 * 顶部标签栏列表
 	 */
 	@Prop tabs: Array<string> = []
-	/*
+	/**
 	 * 下一步
 	 */
 	@Prop nextStepText: string = ""
 
 	// 渲染的tab列表
 	@State tabsList: IBestTabItemType[] = []
-	/*
+	/**
 	 * 当前激活tabname
 	 */
 	@Prop @Watch("tabNameChange") currentName: string = '0'
 	// swiper索引
 	@State swiperIndex: number = 0
-	/*
+	/**
 	 * 是否显示头部工具栏
 	 */
 	@Prop showToolBar: boolean = true
-	/*
+	/**
 	 * 确认按钮文字
 	 */
 	@Prop confirmText: string = "确定"
-	/*
+	/**
 	 * 取消按钮文字
 	 */
 	@Prop cancelText: string = "取消"
-	/*
+	/**
 	 * 默认插槽
 	 */
 	@BuilderParam defaultBuilder: () => void
-	/*
+	/**
 	 * 确认按钮点击事件
 	 */
 	onConfirm: () => void = () => {}
-	/*
+	/**
 	 * 取消按钮点击事件
 	 */
 	onCancel: () => void = () => {}
-	/*
+	/**
 	 * currentName变化事件
 	 */
 	onTabNameChange: (name: string) => void = () => {}

@@ -11,7 +11,7 @@ import { IBestPopup } from '../popup/index'
 @CustomDialog
 @Component
 struct IBestCascaderContent{
-	/*
+	/**
 	 * 顶部tab栏数据
 	 */
 	@State tabList: IBestTabItem[] = [
@@ -20,41 +20,41 @@ struct IBestCascaderContent{
 			name: "0"
 		})
 	]
-	/*
+	/**
 	 * 当前激活tab name
 	 */
 	@State currentTabName: string = "0"
-	/*
+	/**
 	 * swiper默认显示选项
 	 */
 	@State swiperDefaultIndex: number = 0
 	// 是否横屏
 	@State isLandscape: boolean = getIsLandscape(getContext(this))
-	/*
+	/**
 	 * 可选项数据源
 	 */
 	@Consume options: IBestCascaderOption[]
-	/*
+	/**
 	 * 数据源实例
 	 */
 	@State optionsInstance: IBestCascaderOptionInstance[][] = []
-	/*
+	/**
 	 * 已选中数据
 	 */
 	@Link value: (string | number)[]
-	/*
+	/**
 	 * 选中颜色
 	 */
-	@Consume activeColor: string
-	/*
+	@Consume activeColor: ResourceColor
+	/**
 	 * 列表区域高度
 	 */
 	@Consume listHeight: number
-	/*
+	/**
 	 * 是否开启动态加载
 	 */
 	@Consume lazy: boolean
-	/*
+	/**
 	 * 动态加载函数
 	 */
 	lazyLoad: ((value: string | number, level: number, cb: (arr: IBestCascaderOption[]) => void) => void) | null = null
@@ -62,11 +62,11 @@ struct IBestCascaderContent{
 	controller?: CustomDialogController
 	private tabController: IBestTabController = new IBestTabController()
 	private swiperController: SwiperController = new SwiperController()
-	/*
+	/**
 	 * 选中项变化时回调函数
 	 */
 	onChange: (value: string | number, selectedOptions: IBestCascaderOption[], index: number) => void = () => {}
-	/*
+	/**
 	 * 全部选择完后回调函数
 	 */
 	onConfirm: (value: IBestCascaderOption[]) => void = () => {}
@@ -243,23 +243,23 @@ struct IBestCascaderContent{
 
 @Component
 struct CascaderOptionItem{
-	/*
+	/**
 	 * 选项数据
 	 */
 	@ObjectLink option: IBestCascaderOptionInstance
-	/*
+	/**
 	 * 当前tab索引
 	 */
 	@Prop index: number
-	/*
+	/**
 	 * 当前选项索引
 	 */
 	@Prop index1: number
-	/*
+	/**
 	 * 选中颜色
 	 */
-	@Consume activeColor: string
-	/*
+	@Consume activeColor: ResourceColor
+	/**
 	 * item高度
 	 */
 	@Consume itemHeight: number
@@ -293,47 +293,47 @@ export struct IBestCascader{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	/*
+	/**
 	 * 弹框显隐
 	 */
 	@Link visible: boolean
-	/*
+	/**
 	 * 标题
 	 */
 	@Prop title: string = "请选择"
-	/*
+	/**
 	 * 可选项数据源
 	 */
 	@Provide options: IBestCascaderOption[] = []
-	/*
+	/**
 	 * 选中颜色
 	 */
-	@Provide activeColor: string = this.baseStyle.primary as string
-	/*
+	@Provide activeColor: ResourceColor = this.baseStyle.primary
+	/**
 	 * 列表区域高度
 	 */
 	@Provide listHeight: number = 700
-	/*
+	/**
 	 * 单项高度
 	 */
 	@Provide itemHeight: number = 80
-	/*
+	/**
 	 * 是否开启动态加载
 	 */
 	@Provide lazy: boolean = false
-	/*
+	/**
 	 * 动态加载函数
 	 */
 	lazyLoad: ((value: string | number, level: number, cb: (arr: IBestCascaderOption[]) => void) => void) | null = null
-	/*
+	/**
 	 * 已选项
 	 */
 	@Link value: (string | number)[]
-	/*
+	/**
 	 * 选中项变化时回调函数
 	 */
 	onChange: (value: string | number, selectedOptions: IBestCascaderOption[], index: number) => void = () => {}
-	/*
+	/**
 	 * 全部选择完回调
 	 */
 	onConfirm: (value: IBestCascaderOption[]) => void = () => {}

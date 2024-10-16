@@ -2,7 +2,7 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 
 @Component
 export struct IBestStepperBtn {
-  @BuilderParam defaultSlot?: CustomBuilder;
+  @BuilderParam defaultSlot: CustomBuilder;
   @Prop private buttonSize: string = '40lpx';
   @Prop private radiusLeftTop: string = '0';
   @Prop private radiusLeftBottom: string = '0';

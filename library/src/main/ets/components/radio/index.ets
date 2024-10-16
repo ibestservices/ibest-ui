@@ -13,68 +13,68 @@ export struct IBestRadio {
   /**
    * 自定义文本插槽
    */
-  @BuilderParam private defaultBuilder?: (data: BuilderArgs) => CustomerBuilderReturnData;
+  @BuilderParam defaultBuilder: (data: BuilderArgs) => CustomerBuilderReturnData;
   /**
    * 自定义图标插槽
    */
-  @BuilderParam private iconBuilder?: (data: BuilderArgs) => void;
+  @BuilderParam iconBuilder: (data: BuilderArgs) => void;
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
   /**
    * 标识符，通常为一个唯一的字符串
    * 多选框名称。
    */
-  @Prop private name: string = '';
+  @Prop name: string = '';
   /**
    * 形状
    */
-  @Prop private shape: 'square' | 'round' | 'dot' = 'round';
+  @Prop shape: 'square' | 'round' | 'dot' = 'round';
   /**
    * 选中状态颜色
    */
-  @Prop private checkedColor: string = '';
+  @Prop checkedColor: ResourceColor = '';
   /**
    * 图标大小 单位lpx
    * 默认40lpx
    */
-  @Prop private iconSize: number = 40;
+  @Prop iconSize: number = 40;
   /**
    * 默认是否选中 非双向绑定
    * 如果要更改数据请从onChange回调中获取最新的值
    */
-  @Prop private value: boolean = false;
+  @Prop value: boolean = false;
   /**
    * 是否禁用
    */
-  @Prop private disabled: boolean = false
+  @Prop disabled: boolean = false
   /**
    * 显示的文本
    */
-  @Prop private label: string = ''
+  @Prop label: string = ''
   /**
    * 文本位置，可选值为 left
    */
-  @Prop private labelPosition: 'left' | 'right' = 'right';
+  @Prop labelPosition: 'left' | 'right' = 'right';
   /**
    * 是否禁用复选框文本点击
    */
-  @Prop private labelDisabled: boolean = false;
+  @Prop labelDisabled: boolean = false;
   /**
    * 组名
    */
-  @Prop private group: string = '';
+  @Prop group: string = '';
   /**
    * 改变的回调
    */
-  private onChange?: (checked: boolean) => void;
+  onChange?: (checked: boolean) => void;
 
   /**
    * 获取背景色
    * @returns
    */
-  private getBackgroundColor() {
+  getBackgroundColor() {
     if (this.disabled) {
       return GRAY_COLOR.GRAY_3
     } else {
@@ -86,7 +86,7 @@ export struct IBestRadio {
    * 获取边框色
    * @returns
    */
-  private getBorderColor() {
+  getBorderColor() {
     if (this.disabled) {
       return GRAY_COLOR.GRAY_5
     } else {
@@ -98,7 +98,7 @@ export struct IBestRadio {
    * 获取label的颜色
    * @returns
    */
-  private getLabelColor() {
+  getLabelColor() {
     return this.disabled ? GRAY_COLOR.GRAY_5 : GRAY_COLOR.GRAY_8
   }
 
@@ -106,7 +106,7 @@ export struct IBestRadio {
    * 获取图标的颜色
    * @returns
    */
-  private getIconColor() {
+  getIconColor() {
     if (this.disabled) {
       return GRAY_COLOR.GRAY_5
     } else {
@@ -119,15 +119,15 @@ export struct IBestRadio {
    * 是否是在左边的label
    * @returns
    */
-  private isLeftLabel() {
+  isLeftLabel() {
     return this.labelPosition === 'left'
   }
 
-  private isHasGroup() {
+  isHasGroup() {
     return typeof this.group === 'string' && this.group.length > 0
   }
 
-  private updateGroupStore() {
+  updateGroupStore() {
     if (this.isHasGroup()) {
       updateRadioGroupStoreByKey(this.group, { name: this.name, checked: this.value } as CheckedItem)
     }
@@ -136,7 +136,7 @@ export struct IBestRadio {
   /**
    * 改变选中状态的回调
    */
-  private handleCheckedChange() {
+  handleCheckedChange() {
     if (this.disabled || this.value) {
       return
     }
@@ -149,7 +149,7 @@ export struct IBestRadio {
    * 当radioGroup初始化时 赋值选中逻辑
    * @param name
    */
-  private handleRadioGroupInit(name: string) {
+  handleRadioGroupInit(name: string) {
     this.value = name === this.name
   }
 
@@ -157,15 +157,13 @@ export struct IBestRadio {
     this.value && this.updateGroupStore()
     // 如果有组 监听max change
     if (this.isHasGroup()) {
-      emitter.on(getRadioGroupNamespace(this.group, RADIO_GROUP_EVENT_NAME.ON_INIT),
-        this.handleRadioGroupInit.bind(this))
+      emitter.on(getRadioGroupNamespace(this.group, RADIO_GROUP_EVENT_NAME.ON_INIT), (name: string): void => this.handleRadioGroupInit(name))
     }
   }
 
   aboutToDisappear() {
     if (this.isHasGroup()) {
-      emitter.off(getRadioGroupNamespace(this.group, RADIO_GROUP_EVENT_NAME.ON_INIT),
-        this.handleRadioGroupInit.bind(this))
+      emitter.off(getRadioGroupNamespace(this.group, RADIO_GROUP_EVENT_NAME.ON_INIT), (name: string): void => this.handleRadioGroupInit(name))
     }
   }
 

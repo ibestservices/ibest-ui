@@ -18,187 +18,187 @@ export struct IBestField{
      * 全局公共样式
      */
     @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
-    /*
+    /**
      * form id 用于验证
      */
     @Prop formId: string = ""
-    /*
+    /**
      * 表单绑定属性名
      */
     @Prop prop: string = ""
-    /*
+    /**
      * 验证规则
      */
     rules: IBestFormRuleItem[] = []
-    /*
+    /**
      * 组件绑定的值
      */
     @Link @Watch("valueChange") value: IBestFieldValueType
-    /*
+    /**
      * 文本内容
      */
     @Provide label: string = ""
-    /*
+    /**
      * 是否在label后加冒号
      */
     @Provide colon?: boolean = undefined
-    /*
+    /**
      * 文本宽度
      */
     @Provide labelWidth: number = 0
-    /*
+    /**
      * 文本位置
      */
     @Provide labelPosition: LabelPositionType = ''
-    /*
+    /**
      * 文本对齐方式
      */
     @Provide labelAlign: FieldTextAlign = ''
-    /*
+    /**
      * 输入框占位提示文字
      */
     @Provide placeholder: string = ""
-    /*
+    /**
      * 输入框类型
      */
     @Provide type: IBestFieldType = "normal"
-    /*
+    /**
      * 小数点位数
      */
     @Provide decimalLength: number = -1
-    /*
+    /**
      * 是否显示密码框末尾图标
      */
     @Provide showPasswordIcon: boolean = true
-    /*
+    /**
      * 输入框自适应高度
      */
     @Provide autosize: boolean = false
-    /*
+    /**
      * 自适应高度时默认行数
      */
     @Provide rows: number = 1
-    /*
+    /**
      * 最大输入字符数
      */
     @Provide maxlength: number = -1
-    /*
+    /**
      * 是否显示字数统计
      */
     @Provide showWordLimit: boolean = false
-    /*
+    /**
      * 输入框文字对齐方式
      */
     @Provide inputAlign: FieldTextAlign = "left"
-    /*
+    /**
      * 是否必填, 仅控制*显隐
      */
     @Provide required?: boolean = undefined
-    /*
+    /**
      * 星号的位置
      */
     @Provide requireAsteriskPosition: RequireAsteriskPositionType = ''
-    /*
+    /**
      * 是否禁用
      */
     @Provide disabled?: boolean = undefined
-    /*
+    /**
      * 是否只读
      */
     @Provide readOnly: boolean = false
-    /*
+    /**
      * 是否开启点击反馈
      */
     @Provide clickable: boolean = false
-    /*
+    /**
      * 是否展示右侧箭头并开启点击反馈
      */
     @Provide isLink: boolean = false
-    /*
+    /**
      * 左侧图标
      */
-    @Provide leftIcon: string | Resource = ""
-    /*
+    @Provide leftIcon: ResourceStr = ""
+    /**
      * 左侧图标颜色
      */
-    @Provide leftIconColor: string = ""
-    /*
+    @Provide leftIconColor: ResourceColor = ""
+    /**
      * 右侧图标
      */
-    @Provide rightIcon: string | Resource = ""
-    /*
+    @Provide rightIcon: ResourceStr = ""
+    /**
      * 右侧图标颜色
      */
-    @Provide rightIconColor: string = GRAY_COLOR.GRAY_6
-    /*
+    @Provide rightIconColor: ResourceColor = GRAY_COLOR.GRAY_6
+    /**
      * 底部线条
      */
     @Provide hasBorder: boolean = true
-    /*
+    /**
      * 是否启用清除图标，点击清除图标后会清空输入框
      */
     @Provide clearable: boolean = false
-    /*
+    /**
      * 自定义清除图标
      */
-    @Provide clearIcon: string | Resource = ""
-    /*
+    @Provide clearIcon: ResourceStr = ""
+    /**
      * 显示清除图标的时机
      */
     @Provide clearTrigger: ClearTriggerType = 'focus'
-    /*
+    /**
      * 验证状态
      */
     @Provide status: 'passed' | 'failed' | 'unvalidated' = 'unvalidated'
-    /*
+    /**
      * 是否显示验证信息
      */
     @Provide showMessage?: boolean = undefined
-    /*
+    /**
      * 验证信息
      */
     @Provide validateMessage: string = ""
-    /*
+    /**
      * 右侧按钮builder
      */
-    @BuilderParam buttonBuilder?: () => void
-    /*
+    @BuilderParam buttonBuilder: () => void
+    /**
      * 自定义右侧内容
      */
-    @BuilderParam customRightContent?: () => void
-    /*
+    @BuilderParam customRightContent: () => void
+    /**
      * 执行格式化函数触发时机
      */
     @Provide formatTrigger: FormatTriggerType = 'onchange'
-    /*
+    /**
      * 格式化函数
      */
     formatter?: ((value: string) => string) | undefined
-    /*
+    /**
      * value变化回调函数
      */
     onChange: (value: IBestFieldValueType) => void = () => {}
-    /*
+    /**
      * 点击清除按钮时触发
      */
     onClear: () => void = () => {}
-    /*
+    /**
      * 点击组件触发
      */
     onFieldClick: () => void = () => {}
-    /*
+    /**
      * 输入框获得焦点时触发
      */
     onFieldFocus: () => void = () => {}
-    /*
+    /**
      * 输入框失去焦点时触发
      */
     onFieldBlur: () => void = () => {}
-    /*
+    /**
      * 左侧图标点击时触发
      */
     onLeftIconClick: () => void = () => {}
-    /*
+    /**
      * 右侧图标点击时触发
      */
     onRightIconClick: () => void = () => {}
@@ -243,7 +243,7 @@ export struct IBestField{
     }
     aboutToDisappear(): void {
         if(this.formId && this.prop) {
-            emitter.off(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), () => {})
+            emitter.off(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (result: IBestFormSendFieldCallResult): void => this.init(result))
         }
     }
     // 初始化参数
@@ -331,14 +331,9 @@ export struct IBestField{
         if(this.formId && this.prop){
             let rules: IBestFormRuleItem[] = this.getFilteredRule(trigger)
             if(rules.length) {
-                emitter.emit(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), this.prop, (valid: boolean,
-                    field: FieldValidateResult): void => this.handleValidateFieldCallBack(valid, field))
+                emitter.emit(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), this.prop)
             }
         }
-    }
-    // 处理验证结果
-    handleValidateFieldCallBack(valid: boolean,res: FieldValidateResult){
-        // console.log("handleValidateFieldCallBack", valid, JSON.stringify(res), this.prop, this.value)
     }
 
     build() {
@@ -483,7 +478,7 @@ struct Content{
     @Consume clearTrigger: ClearTriggerType
     @Consume showMessage: boolean
     @Consume validateMessage: string
-    @BuilderParam buttonBuilder?: () => void
+    @BuilderParam buttonBuilder: () => void
     @BuilderParam customRightContent?: () => void
     @Consume formatTrigger: FormatTriggerType
     formatter?: (value: string) => string

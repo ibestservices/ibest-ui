@@ -20,10 +20,6 @@ struct Index {
       title: '基础组件',
       list: [
         {
-          name: 'Uploader 文件上传',
-          path: 'pages/Uploader'
-        },
-        {
           name: 'Button按钮',
           path: 'pages/Button'
         },

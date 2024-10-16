@@ -14,7 +14,9 @@ import {
 	IBestRadio, IBestRadioGroup,
 	IBestStepper,
 	IBestSwitch,
-	IBestToast} from '@ibestservices/ibest-ui'
+	IBestToast,
+	IBestUploader,
+	IBestUploaderFile} from '@ibestservices/ibest-ui'
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
@@ -79,6 +81,8 @@ struct FieldPage {
 	@State visible: boolean = false
 	@State value11: string = ''
 	@State visible1: boolean = false
+	@State value12: IBestUploaderFile[] = []
+
 	private formId3: string = 'form3'
 	private rules3: IBestFormRule = {
 		"value7": [
@@ -92,6 +96,9 @@ struct FieldPage {
 		],
 		"value11": [
 			{ required: true, message: "请选择日期" }
+		],
+		"value12": [
+			{ required: true, message: "请上传图片" }
 		]
 	}
 	private controller3: IBestFormController = new IBestFormController()
@@ -239,6 +246,12 @@ struct FieldPage {
 			}
 		})
 	}
+	@Builder uploadImg(){
+		IBestUploader({
+			fileList: $value12,
+			max: 2
+		})
+	}
 
 	build() {
 		Column() {
@@ -247,7 +260,7 @@ struct FieldPage {
 			}).backgroundColor('#FFF')
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL }) {
+					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MEDIA }) {
 						IBestForm({
 							formId: this.formId1,
 							controller: this.controller1
@@ -299,7 +312,7 @@ struct FieldPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '校验规则', titlePaddingLeft: SPACE.SMALL }) {
+					ComponentShowContainer({ title: '校验规则', titlePaddingLeft: SPACE.MEDIA }) {
 						IBestForm({
 							formId: this.formId2,
 							rules: this.rules2,
@@ -353,7 +366,7 @@ struct FieldPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '自定义表单项类型', titlePaddingLeft: SPACE.SMALL }) {
+					ComponentShowContainer({ title: '自定义表单项类型', titlePaddingLeft: SPACE.MEDIA }) {
 						IBestForm({
 							formId: this.formId3,
 							rules: this.rules3,
@@ -418,6 +431,14 @@ struct FieldPage {
 										this.visible1 = true
 									}
 								})
+								IBestField({
+									formId: this.formId3,
+									prop: 'value12',
+									value: $value12,
+									label: "上传图片",
+									hasBorder: false,
+									customRightContent: (): void => this.uploadImg()
+								})
 								IBestButton({
 									text: "提交",
 									type: 'primary',
@@ -437,7 +458,6 @@ struct FieldPage {
 				}
 			}
 			.layoutWeight(1)
-			.padding({bottom: SPACE.MEDIA})
 			// 选择城市
 			IBestCascader({
 				visible: this.visible,

@@ -15,58 +15,78 @@ import { IBestImagePreview } from '../../../../../Index'
 @Component
 export struct IBestUploader {
 	/**
-	 * 全局公共样式
-	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	/*
 	 * 文件列表
 	 */
 	@Link fileList: IBestUploaderFile[]
-	/*
+	/**
 	 * 选择类型
 	 */
 	@Prop selectType: IBestUploaderSelectType = "image"
-	/*
+	/**
 	 * 自定义触发器图标
 	 */
 	@Prop uploaderIcon: ResourceStr = $r("app.media.icon_photo")
-	/*
+	/**
 	 * 触发器图标大小
 	 */
 	@Prop uploaderIconSize: number = 48
-	/*
-	 * 触发器图标大小
+	/**
+	 * 触发器图标颜色
 	 */
 	@Prop uploaderIconColor: ResourceColor = GRAY_COLOR.GRAY_4
-	/*
+	/**
 	 * 最大上传数量
 	 */
 	@Prop max: number = -1
-	/*
+	/**
 	 * 文件大小限制，单位为 byte
 	 */
 	@Prop maxSize: number = -1
-	/*
+	/**
 	 * 预览大小
 	 */
 	@Provide previewSize: number = 160
-	/*
+	/**
+	 * 是否在点击预览图后展示全屏图片预览
+	 */
+	@Prop isPreviewFullImage: boolean = true
+	/**
 	 * 预览图片裁剪方式
 	 */
 	@Provide imageFit: ImageFit = ImageFit.Cover
-	/*
+	/**
+	 * 圆角大小
+	 */
+	@Provide cornerRadius: number = 0
+	/**
+	 * 是否显示删除按钮
+	 */
+	@Provide showDelete: boolean = true
+	/**
 	 * 文件选择配置项
 	 */
 	@Prop fileSelectOptions: FileSelectOptions
-	/*
+	/**
+	 * 禁用
+	 */
+	@Provide disabled: boolean = false
+	/**
 	 * 自定义上传触发器
 	 */
 	@BuilderParam customUploader: CustomBuilder
-	/*
-	 * 选择文件后回调
+	/**
+	 * 自定义预览样式
 	 */
-	onChange: (file: IBestUploaderFile[]) => void = () => {}
-	/*
+	@BuilderParam customPreview: (file: IBestUploaderFile) => void
+	/**
+	 * 文件插入前回调
+	 */
+	onBeforeInsert: (file: IBestUploaderFile) => boolean = () => true
+	/**
+	 * 文件全部插入后回调
+	 */
+	onChange: (insertFile: IBestUploaderFile[], allFile: IBestUploaderFile[]) => void = () => {}
+	/**
 	 * 超出限制后回调
 	 */
 	onExceed: () => void = () => {}
@@ -84,10 +104,12 @@ export struct IBestUploader {
 	// 选择文件
 	selectFile(){
 		let options = new picker.DocumentSelectOptions()
-		options.maxSelectNumber = this.max > 0 ? this.max : 500
-		options.defaultFilePathUri = this.fileSelectOptions?.defaultFilePathUri
-		options.fileSuffixFilters = this.fileSelectOptions?.fileSuffixFilters
 		const docPicker = new picker.DocumentViewPicker(this.context)
+		options.maxSelectNumber = this.max > 0 ? this.max : 500
+		if(this.fileSelectOptions){
+			options.defaultFilePathUri = this.fileSelectOptions.defaultFilePathUri
+			options.fileSuffixFilters = this.fileSelectOptions.fileSuffixFilters
+		}
 		docPicker.select(options).then((result: Array<string>) => {
 			this.onFileSelect(result)
 		})
@@ -95,9 +117,9 @@ export struct IBestUploader {
 	// 选择图片
 	selectImg(){
 		let PhotoSelectOptions = new photoAccessHelper.PhotoSelectOptions()
+		let photoPicker = new photoAccessHelper.PhotoViewPicker()
 		PhotoSelectOptions.MIMEType = photoAccessHelper.PhotoViewMIMETypes.IMAGE_TYPE
 		PhotoSelectOptions.maxSelectNumber = this.max > 0 ? this.max : 500
-		let photoPicker = new photoAccessHelper.PhotoViewPicker()
 		photoPicker.select(PhotoSelectOptions).then((result: photoAccessHelper.PhotoSelectResult) => {
 			this.onFileSelect(result.photoUris)
 		})
@@ -126,11 +148,13 @@ export struct IBestUploader {
 				size: stat.size,
 				isImage: this.selectType == "image" || isImageUrl(e)
 			})
-			arr.push(obj)
-			this.fileList.push(obj)
+			if(this.onBeforeInsert(obj)){
+				arr.push(obj)
+				this.fileList.push(obj)
+			}
 		}
 		if(arr.length){
-			this.onChange(arr)
+			this.onChange(arr, this.fileList)
 		}
 	}
 	// 删除
@@ -139,9 +163,11 @@ export struct IBestUploader {
 	}
 	// 预览图片
 	preview(file: IBestUploaderFile){
-		let imgLists = this.fileList.filter(e => e.isImage)
-		let index = imgLists.findIndex(e => e.internalUri == file.internalUri)
-		IBestImagePreview.show(imgLists.map(e => e.url || e.previewUri || ""), { startIndex: index })
+		if(this.isPreviewFullImage){
+			let imgLists = this.fileList.filter(e => e.isImage || isImageUrl(e.url as string))
+			let index = imgLists.findIndex(e => e.internalUri == file.internalUri)
+			IBestImagePreview.show(imgLists.map(e => e.url || e.previewUri || ""), { startIndex: index || 0 })
+		}
 	}
 
 	build() {
@@ -151,6 +177,7 @@ export struct IBestUploader {
 					UploadItem({
 						file: item,
 						index,
+						customPreview: this.customPreview,
 						remove: (index: number): void => this.remove(index),
 						preview: (file: IBestUploaderFile): void => this.preview(file)
 					})
@@ -175,6 +202,10 @@ export struct IBestUploader {
 				.width(`${this.previewSize}lpx`)
 				.aspectRatio(1)
 				.justifyContent(FlexAlign.Center)
+				.borderRadius(`${ this.cornerRadius }lpx`)
+				.clip(true)
+				.enabled(!this.disabled)
+				.opacity(this.disabled ? 0.5 : 1)
 				.stateStyles({
 					normal: {
 						.backgroundColor(GRAY_COLOR.GRAY_1)
@@ -183,7 +214,7 @@ export struct IBestUploader {
 						.backgroundColor(GRAY_COLOR.GRAY_2)
 					}
 				})
-				.visibility(this.max <= 0 || this.fileList.length < this.max ? Visibility.Visible : Visibility.None)
+				.visibility(this.max > 0 && this.fileList.length >= this.max ? Visibility.None : Visibility.Visible)
 				.onClick(() => {
 					this.select()
 				})
@@ -198,10 +229,16 @@ struct UploadItem{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@State isError: boolean = false
+
 	@ObjectLink file: IBestUploaderFile
 	@Prop index: number
 	@Consume previewSize: number
 	@Consume imageFit: ImageFit
+	@Consume cornerRadius: number
+	@Consume showDelete: boolean
+	@Consume disabled: boolean
+	@BuilderParam customPreview: (file: IBestUploaderFile) => void
 
 	// 移除文件
 	remove: (index: number) => void = () => {}
@@ -209,54 +246,51 @@ struct UploadItem{
 	preview: (file: IBestUploaderFile) => void = () => {}
 
 	build() {
-		Row(){
-			if(isImageFile(this.file)){
-				Image(this.file.url || this.file.previewUri)
-					.width(CONTAINER_SIZE.FULL)
-					.aspectRatio(1)
-					.objectFit(this.imageFit)
-					.draggable(false)
-					.stateStyles({
-						normal: {
-							.backgroundColor(GRAY_COLOR.GRAY_1)
-						},
-						pressed: {
-							.backgroundColor(GRAY_COLOR.GRAY_2)
-						}
-					})
-					.onClick(() => {
-						this.preview(this.file)
-					})
-			}else{
-				Column({ space: this.baseStyle.spaceBase }){
+		Column() {
+			if (this.customPreview) {
+				this.customPreview(this.file)
+			} else {
+				if (isImageFile(this.file)) {
+					Image(this.isError ? $r("app.media.icon_photo_fail") : (this.file.url || this.file.previewUri))
+						.width(this.isError ? "64lpx" : CONTAINER_SIZE.FULL)
+						.aspectRatio(1)
+						.objectFit(this.imageFit)
+						.draggable(false)
+						.onError(() => {
+							this.isError = true
+						})
+						.onClick(() => {
+							this.preview(this.file)
+						})
+				} else {
 					Image($r("app.media.icon_file"))
 						.width("40lpx")
 						.aspectRatio(1)
 						.draggable(false)
 						.fillColor(GRAY_COLOR.GRAY_7)
-					Text(this.file.name)
-						.fontColor(GRAY_COLOR.GRAY_7)
-						.fontSize(this.baseStyle.fontSizeSm)
-						.width(CONTAINER_SIZE.FULL)
-						.maxLines(1)
-						.textAlign(TextAlign.Center)
-						.textOverflow({ overflow: TextOverflow.Ellipsis })
-						.padding({ left: this.baseStyle.spaceBase, right: this.baseStyle.spaceBase })
+					if (this.file.name) {
+						Text(this.file.name)
+							.fontColor(GRAY_COLOR.GRAY_7)
+							.fontSize(this.baseStyle.fontSizeSm)
+							.width(CONTAINER_SIZE.FULL)
+							.maxLines(1)
+							.textAlign(TextAlign.Center)
+							.textOverflow({ overflow: TextOverflow.Ellipsis })
+							.padding({ left: this.baseStyle.spaceBase, right: this.baseStyle.spaceBase })
+							.margin({ top: this.baseStyle.spaceBase })
+					}
 				}
-				.width(CONTAINER_SIZE.FULL)
-				.aspectRatio(1)
-				.justifyContent(FlexAlign.Center)
-				.alignItems(HorizontalAlign.Center)
 			}
-			if(this.file.status && this.file.status != 'done'){
-				Column({ space: "12lpx" }){
-					if(this.file.status == 'uploading'){
+			// 状态展示
+			if (this.file.status && this.file.status != 'done') {
+				Column({ space: "12lpx" }) {
+					if (this.file.status == 'uploading') {
 						IBestLoading({
 							loadingSize: "36lpx",
 							loadingStrokeWidth: "2lpx",
 							loadingColor: this.baseStyle.default
 						})
-					}else{
+					} else {
 						Image($r("app.media.icon_close_circle"))
 							.width("40lpx")
 							.aspectRatio(1)
@@ -273,25 +307,33 @@ struct UploadItem{
 				.backgroundColor("rgba(50,50,51,0.88)")
 				.position({ left: 0, top: 0 })
 			}
-			Row(){
-				Image($r("app.media.icon_cuo"))
-					.width(this.baseStyle.fontSizeMd)
-					.aspectRatio(1)
-					.fillColor(this.baseStyle.default)
-					.scale({ x: 0.7, y: 0.7 })
-					.translate({ x: "10%", y: "-10%" })
+			// 删除按钮
+			if (this.showDelete && !this.disabled) {
+				Row() {
+					Image($r("app.media.icon_cuo"))
+						.width(this.baseStyle.fontSizeMd)
+						.aspectRatio(1)
+						.fillColor(this.baseStyle.default)
+						.scale({ x: 0.7, y: 0.7 })
+						.translate({ x: "10%", y: "-10%" })
+				}
+				.width(this.baseStyle.fontSizeMd)
+				.aspectRatio(1)
+				.position({ right: 0, top: 0 })
+				.backgroundColor("rgba(0,0,0,0.7)")
+				.borderRadius({ bottomLeft: 9999 })
+				.visibility(this.file.status == 'uploading' ? Visibility.None : Visibility.Visible)
+				.onClick(() => {
+					this.remove(this.index)
+				})
 			}
-			.width(this.baseStyle.fontSizeMd)
-			.aspectRatio(1)
-			.position({ right: 0, top: 0 })
-			.backgroundColor("rgba(0,0,0,0.7)")
-			.borderRadius({ bottomLeft: 9999 })
-			.visibility(this.file.status == 'uploading' ? Visibility.None : Visibility.Visible)
-			.onClick(() => {
-				this.remove(this.index)
-			})
 		}
 		.width(`${this.previewSize}lpx`)
 		.aspectRatio(1)
+		.justifyContent(FlexAlign.Center)
+		.alignItems(HorizontalAlign.Center)
+		.backgroundColor(GRAY_COLOR.GRAY_1)
+		.borderRadius(`${ this.cornerRadius }lpx`)
+		.clip(true)
 	}
 }

@@ -9,55 +9,55 @@ export struct IBestSignature{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	/*
+	/**
 	 * 宽度
 	 */
 	@Prop boardWidth: number | string = -1
-	/*
+	/**
 	 * 高度
 	 */
 	@Prop boardHeight: number | string = 400
-	/*
+	/**
 	 * 导出图片类型
 	 */
 	@Prop exportImgType: 'png' | 'jpeg' | 'webp' = 'png'
-	/*
+	/**
 	 * 笔触颜色
 	 */
 	@Prop penColor: string | number | CanvasGradient | CanvasPattern = '#000'
-	/*
+	/**
 	 * 线条宽度
 	 */
 	@Prop lineWidth: number = 3
-	/*
+	/**
 	 * 背景色
 	 */
-	@Prop bgColor: string = '#fff'
-	/*
+	@Prop bgColor: string | number | CanvasGradient | CanvasPattern = '#fff'
+	/**
 	 * 清除按钮文案
 	 */
 	@Prop clearText: string = '清空'
-	/*
+	/**
 	 * 确认按钮文案
 	 */
 	@Prop confirmText: string = '确认'
-	/*
+	/**
 	 * 是否显示底部按钮
 	 */
 	@Prop isShowFooter: boolean = true
-	/*
+	/**
 	 * 绘制完毕的回调
 	 */
 	onDrawEnd: () => void = () => {}
-	/*
+	/**
 	 * 点击确定按钮的回调
 	 */
 	onConfirm: (url: string) => void = () => {}
-	/*
+	/**
 	 * 点击清空按钮的回调
 	 */
 	onClear: () => void = () => {}
-	/*
+	/**
 	 * 控制器
 	 */
 	controller?: IBestSignatureController

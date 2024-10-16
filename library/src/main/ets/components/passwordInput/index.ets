@@ -23,71 +23,71 @@ export struct IBestPasswordInput {
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	/*
+	/**
 	 * 唯一id
 	 */
 	@State uniId: number = 0
-	/*
+	/**
 	 * 值
 	 */
 	@Link @Watch("formatInputList") value: string
-	/*
+	/**
 	 * 长度
 	 */
 	@Prop inputLength: number = 6
-	/*
+	/**
 	 * 输入框列表
 	 */
 	@State inputList: IBestPasswordInputModel[] = []
-	/*
+	/**
 	 * 当前聚焦的输入框下标
 	 */
 	@State currentFocusIndex: number = 0
-	/*
+	/**
 	 * 输入框是否聚焦
 	 */
 	@State focused: boolean = false
-	/*
+	/**
 	 * 输入框高度
 	 */
 	@Prop inputHeight: number = 100
-	/*
+	/**
 	 * 格子间距
 	 */
 	@Provide space: number = 0
-	/*
+	/**
 	 * 圆角
 	 */
 	@Provide radius: number = 10
-	/*
+	/**
 	 * 是否高亮当前正在输入的格子
 	 */
 	@Provide isHighlightCurrent: boolean = true
-	/*
+	/**
 	 * 高亮颜色
 	 */
-	@Provide highlightColor: string = this.baseStyle.primary as string
-	/*
+	@Provide highlightColor: ResourceColor = this.baseStyle.primary
+	/**
 	 * 是否隐藏内容
 	 */
 	@Provide isHidden: boolean = true
-	/*
+	/**
 	 * 提示文字
 	 */
 	@Prop tip: string = ""
-	/*
+	/**
 	 * 错误提示
 	 */
 	@Prop errorTip: string = ""
-	/*
+	/**
 	 * 是否使用系统键盘
 	 */
 	@Prop useSystemKeyboard: boolean = false
-	/*
+	/**
 	 * 自定义键盘配置
 	 */
 	@Prop numberKeyboardConfig: NumberKeyboardConfig
-	/*
+	/**
 	 * 区域点击
 	 */
 	onFieldClick: () => void = () => {}

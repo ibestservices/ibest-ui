@@ -60,7 +60,7 @@ struct PopupPage {
 			}).backgroundColor('#FFF')
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL }) {
+					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MEDIA }) {
 						IBestCellGroup({ inset: true }) {
 							Column() {
 								IBestCell({
@@ -76,7 +76,7 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '弹出位置', titlePaddingLeft: SPACE.SMALL }) {
+					ComponentShowContainer({ title: '弹出位置', titlePaddingLeft: SPACE.MEDIA }) {
 						IBestCellGroup({ inset: true }) {
 							Row(){
 								Column(){
@@ -130,7 +130,7 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '显示标题', titlePaddingLeft: SPACE.SMALL }) {
+					ComponentShowContainer({ title: '显示标题', titlePaddingLeft: SPACE.MEDIA }) {
 						IBestCellGroup({ inset: true }) {
 							Column() {
 								IBestCell({
@@ -153,7 +153,7 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '圆角弹窗', titlePaddingLeft: SPACE.SMALL }) {
+					ComponentShowContainer({ title: '圆角弹窗', titlePaddingLeft: SPACE.MEDIA }) {
 						IBestCellGroup({ inset: true }) {
 							Column() {
 								IBestCell({
@@ -176,7 +176,7 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '事件监听', titlePaddingLeft: SPACE.SMALL }) {
+					ComponentShowContainer({ title: '事件监听', titlePaddingLeft: SPACE.MEDIA }) {
 						IBestCellGroup({ inset: true }) {
 							Column() {
 								IBestCell({
@@ -192,7 +192,7 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '安全区域适配', titlePaddingLeft: SPACE.SMALL }) {
+					ComponentShowContainer({ title: '安全区域适配', titlePaddingLeft: SPACE.MEDIA }) {
 						IBestCellGroup({ inset: true }) {
 							Column() {
 								IBestCell({
@@ -213,7 +213,7 @@ struct PopupPage {
 			IBestPopup({
 				visible: $baseVisible,
 				popupWidth: 300,
-				contentBuilder: this.centerBuilder
+				contentBuilder: (): void => this.centerBuilder()
 			})
 			// 弹框位置
 			IBestPopup({
@@ -239,7 +239,7 @@ struct PopupPage {
 				cornerRadius: 20,
 				isShowHeader: true,
 				title: "标题",
-				contentBuilder: this.centerBuilder
+				contentBuilder: (): void => this.centerBuilder()
 			})
 			IBestPopup({
 				visible: $cusCloseIconVisible,
@@ -253,7 +253,7 @@ struct PopupPage {
 				visible: $centerCornerVisible,
 				popupWidth: 300,
 				cornerRadius: 10,
-				contentBuilder: this.centerBuilder
+				contentBuilder: (): void => this.centerBuilder()
 			})
 			IBestPopup({
 				visible: $bottomCornerVisible,
@@ -275,7 +275,7 @@ struct PopupPage {
 			IBestPopup({
 				visible: $safeAreaVisible,
 				popupAlign: "left",
-				contentBuilder: this.safeBuilder,
+				contentBuilder: (): void => this.safeBuilder(),
 				safeAreaInsetTop: true,
 				safeAreaInsetBottom: true
 			})
