@@ -97,6 +97,10 @@ struct Index {
           path: 'pages/Search'
         },
         {
+          name: 'Slider 滑块',
+          path: 'pages/Slider'
+        },
+        {
           name: 'Signature 签名',
           path: 'pages/Signature'
         },
@@ -111,6 +115,10 @@ struct Index {
         {
           name: 'TimePicker 时间选择',
           path: 'pages/TimePicker'
+        },
+        {
+          name: 'Uploader 文件上传',
+          path: 'pages/Uploader'
         }
       ]
     },
@@ -137,6 +145,10 @@ struct Index {
         {
           name: 'Empty 空状态',
           path: 'pages/Empty'
+        },
+        {
+          name: 'ImagePreview 图片预览',
+          path: 'pages/ImagePreview'
         },
         {
           name: 'Tag 标签',

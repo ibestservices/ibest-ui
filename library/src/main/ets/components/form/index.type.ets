@@ -2,7 +2,7 @@ import { emitter } from '../../assets/ets/EventEmitter'
 import { FieldTextAlign, IBestFieldValueType,
 	LabelPositionType,
 	RequireAsteriskPositionType } from '../field/index.type'
-/*
+/**
  * 验证规则
  */
 export interface IBestFormRuleItem {
@@ -26,7 +26,7 @@ export enum FORM_EVENT_NAME {
 	 * 验证整个表单
 	 */
 	VALIDATE = 'VALIDATE',
-	/*
+	/**
 	 * 验证某个字段
 	 */
 	VALIDATE_FIELD = 'VALIDATE_FIELD',
@@ -34,18 +34,18 @@ export enum FORM_EVENT_NAME {
 	 * 重置
 	 */
 	RESET_VALIDATE = 'RESET_VALIDATE',
-	/*
+	/**
 	 * 获取所有值
 	 */
 	GET_VALUES = 'GET_VALUES'
 }
-/*
+/**
  * 获取事件名称
  */
 export function getFormEventName(formId: string, eventName: string): string {
 	return `IBestForm_${formId}_${eventName}`
 }
-/*
+/**
  * SEND_FIELD 回调参数
  */
 export interface IBestFormSendFieldCallResult {
@@ -58,7 +58,7 @@ export interface IBestFormSendFieldCallResult {
 	showMessage: boolean
 	disabled: boolean
 }
-/*
+/**
  * 表单验证结果
  */
 export interface FieldValidateResult{
@@ -66,7 +66,7 @@ export interface FieldValidateResult{
 	name: string
 	message: string
 }
-/*
+/**
  * 表单项信息
  */
 export interface IBestFieldItem{
@@ -75,48 +75,41 @@ export interface IBestFieldItem{
 	resetValidation: () => void
 	getValue: () => IBestFieldValueType
 }
-/*
+/**
  * 表单控制器
  */
 export class IBestFormController {
-	formId: string = ""
-	/*
+	/**
 	 * 验证整个/某个表单
+	 * @param callBack 回调函数
 	 */
 	public validate: (callBack?: (valid: boolean, field: FieldValidateResult[]) => void) => void = () => {}
-	/*
+	/**
 	 * 验证某个字段
+	 * @param name 表单属性名
+	 * @param callBack 回调函数
 	 */
-	public validateField: (name: string, callBack?: (valid: boolean, field?: FieldValidateResult[]) => void) => void = () => {}
-	/*
+	public validateField: (name: string, callBack?: (valid: boolean, field?: FieldValidateResult) => void) => void = () => {}
+	/**
 	 * 重置校验结果
+	 * @param name 表单属性名
 	 */
 	public resetValidation: (name?: string | string[]) => void = () => {}
-	/*
+	/**
 	 * 获取表单当前所有值
+	 * @deprecated since 1.15.0
+	 * @useinstead getFormValues
 	 */
 	public getValues: () => Promise<Record<string, IBestFieldValueType>> = () => {
 		let res: Record<string, IBestFieldValueType> = {}
 		return Promise.resolve(res)
 	}
-
-	constructor() {
-		this.validate = (callBack?: (valid: boolean, field: FieldValidateResult[]) => void) => {
-			emitter.emit(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE), callBack)
-		}
-		this.validateField = (name: string, callBack?: (valid: boolean, field?: FieldValidateResult[]) => void) => {
-			emitter.emit(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), name, callBack)
-		}
-		this.resetValidation = (name?: string | string[]) => {
-			emitter.emit(getFormEventName(this.formId, FORM_EVENT_NAME.RESET_VALIDATE), name)
-		}
-		this.getValues = () => {
-			return new Promise<Record<string, IBestFieldValueType>>((resolve) => {
-				emitter.emit(getFormEventName(this.formId, FORM_EVENT_NAME.GET_VALUES), (values: Record<string,
-				IBestFieldValueType>) => {
-					resolve(values)
-				})
-			})
-		}
+	/**
+	 * 获取表单所有值
+	 * @since 1.15.0
+	 */
+	public getFormValues: () => Record<string, IBestFieldValueType> = () => {
+		let res: Record<string, IBestFieldValueType> = {}
+		return res
 	}
 }

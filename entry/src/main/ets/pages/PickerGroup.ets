@@ -50,7 +50,7 @@ struct PickerGroupPage {
 			}).backgroundColor('#FFF')
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL, card: true }) {
+					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.BASE, card: true }) {
 						IBestPickerGroup({
 							groupId: this.groupId,
 							title: "选择地点时间",
@@ -75,7 +75,7 @@ struct PickerGroupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '下一步按钮', titlePaddingLeft: SPACE.SMALL, card: true }) {
+					ComponentShowContainer({ title: '下一步按钮', titlePaddingLeft: SPACE.BASE, card: true }) {
 						IBestPickerGroup({
 							groupId: this.groupId1,
 							title: "选择地点时间",
@@ -101,7 +101,7 @@ struct PickerGroupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '选择日期范围', titlePaddingLeft: SPACE.SMALL, card: true }) {
+					ComponentShowContainer({ title: '选择日期范围', titlePaddingLeft: SPACE.BASE, card: true }) {
 						IBestPickerGroup({
 							groupId: this.groupId2,
 							title: "预约日期",
@@ -125,8 +125,8 @@ struct PickerGroupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '手动切换', titlePaddingLeft: SPACE.SMALL, card: true }) {
-						Column({space: SPACE.SMALL}){
+					ComponentShowContainer({ title: '手动切换', titlePaddingLeft: SPACE.BASE, card: true }) {
+						Column({space: SPACE.BASE}){
 							IBestButton({
 								text: `点击切换tab 当前为${this.currentName}`,
 								type: "primary",

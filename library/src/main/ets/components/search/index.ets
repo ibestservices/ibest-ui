@@ -12,111 +12,111 @@ export struct IBestSearch {
 	@State isFocus: boolean = false
 	// 清除锁
 	@State clearLock: boolean = false
-	/*
+	/**
 	 * 左侧文本
 	 */
 	@Prop label: string = ''
-	/*
+	/**
 	 * 输入框绑定值
 	 */
 	@Link value: string
-	/*
+	/**
 	 * 输入框 placeholder 提示文字
 	 */
 	@Prop placeholder: string = '请输入搜索关键词'
 	/**
 	 * placeholder 提示文字颜色
 	 */
-	@Prop placeholderColor: string = GRAY_COLOR.GRAY_5
-	/*
+	@Prop placeholderColor: ResourceColor = GRAY_COLOR.GRAY_5
+	/**
 	 * 搜索框高度
 	 */
 	@Prop contentHeight: number = 108
-	/*
+	/**
 	 * 外侧背景色
 	 */
-	@Prop outBgColor: string = this.baseStyle.default as string
-	/*
+	@Prop outBgColor: ResourceColor = this.baseStyle.default as string
+	/**
 	 * 内侧背景色
 	 */
-	@Prop innerBgColor: string = GRAY_COLOR.GRAY_1
-	/*
+	@Prop innerBgColor: ResourceColor = GRAY_COLOR.GRAY_1
+	/**
 	 * 是否为圆形搜索框
 	 */
 	@Prop isRound: boolean = false
-	/*
+	/**
 	 * 圆角大小
 	 */
 	@Prop radius: number = 0
-	/*
+	/**
 	 * 左侧图标
 	 */
 	@Prop leftIcon: string | Resource = $r("app.media.icon_search")
-	/*
+	/**
 	 * 左侧图标颜色
 	 */
-	@Prop leftIconColor: string = GRAY_COLOR.GRAY_6
-	/*
+	@Prop leftIconColor: ResourceColor = GRAY_COLOR.GRAY_6
+	/**
 	 * 是否可清除
 	 */
 	@Prop clearable: boolean = true
-	/*
+	/**
 	 * 清除图片地址
 	 */
 	@Prop clearIcon: string | Resource = $r("app.media.icon_clear")
-	/*
+	/**
 	 * 清除图标显示时机
 	 */
 	@Prop clearTrigger: "always" | "focus" = 'focus'
-	/*
+	/**
 	 * 自动获取焦点
 	 */
 	@Prop autoFocus: boolean = false
-	/*
+	/**
 	 * 是否显示右侧按钮
 	 */
 	@Prop showRightButton: boolean = false
-	/*
+	/**
 	 * 右侧按钮文字
 	 */
 	@Prop rightButtonText: string = '取消'
-	/*
+	/**
 	 * 是否禁用
 	 */
 	@Prop disabled: boolean = false
-	/*
+	/**
 	 * 是否只读
 	 */
 	@Prop readOnly: boolean = false
-	/*
+	/**
 	 * 输入法回车键类型
 	 */
 	@Prop enterKeyType: EnterKeyType = EnterKeyType.Search
-	/*
+	/**
 	 * 自定义右侧按钮
 	 */
 	@BuilderParam customRightButton?: CustomBuilder
-	/*
+	/**
 	 * 输入回调
 	 */
 	onInput: (value: string) => void = () => {}
-	/*
+	/**
 	 * 搜索回调
 	 */
 	onSearch: () => void = () => {}
-	/*
+	/**
 	 * 失焦回调
 	 */
 	onInputBlur: () => void = () => {}
-	/*
+	/**
 	 * 聚焦回调
 	 */
 	onInputFocus: () => void = () => {}
-	/*
+	/**
 	 * 清除回调
 	 */
 	onClear: () => void = () => {}
-	/*
+	/**
 	 * 右侧按钮点击回调
 	 */
 	onRightButtonClick: () => void = () => {}

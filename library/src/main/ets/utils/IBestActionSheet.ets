@@ -19,99 +19,99 @@ class IBestActionMultiLine extends IBestActionType {
  * ActionSheetOption 类型
  */
 class IBestActionSheetOption {
-	/*
+	/**
 	 * 宽度
 	 */
 	width?: Dimension
-	/*
+	/**
 	 * 高度
 	 */
 	height?: SheetSize | Length
-	/*
+	/**
 	 * 半模态页面的背板颜色
 	 */
 	backgroundColor?: ResourceColor
-	/*
+	/**
 	 * 半模态页面的切换高度档位
 	 */
 	detents?: [(SheetSize | Length), ( SheetSize | Length)?, (SheetSize | Length)?]
-	/*
+	/**
 	 * 半模态页面的样式
 	 */
 	preferType?: SheetType
-	/*
+	/**
 	 * 设置半模态页面的显示层级
 	 */
 	mode?: SheetMode
-	/*
+	/**
 	 * 是否显示控制条
 	 */
 	dragBar?: boolean
-	/*
+	/**
 	 * 原生标题
 	 */
 	title?: SheetTitleOptions | CustomBuilder
-	/*
+	/**
 	 * 是否显示原生关闭图标
 	 */
 	showClose?: boolean
-	/*
+	/**
 	 * 选项列表
 	 */
 	actions?: (IBestActionType | string)[] | (IBestActionMultiLine)[][]
-	/*
+	/**
 	 * 自定义标题
 	 */
 	customTitle?: string
-	/*
+	/**
 	 * 自定义标题背景色
 	 */
 	titleBgColor?: ResourceColor
-	/*
+	/**
 	 * 描述
 	 */
 	description?: string
-	/*
+	/**
 	 * 是否显示关闭图标
 	 */
 	closeable?: boolean
-	/*
+	/**
 	 * 自定义关闭图标
 	 */
 	closeIcon?: string | Resource
-	/*
+	/**
 	 * 底部按钮文字
 	 */
 	cancelText?: string
-	/*
+	/**
 	 * 是否开启底部安全距离适配
 	 */
 	safeAreaInsetBottom?: boolean
-	/*
+	/**
 	 * 是否允许物理关闭
 	 */
 	closeOnBackPress?: boolean
-	/*
+	/**
 	 * 是否允许点击遮罩关闭
 	 */
 	closeOnClickOverlay?: boolean
-	/*
+	/**
 	 * 自定义内容
 	 */
 	customContent?: CustomBuilder
-	/*
+	/**
 	 * 打开回调
 	 */
 	onOpen?: () => void
-	/*
+	/**
 	 * 选择后回调
 	 */
 	onSelect?: (index1: number, index2?: number | string, value?: string) => void
-	/*
+	/**
 	 * 点击取消回调
 	 */
 	onCancel?: () => void
-	/*
+	/**
 	 * 关闭回调
 	 */
 	onClose?: () => void
@@ -166,7 +166,7 @@ struct customContent {
 	}
 }
 
-/*
+/**
  * 默认内容 Builder
  */
 @Builder
@@ -326,6 +326,9 @@ function defaultContentBuilder(option: IBestActionSheetParams) {
 class ActionSheet{
 	private uiContext: UIContext | null = null
 	private contentNodeMap: Map<string, ComponentContent<IBestActionSheetParams>> = new Map()
+	/**
+	 * 展示actionSheet
+  	 */
 	public async show(option: IBestActionSheetOption): Promise<string> {
 		let key = this.getUniKey()
 		if(this.uiContext == null){
@@ -375,6 +378,9 @@ class ActionSheet{
 		params.onOpen?.()
 		return key
 	}
+	/**
+	 * 关闭actionSheet
+	 */
 	public close(id?: string){
 		let key = id || this.getLastKey()
 		if(this.contentNodeMap.has(key)){

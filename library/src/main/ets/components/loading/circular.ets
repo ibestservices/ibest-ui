@@ -10,7 +10,7 @@ export struct IBestLoadingCircular {
   /**
    * loading的颜色
    */
-  @Prop private color: string = GRAY_COLOR.GRAY_6;
+  @Prop private color: ResourceColor = GRAY_COLOR.GRAY_6;
   /**
    * 圆的边框粗细
    */

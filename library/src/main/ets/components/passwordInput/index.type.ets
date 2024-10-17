@@ -1,4 +1,4 @@
-/*
+/**
  * 输入框model
  */
 export class IBestPasswordInputModel {
@@ -7,7 +7,7 @@ export class IBestPasswordInputModel {
 		this.value = value
 	}
 }
-/*
+/**
  * 自定义键盘配置
  */
 export interface NumberKeyboardConfig {

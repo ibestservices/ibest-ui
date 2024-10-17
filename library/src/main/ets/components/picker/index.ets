@@ -30,51 +30,51 @@ export struct IBestPicker{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	/*
+	/**
 	 * 分组id
 	 */
 	@Prop groupId: string = ""
-	/*
+	/**
 	 * 当前选中的值
 	 */
 	@Link value: Array<string>
-	/*
+	/**
 	 * 选项列表
 	 */
 	@Prop @Watch("optionsChange") options: IBestPickerOption[] | IBestPickerOption[][] = []
-	/*
+	/**
 	 * 标题
 	 */
 	@Prop title: string = ""
-	/*
+	/**
 	 * 单项高度
 	 */
 	@Prop itemHeight: number = 88
-	/*
+	/**
 	 * 确认按钮文字
 	 */
 	@Prop confirmText: string = "确定"
-	/*
+	/**
 	 * 取消按钮文字
 	 */
 	@Prop cancelText: string = "取消"
-	/*
+	/**
 	 * 是否显示顶部栏
 	 */
 	@Prop showToolBar: boolean = true
-	/*
+	/**
 	 * 可见选项数量
   	 */
 	@Prop visibleItemCount: number = 6
-	/*
+	/**
 	 * 确认按钮点击事件
 	 */
 	onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => void = () => {}
-	/*
+	/**
 	 * 取消按钮点击事件
 	 */
 	onCancel: () => void = () => {}
-	/*
+	/**
 	 * 选中项改变事件
 	 */
 	onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => void = () => {}

@@ -127,7 +127,7 @@ struct DialogPage {
 
       List() {
         ListItem() {
-          ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MEDIA }) {
             IBestCellGroup({ inset: true }) {
               IBestCell({
                 title: '提示弹窗',
@@ -164,7 +164,7 @@ struct DialogPage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: '异步关闭', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '异步关闭', titlePaddingLeft: SPACE.MEDIA }) {
             IBestCellGroup({ inset: true }) {
               IBestCell({
                 title: '异步关闭',
@@ -179,7 +179,7 @@ struct DialogPage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: '使用插槽', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '使用插槽', titlePaddingLeft: SPACE.MEDIA }) {
             IBestCellGroup({ inset: true }) {
               IBestCell({
                 title: '使用插槽',

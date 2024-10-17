@@ -10,19 +10,19 @@ export struct IBestLoading {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
   /**
    * 默认插槽 loading覆盖的插槽
    */
-  @BuilderParam defaultBuilder?: CustomBuilder;
+  @BuilderParam defaultBuilder: CustomBuilder;
   /**
    * loading的图标的插槽
    */
-  @BuilderParam loadingIconBuilder?: CustomBuilder;
+  @BuilderParam loadingIconBuilder: CustomBuilder;
   /**
    * loading的文案的插槽
    */
-  @BuilderParam loadingTextBuilder?: CustomBuilder;
+  @BuilderParam loadingTextBuilder: CustomBuilder;
   /**
    * 类型，可选值为 spinner
    */
@@ -30,51 +30,51 @@ export struct IBestLoading {
   /**
    * loading的尺寸
    */
-  @Prop private loadingSize: string = '60lpx'
+  @Prop loadingSize: string = '60lpx'
   /**
    * loading的颜色
    */
-  @Prop private loadingColor: string = '#c9c9c9';
+  @Prop loadingColor: ResourceColor = '#c9c9c9';
   /**
    * loading的线条宽度
    */
-  @Prop private loadingStrokeWidth: string = '6lpx';
+  @Prop loadingStrokeWidth: string = '6lpx';
   /**
    * loading的遮罩颜色
    */
-  @Prop private loadingMaskColor: string = 'transparent';
+  @Prop loadingMaskColor: ResourceColor = 'transparent';
   /**
    * loading的图标距离顶部的margin 因为默认loading是垂直居中布局的 可通过该属性调整loading图标的上下位置 只有在vertical为true 即垂直布局时有效
    */
-  @Prop private loadingIconMarginTop: string | number = '0';
+  @Prop loadingIconMarginTop: string | number = '0';
   /**
    * loadingText的marginLeft值 只有在vertical为false 即横向布局时有效
    */
-  @Prop private loadingTextMarginLeft: string | number = this.baseStyle.spaceXs;
+  @Prop loadingTextMarginLeft: string | number = this.baseStyle.spaceXs;
   /**
    * loadingText的marginTop值 只有在vertical为true 即垂直布局时有效
    */
-  @Prop private loadingTextMarginTop: string | number = this.baseStyle.spaceXs;
+  @Prop loadingTextMarginTop: string | number = this.baseStyle.spaceXs;
   /**
    * 加载的文案
    */
-  @Prop private loadingText?: string = undefined;
+  @Prop loadingText?: string = undefined;
   /**
    * loading的文字颜色
    */
-  @Prop private loadingTextColor: string = GRAY_COLOR.GRAY_6;
+  @Prop loadingTextColor: ResourceColor = GRAY_COLOR.GRAY_6;
   /**
    * loading的文字大小
    */
-  @Prop private loadingTextFontSize: string = this.baseStyle.fontSizeMd as string;
+  @Prop loadingTextFontSize: string = this.baseStyle.fontSizeMd as string;
   /**
    * 菊花图的每条线的长度
    */
-  @Prop private spinnerStrokeHeight: string | number = '15lpx';
+  @Prop spinnerStrokeHeight: string | number = '15lpx';
   /**
    * 是否垂直排列图标和文字内容
    */
-  @Prop private vertical: boolean = true;
+  @Prop vertical: boolean = true;
   /**
    * 当前stack容器的尺寸
    */

@@ -7,35 +7,35 @@ export struct IBestEmpty {
   /**
    * 描述文字底部的builder
    */
-  @BuilderParam defaultBuilder?: CustomBuilder;
+  @BuilderParam defaultBuilder: CustomBuilder;
   /**
    * 空状态的builder
    */
-  @BuilderParam emptyImgBuilder?: CustomBuilder;
+  @BuilderParam emptyImgBuilder: CustomBuilder;
   /**
    * 描述文字的builder
    */
-  @BuilderParam descriptionBuilder?: CustomBuilder;
+  @BuilderParam descriptionBuilder: CustomBuilder;
   /**
    * 图片下方的描述文字 默认空字符串
    */
-  @Prop private description: string = '';
+  @Prop description: string = '';
   /**
    * 描述文字颜色 默认 "#969799"
    */
-  @Prop private descriptionColor: string = GRAY_COLOR.GRAY_6;
+  @Prop descriptionColor: ResourceColor = GRAY_COLOR.GRAY_6;
   /**
    * 描述文字大小 默认 28lpx
    */
-  @Prop private descriptionFontSize: string | number = '28lpx';
+  @Prop descriptionFontSize: string | number = '28lpx';
   /**
    * 空占位图的高度
    */
-  @Prop private imageSize: string | number = '320lpx';
+  @Prop imageSize: string | number = '320lpx';
   /**
    * 图片类型，可选值为 error network search default 默认default
    */
-  @Prop private emptyImage: 'error' | 'network' | 'search' | 'default' = 'default';
+  @Prop emptyImage: 'error' | 'network' | 'search' | 'default' = 'default';
 
   @Builder
   EmptyImg() {

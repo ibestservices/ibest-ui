@@ -139,29 +139,42 @@ export const getWindowAvoidSize = async (context: common.BaseContext): Promise<C
     navigationSize: px2lpx(systemDht.bottomRect.height)
   }
 }
-/**  */
+/**
+ * 获取区间值
+ */
 export const clamp = (num: number, min: number, max: number): number => Math.min(Math.max(num, min), max)
-/*
+/**
  * 是否是对象
  */
 export const isObject = (val: AnyType): boolean => val !== null && typeof val === 'object'
-/*
+/**
  * 是否是函数
  */
 export const isFunction = (val: AnyType): boolean => typeof val === 'function'
-/*
+/**
  * 是否是Promise
  */
 export const isPromise = (val: AnyType): boolean => isObject(val) && isFunction(val.then) && isFunction(val.catch)
-/*
+/**
  * 获取是否横屏
  */
 export const getIsLandscape = (context: Context): boolean => {
   return context.resourceManager.getConfigurationSync().direction == resourceManager.Direction.DIRECTION_HORIZONTAL
 }
-/*
+/**
  * 生成随机id
  */
 export function generateId(){
   return Math.random().toString(36).substring(2, 9)
+}
+
+// 加法避免浮点数
+export function addNumber(num1: number, num2: number) {
+  const cardinal = 10 ** 10
+  return Math.round((num1 + num2) * cardinal) / cardinal
+}
+
+// 生成事件名称
+export function getEventName(id: string, eventName: string) {
+  return `${id}_${eventName}`
 }

@@ -24,81 +24,81 @@ export struct IBestButton {
   /**
    * defaultSlot 默认插槽
    */
-  @BuilderParam private defaultBuilder?: CustomBuilder;
+  @BuilderParam defaultBuilder: CustomBuilder;
   /**
    * 图标的builder
    */
-  @BuilderParam private iconBuilder?: CustomBuilder;
+  @BuilderParam iconBuilder: CustomBuilder;
   /**
    * 加载图标的builder
    */
-  @BuilderParam private loadingIconBuilder?: CustomBuilder;
+  @BuilderParam loadingIconBuilder: CustomBuilder;
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
   /**
    * 类型，可选值为 primary success warning danger 默认值为default
    */
-  @Prop private type: ColorType = COLOR_TYPE.DEFAULT;
+  @Prop type: ColorType = COLOR_TYPE.DEFAULT;
   /**
    * 大小，可选值为 large normal small mini
    * size是保留字所以没使用size
    */
-  @Prop private buttonSize: SizeType = SIZE.NORMAL;
+  @Prop buttonSize: SizeType = SIZE.NORMAL;
   /**
    * 是否为朴素按钮
    */
-  @Prop private plain: boolean = false;
+  @Prop plain: boolean = false;
   /**
    * 是否为方形按钮
    */
-  @Prop private square: boolean = false;
+  @Prop square: boolean = false;
   /**
    * 是否为圆形按钮
    */
-  @Prop private round: boolean = false;
+  @Prop round: boolean = false;
   /**
    * 是否使用 0.5px 边框
    */
-  @Prop private hairline: boolean = false;
+  @Prop hairline: boolean = false;
   /**
    * 是否显示为加载状态
    */
-  @Prop private loading: boolean = false;
+  @Prop loading: boolean = false;
   /**
    * loading加载的文案
    */
-  @Prop private loadingText: string | null = null;
+  @Prop loadingText: string | null = null;
   /**
    * 按钮展示的文字
    */
-  @Prop private text: string = '';
+  @Prop text: string = '';
   /**
    * 是否禁用
    */
-  @Prop private disabled: boolean = false;
+  @Prop disabled: boolean = false;
   /**
    * 按钮颜色
    */
-  @Prop @Watch('handleColorChange') private color: string = '';
+  @Prop @Watch('handleColorChange') color: ResourceColor = '';
   /**
    * 加载图标的大小，默认单位为 lpx 如果为-1就是默认值 默认值跟随字体大小
    */
-  @Prop private loadingSize: number = -1;
-  @Prop private btnWidth?: number | string = undefined;
-  @Prop private btnHeight?: number | string = undefined;
-  @Prop private btnFontSize?: number | string = undefined;
+  @Prop loadingSize: number = -1;
+  @Prop btnWidth?: number | string = undefined;
+  @Prop btnHeight?: number | string = undefined;
+  @Prop btnFontSize?: number | string = undefined;
   /**
    * 点击按钮，且按钮状态不为加载或禁用时触发
    */
-  private onClickBtn?: (event?: ClickEvent) => void;
+  onClickBtn?: (event?: ClickEvent) => void;
 
   /**
    * 根据颜色type获取背景色
    * @returns
    */
-  private getBackgroundColor(type = this.type) {
+  getBackgroundColor(type = this.type) {
     return this.color ? this.color : this.baseStyle[type] as string
   }
 
@@ -108,7 +108,7 @@ export struct IBestButton {
    * 字典形式写起来校验问题很多 改成switch了
    * @returns
    */
-  private getBtnSize() {
+  getBtnSize() {
     if (this.btnWidth || this.btnHeight) {
       return new ButtonSizeData(this.btnWidth ? 0 : '30lpx', typeof this.btnHeight != undefined ? `${this.btnHeight}${typeof this.btnHeight == 'number' ? 'lpx' : ''}` : '88lpx',
         typeof this.btnFontSize != undefined ? `${this.btnFontSize}${typeof this.btnFontSize == 'number' ? 'lpx' : ''}` : this.baseStyle.fontSizeMd, typeof this.btnWidth != undefined ? `${this.btnWidth}${typeof this.btnWidth == 'number' ? 'lpx' : ''}` : '')
@@ -130,7 +130,7 @@ export struct IBestButton {
    * 获取按钮的borderRadius
    * @returns
    */
-  private getBtnBorderRadius() {
+  getBtnBorderRadius() {
     return this.square ? 0 : this.baseStyle[`borderRadius${this.round ? 'Max' : 'Md'}`]
   }
 
@@ -139,7 +139,7 @@ export struct IBestButton {
    * @param {boolean} isHasColor 是否需要展示颜色
    * @returns
    */
-  private getBtnColor(isHasColor: boolean) {
+  getBtnColor(isHasColor: boolean) {
     return isHasColor ? this.getBackgroundColor() : '#fff'
   }
 
@@ -147,7 +147,7 @@ export struct IBestButton {
    * 获取按钮文字的颜色
    * @returns
    */
-  private getBtnTextColor() {
+  getBtnTextColor() {
     return this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_8 : this.getBtnColor(this.plain)
   }
 
@@ -155,14 +155,14 @@ export struct IBestButton {
    * 获取loading的大小
    * @returns
    */
-  private getLoadingSize() {
+  getLoadingSize() {
     return this.loadingSize != -1 ? `${this.loadingSize}lpx` : this.getBtnSize()?.fontSize as string
   }
 
   /**
    * 当传入自定义颜色时 设置type保证颜色渲染正常
    */
-  private handleColorChange() {
+  handleColorChange() {
     if (this.color) {
       this.type = 'primary'
     }

@@ -6,9 +6,9 @@
 				"type": "HarmonyOS",
 				"material": {
 					"certpath": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.cer",
-					"storePassword": "0000001B4CE7B80DFF04D27BD173AA4391E17B4D09F836BDDA158D0CE0EEB62BA0B0C13C74397DCE17C966",
+					"storePassword": "0000001B8909F1E21DBD5DE62463886BFC894CC7171B2FEB8C36022DDAF192A0358223BCE838740325B003",
 					"keyAlias": "debugKey",
-					"keyPassword": "0000001B59B06599ED895733EA781875DB11A3E7A3D0BC93EEC9AF2AE9F26001B931DB9EB16276E075AAA1",
+					"keyPassword": "0000001B46EB4733F5786D3B67ED2A96484425F31F43C3A71C33691B24F19BE897DF1E643D953868622BED",
 					"profile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p7b",
 					"signAlg": "SHA256withECDSA",
 					"storeFile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p12"

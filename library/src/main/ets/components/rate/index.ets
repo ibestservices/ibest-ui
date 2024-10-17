@@ -24,63 +24,63 @@ export struct IBestRate {
 	// 手势初始位置
 	@State startX: number = 0
 	@State startY: number = 0
-	/*
+	/**
 	 * 值
 	 */
 	@Link @Watch("refreshList") value: number
-	/*
+	/**
 	 * 图标总数
 	 */
 	@Prop count: number = 5
-	/*
+	/**
 	 * 图标大小
 	 */
 	@Provide iconSize: number = 40
-	/*
+	/**
 	 * 间距
 	 */
 	@Prop space: number = 8
-	/*
+	/**
 	 * 选中图标
 	 */
 	@Provide activeIcon: Resource = $r("app.media.icon_star_o")
-	/*
+	/**
 	 * 未选中图标
 	 */
 	@Provide inactiveIcon: Resource = $r("app.media.icon_star")
-	/*
+	/**
 	 * 选中颜色
 	 */
-	@Provide activeColor: string = this.baseStyle.danger as string
-	/*
+	@Provide activeColor: ResourceColor = this.baseStyle.danger as string
+	/**
 	 * 未选中颜色
 	 */
-	@Provide inactiveColor: string = GRAY_COLOR.GRAY_5
-	/*
+	@Provide inactiveColor: ResourceColor = GRAY_COLOR.GRAY_5
+	/**
 	 * 是否允许半选
 	 */
 	@Prop allowHalf: boolean = false
-	/*
+	/**
 	 * 禁用
 	 */
 	@Provide disabled: boolean = false
-	/*
+	/**
 	 * 只读
 	 */
 	@Prop readOnly: boolean = false
-	/*
+	/**
 	 * 禁用时颜色
 	 */
-	@Provide disabledColor: string = GRAY_COLOR.GRAY_5
-	/*
+	@Provide disabledColor: ResourceColor = GRAY_COLOR.GRAY_5
+	/**
 	 * 是否可清空
 	 */
 	@Prop clearable: boolean = false
-	/*
+	/**
 	 * 是否可通过滑动手势选择评分
 	 */
 	@Prop isTouchable: boolean = true
-	/*
+	/**
 	 * 分值变化回调
 	 */
 	onChange: (value: number) => void = () => {}

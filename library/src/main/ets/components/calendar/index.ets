@@ -153,35 +153,35 @@ export struct IBestCalendar{
     @State uniId: number = 0
     // 是否横屏
     @State isLandscape: boolean = getIsLandscape(getContext(this))
-    /*
+    /**
      * 默认选中日期
      */
     @Prop defaultSelectedDate: Array<string> = []
-    /*
+    /**
      * 单项宽度
      */
     @Provide itemWidth: string = "13%"
-    /*
+    /**
      * 每周第一天是周几
      */
     @Prop weekFirstDay: WeekDayType = "一"
-    /*
+    /**
      * 是否显示农历
      */
     @Provide isShowLunar: boolean = false
-    /*
+    /**
      * 当前点击选择的年月日
      */
     @State @Watch("selectDateChange") curSelectedDate: string = dayjs().format('YYYY-MM-DD')
-    /*
+    /**
      * 当前所在年月份
      */
     @State @Watch("monthChange") curYearMonth: string = dayjs().format('YYYY-MM')
-    /*
+    /**
      * 当前月份
      */
     @State curMonth: string = ""
-    /*
+    /**
      * 日历头部
      */
     @State headerList: Array<HeaderItemType> = [
@@ -214,65 +214,65 @@ export struct IBestCalendar{
             key: 0
         }
     ]
-    /*
+    /**
      * 列表日期
      */
     @State daysList: Array<DayItemType> = []
     // 日期区域高度
     @State contentHeight: number = 0
-    /*
+    /**
      * 选择类型
      */
     @Provide selectType: SelectType = "single"
-    /*
+    /**
      * 已选的日期列表
      */
     @Provide selectedList: Array<DayItemType> = []
-    /*
+    /**
      * 选中样式
      */
     @Provide selectedStyleType: SelectedStyleType = "normal"
-    /*
+    /**
      * 选中主题颜色
      */
     @Provide type: ColorType = COLOR_TYPE.PRIMARY
-    /*
+    /**
      * 自定义选中颜色
      */
-    @Provide selectedColor: string = ""
-    /*
+    @Provide selectedColor: ResourceColor = ""
+    /**
      * 日期区间最多可选天数 默认无限制
      */
     @Prop maxRange: number = -1
-    /*
+    /**
      * 最小日期
      */
     @Prop minDate: Date
-    /*
+    /**
      * 最大日期
      */
     @Prop maxDate: Date
-    /*
+    /**
      * 是否显示月份背景水印
      */
     @Prop isShowMark: boolean = false
-    /*
+    /**
      * 是否显示头部
      */
     @Prop isShowHeader: boolean = true
-    /*
+    /**
      * 是否显示底部确定按钮
      */
     @Prop isShowConfirmBtn: boolean = false
-    /*
+    /**
      * 确认按钮颜色
      */
-    @Prop confirmBtnColor: string = this.baseStyle[this.type] as string
-    /*
+    @Prop confirmBtnColor: ResourceColor = this.baseStyle[this.type]
+    /**
      * 确认按钮文案
      */
     @Prop confirmBtnText: string = "确认"
-    /*
+    /**
      * 选择回调
      */
     onConfirm: (value: Array<CalendarConfirmResultType>) => void = () => {}
@@ -291,7 +291,7 @@ export struct IBestCalendar{
         this.init()
         this.initDaysList()
     }
-    /*
+    /**
      * 初始化本地数据
      */
     init(){
@@ -325,7 +325,7 @@ export struct IBestCalendar{
         }
         this.selectedList = list
     }
-    /*
+    /**
      * 初始化日历列表
      */
     initDaysList(){
@@ -406,7 +406,7 @@ export struct IBestCalendar{
         this.selectedList = this.refreshListParam(this.selectedList)
         this.getDateAreaHeight()
     }
-    /*
+    /**
      * 获取日期区域高度
      */
     getDateAreaHeight(){
@@ -416,7 +416,7 @@ export struct IBestCalendar{
             }, 0)
         }
     }
-    /*
+    /**
      * 刷新字段
      */
     refreshListParam(list: Array<DayItemType>): Array<DayItemType>{
@@ -425,20 +425,20 @@ export struct IBestCalendar{
         })
         return list
     }
-    /*
+    /**
      * 获取日期是否禁用
      */
     getIsDisabled(day: Dayjs): boolean{
         return this.minDate && dayjs(day).isBefore(this.minDate, 'day') || this.maxDate && dayjs(day).isAfter(this
             .maxDate, 'day')
     }
-    /*
+    /**
      * 获取日期是周几 0123456
      */
     getWeekNum(date?: string | Dayjs): number{
         return dayjs(date).day()
     }
-    /*
+    /**
      * 切换年、月份
      */
     changeYearMonth(type: string){
@@ -458,7 +458,7 @@ export struct IBestCalendar{
         }
         this.initDaysList()
     }
-    /*
+    /**
      * 点击选择日期
      */
     selectDate(item: DayItemType){
@@ -545,7 +545,7 @@ export struct IBestCalendar{
             }
         }
     }
-    /*
+    /**
      * 获取两个日期之间的所有日期
      */
     getDateListBetween(startDayjs: Dayjs, endDayjs: Dayjs): DayItemType[]{
@@ -571,7 +571,7 @@ export struct IBestCalendar{
         }
         return dateArray
     }
-    /*
+    /**
      * 提交
      */
     confirm(){
@@ -587,14 +587,7 @@ export struct IBestCalendar{
             return obj
         }))
     }
-    /*
-     * 获取按钮背景颜色
-     */
-    private getBtnBgColor() {
-        let reg = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/
-        return this.confirmBtnColor && reg.test(this.confirmBtnColor as string) ? this.confirmBtnColor : this
-            .baseStyle[this.type]
-    }
+
     build() {
         Column(){
             Row(){
@@ -667,7 +660,7 @@ export struct IBestCalendar{
                 .height(this.isLandscape ? "40lpx" : "60lpx")
                 .fontSize(this.baseStyle.fontSizeSm)
                 .margin({top: this.baseStyle.spaceXs})
-                .backgroundColor(this.getBtnBgColor())
+                .backgroundColor(this.confirmBtnColor || this.baseStyle[this.type])
                 .visibility(this.isShowConfirmBtn ? Visibility.Visible : Visibility.None)
                 .onClick(() => {
                     this.confirm()

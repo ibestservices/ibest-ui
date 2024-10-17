@@ -1,6 +1,6 @@
 import { emitter } from '../../assets/ets/EventEmitter'
 
-/*
+/**
  * tab宽度类型
  */
 export interface TabWidthType{
@@ -9,7 +9,7 @@ export interface TabWidthType{
     textWidth: number
 }
 
-/*
+/**
  * tabItem类型
  */
 export interface IBestTabItemType{
@@ -34,15 +34,9 @@ export class IBestTabItem implements IBestTabItemType{
         this.isDisable = value.isDisable ?? false
     }
 }
-/*
+/**
  * tabController类型
  */
 export class IBestTabController{
-    uniId: string = ""
     changeTab: (name: string) => void = () => {}
-    constructor() {
-        this.changeTab = (name: string) => {
-            emitter.emit(`nameChange_${this.uniId}`, name)
-        }
-    }
 }

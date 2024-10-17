@@ -7,77 +7,77 @@ import { clamp } from '../../assets/ets/utils'
 
 @Component
 export struct IBestDatePicker {
-	/*
+	/**
 	 * 分组id
 	 */
 	@Prop groupId: string = ""
-	/*
+	/**
 	 * 唯一id
 	 */
 	@State uniId: number = 0
-	/*
+	/**
 	 * 已选择的值
 	 */
 	@Link value: Array<string>
-	/*
+	/**
 	 * 选项列表
 	 */
 	@State options: IBestPickerOption[][] = []
-	/*
+	/**
 	 * 最小时间
 	 */
 	@Prop minDate: Date = dayjs().subtract(10, 'year').toDate()
-	/*
+	/**
 	 * 最大时间
 	 */
 	@Prop maxDate: Date = dayjs().add(10, 'year').toDate()
-	/*
+	/**
 	 * 是否显示日列
 	 */
 	@Prop isShowDay: boolean = true
 	// 列表类型
 	@State listType: Array<DatePickerColumnType> = ["year", "month", "day"]
-	/*
+	/**
 	 * 是否显示单位
 	 */
 	@Prop showUnit: boolean = false
-	/*
+	/**
 	 * 标题
 	 */
 	@Prop title: string = ""
-	/*
+	/**
 	 * 单项高度
 	 */
 	@Prop itemHeight: number = 88
-	/*
+	/**
 	 * 确认按钮文字
 	 */
 	@Prop confirmText: string = "确定"
-	/*
+	/**
 	 * 取消按钮文字
 	 */
 	@Prop cancelText: string = "取消"
-	/*
+	/**
 	 * 是否显示顶部栏
 	 */
 	@Prop showToolBar: boolean = true
-	/*
+	/**
 	 * 可见选项数量
   	 */
 	@Prop visibleItemCount: number = 6
-	/*
+	/**
 	 * 过滤器
 	 */
 	filter: (type: DatePickerColumnType, options: IBestPickerOption[]) => IBestPickerOption[] = (type: DatePickerColumnType, options: IBestPickerOption[]) => options
-	/*
+	/**
 	 * 确认按钮点击事件
 	 */
 	onConfirm: (value: IBestDatePickerResultType) => void = () => {}
-	/*
+	/**
 	 * 取消按钮点击事件
 	 */
 	onCancel: () => void = () => {}
-	/*
+	/**
 	 * 选中项改变事件
 	 */
 	onChange: (value: IBestDatePickerResultType) => void = () => {}
@@ -87,21 +87,13 @@ export struct IBestDatePicker {
 		this.init()
 		if(this.groupId){
 			// 监听日期picker变化
-			emitter.on(getPickerEventName(this.groupId, DATE_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>) => {
-				if(this.uniId > uniId){
-					// console.log("监听到同组前一个datePicker值变化", `当前组件${this.uniId}`, uniId, selectedValues.join("-"))
-					let selectDate = dayjs(selectedValues.join("-")).toDate()
-					this.minDate = dayjs(selectedValues.join("-")).toDate()
-					if(selectDate > dayjs(this.maxDate).toDate() || selectDate < dayjs(this.minDate).toDate()){
-						this.value = selectedValues
-					}
-					this.init()
-				}
-			})
+			emitter.on(getPickerEventName(this.groupId, DATE_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>): void => this.handleGroupChange(uniId, selectedValues))
 		}
 	}
 	aboutToDisappear(): void {
-		emitter.off(getPickerEventName(this.groupId, DATE_PICKER_EVENT_NAME.COLUMN_CHANGE), () => {})
+		if(this.groupId) {
+			emitter.off(getPickerEventName(this.groupId, DATE_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>): void => this.handleGroupChange(uniId, selectedValues))
+		}
 	}
 	// 初始化
 	init(){
@@ -183,8 +175,8 @@ export struct IBestDatePicker {
 		let year = this.getValue("year")
 		let month = this.getValue("month")
 		let minDay = this.isMinYear(year) && this.isMinMonth(month) ? this.minDate.getDate() : 1
-		let maxDay = this.isMaxYear(year) && this.isMaxMonth(month) ? this.maxDate.getDate() : dayjs(year+" "+month).daysInMonth()
-		console.log("获取日期列表", year, month, minDay, maxDay)
+		let maxDay = this.isMaxYear(year) && this.isMaxMonth(month) ? this.maxDate.getDate() : dayjs(year+"-"+month).daysInMonth()
+		// console.log("获取日期列表", year, month, minDay, maxDay)
 		for(let i = minDay; i <= maxDay; i++){
 			daysList.push({
 				value: this.formatValue(i),
@@ -217,6 +209,18 @@ export struct IBestDatePicker {
 			result.day = this.value[2]
 		}
 		return result
+	}
+	// 处理同组日期变化
+	handleGroupChange(uniId: number, selectedValues: Array<string>) {
+		if(this.uniId > uniId){
+			// console.log("监听到同组前一个datePicker值变化", `当前组件${this.uniId}`, uniId, selectedValues.join("-"))
+			let selectDate = dayjs(selectedValues.join("-")).toDate()
+			this.minDate = dayjs(selectedValues.join("-")).toDate()
+			if(selectDate > dayjs(this.maxDate).toDate() || selectDate < dayjs(this.minDate).toDate()){
+				this.value = selectedValues
+			}
+			this.init()
+		}
 	}
 
 	build() {

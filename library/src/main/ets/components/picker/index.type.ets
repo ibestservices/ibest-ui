@@ -1,4 +1,4 @@
-/*
+/**
  * 选项列表数据类型
  */
 export interface IBestPickerOption{
@@ -6,7 +6,7 @@ export interface IBestPickerOption{
 	value: string
 	children?: IBestPickerOption[]
 }
-/*
+/**
  * 列表类型
  */
 export type ColumnType = "cascade" | "multiple"

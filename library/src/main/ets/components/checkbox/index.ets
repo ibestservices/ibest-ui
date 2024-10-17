@@ -13,79 +13,79 @@ export struct IBestCheckbox {
   /**
    * 自定义文本插槽
    */
-  @BuilderParam private defaultBuilder?: (data: BuilderArgs) => CustomBuilder;
+  @BuilderParam defaultBuilder: (data: BuilderArgs) => CustomBuilder;
   /**
    * 自定义图标插槽
    */
-  @BuilderParam private iconBuilder?: (data: BuilderArgs) => void;
+  @BuilderParam iconBuilder: (data: BuilderArgs) => void;
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
   /**
    * 标识符，通常为一个唯一的字符串
    * 多选框名称。
    */
-  @Prop private name: string;
+  @Prop name: string;
   /**
    * 形状
    */
-  @Prop private shape: 'square' | 'round' = 'round';
+  @Prop shape: 'square' | 'round' = 'round';
   /**
    * 选中状态颜色
    */
-  @Prop private checkedColor: string = '';
+  @Prop checkedColor: ResourceColor = '';
   /**
    * 图标大小 单位lpx
    * 默认40lpx
    */
-  @Prop private iconSize: number = 40;
+  @Prop iconSize: number = 40;
   /**
    * 默认是否选中 非双向绑定
    * 如果要更改数据请从onChange回调中获取最新的值
    */
-  @Prop @Watch('handleValueChange') @Watch('handleIndeterminateChange') private value: boolean;
+  @Prop @Watch('handleValueChange') @Watch('handleIndeterminateChange') value: boolean;
   /**
    * 是否禁用
    */
-  @Prop @Watch('getIsDisabled') private disabled: boolean = false
+  @Prop @Watch('getIsDisabled') disabled: boolean = false
   /**
    * 显示的文本
    */
-  @Prop private label: string = ''
+  @Prop label: string = ''
   /**
    * 文本位置，可选值为 left
    */
-  @Prop private labelPosition: 'left' | 'right' = 'right';
+  @Prop labelPosition: 'left' | 'right' = 'right';
   /**
    * 是否禁用复选框文本点击
    */
-  @Prop private labelDisabled: boolean = false;
+  @Prop labelDisabled: boolean = false;
   /**
    * 组名
    */
-  @Prop private group: string = '';
+  @Prop group: string = '';
   /**
    * 是否为不确定状态
    */
-  @Prop @Watch('handleIndeterminateChange') private indeterminate: boolean = false;
+  @Prop @Watch('handleIndeterminateChange') indeterminate: boolean = false;
   /**
    * 改变的回调
    */
-  private onChange?: (checked: boolean) => void;
+  onChange?: (checked: boolean) => void;
   /**
    * 受checkboxgroup的最大可选数量禁用的
    */
-  @State @Watch('getIsDisabled') private checkboxGroupMaxDisabled: boolean = false;
+  @State @Watch('getIsDisabled') checkboxGroupMaxDisabled: boolean = false;
   /**
    * 合并disabled与checkboxGroupMaxDisabled的最终结果 用来UI渲染
    */
-  @State private mergeDisabled: boolean = false;
+  @State mergeDisabled: boolean = false;
   /**
    * 是否展示不确定状态的按钮
    * 因为chekbox在切换状态时有动画 但是图片切换没有动画 就会导致有不确定状态切换的时候 会先闪成勾选状态
    */
-  @State private isShowIndeterminateImg: boolean = false;
+  @State isShowIndeterminateImg: boolean = false;
   /**
    * 当不确定图标从显示变隐藏时 等待动画结束后再变
    */
@@ -96,7 +96,7 @@ export struct IBestCheckbox {
    * 比如选中了或者需要显示不确定状态时
    * @returns
    */
-  private isShowBackground() {
+  isShowBackground() {
     return this.value || this.indeterminate
   }
 
@@ -104,7 +104,7 @@ export struct IBestCheckbox {
    * 获取背景色
    * @returns
    */
-  private getBackgroundColor() {
+  getBackgroundColor() {
     if (this.mergeDisabled) {
       return GRAY_COLOR.GRAY_3
     } else {
@@ -116,7 +116,7 @@ export struct IBestCheckbox {
    * 获取边框色
    * @returns
    */
-  private getBorderColor() {
+  getBorderColor() {
     if (this.mergeDisabled) {
       return GRAY_COLOR.GRAY_5
     } else {
@@ -128,7 +128,7 @@ export struct IBestCheckbox {
    * 获取label的颜色
    * @returns
    */
-  private getLabelColor() {
+  getLabelColor() {
     return this.mergeDisabled ? GRAY_COLOR.GRAY_5 : GRAY_COLOR.GRAY_8
   }
 
@@ -136,7 +136,7 @@ export struct IBestCheckbox {
    * 获取图标的颜色
    * @returns
    */
-  private getIconColor() {
+  getIconColor() {
     return this.mergeDisabled ? GRAY_COLOR.GRAY_5 : '#fff'
   }
 
@@ -144,15 +144,15 @@ export struct IBestCheckbox {
    * 是否是在左边的label
    * @returns
    */
-  private isLeftLabel() {
+  isLeftLabel() {
     return this.labelPosition === 'left'
   }
 
-  private isHasGroup() {
+  isHasGroup() {
     return typeof this.group === 'string' && this.group.length > 0
   }
 
-  private updateGroupStore() {
+  updateGroupStore() {
     if (this.isHasGroup()) {
       updateCheckboxStoreByKey(this.group, { name: this.name, checked: this.value } as CheckedItem)
     }
@@ -161,7 +161,7 @@ export struct IBestCheckbox {
   /**
    * 改变选中状态的回调
    */
-  private handleCheckedChange(status = !this.value) {
+  handleCheckedChange(status = !this.value) {
     if (this.mergeDisabled) {
       return
     }
@@ -169,7 +169,7 @@ export struct IBestCheckbox {
     this.handleValueChange()
   }
 
-  private handleValueChange() {
+  handleValueChange() {
     typeof this.onChange === 'function' && this.onChange(this.value)
     this.updateGroupStore()
   }
@@ -178,7 +178,7 @@ export struct IBestCheckbox {
    * 当选中的最大数量变化时 或者选中的数据变化时
    * @param data
    */
-  private handleMaxChange(data: MaxChangeArgs) {
+  handleMaxChange(data: MaxChangeArgs) {
     // max是0说明不限制了
     if (data.max <= 0) {
       this.checkboxGroupMaxDisabled = false;
@@ -200,7 +200,7 @@ export struct IBestCheckbox {
   /**
    * 获取是否禁用
    */
-  private getIsDisabled() {
+  getIsDisabled() {
     this.mergeDisabled = this.disabled || this.checkboxGroupMaxDisabled;
   }
 
@@ -208,14 +208,14 @@ export struct IBestCheckbox {
    * 全选反选的响应事件
    * @param {boolean} [isSelectAll] 切换所有复选框，传 true 为选中，false 为取消选中，不传参为取反
    */
-  private handleToggleChange(isSelectAll?: boolean) {
+  handleToggleChange(isSelectAll?: boolean) {
     this.handleCheckedChange(typeof isSelectAll === 'boolean' ? isSelectAll : !this.value)
   }
 
   /**
    * 当不确定状态发生改变时 响应按钮UI状态图标变化
    */
-  private handleIndeterminateChange() {
+  handleIndeterminateChange() {
     clearTimeout(this.isShowIndeterminateTimeId)
     // 当按钮的选中状态变为false时 会触发隐藏动画
     // 这时候如果直接更改不确定状态的图标为false时
@@ -233,12 +233,8 @@ export struct IBestCheckbox {
     this.updateGroupStore()
     // 如果有组 监听max change
     if (this.isHasGroup()) {
-      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE),
-        (data: MaxChangeArgs) => {
-          this.handleMaxChange(data)
-        })
-      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL),
-        this.handleToggleChange.bind(this))
+      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), (data: MaxChangeArgs): void => this.handleMaxChange(data))
+      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), (isSelectAll: boolean): void => this.handleToggleChange(isSelectAll))
     } else {
       this.getIsDisabled()
     }
@@ -247,33 +243,30 @@ export struct IBestCheckbox {
 
   aboutToDisappear() {
     if (this.isHasGroup()) {
-      emitter.off(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE),
-        this.handleMaxChange.bind(this))
-      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL),
-        this.handleToggleChange.bind(this))
+      emitter.off(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), (data: MaxChangeArgs): void => this.handleMaxChange(data))
+      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), (isSelectAll: boolean): void => this.handleToggleChange(isSelectAll))
     }
     clearTimeout(this.isShowIndeterminateTimeId)
   }
 
   @Builder
   LabelContain() {
-    if (typeof this.defaultBuilder === 'function') {
-      Row() {
+    Row() {
+      if (this.defaultBuilder) {
         this.defaultBuilder({ checked: this.value, disabled: this.mergeDisabled })
-      }.onClick(() => {
-        !this.labelDisabled && this.handleCheckedChange()
-      })
-    } else {
-      Text(this.label)
-        .fontColor(this.getLabelColor())
-        .fontSize(`${this.iconSize * .7}lpx`)
-        .margin({
-          left: this.isLeftLabel() ? 0 : SPACE.XS,
-          right: this.isLeftLabel() ? SPACE.XS : 0
-        }).onClick(() => {
-        !this.labelDisabled && this.handleCheckedChange()
-      })
+      } else {
+        Text(this.label)
+          .fontColor(this.getLabelColor())
+          .fontSize(`${this.iconSize * .7}lpx`)
+      }
     }
+    .margin({
+      left: this.isLeftLabel() ? 0 : SPACE.XS,
+      right: this.isLeftLabel() ? SPACE.XS : 0
+    })
+    .onClick(() => {
+      !this.labelDisabled && this.handleCheckedChange()
+    })
   }
 
   build() {

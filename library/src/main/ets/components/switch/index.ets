@@ -7,62 +7,62 @@ export struct IBestSwitch {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
   /**
    * 自定义按钮的内容
    */
-  @BuilderParam private nodeBuilder?: CustomBuilder
+  @BuilderParam nodeBuilder: CustomBuilder
   /**
    * 开关按钮的尺寸，默认单位为 lpx
    */
-  @Prop private switchSize: number = 52;
+  @Prop switchSize: number = 52;
   /**
    * 打开时的背景色
    */
   // 这里不能赋值一个颜色 而是使用兜底的方式处理
   // 因为如果给了一个默认色值 会导致主题色切换的逻辑出错
-  @Prop private activeColor: string = '';
+  @Prop activeColor: ResourceColor = '';
   /**
    * 关闭时的背景色
    */
-  @Prop private inactiveColor: string = 'rgba(120, 120, 128, 0.16)';
+  @Prop inactiveColor: ResourceColor = 'rgba(120, 120, 128, 0.16)';
   /**
    * 开关默认选中的状态
    */
-  @Prop private value: boolean = false;
+  @Prop value: boolean = false;
   /**
    * 是否禁用 禁用状态下开关不可点击
    */
-  @Prop private disabled: boolean = false;
+  @Prop disabled: boolean = false;
   /**
    * 是否为加载状态 加载状态下开关不可点击
    */
-  @Prop private loading: boolean = false;
+  @Prop loading: boolean = false;
   /**
    * 打开时的loading颜色
    */
-  @Prop private loadingActiveColor: string = '';
+  @Prop loadingActiveColor: ResourceColor = '';
   /**
    * 关闭时的loading颜色
    */
-  @Prop private loadingInactiveColor: string = '';
+  @Prop loadingInactiveColor: ResourceColor = '';
   /**
    * 改变的回调
    */
-  private onChange?: (value: boolean) => void;
+  onChange?: (value: boolean) => void;
   /**
    * 改变前的回调 接受一个promise 如果promise rejcet了那么将不会改变
    */
-  private onBeforeChange?: (value: boolean) => Promise<void>;
+  onBeforeChange?: (value: boolean) => Promise<void>;
   /**
    * 点击的回调
    */
-  private onClickSwitch?: (event: ClickEvent) => void;
+  onClickSwitch?: (event: ClickEvent) => void;
 
   /**
    * 改变的回调
    */
-  private async handleChange(){
+  async handleChange(){
     const nextValue = !this.value;
     if(typeof this.onBeforeChange === 'function'){
       await this.onBeforeChange(nextValue)
@@ -78,7 +78,7 @@ export struct IBestSwitch {
    * 优先使用传进来的颜色 如果没有就使用主题色
    * @returns
    */
-  private getActiveColor(){
+  getActiveColor(){
     return this.activeColor || this.baseStyle.primary as string
   }
 

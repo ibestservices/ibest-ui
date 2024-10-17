@@ -12,66 +12,66 @@ interface CountData {
 
 @Component
 export struct WatermarkCanvas {
-  private settings: RenderingContextSettings = new RenderingContextSettings(true)
-  private context: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
+  settings: RenderingContextSettings = new RenderingContextSettings(true)
+  context: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
   /**
    * 图片水印的宽度
    */
-  @Prop @Watch('drawWaterMark') private waterMarkWidth: number = 100;
+  @Prop @Watch('drawWaterMark') waterMarkWidth: number = 100;
   /**
    * 图片水印的高度
    */
-  @Prop @Watch('drawWaterMark') private waterMarkHeight: number = 100;
+  @Prop @Watch('drawWaterMark') waterMarkHeight: number = 100;
   /**
    * 旋转角度
    */
-  @Prop @Watch('drawWaterMark') private rotateDeg: number = -22;
+  @Prop @Watch('drawWaterMark') rotateDeg: number = -22;
   /**
    * 水印透明度
    */
-  @Prop @Watch('drawWaterMark') private waterMarkOpacity: number = 0.3;
+  @Prop @Watch('drawWaterMark') waterMarkOpacity: number = 0.3;
   /**
    * 水印区域的总高度
    */
-  @Prop @Watch('drawWaterMark') private waterMarkContainHeight: number = 0;
+  @Prop @Watch('drawWaterMark') waterMarkContainHeight: number = 0;
   /**
    * 水印区域的总宽度
    */
-  @Prop @Watch('drawWaterMark') private waterMarkContainWidth: number = 0;
+  @Prop @Watch('drawWaterMark') waterMarkContainWidth: number = 0;
   /**
    * 水印之间的水平间隔 默认0
    */
-  @Prop @Watch('drawWaterMark') private gapX: number = 0;
+  @Prop @Watch('drawWaterMark') gapX: number = 0;
   /**
    * 水印之间的垂直间隔 默认0
    */
-  @Prop @Watch('drawWaterMark') private gapY: number = 0;
+  @Prop @Watch('drawWaterMark') gapY: number = 0;
   /**
    * 图片水印的链接
    */
-  @Prop @Watch('drawWaterMark') private imageUrl: string = '';
+  @Prop @Watch('drawWaterMark') imageUrl: string = '';
   /**
    * 文字水印的文案 文字水印优先级高于图片水印
    */
-  @Prop @Watch('drawWaterMark') private text: string = '';
+  @Prop @Watch('drawWaterMark') text: string = '';
   /**
    * 文字的大小
    */
-  @Prop @Watch('drawWaterMark') private fontSize: number = 30;
+  @Prop @Watch('drawWaterMark') fontSize: number = 30;
   /**
    * 文字字体
    */
-  @Prop @Watch('drawWaterMark') private fontFamily: string = 'sans-serif';
+  @Prop @Watch('drawWaterMark') fontFamily: string = 'sans-serif';
   /**
    * 文字颜色
    */
-  @Prop @Watch('drawWaterMark') private fontColor: string = '#000'
+  @Prop @Watch('drawWaterMark') fontColor: string | number | CanvasGradient | CanvasPattern = '#000'
   /**
    * 水印的z-index
    */
-  @Prop private waterMarkZIndex: number = -1;
+  @Prop waterMarkZIndex: number = -1;
 
-  private clearCanvas() {
+  clearCanvas() {
     // 清除画布
     this.context?.clearRect(0, 0, this.waterMarkWidth, this.waterMarkHeight)
   }
@@ -82,7 +82,7 @@ export struct WatermarkCanvas {
    * @param height
    * @returns
    */
-  private getXYCount(width: number, height: number) {
+  getXYCount(width: number, height: number) {
     // 计算出水平数量
     let countX = Math.ceil(this.waterMarkContainWidth / (width + this.gapX));
     // 保证最少有一个
@@ -112,7 +112,7 @@ export struct WatermarkCanvas {
    * @param {number} rotateDeg 旋转的角度
    * @param {()=>void} callback 每次绘制的内容
    */
-  private drawCanvasItem(data: DrawCanvasItemArgs) {
+  drawCanvasItem(data: DrawCanvasItemArgs) {
     const width = data.width;
     const height = data.height;
     const rotateDeg = data.rotateDeg;
@@ -140,7 +140,7 @@ export struct WatermarkCanvas {
   /**
    * 绘制图片
    */
-  private handleLayoutImg(rotateDeg: number) {
+  handleLayoutImg(rotateDeg: number) {
     const waterMarkImg: ImageBitmap = new ImageBitmap(this.imageUrl)
     this.drawCanvasItem({
       width: this.waterMarkWidth,
@@ -156,7 +156,7 @@ export struct WatermarkCanvas {
   /**
    * 绘制文字
    */
-  private handleLayoutText(rotateDeg: number) {
+  handleLayoutText(rotateDeg: number) {
     this.context.fillStyle = this.fontColor;
     this.context.font = `${vp2px(this.fontSize)}px ${this.fontFamily}`;
     const data = this.context.measureText(this.text);
@@ -173,7 +173,7 @@ export struct WatermarkCanvas {
   /**
    * 绘制水印
    */
-  private drawWaterMark() {
+  drawWaterMark() {
       this.context.textBaseline = 'top'
       this.clearCanvas();
       const rotateDeg = this.rotateDeg * Math.PI / 180;
