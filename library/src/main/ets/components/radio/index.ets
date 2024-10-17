@@ -14,6 +14,7 @@ export struct IBestRadio {
    * 自定义文本插槽
    */
   @BuilderParam defaultBuilder: (data: BuilderArgs) => CustomBuilder;
+
   /**
    * 自定义图标插槽
    */
