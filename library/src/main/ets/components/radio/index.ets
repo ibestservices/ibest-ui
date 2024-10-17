@@ -5,7 +5,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SPACE } from '../../theme-chalk/src/space.type';
 import { CheckedItem, updateRadioGroupStoreByKey } from '../radioGroup/store';
 import { getRadioGroupNamespace, RADIO_GROUP_EVENT_NAME } from '../radioGroup/utils';
-import { BuilderArgs, CustomerBuilderReturnData } from './index.type';
+import { BuilderArgs } from './index.type';
 
 
 @Component
@@ -13,7 +13,7 @@ export struct IBestRadio {
   /**
    * 自定义文本插槽
    */
-  @BuilderParam defaultBuilder: (data: BuilderArgs) => CustomerBuilderReturnData;
+  @BuilderParam defaultBuilder: (data: BuilderArgs) => CustomBuilder;
   /**
    * 自定义图标插槽
    */
@@ -169,21 +169,22 @@ export struct IBestRadio {
 
   @Builder
   LabelContain() {
-    if (typeof this.defaultBuilder === 'function') {
-      this.defaultBuilder({ checked: this.value, disabled: this.disabled }).onClick(() => {
-        !this.labelDisabled && this.handleCheckedChange()
-      })
-    } else {
-      Text(this.label)
-        .fontColor(this.getLabelColor())
-        .fontSize(`${this.iconSize * .7}lpx`)
-        .margin({
-          left: this.isLeftLabel() ? 0 : SPACE.XS,
-          right: this.isLeftLabel() ? SPACE.XS : 0
-        }).onClick(() => {
-        !this.labelDisabled && this.handleCheckedChange()
-      })
+    Row() {
+      if (this.defaultBuilder) {
+        this.defaultBuilder({ checked: this.value, disabled: this.disabled })
+      }else {
+        Text(this.label)
+          .fontColor(this.getLabelColor())
+          .fontSize(`${this.iconSize * .7}lpx`)
+      }
     }
+    .margin({
+      left: this.isLeftLabel() ? 0 : SPACE.XS,
+      right: this.isLeftLabel() ? SPACE.XS : 0
+    })
+    .onClick(() => {
+      !this.labelDisabled && this.handleCheckedChange()
+    })
   }
 
   build() {
@@ -225,9 +226,8 @@ export struct IBestRadio {
               .scale({
                 x: .9,
                 y: .9
-              })
-                // 升级api11后图形移位了
-              .translate({x: `${this.iconSize * .02}lpx}`})
+              })// 升级api11后图形移位了
+              .translate({ x: `${this.iconSize * .02}lpx}` })
           }
 
         }

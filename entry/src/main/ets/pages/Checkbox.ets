@@ -1,6 +1,6 @@
 import router from '@ohos.router';
 import { IBestButton, IBestCheckbox, IBestCheckboxGroup, CheckboxGroupContext, IBestCell } from '@ibestservices/ibest-ui'
-import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, DISABLE_COLOR, SPACE } from '../assets/styles/BaseStyle';
+import { BACKGROUND_COLOR, CONTAINER_SIZE, DISABLE_COLOR, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { ComponentRouterParams } from '../assets/global.type';
@@ -36,7 +36,7 @@ struct CheckboxPage {
   /**
    * 搭配单元格组件选中的name
    */
-  @State cellCehckedNames: string[] = [];
+  @State cellCheckedNames: string[] = [];
 
   /**
    * 最大可选数量
@@ -47,16 +47,16 @@ struct CheckboxPage {
     IBestCheckbox({
       name,
       group,
-      value: this.cellCehckedNames.includes(name)
+      value: this.cellCheckedNames.includes(name)
     })
   }
 
   handleClickCell(name: string){
-    const index = this.cellCehckedNames.indexOf(name)
+    const index = this.cellCheckedNames.indexOf(name)
     if(index > -1){
-      this.cellCehckedNames.splice(index ,1)
+      this.cellCheckedNames.splice(index ,1)
     }else{
-      (this.cellCheckedMaxNum > this.cellCehckedNames.length) && this.cellCehckedNames.push(name)
+      (this.cellCheckedMaxNum > this.cellCheckedNames.length) && this.cellCheckedNames.push(name)
     }
   }
 
@@ -400,19 +400,17 @@ struct CheckboxPage {
 
         ListItem() {
           ComponentShowContainer({ title: '搭配单元格组件使用', }) {
-            IBestCheckboxGroup({ group: 'group17', max: this.cellCheckedMaxNum, onChange: (names)=>{
-              // console.log(JSON.stringify(names))
-            } })
+            IBestCheckboxGroup({ group: 'group17', max: this.cellCheckedMaxNum})
             IBestCell({
               clickable: true,
               title: '复选框1',
-              rightIconBuilder: ()=>this.CellCheckbox('checkbox1-cell', 'group17'),
+              rightIconBuilder: (): void=>this.CellCheckbox('checkbox1-cell', 'group17'),
               onClickCell: (): void => this.handleClickCell('checkbox1-cell')
             })
             IBestCell({
               clickable: true,
               title: '复选框2',
-              rightIconBuilder: ()=>this.CellCheckbox('checkbox2-cell', 'group17'),
+              rightIconBuilder: (): void=>this.CellCheckbox('checkbox2-cell', 'group17'),
               onClickCell: (): void=>this.handleClickCell('checkbox2-cell')
 
             })
@@ -420,7 +418,7 @@ struct CheckboxPage {
               clickable: true,
               title: '复选框3',
               hasBorder: false,
-              rightIconBuilder: ()=>this.CellCheckbox('checkbox3-cell', 'group17'),
+              rightIconBuilder: (): void=>this.CellCheckbox('checkbox3-cell', 'group17'),
               onClickCell: (): void=>this.handleClickCell('checkbox3-cell')
             })
           }
