@@ -74,3 +74,14 @@ watermark引用文件大小写不一致报错bug修复
 2. 增加 IBestActionSheet API
 3. 增加 IBestSignature 组件
 4. 组件库初始化变更
+
+## 1.15.0
+新增:
+1. 增加 slider 滑块组件;
+2. 增加 Uploader 文件上传组件;
+3. 增加图片预览api IBestImagePreview;
+4. tab组件新增 fontSize 属性;
+5. form组件新增 getFormValues 方法, 同步获取表单数据。
+
+兼容变更:
+1. 所有组件(Watermark、Signature除外)颜色相关属性类型改为 RescourseColor 。
