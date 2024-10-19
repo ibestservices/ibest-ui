@@ -2,7 +2,7 @@ import router from '@ohos.router';
 import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, DISABLE_COLOR, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
-import { IBestDialog, IBestCell, IBestCellGroup } from '@ibestservices/ibest-ui'
+import { IBestDialog, IBestCell, IBestCellGroup, IBestDialogUtil } from '@ibestservices/ibest-ui'
 import { ComponentRouterParams } from '../assets/global.type';
 
 export interface TextData {
@@ -29,9 +29,9 @@ struct DialogPage {
   @State showDialogCancelBtn: boolean = false;
   @State inputValue: string = '';
   @State formInputError: boolean = false;
-  basicDialogController: CustomDialogController | null = null;
-  asyncDialogController: CustomDialogController | null = null;
-  slotDialogController: CustomDialogController | null = null;
+  @State basicDialogVisible: boolean = false
+  @State asyncDialogVisible: boolean = false
+  @State slotDialogVisible: boolean = false
 
   @Builder
   FormInputContain() {
@@ -68,12 +68,10 @@ struct DialogPage {
 
       // 基础弹窗
       IBestDialog({
+        visible: $basicDialogVisible,
         title: this.dialogTitle,
         message: this.dialogMsg,
         showCancelButton: this.showDialogCancelBtn,
-        onReady: controller => {
-          this.basicDialogController = controller;
-        },
         onConfirm: () => {
           setTimeout(()=>{
             this.showDialogCancelBtn = false
@@ -88,11 +86,9 @@ struct DialogPage {
 
       // 异步关闭弹窗
       IBestDialog({
+        visible: $asyncDialogVisible,
         title: textData.title,
         message: textData.life,
-        onReady: controller => {
-          this.asyncDialogController = controller;
-        },
         showCancelButton: true,
         beforeClose: (action) => {
           return new Promise((resolve) => {
@@ -105,13 +101,11 @@ struct DialogPage {
 
       // 使用插槽
       IBestDialog({
+        visible: $slotDialogVisible,
         title: textData.title,
         confirmButtonText: '提交',
         showCancelButton: true,
-        defaultBuilder: this.FormInputContain.bind(this),
-        onReady: controller => {
-          this.slotDialogController = controller;
-        },
+        defaultBuilder: (): void => this.FormInputContain(),
         beforeClose: (action) => {
           if (action === 'cancel') {
             return true
@@ -133,18 +127,31 @@ struct DialogPage {
                 title: '提示弹窗',
                 isLink: true,
                 onClickCell: () => {
-                  this.dialogTitle = textData.title
-                  this.dialogMsg = textData.code
-                  this.basicDialogController?.open()
+                  // this.dialogTitle = textData.title
+                  // this.dialogMsg = textData.code
+                  // this.basicDialogVisible = true
+                  IBestDialogUtil.open({
+                    title: textData.title,
+                    message: textData.code,
+                    onConfirm: () => {
+                      console.log("点击确定")
+                    }
+                  })
                 }
               })
               IBestCell({
                 title: '提示弹窗（无标题）',
                 isLink: true,
                 onClickCell: () => {
-                  this.dialogTitle = ''
-                  this.dialogMsg = textData.life
-                  this.basicDialogController?.open()
+                  // this.dialogTitle = ''
+                  // this.dialogMsg = textData.life
+                  // this.basicDialogVisible = true
+                  IBestDialogUtil.open({
+                    message: textData.life,
+                    onConfirm: () => {
+                      console.log("点击确定")
+                    }
+                  })
                 }
               })
               IBestCell({
@@ -152,14 +159,52 @@ struct DialogPage {
                 isLink: true,
                 hasBorder: false,
                 onClickCell: () => {
-                  this.dialogTitle = textData.title
-                  this.dialogMsg = textData.life
-                  this.showDialogCancelBtn = true;
-                  this.basicDialogController?.open()
+                  // this.dialogTitle = textData.title
+                  // this.dialogMsg = textData.life
+                  // this.showDialogCancelBtn = true;
+                  // this.basicDialogVisible = true
+                  IBestDialogUtil.open({
+                    title: textData.title,
+                    message: textData.life,
+                    showCancelButton: true,
+                    onConfirm: () => {
+                      console.log("点击确定")
+                    }
+                  })
                 }
               })
             }
 
+          }
+        }
+
+        ListItem() {
+          ComponentShowContainer({ title: '圆角按钮样式', titlePaddingLeft: SPACE.MEDIA }) {
+            IBestCellGroup({ inset: true }) {
+              IBestCell({
+                title: '提示弹窗',
+                isLink: true,
+                onClickCell: () => {
+                  IBestDialogUtil.open({
+                    title: textData.title,
+                    message: textData.life,
+                    theme: "round-button"
+                  })
+                }
+              })
+              IBestCell({
+                title: '提示弹窗(无标题)',
+                isLink: true,
+                hasBorder: false,
+                onClickCell: () => {
+                  IBestDialogUtil.open({
+                    message: textData.life,
+                    showCancelButton: true,
+                    theme: "round-button"
+                  })
+                }
+              })
+            }
           }
         }
 
@@ -171,7 +216,19 @@ struct DialogPage {
                 isLink: true,
                 hasBorder: false,
                 onClickCell: () => {
-                  this.asyncDialogController?.open()
+                  // this.asyncDialogVisible = true
+                  IBestDialogUtil.open({
+                    title: textData.title,
+                    message: textData.life,
+                    showCancelButton: true,
+                    beforeClose: (action) => {
+                      return new Promise((resolve) => {
+                        setTimeout(() => {
+                          resolve(action === 'confirm')
+                        }, 1000)
+                      })
+                    }
+                  })
                 }
               })
             }
@@ -188,7 +245,7 @@ struct DialogPage {
                 onClickCell: () => {
                   this.formInputError = false;
                   this.inputValue = '';
-                  this.slotDialogController?.open()
+                  this.slotDialogVisible = true;
                 }
               })
             }

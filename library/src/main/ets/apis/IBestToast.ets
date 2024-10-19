@@ -1,11 +1,10 @@
 import { ComponentContent, PromptAction, UIObserver, window } from '@kit.ArkUI'
 import { IBestLoading } from '../components/loading'
-import { AnyType } from './AnyType'
-import { LoadingIconType, WordBreakType } from './Global.type'
+import { LoadingIconType, WordBreakType } from '../utils/Global.type'
 import { fontSizeData } from '../theme-chalk/src/font'
 import { spaceData } from '../theme-chalk/src/space'
 
-class ToastParams{
+class ToastOption{
     /**
      * 展示类型
      */
@@ -48,8 +47,8 @@ class ToastParams{
     onOpened?: () => void
 }
 
-class ToastOption extends ToastParams{
-    constructor(value: ToastParams) {
+class ToastParams extends ToastOption{
+    constructor(value: ToastOption) {
         super()
         this.type = value.type || ""
         this.message = value.message || ""
@@ -70,30 +69,30 @@ class ToastOption extends ToastParams{
     .margin({bottom: '20lpx'})
 }
 
-@Builder function toastBuilder($$: ToastParams){
+@Builder function toastBuilder(option: ToastParams){
     Column(){
-        if($$.icon){
-            Image($$.icon).imageStyle()
-        }else if($$.type){
-            if($$.type == "loading"){
+        if(option.icon){
+            Image(option.icon).imageStyle()
+        }else if(option.type){
+            if(option.type == "loading"){
                 IBestLoading({
-                    loadingIconType: $$.loadingType,
+                    loadingIconType: option.loadingType,
                     loadingSize: "38lpx",
                     loadingStrokeWidth: "3lpx"
                 }).margin({bottom: '20lpx'})
             }else{
-                Image($$.type == "success" ? $r("app.media.success") : $$.type ==
+                Image(option.type == "success" ? $r("app.media.success") : option.type ==
                     "warning" ? $r("app.media.icon_warn") :$r("app.media.icon_cuo"))
                     .imageStyle()
                     .fillColor("#fff")
             }
         }
-        Text($$.message)
+        Text(option.message)
             .fontColor('#fff')
             .fontSize(fontSizeData.fontSizeMd)
-            .wordBreak($$.wordBreak == "normal" ? WordBreak.NORMAL : $$.wordBreak == "break-all" ? WordBreak.BREAK_ALL : WordBreak.BREAK_WORD)
+            .wordBreak(option.wordBreak == "normal" ? WordBreak.NORMAL : option.wordBreak == "break-all" ? WordBreak.BREAK_ALL : WordBreak.BREAK_WORD)
     }
-    .constraintSize({minWidth: "192lpx", maxWidth: "60%", minHeight: $$.type == "" && $$.icon == "" ? 0 :
+    .constraintSize({minWidth: "192lpx", maxWidth: "60%", minHeight: option.type == "" && option.icon == "" ? 0 :
         "196lpx"})
     .backgroundColor("rgba(0,0,0,0.7)")
     .borderRadius("12lpx")
@@ -105,7 +104,7 @@ class Toast{
     private static _instance: Toast | null = null
     private toastOption: ToastParams | null = null
     private uiObserver: UIObserver | null = null
-    private loadingDialog: ComponentContent<AnyType> | null = null
+    private loadingDialog: ComponentContent<ToastParams> | null = null
     private promptAction: PromptAction | null = null
     private timer: number = 0
     public _message?: string = ""
@@ -114,13 +113,13 @@ class Toast{
         // console.log("message改变为", msg)
         if(Toast._instance && Toast._instance.toastOption){
             Toast._instance.toastOption.message = msg
-            Toast._instance?.loadingDialog?.update(new ToastOption(Toast._instance.toastOption))
+            Toast._instance?.loadingDialog?.update(new ToastParams(Toast._instance.toastOption))
         }
     }
 
     private constructor() {}
 
-    private static getInstance(option: ToastParams, uiObserver: UIObserver, loadingDialog: ComponentContent<AnyType>,
+    private static getInstance(option: ToastParams, uiObserver: UIObserver, loadingDialog: ComponentContent<ToastOption>,
         promptAction: PromptAction): Toast{
         if(!Toast._instance){
             Toast._instance = new Toast()
@@ -135,37 +134,37 @@ class Toast{
     /**
      * 显示toast
      */
-    public static async show(value: string | ToastParams){
-        let option: ToastParams = typeof value == "string" ? new ToastOption({ message: value }) : new ToastOption(value)
+    public static async show(option: string | ToastOption){
+        let params: ToastParams = typeof option == "string" ? new ToastParams({ message: option }) : new ToastParams(option)
         if(Toast._instance?.loadingDialog){
             Toast.hide()
         }
         let windowClass = await window.getLastWindow(getContext())
         let uiContext = windowClass.getUIContext()
         let uiObserver = uiContext.getUIObserver()
-        let loadingDialog = new ComponentContent(uiContext, wrapBuilder(toastBuilder), option)
+        let loadingDialog = new ComponentContent(uiContext, wrapBuilder(toastBuilder), params)
         let promptAction = uiContext.getPromptAction()
-        Toast._instance = Toast.getInstance(option, uiObserver, loadingDialog, promptAction)
+        Toast._instance = Toast.getInstance(params, uiObserver, loadingDialog, promptAction)
         promptAction.openCustomDialog(Toast._instance.loadingDialog, {
-            alignment: option.position == "top" ? DialogAlignment.Top : option.position == "bottom" ? DialogAlignment.Bottom : DialogAlignment.Center,
-            offset: {dx: 0, dy: option.offsetY},
-            isModal: option.isShowMask || option.type == "loading",
-            maskColor: option.type == "loading" ? "transparent" : "0x33000000",
+            alignment: params.position == "top" ? DialogAlignment.Top : params.position == "bottom" ? DialogAlignment.Bottom : DialogAlignment.Center,
+            offset: {dx: 0, dy: params.offsetY},
+            isModal: params.isShowMask || params.type == "loading",
+            maskColor: params.type == "loading" ? "transparent" : "0x33000000",
             autoCancel: false,
             onWillDismiss: (dismissDialogAction: DismissDialogAction) => {
                 // console.log("原因", JSON.stringify(dismissDialogAction.reason))
             }
         }).then(()=>{
-            option.onOpened?.()
+            params.onOpened?.()
         })
         // 监听路由变化，关闭toast
         Toast._instance.uiObserver?.on("routerPageUpdate", ()=>{
             Toast.hide()
         })
-        if(option.type!="loading" && option.duration){
+        if(params.type!="loading" && params.duration){
             Toast._instance.timer = setTimeout(()=>{
                 Toast.hide()
-            }, option.duration)
+            }, params.duration)
         }
         return Toast._instance
     }

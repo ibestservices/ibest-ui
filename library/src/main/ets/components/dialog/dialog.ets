@@ -1,13 +1,13 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-import { IBestUIBaseStyleObjType, IBestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SPACE } from '../../theme-chalk/src/space.type';
 
 @Extend(Button)
-function defaultBtnStyles() {
+function defaultBtnStyles(theme: 'default' | 'round-button') {
   .layoutWeight(1)
   .backgroundColor('transparent')
-  .height('96lpx')
+  .height(theme == 'default' ? '96lpx' : "72lpx")
 }
 
 @CustomDialog
@@ -35,132 +35,142 @@ export struct IBestDialogView {
   /**
    * 弹窗宽度
    */
-  @Link dialogWidth: string;
+  @Prop dialogWidth: string;
   /**
    * 弹窗border-radius 默认 32lpx
    */
-  @Link dialogBorderRadius: string;
+  @Prop dialogBorderRadius: string;
   /**
    * 标题
    */
-  @Link title: string;
+  @Prop title: string;
   /**
    * 标题颜色
    */
-  @Link titleColor: ResourceColor;
+  @Prop titleColor: ResourceColor;
   /**
    * 标题的padding-top值
    */
-  @Link titlePaddingTop: string;
+  @Prop titlePaddingTop: string;
   /**
    * 标题的padding-left与padding-right值 默认48lpx
    */
-  @Link titlePaddingX: string;
+  @Prop titlePaddingX: string;
   /**
    * 标题的padding-top值
    */
-  @Link titleLineHeight: string;
+  @Prop titleLineHeight: string;
   /**
    * 标题的fontSize
    */
-  @Link titleFontSize: string;
+  @Prop titleFontSize: string;
   /**
    * 标题的对齐方式
    */
-  @Link titleTextAlign: 'left' | 'center' | 'right';
+  @Prop titleTextAlign: 'left' | 'center' | 'right';
   /**
    * 文本内容，支持通过 \n 换行
    */
-  @Link message: string;
+  @Prop message: string;
   /**
    * 内容区域的padding-left与padding-right值 默认48lpx
    */
-  @Link messagePaddingX: string;
+  @Prop messagePaddingX: string;
   /**
    * 内容区域的padding-top值 默认16lpx
    */
-  @Link messagePaddingTop: string;
+  @Prop messagePaddingTop: string;
   /**
    * 内容区域的padding-bottom值 默认52lpx
    */
-  @Link messagePaddingBottom: string;
+  @Prop messagePaddingBottom: string;
   /**
    * 内容区域的fontColor 默认#323233
    */
-  @Link messageFontColor: string;
+  @Prop messageFontColor: ResourceColor;
   /**
    * 内容区域的fontSize
    */
-  @Link messageFontSize: string;
+  @Prop messageFontSize: string;
   /**
    * 内容区域的行高 lineHeight 默认 40lpx
    */
-  @Link messageLineHeight: string;
+  @Prop messageLineHeight: string;
   /**
    * 内容区域的文字对齐方式
    */
-  @Link messageTextAlign: 'left' | 'center' | 'right';
+  @Prop messageTextAlign: 'left' | 'center' | 'right';
   /**
    * 内容区域的滚动区域最大高度
    */
-  @Link messageMaxHeight: string;
-  // /**
-  //  * 样式风格
-  //  * 本期暂不开发
-  //  */
-  // @Link private theme: 'default' | 'round-button' ';
+  @Prop messageMaxHeight: string;
+  /**
+   * 样式风格
+   * @since 1.16.0
+   */
+  @Prop theme: 'default' | 'round-button'
   /**
    * 是否展示确认按钮
    */
-  @Link showConfirmButton: boolean;
+  @Prop showConfirmButton: boolean;
   /**
    * 是否展示取消按钮
    */
-  @Link showCancelButton: boolean;
+  @Prop showCancelButton: boolean;
   /**
    * 确认按钮文案
    */
-  @Link confirmButtonText: string;
+  @Prop confirmButtonText: string;
   /**
    * 取消按钮的文案
    */
-  @Link cancelButtonText: string;
+  @Prop cancelButtonText: string;
   /**
-   * 确认按钮的颜色
+   * 确认按钮的字体颜色
    */
-  @Link confirmButtonColor: ResourceColor;
+  @Prop confirmButtonColor: ResourceColor;
   /**
-   * 取消按钮的颜色
+   * 确认按钮的背景颜色
+   * @since 1.16.0
    */
-  @Link cancelButtonColor: ResourceColor;
+  @Prop confirmButtonBgColor: ResourceColor;
+  /**
+   * 取消按钮的字体颜色
+   */
+  @Prop cancelButtonColor: ResourceColor;
+  /**
+   * 取消按钮的背景颜色
+   * @since 1.16.0
+   */
+  @Prop cancelButtonBgColor: ResourceColor;
   /**
    * 是否禁用确认按钮
    */
-  @Link confirmButtonDisabled: boolean;
+  @Prop confirmButtonDisabled: boolean;
   /**
    * 是否禁用取消按钮
    */
-  @Link cancelButtonDisabled: boolean;
+  @Prop cancelButtonDisabled: boolean;
   /**
    * 按钮的文字大小
    */
-  @Link buttonFontSize: string;
+  @Prop buttonFontSize: string;
   /**
    * 确认按钮的loading
    */
-  @Link confirmButtonLoading: boolean;
+  @Prop confirmButtonLoading: boolean;
   /**
    * 取消按钮的loading
    */
-  @Link cancelButtonLoading: boolean;
+  @Prop cancelButtonLoading: boolean;
   /**
    * 点击取消的回调
    */
-  private onCancel?: (event?: ClickEvent) => void;
+  onCancel: (event?: ClickEvent) => void = () => {}
   /**
    * 点击确认的的回调
    */
-  private onConfirm?: (event?: ClickEvent) => void;
+  onConfirm: (event?: ClickEvent) => void = () => {}
 
   /**
    * 对齐置换TextAlign
@@ -183,7 +193,7 @@ export struct IBestDialogView {
    * @returns
    */
   isHasTitle() {
-    return (typeof this.title === 'string' && !!this.title.length) || typeof this.titleBuilder === 'function'
+    return typeof this.title === 'string' && !!this.title.length
   }
 
   /**
@@ -213,7 +223,7 @@ export struct IBestDialogView {
   build() {
     Column() {
       // title
-      if (typeof this.titleBuilder === 'function') {
+      if (this.titleBuilder) {
         this.titleBuilder()
       } else {
         if (this.isHasTitle()) {
@@ -233,7 +243,7 @@ export struct IBestDialogView {
 
 
       // content
-      if (typeof this.defaultBuilder === 'function') {
+      if (this.defaultBuilder) {
         this.defaultBuilder()
       } else {
         Scroll() {
@@ -259,7 +269,7 @@ export struct IBestDialogView {
 
 
       // footer
-      if (typeof this.footerBuilder === 'function') {
+      if (this.footerBuilder) {
         this.footerBuilder()
       } else {
         Row() {
@@ -290,9 +300,11 @@ export struct IBestDialogView {
               color: '#ecedf0'
             })
             .enabled(!this.cancelButtonDisabled || !this.cancelButtonLoading)
-            .defaultBtnStyles()
+            .defaultBtnStyles(this.theme)
+            .backgroundColor(this.cancelButtonBgColor)
+            .borderRadius(this.theme == "round-button" ? { topLeft: 999, bottomLeft: 999, topRight: this.showConfirmButton ? 0 : 999, bottomRight: this.showConfirmButton ? 0 : 999 } : 0)
             .onClick(event => {
-              typeof this.onCancel === 'function' && this.onCancel(event)
+              this.onCancel(event)
             })
           }
 
@@ -319,18 +331,21 @@ export struct IBestDialogView {
               }
             }
             .enabled(!this.confirmButtonDisabled || !this.confirmButtonLoading)
-            .defaultBtnStyles()
+            .defaultBtnStyles(this.theme)
+            .backgroundColor(this.confirmButtonBgColor)
+            .borderRadius(this.theme == "round-button" ? { topLeft: this.showCancelButton ? 0 : 999, bottomLeft: this.showCancelButton ? 0 : 999, topRight: 999, bottomRight: 999 } : 0)
             .onClick(event => {
-              typeof this.onConfirm === 'function' && this.onConfirm(event)
+              this.onConfirm(event)
             })
           }
 
         }.border({
           width: {
-            top: '2lpx'
+            top: this.theme == 'default' ? '2lpx' : 0
           },
           color: '#ecedf0'
         })
+        .padding(this.theme == "round-button" ? { top: this.baseStyle.spaceXs, left: this.baseStyle.spaceLg, right: this.baseStyle.spaceLg, bottom: this.baseStyle.spaceMd } : "")
       }
     }
     .backgroundColor('#fff')

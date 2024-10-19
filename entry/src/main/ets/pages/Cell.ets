@@ -164,7 +164,7 @@ struct CellPage {
               value: '内容',
               required: true,
               hasBorder: false,
-              valueBuilder: this.InputContain.bind(this)
+              valueBuilder: (): void => this.InputContain()
             })
           }
         }

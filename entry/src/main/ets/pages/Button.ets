@@ -196,7 +196,7 @@ struct ButtonPage {
                   plain: true,
                   text: '按钮',
                   type: 'default',
-                  iconBuilder: Arrow.bind(this, COLOR_BLUE.MINI)
+                  iconBuilder: (): void => Arrow(COLOR_BLUE.MINI)
                 })
               }.btnMargin()
             }

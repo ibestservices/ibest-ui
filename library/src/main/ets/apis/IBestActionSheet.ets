@@ -1,6 +1,6 @@
 import { ComponentContent, UIContext, window } from '@kit.ArkUI';
 import { generateId } from '../assets/ets/utils';
-import GlobalStore from './GlobalStore';
+import GlobalStore from '../utils/GlobalStore';
 // 选项类型
 class IBestActionType {
 	name: string = ""

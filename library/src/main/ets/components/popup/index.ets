@@ -165,7 +165,7 @@ export struct IBestPopup{
 	 */
 	onClose: () => void = () => {}
 	private context = getContext(this) as common.BaseContext
-	dialogController: CustomDialogController | null = new CustomDialogController({
+	dialogController: CustomDialogController = new CustomDialogController({
 		builder: IBestPopupBaseContent({
 			contentBuilder: this.contentBuilder,
 			popupAlign: this.popupAlign,
@@ -231,10 +231,10 @@ export struct IBestPopup{
 	}
 	visibleChange(){
 		if(this.visible){
-			this.dialogController?.open()
+			this.dialogController.open()
 			this.onOpen()
 		}else{
-			this.dialogController?.close()
+			this.dialogController.close()
 			this.onClose()
 		}
 	}
