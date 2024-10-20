@@ -20,8 +20,8 @@ struct Index {
       title: '基础组件',
       list: [
         {
-          name: 'Dialog 弹出框',
-          path: 'pages/Dialog'
+          name: 'Loading 加载',
+          path: 'pages/Loading'
         },
         {
           name: 'Button 按钮',

@@ -114,6 +114,7 @@ export struct IBestPopup{
 	@Prop offsetY: number = 0
 	/**
 	 * 蒙层颜色
+	 * @since 1.15.0
 	 */
 	@Prop maskColor: ResourceColor = "0x33000000"
 	/**

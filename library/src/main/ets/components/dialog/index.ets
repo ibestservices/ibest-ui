@@ -98,11 +98,16 @@ export struct IBestDialog {
    * 内容区域的滚动区域最大高度
    */
   @Prop messageMaxHeight: string = '60%';
-  // /**
-  //  * 样式风格
-  //  * 本期暂不开发
-  //  */
-  // @Prop theme: 'default' | 'round-button' = 'default';
+  /**
+   * 样式风格
+   * @since 1.16.0
+   */
+  @Prop theme: 'default' | 'round-button' = 'default';
+  /**
+   * 按钮间距 单位lpx
+   * @since 1.16.0
+   */
+  @Prop buttonSpace: number = 0
   /**
    * 是否展示确认按钮
    */
@@ -338,6 +343,7 @@ export struct IBestDialog {
       messageLineHeight: this.messageLineHeight,
       messageTextAlign: this.messageTextAlign,
       messageMaxHeight: this.messageMaxHeight,
+      theme: this.theme,
       showConfirmButton: this.showConfirmButton,
       showCancelButton: this.showCancelButton,
       confirmButtonText: this.confirmButtonText,

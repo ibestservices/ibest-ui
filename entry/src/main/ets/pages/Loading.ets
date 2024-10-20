@@ -46,10 +46,10 @@ struct LoadingPage {
           ComponentShowContainer({ title: '自定义颜色' }) {
             Row() {
               IBestLoading({
-                loadingColor: 'rgb(25, 137, 250)'
+                loadingColor: '#DB3131'
               })
               IBestLoading({
-                loadingColor: 'rgb(25, 137, 250)',
+                loadingColor: '#DB3131',
                 loadingIconType: 'spinner'
               }).margin({ left: '40lpx' })
 
@@ -110,11 +110,11 @@ struct LoadingPage {
             Row() {
               IBestLoading({
                 loadingText: '加载中...',
-                loadingColor: 'rgb(25, 137, 250)',
                 loadingTextColor: 'rgb(25, 137, 250)'
               })
               IBestLoading({
                 loadingText: '加载中...',
+                loadingColor: '#c9c9c9',
                 loadingTextColor: 'rgb(25, 137, 250)'
               }).margin({ left: '40lpx' })
             }

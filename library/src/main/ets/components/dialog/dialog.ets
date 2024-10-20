@@ -110,6 +110,11 @@ export struct IBestDialogView {
    */
   @Prop theme: 'default' | 'round-button'
   /**
+   * 按钮间距 单位lpx
+   * @since 1.16.0
+   */
+  @Prop buttonSpace: number = 0
+  /**
    * 是否展示确认按钮
    */
   @Prop showConfirmButton: boolean;
@@ -272,7 +277,7 @@ export struct IBestDialogView {
       if (this.footerBuilder) {
         this.footerBuilder()
       } else {
-        Row() {
+        Row({ space: `${this.buttonSpace}lpx` }) {
           // 取消按钮
           if (this.showCancelButton) {
             Button({ type: ButtonType.Normal }) {
@@ -296,13 +301,13 @@ export struct IBestDialogView {
               }
             }
             .border({
-              width: { right: this.showConfirmButton ? '2lpx' : 0 },
+              width: this.theme == 'default' ? { right: this.showConfirmButton ? '2lpx' : 0 } : "2lpx",
               color: '#ecedf0'
             })
             .enabled(!this.cancelButtonDisabled || !this.cancelButtonLoading)
             .defaultBtnStyles(this.theme)
             .backgroundColor(this.cancelButtonBgColor)
-            .borderRadius(this.theme == "round-button" ? { topLeft: 999, bottomLeft: 999, topRight: this.showConfirmButton ? 0 : 999, bottomRight: this.showConfirmButton ? 0 : 999 } : 0)
+            .borderRadius(this.theme == "round-button" ? { topLeft: 999, bottomLeft: 999, topRight: this.showConfirmButton && this.buttonSpace == 0 ? 0 : 999, bottomRight: this.showConfirmButton && this.buttonSpace == 0 ? 0 : 999 } : 0)
             .onClick(event => {
               this.onCancel(event)
             })
@@ -333,7 +338,7 @@ export struct IBestDialogView {
             .enabled(!this.confirmButtonDisabled || !this.confirmButtonLoading)
             .defaultBtnStyles(this.theme)
             .backgroundColor(this.confirmButtonBgColor)
-            .borderRadius(this.theme == "round-button" ? { topLeft: this.showCancelButton ? 0 : 999, bottomLeft: this.showCancelButton ? 0 : 999, topRight: 999, bottomRight: 999 } : 0)
+            .borderRadius(this.theme == "round-button" ? { topLeft: this.showCancelButton && this.buttonSpace == 0 ? 0 : 999, bottomLeft: this.showCancelButton && this.buttonSpace == 0 ? 0 : 999, topRight: 999, bottomRight: 999 } : 0)
             .onClick(event => {
               this.onConfirm(event)
             })

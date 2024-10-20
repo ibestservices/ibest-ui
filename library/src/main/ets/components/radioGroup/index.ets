@@ -22,7 +22,7 @@ export struct IBestRadioGroup {
    * 选中变化的回调
    * 参数是radio子组件的的name值
    */
-  private onChange?: (radioName: string) => void;
+  onChange: (radioName: string) => void = () => {}
 
   handleInitRadio(radioName: string | number){
     emitter.emit(getRadioGroupNamespace(this.group, RADIO_GROUP_EVENT_NAME.ON_INIT), radioName)
@@ -46,7 +46,7 @@ export struct IBestRadioGroup {
     initRadioGroupStore(this.group, (checkedItem) => {
       this.checkedItem = checkedItem;
       this.handleInitRadio(checkedItem?.name)
-      typeof this.onChange === 'function' && this.onChange(checkedItem?.name)
+      this.onChange(checkedItem?.name)
     })
   }
 

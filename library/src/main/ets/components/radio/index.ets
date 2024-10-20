@@ -69,7 +69,7 @@ export struct IBestRadio {
   /**
    * 改变的回调
    */
-  onChange?: (checked: boolean) => void;
+  onChange: (checked: boolean) => void = () => {}
 
   /**
    * 获取背景色
@@ -142,7 +142,7 @@ export struct IBestRadio {
       return
     }
     this.value = true;
-    typeof this.onChange === 'function' && this.onChange(this.value)
+    this.onChange(this.value)
     this.updateGroupStore()
   }
 
@@ -196,7 +196,7 @@ export struct IBestRadio {
 
       // radio
       Column() {
-        if (typeof this.iconBuilder === 'function') {
+        if (this.iconBuilder) {
           this.iconBuilder({ checked: this.value, disabled: this.disabled })
         } else {
           if (this.shape === 'dot') {

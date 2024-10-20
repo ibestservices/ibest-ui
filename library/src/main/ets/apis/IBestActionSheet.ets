@@ -117,7 +117,8 @@ class IBestActionSheetOption {
 	onClose?: () => void
 }
 class IBestActionSheetParams extends IBestActionSheetOption {
-	close: () => void = () => {}
+	id: string = ""
+	close: (id: string) => void = () => {}
 	constructor(option: IBestActionSheetOption) {
 		// console.log("options", JSON.stringify(option))
 		super()
@@ -189,7 +190,7 @@ function defaultContentBuilder(option: IBestActionSheetParams) {
 					.height("100%")
 					.padding({ left: "32lpx", right: "32lpx"})
 					.onClick(() => {
-						option.close()
+						option.close(option.id)
 					})
 				}
 			}
@@ -248,7 +249,7 @@ function defaultContentBuilder(option: IBestActionSheetParams) {
 										}else{
 											option.onSelect?.(listIndex, index)
 										}
-										option.close()
+										option.close(option.id)
 									}
 								})
 							})
@@ -296,7 +297,7 @@ function defaultContentBuilder(option: IBestActionSheetParams) {
 							}else{
 								option.onSelect?.(index)
 							}
-							option.close()
+							option.close(option.id)
 						}
 					})
 				})
@@ -315,7 +316,7 @@ function defaultContentBuilder(option: IBestActionSheetParams) {
 			.actionSheetButtonStyle()
 			.onClick(() => {
 				option.onCancel?.()
-				option.close()
+				option.close(option.id)
 			})
 		}
 	}
@@ -336,7 +337,8 @@ class ActionSheet{
 			this.uiContext = windowClass.getUIContext()
 		}
 		let params = new IBestActionSheetParams(option)
-		params.close = (): void => this.close()
+		params.id = key
+		params.close = (id: string): void => this.close(id)
 		let contentNode = new ComponentContent(this.uiContext, wrapBuilder(defaultContentBuilder), params)
 		let sheetOption: SheetOptions = {
 			width: params.width,

@@ -23,15 +23,9 @@ const textData: TextData = {
 @Component
 struct DialogPage {
   @State title: string = (router.getParams() as ComponentRouterParams).title || ''
-  @State disabled: boolean = false;
-  @State dialogTitle: string = '';
-  @State dialogMsg: string = '';
-  @State showDialogCancelBtn: boolean = false;
-  @State inputValue: string = '';
-  @State formInputError: boolean = false;
-  @State basicDialogVisible: boolean = false
-  @State asyncDialogVisible: boolean = false
-  @State slotDialogVisible: boolean = false
+  @State inputValue: string = ''
+  @State formInputError: boolean = false
+  @State dialogVisible: boolean = false
 
   @Builder
   FormInputContain() {
@@ -60,63 +54,25 @@ struct DialogPage {
     }.width('90%').margin({ top: SPACE.LARGE, bottom: SPACE.LARGE })
   }
 
+  @Builder customComponentContent() {
+    Column(){
+      Text(textData.program)
+    }
+    .padding(20)
+  }
+
   build() {
     Column() {
       TitleBar({
         title: this.title
       }).backgroundColor('#FFF')
 
-      // 基础弹窗
+      // 使用组件
       IBestDialog({
-        visible: $basicDialogVisible,
-        title: this.dialogTitle,
-        message: this.dialogMsg,
-        showCancelButton: this.showDialogCancelBtn,
-        onConfirm: () => {
-          setTimeout(()=>{
-            this.showDialogCancelBtn = false
-          }, 400)
-        },
-        onCancel: () => {
-          setTimeout(()=>{
-            this.showDialogCancelBtn = false
-          }, 400)
-        }
-      })
-
-      // 异步关闭弹窗
-      IBestDialog({
-        visible: $asyncDialogVisible,
+        visible: $dialogVisible,
         title: textData.title,
-        message: textData.life,
         showCancelButton: true,
-        beforeClose: (action) => {
-          return new Promise((resolve) => {
-            setTimeout(() => {
-              resolve(action === 'confirm')
-            }, 1000)
-          })
-        }
-      })
-
-      // 使用插槽
-      IBestDialog({
-        visible: $slotDialogVisible,
-        title: textData.title,
-        confirmButtonText: '提交',
-        showCancelButton: true,
-        defaultBuilder: (): void => this.FormInputContain(),
-        beforeClose: (action) => {
-          if (action === 'cancel') {
-            return true
-          }
-          const valueLength = this.inputValue.trim().length;
-          this.formInputError = !valueLength;
-          return !this.formInputError
-        },
-        onConfirm: () => {
-
-        }
+        defaultBuilder: (): void => this.customComponentContent()
       })
 
       List() {
@@ -127,9 +83,6 @@ struct DialogPage {
                 title: '提示弹窗',
                 isLink: true,
                 onClickCell: () => {
-                  // this.dialogTitle = textData.title
-                  // this.dialogMsg = textData.code
-                  // this.basicDialogVisible = true
                   IBestDialogUtil.open({
                     title: textData.title,
                     message: textData.code,
@@ -143,9 +96,6 @@ struct DialogPage {
                 title: '提示弹窗（无标题）',
                 isLink: true,
                 onClickCell: () => {
-                  // this.dialogTitle = ''
-                  // this.dialogMsg = textData.life
-                  // this.basicDialogVisible = true
                   IBestDialogUtil.open({
                     message: textData.life,
                     onConfirm: () => {
@@ -159,16 +109,27 @@ struct DialogPage {
                 isLink: true,
                 hasBorder: false,
                 onClickCell: () => {
-                  // this.dialogTitle = textData.title
-                  // this.dialogMsg = textData.life
-                  // this.showDialogCancelBtn = true;
-                  // this.basicDialogVisible = true
                   IBestDialogUtil.open({
                     title: textData.title,
                     message: textData.life,
                     showCancelButton: true,
-                    onConfirm: () => {
-                      console.log("点击确定")
+                    beforeClose: (action) => {
+                      if(action == "confirm"){
+                        return new Promise(resolve => {
+                          IBestDialogUtil.open({
+                            title: "提示",
+                            message: "确认关闭？",
+                            showCancelButton: true,
+                            onConfirm: () => {
+                              resolve(true)
+                            },
+                            onCancel: () => {
+                              resolve(false)
+                            }
+                          })
+                        })
+                      }
+                      return true
                     }
                   })
                 }
@@ -193,14 +154,26 @@ struct DialogPage {
                 }
               })
               IBestCell({
-                title: '提示弹窗(无标题)',
+                title: '确认弹窗(无标题)',
+                isLink: true,
+                onClickCell: () => {
+                  IBestDialogUtil.open({
+                    message: textData.life,
+                    showCancelButton: true,
+                    theme: "round-button"
+                  })
+                }
+              })
+              IBestCell({
+                title: '按钮带间距确认弹窗',
                 isLink: true,
                 hasBorder: false,
                 onClickCell: () => {
                   IBestDialogUtil.open({
                     message: textData.life,
                     showCancelButton: true,
-                    theme: "round-button"
+                    theme: "round-button",
+                    buttonSpace: 40
                   })
                 }
               })
@@ -216,7 +189,6 @@ struct DialogPage {
                 isLink: true,
                 hasBorder: false,
                 onClickCell: () => {
-                  // this.asyncDialogVisible = true
                   IBestDialogUtil.open({
                     title: textData.title,
                     message: textData.life,
@@ -243,9 +215,38 @@ struct DialogPage {
                 isLink: true,
                 hasBorder: false,
                 onClickCell: () => {
-                  this.formInputError = false;
-                  this.inputValue = '';
-                  this.slotDialogVisible = true;
+                  // this.formInputError = false;
+                  // this.inputValue = '';
+                  // this.slotDialogVisible = true;
+                  IBestDialogUtil.open({
+                    title: textData.title,
+                    message: textData.life,
+                    showCancelButton: true,
+                    defaultBuilder: (): void => this.FormInputContain(),
+                    beforeClose: (action) => {
+                      if (action === 'cancel') {
+                        return true
+                      }
+                      const valueLength = this.inputValue.trim().length;
+                      this.formInputError = !valueLength;
+                      return !this.formInputError
+                    }
+                  })
+                }
+              })
+            }
+          }
+        }
+
+        ListItem() {
+          ComponentShowContainer({ title: '使用组件', titlePaddingLeft: SPACE.MEDIA }) {
+            IBestCellGroup({ inset: true }) {
+              IBestCell({
+                title: '使用组件',
+                isLink: true,
+                hasBorder: false,
+                onClickCell: () => {
+                  this.dialogVisible = true
                 }
               })
             }

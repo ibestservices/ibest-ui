@@ -10,13 +10,6 @@ function btnMargin() {
   .margin({ right: SPACE.BASE, bottom: SPACE.BASE })
 }
 
-@Builder function Arrow(color = '#fff'){
-  Image($r('app.media.title_back'))
-    .width(CONTAINER_SIZE.FORTY_FOUR)
-    .fillColor(color)
-
-}
-
 @Entry
 @Component
 struct ButtonPage {
@@ -26,6 +19,12 @@ struct ButtonPage {
   @Builder
   TextBuilder() {
     Text('default slot  ' + this.message)
+  }
+
+  @Builder Arrow(color = '#fff'){
+    Image($r('app.media.title_back'))
+      .width(CONTAINER_SIZE.FORTY_FOUR)
+      .fillColor(color)
   }
 
   build() {
@@ -179,7 +178,7 @@ struct ButtonPage {
                 IBestButton({
                   text: '',
                   type: 'primary',
-                  iconBuilder: Arrow
+                  iconBuilder: this.Arrow
                 })
               }.btnMargin()
 
@@ -187,7 +186,7 @@ struct ButtonPage {
                 IBestButton({
                   text: '按钮',
                   type: 'primary',
-                  iconBuilder: Arrow
+                  iconBuilder: this.Arrow
                 })
               }.btnMargin()
 
@@ -196,7 +195,7 @@ struct ButtonPage {
                   plain: true,
                   text: '按钮',
                   type: 'default',
-                  iconBuilder: (): void => Arrow(COLOR_BLUE.MINI)
+                  iconBuilder: () => this.Arrow(COLOR_BLUE.MINI)
                 })
               }.btnMargin()
             }
@@ -268,7 +267,6 @@ struct ButtonPage {
                   color: "#7232dd"
                 })
               }.btnMargin()
-
             }
           }
         }
@@ -276,7 +274,6 @@ struct ButtonPage {
         ListItem() {
           ComponentShowContainer({ title: '自定义大小' }) {
             Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap, alignItems: ItemAlign.Center }) {
-
               Column() {
                 IBestButton({
                   text: '自定义大小按钮',
@@ -285,20 +282,15 @@ struct ButtonPage {
                   btnFontSize: 32
                 })
               }.btnMargin()
-
-
-
             }
           }
         }
-
       }
       .layoutWeight(1)
       .padding({
         left: SPACE.BASE,
         right: SPACE.BASE
       })
-
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)

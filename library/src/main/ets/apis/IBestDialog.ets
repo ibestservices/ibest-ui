@@ -92,6 +92,10 @@ class IBestDialogOption {
 	 */
 	theme?: 'default' | 'round-button'
 	/**
+	 * 按钮间距 单位lpx
+	 */
+	buttonSpace?: number
+	/**
 	 * 是否展示确认按钮
 	 */
 	showConfirmButton?: boolean
@@ -175,8 +179,9 @@ class IBestDialogOption {
 }
 
 class IBestDialogParams extends IBestDialogOption {
+	id: string = ""
 	contentNode?: ComponentContent<IBestDialogParams>
-	close: () => void = () => {}
+	close: (id: string) => void = () => {}
 	constructor(option: IBestDialogOption) {
 		super()
 		this.titleBuilder = option.titleBuilder
@@ -201,6 +206,7 @@ class IBestDialogParams extends IBestDialogOption {
 		this.messageTextAlign = option.messageTextAlign || "center"
 		this.messageMaxHeight = option.messageMaxHeight || "60%"
 		this.theme = option.theme || 'default'
+		this.buttonSpace = option.buttonSpace || 0
 		this.showConfirmButton = option.showConfirmButton || true
 		this.showCancelButton = option.showCancelButton || false
 		this.confirmButtonText = option.confirmButtonText || '确认'
@@ -229,14 +235,14 @@ async function handleBtnClick(option: IBestDialogParams, action: 'cancel' | 'con
 		action == 'cancel' ? option.cancelButtonLoading = true : option.confirmButtonLoading = true
 		option.contentNode?.update(option)
 		const status = await option.beforeClose(action)
-		console.log('status', status)
+		// console.log('status', status)
 		action == 'cancel' ? option.cancelButtonLoading = false : option.confirmButtonLoading = false
 		option.contentNode?.update(option)
 		if (!status) {
 			return
 		}
 	}
-	option.close()
+	option.close(option.id)
 	if(action == 'confirm' && option.onConfirm){
 		option.onConfirm()
 	}
@@ -273,6 +279,7 @@ function defaultContentBuilder(option: IBestDialogParams) {
 		messageTextAlign: option.messageTextAlign,
 		messageMaxHeight: option.messageMaxHeight,
 		theme: option.theme,
+		buttonSpace: option.buttonSpace,
 		showConfirmButton: option.showConfirmButton,
 		showCancelButton: option.showCancelButton,
 		confirmButtonText: option.confirmButtonText,
@@ -311,7 +318,8 @@ class Dialog{
 		let uiContext = windowClass.getUIContext()
 		let promptAction = uiContext.getPromptAction()
 		let params = new IBestDialogParams(option)
-		params.close = (): void => this.close()
+		params.id = key
+		params.close = (id: string): void => this.close(id)
 		let contentNode = new ComponentContent(uiContext, wrapBuilder(defaultContentBuilder), params)
 		params.contentNode = contentNode
 		this.contentNodeMap.set(key, {
