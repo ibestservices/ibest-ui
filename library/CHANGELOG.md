@@ -85,3 +85,19 @@ watermark引用文件大小写不一致报错bug修复
 
 兼容变更:
 1. 所有组件(Watermark、Signature除外)颜色相关属性类型改为 RescourseColor 。
+
+## 1.16.0
+
+新增:
+1. 增加 IBestDialogUtil 弹框API;
+2. IBestDialog 增加 visible、theme、buttonSpace、confirmButtonBgColor、cancelButtonBgColor、closeOnBackPress、onOpen、onClose 属性;
+3. 增加 IBestNotify 消息提示API;
+4. IBestToast 增加 showLoading 方法.
+
+变更:
+IBestDialog 组件显隐控制方式由原来的controller方式变为由 visible 属性控制, 简化使用.
+
+
+优化:
+1. 优化 IBestLoading 组件动画效果;
+2. 优化 IBestPopup 组件隐藏动画效果.
