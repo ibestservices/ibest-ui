@@ -16,23 +16,23 @@ export struct IBestTabs{
     /**
      * 样式类型
      */
-    @Provide type: 'line' | 'card' = "line"
+    @Provide({allowOverride: "type"}) type: 'line' | 'card' = "line"
     /**
      * tab高度
      */
-    @Provide tabHeight: number = 70
+    @Provide({allowOverride: "tabHeight"}) tabHeight: number = 70
     /**
      * tab宽度类型
      */
-    @Provide tabWidthType: "auto" | "flex" = "flex"
+    @Provide({allowOverride: "tabWidthType"}) tabWidthType: "auto" | "flex" = "flex"
     /**
      * tab列表
      */
-    @Provide @Watch("tabsListChange") tabsList: IBestTabItem[] = []
+    @Provide({ allowOverride: "tabsList" }) @Watch("tabsListChange") tabsList: IBestTabItem[] = []
     /**
      * 单个tab内边距，单位lpx
      */
-    @Provide tabPadding: number = 16
+    @Provide({allowOverride: "tabPadding"}) tabPadding: number = 16
     /**
      * tab盒子宽度
      */
@@ -52,11 +52,11 @@ export struct IBestTabs{
     /**
      * 标记线宽度，单位lpx
      */
-    @Provide tabLineWidth: number = 80
+    @Provide({allowOverride: "tabLineWidth"}) tabLineWidth: number = 80
     /**
      * 标记线高度，单位lpx
      */
-    @Provide tabLineHeight: number = 4
+    @Provide({allowOverride: "tabLineHeight"}) tabLineHeight: number = 4
     /**
      * 标记块宽度
      */
@@ -72,27 +72,27 @@ export struct IBestTabs{
     /**
      * 未激活的tab文字颜色
      */
-    @Provide inactiveTextColor: ResourceColor = GRAY_COLOR.GRAY_7
+    @Provide({allowOverride: "inactiveTextColor"}) inactiveTextColor: ResourceColor = GRAY_COLOR.GRAY_7
     /**
      * 激活的tab文字颜色
      */
-    @Provide activeTextColor: ResourceColor = GRAY_COLOR.GRAY_8
+    @Provide({allowOverride: "activeTextColor"}) activeTextColor: ResourceColor = GRAY_COLOR.GRAY_8
     /**
      * 标记线颜色
      */
-    @Provide tabLineColor: ResourceColor = this.baseStyle.primary
+    @Provide({allowOverride: "tabLineColor"}) tabLineColor: ResourceColor = this.baseStyle.primary
     /**
      * 标记线Y偏移量
      */
-    @Provide lineOffsetY: number = 0
+    @Provide({allowOverride: "lineOffsetY"}) lineOffsetY: number = 0
     /**
      * tab区域背景颜色
      */
-    @Provide tabBgColor: ResourceColor  = this.baseStyle.default
+    @Provide({allowOverride: "tabBgColor"}) tabBgColor: ResourceColor  = this.baseStyle.default
     /**
      * 字体大小 单位lpx
      */
-    @Provide fontSize: number = 28
+    @Provide({allowOverride: "fontSize"}) fontSize: number = 28
     /**
      * controller 控制器
      */

@@ -9,7 +9,7 @@ export struct IBestRadioGroup {
   /**
    * 多个相同群组名称的CheckboxGroup，仅第一个CheckboxGroup生效。
    */
-  @Prop private group: string;
+  @Prop group: string;
   // /**
   //  * 默认选中的
   //  */
@@ -17,7 +17,7 @@ export struct IBestRadioGroup {
   /**
    * 选中的数据
    */
-  private checkedItem: CheckedItem | null = null;
+  checkedItem: CheckedItem | null = null;
   /**
    * 选中变化的回调
    * 参数是radio子组件的的name值
@@ -42,7 +42,7 @@ export struct IBestRadioGroup {
     removeRadioGroupStore(this.group)
   }
 
-  private initStorage() {
+  initStorage() {
     initRadioGroupStore(this.group, (checkedItem) => {
       this.checkedItem = checkedItem;
       this.handleInitRadio(checkedItem?.name)

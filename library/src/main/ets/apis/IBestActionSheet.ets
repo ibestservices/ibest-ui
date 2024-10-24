@@ -1,5 +1,10 @@
 import { ComponentContent, UIContext, window } from '@kit.ArkUI';
 import { generateId } from '../assets/ets/utils';
+import CustomContent from '../common/components/CustomContent';
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src';
+import { GRAY_COLOR } from '../theme-chalk/src/color.type';
+import { CONTAINER_SIZE } from '../theme-chalk/src/container.type';
+import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type';
 import GlobalStore from '../utils/GlobalStore';
 // 选项类型
 class IBestActionType {
@@ -116,13 +121,14 @@ class IBestActionSheetOption {
 	 */
 	onClose?: () => void
 }
+
 class IBestActionSheetParams extends IBestActionSheetOption {
 	id: string = ""
 	close: (id: string) => void = () => {}
 	constructor(option: IBestActionSheetOption) {
 		// console.log("options", JSON.stringify(option))
 		super()
-		this.width = option.width || "100%"
+		this.width = option.width || CONTAINER_SIZE.FULL
 		this.height = option.height || SheetSize.FIT_CONTENT
 		this.backgroundColor = option.backgroundColor
 		this.detents = option.detents
@@ -149,10 +155,6 @@ class IBestActionSheetParams extends IBestActionSheetOption {
 	}
 }
 
-@Extend(Column) function actionSheetItemStyle(){
-	.width("100%")
-	.padding({ left: "32lpx", right: "32lpx", top: "28lpx", bottom: "28lpx" })
-}
 @Extend(Button) function actionSheetButtonStyle(bd: boolean = false){
 	.type(ButtonType.Normal)
 	.backgroundColor("#fff")
@@ -160,168 +162,174 @@ class IBestActionSheetParams extends IBestActionSheetOption {
 }
 
 @Component
-struct customContent {
-	@BuilderParam customBuilder: () => void
+struct defaultContent{
+	/**
+	 * 全局公共样式
+	 */
+	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@Prop option: IBestActionSheetParams
 	build() {
-		this.customBuilder()
-	}
-}
-
-/**
- * 默认内容 Builder
- */
-@Builder
-function defaultContentBuilder(option: IBestActionSheetParams) {
-	Column() {
-		if(option.customTitle){
-			Stack({ alignContent: Alignment.End }) {
-				Text(option.customTitle)
-					.width("100%")
-					.height("100%")
-					.textAlign(TextAlign.Center)
-					.fontSize("32lpx")
-					.fontWeight(600)
-				if(option.closeable){
-					Row(){
-						Image(option.closeIcon)
-							.width("44lpx")
-							.aspectRatio(1)
+		Column() {
+			if(this.option.customTitle){
+				Stack({ alignContent: Alignment.End }) {
+					Text(this.option.customTitle)
+						.width(CONTAINER_SIZE.FULL)
+						.height(CONTAINER_SIZE.FULL)
+						.textAlign(TextAlign.Center)
+						.fontSize(this.baseStyle.fontSizeLg)
+						.fontWeight(600)
+					if(this.option.closeable){
+						Row(){
+							Image(this.option.closeIcon)
+								.width("44lpx")
+								.aspectRatio(1)
+						}
+						.height(CONTAINER_SIZE.FULL)
+						.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd})
+						.onClick(() => {
+							this.option.close(this.option.id)
+						})
 					}
-					.height("100%")
-					.padding({ left: "32lpx", right: "32lpx"})
-					.onClick(() => {
-						option.close(option.id)
+				}
+				.height("96lpx")
+				.backgroundColor(this.option.titleBgColor)
+				.border({ width: { bottom: 1 }, color: GRAY_COLOR.GRAY_3 })
+			}
+			if(this.option.description){
+				Text(this.option.description)
+					.width(CONTAINER_SIZE.FULL)
+					.textAlign(TextAlign.Center)
+					.padding(this.baseStyle.spaceMd)
+					.fontSize(this.baseStyle.fontSizeMd)
+					.fontColor(GRAY_COLOR.GRAY_6)
+					.backgroundColor(this.baseStyle.default)
+					.border({ width: { bottom: 1 }, color: GRAY_COLOR.GRAY_3 })
+			}
+			if(this.option.customContent){
+				CustomContent({ customBuilder: this.option.customContent })
+			}else if(this.option.actions){
+				if(Array.isArray(this.option.actions[0])){
+					ForEach(this.option.actions, (actionList: IBestActionMultiLine[], listIndex) => {
+						Scroll(){
+							Row(){
+								ForEach(actionList, (action: IBestActionMultiLine, index) => {
+									Button(){
+										Column() {
+											Image(action.icon)
+												.width("96lpx")
+												.fillColor(GRAY_COLOR.GRAY_8)
+												.borderRadius(999)
+												.aspectRatio(1)
+												.margin({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd, bottom: this.baseStyle.spaceXs })
+												.draggable(false)
+											Text(action.name)
+												.padding({ left: this.baseStyle.spaceBase, right: this.baseStyle.spaceBase })
+												.fontSize(this.baseStyle.fontSizeSm)
+												.fontColor(action.color || GRAY_COLOR.GRAY_8)
+											if(action.subName){
+												Text(action.subName)
+													.fontSize(this.baseStyle.fontSizeSm)
+													.fontColor(GRAY_COLOR.GRAY_5)
+													.margin({ top: "12lpx" })
+													.padding({ left: this.baseStyle.spaceBase, right: this.baseStyle.spaceBase })
+											}
+										}.alignItems(HorizontalAlign.Center)
+									}
+									.type(ButtonType.Normal)
+									.borderRadius(0)
+									.backgroundColor(this.baseStyle.default)
+									.stateEffect(!action.isDisabled)
+									.opacity(action.isDisabled ? 0.5 : 1)
+									.onClick(() => {
+										if(!action.isDisabled){
+											if(action.value){
+												this.option.onSelect?.(listIndex, index, action.value)
+											}else{
+												this.option.onSelect?.(listIndex, index)
+											}
+											this.option.close(this.option.id)
+										}
+									})
+								})
+							}.alignItems(VerticalAlign.Top)
+						}
+						.width(CONTAINER_SIZE.FULL)
+						.scrollable(ScrollDirection.Horizontal)
+						.scrollBar(BarState.Off)
+						.align(Alignment.Start)
+						.backgroundColor(this.baseStyle.default)
+						.padding({ top: this.baseStyle.spaceMd, bottom: this.baseStyle.spaceMd, left: this.baseStyle.spaceXs })
+						.border({ width: { top: listIndex > 0 ? 1 :0 }, color: GRAY_COLOR.GRAY_3 })
+					})
+				}else{
+					ForEach(this.option.actions, (action: IBestActionType | string, index) => {
+						Button({ type: ButtonType.Normal }){
+							Column() {
+								Row(){
+									if(typeof action == "object" && action.icon){
+										Image(action.icon)
+											.width("36lpx")
+											.aspectRatio(1)
+											.fillColor(typeof action == "object" && action.isDisabled ? GRAY_COLOR.GRAY_5 : GRAY_COLOR.GRAY_8)
+											.margin({ right: this.baseStyle.spaceXs })
+											.draggable(false)
+									}
+									Text(typeof action == "object" ? action.name : action).fontColor(typeof action == "object" && action.isDisabled ? GRAY_COLOR.GRAY_5 : (typeof action == "object" && action.color || GRAY_COLOR.GRAY_8))
+								}.justifyContent(FlexAlign.Center)
+								if(typeof action == "object" && action.subName){
+									Text(action.subName)
+										.width(CONTAINER_SIZE.FULL)
+										.textAlign(TextAlign.Center)
+										.fontSize(this.baseStyle.fontSizeSm)
+										.fontColor(GRAY_COLOR.GRAY_6)
+										.margin({ top: this.baseStyle.spaceXs })
+								}
+							}
+							.width(CONTAINER_SIZE.FULL)
+							.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd, top: this.baseStyle.spaceSm, bottom: this.baseStyle.spaceSm })
+						}
+						.actionSheetButtonStyle(this.option.actions && index < this.option.actions.length - 1)
+						.stateEffect(typeof action == "string" || !action.isDisabled)
+						.onClick(() => {
+							if(typeof action == "string" || !action.isDisabled){
+								if(typeof action == "object" && action.value){
+									this.option.onSelect?.(index, action.value)
+								}else{
+									this.option.onSelect?.(index)
+								}
+								this.option.close(this.option.id)
+							}
+						})
 					})
 				}
 			}
-			.height("96lpx").backgroundColor(option.titleBgColor).border({ width: { bottom: 1 }, color: "#ebedf0" })
-		}
-		if(option.description){
-			Text(option.description)
-				.width("100%")
-				.lineHeight("40lpx")
-				.textAlign(TextAlign.Center)
-				.padding({ top: "40lpx", bottom: "40lpx", left: "32lpx", right: "32lpx" })
-				.fontSize("28lpx")
-				.fontColor("#969799")
-				.backgroundColor("#fff")
-				.border({ width: { bottom: 1 }, color: "#ebedf0" })
-		}
-		if(option.customContent){
-			customContent({ customBuilder: option.customContent })
-		}else if(option.actions){
-			if(Array.isArray(option.actions[0])){
-				ForEach(option.actions, (actionList: IBestActionMultiLine[], listIndex) => {
-					Scroll(){
-						Row(){
-							ForEach(actionList, (action: IBestActionMultiLine, index) => {
-								Button(){
-									Column() {
-										Image(action.icon)
-											.width("96lpx")
-											.fillColor("#323232")
-											.borderRadius(1000)
-											.aspectRatio(1)
-											.margin({ left: "32lpx", right: "32lpx", bottom: "16lpx" })
-											.draggable(false)
-										Text(action.name)
-											.padding({ left: "8lpx", right: "8lpx" })
-											.fontSize("24lpx")
-											.fontColor(action.color || "#323232")
-										if(action.subName){
-											Text(action.subName)
-												.fontSize("24lpx")
-												.fontColor("#c8c9cc")
-												.margin({ top: "12lpx" })
-												.padding({ left: "8lpx", right: "8lpx" })
-										}
-									}.alignItems(HorizontalAlign.Center)
-								}
-								.type(ButtonType.Normal)
-								.borderRadius(0)
-								.backgroundColor("#fff")
-								.stateEffect(!action.isDisabled)
-								.opacity(action.isDisabled ? 0.5 : 1)
-								.onClick(() => {
-									if(!action.isDisabled){
-										if(action.value){
-											option.onSelect?.(listIndex, index, action.value)
-										}else{
-											option.onSelect?.(listIndex, index)
-										}
-										option.close(option.id)
-									}
-								})
-							})
-						}.alignItems(VerticalAlign.Top)
+			if(this.option.cancelText){
+				Divider()
+					.width(CONTAINER_SIZE.FULL)
+					.strokeWidth("16lpx")
+					.color(GRAY_COLOR.GRAY_1)
+				Button({ type: ButtonType.Normal }){
+					Column(){
+						Text(this.option.cancelText).fontColor(GRAY_COLOR.GRAY_7)
 					}
-					.width("100%")
-					.scrollable(ScrollDirection.Horizontal)
-					.scrollBar(BarState.Off)
-					.align(Alignment.Start)
-					.backgroundColor("#fff")
-					.padding({ top: "32lpx", bottom: "32lpx", left: "16lpx" })
-					.border({ width: { top: listIndex > 0 ? 1 :0 }, color: "#ebedf0" })
-				})
-			}else{
-				ForEach(option.actions, (action: IBestActionType | string, index) => {
-					Button({ type: ButtonType.Normal }){
-						Column() {
-							Row(){
-								if(typeof action == "object" && action.icon){
-									Image(action.icon)
-										.width("36lpx")
-										.aspectRatio(1)
-										.fillColor(typeof action == "object" && action.isDisabled ? "#c8c9cc" : "#323232")
-										.margin({ right: "16lpx" })
-										.draggable(false)
-								}
-								Text(typeof action == "object" ? action.name : action).fontColor(typeof action == "object" && action.isDisabled ? "#c8c9cc" : (typeof action == "object" && action.color || "#323232"))
-							}.justifyContent(FlexAlign.Center)
-							if(typeof action == "object" && action.subName){
-								Text(action.subName)
-									.width("100%")
-									.textAlign(TextAlign.Center)
-									.fontSize("24lpx")
-									.fontColor("#969799")
-									.margin({ top: "16lpx" })
-							}
-						}.actionSheetItemStyle()
-					}
-					.actionSheetButtonStyle(option.actions && index < option.actions.length - 1)
-					.stateEffect(typeof action == "string" || !action.isDisabled)
-					.onClick(() => {
-						if(typeof action == "string" || !action.isDisabled){
-							if(typeof action == "object" && action.value){
-								option.onSelect?.(index, action.value)
-							}else{
-								option.onSelect?.(index)
-							}
-							option.close(option.id)
-						}
-					})
+					.width(CONTAINER_SIZE.FULL)
+					.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd, top: this.baseStyle.spaceSm, bottom: this.baseStyle.spaceSm })
+				}
+				.actionSheetButtonStyle()
+				.onClick(() => {
+					this.option.onCancel?.()
+					this.option.close(this.option.id)
 				})
 			}
 		}
-		if(option.cancelText){
-			Divider()
-				.width("100%")
-				.strokeWidth("16lpx")
-				.color("#f7f8fa")
-			Button({ type: ButtonType.Normal }){
-				Column(){
-					Text(option.cancelText).fontColor("#646566")
-				}.actionSheetItemStyle()
-			}
-			.actionSheetButtonStyle()
-			.onClick(() => {
-				option.onCancel?.()
-				option.close(option.id)
-			})
-		}
+		.width(CONTAINER_SIZE.FULL)
+		.padding({ bottom: this.option.safeAreaInsetBottom ? `${GlobalStore.bottomBarHeight}lpx` : 0 })
 	}
-	.width("100%")
-	.padding({ bottom: option.safeAreaInsetBottom ? `${GlobalStore.bottomBarHeight}lpx` : 0 })
+}
+
+@Builder
+function defaultBuilder(option: IBestActionSheetParams) {
+	defaultContent({ option })
 }
 
 class ActionSheet{
@@ -339,7 +347,7 @@ class ActionSheet{
 		let params = new IBestActionSheetParams(option)
 		params.id = key
 		params.close = (id: string): void => this.close(id)
-		let contentNode = new ComponentContent(this.uiContext, wrapBuilder(defaultContentBuilder), params)
+		let contentNode = new ComponentContent(this.uiContext, wrapBuilder(defaultBuilder), params)
 		let sheetOption: SheetOptions = {
 			width: params.width,
 			height: params.height,

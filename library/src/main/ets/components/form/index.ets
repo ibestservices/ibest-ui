@@ -33,31 +33,31 @@ export struct IBestForm {
 	/**
      * 文本宽度
      */
-	@Provide labelWidth: number = 160
+	@Prop labelWidth: number = 160
 	/**
      * 文本位置
      */
-	@Provide labelPosition: LabelPositionType = "left"
+	@Prop labelPosition: LabelPositionType = "left"
 	/**
      * 文本对齐方式
      */
-	@Provide labelAlign: FieldTextAlign = "left"
+	@Prop labelAlign: FieldTextAlign = "left"
 	/**
 	 * 是否显示文本后冒号
 	 */
-	@Provide colon: boolean = false
+	@Prop colon: boolean = false
 	/**
      * 星号的位置
      */
-	@Provide requireAsteriskPosition: RequireAsteriskPositionType = 'left'
+	@Prop requireAsteriskPosition: RequireAsteriskPositionType = 'left'
 	/**
      * 是否显示验证信息
      */
-	@Provide showMessage: boolean = true
+	@Prop showMessage: boolean = true
 	/**
      * 是否禁用
      */
-	@Provide disabled: boolean = false
+	@Prop disabled: boolean = false
 	/**
 	 * 表单内容
 	 */

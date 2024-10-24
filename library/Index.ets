@@ -3,12 +3,21 @@ import IBestToast from './src/main/ets/apis/IBestToast'
 import IBestActionSheet from './src/main/ets/apis/IBestActionSheet'
 import IBestImagePreview from './src/main/ets/apis/IBestImagePreview'
 import IBestDialogUtil from './src/main/ets/apis/IBestDialog'
+import IBestNotify from './src/main/ets/apis/IBestNotify'
 import GlobalStore from './src/main/ets/utils/GlobalStore'
 const init = GlobalStore.init
 
 setIBestUIBaseStyle()
 
-export { setIBestUIBaseStyle, IBestToast, IBestActionSheet, init as IBestInit, IBestImagePreview, IBestDialogUtil }
+export {
+	setIBestUIBaseStyle,
+	IBestToast,
+	IBestActionSheet,
+	init as IBestInit,
+	IBestImagePreview,
+	IBestDialogUtil,
+	IBestNotify
+}
 export { Throttle } from './src/main/ets/utils/Throttle'
 export { Debounce } from './src/main/ets/utils/Debounce'
 

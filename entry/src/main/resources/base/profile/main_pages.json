@@ -32,6 +32,7 @@
 		"pages/Signature",
 		"pages/Slider",
 		"pages/ImagePreview",
-		"pages/Uploader"
+		"pages/Uploader",
+		"pages/Notify"
 	]
 }

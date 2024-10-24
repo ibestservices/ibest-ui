@@ -20,10 +20,6 @@ struct Index {
       title: '基础组件',
       list: [
         {
-          name: 'Loading 加载',
-          path: 'pages/Loading'
-        },
-        {
           name: 'Button 按钮',
           path: 'pages/Button'
         },
@@ -140,6 +136,10 @@ struct Index {
         {
           name: 'Loading 加载',
           path: 'pages/Loading'
+        },
+        {
+          name: 'Notify 消息通知',
+          path: 'pages/Notify'
         }
       ]
     },

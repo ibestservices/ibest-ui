@@ -34,7 +34,7 @@ export struct IBestLoading {
   /**
    * loading的颜色
    */
-  @Prop loadingColor: ResourceColor = '#3D8AF2';
+  @Prop loadingColor: ResourceColor = GRAY_COLOR.GRAY_5;
   /**
    * loading的线条宽度
    */
@@ -58,11 +58,11 @@ export struct IBestLoading {
   /**
    * 加载的文案
    */
-  @Prop loadingText?: string = undefined;
+  @Prop loadingText: string = "";
   /**
    * loading的文字颜色
    */
-  @Prop loadingTextColor: ResourceColor = GRAY_COLOR.GRAY_6;
+  @Prop loadingTextColor: ResourceColor = GRAY_COLOR.GRAY_5;
   /**
    * loading的文字大小
    */

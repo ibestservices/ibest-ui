@@ -45,7 +45,7 @@ export struct IBestUploader {
 	/**
 	 * 预览大小
 	 */
-	@Provide previewSize: number = 160
+	@Provide({allowOverride: "previewSize"}) previewSize: number = 160
 	/**
 	 * 是否在点击预览图后展示全屏图片预览
 	 */
@@ -53,15 +53,15 @@ export struct IBestUploader {
 	/**
 	 * 预览图片裁剪方式
 	 */
-	@Provide imageFit: ImageFit = ImageFit.Cover
+	@Provide({allowOverride: "imageFit"}) imageFit: ImageFit = ImageFit.Cover
 	/**
 	 * 圆角大小
 	 */
-	@Provide cornerRadius: number = 0
+	@Provide({allowOverride: "cornerRadius"}) cornerRadius: number = 0
 	/**
 	 * 是否显示删除按钮
 	 */
-	@Provide showDelete: boolean = true
+	@Provide({allowOverride: "showDelete"}) showDelete: boolean = true
 	/**
 	 * 文件选择配置项
 	 */
@@ -69,7 +69,7 @@ export struct IBestUploader {
 	/**
 	 * 禁用
 	 */
-	@Provide disabled: boolean = false
+	@Provide({allowOverride: "disabled"}) disabled: boolean = false
 	/**
 	 * 自定义上传触发器
 	 */

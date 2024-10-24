@@ -35,7 +35,7 @@ export struct IBestRate {
 	/**
 	 * 图标大小
 	 */
-	@Provide iconSize: number = 40
+	@Provide({allowOverride: "iconSize"}) iconSize: number = 40
 	/**
 	 * 间距
 	 */
@@ -43,19 +43,19 @@ export struct IBestRate {
 	/**
 	 * 选中图标
 	 */
-	@Provide activeIcon: Resource = $r("app.media.icon_star_o")
+	@Provide({allowOverride: "activeIcon"}) activeIcon: Resource = $r("app.media.icon_star_o")
 	/**
 	 * 未选中图标
 	 */
-	@Provide inactiveIcon: Resource = $r("app.media.icon_star")
+	@Provide({allowOverride: "inactiveIcon"}) inactiveIcon: Resource = $r("app.media.icon_star")
 	/**
 	 * 选中颜色
 	 */
-	@Provide activeColor: ResourceColor = this.baseStyle.danger as string
+	@Provide({allowOverride: "activeColor"}) activeColor: ResourceColor = this.baseStyle.danger as string
 	/**
 	 * 未选中颜色
 	 */
-	@Provide inactiveColor: ResourceColor = GRAY_COLOR.GRAY_5
+	@Provide({allowOverride: "inactiveColor"}) inactiveColor: ResourceColor = GRAY_COLOR.GRAY_5
 	/**
 	 * 是否允许半选
 	 */
@@ -63,7 +63,7 @@ export struct IBestRate {
 	/**
 	 * 禁用
 	 */
-	@Provide disabled: boolean = false
+	@Provide({allowOverride: "disabled"}) disabled: boolean = false
 	/**
 	 * 只读
 	 */
@@ -71,7 +71,7 @@ export struct IBestRate {
 	/**
 	 * 禁用时颜色
 	 */
-	@Provide disabledColor: ResourceColor = GRAY_COLOR.GRAY_5
+	@Provide({allowOverride: "disabledColor"}) disabledColor: ResourceColor = GRAY_COLOR.GRAY_5
 	/**
 	 * 是否可清空
 	 */

@@ -4,43 +4,46 @@ import { LoadingIconType, WordBreakType } from '../utils/Global.type'
 import { fontSizeData } from '../theme-chalk/src/font'
 import { spaceData } from '../theme-chalk/src/space'
 
-class ToastOption{
-    /**
-     * 展示类型
-     */
-    type?: "" | "success" | "warning" | "fail" | "loading" = ""
+class LoadingOption{
     /**
      * 展示文本
      */
-    message?: string = ""
+    message?: string
     /**
      * 显示时长
      */
-    duration?: number = 1500
-    /**
-     * 换行方式
-     */
-    wordBreak?: WordBreakType = "normal"
-    /**
-     * 自定义图标
-     */
-    icon?: string | Resource = ""
-    /**
-     * 是否显示背景遮罩层
-     */
-    isShowMask?: boolean = false
+    duration?: number
     /**
      * 加载类型  type为loading时有效
      */
-    loadingType?: LoadingIconType = "circular"
+    loadingType?: LoadingIconType
+}
+
+class ToastOption extends LoadingOption {
+    /**
+     * 展示类型
+     */
+    type?: "success" | "warning" | "fail" | "loading" | ""
+    /**
+     * 换行方式
+     */
+    wordBreak?: WordBreakType
+    /**
+     * 自定义图标
+     */
+    icon?: string | Resource
+    /**
+     * 是否显示背景遮罩层
+     */
+    isShowMask?: boolean
     /**
      * 位置
      */
-    position?: "top" | "center" | "bottom" = "center"
+    position?: "top" | "center" | "bottom"
     /**
      * 偏移量
      */
-    offsetY?: number | string = 0
+    offsetY?: number | string
     /**
      * toast打开后回调
      */
@@ -48,18 +51,18 @@ class ToastOption{
 }
 
 class ToastParams extends ToastOption{
-    constructor(value: ToastOption) {
+    constructor(value?: ToastOption) {
         super()
-        this.type = value.type || ""
-        this.message = value.message || ""
-        this.duration = typeof value.duration != "undefined" ? value.duration : 1500
-        this.wordBreak = value.wordBreak || "normal"
-        this.icon = value.icon || ""
-        this.isShowMask = value.isShowMask || false
-        this.loadingType = value.loadingType || "circular"
-        this.position = value.position || "center"
-        this.offsetY = value.offsetY || 0
-        this.onOpened = value.onOpened
+        this.type = value?.type || ""
+        this.message = value?.message || "加载中"
+        this.duration = typeof value?.duration != "undefined" ? value.duration : 1500
+        this.wordBreak = value?.wordBreak || "normal"
+        this.icon = value?.icon || ""
+        this.isShowMask = value?.isShowMask || false
+        this.loadingType = value?.loadingType || "circular"
+        this.position = value?.position || "center"
+        this.offsetY = value?.offsetY || 0
+        this.onOpened = value?.onOpened
     }
 }
 
@@ -101,13 +104,13 @@ class ToastParams extends ToastOption{
 }
 
 class Toast{
-    private static _instance: Toast | null = null
+    private static _instance: Toast = new Toast()
     private toastOption: ToastParams | null = null
     private uiObserver: UIObserver | null = null
     private loadingDialog: ComponentContent<ToastParams> | null = null
     private promptAction: PromptAction | null = null
     private timer: number = 0
-    public _message?: string = ""
+    private _message?: string = ""
 
     set message(msg: string){
         // console.log("message改变为", msg)
@@ -117,7 +120,7 @@ class Toast{
         }
     }
 
-    private constructor() {}
+    constructor() {}
 
     private static getInstance(option: ToastParams, uiObserver: UIObserver, loadingDialog: ComponentContent<ToastOption>,
         promptAction: PromptAction): Toast{
@@ -132,12 +135,12 @@ class Toast{
         return Toast._instance
     }
     /**
-     * 显示toast
+     * 根据参数打开弹框
      */
-    public static async show(option: string | ToastOption){
+    private async open(option?: string | ToastOption){
         let params: ToastParams = typeof option == "string" ? new ToastParams({ message: option }) : new ToastParams(option)
-        if(Toast._instance?.loadingDialog){
-            Toast.hide()
+        if(Toast._instance.loadingDialog){
+            this.hide()
         }
         let windowClass = await window.getLastWindow(getContext())
         let uiContext = windowClass.getUIContext()
@@ -145,7 +148,7 @@ class Toast{
         let loadingDialog = new ComponentContent(uiContext, wrapBuilder(toastBuilder), params)
         let promptAction = uiContext.getPromptAction()
         Toast._instance = Toast.getInstance(params, uiObserver, loadingDialog, promptAction)
-        promptAction.openCustomDialog(Toast._instance.loadingDialog, {
+        await promptAction.openCustomDialog(Toast._instance.loadingDialog, {
             alignment: params.position == "top" ? DialogAlignment.Top : params.position == "bottom" ? DialogAlignment.Bottom : DialogAlignment.Center,
             offset: {dx: 0, dy: params.offsetY},
             isModal: params.isShowMask || params.type == "loading",
@@ -154,25 +157,45 @@ class Toast{
             onWillDismiss: (dismissDialogAction: DismissDialogAction) => {
                 // console.log("原因", JSON.stringify(dismissDialogAction.reason))
             }
-        }).then(()=>{
-            params.onOpened?.()
         })
-        // 监听路由变化，关闭toast
-        Toast._instance.uiObserver?.on("routerPageUpdate", ()=>{
-            Toast.hide()
+        params.onOpened?.()
+        return params
+    }
+    /**
+     * 显示toast
+     */
+    public show(option?: string | ToastOption){
+        this.open(option).then((params)=>{
+            // 监听路由变化，关闭toast
+            Toast._instance?.uiObserver?.on("routerPageUpdate", ()=>{
+                this.hide()
+            })
+            // 非loading自动关闭
+            if(params.type!="loading" && params.duration){
+                Toast._instance.timer = setTimeout(()=>{
+                    this.hide()
+                }, params.duration)
+            }
         })
-        if(params.type!="loading" && params.duration){
-            Toast._instance.timer = setTimeout(()=>{
-                Toast.hide()
-            }, params.duration)
-        }
         return Toast._instance
+    }
+    /**
+     * 显示loading
+     */
+    public showLoading(option?: LoadingOption) {
+        let opt: ToastOption = {
+            type: "loading",
+            message: option?.message,
+            loadingType: option?.loadingType,
+            duration: option?.duration
+        }
+        this.open(opt)
     }
 
     /**
      * 关闭toast
      */
-    static hide(){
+    public hide(){
         if(Toast._instance && Toast._instance.loadingDialog){
             Toast._instance.promptAction?.closeCustomDialog(Toast._instance.loadingDialog)
             Toast._instance.loadingDialog?.dispose()
@@ -182,4 +205,4 @@ class Toast{
         }
     }
 }
-export default Toast
+export default new Toast()

@@ -11,7 +11,7 @@ export struct IBestSlider{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@Provide uniId: number = 0
+	@State uniId: number = 0
 	@State space: number = 5
 	@State percentage: number = 0
 	@State barOffset: number = 0
@@ -41,7 +41,7 @@ export struct IBestSlider{
 	/**
 	 * 滑块大小
 	 */
-	@Provide buttonSize: number = 48
+	@Provide({allowOverride: "buttonSize"}) buttonSize: number = 48
 	/**
 	 * 进度条激活态颜色
 	 */
@@ -57,11 +57,11 @@ export struct IBestSlider{
 	/**
 	 * 是否垂直展示
 	 */
-	@Provide vertical: boolean = false
+	@Provide({allowOverride: "vertical"}) vertical: boolean = false
 	/**
 	 * 是否反转
 	 */
-	@Provide reverse: boolean = false
+	@Provide({allowOverride: "reverse"}) reverse: boolean = false
 	/**
 	 * 自定义滑块
 	 */
@@ -223,6 +223,7 @@ export struct IBestSlider{
 						// 拖动按钮1
 						DragBar({
 							value: this.value,
+							uniId: this.uniId,
 							buttonIndex: 0,
 							customButton: this.customButton
 						})
@@ -272,7 +273,7 @@ struct DragBar{
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@Prop value: IBestSliderValue
-	@Consume uniId: number
+	@Prop uniId: number
 	@Consume buttonWidth: number
 	@Consume buttonHeight: number
 	@Consume buttonSize: number

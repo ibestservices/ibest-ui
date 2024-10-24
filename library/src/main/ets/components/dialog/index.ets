@@ -8,6 +8,7 @@ import { sleep } from '../../assets/ets/utils';
 export struct IBestDialog {
   /**
    * 弹框展示状态
+   * @since 1.16.0
    */
   @Link @Watch("visibleChange") visible: boolean
   /**
@@ -99,7 +100,7 @@ export struct IBestDialog {
    */
   @Prop messageMaxHeight: string = '60%';
   /**
-   * 样式风格
+   * 按钮样式风格
    * @since 1.16.0
    */
   @Prop theme: 'default' | 'round-button' = 'default';
@@ -127,12 +128,12 @@ export struct IBestDialog {
   /**
    * 确认按钮的颜色
    */
-  @Prop confirmButtonColor: ResourceColor = '#3D8AF2';
+  @Prop confirmButtonColor: ResourceColor = ""
   /**
    * 确认按钮的背景颜色
    * @since 1.16.0
    */
-  @Prop confirmButtonBgColor: ResourceColor = this.baseStyle.default
+  @Prop confirmButtonBgColor: ResourceColor = ""
   /**
    * 取消按钮的颜色
    */
@@ -348,8 +349,8 @@ export struct IBestDialog {
       showCancelButton: this.showCancelButton,
       confirmButtonText: this.confirmButtonText,
       cancelButtonText: this.cancelButtonText,
-      confirmButtonColor: this.confirmButtonColor,
-      confirmButtonBgColor: this.confirmButtonBgColor,
+      confirmButtonColor: this.confirmButtonColor || (this.theme == 'round-button' ? '#fff' : '#3D8AF2'),
+      confirmButtonBgColor: this.confirmButtonBgColor || (this.theme == 'round-button' ? '#3D8AF2' : '#fff'),
       cancelButtonColor: this.cancelButtonColor,
       cancelButtonBgColor: this.cancelButtonBgColor,
       confirmButtonDisabled: this.confirmButtonDisabled,

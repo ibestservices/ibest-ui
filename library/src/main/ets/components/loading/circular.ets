@@ -39,7 +39,7 @@ export struct IBestLoadingCircular {
   /**
    * loading的颜色
    */
-  @Prop color: ResourceColor = GRAY_COLOR.GRAY_6;
+  @Prop color: ResourceColor = GRAY_COLOR.GRAY_5;
   /**
    * 圆的边框粗细
    */
@@ -84,7 +84,7 @@ export struct IBestLoadingCircular {
         curve: Curve.EaseInOut,
         event: () => {
           this.strokeDashOffset = -this.maxPerimeter*0.5
-          this.strokeDashArray = new Point(this.maxPerimeter*0.8,this.maxPerimeter)
+          this.strokeDashArray = new Point(this.maxPerimeter*0.6,this.maxPerimeter)
         }
       }
     ])

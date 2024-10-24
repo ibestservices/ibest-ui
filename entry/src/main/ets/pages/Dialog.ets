@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, DISABLE_COLOR, SPACE } from '../assets/styles/BaseStyle';
+import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { IBestDialog, IBestCell, IBestCellGroup, IBestDialogUtil } from '@ibestservices/ibest-ui'
@@ -27,8 +27,7 @@ struct DialogPage {
   @State formInputError: boolean = false
   @State dialogVisible: boolean = false
 
-  @Builder
-  FormInputContain() {
+  @Builder formInputContain() {
     Column() {
       TextInput({ 'placeholder': '请输入' })
         .fontSize('28lpx')
@@ -72,7 +71,15 @@ struct DialogPage {
         visible: $dialogVisible,
         title: textData.title,
         showCancelButton: true,
-        defaultBuilder: (): void => this.customComponentContent()
+        defaultBuilder: (): void => this.formInputContain(),
+        beforeClose: (action) => {
+          if (action === 'cancel') {
+            return true
+          }
+          const valueLength = this.inputValue.trim().length;
+          this.formInputError = !valueLength;
+          return !this.formInputError
+        }
       })
 
       List() {
@@ -112,30 +119,11 @@ struct DialogPage {
                   IBestDialogUtil.open({
                     title: textData.title,
                     message: textData.life,
-                    showCancelButton: true,
-                    beforeClose: (action) => {
-                      if(action == "confirm"){
-                        return new Promise(resolve => {
-                          IBestDialogUtil.open({
-                            title: "提示",
-                            message: "确认关闭？",
-                            showCancelButton: true,
-                            onConfirm: () => {
-                              resolve(true)
-                            },
-                            onCancel: () => {
-                              resolve(false)
-                            }
-                          })
-                        })
-                      }
-                      return true
-                    }
+                    showCancelButton: true
                   })
                 }
               })
             }
-
           }
         }
 
@@ -194,11 +182,22 @@ struct DialogPage {
                     message: textData.life,
                     showCancelButton: true,
                     beforeClose: (action) => {
-                      return new Promise((resolve) => {
-                        setTimeout(() => {
-                          resolve(action === 'confirm')
-                        }, 1000)
-                      })
+                      if(action == "confirm"){
+                        return new Promise(resolve => {
+                          IBestDialogUtil.open({
+                            title: "提示",
+                            message: "确认关闭？",
+                            showCancelButton: true,
+                            onConfirm: () => {
+                              resolve(true)
+                            },
+                            onCancel: () => {
+                              resolve(false)
+                            }
+                          })
+                        })
+                      }
+                      return true
                     }
                   })
                 }
@@ -215,22 +214,11 @@ struct DialogPage {
                 isLink: true,
                 hasBorder: false,
                 onClickCell: () => {
-                  // this.formInputError = false;
-                  // this.inputValue = '';
-                  // this.slotDialogVisible = true;
                   IBestDialogUtil.open({
                     title: textData.title,
                     message: textData.life,
                     showCancelButton: true,
-                    defaultBuilder: (): void => this.FormInputContain(),
-                    beforeClose: (action) => {
-                      if (action === 'cancel') {
-                        return true
-                      }
-                      const valueLength = this.inputValue.trim().length;
-                      this.formInputError = !valueLength;
-                      return !this.formInputError
-                    }
+                    defaultBuilder: (): void => this.customComponentContent()
                   })
                 }
               })

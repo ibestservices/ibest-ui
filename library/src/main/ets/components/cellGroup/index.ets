@@ -12,27 +12,27 @@ export struct IBestCellGroup {
   /**
    * 默认插槽
    */
-  @BuilderParam private defaultBuilder: CustomBuilder;
+  @BuilderParam defaultBuilder: CustomBuilder;
   /**
    * 分组标题
    * title没有设计成builder是因为如果设计成了builder就没法用尾随闭包方式初始化Cell或别的组件了
    * must have one and only one property decorated with @BuilderParam, and its @BuilderParam expects no parameter.
    */
-  @Prop private title: string | number = '';
+  @Prop title: string | number = '';
   /**
    * 是否展示为圆角卡片风格
    */
-  @Prop private inset: boolean = false;
+  @Prop inset: boolean = false;
   /**
    * 是否显示外边框
    */
-  @Prop private hasBorder: boolean = true;
+  @Prop hasBorder: boolean = true;
 
   /**
    * 获取边框宽度
    * @returns
    */
-  private getBorderWidth() {
+  getBorderWidth() {
     return this.hasBorder && !this.inset ? '2lpx' : 0
   }
 
@@ -40,7 +40,7 @@ export struct IBestCellGroup {
    * 获取margin
    * @returns
    */
-  private getMargin() {
+  getMargin() {
     return this.inset ? { left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd } as Padding : 0
   }
 
@@ -48,7 +48,7 @@ export struct IBestCellGroup {
    * 是否传入了title
    * @returns
    */
-  private isHasTitle() {
+  isHasTitle() {
     const titleText = String(this.title);
     return titleText.length
   }

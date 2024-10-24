@@ -114,7 +114,7 @@ struct LoadingPage {
               })
               IBestLoading({
                 loadingText: '加载中...',
-                loadingColor: '#c9c9c9',
+                loadingColor: '#3D8AF2',
                 loadingTextColor: 'rgb(25, 137, 250)'
               }).margin({ left: '40lpx' })
             }

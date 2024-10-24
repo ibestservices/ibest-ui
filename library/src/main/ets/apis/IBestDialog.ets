@@ -176,6 +176,16 @@ class IBestDialogOption {
 	 * 点击确认的的回调
 	 */
 	onConfirm?: (event?: ClickEvent) => void
+	/**
+	 * 弹框打开回调
+	 * @since 1.16.0
+	 */
+	onOpen?: () => void = () => {}
+	/**
+	 * 弹框关闭回调
+	 * @since 1.16.0
+	 */
+	onClose?: () => void = () => {}
 }
 
 class IBestDialogParams extends IBestDialogOption {
@@ -225,6 +235,8 @@ class IBestDialogParams extends IBestDialogOption {
 		this.beforeClose = option.beforeClose
 		this.onCancel = option.onCancel
 		this.onConfirm = option.onConfirm
+		this.onOpen = option.onOpen
+		this.onClose = option.onClose
 	}
 }
 /**
@@ -303,6 +315,7 @@ function defaultContentBuilder(option: IBestDialogParams) {
 interface DialogMapValue{
 	contentNode: ComponentContent<IBestDialogParams>
 	promptAction: PromptAction
+	params: IBestDialogParams
 }
 /**
  * 弹窗管理器
@@ -324,7 +337,8 @@ class Dialog{
 		params.contentNode = contentNode
 		this.contentNodeMap.set(key, {
 			contentNode: contentNode,
-			promptAction: promptAction
+			promptAction: promptAction,
+			params: params
 		})
 		await promptAction.openCustomDialog(contentNode, {
 			alignment: DialogAlignment.Center,
@@ -341,6 +355,7 @@ class Dialog{
 				}
 			}
 		})
+		params.onOpen?.()
 		return key
 	}
 	/**
@@ -352,6 +367,7 @@ class Dialog{
 			let dialog = this.contentNodeMap.get(key)
 			dialog?.promptAction?.closeCustomDialog(dialog?.contentNode)
 			dialog?.contentNode?.dispose()
+			dialog?.params.onClose?.()
 		}
 	}
 	private getUniKey(): string{

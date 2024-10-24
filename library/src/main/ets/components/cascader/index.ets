@@ -304,23 +304,23 @@ export struct IBestCascader{
 	/**
 	 * 可选项数据源
 	 */
-	@Provide options: IBestCascaderOption[] = []
+	@Provide({allowOverride: "options"}) options: IBestCascaderOption[] = []
 	/**
 	 * 选中颜色
 	 */
-	@Provide activeColor: ResourceColor = this.baseStyle.primary
+	@Provide({allowOverride: "activeColor"}) activeColor: ResourceColor = this.baseStyle.primary
 	/**
 	 * 列表区域高度
 	 */
-	@Provide listHeight: number = 700
+	@Provide({allowOverride: "listHeight"}) listHeight: number = 700
 	/**
 	 * 单项高度
 	 */
-	@Provide itemHeight: number = 80
+	@Provide({allowOverride: "itemHeight"}) itemHeight: number = 80
 	/**
 	 * 是否开启动态加载
 	 */
-	@Provide lazy: boolean = false
+	@Provide({allowOverride: "lazy"}) lazy: boolean = false
 	/**
 	 * 动态加载函数
 	 */

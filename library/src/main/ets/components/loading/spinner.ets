@@ -1,6 +1,6 @@
 import { UIContext } from '@ohos.arkui.UIContext';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-
+import { curves } from '@kit.ArkUI';
 @Component
 export struct IBestLoadingSpinner {
   /**
@@ -14,7 +14,7 @@ export struct IBestLoadingSpinner {
   /**
    * 滚动的角度
    */
-  @State rotateAngle: string = '0';
+  @State rotateAngle: number = 0
   /**
    * 当前菊花图的每条线的长度
    */
@@ -22,41 +22,11 @@ export struct IBestLoadingSpinner {
   /**
    * loading的颜色
    */
-  @Prop color: ResourceColor = GRAY_COLOR.GRAY_6
+  @Prop color: ResourceColor = GRAY_COLOR.GRAY_5
   /**
    * 循环渲染的数据
    */
-  private list: number[] = new Array(12).fill(1);
-  /**
-   * uiContext实例
-   */
-  private uiContext: UIContext | undefined = undefined;
-
-  aboutToAppear() {
-    this.uiContext = this.getUIContext?.();
-    setTimeout(() => {
-      this.handleAnimate()
-    }, 100)
-  }
-
-  handleAnimate() {
-    this.uiContext?.keyframeAnimateTo({ iterations: -1 }, [
-      {
-        duration: 500,
-        curve: Curve.Linear,
-        event: () => {
-          this.rotateAngle = '180deg';
-        }
-      },
-      {
-        duration: 500,
-        curve: Curve.Linear,
-        event: () => {
-          this.rotateAngle = '360deg';
-        }
-      }
-    ]);
-  }
+  private list: number[] = new Array(12).fill(1)
 
   build() {
     Column() {
@@ -79,8 +49,14 @@ export struct IBestLoadingSpinner {
       })
     }.width(this.spinnerSize)
     .height(this.spinnerSize)
-    .rotate({
-      angle: this.rotateAngle
+    .rotate({ angle: this.rotateAngle })
+    .animation({
+      duration: 800,
+      iterations: -1,
+      curve: curves.stepsCurve(12, true)
+    })
+    .onAppear(() => {
+      this.rotateAngle = 360
     })
   }
 }

@@ -10,20 +10,6 @@ import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseSt
 struct ToastPage {
   @State title: string = (router.getParams() as ComponentRouterParams).title || ''
 
-  showCircularLoading(){
-    IBestToast.show({
-      type: "loading",
-      message: "加载中...",
-      onOpened: () => {
-        // 可在此处延时关闭toast
-        console.log("toast打开成功")
-      }
-    })
-    setTimeout(() => {
-      // 也可在此处关闭toast
-      IBestToast.hide()
-    }, 2000)
-  }
   showSpinnerLoading(){
     IBestToast.show({
       type: "loading",
@@ -40,9 +26,9 @@ struct ToastPage {
     }, 2000)
   }
   // 动态更新提示
-  async showCountDownLoading(){
+  showCountDownLoading(){
     let count = 3
-    let toast = await IBestToast.show({
+    let toast = IBestToast.show({
       type: "loading",
       message: `倒计时 ${count} 秒`,
       duration: 0
@@ -111,7 +97,10 @@ struct ToastPage {
                   isLink: true,
                   hasBorder: false,
                   onClickCell: () => {
-                    this.showCircularLoading()
+                    IBestToast.showLoading()
+                    setTimeout(() => {
+                      IBestToast.hide()
+                    }, 1500)
                   }
                 })
               }
@@ -231,6 +220,7 @@ struct ToastPage {
           }
         }
       }.layoutWeight(1)
+      .padding({ bottom: SPACE.BASE })
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)
