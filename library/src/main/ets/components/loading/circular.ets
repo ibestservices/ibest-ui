@@ -1,71 +1,113 @@
 import { UIContext } from '@ohos.arkui.UIContext';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 
+class Point {
+  x: number
+  y: number
+
+  constructor(x: number, y: number) {
+    this.x = x
+    this.y = y
+  }
+  plus(rhs: Point): Point {
+    return new Point(this.x + rhs.x, this.y + rhs.y)
+  }
+  subtract(rhs: Point): Point {
+    return new Point(this.x - rhs.x, this.y - rhs.y)
+  }
+  multiply(scale: number): Point {
+    return new Point(this.x * scale, this.y * scale)
+  }
+  equals(rhs: Point): boolean {
+    return this.x === rhs.x && this.y === rhs.y
+  }
+}
+
+@AnimatableExtend(Circle) function animatableDashArray(point: Point) {
+  .strokeDashArray([point.x, point.y])
+}
+@AnimatableExtend(Circle) function animatableDashOffset(strokeDashOffset: number) {
+  .strokeDashOffset(strokeDashOffset)
+}
+
 @Component
 export struct IBestLoadingCircular {
   /**
    * loading的尺寸
    */
-  @Prop private circularSize: string = '60lpx'
+  @Prop circularSize: string = '60lpx'
   /**
    * loading的颜色
    */
-  @Prop private color: ResourceColor = GRAY_COLOR.GRAY_6;
+  @Prop color: ResourceColor = GRAY_COLOR.GRAY_5;
   /**
    * 圆的边框粗细
    */
-  @Prop private strokeWidth: string | number = '6lpx';
-  /**
-   * J间距
-   */
-  @State private strokeDashArray: (string|number)[] = [this.circularSize, 400]
-  /**
-   * 偏移
-   */
-  @State private strokeDashOffset: string | number = `-${this.circularSize}`
+  @Prop strokeWidth: Length = '6lpx';
   /**
    * 旋转角度
    */
-  @State rotateAngle: string = '0';
-  uiContext: UIContext | undefined = undefined;
+  @State rotateAngle: number = 0
+  @State maxPerimeter: number = 0
+  @State strokeDashArray: Point = new Point(0,0)
+  @State strokeDashOffset: number = 0
+  private uiContext: UIContext = this.getUIContext()
+
   aboutToAppear() {
-    this.uiContext = this.getUIContext?.();
-    // 不加延迟不执行
-    setTimeout(()=>{
-      this.handleAnimate()
-    }, 0)
+    this.maxPerimeter = Math.floor(Math.PI * parseFloat(this.circularSize)) + 20
+    this.strokeDashArray = new Point(0,this.maxPerimeter)
   }
 
-  handleAnimate(){
-    this.uiContext?.keyframeAnimateTo({ iterations: -1 }, [
+  keyframeAnimateTo(){
+    this.uiContext?.keyframeAnimateTo({iterations: -1},[
       {
-        duration: 500,
-        curve: Curve.Linear,
+        // 第一段关键帧动画时长为100ms
+        duration: 100,
+        curve: Curve.EaseInOut,
         event: () => {
-          this.rotateAngle = '180deg';
+          this.strokeDashOffset = 0
+          this.strokeDashArray = new Point(0,this.maxPerimeter)
         }
       },
       {
-        duration: 500,
-        curve: Curve.Linear,
+        // 第一段关键帧动画时长为700ms
+        duration: 700,
+        curve: Curve.EaseInOut,
         event: () => {
-          this.rotateAngle = '360deg';
+          this.strokeDashOffset = -this.maxPerimeter*0.3
+          this.strokeDashArray = new Point(this.maxPerimeter*0.6,this.maxPerimeter)
+        }
+      },
+      {
+        // 第二段关键帧动画时长为700ms
+        duration: 700,
+        curve: Curve.EaseInOut,
+        event: () => {
+          this.strokeDashOffset = -this.maxPerimeter*0.5
+          this.strokeDashArray = new Point(this.maxPerimeter*0.6,this.maxPerimeter)
         }
       }
-    ]);
+    ])
   }
 
   build() {
-      Circle()
-        .width(this.circularSize)
-        .height(this.circularSize)
-        .fillOpacity(0)
-        .strokeWidth(this.strokeWidth)
-        .stroke(this.color)
-        .strokeDashOffset(this.strokeDashOffset)
-        .strokeDashArray(this.strokeDashArray)
-        .rotate({
-          angle: this.rotateAngle
-        })
+    Circle({width: this.circularSize, height: this.circularSize})
+      .fill("transparent")
+      .strokeWidth(2)
+      .stroke(this.color)
+      .strokeLineCap(LineCapStyle.Round)
+      .animatableDashArray(this.strokeDashArray)
+      .animatableDashOffset(this.strokeDashOffset)
+      .rotate({ angle: this.rotateAngle })
+      .animation({
+        duration: 2000,
+        iterations: -1,
+        curve: Curve.Linear,
+        playMode: PlayMode.Normal
+      })
+      .onAppear(() => {
+        this.rotateAngle = 360
+        this.keyframeAnimateTo()
+      })
   }
 }

@@ -88,18 +88,18 @@ export struct IBestCell {
   /**
    * 点击单元格的回调
    */
-  private onClickCell?: (event: ClickEvent) => void;
+  onClickCell?: (event: ClickEvent) => void;
   /**
    * 根据arrow direction获取图标旋转角度
    */
-  private arrowDirection2RotateDegMap: Record<string, number> = {
+  arrowDirection2RotateDegMap: Record<string, number> = {
     [ARROW_DIRECTION.RIGHT]: 0,
     [ARROW_DIRECTION.TOP]: -90,
     [ARROW_DIRECTION.BOTTOM]: 90,
     [ARROW_DIRECTION.LEFT]: 180,
   }
 
-  private isHasLabel() {
+  isHasLabel() {
     const labelText = String(this.label)
     return labelText.length
   }
@@ -108,7 +108,7 @@ export struct IBestCell {
    * 根据size获取单元格的尺寸
    * @returns
    */
-  private getCellSize() {
+  getCellSize() {
     const cellSize = this.cellSize;
     switch (cellSize){
         case SIZE.LARGE:
@@ -118,11 +118,11 @@ export struct IBestCell {
     }
   }
 
-  private getArrowRotateAngle() {
+  getArrowRotateAngle() {
     return this.arrowDirection2RotateDegMap[this.arrowDirection] || this.arrowDirection2RotateDegMap[ARROW_DIRECTION.RIGHT]
   }
 
-  private getAlignItems() {
+  getAlignItems() {
     return this.center ? VerticalAlign.Center : VerticalAlign.Top
   }
 

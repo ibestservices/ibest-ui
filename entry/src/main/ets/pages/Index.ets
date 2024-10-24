@@ -20,19 +20,19 @@ struct Index {
       title: '基础组件',
       list: [
         {
-          name: 'Button按钮',
+          name: 'Button 按钮',
           path: 'pages/Button'
         },
         {
-          name: 'Cell单元格',
+          name: 'Cell 单元格',
           path: 'pages/Cell'
         },
         {
-          name: 'Popup弹出层',
+          name: 'Popup 弹出层',
           path: 'pages/Popup'
         },
         {
-          name: 'Theme主题',
+          name: 'Theme 主题',
           path: 'pages/Theme'
         },
         {
@@ -136,6 +136,10 @@ struct Index {
         {
           name: 'Loading 加载',
           path: 'pages/Loading'
+        },
+        {
+          name: 'Notify 消息通知',
+          path: 'pages/Notify'
         }
       ]
     },

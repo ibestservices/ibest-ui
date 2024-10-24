@@ -160,7 +160,7 @@ export struct IBestCalendar{
     /**
      * 单项宽度
      */
-    @Provide itemWidth: string = "13%"
+    @Provide({allowOverride: "itemWidth"}) itemWidth: string = "13%"
     /**
      * 每周第一天是周几
      */
@@ -168,7 +168,7 @@ export struct IBestCalendar{
     /**
      * 是否显示农历
      */
-    @Provide isShowLunar: boolean = false
+    @Provide({allowOverride: "isShowLunar"}) isShowLunar: boolean = false
     /**
      * 当前点击选择的年月日
      */
@@ -223,23 +223,23 @@ export struct IBestCalendar{
     /**
      * 选择类型
      */
-    @Provide selectType: SelectType = "single"
+    @Provide({allowOverride: "selectType"}) selectType: SelectType = "single"
     /**
      * 已选的日期列表
      */
-    @Provide selectedList: Array<DayItemType> = []
+    @Provide({allowOverride: "selectedList"}) selectedList: Array<DayItemType> = []
     /**
      * 选中样式
      */
-    @Provide selectedStyleType: SelectedStyleType = "normal"
+    @Provide({allowOverride: "selectedStyleType"}) selectedStyleType: SelectedStyleType = "normal"
     /**
      * 选中主题颜色
      */
-    @Provide type: ColorType = COLOR_TYPE.PRIMARY
+    @Provide({allowOverride: "type"}) type: ColorType = COLOR_TYPE.PRIMARY
     /**
      * 自定义选中颜色
      */
-    @Provide selectedColor: ResourceColor = ""
+    @Provide({allowOverride: "selectedColor"}) selectedColor: ResourceColor = ""
     /**
      * 日期区间最多可选天数 默认无限制
      */

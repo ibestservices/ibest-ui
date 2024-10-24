@@ -3,14 +3,14 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 @Component
 export struct IBestStepperBtn {
   @BuilderParam defaultSlot: CustomBuilder;
-  @Prop private buttonSize: string = '40lpx';
-  @Prop private radiusLeftTop: string = '0';
-  @Prop private radiusLeftBottom: string = '0';
-  @Prop private radiusRightTop: string = '0';
-  @Prop private radiusRightBottom: string = '0';
-  @Prop private disabled: boolean = false;
-  private onClickBtn?: () => void;
-  private onLongPress?: () => void;
+  @Prop buttonSize: string = '40lpx';
+  @Prop radiusLeftTop: string = '0';
+  @Prop radiusLeftBottom: string = '0';
+  @Prop radiusRightTop: string = '0';
+  @Prop radiusRightBottom: string = '0';
+  @Prop disabled: boolean = false;
+  onClickBtn?: () => void;
+  onLongPress?: () => void;
 
   build() {
     Button() {

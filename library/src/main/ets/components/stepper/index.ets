@@ -14,27 +14,27 @@ export struct IBestStepper {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
   /**
    * 输入框宽度
    */
-  @Prop private inputWidth: string = '64lpx'
+  @Prop inputWidth: string = '64lpx'
   /**
    * 按钮大小以及输入框高度
    */
-  @Prop private buttonSize: string = '54lpx'
+  @Prop buttonSize: string = '54lpx'
   /**
    * 图标大小
    */
-  @Prop private iconSize: string = '40lpx'
+  @Prop iconSize: string = '40lpx'
   /**
    * 加减按钮图标的左右radius值
    */
-  @Prop private buttonRadius: string = this.baseStyle.borderRadiusSm as string;
+  @Prop buttonRadius: string = this.baseStyle.borderRadiusSm as string;
   /**
    * 默认值
    */
-  @Prop @Watch('handleInputNumChange') private defaultValue: string | number = 1;
+  @Prop @Watch('handleInputNumChange') defaultValue: string | number = 1;
   /**
    * 最小值
    */

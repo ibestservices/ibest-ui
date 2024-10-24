@@ -54,23 +54,23 @@ export struct IBestPasswordInput {
 	/**
 	 * 格子间距
 	 */
-	@Provide space: number = 0
+	@Provide({allowOverride: "space"}) space: number = 0
 	/**
 	 * 圆角
 	 */
-	@Provide radius: number = 10
+	@Provide({allowOverride: "radius"}) radius: number = 10
 	/**
 	 * 是否高亮当前正在输入的格子
 	 */
-	@Provide isHighlightCurrent: boolean = true
+	@Provide({allowOverride: "isHighlightCurrent"}) isHighlightCurrent: boolean = true
 	/**
 	 * 高亮颜色
 	 */
-	@Provide highlightColor: ResourceColor = this.baseStyle.primary
+	@Provide({allowOverride: "highlightColor"}) highlightColor: ResourceColor = this.baseStyle.primary
 	/**
 	 * 是否隐藏内容
 	 */
-	@Provide isHidden: boolean = true
+	@Provide({allowOverride: "isHidden"}) isHidden: boolean = true
 	/**
 	 * 提示文字
 	 */

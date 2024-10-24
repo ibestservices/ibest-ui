@@ -7,6 +7,11 @@ import { sleep } from '../../assets/ets/utils';
 @CustomDialog
 export struct IBestDialog {
   /**
+   * 弹框展示状态
+   * @since 1.16.0
+   */
+  @Link @Watch("visibleChange") visible: boolean
+  /**
    * 标题区域的builder
    */
   @BuilderParam titleBuilder?: CustomBuilder;
@@ -75,9 +80,9 @@ export struct IBestDialog {
    */
   @Prop messagePaddingBottom: string = '52lpx';
   /**
-   * 内容区域的fontColor 默认#323233
+   * 内容区域的字体色 默认#323233
    */
-  @Prop messageFontColor: string = '';
+  @Prop messageFontColor: ResourceColor = '#323233';
   /**
    * 内容区域的fontSize
    */
@@ -94,11 +99,16 @@ export struct IBestDialog {
    * 内容区域的滚动区域最大高度
    */
   @Prop messageMaxHeight: string = '60%';
-  // /**
-  //  * 样式风格
-  //  * 本期暂不开发
-  //  */
-  // @Prop theme: 'default' | 'round-button' = 'default';
+  /**
+   * 按钮样式风格
+   * @since 1.16.0
+   */
+  @Prop theme: 'default' | 'round-button' = 'default';
+  /**
+   * 按钮间距 单位lpx
+   * @since 1.16.0
+   */
+  @Prop buttonSpace: number = 0
   /**
    * 是否展示确认按钮
    */
@@ -118,11 +128,21 @@ export struct IBestDialog {
   /**
    * 确认按钮的颜色
    */
-  @Prop confirmButtonColor: ResourceColor = '';
+  @Prop confirmButtonColor: ResourceColor = ""
+  /**
+   * 确认按钮的背景颜色
+   * @since 1.16.0
+   */
+  @Prop confirmButtonBgColor: ResourceColor = ""
   /**
    * 取消按钮的颜色
    */
-  @Prop cancelButtonColor: ResourceColor = '';
+  @Prop cancelButtonColor: ResourceColor = '#646566';
+  /**
+   * 取消按钮的背景颜色
+   * @since 1.16.0
+   */
+  @Prop cancelButtonBgColor: ResourceColor = this.baseStyle.default
   /**
    * 是否禁用确认按钮
    */
@@ -147,6 +167,11 @@ export struct IBestDialog {
    * 是否在点击遮罩层后关闭弹窗
    */
   @Prop closeOnClickOverlay: boolean = false;
+  /**
+   * 是否允许返回键关闭
+   * @since 1.16.0
+   */
+  @Prop closeOnBackPress: boolean = false
   /**
    * 弹窗在竖直方向上的对齐方式 默认center
    */
@@ -177,19 +202,25 @@ export struct IBestDialog {
   /**
    * 关闭前的回调函数，返回 false 可阻止关闭，支持返回 Promise
    */
-  private beforeClose?: (action?: 'cancel' | 'confirm') => Promise<boolean> | boolean;
+  beforeClose?: (action: 'cancel' | 'confirm') => Promise<boolean> | boolean
   /**
-   * ready事件
+   * 弹框打开回调
+   * @since 1.16.0
    */
-  private onReady?: (dialogController: CustomDialogController) => void;
+  onOpen: () => void = () => {}
+  /**
+   * 弹框关闭回调
+   * @since 1.16.0
+   */
+  onClose: () => void = () => {}
   /**
    * 点击取消的回调
    */
-  private onCancel?: (event?: ClickEvent) => void;
+  onCancel: (event?: ClickEvent) => void = () => {}
   /**
    * 点击确认的的回调
    */
-  private onConfirm?: (event?: ClickEvent) => void;
+  onConfirm: (event?: ClickEvent) => void = () => {}
 
   getAlignment(type: string) {
     switch (type) {
@@ -212,7 +243,7 @@ export struct IBestDialog {
   async handleBeforeClose(action: 'cancel' | 'confirm') {
     let status = true
     try {
-      if (typeof this.beforeClose === 'function') {
+      if (this.beforeClose) {
         status = await this.beforeClose(action);
       }
     } catch (e) {
@@ -228,7 +259,7 @@ export struct IBestDialog {
     if (this.cancelButtonDisabled || this.cancelButtonLoading) {
       return
     }
-    if (typeof this.beforeClose === 'function') {
+    if (this.beforeClose) {
       this.cancelButtonLoading = true
       const status = await this.handleBeforeClose('cancel');
       this.cancelButtonLoading = false
@@ -237,12 +268,10 @@ export struct IBestDialog {
       }
     }
     this.cancelButtonDisabled = true
-    this.dialogController?.close()
+    this.close()
+    this.onCancel(event)
     // 等待动画结束
     await sleep()
-    if (typeof this.onCancel === 'function') {
-      this.onCancel(event)
-    }
     this.cancelButtonDisabled = false
   }
 
@@ -253,7 +282,7 @@ export struct IBestDialog {
     if (this.confirmButtonDisabled || this.confirmButtonLoading) {
       return
     }
-    if (typeof this.beforeClose === 'function') {
+    if (this.beforeClose) {
       this.confirmButtonLoading = true
       const status = await this.handleBeforeClose('confirm');
       this.confirmButtonLoading = false
@@ -262,15 +291,32 @@ export struct IBestDialog {
       }
     }
     this.confirmButtonDisabled = true;
-    if (typeof this.onConfirm === 'function') {
-       this.onConfirm(event)
-    }
-    this.dialogController?.close()
+    this.close()
+    this.onConfirm(event)
     // 等待动画结束
     await sleep()
     this.confirmButtonDisabled = false;
     this.confirmButtonLoading = false;
-
+  }
+  /**
+   * visible 变化
+   */
+  visibleChange(){
+    if(this.visible){
+      this.dialogController?.open()
+      this.onOpen()
+    }else{
+      this.dialogController?.close()
+      this.onClose()
+    }
+  }
+  /**
+   * 关闭
+   */
+  close(){
+    this.dialogController?.close()
+    this.visible = false
+    this.onClose()
   }
 
   // 按照文档类型允许null 组件校验会报错
@@ -280,44 +326,45 @@ export struct IBestDialog {
       titleBuilder: this.titleBuilder,
       defaultBuilder: this.defaultBuilder,
       footerBuilder: this.footerBuilder,
-      dialogBorderRadius: $dialogBorderRadius,
-      title: $title,
-      titleColor: $titleColor,
-      titlePaddingTop: $titlePaddingTop,
-      titlePaddingX: $titlePaddingX,
-      titleLineHeight: $titleLineHeight,
-      titleFontSize: $titleFontSize,
-      titleTextAlign: $titleTextAlign,
-      message: $message,
-      dialogWidth: $dialogWidth,
-      messagePaddingX: $messagePaddingX,
-      messagePaddingTop: $messagePaddingTop,
-      messagePaddingBottom: $messagePaddingBottom,
-      messageFontColor: $messageFontColor,
-      messageFontSize: $messageFontSize,
-      messageLineHeight: $messageLineHeight,
-      messageTextAlign: $messageTextAlign,
-      messageMaxHeight: $messageMaxHeight,
-      showConfirmButton: $showConfirmButton,
-      showCancelButton: $showCancelButton,
-      confirmButtonText: $confirmButtonText,
-      cancelButtonText: $cancelButtonText,
-      confirmButtonColor: $confirmButtonColor,
-      cancelButtonColor: $cancelButtonColor,
-      confirmButtonDisabled: $confirmButtonDisabled,
-      cancelButtonDisabled: $cancelButtonDisabled,
-      buttonFontSize: $buttonFontSize,
-      confirmButtonLoading: $confirmButtonLoading,
-      cancelButtonLoading: $cancelButtonLoading,
+      dialogBorderRadius: this.dialogBorderRadius,
+      title: this.title,
+      titleColor: this.titleColor,
+      titlePaddingTop: this.titlePaddingTop,
+      titlePaddingX: this.titlePaddingX,
+      titleLineHeight: this.titleLineHeight,
+      titleFontSize: this.titleFontSize,
+      titleTextAlign: this.titleTextAlign,
+      message: this.message,
+      dialogWidth: this.dialogWidth,
+      messagePaddingX: this.messagePaddingX,
+      messagePaddingTop: this.messagePaddingTop,
+      messagePaddingBottom: this.messagePaddingBottom,
+      messageFontColor: this.messageFontColor,
+      messageFontSize: this.messageFontSize,
+      messageLineHeight: this.messageLineHeight,
+      messageTextAlign: this.messageTextAlign,
+      messageMaxHeight: this.messageMaxHeight,
+      theme: this.theme,
+      showConfirmButton: this.showConfirmButton,
+      showCancelButton: this.showCancelButton,
+      confirmButtonText: this.confirmButtonText,
+      cancelButtonText: this.cancelButtonText,
+      confirmButtonColor: this.confirmButtonColor || (this.theme == 'round-button' ? '#fff' : '#3D8AF2'),
+      confirmButtonBgColor: this.confirmButtonBgColor || (this.theme == 'round-button' ? '#3D8AF2' : '#fff'),
+      cancelButtonColor: this.cancelButtonColor,
+      cancelButtonBgColor: this.cancelButtonBgColor,
+      confirmButtonDisabled: this.confirmButtonDisabled,
+      cancelButtonDisabled: this.cancelButtonDisabled,
+      buttonFontSize: this.buttonFontSize,
+      confirmButtonLoading: this.confirmButtonLoading,
+      cancelButtonLoading: this.cancelButtonLoading,
       onCancel: (event) => {
-        typeof this.handleCancel === 'function' && this.handleCancel(event)
+        this.handleCancel(event)
       },
       onConfirm: (event) => {
-        typeof this.handleConfirm === 'function' && this.handleConfirm(event)
-      },
+        this.handleConfirm(event)
+      }
     }),
-    // 不转一下就无效了
-    autoCancel: !!this.closeOnClickOverlay,
     alignment: this.getAlignment(this.alignment),
     customStyle: true,
     offset: {
@@ -325,20 +372,22 @@ export struct IBestDialog {
       dy: this.offsetY
     },
     cancel: () => {
-      this.closeOnClickOverlay && this.handleCancel()
+      this.handleCancel()
     },
     isModal: this.showOverlay,
     maskColor: this.overlayColor,
-    showInSubWindow: this.showInSubWindow
+    showInSubWindow: this.showInSubWindow,
+    onWillDismiss:(dismissDialogAction: DismissDialogAction)=> {
+      // 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
+      let reason = dismissDialogAction.reason
+      if (reason == DismissReason.PRESS_BACK && this.closeOnBackPress) {
+        dismissDialogAction.dismiss()
+      }
+      if (reason == DismissReason.TOUCH_OUTSIDE && this.closeOnClickOverlay) {
+        dismissDialogAction.dismiss()
+      }
+    }
   })
-
-  aboutToAppear() {
-    typeof this.onReady === 'function' && this.dialogController && this.onReady(this.dialogController)
-  }
-
-  aboutToDisappear() {
-    this.dialogController = undefined;
-  }
 
   build() {
   }

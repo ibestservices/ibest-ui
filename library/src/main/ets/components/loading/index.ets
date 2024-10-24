@@ -34,7 +34,7 @@ export struct IBestLoading {
   /**
    * loading的颜色
    */
-  @Prop loadingColor: ResourceColor = '#c9c9c9';
+  @Prop loadingColor: ResourceColor = GRAY_COLOR.GRAY_5;
   /**
    * loading的线条宽度
    */
@@ -58,11 +58,11 @@ export struct IBestLoading {
   /**
    * 加载的文案
    */
-  @Prop loadingText?: string = undefined;
+  @Prop loadingText: string = "";
   /**
    * loading的文字颜色
    */
-  @Prop loadingTextColor: ResourceColor = GRAY_COLOR.GRAY_6;
+  @Prop loadingTextColor: ResourceColor = GRAY_COLOR.GRAY_5;
   /**
    * loading的文字大小
    */
@@ -83,7 +83,7 @@ export struct IBestLoading {
 
   @Builder LoadingContent(){
     // loading图标
-    if(typeof this.loadingIconBuilder === 'function'){
+    if(this.loadingIconBuilder){
       this.loadingIconBuilder()
     }else{
       if(this.loadingIconType === 'spinner'){
@@ -105,7 +105,7 @@ export struct IBestLoading {
 
     }
     // 加载的文案
-    if(typeof this.loadingTextBuilder === 'function'){
+    if(this.loadingTextBuilder){
       this.loadingTextBuilder()
     }else{
       if(this.loadingText?.trim()){
@@ -123,7 +123,7 @@ export struct IBestLoading {
 
   build(){
     Stack(){
-      if(typeof this.defaultBuilder === 'function'){
+      if(this.defaultBuilder){
         this.defaultBuilder()
       }
 

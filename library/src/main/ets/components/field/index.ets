@@ -37,115 +37,115 @@ export struct IBestField{
     /**
      * 文本内容
      */
-    @Provide label: string = ""
+    @Provide({allowOverride: "label"}) label: string = ""
     /**
      * 是否在label后加冒号
      */
-    @Provide colon?: boolean = undefined
+    @Provide({allowOverride: "colon"}) colon?: boolean = undefined
     /**
      * 文本宽度
      */
-    @Provide labelWidth: number = 0
+    @Provide({allowOverride: "labelWidth"}) labelWidth: number = 0
     /**
      * 文本位置
      */
-    @Provide labelPosition: LabelPositionType = ''
+    @Provide({allowOverride: "labelPosition"}) labelPosition: LabelPositionType = ''
     /**
      * 文本对齐方式
      */
-    @Provide labelAlign: FieldTextAlign = ''
+    @Provide({allowOverride: "labelAlign"}) labelAlign: FieldTextAlign = ''
     /**
      * 输入框占位提示文字
      */
-    @Provide placeholder: string = ""
+    @Provide({allowOverride: "placeholder"}) placeholder: string = ""
     /**
      * 输入框类型
      */
-    @Provide type: IBestFieldType = "normal"
+    @Provide({allowOverride: "type"}) type: IBestFieldType = "normal"
     /**
      * 小数点位数
      */
-    @Provide decimalLength: number = -1
+    @Provide({allowOverride: "decimalLength"}) decimalLength: number = -1
     /**
      * 是否显示密码框末尾图标
      */
-    @Provide showPasswordIcon: boolean = true
+    @Provide({allowOverride: "showPasswordIcon"}) showPasswordIcon: boolean = true
     /**
      * 输入框自适应高度
      */
-    @Provide autosize: boolean = false
+    @Provide({allowOverride: "autosize"}) autosize: boolean = false
     /**
      * 自适应高度时默认行数
      */
-    @Provide rows: number = 1
+    @Provide({allowOverride: "rows"}) rows: number = 1
     /**
      * 最大输入字符数
      */
-    @Provide maxlength: number = -1
+    @Provide({allowOverride: "maxlength"}) maxlength: number = -1
     /**
      * 是否显示字数统计
      */
-    @Provide showWordLimit: boolean = false
+    @Provide({allowOverride: "showWordLimit"}) showWordLimit: boolean = false
     /**
      * 输入框文字对齐方式
      */
-    @Provide inputAlign: FieldTextAlign = "left"
+    @Provide({allowOverride: "inputAlign"}) inputAlign: FieldTextAlign = "left"
     /**
      * 是否必填, 仅控制*显隐
      */
-    @Provide required?: boolean = undefined
+    @Provide({allowOverride: "required"}) required?: boolean = undefined
     /**
      * 星号的位置
      */
-    @Provide requireAsteriskPosition: RequireAsteriskPositionType = ''
+    @Provide({allowOverride: "requireAsteriskPosition"}) requireAsteriskPosition: RequireAsteriskPositionType = ''
     /**
      * 是否禁用
      */
-    @Provide disabled?: boolean = undefined
+    @Provide({allowOverride: "disabled"}) disabled?: boolean = undefined
     /**
      * 是否只读
      */
-    @Provide readOnly: boolean = false
+    @Provide({allowOverride: "readOnly"}) readOnly: boolean = false
     /**
      * 是否开启点击反馈
      */
-    @Provide clickable: boolean = false
+    @Provide({allowOverride: "clickable"}) clickable: boolean = false
     /**
      * 是否展示右侧箭头并开启点击反馈
      */
-    @Provide isLink: boolean = false
+    @Provide({allowOverride: "isLink"}) isLink: boolean = false
     /**
      * 左侧图标
      */
-    @Provide leftIcon: ResourceStr = ""
+    @Provide({allowOverride: "leftIcon"}) leftIcon: ResourceStr = ""
     /**
      * 左侧图标颜色
      */
-    @Provide leftIconColor: ResourceColor = ""
+    @Provide({allowOverride: "leftIconColor"}) leftIconColor: ResourceColor = ""
     /**
      * 右侧图标
      */
-    @Provide rightIcon: ResourceStr = ""
+    @Provide({allowOverride: "rightIcon"}) rightIcon: ResourceStr = ""
     /**
      * 右侧图标颜色
      */
-    @Provide rightIconColor: ResourceColor = GRAY_COLOR.GRAY_6
+    @Provide({allowOverride: "rightIconColor"}) rightIconColor: ResourceColor = GRAY_COLOR.GRAY_6
     /**
      * 底部线条
      */
-    @Provide hasBorder: boolean = true
+    @Provide({allowOverride: "hasBorder"}) hasBorder: boolean = true
     /**
      * 是否启用清除图标，点击清除图标后会清空输入框
      */
-    @Provide clearable: boolean = false
+    @Provide({allowOverride: "clearable"}) clearable: boolean = false
     /**
      * 自定义清除图标
      */
-    @Provide clearIcon: ResourceStr = ""
+    @Provide({allowOverride: "clearIcon"}) clearIcon: ResourceStr = ""
     /**
      * 显示清除图标的时机
      */
-    @Provide clearTrigger: ClearTriggerType = 'focus'
+    @Provide({allowOverride: "clearTrigger"}) clearTrigger: ClearTriggerType = 'focus'
     /**
      * 验证状态
      */
@@ -153,11 +153,11 @@ export struct IBestField{
     /**
      * 是否显示验证信息
      */
-    @Provide showMessage?: boolean = undefined
+    @Provide({allowOverride: "showMessage"}) showMessage?: boolean = undefined
     /**
      * 验证信息
      */
-    @Provide validateMessage: string = ""
+    @Provide({allowOverride: "validateMessage"}) validateMessage: string = ""
     /**
      * 右侧按钮builder
      */
@@ -169,7 +169,7 @@ export struct IBestField{
     /**
      * 执行格式化函数触发时机
      */
-    @Provide formatTrigger: FormatTriggerType = 'onchange'
+    @Provide({allowOverride: "formatTrigger"}) formatTrigger: FormatTriggerType = 'onchange'
     /**
      * 格式化函数
      */

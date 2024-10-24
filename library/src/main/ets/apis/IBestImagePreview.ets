@@ -110,43 +110,19 @@ class IBestImagePreviewParams extends IBestImagePreviewOption {
 	}
 }
 
-class MyDataSource implements IDataSource {
-	private list: IBestPreviewImgType[] = []
-
-	constructor(list: IBestPreviewImgType[]) {
-		this.list = list
-	}
-
-	totalCount(): number {
-		return this.list.length
-	}
-
-	getData(index: number): IBestPreviewImgType {
-		return this.list[index]
-	}
-
-	registerDataChangeListener(listener: DataChangeListener): void {
-	}
-
-	unregisterDataChangeListener() {
-	}
-}
-
 @Component
 struct PreviewContent{
 	params: IBestImagePreviewParams = new IBestImagePreviewParams([])
-	private data: MyDataSource = new MyDataSource([])
 	@State active: number = 0
 	@State isDisabledSwiper: boolean = false
 
 	aboutToAppear(): void {
-		this.data = new MyDataSource(this.params.list)
 		this.active = this.params.startIndex as number
 	}
 	build() {
 		Stack({ alignContent: this.params.indexPosition === 'top' ? Alignment.Top : Alignment.Bottom }){
 			Swiper() {
-				LazyForEach(this.data, (item: IBestPreviewImgType, index: number) => {
+				ForEach(this.params.list, (item: IBestPreviewImgType, index: number) => {
 					SwiperItem({
 						url: item,
 						index: index,
@@ -164,7 +140,7 @@ struct PreviewContent{
 			.duration(this.params.swipeDuration)
 			.disableSwipe(this.isDisabledSwiper)
 			if(this.params.showIndex){
-				Text(`${this.active + 1} / ${this.data.totalCount()}`)
+				Text(`${this.active + 1} / ${this.params.list.length}`)
 					.fontColor(this.params.indexFontColor)
 					.fontSize(this.params.indexFontSize + "lpx")
 					.offset({ y: `${this.params.indexPosition == "top" ? "" : "-"}${this.params.indexOffset}lpx` })
@@ -407,11 +383,11 @@ struct SwiperItem{
 }
 
 class ImagePreview{
-	private static _instance: ImagePreview | null = null
+	private static _instance: ImagePreview = new ImagePreview()
 	private contentNode: ComponentContent<IBestImagePreviewParams> | null = null
 	private promptAction: PromptAction | null = null
 
-	private static getInstance(contentNode: ComponentContent<IBestImagePreviewParams>, promptAction: PromptAction): ImagePreview{
+	private getInstance(contentNode: ComponentContent<IBestImagePreviewParams>, promptAction: PromptAction): ImagePreview{
 		if(!ImagePreview._instance){
 			ImagePreview._instance = new ImagePreview()
 		}
@@ -422,17 +398,17 @@ class ImagePreview{
 	/**
 	 * 显示预览
 	 */
-	public static async show(list: IBestPreviewImgType[], option?: IBestImagePreviewOption){
+	public async show(list: IBestPreviewImgType[], option?: IBestImagePreviewOption){
 		let opt: IBestImagePreviewParams = new IBestImagePreviewParams(list, option)
-		opt.hide = (): void => ImagePreview.hide()
-		if(ImagePreview._instance?.contentNode){
-			ImagePreview.hide()
+		opt.hide = (): void => this.hide()
+		if(ImagePreview._instance.contentNode){
+			this.hide()
 		}
 		let windowClass = await window.getLastWindow(getContext())
 		let uiContext = windowClass.getUIContext()
 		let contentNode = new ComponentContent(uiContext, wrapBuilder(previewBuilder), opt)
 		let promptAction = uiContext.getPromptAction()
-		ImagePreview._instance = ImagePreview.getInstance(contentNode, promptAction)
+		ImagePreview._instance = this.getInstance(contentNode, promptAction)
 		promptAction.openCustomDialog(contentNode, {
 			alignment: DialogAlignment.Center,
 			isModal: true,
@@ -444,12 +420,12 @@ class ImagePreview{
 	/**
 	 * 关闭预览
 	 */
-	static hide(){
-		if(ImagePreview._instance && ImagePreview._instance.contentNode){
+	public hide(){
+		if(ImagePreview._instance.contentNode){
 			ImagePreview._instance.promptAction?.closeCustomDialog(ImagePreview._instance.contentNode)
 			ImagePreview._instance.contentNode?.dispose()
 			ImagePreview._instance.contentNode = null
 		}
 	}
 }
-export default ImagePreview
+export default new ImagePreview()

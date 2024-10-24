@@ -124,7 +124,7 @@ export struct IBestCalendarDialog {
      */
     onGetCalendarResult(value: Array<CalendarConfirmResultType>) {
         this.selectedDate = value
-        typeof this.onConfirm === "function" && this.onConfirm(this.selectedDate)
+        this.onConfirm(this.selectedDate)
         this.visible = false
     }
     build() {

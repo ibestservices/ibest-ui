@@ -92,7 +92,7 @@ export struct IBestButton {
   /**
    * 点击按钮，且按钮状态不为加载或禁用时触发
    */
-  onClickBtn?: (event?: ClickEvent) => void;
+  onClickBtn: (event?: ClickEvent) => void = () => {}
 
   /**
    * 根据颜色type获取背景色
@@ -174,13 +174,13 @@ export struct IBestButton {
 
   build() {
     Button({ type: ButtonType.Normal }) {
-      if (typeof this.defaultBuilder === 'function') {
+      if (this.defaultBuilder) {
         this.defaultBuilder()
       } else {
         Row() {
           if (this.loading) {
             // 如果有自定义loading
-            if (typeof this.loadingIconBuilder === 'function') {
+            if (this.loadingIconBuilder) {
               this.loadingIconBuilder()
             } else {
               // 默认的loading
@@ -191,7 +191,7 @@ export struct IBestButton {
 
             }
             // 加载loading显示的时候不显示图标
-          } else if (typeof this.iconBuilder === 'function') {
+          } else if (this.iconBuilder) {
             this.iconBuilder()
           }
           Text(this.loading ? this.loadingText ?? this.text : this.text)
@@ -211,7 +211,7 @@ export struct IBestButton {
     .enabled(!this.disabled)
     .opacity(this.disabled && this.plain ? 0.5 : 1)
     .onClick((event) => {
-      typeof this.onClickBtn === 'function' && this.onClickBtn(event)
+      this.onClickBtn(event)
     })
     .animation({ duration: this.baseStyle.animationDuration as number })
   }

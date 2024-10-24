@@ -2,11 +2,16 @@ import { FONT_SIZE } from '../../theme-chalk/src/font.type'
 import { spaceData } from '../../theme-chalk/src/space'
 import { getIsLandscape, getWindowAvoidSize } from '../../assets/ets/utils'
 import { common } from '@kit.AbilityKit'
-import { PopupAlign } from './index.type'
+import { PopupAlign, PopupBaseController } from './index.type'
+
+const popupDuration = 200
+const hideDuration = 220
 
 @CustomDialog
 @Component
 struct IBestPopupBaseContent {
+	@State transX: string | number = ""
+	@State transY: string | number = ""
 	/**
 	 * 弹框显示位置
 	 */
@@ -50,33 +55,80 @@ struct IBestPopupBaseContent {
 	close: () => void = () => {}
 	controller?: CustomDialogController
 
+	private baseController: PopupBaseController = new PopupBaseController()
+
+	aboutToAppear(): void {
+		this.baseController.hide = (): void => this.init()
+		this.init()
+	}
+	// 初始化
+	init(){
+		switch (this.popupAlign){
+			case "left":
+				this.transX = "-100%"
+				break
+			case "right":
+				this.transX = "100%"
+				break
+			case "top":
+				this.transY = "-100%"
+				break
+			case "bottom":
+				this.transY = "100%"
+				break
+		}
+	}
+	// 变换显示
+	trans(){
+		switch (this.popupAlign){
+			case "left":
+			case "right":
+				this.transX = 0
+				break
+			case "top":
+			case "bottom":
+				this.transY = 0
+				break
+		}
+	}
+
 	build() {
 		Column(){
-			PopupTitle({
-				close: this.close
-			})
-				.visibility(this.isShowHeader ? Visibility.Visible : Visibility.None)
-			if(this.contentBuilder){
-				this.contentBuilder()
+			Column(){
+				if(this.isShowHeader){
+					PopupTitle({
+						close: this.close
+					})
+				}
+				if(this.contentBuilder){
+					this.contentBuilder()
+				}
 			}
+			.width(this.popupWidth)
+			.height(this.popupHeight)
+			.backgroundColor("#fff")
+			.padding({
+				top: this.safeAreaInsetTop && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
+					== "top") ? this.topAvoidSize + "lpx" : 0,
+				bottom: this.safeAreaInsetBottom && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
+					== "bottom") ? this.bottomAvoidSize + "lpx" : 0
+			})
+			.alignItems(HorizontalAlign.Start)
+			.borderRadius(this.cornerRadius + "lpx")
+			.translate({
+				x: (this.popupAlign == "left" || this.popupAlign == "right") ? this.transX : "",
+				y: (this.popupAlign == "top" || this.popupAlign == 'bottom') ? this.transY : "" })
+			.animation({
+				duration: popupDuration,
+				curve: Curve.EaseInOut
+			})
+			.onAppear(() => {
+				setTimeout(() => {
+					this.trans()
+				}, 100)
+			})
 		}
-		.width(this.popupWidth)
-		.height(this.popupHeight)
-		.backgroundColor("#fff")
-		.padding({
-			top: this.safeAreaInsetTop && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
-				== "top") ? this.topAvoidSize + "lpx" : 0,
-			bottom: this.safeAreaInsetBottom && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
-				== "bottom") ? this.bottomAvoidSize + "lpx" : 0
-		})
-		.alignItems(HorizontalAlign.Start)
-		.borderRadius(this.cornerRadius + "lpx")
 		.clip(true)
-		.transition(
-			 this.popupAlign == "center" ? undefined : TransitionEffect.move(this.popupAlign == "top" ?
-			 TransitionEdge.TOP : this.popupAlign == 'bottom' ? TransitionEdge.BOTTOM : this.popupAlign == "left" ?
-				 TransitionEdge.START : TransitionEdge.END).animation({duration: 300, curve: Curve.FastOutSlowIn})
-		)
 	}
 }
 
@@ -103,17 +155,18 @@ export struct IBestPopup{
 	/**
 	 * 是否显示头部标题栏
 	 */
-	@Provide isShowHeader: boolean = false
+	@Provide({allowOverride: "isShowHeader"}) isShowHeader: boolean = false
 	/**
 	 * 标题
 	 */
-	@Provide title: string = ""
+	@Provide({allowOverride: "title"}) title: string = ""
 	/**
 	 * 底部偏移
 	 */
 	@Prop offsetY: number = 0
 	/**
 	 * 蒙层颜色
+	 * @since 1.15.0
 	 */
 	@Prop maskColor: ResourceColor = "0x33000000"
 	/**
@@ -131,19 +184,19 @@ export struct IBestPopup{
 	/**
 	 * 是否显示关闭图标
 	 */
-	@Provide isShowClose: boolean = true
+	@Provide({allowOverride: "isShowClose"}) isShowClose: boolean = true
 	/**
 	 * 自定义关闭图标
 	 */
-	@Provide closeIcon: string | Resource = ""
+	@Provide({allowOverride: "closeIcon"}) closeIcon: string | Resource = ""
 	/**
 	 * 是否开启顶部安全区适配
 	 */
-	@Provide safeAreaInsetTop: boolean = false
+	@Provide({allowOverride: "safeAreaInsetTop"}) safeAreaInsetTop: boolean = false
 	/**
 	 * 是否开启底部安全区适配
 	 */
-	@Provide safeAreaInsetBottom: boolean = false
+	@Provide({allowOverride: "safeAreaInsetBottom"}) safeAreaInsetBottom: boolean = false
 	/**
 	 * 顶部规避尺寸
 	 */
@@ -165,8 +218,10 @@ export struct IBestPopup{
 	 */
 	onClose: () => void = () => {}
 	private context = getContext(this) as common.BaseContext
-	dialogController: CustomDialogController | null = new CustomDialogController({
+	private baseController: PopupBaseController = new PopupBaseController()
+	dialogController: CustomDialogController = new CustomDialogController({
 		builder: IBestPopupBaseContent({
+			baseController: this.baseController,
 			contentBuilder: this.contentBuilder,
 			popupAlign: this.popupAlign,
 			popupWidth: this.popupWidth,
@@ -186,11 +241,8 @@ export struct IBestPopup{
 		onWillDismiss:(dismissDialogAction: DismissDialogAction)=> {
 			// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
 			let reason = dismissDialogAction.reason
-			if (reason == DismissReason.PRESS_BACK && this.closeOnBackPress) {
-				dismissDialogAction.dismiss()
-			}
-			if (reason == DismissReason.TOUCH_OUTSIDE && this.closeOnClickOverlay) {
-				dismissDialogAction.dismiss()
+			if (reason == DismissReason.PRESS_BACK && this.closeOnBackPress || reason == DismissReason.TOUCH_OUTSIDE && this.closeOnClickOverlay) {
+				this.close()
 			}
 		},
 		cancel: this.close
@@ -231,11 +283,14 @@ export struct IBestPopup{
 	}
 	visibleChange(){
 		if(this.visible){
-			this.dialogController?.open()
+			this.dialogController.open()
 			this.onOpen()
 		}else{
-			this.dialogController?.close()
-			this.onClose()
+			this.baseController.hide()
+			setTimeout(() => {
+				this.dialogController.close()
+				this.onClose()
+			}, hideDuration)
 		}
 	}
 	// 关闭弹框
