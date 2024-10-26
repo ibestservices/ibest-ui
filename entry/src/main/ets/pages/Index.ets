@@ -20,6 +20,10 @@ struct Index {
       title: '基础组件',
       list: [
         {
+          name: 'PullRefresh 下拉刷新',
+          path: 'pages/PullRefresh'
+        },
+        {
           name: 'Button 按钮',
           path: 'pages/Button'
         },
@@ -140,6 +144,10 @@ struct Index {
         {
           name: 'Notify 消息通知',
           path: 'pages/Notify'
+        },
+        {
+          name: 'PullRefresh 下拉刷新',
+          path: 'pages/PullRefresh'
         }
       ]
     },

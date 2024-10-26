@@ -97,3 +97,6 @@ export { IBestSliderValue } from './src/main/ets/components/slider/index.type'
 
 export { IBestUploader } from './src/main/ets/components/uploader/index'
 export { IBestUploaderFile } from './src/main/ets/components/uploader/index.type'
+
+export { IBestPullRefresh } from './src/main/ets/components/pullRefresh'
+export { IBestRefreshContentParams } from './src/main/ets/components/pullRefresh/index.type'

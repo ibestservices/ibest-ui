@@ -33,6 +33,7 @@
 		"pages/Slider",
 		"pages/ImagePreview",
 		"pages/Uploader",
-		"pages/Notify"
+		"pages/Notify",
+		"pages/PullRefresh"
 	]
 }
