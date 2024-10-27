@@ -178,11 +178,11 @@ struct RateItem {
 	@ObjectLink item: RateOption
 	@Consume inactiveIcon: string | Resource
 	@Consume activeIcon: string | Resource
-	@Consume activeColor: string
-	@Consume inactiveColor: string
+	@Consume activeColor: ResourceColor
+	@Consume inactiveColor: ResourceColor
 	@Consume iconSize: number
 	@Consume disabled: boolean
-	@Consume disabledColor: string
+	@Consume disabledColor: ResourceColor
 	build() {
 		Stack({ alignContent: Alignment.Start }) {
 			Image(this.inactiveIcon)

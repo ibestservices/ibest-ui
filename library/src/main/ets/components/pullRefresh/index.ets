@@ -1,10 +1,9 @@
-import { IBestRefreshContentParams } from "./index.type"
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { GRAY_COLOR } from "../../theme-chalk/src/color.type"
-import { CONTAINER_SIZE } from "../../theme-chalk/src/container.type"
-import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { IBestLoading } from "../loading"
-import { PullRefreshStatus } from "./index.type"
+import { IBestRefreshContentParams, PullRefreshStatus } from './index.type'
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { GRAY_COLOR } from '../../theme-chalk/src/color.type'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { IBestLoading } from '../loading'
 @Component
 export struct IBestPullRefresh {
 	/**
@@ -67,9 +66,6 @@ export struct IBestPullRefresh {
 	@State transY: number = 0
 	@State startY: number = 0
 	@Provide refreshStatus: PullRefreshStatus = "normal"
-	/**
-	 * 页面滚动高度
-	 */
 	@State scrollTop: number = 0
 	private scroller: Scroller = new Scroller()
 
@@ -141,34 +137,34 @@ export struct IBestPullRefresh {
 		Column(){
 			Column(){
 				Row({ space: 10 }){
-					if(this.refreshStatus == "pulling"){
+					Row(){
 						if(this.pullingContent){
 							this.pullingContent({ distance: this.transY })
 						}else{
 							TextTip()
 						}
-					}
-					if(this.refreshStatus == "loosing"){
+					}.visibility(this.refreshStatus == "pulling" ? Visibility.Visible : Visibility.None)
+					Row(){
 						if(this.loosingContent){
 							this.loosingContent({ distance: this.transY })
 						}else{
 							TextTip()
 						}
-					}
-					if(this.refreshStatus == "loading"){
+					}.visibility(this.refreshStatus == "loosing" ? Visibility.Visible : Visibility.None)
+					Row(){
 						if(this.loadingContent){
 							this.loadingContent()
 						}else{
 							TextTip()
 						}
-					}
-					if(this.refreshStatus == "success"){
+					}.visibility(this.refreshStatus == "loading" ? Visibility.Visible : Visibility.None)
+					Row(){
 						if(this.successContent){
 							this.successContent()
 						}else{
 							TextTip()
 						}
-					}
+					}.visibility(this.refreshStatus == "success" ? Visibility.Visible : Visibility.None)
 				}
 				.width(CONTAINER_SIZE.FULL)
 				.height(`${this.headHeight}lpx`)
@@ -196,7 +192,6 @@ export struct IBestPullRefresh {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.clip(true)
-		// TODO 高度问题
 	}
 }
 

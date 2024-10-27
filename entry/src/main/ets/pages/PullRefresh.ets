@@ -18,10 +18,6 @@ struct PullRefresh {
 		},
 		{
 			name: "3",
-			label: '滚动区域'
-		},
-		{
-			name: "4",
 			label: '自定义提示'
 		}
 	]
@@ -29,14 +25,6 @@ struct PullRefresh {
 	@State isLoading: boolean = false
 
 	@Builder customContent() {
-		Column(){
-			Text("这是一些自定义内容")
-		}
-		.height(200)
-		.padding(SPACE.BASE)
-	}
-
-	@Builder customContent1(){
 		Column({ space: 10 }){
 			Text("浔阳江头夜送客，枫叶荻花秋瑟瑟。")
 			Text("主人下马客在船，举酒欲饮无管弦。")
@@ -75,7 +63,17 @@ struct PullRefresh {
 	}
 
 	@Builder customPullingContent($$: IBestRefreshContentParams){
-		Text($$.distance + "")
+		Image($r("app.media.icon_loading_point_static"))
+			.width(60)
+			.scale({ x: $$.distance / 100, y: $$.distance / 100 })
+	}
+	@Builder customLoosingContent($$: IBestRefreshContentParams){
+		Image($r("app.media.icon_loading_point_static"))
+			.width(60)
+	}
+	@Builder customLoadingContent(){
+		Image($r("app.media.icon_loading_point_dynamics"))
+			.width(60)
 	}
 
 	onRefresh(){
@@ -112,15 +110,10 @@ struct PullRefresh {
 			if(this.currentTab == "3"){
 				IBestPullRefresh({
 					loading: $isLoading,
-					defaultContent: (): void => this.customContent1(),
-					onRefresh: (): void => this.onRefresh()
-				})
-			}
-			if(this.currentTab == "4"){
-				IBestPullRefresh({
-					loading: $isLoading,
 					defaultContent: (): void => this.customContent(),
 					pullingContent: this.customPullingContent,
+					loosingContent: this.customLoosingContent,
+					loadingContent: (): void => this.customLoadingContent(),
 					onRefresh: (): void => this.onRefresh()
 				})
 			}

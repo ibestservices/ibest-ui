@@ -1,5 +1,5 @@
 import router from '@ohos.router'
-import { BACKGROUND_COLOR, SPACE, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT } from '../assets/styles/BaseStyle'
+import { BACKGROUND_COLOR, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, SPACE } from '../assets/styles/BaseStyle'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 
 interface ComponentPart{
@@ -20,8 +20,8 @@ struct Index {
       title: '基础组件',
       list: [
         {
-          name: 'PullRefresh 下拉刷新',
-          path: 'pages/PullRefresh'
+          name: 'Tab 标签页',
+          path: 'pages/Tab'
         },
         {
           name: 'Button 按钮',

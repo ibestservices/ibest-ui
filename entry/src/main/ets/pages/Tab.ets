@@ -7,6 +7,13 @@ import TitleBar from '../components/TitleBar'
 import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 
+@Builder function MyBuilder() {
+    Text("测试")
+}
+@Builder function MyBuilder1() {
+    Text("测试1")
+}
+
 @Entry
 @Component
 struct TabPage {
@@ -107,7 +114,7 @@ struct TabPage {
         })
     ]
 
-    @State curTabName: string = "1"
+    @State curTabName: string = "2"
     @State curTabName1: string = "1"
     @State curTabName2: string = "1"
     @State curTabName3: string = "1"
@@ -116,6 +123,14 @@ struct TabPage {
     @State curTabName6: string = "1"
 
     private tabController: IBestTabController = new IBestTabController()
+
+    @Builder MyBuilder() {
+        Text("测试")
+    }
+    @State tabContents: WrappedBuilder<[]>[] = [
+        wrapBuilder(MyBuilder),
+        wrapBuilder(MyBuilder1)
+    ]
 
     build() {
         Column(){
@@ -127,7 +142,8 @@ struct TabPage {
                     ComponentShowContainer({ title: '基础用法' }) {
                         IBestTabs({
                             tabsList: this.tabsList,
-                            currentName: $curTabName
+                            currentName: $curTabName,
+                            tabContent: this.tabContents
                         })
                     }
                 }
