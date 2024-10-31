@@ -24,6 +24,10 @@ struct Index {
           path: 'pages/Button'
         },
         {
+          name: 'Icon 图标',
+          path: 'pages/Icon'
+        },
+        {
           name: 'Cell 单元格',
           path: 'pages/Cell'
         },

@@ -1,6 +1,7 @@
 {
 	"src": [
 		"pages/Index",
+		"pages/Icon",
 		"pages/Button",
 		"pages/Checkbox",
 		"pages/Switch",
