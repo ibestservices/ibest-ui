@@ -99,4 +99,5 @@ export { IBestUploaderFile } from './src/main/ets/components/uploader/index.type
 export { IBestPullRefresh } from './src/main/ets/components/pullRefresh'
 export { IBestRefreshContentParams } from './src/main/ets/components/pullRefresh/index.type'
 
-export { IBestSwipeCell } from './src/main/ets/components/swipeCell/index'
+export { IBestIcon } from './src/main/ets/components/icon/index'
+export {IbestIconClassify, IbestIconData} from './src/main/ets/components/icon/config'

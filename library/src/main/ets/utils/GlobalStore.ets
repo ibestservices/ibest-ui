@@ -1,4 +1,5 @@
 import window from '@ohos.window'
+import font from '@ohos.font';
 import { getWindowAvoidSize } from '../assets/ets/utils'
 import { common } from '@kit.AbilityKit'
 // 全局存储中心
@@ -24,5 +25,9 @@ export default class GlobalStore {
 		})
 		GlobalStore.screenWidth = screenInfo.windowRect.width
 		GlobalStore.screenHeight = screenInfo.windowRect.height
+		font.registerFont({
+			familyName: 'ibestFont',
+			familySrc: $rawfile('vant_font.woff')
+		})
 	}
 }
