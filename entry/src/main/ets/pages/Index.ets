@@ -20,10 +20,6 @@ struct Index {
       title: '基础组件',
       list: [
         {
-          name: 'Tab 标签页',
-          path: 'pages/Tab'
-        },
-        {
           name: 'Button 按钮',
           path: 'pages/Button'
         },
@@ -148,7 +144,11 @@ struct Index {
         {
           name: 'PullRefresh 下拉刷新',
           path: 'pages/PullRefresh'
-        }
+        },
+        // {
+        //   name: 'SwipeCell 滑动单元格',
+        //   path: 'pages/SwipeCell'
+        // }
       ]
     },
     {

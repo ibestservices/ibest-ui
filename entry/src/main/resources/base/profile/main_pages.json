@@ -34,6 +34,7 @@
 		"pages/ImagePreview",
 		"pages/Uploader",
 		"pages/Notify",
-		"pages/PullRefresh"
+		"pages/PullRefresh",
+		"pages/SwipeCell"
 	]
 }

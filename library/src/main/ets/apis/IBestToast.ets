@@ -110,7 +110,6 @@ class Toast{
     private loadingDialog: ComponentContent<ToastParams> | null = null
     private promptAction: PromptAction | null = null
     private timer: number = 0
-    private _message?: string = ""
 
     set message(msg: string){
         // console.log("message改变为", msg)
@@ -128,7 +127,6 @@ class Toast{
             Toast._instance = new Toast()
         }
         Toast._instance.toastOption = option
-        Toast._instance._message = option.message
         Toast._instance.uiObserver = uiObserver
         Toast._instance.loadingDialog = loadingDialog
         Toast._instance.promptAction = promptAction

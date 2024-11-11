@@ -4,6 +4,7 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestLoading } from '../loading'
+
 @Component
 export struct IBestPullRefresh {
 	/**
@@ -45,11 +46,11 @@ export struct IBestPullRefresh {
 	/**
 	 * 自定义下拉过程顶部内容
   	 */
-	@BuilderParam pullingContent?: ($$: IBestRefreshContentParams) => void
+	@BuilderParam pullingContent: ($$: IBestRefreshContentParams) => void
 	/**
 	 * 自定义释放过程顶部内容
   	 */
-	@BuilderParam loosingContent?: ($$: IBestRefreshContentParams) => void
+	@BuilderParam loosingContent: ($$: IBestRefreshContentParams) => void
 	/**
 	 * 自定义加载过程顶部内容
   	 */
@@ -59,15 +60,16 @@ export struct IBestPullRefresh {
 	 */
 	@BuilderParam successContent: CustomBuilder
 	/**
-	 * 下拉刷新回调
+	 * 触发下拉刷新时的回调
 	 */
 	onRefresh: () => void = () => {}
+
+	scroller: Scroller = new Scroller()
 
 	@State transY: number = 0
 	@State startY: number = 0
 	@Provide refreshStatus: PullRefreshStatus = "normal"
 	@State scrollTop: number = 0
-	private scroller: Scroller = new Scroller()
 
 	isTouchable(){
 		return this.refreshStatus != "loading" && this.refreshStatus != "success"
@@ -97,6 +99,7 @@ export struct IBestPullRefresh {
 		}
 	}
 	onFingerMove(event: TouchEvent){
+		this.scrollTop = this.scroller.currentOffset()?.yOffset || 0
 		if(this.isTouchable() && this.scrollTop == 0){
 			switch (event.type){
 				case TouchType.Down:
@@ -109,6 +112,30 @@ export struct IBestPullRefresh {
 					}
 					break
 				case TouchType.Up:
+					if(this.refreshStatus == "loosing"){
+						this.setRefreshStatus(this.headHeight, true)
+						this.loading = true
+						this.onRefresh()
+					}else{
+						this.setRefreshStatus(0)
+					}
+					break
+			}
+		}
+	}
+	onPanGestureChange(type: string, event: GestureEvent){
+		let scrollTop = this.scroller.currentOffset()?.yOffset
+		// console.log("scrollTop", scrollTop)
+		this.scrollTop = scrollTop == undefined || scrollTop < 0 ? 0 : scrollTop
+		if(this.isTouchable() && this.scrollTop < 0.001) {
+			switch (type) {
+				case "move":
+					let newOffset = px2lpx(vp2px(event.offsetY))
+					if(newOffset >= 0){
+						this.setRefreshStatus(this.ease(newOffset))
+					}
+					break
+				case "end":
 					if(this.refreshStatus == "loosing"){
 						this.setRefreshStatus(this.headHeight, true)
 						this.loading = true
@@ -171,36 +198,35 @@ export struct IBestPullRefresh {
 				.justifyContent(FlexAlign.Center)
 				.position({ x: 0, y: 0 })
 				.translate({ y: "-100%" })
-				Scroll(this.scroller){
-					if(this.defaultContent){
-						this.defaultContent()
-					}
+				if(this.defaultContent){
+					this.defaultContent()
 				}
-				.width(CONTAINER_SIZE.FULL)
-				.onDidScroll(() => {
-					this.scrollTop = this.scroller.currentOffset().yOffset
-				})
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.translate({ y: `${ this.transY }lpx` })
 			.animation({
 				duration: this.duration
 			})
-			.onTouch((event) => {
-				this.onFingerMove(event)
-			})
+			// .onTouch((event) => {
+			// 	this.onFingerMove(event)
+			// })
+			.parallelGesture(
+			  	PanGesture({ fingers: 1, direction: PanDirection.Vertical })
+					.onActionUpdate((event: GestureEvent) => {
+						this.onPanGestureChange("move", event)
+					})
+					.onActionEnd((event) => {
+						this.onPanGestureChange("end", event)
+					})
+			)
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.clip(true)
 	}
 }
 
-// 文字提示
 @Component
 struct TextTip{
-	/**
-	 * 全局公共样式
-	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@Consume refreshStatus: PullRefreshStatus
 	@Consume pullingText: string
@@ -222,7 +248,7 @@ struct TextTip{
 		}
 	}
 	build() {
-		Row(){
+		Row({space: "10lpx"}){
 			if(this.refreshStatus == "loading") {
 				IBestLoading({
 					loadingSize: this.baseStyle.fontSizeMd as string

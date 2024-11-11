@@ -32,11 +32,6 @@ export struct IBestTabs{
      */
     @Provide({ allowOverride: "tabsList" }) @Watch("tabsListChange") tabsList: IBestTabItem[] = []
     /**
-     * tabContent 内容列表
-     * @since 1.17.0
-     */
-    @Prop tabContent: WrappedBuilder<[]>[] = []
-    /**
      * 单个tab内边距，单位lpx
      */
     @Provide({allowOverride: "tabPadding"}) tabPadding: number = 16
@@ -102,8 +97,23 @@ export struct IBestTabs{
     @Provide({allowOverride: "tabBgColor"}) tabBgColor: ResourceColor  = this.baseStyle.default
     /**
      * 字体大小 单位lpx
+     * @since 1.15.0
      */
     @Provide({allowOverride: "fontSize"}) fontSize: number = 28
+    /**
+     * onChange事件回调
+     */
+    onChange: (name: string) => void = () => {}
+    /**
+     * 点击事件
+     * @since 1.17.0
+     */
+    onTabClick: (name: string) => void = () => {}
+    /**
+     * tabContent 内容列表
+     * @since 1.17.0
+     */
+    // @BuilderParam tabContent: CustomBuilder
     /**
      * controller 控制器
      */
@@ -116,10 +126,7 @@ export struct IBestTabs{
     @State startX: number = 0
     @State touchOffsetX: number = 0
     @State startTime: number = 0
-    /**
-     * onChange事件回调
-     */
-    onChange: (name: string) => void = () => {}
+
 
     aboutToAppear(): void {
         this.uniId = this.getUniqueId().toString()
@@ -158,9 +165,7 @@ export struct IBestTabs{
     }
     // 切换swiper
     swiperChange(index: number, animated: boolean){
-        if(this.tabContent.length && index < this.tabContent.length){
-            this.swiperController.changeIndex(index, animated)
-        }
+        this.swiperController.changeIndex(index, animated)
     }
     // 切换name
     changeTab(name: string){
@@ -228,14 +233,14 @@ export struct IBestTabs{
                 this.touchOffsetX = newOffset
                 break
             case TouchType.Up:  // TODO 滑动较快时 会触发swiper change 暂不知条件
-                let time = (Date.now() - this.startTime) / 1000
-                let speed = Math.abs(this.touchOffsetX / time)
-                console.log("滑动距离", Math.abs(this.touchOffsetX), "时间 s", time, "速度 vp/s", speed)
+                // let time = (Date.now() - this.startTime) / 1000
+                // let speed = Math.abs(this.touchOffsetX / time)
+                // console.log("滑动距离", Math.abs(this.touchOffsetX), "时间 s", time, "速度 vp/s", speed)
                 if(Math.abs(this.touchOffsetX) >= px2vp(lpx2px(this.tabContentWidth/2))){
                     let index = this.touchOffsetX > 0 ? this.swiperIndex - 1 : this.swiperIndex + 1
                     this.currentName = this.tabsList[index].name
                 }else{
-                    console.log("未触发", Math.abs(this.touchOffsetX))
+                    // console.log("未触发", Math.abs(this.touchOffsetX))
                     this.translateX = this.tabBoxTranslateX = this.startTransX
                 }
                 this.touchOffsetX = 0
@@ -246,12 +251,13 @@ export struct IBestTabs{
         Column({ space: "30lpx" }){
             if(this.tabWidthType == "auto"){
                 Scroll(this.scroller){
-                    IBestTabContent({
+                    IBestTabBox({
                         currentName: $currentName,
                         translateX: this.translateX,
                         tabBoxWidth: this.tabBoxWidth,
                         tabBoxTranslateX: this.tabBoxTranslateX,
-                        initSize: (): Promise<void> => this.initSize()
+                        initSize: (): Promise<void> => this.initSize(),
+                        onTabClick: (name: string): void => this.onTabClick(name)
                     })
                 }
                 .scrollable(ScrollDirection.Horizontal)
@@ -261,40 +267,39 @@ export struct IBestTabs{
                 .constraintSize({ maxHeight: `${this.tabHeight}lpx` })
                 .id(`tabContent_${this.uniId}`)
             }else{
-                IBestTabContent({
+                IBestTabBox({
                     currentName: $currentName,
                     translateX: this.translateX,
                     tabBoxWidth: this.tabBoxWidth,
                     tabBoxTranslateX: this.tabBoxTranslateX,
-                    initSize: (): Promise<void> => this.initSize()
+                    initSize: (): Promise<void> => this.initSize(),
+                    onTabClick: (name: string): void => this.onTabClick(name)
                 }).id(`tabContent_${this.uniId}`)
             }
-            if(this.tabContent.length){
-                Swiper(this.swiperController){
-                    ForEach(this.tabContent, (item: WrappedBuilder<[]>, index: number) => {
-                        item.builder()
-                    })
-                }
-                .width(CONTAINER_SIZE.FULL)
-                .indicator(false)
-                .loop(false)
-                .duration(200)
-                .effectMode(EdgeEffect.None)
-                .index($$this.swiperIndex)
-                .monopolizeEvents(true)
-                .onGestureSwipe((index: number, extraInfo: SwiperAnimationEvent) => {
-                    let curOffset = extraInfo.currentOffset
-                    let transX = curOffset > 0 ? this.translateXList[index] - this.translateXList[index-1] : this.translateXList[index+1] - this.translateXList[index]
-                    let x = - px2lpx(vp2px(curOffset))*transX/this.tabContentWidth
-                    this.translateX = this.startTransX + x
-                })
-                .onTouch((event: TouchEvent) => {
-                    this.onFingerTouch(event)
-                })
-                // .onChange((index: number) => {
-                //     this.currentName = this.tabsList[index].name
-                // })
-            }
+            // if(this.tabContent){
+            //     Swiper(this.swiperController){
+            //         this.tabContent()
+            //     }
+            //     .width(CONTAINER_SIZE.FULL)
+            //     .indicator(false)
+            //     .loop(false)
+            //     .duration(200)
+            //     .effectMode(EdgeEffect.None)
+            //     .index($$this.swiperIndex)
+            //     .monopolizeEvents(true)
+            //     .onGestureSwipe((index: number, extraInfo: SwiperAnimationEvent) => {
+            //         let curOffset = extraInfo.currentOffset
+            //         let transX = curOffset > 0 ? this.translateXList[index] - this.translateXList[index-1] : this.translateXList[index+1] - this.translateXList[index]
+            //         let x = - px2lpx(vp2px(curOffset))*transX/this.tabContentWidth
+            //         this.translateX = this.startTransX + x
+            //     })
+            //     .onTouch((event: TouchEvent) => {
+            //         this.onFingerTouch(event)
+            //     })
+            //     .onChange((index: number) => {
+            //         this.currentName = this.tabsList[index].name
+            //     })
+            // }
         }
         .width(CONTAINER_SIZE.FULL)
         .alignItems(HorizontalAlign.Start)
@@ -302,7 +307,7 @@ export struct IBestTabs{
 }
 
 @Component
-struct IBestTabContent{
+struct IBestTabBox{
     /**
      * 全局公共样式
      */
@@ -321,6 +326,7 @@ struct IBestTabContent{
     @Prop tabBoxTranslateX: number
     @Prop tabBoxWidth: number
     initSize: () => Promise<void> = () => new Promise(() => {})
+    onTabClick: (name: string) => void = () => {}
     build() {
         Stack({alignContent: Alignment.BottomStart}){
             // 标记线
@@ -354,7 +360,8 @@ struct IBestTabContent{
                         item: item,
                         index: index,
                         currentName: $currentName,
-                        initSize: this.initSize
+                        initSize: this.initSize,
+                        onTabClick: this.onTabClick
                     })
                 }, (item: string, index: number) => index+'')
             }
@@ -386,6 +393,7 @@ struct IBestTab{
     @Consume tabLineColor: ResourceColor
     @Consume fontSize: number
     initSize: () => Promise<void> = () => new Promise(() => {})
+    onTabClick: (name: string) => void = () => {}
     itemChange(){
         this.initSize()
     }
@@ -421,6 +429,7 @@ struct IBestTab{
         .id(`ibestTab_${this.uniId}_box_${this.item.name}`)
         .onClick(() => {
             this.currentName = this.item.name
+            this.onTabClick(this.item.name)
         })
     }
 }

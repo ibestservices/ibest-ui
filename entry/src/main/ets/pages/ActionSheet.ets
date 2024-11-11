@@ -127,7 +127,8 @@ struct ActionSheetPage {
 										{ name: '选项二', isDisabled: true },
 										{ name: '选项三' }
 									],
-									cancelText: '取消'
+									cancelText: '取消',
+									cancelTextColor: '#3d8af2'
 								})
 							}
 						})

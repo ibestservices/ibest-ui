@@ -88,7 +88,37 @@ export struct IBestCell {
   /**
    * 点击单元格的回调
    */
-  onClickCell?: (event: ClickEvent) => void;
+  onClickCell: (event: ClickEvent) => void = () => {}
+  /**
+   * 左侧图标
+   * @since 1.17.0
+   */
+  @Prop leftIcon: ResourceStr = ""
+  /**
+   * 左侧图标颜色
+   * @since 1.17.0
+   */
+  @Prop leftIconColor: ResourceColor = ""
+  /**
+   * 左侧图标大小
+   * @since 1.17.0
+   */
+  @Prop leftIconSize: number = 32
+  /**
+   * 右侧图标
+   * @since 1.17.0
+   */
+  @Prop rightIcon: ResourceStr = ""
+  /**
+   * 右侧图标颜色
+   * @since 1.17.0
+   */
+  @Prop rightIconColor: ResourceColor = ""
+  /**
+   * 右侧图标大小
+   * @since 1.17.0
+   */
+  @Prop rightIconSize: number = 32
   /**
    * 根据arrow direction获取图标旋转角度
    */
@@ -138,32 +168,39 @@ export struct IBestCell {
               })
               .fontSize(this.baseStyle.fontSizeSm)
               .fontColor(this.baseStyle.danger)
-              .constraintSize({
-                minHeight: '48lpx'
-              })
+              // .constraintSize({
+              //   minHeight: '48lpx'
+              // })
           }
           // 标题与描述
           Column(){
             // 标题
-            if (typeof this.titleBuilder === 'function') {
+            if (this.titleBuilder) {
               Row() {
                 this.titleBuilder()
-              }.constraintSize({
-                minHeight: '48lpx'
-              })
+              }
+              // .constraintSize({
+              //   minHeight: '48lpx'
+              // })
             } else {
               Row() {
-                if (typeof this.iconBuilder === 'function') {
+                if (this.iconBuilder) {
                   Row() {
                     this.iconBuilder()
-                  }.constraintSize({
-                    minHeight: '48lpx'
-                  })
+                  }.margin({right: this.baseStyle.spaceBase})
+                }else if(this.leftIcon){
+                  Image(this.leftIcon)
+                    .height(`${this.leftIconSize}lpx`)
+                    .fillColor(this.leftIconColor)
+                    .margin({right: this.baseStyle.spaceBase})
                 }
+                // .constraintSize({
+                //   minHeight: '48lpx'
+                // })
                 // 默认标题内容
                 Text(String(this.title))
-                  .width(CONTAINER_SIZE.FULL)
-                  .lineHeight('48lpx')
+                  .layoutWeight(1)
+                  // .lineHeight('48lpx')
                   .fontSize(this.getCellSize().fontSize)
                   .fontColor(this.titleColor)
               }.width(CONTAINER_SIZE.FULL)
@@ -171,17 +208,18 @@ export struct IBestCell {
             }
 
             // 描述信息
-            if (typeof this.labelBuilder === 'function') {
+            if (this.labelBuilder) {
               Row() {
                 this.labelBuilder()
-              }.constraintSize({
-                minHeight: '36lpx'
-              })
+              }
+              // .constraintSize({
+              //   minHeight: '36lpx'
+              // })
             } else {
               if (this.isHasLabel()) {
                 Text(String(this.label))
                   .width(CONTAINER_SIZE.FULL)
-                  .lineHeight('36lpx')
+                  // .lineHeight('36lpx')
                   .fontSize(this.getCellSize().labelFontSize)
                   .margin({
                     top: this.baseStyle.spaceBase
@@ -195,27 +233,35 @@ export struct IBestCell {
 
 
           // 内容
-          if (typeof this.valueBuilder === 'function') {
+          if (this.valueBuilder) {
             Row() {
               this.valueBuilder()
-            }.constraintSize({
-              minHeight: '48lpx'
-            }).layoutWeight(1)
+            }
+            // .constraintSize({
+            //   minHeight: '48lpx'
+            // })
+            .layoutWeight(1)
           } else {
             Row() {
               Text(String(this.value))
                 .textAlign(TextAlign.Start)
-                .lineHeight('48lpx')
+                // .lineHeight('48lpx')
                 .fontSize(this.getCellSize().fontSize)
                 .fontColor(this.valueColor)
-              if (typeof this.rightIconBuilder === 'function') {
+              if (this.rightIconBuilder) {
                 Row() {
                   this.rightIconBuilder()
-                }.constraintSize({
-                  minHeight: '48lpx'
-                })
+                }.margin({left: this.baseStyle.spaceBase})
+                // .constraintSize({
+                //   minHeight: '48lpx'
+                // })
 
                 // 如果是link箭头
+              } else if(this.rightIcon){
+                Image(this.rightIcon)
+                  .width(`${this.rightIconSize}lpx`)
+                  .fillColor(this.rightIconColor)
+                  .margin({left: this.baseStyle.spaceBase})
               } else if (this.isLink) {
                 Row() {
                   Image($r("app.media.arrow_right"))
@@ -229,9 +275,10 @@ export struct IBestCell {
                       duration: this.baseStyle.animationDuration as number
                     })
                   // 行高会导致对不齐 所以要加个做小高度和行高一样
-                }.constraintSize({
-                  minHeight: '48lpx'
-                })
+                }
+                // .constraintSize({
+                //   minHeight: '48lpx'
+                // })
               }
             }.layoutWeight(1)
             .justifyContent(FlexAlign.End)
@@ -266,7 +313,7 @@ export struct IBestCell {
       duration: this.baseStyle.animationDuration as number
     })
     .onClick((event) => {
-      typeof this.onClickCell === 'function' && this.onClickCell(event)
+      this.onClickCell(event)
     })
 
   }

@@ -14,8 +14,8 @@ struct CellPage {
   @State inputValue: string = ''
 
   @Builder
-  StarIcon(height = '48lpx') {
-    Image($r('app.media.app_icon')).height(height).margin({ right: SPACE.MINI })
+  StarIcon(width = '36lpx') {
+    Image($r('app.media.app_icon')).width(width)
   }
 
   @Builder
@@ -50,16 +50,13 @@ struct CellPage {
         ListItem() {
           ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL }) {
             IBestCellGroup() {
-              // 不包个组件就报错 奇怪啊
-              Column() {
-                IBestCell({ title: '标题', value: '内容' })
-                IBestCell({
-                  title: '标题',
-                  value: '内容',
-                  label: '描述信息',
-                  hasBorder: false
-                })
-              }
+              IBestCell({ title: '标题', value: '内容' })
+              IBestCell({
+                title: '标题',
+                value: '内容',
+                label: '描述信息',
+                hasBorder: false
+              })
             }
           }
         }
@@ -67,17 +64,13 @@ struct CellPage {
         ListItem() {
           ComponentShowContainer({ title: '卡片风格', titlePaddingLeft: SPACE.SMALL }) {
             IBestCellGroup({ inset: true }) {
-              // 不包个组件就报错 奇怪啊
-              Column() {
-                IBestCell({ title: '标题', value: '内容' })
-                IBestCell({
-                  title: '标题',
-                  value: '内容',
-                  label: '描述信息',
-                  hasBorder: false
-                })
-              }
-
+              IBestCell({ title: '标题', value: '内容' })
+              IBestCell({
+                title: '标题',
+                value: '内容',
+                label: '描述信息',
+                hasBorder: false
+              })
             }
           }
         }
@@ -123,9 +116,20 @@ struct CellPage {
             IBestCell({
               title: '标题',
               value: '内容',
+              leftIcon: $r("app.media.icon_like")
+            })
+            IBestCell({
+              title: '标题',
+              value: '内容',
               iconBuilder: () => {
                 this.StarIcon()
-              },
+              }
+            })
+            IBestCell({
+              title: '标题',
+              value: '内容',
+              rightIcon: $r("app.media.icon_star"),
+              rightIconColor: '#FF0000',
               hasBorder: false
             })
           }
@@ -162,6 +166,7 @@ struct CellPage {
             IBestCell({
               title: '标题',
               value: '内容',
+              center: true,
               required: true,
               hasBorder: false,
               valueBuilder: (): void => this.InputContain()

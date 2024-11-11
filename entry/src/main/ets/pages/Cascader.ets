@@ -1,4 +1,4 @@
-import { IBestCascader, IBestCascaderOption, IBestCellGroup, IBestCell, IBestToast } from '@ibestservices/ibest-ui'
+import { IBestCascader, IBestCascaderContent, IBestCascaderOption, IBestCellGroup, IBestCell, IBestToast } from '@ibestservices/ibest-ui'
 import TitleBar from '../components/TitleBar'
 import { ComponentRouterParams } from '../assets/global.type'
 import router from '@ohos.router'
@@ -211,6 +211,8 @@ struct CascaderPage {
 		}
 	]
 
+	@State selectValue5: string[] = []
+
 	build() {
 		Column() {
 			TitleBar({
@@ -300,6 +302,14 @@ struct CascaderPage {
 								})
 							}
 						}
+					}
+				}
+				ListItem(){
+					ComponentShowContainer({ title: '平铺展示', titlePaddingLeft: SPACE.SMALL }) {
+						IBestCascaderContent({
+							value: $selectValue5,
+							options: this.data4
+						})
 					}
 				}
 			}
