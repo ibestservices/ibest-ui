@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "access_read_pasteboard_reason",
+      "value": "用于复制页面内容"
     }
   ]
 }

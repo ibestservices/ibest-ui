@@ -1,13 +1,10 @@
 import {
-  BasicIconsType,
-  OutlineIconsType,
-  FilledIconsType,
-  IbestIconDataType,
+  IBestIconDataType,
   IconClassifyInterface
 } from './index.type'
 
 // 图标分类
-export const IbestIconClassify: IconClassifyInterface = {
+export const IBestIconClassify: IconClassifyInterface = {
   basic: ["arrow", "arrow-left", "arrow-up", "arrow-down", "arrow-double-left", "arrow-double-right", "success",
     "cross", "plus", "minus", "fail", "circle"],
   outline: ["location-o", "like-o", "star-o", "phone-o", "setting-o", "fire-o", "coupon-o", "cart-o", "shopping-cart-o",
@@ -40,7 +37,7 @@ export const IbestIconClassify: IconClassifyInterface = {
 }
 
 // 全部图标数据
-export const IbestIconData: IbestIconDataType = {
+export const IBestIconData: IBestIconDataType = {
   "arrow-double-left": "\ue653",
   "arrow-double-right": "\ue654",
   "contact": "\ue753",

@@ -14,19 +14,19 @@ export struct IBestPullRefresh {
 	/**
 	 * 下拉过程提示文案
 	 */
-	@Provide({allowOverride: 'pullingText'}) pullingText: string = "下拉即可刷新..."
+	@Provide({allowOverride: 'pullingText'}) pullingText: ResourceStr = "下拉即可刷新..."
 	/**
 	 * 释放过程提示文案
      */
-	@Provide({allowOverride: 'loosingText'}) loosingText: string = "释放即可刷新..."
+	@Provide({allowOverride: 'loosingText'}) loosingText: ResourceStr = "释放即可刷新..."
 	/**
 	 * 加载过程提示文案
 	 */
-	@Provide({allowOverride: 'loadingText'}) loadingText: string = "加载中..."
+	@Provide({allowOverride: 'loadingText'}) loadingText: ResourceStr = "加载中..."
 	/**
 	 * 刷新成功提示文案
 	 */
-	@Provide({allowOverride: 'successText'}) successText: string = ""
+	@Provide({allowOverride: 'successText'}) successText: ResourceStr = ""
 	/**
 	 * 刷新成功提示展示时长(ms)
 	 */
@@ -63,7 +63,9 @@ export struct IBestPullRefresh {
 	 * 触发下拉刷新时的回调
 	 */
 	onRefresh: () => void = () => {}
-
+	/**
+	 * 当自定义内容包含List Grid Scroll组件时必传
+  	 */
 	scroller: Scroller = new Scroller()
 
 	@State transY: number = 0

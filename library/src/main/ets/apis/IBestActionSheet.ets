@@ -142,7 +142,7 @@ class IBestActionSheetParams extends IBestActionSheetOption {
 		this.height = option.height || SheetSize.FIT_CONTENT
 		this.backgroundColor = option.backgroundColor
 		this.detents = option.detents
-		this.preferType = option.preferType
+		this.preferType = option.preferType || SheetType.BOTTOM
 		this.mode = option.mode
 		this.dragBar = option.dragBar != undefined ? option.dragBar : false
 		this.title = option.title
@@ -370,6 +370,7 @@ class ActionSheet{
 			width: params.width,
 			height: params.height,
 			dragBar: params.dragBar,
+			preferType: params.preferType,
 			showClose: params.showClose,
 			onWillDismiss: async (DismissSheetAction: DismissSheetAction) => {
 				// console.log("onWillDismiss", DismissSheetAction.reason)
@@ -392,9 +393,6 @@ class ActionSheet{
 		}
 		if(params.detents){
 			sheetOption.detents = params.detents
-		}
-		if(params.preferType){
-			sheetOption.preferType = params.preferType
 		}
 		if(params.mode){
 			sheetOption.mode = params.mode

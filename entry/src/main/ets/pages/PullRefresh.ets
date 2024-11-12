@@ -1,6 +1,6 @@
 import router from '@ohos.router';
 import TitleBar from '../components/TitleBar'
-import { CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import { CONTAINER_SIZE } from '../assets/styles/BaseStyle';
 import { IBestPullRefresh, IBestRefreshContentParams, IBestTabItemType, IBestTabs } from '@ibestservices/ibest-ui';
 import { ComponentRouterParams } from '../assets/global.type';
 @Entry
@@ -41,8 +41,8 @@ struct PullRefresh {
 							.margin(10)
 							.textAlign(TextAlign.Center)
 							.borderRadius(10)
-							.backgroundColor(0xFFFFFF)
-					}
+							.backgroundColor(0x89CFF0)
+					}.width("100%")
 				}, (item: string) => item)
 			}.width("100%")
 		}else if(type == "2"){
@@ -56,9 +56,9 @@ struct PullRefresh {
 							.margin(10)
 							.textAlign(TextAlign.Center)
 							.borderRadius(10)
-							.backgroundColor(0xFFFFFF)
+							.backgroundColor(0x89CFF0)
 					}, (item: string) => item)
-				}
+				}.width("100%")
 			}
 		}
 	}
@@ -68,7 +68,7 @@ struct PullRefresh {
 			.width(60)
 			.scale({ x: $$.distance / 100, y: $$.distance / 100 })
 	}
-	@Builder customLoosingContent($$: IBestRefreshContentParams){
+	@Builder customLoosingContent(){
 		Image($r("app.media.icon_loading_point_static"))
 			.width(60)
 	}

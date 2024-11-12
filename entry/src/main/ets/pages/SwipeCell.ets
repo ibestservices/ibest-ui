@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { IBestCell, IBestSwipeCell, IBestButton } from '@ibestservices/ibest-ui';
+import { IBestCell, IBestButton } from '@ibestservices/ibest-ui';
 import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
@@ -45,14 +45,14 @@ struct SwipeCellPage {
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL }) {
-						IBestSwipeCell({
-							defaultContent: this.cellContent,
-							leftContent: this.leftContent,
-							rightContent: this.rightContent,
-							onContentClick: () => {
-
-							}
-						})
+						// IBestSwipeCell({
+						// 	defaultContent: this.cellContent,
+						// 	leftContent: this.leftContent,
+						// 	rightContent: this.rightContent,
+						// 	onContentClick: () => {
+						//
+						// 	}
+						// })
 					}
 				}
 			}
