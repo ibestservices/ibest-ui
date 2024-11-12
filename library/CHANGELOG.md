@@ -101,3 +101,14 @@ IBestDialog 组件显隐控制方式由原来的controller方式变为由 visibl
 优化:
 1. 优化 IBestLoading 组件动画效果;
 2. 优化 IBestPopup 组件隐藏动画效果.
+
+## 1.17.0
+
+1. 新增 IBestIcon 组件;
+2. 新增 IBestPullRefresh 下拉刷新组件;
+3. IBestTab 新增 onTabClick 事件;
+4. 增加导出 IBestCascaderContent 级联组件, 可独立在页面中使用或与其他自定义组件组合使用;
+5. IBestCell 增加 leftIcon leftIconColor leftIconSize rightIcon rightIconColor rightIconSize 属性;
+6. IBestActionSheet 增加 cancelTextColor、beforeClose 属性.
+
+另: 新发布 @ibestservices/area-data 库, 可用于Cascader相关组件.
