@@ -1,5 +1,3 @@
-import { IbestUIBaseStyleValue } from '../../theme-chalk/src/index.type';
-
 // 基础图标类型
 export interface BasicIconsType {
   "arrow": string;
@@ -279,4 +277,4 @@ export interface IconClassifyInterface {
 }
 
 // 全部数据的类型
-export interface IbestIconDataType extends BasicIconsType, OutlineIconsType, FilledIconsType {}
+export interface IBestIconDataType extends BasicIconsType, OutlineIconsType, FilledIconsType {}

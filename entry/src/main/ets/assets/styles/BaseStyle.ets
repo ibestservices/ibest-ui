@@ -5,17 +5,26 @@ interface GeneratedObjectLiteralInterface_1 {
   DEFAULT?: string;
   BASE: string;
 }
-
+/**
+ * 红色
+ */
 export const COLOR_RED: GeneratedObjectLiteralInterface_1 = {
   BASE: '#F56C6C'
 };
 
 /**
- * 红色
+ * 灰色
  */
-export const COLOR_GRAY: GeneratedObjectLiteralInterface_1 = {
-  BASE: '#969799'
-};
+export enum COLOR_GRAY {
+  GRAY_1 =  '#f7f8fa',
+  GRAY_2 =  '#f2f3f5',
+  GRAY_3 =  '#ebedf0',
+  GRAY_4 =  '#dcdee0',
+  GRAY_5 =  '#c8c9cc',
+  GRAY_6 =  '#969799',
+  GRAY_7 =  '#646566',
+  GRAY_8 =  '#323233',
+}
 
 /**
  * 置灰的颜色

@@ -112,7 +112,7 @@ struct SwitchPage {
                       gridCount: 3,
                       primaryButton: {
                         value: '取消',
-                        fontColor: COLOR_GRAY.BASE,
+                        fontColor: COLOR_GRAY.GRAY_6,
                         action: () => {
                           reject()
                         }

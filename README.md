@@ -33,21 +33,18 @@ https://github.com/ibestservices/ibest-ui
 ## 约束与限制
 在下述版本验证通过：
 ```text
-DevEco Studio NEXT Developer Beta1
-Build #DS-233.14475.28.36.503403
-构建版本：5.0.3.403, built on June 20, 2024
-Runtime version: 17.0.10+1-b1087.17 x86_64
+DevEco Studio 5.0.0 Release
+Build #DS-233.14475.28.36.503906
+构建版本：5.0.3.906, built on October 21, 2024
+Runtime version: 17.0.12+1-b1087.25 x86_64
 VM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.
-macOS 10.15.4
+macOS 15.0.1
 GC: G1 Young Generation, G1 Old Generation
-Memory: 4096M
+Memory: 2048M
 Cores: 12
 Metal Rendering is ON
 Registry:
   idea.plugins.compatible.build=IC-233.14475.28
-Non-Bundled Plugins:
-  ru.adelf.idea.dotenv (2024.1)
-
 ```
 
 ## 开源协议

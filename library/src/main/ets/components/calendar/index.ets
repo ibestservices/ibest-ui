@@ -1,9 +1,8 @@
-import dayjs, { Dayjs } from "@hview/dayjs"
-import {Lunar} from 'lunar'
+import dayjs, { Dayjs } from '@hview/dayjs'
+import { Lunar } from 'lunar'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType, IbestUIBaseStyleValue } from '../../theme-chalk/src/index.type'
-import { ColorType, COLOR_TYPE } from '../../theme-chalk/src/color.type'
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type'
+import { COLOR_TYPE, ColorType, GRAY_COLOR } from '../../theme-chalk/src/color.type'
 import { CalendarConfirmResultType, SelectedStyleType, SelectType, WeekDayType } from './index.type'
 import { FONT_SIZE } from '../../theme-chalk/src/font.type'
 import { spaceData } from '../../theme-chalk/src/space'
@@ -63,15 +62,15 @@ struct CalendarItem {
     @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
     // 是否横屏
     @State isLandscape: boolean = getIsLandscape(getContext(this))
-    @State fontColor: string | IbestUIBaseStyleValue = "#333"
-    @State bgColor: string | IbestUIBaseStyleValue = "transparent"
+    @State fontColor: ResourceColor = "#333"
+    @State bgColor: ResourceColor = "transparent"
     @ObjectLink @Watch("itemChange") dayItem: DayItemType
     @Consume itemWidth: string
     @Consume isShowLunar: boolean
     @Consume type: ColorType
     @Consume selectType: SelectType
     @Consume selectedStyleType: SelectedStyleType
-    @Consume selectedColor: string
+    @Consume selectedColor: ResourceColor
     @Consume @Watch("itemChange") selectedList: Array<DayItemType>
 
     aboutToAppear(): void {
@@ -90,11 +89,11 @@ struct CalendarItem {
                 this.fontColor = item.isSelected ? dateStr == first.dateStr || dateStr == last.dateStr ? this
                     .baseStyle.default : this.selectedColor || this.baseStyle[this.type] : item.isCurMonthDay ? "#333" : "#999"
                 this.bgColor = item.isSelected ? dateStr == first.dateStr || dateStr == last.dateStr ? this.selectedColor || this.baseStyle[this.type]
-                    : this.selectedColor ? this.set16ToRgb(this.selectedColor) : this.baseStyle[this.type + "Opacity"] :
+                    : this.selectedColor ? this.set16ToRgb(this.selectedColor as string) : this.baseStyle[this.type + "Opacity"] :
                     "transparent"
             }else{
                 this.fontColor = item.isSelected ? this.selectedColor || this.baseStyle[this.type] : item.isCurMonthDay ? "#333" : "#999"
-                this.bgColor = item.isSelected ? this.selectedColor ? this.set16ToRgb(this.selectedColor) : this.baseStyle[this.type + "Opacity"] : "transparent"
+                this.bgColor = item.isSelected ? this.selectedColor ? this.set16ToRgb(this.selectedColor as string) : this.baseStyle[this.type + "Opacity"] : "transparent"
             }
         }else{
             this.fontColor = this.dayItem.isCurMonthDay ? this.dayItem.isSelected ? this.baseStyle.default : "#333" : "#999"
@@ -102,9 +101,9 @@ struct CalendarItem {
         }
     }
     // 16进制转rgb
-    set16ToRgb(str:string){
+    set16ToRgb(str:string): string{
         let reg = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/
-        if(!reg.test(str)) return
+        if(!reg.test(str)) return this.set16ToRgb("#999999")
         let newStr = (str.toLowerCase()).replace(/\#/g,'')
         let len = newStr.length
         if(len == 3){
@@ -135,7 +134,7 @@ struct CalendarItem {
         }
         .width(this.itemWidth)
         .aspectRatio(this.isLandscape ? 0 : 1)
-        .borderRadius(this.selectedStyleType == "circle" ? 8888 : borderRadiusData.borderRadiusSm)
+        .borderRadius(this.selectedStyleType == "circle" ? 999 : borderRadiusData.borderRadiusSm)
         .backgroundColor(this.bgColor)
         .justifyContent(FlexAlign.Center)
         .margin({bottom: this.baseStyle.spaceBase})

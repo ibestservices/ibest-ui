@@ -117,6 +117,16 @@ struct TabPage {
 
     private tabController: IBestTabController = new IBestTabController()
 
+    // @Builder tabContent(){
+    //     ForEach([1,2,3], (item: number) => {
+    //         Row(){
+    //             Text(item.toString())
+    //         }
+    //         .width("100%")
+    //         .height(100)
+    //     })
+    // }
+
     build() {
         Column(){
             TitleBar({

@@ -206,7 +206,7 @@ export struct IBestButton {
     .borderRadius(this.getBtnBorderRadius())
     .fontColor(this.getBtnColor(this.plain))
     .backgroundColor(this.getBtnColor(!this.plain))
-    .borderColor(this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_4 : this.getBtnColor(this.plain))
+    .borderColor(this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_4 : this.getBtnColor(true))
     .hitTestBehavior(this.loading ? HitTestMode.None : HitTestMode.Default)
     .enabled(!this.disabled)
     .opacity(this.disabled && this.plain ? 0.5 : 1)

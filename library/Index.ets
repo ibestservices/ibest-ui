@@ -50,10 +50,8 @@ export { IBestDialog } from './src/main/ets/components/dialog/index'
 export { IBestStepper } from './src/main/ets/components/stepper/index'
 
 export { IBestCalendar } from './src/main/ets/components/calendar/index'
-
-export { CalendarConfirmResultType, SelectType, SelectedStyleType } from './src/main/ets/components/calendar/index.type'
-
 export { IBestCalendarDialog } from './src/main/ets/components/calendar/calendarDialog'
+export { CalendarConfirmResultType, SelectType, SelectedStyleType } from './src/main/ets/components/calendar/index.type'
 
 export { IBestLoading } from './src/main/ets/components/loading/index'
 
@@ -62,7 +60,7 @@ export { IBestTabItem, IBestTabItemType, IBestTabController } from './src/main/e
 
 export { IBestPopup } from './src/main/ets/components/popup/index'
 
-export { IBestCascader } from './src/main/ets/components/cascader/index'
+export { IBestCascader, IBestCascaderContent } from './src/main/ets/components/cascader/index'
 export { IBestCascaderOption } from './src/main/ets/components/cascader/index.type'
 
 export { IBestField } from './src/main/ets/components/field/index'
@@ -98,5 +96,8 @@ export { IBestSliderValue } from './src/main/ets/components/slider/index.type'
 export { IBestUploader } from './src/main/ets/components/uploader/index'
 export { IBestUploaderFile } from './src/main/ets/components/uploader/index.type'
 
+export { IBestPullRefresh } from './src/main/ets/components/pullRefresh'
+export { IBestRefreshContentParams } from './src/main/ets/components/pullRefresh/index.type'
+
 export { IBestIcon } from './src/main/ets/components/icon/index'
-export {IbestIconClassify, IbestIconData} from './src/main/ets/components/icon/config'
+export {IBestIconClassify, IBestIconData} from './src/main/ets/components/icon/config'

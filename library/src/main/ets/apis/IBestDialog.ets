@@ -344,15 +344,20 @@ class Dialog{
 			alignment: DialogAlignment.Center,
 			isModal: params.showOverlay,
 			maskColor: params.overlayColor,
-			onWillDismiss:(dismissDialogAction: DismissDialogAction)=> {
+			onWillDismiss: async(dismissDialogAction: DismissDialogAction)=> {
 				// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
 				let reason = dismissDialogAction.reason
-				if (reason == DismissReason.PRESS_BACK && params.closeOnBackPress) {
-					dismissDialogAction.dismiss()
+				if (reason == DismissReason.PRESS_BACK && !params.closeOnBackPress || reason == DismissReason.TOUCH_OUTSIDE && !params.closeOnClickOverlay) {
+					return
 				}
-				if (reason == DismissReason.TOUCH_OUTSIDE && params.closeOnClickOverlay) {
-					dismissDialogAction.dismiss()
+				if (params.beforeClose) {
+					const status = await params.beforeClose("cancel")
+					if (!status) {
+						return
+					}
 				}
+				dismissDialogAction.dismiss()
+				params.onClose?.()
 			}
 		})
 		params.onOpen?.()
@@ -365,9 +370,10 @@ class Dialog{
 		let key = id || this.getLastKey()
 		if(this.contentNodeMap.has(key)){
 			let dialog = this.contentNodeMap.get(key)
-			dialog?.promptAction?.closeCustomDialog(dialog?.contentNode)
-			dialog?.contentNode?.dispose()
-			dialog?.params.onClose?.()
+			dialog?.promptAction?.closeCustomDialog(dialog?.contentNode).then(() => {
+				dialog?.contentNode?.dispose()
+				dialog?.params.onClose?.()
+			})
 		}
 	}
 	private getUniKey(): string{

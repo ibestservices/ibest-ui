@@ -348,15 +348,15 @@ export struct IBestPicker{
 									direction: PanDirection.Vertical,
 									distance: 1
 								})
-									.onActionStart(() => {
-										this.onTouchStart(index)
-									})
-									.onActionUpdate((event: GestureEvent) => {
-										this.onTouchMove(event, index)
-									})
-									.onActionEnd(() => {
-										this.onTouchEnd(index)
-									})
+								.onActionStart(() => {
+									this.onTouchStart(index)
+								})
+								.onActionUpdate((event: GestureEvent) => {
+									this.onTouchMove(event, index)
+								})
+								.onActionEnd(() => {
+									this.onTouchEnd(index)
+								})
 							)
 					})
 				}

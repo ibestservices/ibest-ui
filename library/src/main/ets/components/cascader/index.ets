@@ -10,7 +10,11 @@ import { IBestPopup } from '../popup/index'
 
 @CustomDialog
 @Component
-struct IBestCascaderContent{
+export struct IBestCascaderContent{
+	/**
+	 * 全局公共样式
+	 */
+	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 顶部tab栏数据
 	 */
@@ -33,7 +37,7 @@ struct IBestCascaderContent{
 	/**
 	 * 可选项数据源
 	 */
-	@Consume options: IBestCascaderOption[]
+	@Provide({allowOverride: "options"}) options: IBestCascaderOption[] = []
 	/**
 	 * 数据源实例
 	 */
@@ -45,15 +49,19 @@ struct IBestCascaderContent{
 	/**
 	 * 选中颜色
 	 */
-	@Consume activeColor: ResourceColor
+	@Provide({allowOverride: "activeColor"}) activeColor: ResourceColor = this.baseStyle.primary
 	/**
 	 * 列表区域高度
 	 */
-	@Consume listHeight: number
+	@Provide({allowOverride: "listHeight"}) listHeight: number = 700
+	/**
+	 * 单项高度
+	 */
+	@Provide({allowOverride: "itemHeight"}) itemHeight: number = 80
 	/**
 	 * 是否开启动态加载
 	 */
-	@Consume lazy: boolean
+	@Provide({allowOverride: "lazy"}) lazy: boolean = false
 	/**
 	 * 动态加载函数
 	 */

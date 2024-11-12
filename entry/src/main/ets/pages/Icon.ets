@@ -1,27 +1,17 @@
 import router from '@ohos.router';
-import { IBestIcon, IBestTabItemType, IBestTabs, IbestIconData, IbestIconClassify,
+import { IBestIcon, IBestTabItemType, IBestTabs, IBestIconClassify,
   IBestNotify } from '@ibestservices/ibest-ui'
-import { BACKGROUND_COLOR, COLOR_BLUE, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
+import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, FONT_SIZE, SPACE } from '../assets/styles/BaseStyle'
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { ComponentRouterParams } from '../assets/global.type'
 import { pasteboard } from '@kit.BasicServicesKit'
 import { promptAction } from '@kit.ArkUI'
 
-interface iconListItem {
-  name: string
-  value: string
-}
-
-@Styles
-function IconsGap() {
-  .margin({ right: SPACE.BASE, bottom: SPACE.BASE })
-}
 
 @Entry
 @Component
 struct IconsPage {
-  @State message: string = 'Hello World';
   @State title: string = (router.getParams() as ComponentRouterParams).title || ''
   @State curTabName: string = "1"
   @State tabsList: IBestTabItemType[] = [
@@ -43,63 +33,37 @@ struct IconsPage {
     }
   ]
 
-  @Builder
-  example() {
+  @Builder example() {
     List() {
       ListItem() {
         ComponentShowContainer({ title: '基础用法' }) {
-          Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
-            Column() {
-              IBestIcon({ name: 'like' })
-            }
-          }
+          IBestIcon({ name: 'like' })
         }
       }
-
-      ListItem() {
-        ComponentShowContainer({ title: '使用图片 URL' }) {
-          Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
-            Column() {
-              IBestIcon({ name: 'https://fastly.jsdelivr.net/npm/@vant/assets/icon-demo.png' })
-            }
-          }
-        }
-      }
-
       ListItem() {
         ComponentShowContainer({ title: '图标颜色' }) {
-          Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
-            Column() {
-              IBestIcon({ name: 'cart-o', color: '#1989fa' })
-            }.IconsGap()
-
-            Column() {
-              IBestIcon({ name: 'fire-o', color: '#ee0a24' })
-            }
+          Row({space: SPACE.BASE}){
+            IBestIcon({ name: 'cart-o', color: '#1989fa' })
+            IBestIcon({ name: 'fire-o', color: '#ee0a24' })
           }
         }
       }
-
       ListItem() {
         ComponentShowContainer({ title: '图标大小' }) {
-          Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
-            Column() {
-              IBestIcon({ name: 'chat-o', iconSize: 20 })
-            }.IconsGap()
-
-            Column() {
-              IBestIcon({ name: 'chat-o', iconSize: 40 })
-            }
+          Row({space: SPACE.BASE}){
+            IBestIcon({ name: 'chat-o', iconSize: 20 })
+            IBestIcon({ name: 'chat-o', iconSize: 40 })
           }
         }
       }
-
     }
     .layoutWeight(1)
     .padding({
-      left: SPACE.BASE,
-      right: SPACE.BASE
+      left: SPACE.MEDIA,
+      right: SPACE.MEDIA
     })
+    .backgroundColor("#fff")
+    .borderRadius(SPACE.BASE)
   }
 
   copyText(text: string) {
@@ -108,41 +72,51 @@ struct IconsPage {
     systemPasteboard.setData(pasteboardData); // 将数据放入剪切板
     systemPasteboard.getData().then((data) => {
       if (data) {
-        promptAction.showToast({ message: '复制成功' });
+        // promptAction.showToast({ message: '复制成功' });
+        IBestNotify.show({
+          message: `已复制到剪切板`,
+          color: Color.White,
+          backgroundColor: '#58be6a'
+        })
       } else {
         promptAction.showToast({ message: '复制失败' });
       }
     })
   }
 
-  @Builder
-  iconShowList(list: string[]) {
-    List() {
-      ListItem() {
-        Flex({ wrap: FlexWrap.Wrap, direction: FlexDirection.Row }) {
-          ForEach(list, (item: string) => {
-            Stack() {
-              Column() {
-                IBestIcon({ name: item, iconSize: 30 })
-                Text(item).margin({ top: SPACE.BASE, bottom: SPACE.BASE })
-              }.alignItems(HorizontalAlign.Center)
+  @Builder iconShowList(list: string[]) {
+    Grid(){
+      ForEach(list, (item: string) => {
+        GridItem() {
+          Column({space: SPACE.MEDIA}) {
+            IBestIcon({ name: item, iconSize: 30 })
+            Text(item)
+              .fontSize(FONT_SIZE.MINI)
+              .textAlign(TextAlign.Center)
+              .padding({ left: SPACE.MINI, right: SPACE.MINI })
+          }
+          .width(CONTAINER_SIZE.FULL)
+          .alignItems(HorizontalAlign.Center)
+          .padding({ top: SPACE.MEDIA, bottom: SPACE.MEDIA })
+          .stateStyles({
+            pressed:{
+              .backgroundColor(COLOR_GRAY.GRAY_2)
+            },
+            normal:{
+              .backgroundColor(BACKGROUND_COLOR.DEFAULT)
             }
-            .width('20%')
-            .height('20%')
-            .IconsGap()
-            .onClick(() => {
-              this.copyText(item)
-              IBestNotify.show({
-                message: `${item} 复制到剪切板`,
-                color: Color.White,
-                backgroundColor: '#58be6a'
-              })
-            })
           })
-
-        }.backgroundColor(Color.White).margin({ top: SPACE.BASE, bottom: SPACE.BASE })
-      }
-    }.width('100%').height('100%')
+        }
+        .onClick(() => {
+          this.copyText(item)
+        })
+      })
+    }
+    .columnsTemplate("1fr 1fr 1fr 1fr")
+    .cellLength(100)
+    .layoutWeight(1)
+    .backgroundColor(BACKGROUND_COLOR.DEFAULT)
+    .borderRadius(SPACE.BASE)
   }
 
   build() {
@@ -150,34 +124,28 @@ struct IconsPage {
       TitleBar({
         title: this.title
       }).backgroundColor('#FFF')
-
-
+      IBestTabs({
+        tabsList: this.tabsList,
+        currentName: $curTabName
+      })
       Column() {
-        Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap, alignItems: ItemAlign.Center }) {
-          Column() {
-            IBestTabs({
-              tabsList: this.tabsList,
-              currentName: $curTabName
-            })
-            if (this.curTabName === '1') {
-              this.example()
-            } else if (this.curTabName === '2') {
-              this.iconShowList(IbestIconClassify.basic)
-            } else if (this.curTabName === '3') {
-              this.iconShowList(IbestIconClassify.outline)
-            } else if (this.curTabName === '4') {
-              this.iconShowList(IbestIconClassify.filled)
-            } else {
-              Stack()
-            }
-          }
+        if (this.curTabName === '1') {
+          this.example()
+        } else if (this.curTabName === '2') {
+          this.iconShowList(IBestIconClassify.basic)
+        } else if (this.curTabName === '3') {
+          this.iconShowList(IBestIconClassify.outline)
+        } else if (this.curTabName === '4') {
+          this.iconShowList(IBestIconClassify.filled)
         }
       }
       .layoutWeight(1)
       .padding({
         left: SPACE.BASE,
-        right: SPACE.BASE
+        right: SPACE.BASE,
+        bottom: SPACE.BASE
       })
+      .margin({top: SPACE.BASE})
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)

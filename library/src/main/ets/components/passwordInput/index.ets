@@ -207,7 +207,7 @@ struct InputField {
 	@Consume space: number
 	@Consume radius: number
 	@Consume isHighlightCurrent: boolean
-	@Consume highlightColor: string
+	@Consume highlightColor: ResourceColor
 	@Prop focused: boolean
 	@Prop currentFocusIndex: number
 	@Prop index: number = 0

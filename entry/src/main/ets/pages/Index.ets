@@ -1,5 +1,5 @@
 import router from '@ohos.router'
-import { BACKGROUND_COLOR, SPACE, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT } from '../assets/styles/BaseStyle'
+import { BACKGROUND_COLOR, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, SPACE } from '../assets/styles/BaseStyle'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 
 interface ComponentPart{
@@ -24,12 +24,12 @@ struct Index {
           path: 'pages/Button'
         },
         {
-          name: 'Icon 图标',
-          path: 'pages/Icon'
-        },
-        {
           name: 'Cell 单元格',
           path: 'pages/Cell'
+        },
+        {
+          name: 'Icon 图标',
+          path: 'pages/Icon'
         },
         {
           name: 'Popup 弹出层',
@@ -144,7 +144,15 @@ struct Index {
         {
           name: 'Notify 消息通知',
           path: 'pages/Notify'
-        }
+        },
+        {
+          name: 'PullRefresh 下拉刷新',
+          path: 'pages/PullRefresh'
+        },
+        // {
+        //   name: 'SwipeCell 滑动单元格',
+        //   path: 'pages/SwipeCell'
+        // }
       ]
     },
     {

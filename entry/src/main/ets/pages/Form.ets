@@ -265,7 +265,7 @@ struct FieldPage {
 							formId: this.formId1,
 							controller: this.controller1
 						}){
-							IBestCellGroup({inset: true}) {
+							Column() {
 								IBestField({
 									formId: this.formId1,
 									prop: 'name',
@@ -306,8 +306,8 @@ struct FieldPage {
 										})
 									}
 								})
-									.margin({ top: SPACE.TWENTY })
-							}
+									.margin({ top: SPACE.SMALL})
+							}.padding({ left: SPACE.MEDIA, right: SPACE.MEDIA })
 						}
 					}
 				}
@@ -318,7 +318,7 @@ struct FieldPage {
 							rules: this.rules2,
 							controller: this.controller2
 						}){
-							IBestCellGroup({inset: true}) {
+							Column() {
 								IBestField({
 									formId: this.formId2,
 									prop: 'value1',
@@ -360,8 +360,8 @@ struct FieldPage {
 										})
 									}
 								})
-									.margin({ top: SPACE.TWENTY })
-							}
+									.margin({ top: SPACE.SMALL })
+							}.padding({ left: SPACE.MEDIA, right: SPACE.MEDIA })
 						}
 					}
 				}
@@ -372,7 +372,7 @@ struct FieldPage {
 							rules: this.rules3,
 							controller: this.controller3
 						}){
-							IBestCellGroup({inset: true}) {
+							Column() {
 								IBestField({
 									formId: this.formId3,
 									prop: 'value5',
@@ -451,8 +451,8 @@ struct FieldPage {
 										})
 									}
 								})
-									.margin({ top: SPACE.TWENTY })
-							}
+									.margin({ top: SPACE.SMALL })
+							}.padding({ left: SPACE.MEDIA, right: SPACE.MEDIA })
 						}
 					}
 				}

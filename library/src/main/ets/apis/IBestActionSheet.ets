@@ -120,6 +120,16 @@ class IBestActionSheetOption {
 	 * 关闭回调
 	 */
 	onClose?: () => void
+	/**
+	 * 取消按钮文字颜色
+	 * @since 1.17.0
+	 */
+	cancelTextColor?: ResourceColor
+	/**
+	 * 关闭前的回调函数，返回 false 可阻止关闭，支持返回 Promise
+	 * @since 1.17.0
+	 */
+	beforeClose?: () => Promise<boolean> | boolean
 }
 
 class IBestActionSheetParams extends IBestActionSheetOption {
@@ -132,26 +142,28 @@ class IBestActionSheetParams extends IBestActionSheetOption {
 		this.height = option.height || SheetSize.FIT_CONTENT
 		this.backgroundColor = option.backgroundColor
 		this.detents = option.detents
-		this.preferType = option.preferType
+		this.preferType = option.preferType || SheetType.BOTTOM
 		this.mode = option.mode
-		this.dragBar = option.dragBar || false
+		this.dragBar = option.dragBar != undefined ? option.dragBar : false
 		this.title = option.title
 		this.showClose = option.showClose || option.title != undefined || false
 		this.actions = option.actions || []
 		this.customTitle = option.customTitle || ""
 		this.titleBgColor = option.titleBgColor || "#fff"
 		this.description = option.description || ""
-		this.closeable = option.closeable || true
+		this.closeable = option.closeable != undefined ? option.closeable : true
 		this.closeIcon = option.closeIcon || $r("app.media.close")
 		this.cancelText = option.cancelText || ""
-		this.safeAreaInsetBottom = option.safeAreaInsetBottom || true
-		this.closeOnBackPress = option.closeOnBackPress || true
-		this.closeOnClickOverlay = option.closeOnClickOverlay || true
+		this.safeAreaInsetBottom = option.safeAreaInsetBottom != undefined ? option.safeAreaInsetBottom : true
+		this.closeOnBackPress = option.closeOnBackPress != undefined ? option.closeOnBackPress : true
+		this.closeOnClickOverlay = option.closeOnClickOverlay != undefined ? option.closeOnClickOverlay : true
 		this.customContent = option.customContent || undefined
 		this.onOpen = option.onOpen || undefined
 		this.onSelect = option.onSelect || undefined
 		this.onCancel = option.onCancel || undefined
 		this.onClose = option.onClose || undefined
+		this.cancelTextColor = option.cancelTextColor || GRAY_COLOR.GRAY_7
+		this.beforeClose = option.beforeClose || undefined
 	}
 }
 
@@ -274,7 +286,8 @@ struct defaultContent{
 											.margin({ right: this.baseStyle.spaceXs })
 											.draggable(false)
 									}
-									Text(typeof action == "object" ? action.name : action).fontColor(typeof action == "object" && action.isDisabled ? GRAY_COLOR.GRAY_5 : (typeof action == "object" && action.color || GRAY_COLOR.GRAY_8))
+									Text(typeof action == "object" ? action.name : action)
+										.fontColor(typeof action == "object" && action.isDisabled ? GRAY_COLOR.GRAY_5 : (typeof action == "object" && action.color || GRAY_COLOR.GRAY_8))
 								}.justifyContent(FlexAlign.Center)
 								if(typeof action == "object" && action.subName){
 									Text(action.subName)
@@ -310,7 +323,7 @@ struct defaultContent{
 					.color(GRAY_COLOR.GRAY_1)
 				Button({ type: ButtonType.Normal }){
 					Column(){
-						Text(this.option.cancelText).fontColor(GRAY_COLOR.GRAY_7)
+						Text(this.option.cancelText).fontColor(this.option.cancelTextColor)
 					}
 					.width(CONTAINER_SIZE.FULL)
 					.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd, top: this.baseStyle.spaceSm, bottom: this.baseStyle.spaceSm })
@@ -332,9 +345,14 @@ function defaultBuilder(option: IBestActionSheetParams) {
 	defaultContent({ option })
 }
 
+interface contentNodeMapVal{
+	content: ComponentContent<IBestActionSheetParams>
+	params: IBestActionSheetParams
+}
+
 class ActionSheet{
 	private uiContext: UIContext | null = null
-	private contentNodeMap: Map<string, ComponentContent<IBestActionSheetParams>> = new Map()
+	private contentNodeMap: Map<string, contentNodeMapVal> = new Map()
 	/**
 	 * 展示actionSheet
   	 */
@@ -346,27 +364,29 @@ class ActionSheet{
 		}
 		let params = new IBestActionSheetParams(option)
 		params.id = key
-		params.close = (id: string): void => this.close(id)
+		params.close = (id: string): Promise<void> => this.close(id)
 		let contentNode = new ComponentContent(this.uiContext, wrapBuilder(defaultBuilder), params)
 		let sheetOption: SheetOptions = {
 			width: params.width,
 			height: params.height,
 			dragBar: params.dragBar,
+			preferType: params.preferType,
 			showClose: params.showClose,
-			onWillDismiss: ((DismissSheetAction: DismissSheetAction) => {
+			onWillDismiss: async (DismissSheetAction: DismissSheetAction) => {
 				// console.log("onWillDismiss", DismissSheetAction.reason)
 				// 0: 点击三键back、左滑/右滑、键盘ESC 1 点击蒙层  3: 跟手拖拽
-				if (DismissSheetAction.reason == DismissReason.PRESS_BACK && params.closeOnBackPress) {
-					DismissSheetAction.dismiss()
-					params?.onClose?.()
+				if (DismissSheetAction.reason == DismissReason.PRESS_BACK && !params.closeOnBackPress || DismissSheetAction.reason == DismissReason.TOUCH_OUTSIDE && !params.closeOnClickOverlay) {
+					return
 				}
-				if(DismissSheetAction.reason == DismissReason.TOUCH_OUTSIDE && params.closeOnClickOverlay){
-					DismissSheetAction.dismiss()
-					params?.onClose?.()
+				if(params.beforeClose){
+					let status = await params.beforeClose?.()
+					if(!status){
+						return
+					}
 				}
 				DismissSheetAction.dismiss()
-				params?.onClose?.()
-			})
+				params.onClose?.()
+			}
 		}
 		if(params.backgroundColor){
 			sheetOption.backgroundColor = params.backgroundColor
@@ -374,16 +394,16 @@ class ActionSheet{
 		if(params.detents){
 			sheetOption.detents = params.detents
 		}
-		if(params.preferType){
-			sheetOption.preferType = params.preferType
-		}
 		if(params.mode){
 			sheetOption.mode = params.mode
 		}
 		if(params.title){
 			sheetOption.title = params.title
 		}
-		this.contentNodeMap.set(key, contentNode)
+		this.contentNodeMap.set(key, {
+			content: contentNode,
+			params: params
+		})
 		await this.uiContext.openBindSheet(contentNode, sheetOption)
 		params.onOpen?.()
 		return key
@@ -391,10 +411,18 @@ class ActionSheet{
 	/**
 	 * 关闭actionSheet
 	 */
-	public close(id?: string){
+	public async close(id?: string){
 		let key = id || this.getLastKey()
 		if(this.contentNodeMap.has(key)){
-			this.uiContext?.closeBindSheet(this.contentNodeMap.get(key)).then(() => {
+			let val = this.contentNodeMap.get(key) as contentNodeMapVal
+			if(val.params.beforeClose){
+				let status = await val.params.beforeClose?.()
+				if(!status){
+					return
+				}
+			}
+			this.uiContext?.closeBindSheet(val?.content).then(() => {
+				val?.params.onClose?.()
 				this.contentNodeMap.delete(key)
 				if(this.contentNodeMap.size == 0){
 					this.uiContext = null
