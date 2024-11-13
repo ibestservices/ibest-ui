@@ -349,6 +349,7 @@ export struct IBestCascader{
 	@Builder baseBuilder() {
 		IBestCascaderContent({
 			value: $value,
+			options: this.options,
 			lazyLoad: this.lazyLoad,
 			onChange: this.onChange,
 			onConfirm: (value: IBestCascaderOption[]) => {

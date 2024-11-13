@@ -117,7 +117,7 @@ export struct IBestTabs{
     /**
      * controller 控制器
      */
-    private tabController: IBestTabController = new IBestTabController()
+    tabController: IBestTabController = new IBestTabController()
     private scroller: Scroller = new Scroller()
     private context: UIContext = this.getUIContext()
     private swiperController: SwiperController = new SwiperController()
