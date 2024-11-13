@@ -1,5 +1,5 @@
-import { emitter } from '../../assets/ets/EventEmitter';
-import { sleep } from '../../assets/ets/utils';
+import { emitter } from '../../utils/EventEmitter';
+import { sleep } from '../../utils/utils';
 import { CheckedItem, initCheckboxStore, removeCheckboxStore } from './store';
 import { CHECKBOX_GROUP_EVENT_NAME, getCheckboxNamespace } from './utils';
 

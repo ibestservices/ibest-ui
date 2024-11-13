@@ -1,4 +1,4 @@
-import { emitter } from '../../assets/ets/EventEmitter'
+import { emitter } from '../../utils/EventEmitter'
 import { FieldTextAlign, IBestFieldValueType,
 	LabelPositionType,
 	RequireAsteriskPositionType } from '../field/index.type'

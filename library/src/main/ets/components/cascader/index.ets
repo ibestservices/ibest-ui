@@ -1,6 +1,5 @@
-import { getIsLandscape, sleep } from '../../assets/ets/utils'
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { fontSizeData } from '../../theme-chalk/src/font'
+import { getIsLandscape, sleep } from '../../utils/utils'
+import { defaultBaseStyle, getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { spaceData } from '../../theme-chalk/src/space'
 import { IBestTabs } from '../tab'
@@ -14,7 +13,7 @@ export struct IBestCascaderContent{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = defaultBaseStyle
 	/**
 	 * 顶部tab栏数据
 	 */
@@ -252,6 +251,10 @@ export struct IBestCascaderContent{
 @Component
 struct CascaderOptionItem{
 	/**
+	 * 全局公共样式
+	 */
+	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = defaultBaseStyle
+	/**
 	 * 选项数据
 	 */
 	@ObjectLink option: IBestCascaderOptionInstance
@@ -276,7 +279,7 @@ struct CascaderOptionItem{
 		Row(){
 			Text(this.option.text)
 				.fontColor(this.option.actived ? this.activeColor : "#333")
-				.fontSize(fontSizeData.fontSizeMd)
+				.fontSize(this.baseStyle.fontSizeMd)
 			Image($r("app.media.success"))
 				.width("36lpx")
 				.aspectRatio(1)

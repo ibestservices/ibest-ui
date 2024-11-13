@@ -1,6 +1,7 @@
+import { convertDimensionsByUnit } from '../../utils/utils'
 import { borderRadiusData } from './border'
 import { colorData, colorOpacityData } from './color'
-import { fontSizeData } from './font'
+import { FONT_SIZE } from './font'
 import { IBestUIBaseStyleType, IBestUIBaseStyleObjType } from './index.type'
 import { lineHeightData } from './line-height'
 import { spaceData } from './space'
@@ -24,11 +25,11 @@ export function getDefaultBaseStyle(): IBestUIBaseStyleObjType {
     spaceMd: spaceData.spaceMd,
     spaceLg: spaceData.spaceLg,
     spaceXl: spaceData.spaceXl,
-    fontSizeXs: fontSizeData.fontSizeXs,
-    fontSizeSm: fontSizeData.fontSizeSm,
-    fontSizeMd: fontSizeData.fontSizeMd,
-    fontSizeLg: fontSizeData.fontSizeLg,
-    fontSizeXl: fontSizeData.fontSizeXl,
+    fontSizeXs: convertDimensionsByUnit(FONT_SIZE.XS, true),
+    fontSizeSm: convertDimensionsByUnit(FONT_SIZE.SM, true),
+    fontSizeMd: convertDimensionsByUnit(FONT_SIZE.MD, true),
+    fontSizeLg: convertDimensionsByUnit(FONT_SIZE.LG, true),
+    fontSizeXl: convertDimensionsByUnit(FONT_SIZE.XL, true),
     borderRadiusSm: borderRadiusData.borderRadiusSm,
     borderRadiusMd: borderRadiusData.borderRadiusMd,
     borderRadiusLg: borderRadiusData.borderRadiusLg,

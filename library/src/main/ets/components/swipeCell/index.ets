@@ -1,5 +1,5 @@
-import { emitter } from "../../assets/ets/EventEmitter"
-import { getComponentsInfo, clamp } from "../../assets/ets/utils"
+import { emitter } from "../../utils/EventEmitter"
+import { getComponentsInfo, clamp } from "../../utils/utils"
 
 type SwipeCellSide = 'left' | 'right'
 

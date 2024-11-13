@@ -1,9 +1,9 @@
-import { FONT_SIZE } from '../../theme-chalk/src/font.type'
 import { spaceData } from '../../theme-chalk/src/space'
-import { getIsLandscape, getWindowAvoidSize } from '../../assets/ets/utils'
+import { getIsLandscape, getWindowAvoidSize } from '../../utils/utils'
 import { common } from '@kit.AbilityKit'
 import { PopupAlign, PopupBaseController } from './index.type'
-
+import { defaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 const popupDuration = 200
 const hideDuration = 220
 
@@ -302,6 +302,10 @@ export struct IBestPopup{
 
 @Component
 struct PopupTitle {
+	/**
+	 * 全局公共样式
+	 */
+	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = defaultBaseStyle
 	@Consume title: string
 	@Consume isShowClose: boolean
 	/**
@@ -312,7 +316,7 @@ struct PopupTitle {
 	build() {
 		Row(){
 			Text(this.title)
-				.fontSize(FONT_SIZE.LG)
+				.fontSize(this.baseStyle.fontSizeLg)
 			Image(this.closeIcon || $r("app.media.close"))
 				.width(spaceData.spaceMd)
 				.aspectRatio(1)

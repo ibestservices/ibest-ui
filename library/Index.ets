@@ -6,7 +6,9 @@ import IBestDialogUtil from './src/main/ets/apis/IBestDialog'
 import IBestNotify from './src/main/ets/apis/IBestNotify'
 import GlobalStore from './src/main/ets/utils/GlobalStore'
 const init = GlobalStore.init
+const setGlobalConfig = GlobalStore.setGlobalConfig
 
+setGlobalConfig()
 setIBestUIBaseStyle()
 
 export {
@@ -14,6 +16,7 @@ export {
 	IBestToast,
 	IBestActionSheet,
 	init as IBestInit,
+	setGlobalConfig,
 	IBestImagePreview,
 	IBestDialogUtil,
 	IBestNotify

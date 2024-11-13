@@ -1,7 +1,7 @@
 import { ComponentContent, PromptAction, UIObserver, window } from '@kit.ArkUI'
 import { IBestLoading } from '../components/loading'
-import { LoadingIconType, WordBreakType } from '../utils/Global.type'
-import { fontSizeData } from '../theme-chalk/src/font'
+import { LoadingIconType, WordBreakType } from '../model/Global.type'
+import { defaultBaseStyle } from '../theme-chalk/src/index'
 import { spaceData } from '../theme-chalk/src/space'
 
 class LoadingOption{
@@ -92,7 +92,7 @@ class ToastParams extends ToastOption{
         }
         Text(option.message)
             .fontColor('#fff')
-            .fontSize(fontSizeData.fontSizeMd)
+            .fontSize(defaultBaseStyle.fontSizeMd)
             .wordBreak(option.wordBreak == "normal" ? WordBreak.NORMAL : option.wordBreak == "break-all" ? WordBreak.BREAK_ALL : WordBreak.BREAK_WORD)
     }
     .constraintSize({minWidth: "192lpx", maxWidth: "60%", minHeight: option.type == "" && option.icon == "" ? 0 :

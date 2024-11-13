@@ -1,9 +1,9 @@
-import { componentUtils, ComponentUtils, window } from '@kit.ArkUI'
-import { ComInfoType, ComAvoidAreaSize } from '../../utils/Global.type'
+import { componentUtils, ComponentUtils, LengthUnit, window } from '@kit.ArkUI'
+import { ComInfoType, ComAvoidAreaSize, IBestGlobalConfig } from '../model/Global.type'
 import { common } from '@kit.AbilityKit'
-import { AnyType } from '../../utils/AnyType'
+import { AnyType } from '../model/AnyType'
 import { resourceManager } from '@kit.LocalizationKit'
-import GlobalStore from '../../utils/GlobalStore'
+import GlobalStore from './GlobalStore'
 /**
  * 休眠
  * @param {number} time 休眠时间
@@ -168,13 +168,45 @@ export function generateId(){
   return Math.random().toString(36).substring(2, 9)
 }
 
-// 加法避免浮点数
+/**
+ * 加法避免浮点数
+ */
 export function addNumber(num1: number, num2: number) {
   const cardinal = 10 ** 10
   return Math.round((num1 + num2) * cardinal) / cardinal
 }
 
-// 生成事件名称
+/**
+ * 生成事件名称
+ */
 export function getEventName(id: string, eventName: string) {
   return `${id}_${eventName}`
+}
+
+/**
+ * 根据单位生成尺寸
+ */
+export function getSizeByUnit(val: number, isFont?: boolean): string {
+  let config: IBestGlobalConfig = AppStorage.get("iBestGlobalConfig") as IBestGlobalConfig
+  let unit = isFont ? config.fontUnit : config.unit
+  return `${val}${unit}`
+}
+/**
+ * 根据单位转换尺寸
+ */
+export function convertDimensionsByUnit(val: number, isFont?: boolean): string{
+  let config: IBestGlobalConfig = AppStorage.get("iBestGlobalConfig") as IBestGlobalConfig
+  console.log("convertDimensionsByUnit", JSON.stringify(config))
+  if(config){
+    let unit = isFont ? config.fontUnit : config.unit
+    switch (unit){
+      case "lpx":
+        return `${px2lpx(vp2px(val))}${unit}`
+      case "px":
+        return `${vp2px(val)}${unit}`
+      default :
+        return `${val}${unit}`
+    }
+  }
+  return ""
 }

@@ -1,8 +1,8 @@
 import { IBestPicker } from '../picker'
 import { IBestPickerOption } from '../picker/index.type'
 import { TimePickerColumnType, getPickerEventName, TIME_PICKER_EVENT_NAME } from './index.type'
-import { emitter } from '../../assets/ets/EventEmitter'
-import { clamp } from '../../assets/ets/utils'
+import { emitter } from '../../utils/EventEmitter'
+import { clamp } from '../../utils/utils'
 
 @Component
 export struct IBestTimePicker {

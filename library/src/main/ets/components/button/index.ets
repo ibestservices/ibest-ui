@@ -1,4 +1,4 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { defaultBaseStyle, getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { ColorType, COLOR_TYPE, GRAY_COLOR } from '../../theme-chalk/src/color.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
@@ -36,7 +36,7 @@ export struct IBestButton {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = defaultBaseStyle
   /**
    * 类型，可选值为 primary success warning danger 默认值为default
    */
@@ -110,20 +110,23 @@ export struct IBestButton {
    */
   getBtnSize() {
     if (this.btnWidth || this.btnHeight) {
-      return new ButtonSizeData(this.btnWidth ? 0 : '30lpx', typeof this.btnHeight != undefined ? `${this.btnHeight}${typeof this.btnHeight == 'number' ? 'lpx' : ''}` : '88lpx',
-        typeof this.btnFontSize != undefined ? `${this.btnFontSize}${typeof this.btnFontSize == 'number' ? 'lpx' : ''}` : this.baseStyle.fontSizeMd, typeof this.btnWidth != undefined ? `${this.btnWidth}${typeof this.btnWidth == 'number' ? 'lpx' : ''}` : '')
+      return new ButtonSizeData(this.btnWidth ? 0 : '30lpx', this.btnHeight != undefined ? `${this.btnHeight}${typeof this.btnHeight == 'number' ? 'lpx' : ''}` : '88lpx',
+        this.getBtnFontSize() || this.baseStyle.fontSizeMd, this.btnWidth != undefined ? `${this.btnWidth}${typeof this.btnWidth == 'number' ? 'lpx' : ''}` : '')
     }
     const buttonSize = this.buttonSize;
     switch (buttonSize) {
       case SIZE.SMALL:
-        return new ButtonSizeData(this.baseStyle.spaceXs, '64lpx', this.baseStyle.fontSizeSm);
+        return new ButtonSizeData(this.baseStyle.spaceXs, '64lpx', this.getBtnFontSize() || this.baseStyle.fontSizeSm);
       case SIZE.MINI:
-        return new ButtonSizeData(this.baseStyle.spaceBase, '64lpx', this.baseStyle.fontSizeXs);
+        return new ButtonSizeData(this.baseStyle.spaceBase, '64lpx', this.getBtnFontSize() || this.baseStyle.fontSizeXs);
       case SIZE.LARGE:
-        return new ButtonSizeData(this.baseStyle.spaceXs, '100lpx', this.baseStyle.fontSizeLg, CONTAINER_SIZE.FULL);
+        return new ButtonSizeData(this.baseStyle.spaceXs, '100lpx', this.getBtnFontSize() || this.baseStyle.fontSizeLg, CONTAINER_SIZE.FULL);
       default:
-        return new ButtonSizeData('30lpx', '88lpx', this.baseStyle.fontSizeMd);
+        return new ButtonSizeData('30lpx', '88lpx', this.getBtnFontSize() || this.baseStyle.fontSizeMd);
     }
+  }
+  getBtnFontSize(){
+    return this.btnFontSize != undefined ? `${this.btnFontSize}${typeof this.btnFontSize == 'number' ? 'lpx' : ''}` : ""
   }
 
   /**

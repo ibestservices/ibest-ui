@@ -1,5 +1,5 @@
 import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
-import { generateId } from '../assets/ets/utils'
+import { generateId } from '../utils/utils'
 import { IBestDialogView } from '../components/dialog/dialog'
 import { GRAY_COLOR } from '../theme-chalk/src/color.type'
 class IBestDialogOption {

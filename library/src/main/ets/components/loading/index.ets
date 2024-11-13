@@ -1,7 +1,7 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { LoadingIconType } from '../../utils/Global.type';
+import { LoadingIconType } from '../../model/Global.type';
 import {IBestLoadingCircular} from './circular'
 import {IBestLoadingSpinner} from './spinner'
 

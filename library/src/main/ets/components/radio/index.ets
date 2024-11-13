@@ -1,4 +1,4 @@
-import { emitter } from '../../assets/ets/EventEmitter';
+import { emitter } from '../../utils/EventEmitter';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';

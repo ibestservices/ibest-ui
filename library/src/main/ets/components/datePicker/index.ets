@@ -2,8 +2,8 @@ import dayjs from '@hview/dayjs'
 import { IBestPicker } from '../picker'
 import { IBestPickerOption } from '../picker/index.type'
 import { DatePickerColumnType, getPickerEventName, IBestDatePickerResultType, DATE_PICKER_EVENT_NAME } from './index.type'
-import { emitter } from '../../assets/ets/EventEmitter'
-import { clamp } from '../../assets/ets/utils'
+import { emitter } from '../../utils/EventEmitter'
+import { clamp } from '../../utils/utils'
 
 @Component
 export struct IBestDatePicker {

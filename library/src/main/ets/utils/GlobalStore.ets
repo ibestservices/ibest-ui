@@ -1,7 +1,8 @@
 import window from '@ohos.window'
 import font from '@ohos.font';
-import { getWindowAvoidSize } from '../assets/ets/utils'
+import { getWindowAvoidSize } from './utils'
 import { common } from '@kit.AbilityKit'
+import { IBestGlobalConfig } from '../model/Global.type';
 // 全局存储中心
 export default class GlobalStore {
 	// windowStage
@@ -29,5 +30,8 @@ export default class GlobalStore {
 			familyName: 'ibestFont',
 			familySrc: $rawfile('vant_font.woff')
 		})
+	}
+	public static setGlobalConfig(option?: IBestGlobalConfig){
+		AppStorage.setOrCreate("iBestGlobalConfig", new IBestGlobalConfig(option))
 	}
 }

@@ -5,7 +5,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { LengthMetrics, LengthUnit } from '@kit.ArkUI';
 import { KeyboardType } from './index.type';
 import { IBestPopup } from '../popup';
-import { getWindowAvoidSize } from '../../assets/ets/utils';
+import { getWindowAvoidSize } from '../../utils/utils';
 import { common } from '@kit.AbilityKit';
 
 @Extend(Row) function keyBoxStyle(fullWidth?: boolean){

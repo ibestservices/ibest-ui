@@ -1,15 +1,13 @@
 import dayjs, { Dayjs } from '@hview/dayjs'
 import { Lunar } from 'lunar'
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { IBestUIBaseStyleObjType, IbestUIBaseStyleValue } from '../../theme-chalk/src/index.type'
+import { defaultBaseStyle, getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { COLOR_TYPE, ColorType, GRAY_COLOR } from '../../theme-chalk/src/color.type'
 import { CalendarConfirmResultType, SelectedStyleType, SelectType, WeekDayType } from './index.type'
-import { FONT_SIZE } from '../../theme-chalk/src/font.type'
 import { spaceData } from '../../theme-chalk/src/space'
 import { borderRadiusData } from '../../theme-chalk/src/border'
-import { fontSizeData } from '../../theme-chalk/src/font'
 import promptAction from '@ohos.promptAction'
-import { getComponentsInfo, getIsLandscape } from '../../assets/ets/utils'
+import { getComponentsInfo, getIsLandscape } from '../../utils/utils'
 import { UIContext } from '@kit.ArkUI'
 class DayItemObj{
     date: Dayjs = dayjs()
@@ -51,7 +49,7 @@ interface HeaderItemType{
 @Extend(Text) function headerStyle(itemWidth: string){
     .width(itemWidth)
     .textAlign(TextAlign.Center)
-    .fontSize(fontSizeData.fontSizeSm)
+    .fontSize(defaultBaseStyle.fontSizeSm)
     .fontColor("#999")
 }
 @Component
@@ -124,11 +122,11 @@ struct CalendarItem {
     build() {
         Column({space: spaceData.spaceMini}){
             Text(this.dayItem.day)
-                .fontSize(FONT_SIZE.MD)
+                .fontSize(this.baseStyle.fontSizeMd)
                 .fontColor(this.fontColor)
             if(this.isShowLunar){
                 Text(this.dayItem.lunarDay)
-                    .fontSize(FONT_SIZE.SM)
+                    .fontSize(this.baseStyle.fontSizeSm)
                     .fontColor(this.fontColor)
             }
         }

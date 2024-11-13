@@ -1,4 +1,4 @@
-import { emitter } from '../../assets/ets/EventEmitter'
+import { emitter } from '../../utils/EventEmitter'
 
 /**
  * tab宽度类型

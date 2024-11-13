@@ -2,7 +2,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestStepperBtn } from './stepperBtn'
-import { accAdd, accSub } from '../../assets/ets/utils'
+import { accAdd, accSub } from '../../utils/utils'
 
 enum STEPPER_BTN_TYPE {
   PLUS = 'PLUS',

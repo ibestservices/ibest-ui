@@ -187,6 +187,10 @@ struct Index {
     }
   ]
 
+  aboutToAppear(): void {
+    console.log('aboutToAppear', px2fp(vp2px(16)))
+  }
+
   build() {
     Column() {
       List() {

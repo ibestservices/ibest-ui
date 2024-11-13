@@ -1,5 +1,5 @@
 import { ComponentContent, UIContext, window } from '@kit.ArkUI';
-import { generateId } from '../assets/ets/utils';
+import { generateId } from '../utils/utils';
 import CustomContent from '../common/components/CustomContent';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src';
 import { GRAY_COLOR } from '../theme-chalk/src/color.type';

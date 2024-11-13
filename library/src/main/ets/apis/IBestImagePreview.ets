@@ -1,6 +1,6 @@
 import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
 import { CONTAINER_SIZE } from '../theme-chalk/src/container.type'
-import { clamp, getComponentsInfo } from '../assets/ets/utils'
+import { clamp, getComponentsInfo } from '../utils/utils'
 import { getDefaultBaseStyle } from '../theme-chalk/src'
 
 type IBestPreviewImgType = PixelMap | ResourceStr | DrawableDescriptor

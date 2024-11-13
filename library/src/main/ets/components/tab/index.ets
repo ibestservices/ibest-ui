@@ -1,4 +1,4 @@
-import { getComponentsInfo, sleep } from '../../assets/ets/utils';
+import { getComponentsInfo, sleep } from '../../utils/utils';
 import { IBestTabController, IBestTabItem, TabWidthType } from './index.type';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';

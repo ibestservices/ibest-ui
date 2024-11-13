@@ -9,7 +9,7 @@ import type { IBestFieldType, ClearTriggerType, FieldTextAlign, IBestFieldValueT
     RequireAsteriskPositionType,
     LabelPositionType,
     FormatTriggerType} from './index.type'
-import { emitter } from '../../assets/ets/EventEmitter'
+import { emitter } from '../../utils/EventEmitter'
 import { runRuleValidator, runSyncRule } from './utils'
 
 @Component

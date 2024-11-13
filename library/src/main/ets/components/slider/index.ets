@@ -1,4 +1,4 @@
-import { clamp, addNumber, getComponentsInfo } from "../../assets/ets/utils"
+import { clamp, addNumber, getComponentsInfo } from "../../utils/utils"
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
 import { GRAY_COLOR } from "../../theme-chalk/src/color.type"
 import { CONTAINER_SIZE } from "../../theme-chalk/src/container.type"

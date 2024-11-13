@@ -2,7 +2,7 @@ import { IBestDialogView } from './dialog'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { sleep } from '../../assets/ets/utils';
+import { sleep } from '../../utils/utils';
 
 @CustomDialog
 export struct IBestDialog {
