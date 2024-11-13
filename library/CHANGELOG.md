@@ -112,3 +112,9 @@ IBestDialog 组件显隐控制方式由原来的controller方式变为由 visibl
 6. IBestActionSheet 增加 cancelTextColor、beforeClose 属性.
 
 另: 新发布 @ibestservices/area-data 库, 可用于Cascader相关组件.
+
+
+## 1.17.1
+
+1. 修复bug
+
