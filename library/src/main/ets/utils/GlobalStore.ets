@@ -2,7 +2,9 @@ import window from '@ohos.window'
 import font from '@ohos.font';
 import { getWindowAvoidSize } from './utils'
 import { common } from '@kit.AbilityKit'
-import { IBestGlobalConfig } from '../model/Global.type';
+import { IBestGlobalConfig, IBestGlobalConfigType } from '../model/Global.type';
+import { setIBestUIBaseStyle } from '../theme-chalk/src';
+
 // 全局存储中心
 export default class GlobalStore {
 	// windowStage
@@ -31,7 +33,8 @@ export default class GlobalStore {
 			familySrc: $rawfile('vant_font.woff')
 		})
 	}
-	public static setGlobalConfig(option?: IBestGlobalConfig){
+	public static setGlobalConfig(option?: IBestGlobalConfigType){
 		AppStorage.setOrCreate("iBestGlobalConfig", new IBestGlobalConfig(option))
+		setIBestUIBaseStyle()
 	}
 }

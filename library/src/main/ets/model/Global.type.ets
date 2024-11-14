@@ -34,17 +34,22 @@ type IBestLengthUnit = "vp" | "px" | "fp" | "lpx"
 /**
  * 全局配置信息
  */
-export class IBestGlobalConfig {
+export class IBestGlobalConfigType{
+    designWidth?: number
     /**
      * 全局尺寸单位, 默认vp
      */
     unit?: IBestLengthUnit
     /**
-     * 全局字体尺寸单位, 如不设置, 默认与unit一致
+     * 全局字体尺寸单位, 默认fp
      */
     fontUnit?: IBestLengthUnit
-    constructor(option?: IBestGlobalConfig) {
-        this.unit = option?.unit != undefined ? option.unit : "vp"
-        this.fontUnit = option?.fontUnit != undefined ? option.fontUnit : this.unit
+}
+export class IBestGlobalConfig extends IBestGlobalConfigType {
+    constructor(option?: IBestGlobalConfigType) {
+        super()
+        this.designWidth = option?.designWidth || 720
+        this.unit = option?.unit || "vp"
+        this.fontUnit = option?.fontUnit || this.unit
     }
 }

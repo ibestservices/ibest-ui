@@ -50,7 +50,7 @@ export function getDefaultBaseStyle(): IBestUIBaseStyleObjType {
 /**
  * 默认的兜底style
  */
-export const defaultBaseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+// export const defaultBaseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 
 /**
  * AppStorage命名空间

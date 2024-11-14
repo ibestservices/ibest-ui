@@ -1,10 +1,11 @@
-import { defaultBaseStyle, getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { ColorType, COLOR_TYPE, GRAY_COLOR } from '../../theme-chalk/src/color.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE, SizeType } from '../../theme-chalk/src/size.type';
 import { ButtonSizeData } from './index.type'
 import { IBestLoading } from '../loading/index'
+import { convertDimensionsByUnit } from '../../utils/utils';
 
 @Extend(Button)
 function btnSizeStyle(data: ButtonSizeData) {
@@ -36,7 +37,7 @@ export struct IBestButton {
   /**
    * 全局公共样式
    */
-  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = defaultBaseStyle
+  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
   /**
    * 类型，可选值为 primary success warning danger 默认值为default
    */
@@ -122,7 +123,7 @@ export struct IBestButton {
       case SIZE.LARGE:
         return new ButtonSizeData(this.baseStyle.spaceXs, '100lpx', this.getBtnFontSize() || this.baseStyle.fontSizeLg, CONTAINER_SIZE.FULL);
       default:
-        return new ButtonSizeData('30lpx', '88lpx', this.getBtnFontSize() || this.baseStyle.fontSizeMd);
+        return new ButtonSizeData(convertDimensionsByUnit(15), convertDimensionsByUnit(44), this.getBtnFontSize() || this.baseStyle.fontSizeMd);
     }
   }
   getBtnFontSize(){

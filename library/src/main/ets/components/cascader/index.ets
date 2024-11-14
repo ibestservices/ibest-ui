@@ -1,5 +1,5 @@
 import { getIsLandscape, sleep } from '../../utils/utils'
-import { defaultBaseStyle, getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { spaceData } from '../../theme-chalk/src/space'
 import { IBestTabs } from '../tab'
@@ -13,7 +13,7 @@ export struct IBestCascaderContent{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = defaultBaseStyle
+	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 顶部tab栏数据
 	 */
@@ -253,7 +253,7 @@ struct CascaderOptionItem{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = defaultBaseStyle
+	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 选项数据
 	 */

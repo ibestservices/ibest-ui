@@ -201,9 +201,11 @@ export function convertDimensionsByUnit(val: number, isFont?: boolean): string{
     let unit = isFont ? config.fontUnit : config.unit
     switch (unit){
       case "lpx":
-        return `${px2lpx(vp2px(val))}${unit}`
+        return `${val*GlobalStore.screenWidth/(config.designWidth as number)}${unit}`
       case "px":
         return `${vp2px(val)}${unit}`
+      case "fp":
+        return `${isFont ? val : px2fp(vp2px(val))}${unit}`
       default :
         return `${val}${unit}`
     }

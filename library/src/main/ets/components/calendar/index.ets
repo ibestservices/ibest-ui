@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from '@hview/dayjs'
 import { Lunar } from 'lunar'
-import { defaultBaseStyle, getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { COLOR_TYPE, ColorType, GRAY_COLOR } from '../../theme-chalk/src/color.type'
 import { CalendarConfirmResultType, SelectedStyleType, SelectType, WeekDayType } from './index.type'
@@ -49,7 +49,7 @@ interface HeaderItemType{
 @Extend(Text) function headerStyle(itemWidth: string){
     .width(itemWidth)
     .textAlign(TextAlign.Center)
-    .fontSize(defaultBaseStyle.fontSizeSm)
+    .fontSize(getDefaultBaseStyle().fontSizeSm)
     .fontColor("#999")
 }
 @Component

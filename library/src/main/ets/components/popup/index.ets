@@ -2,7 +2,7 @@ import { spaceData } from '../../theme-chalk/src/space'
 import { getIsLandscape, getWindowAvoidSize } from '../../utils/utils'
 import { common } from '@kit.AbilityKit'
 import { PopupAlign, PopupBaseController } from './index.type'
-import { defaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 const popupDuration = 200
 const hideDuration = 220
@@ -305,7 +305,7 @@ struct PopupTitle {
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = defaultBaseStyle
+	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@Consume title: string
 	@Consume isShowClose: boolean
 	/**

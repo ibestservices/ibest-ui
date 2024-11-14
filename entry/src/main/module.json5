@@ -20,6 +20,7 @@
         "label": "$string:app_name",
         "startWindowIcon": "$media:app_icon",
         "startWindowBackground": "$color:start_window_background",
+        "orientation": "auto_rotation_unspecified",
         "exported": true,
         "skills": [
           {
