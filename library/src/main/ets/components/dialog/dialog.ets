@@ -1,7 +1,6 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { SPACE } from '../../theme-chalk/src/space.type';
 
 @Extend(Button)
 function defaultBtnStyles(theme: 'default' | 'round-button') {
@@ -287,7 +286,7 @@ export struct IBestDialogView {
                     .width(this.buttonFontSize)
                     .color(this.getCancelBtnFontColor())
                     .margin({
-                      right: SPACE.MINI
+                      right: this.baseStyle.spaceMini
                     })
                     .transition({ type: TransitionType.Insert, opacity: 1 })
                     .transition({ type: TransitionType.Delete, opacity: 0 })
@@ -322,7 +321,7 @@ export struct IBestDialogView {
                     .width(this.buttonFontSize)
                     .color(this.getConfirmBtnFontColor())
                     .margin({
-                      right: SPACE.MINI
+                      right: this.baseStyle.spaceMini
                     })
                     .transition({ type: TransitionType.Insert, opacity: 1 })
                     .transition({ type: TransitionType.Delete, opacity: 0 })

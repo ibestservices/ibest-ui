@@ -1,4 +1,4 @@
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
 
 @Component
 export struct IBestStepperBtn {

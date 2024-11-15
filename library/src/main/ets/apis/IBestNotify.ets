@@ -1,6 +1,6 @@
 import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src'
-import { CONTAINER_SIZE } from '../theme-chalk/src/container.type'
+import { CONTAINER_SIZE } from '../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type'
 import CustomContent from '../common/components/CustomContent'
 import GlobalStore from '../utils/GlobalStore'

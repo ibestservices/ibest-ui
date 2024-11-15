@@ -58,6 +58,7 @@ interface GeneratedObjectLiteralInterface_3 {
   TWELVE: string;
   TWO: string;
   THIRTY: string;
+  THIRTY_TWO: string;
   FORTY_TWO: string;
   FORTY_FOUR: string;
   SIXTY: string;
@@ -87,6 +88,7 @@ export const CONTAINER_SIZE: GeneratedObjectLiteralInterface_3 = {
   TWELVE: '12lpx',
   TWO: '2lpx',
   THIRTY: '30lpx',
+  THIRTY_TWO: '32lpx',
   FORTY_TWO: '42lpx',
   FORTY_FOUR: '44lpx',
   SIXTY: '60lpx',

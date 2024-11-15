@@ -184,31 +184,30 @@ export function getEventName(id: string, eventName: string) {
 }
 
 /**
- * 根据单位生成尺寸
+ * 根据类型和单位拼接尺寸 用于组件尺寸类属性格式化
  */
-export function getSizeByUnit(val: number, isFont?: boolean): string {
+export function getSizeByUnit(val: string | number, isFont?: boolean): string {
+  if(typeof val == "string") return val
   let config: IBestGlobalConfig = AppStorage.get("iBestGlobalConfig") as IBestGlobalConfig
   let unit = isFont ? config.fontUnit : config.unit
   return `${val}${unit}`
 }
 /**
- * 根据单位转换尺寸
+ * 根据单位转换尺寸 用于框架固定尺寸格式化
  */
 export function convertDimensionsByUnit(val: number, isFont?: boolean): string{
   let config: IBestGlobalConfig = AppStorage.get("iBestGlobalConfig") as IBestGlobalConfig
-  console.log("convertDimensionsByUnit", JSON.stringify(config))
   if(config){
+    // console.log("convertDimensionsByUnit", JSON.stringify(config))
     let unit = isFont ? config.fontUnit : config.unit
     switch (unit){
       case "lpx":
         return `${val*GlobalStore.screenWidth/(config.designWidth as number)}${unit}`
       case "px":
         return `${vp2px(val)}${unit}`
-      case "fp":
-        return `${isFont ? val : px2fp(vp2px(val))}${unit}`
       default :
         return `${val}${unit}`
     }
   }
-  return ""
+  return val + "vp"
 }

@@ -2,12 +2,11 @@ import dayjs, { Dayjs } from '@hview/dayjs'
 import { Lunar } from 'lunar'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { COLOR_TYPE, ColorType, GRAY_COLOR } from '../../theme-chalk/src/color.type'
+import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
+import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CalendarConfirmResultType, SelectedStyleType, SelectType, WeekDayType } from './index.type'
-import { spaceData } from '../../theme-chalk/src/space'
-import { borderRadiusData } from '../../theme-chalk/src/border'
 import promptAction from '@ohos.promptAction'
-import { getComponentsInfo, getIsLandscape } from '../../utils/utils'
+import { convertDimensionsByUnit, getComponentsInfo, getIsLandscape, getSizeByUnit } from '../../utils/utils'
 import { UIContext } from '@kit.ArkUI'
 class DayItemObj{
     date: Dayjs = dayjs()
@@ -120,7 +119,7 @@ struct CalendarItem {
     }
 
     build() {
-        Column({space: spaceData.spaceMini}){
+        Column({space: this.baseStyle.spaceMini}){
             Text(this.dayItem.day)
                 .fontSize(this.baseStyle.fontSizeMd)
                 .fontColor(this.fontColor)
@@ -132,7 +131,7 @@ struct CalendarItem {
         }
         .width(this.itemWidth)
         .aspectRatio(this.isLandscape ? 0 : 1)
-        .borderRadius(this.selectedStyleType == "circle" ? 999 : borderRadiusData.borderRadiusSm)
+        .borderRadius(this.selectedStyleType == "circle" ? 999 : this.baseStyle.borderRadiusSm)
         .backgroundColor(this.bgColor)
         .justifyContent(FlexAlign.Center)
         .margin({bottom: this.baseStyle.spaceBase})
@@ -590,12 +589,12 @@ export struct IBestCalendar{
             Row(){
                 Row(){
                     Image($r("app.media.arrow_left_double"))
-                        .width("28lpx")
+                        .width(convertDimensionsByUnit(14))
                         .onClick(() => {
                             this.changeYearMonth("preYear")
                         })
                     Image($r("app.media.arrow_left"))
-                        .width("28lpx")
+                        .width(convertDimensionsByUnit(14))
                         .onClick(() => {
                             this.changeYearMonth("preMonth")
                         })
@@ -604,19 +603,19 @@ export struct IBestCalendar{
                     .fontSize(this.baseStyle.fontSizeMd)
                 Row(){
                     Image($r("app.media.arrow_right"))
-                        .width("28lpx")
+                        .width(convertDimensionsByUnit(14))
                         .onClick(() => {
                             this.changeYearMonth("nextMonth")
                         })
                     Image($r("app.media.arrow_right_double"))
-                        .width("28lpx")
+                        .width(convertDimensionsByUnit(14))
                         .onClick(() => {
                             this.changeYearMonth("nextYear")
                         })
                 }
             }
             .width('100%')
-            .height(this.isLandscape ? "40lpx" : "80lpx")
+            .height(convertDimensionsByUnit(this.isLandscape ? 20 : 40))
             .padding({left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd})
             .justifyContent(FlexAlign.SpaceBetween)
             .visibility(this.isShowHeader ? Visibility.Visible : Visibility.None)
@@ -626,7 +625,7 @@ export struct IBestCalendar{
                 }, (item: HeaderItemType) => item.text)
             }
             .width('100%')
-            .height(this.isLandscape ? "40lpx" : "80lpx")
+            .height(convertDimensionsByUnit(this.isLandscape ? 20 : 40))
             .justifyContent(FlexAlign.SpaceBetween)
             .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
             Scroll() {
@@ -641,8 +640,8 @@ export struct IBestCalendar{
                     }
                     .id(`calender_${this.uniId}`)
                     Text(this.curMonth)
-                        .fontSize("300lpx")
-                        .height(`${this.contentHeight}lpx`)
+                        .fontSize(convertDimensionsByUnit(150))
+                        .height(getSizeByUnit(this.contentHeight))
                         .fontColor(GRAY_COLOR.GRAY_2)
                         .zIndex(-1)
                         .visibility(this.isShowMark ? Visibility.Visible : Visibility.Hidden)
@@ -654,7 +653,7 @@ export struct IBestCalendar{
             Button(this.confirmBtnText)
                 .type(ButtonType.Capsule)
                 .width('90%')
-                .height(this.isLandscape ? "40lpx" : "60lpx")
+                .height(convertDimensionsByUnit(this.isLandscape ? 20 : 30))
                 .fontSize(this.baseStyle.fontSizeSm)
                 .margin({top: this.baseStyle.spaceXs})
                 .backgroundColor(this.confirmBtnColor || this.baseStyle[this.type])

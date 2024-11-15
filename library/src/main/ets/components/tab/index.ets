@@ -2,8 +2,8 @@ import { getComponentsInfo, sleep } from '../../utils/utils';
 import { IBestTabController, IBestTabItem, TabWidthType } from './index.type';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 
 @Component
 export struct IBestTabs{

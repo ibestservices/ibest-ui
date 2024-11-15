@@ -1,8 +1,7 @@
 import { emitter } from '../../utils/EventEmitter';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { SPACE } from '../../theme-chalk/src/space.type';
 import { CheckedItem, updateRadioGroupStoreByKey } from '../radioGroup/store';
 import { getRadioGroupNamespace, RADIO_GROUP_EVENT_NAME } from '../radioGroup/utils';
 import { BuilderArgs } from './index.type';
@@ -180,8 +179,8 @@ export struct IBestRadio {
       }
     }
     .margin({
-      left: this.isLeftLabel() ? 0 : SPACE.XS,
-      right: this.isLeftLabel() ? SPACE.XS : 0
+      left: this.isLeftLabel() ? 0 : this.baseStyle.spaceXs,
+      right: this.isLeftLabel() ? this.baseStyle.spaceXs : 0
     })
     .onClick(() => {
       !this.labelDisabled && this.handleCheckedChange()

@@ -23,7 +23,7 @@ struct ButtonPage {
 
   @Builder Arrow(color = '#fff'){
     Image($r('app.media.title_back'))
-      .width(CONTAINER_SIZE.FORTY_FOUR)
+      .width(CONTAINER_SIZE.THIRTY_TWO)
       .fillColor(color)
   }
 
@@ -95,6 +95,21 @@ struct ButtonPage {
                   text: '朴素按钮',
                   plain: true,
                   type: 'success'
+                })
+              }.btnMargin()
+
+            }
+          }
+        }
+        ListItem() {
+          ComponentShowContainer({ title: '细边框' }) {
+            Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
+              Column() {
+                IBestButton({
+                  text: '朴素按钮',
+                  type: 'primary',
+                  plain: true,
+                  hairline: true
                 })
               }.btnMargin()
 

@@ -1,7 +1,6 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { colorData } from '../../theme-chalk/src/color'
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type'
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type'
+import { GRAY_COLOR } from '../../theme-chalk/src/color'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { FieldValidateResult, FORM_EVENT_NAME, getFormEventName, IBestFormRuleItem,
     IBestFormSendFieldCallResult } from '../form/index.type'
@@ -672,7 +671,7 @@ struct Content{
             if(this.showMessage && this.validateMessage){
                 Text(this.validateMessage)
                     .fontSize(this.baseStyle.fontSizeSm)
-                    .fontColor(colorData.danger)
+                    .fontColor(this.baseStyle.danger)
                     .margin({top: this.baseStyle.spaceBase})
             }
         }

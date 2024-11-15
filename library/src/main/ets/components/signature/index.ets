@@ -1,5 +1,5 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { CONTAINER_SIZE } from "../../theme-chalk/src/container.type"
+import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
 import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
 import { IBestButton } from "../button"
 import { IBestSignatureController } from "./index.type"

@@ -1,11 +1,12 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { ColorType, COLOR_TYPE, GRAY_COLOR } from '../../theme-chalk/src/color.type'
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
+import { ColorType, COLOR_TYPE } from '../../theme-chalk/src/color.type'
+import { GRAY_COLOR } from '../../theme-chalk/src/color'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE, SizeType } from '../../theme-chalk/src/size.type';
 import { ButtonSizeData } from './index.type'
 import { IBestLoading } from '../loading/index'
-import { convertDimensionsByUnit } from '../../utils/utils';
+import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
 
 @Extend(Button)
 function btnSizeStyle(data: ButtonSizeData) {
@@ -84,9 +85,9 @@ export struct IBestButton {
    */
   @Prop @Watch('handleColorChange') color: ResourceColor = '';
   /**
-   * 加载图标的大小，默认单位为 lpx 如果为-1就是默认值 默认值跟随字体大小
+   * 加载图标的大小, 如果为-1就是默认值 默认值跟随字体大小
    */
-  @Prop loadingSize: number = -1;
+  @Prop loadingSize: number | string = -1;
   @Prop btnWidth?: number | string = undefined;
   @Prop btnHeight?: number | string = undefined;
   @Prop btnFontSize?: number | string = undefined;
@@ -111,23 +112,23 @@ export struct IBestButton {
    */
   getBtnSize() {
     if (this.btnWidth || this.btnHeight) {
-      return new ButtonSizeData(this.btnWidth ? 0 : '30lpx', this.btnHeight != undefined ? `${this.btnHeight}${typeof this.btnHeight == 'number' ? 'lpx' : ''}` : '88lpx',
-        this.getBtnFontSize() || this.baseStyle.fontSizeMd, this.btnWidth != undefined ? `${this.btnWidth}${typeof this.btnWidth == 'number' ? 'lpx' : ''}` : '')
+      return new ButtonSizeData(this.btnWidth ? 0 : convertDimensionsByUnit(15), this.btnHeight != undefined ? getSizeByUnit(this.btnHeight) : convertDimensionsByUnit(44),
+        this.getBtnFontSize() || this.baseStyle.fontSizeMd, this.btnWidth != undefined ? getSizeByUnit(this.btnWidth) : '')
     }
     const buttonSize = this.buttonSize;
     switch (buttonSize) {
       case SIZE.SMALL:
-        return new ButtonSizeData(this.baseStyle.spaceXs, '64lpx', this.getBtnFontSize() || this.baseStyle.fontSizeSm);
+        return new ButtonSizeData(this.baseStyle.spaceXs, convertDimensionsByUnit(32), this.getBtnFontSize() || this.baseStyle.fontSizeSm);
       case SIZE.MINI:
-        return new ButtonSizeData(this.baseStyle.spaceBase, '64lpx', this.getBtnFontSize() || this.baseStyle.fontSizeXs);
+        return new ButtonSizeData(this.baseStyle.spaceBase, convertDimensionsByUnit(32), this.getBtnFontSize() || this.baseStyle.fontSizeXs);
       case SIZE.LARGE:
-        return new ButtonSizeData(this.baseStyle.spaceXs, '100lpx', this.getBtnFontSize() || this.baseStyle.fontSizeLg, CONTAINER_SIZE.FULL);
+        return new ButtonSizeData(this.baseStyle.spaceXs, convertDimensionsByUnit(50), this.getBtnFontSize() || this.baseStyle.fontSizeLg, CONTAINER_SIZE.FULL);
       default:
         return new ButtonSizeData(convertDimensionsByUnit(15), convertDimensionsByUnit(44), this.getBtnFontSize() || this.baseStyle.fontSizeMd);
     }
   }
   getBtnFontSize(){
-    return this.btnFontSize != undefined ? `${this.btnFontSize}${typeof this.btnFontSize == 'number' ? 'lpx' : ''}` : ""
+    return this.btnFontSize != undefined ? getSizeByUnit(this.btnFontSize, true) : ""
   }
 
   /**
@@ -160,7 +161,7 @@ export struct IBestButton {
    * @returns
    */
   getLoadingSize() {
-    return this.loadingSize != -1 ? `${this.loadingSize}lpx` : this.getBtnSize()?.fontSize as string
+    return this.loadingSize != -1 ? getSizeByUnit(this.loadingSize) : this.getBtnSize()?.fontSize as string
   }
 
   /**
@@ -206,7 +207,7 @@ export struct IBestButton {
 
     }
     .btnSizeStyle(this.getBtnSize())
-    .borderWidth(this.hairline ? '1lpx' : '2lpx')
+    .borderWidth(convertDimensionsByUnit(this.hairline ? 0.5 : 1))
     .borderRadius(this.getBtnBorderRadius())
     .fontColor(this.getBtnColor(this.plain))
     .backgroundColor(this.getBtnColor(!this.plain))

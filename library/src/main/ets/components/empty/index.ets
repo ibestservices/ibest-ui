@@ -1,9 +1,13 @@
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type'
-import { SPACE } from '../../theme-chalk/src/space.type';
-
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 @Component
 export struct IBestEmpty {
+  /**
+   * 全局公共样式
+   */
+  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
   /**
    * 描述文字底部的builder
    */
@@ -67,11 +71,11 @@ export struct IBestEmpty {
       } else {
         Text(this.description)
           .margin({
-            top: this.description ?? false ? SPACE.MD : 0
+            top: this.description ?? false ? this.baseStyle.spaceMd : 0
           })
           .padding({
-            left: SPACE.XL,
-            right: SPACE.XL
+            left: this.baseStyle.spaceXl,
+            right: this.baseStyle.spaceXl
           })
           .fontColor(this.descriptionColor)
           .fontSize(this.descriptionFontSize)

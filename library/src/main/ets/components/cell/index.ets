@@ -1,8 +1,9 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE } from '../../theme-chalk/src/size.type';
+import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
 import { ARROW_DIRECTION, CellSizeData } from './index.type';
 
 @Component
@@ -103,7 +104,7 @@ export struct IBestCell {
    * 左侧图标大小
    * @since 1.17.0
    */
-  @Prop leftIconSize: number = 32
+  @Prop leftIconSize: number | string = this.baseStyle.fontSizeMd
   /**
    * 右侧图标
    * @since 1.17.0
@@ -118,7 +119,7 @@ export struct IBestCell {
    * 右侧图标大小
    * @since 1.17.0
    */
-  @Prop rightIconSize: number = 32
+  @Prop rightIconSize: number | string = this.baseStyle.fontSizeMd
   /**
    * 根据arrow direction获取图标旋转角度
    */
@@ -144,7 +145,7 @@ export struct IBestCell {
         case SIZE.LARGE:
           return new CellSizeData(this.baseStyle.spaceSm, this.baseStyle.fontSizeLg, this.baseStyle.fontSizeMd)
       default:
-        return new CellSizeData('20lpx', this.baseStyle.fontSizeMd, this.baseStyle.fontSizeSm)
+        return new CellSizeData(convertDimensionsByUnit(10), this.baseStyle.fontSizeMd, this.baseStyle.fontSizeSm)
     }
   }
 
@@ -190,7 +191,7 @@ export struct IBestCell {
                   }.margin({right: this.baseStyle.spaceBase})
                 }else if(this.leftIcon){
                   Image(this.leftIcon)
-                    .height(`${this.leftIconSize}lpx`)
+                    .height(getSizeByUnit(this.leftIconSize))
                     .fillColor(this.leftIconColor)
                     .margin({right: this.baseStyle.spaceBase})
                 }
@@ -259,7 +260,7 @@ export struct IBestCell {
                 // 如果是link箭头
               } else if(this.rightIcon){
                 Image(this.rightIcon)
-                  .width(`${this.rightIconSize}lpx`)
+                  .width(getSizeByUnit(this.rightIconSize))
                   .fillColor(this.rightIconColor)
                   .margin({left: this.baseStyle.spaceBase})
               } else if (this.isLink) {
@@ -267,8 +268,8 @@ export struct IBestCell {
                   Image($r("app.media.arrow_right"))
                     .width(this.baseStyle.fontSizeSm)
                     .margin({
-                      top: '6lpx',
-                      left: '8lpx'
+                      top: convertDimensionsByUnit(3),
+                      left: convertDimensionsByUnit(4)
                     })
                     .rotate({ angle: this.getArrowRotateAngle() })
                     .animation({
@@ -289,7 +290,7 @@ export struct IBestCell {
         .alignItems(this.getAlignItems())
         .width(CONTAINER_SIZE.FULL)
         .border({
-          width: { bottom: this.hasBorder ? '2lpx' : 0 },
+          width: { bottom: this.hasBorder ? convertDimensionsByUnit(1) : 0 },
           color: GRAY_COLOR.GRAY_3,
         })
         .padding({
@@ -298,8 +299,8 @@ export struct IBestCell {
         })
 
     }.padding({
-      left: '32lpx',
-      right: '32lpx'
+      left: this.baseStyle.spaceMd,
+      right: this.baseStyle.spaceMd
     })
     .stateStyles({
       normal: {

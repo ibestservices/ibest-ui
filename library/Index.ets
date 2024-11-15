@@ -9,7 +9,6 @@ const init = GlobalStore.init
 const setGlobalConfig = GlobalStore.setGlobalConfig
 
 setGlobalConfig()
-setIBestUIBaseStyle()
 
 export {
 	setIBestUIBaseStyle,

@@ -1,8 +1,8 @@
 import { ComponentContent, PromptAction, UIObserver, window } from '@kit.ArkUI'
 import { IBestLoading } from '../components/loading'
 import { LoadingIconType, WordBreakType } from '../model/Global.type'
-import { getDefaultBaseStyle } from '../theme-chalk/src/index'
-import { spaceData } from '../theme-chalk/src/space'
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src/index'
+import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type'
 
 class LoadingOption{
     /**
@@ -72,35 +72,46 @@ class ToastParams extends ToastOption{
     .margin({bottom: '20lpx'})
 }
 
-@Builder function toastBuilder(option: ToastParams){
-    Column(){
-        if(option.icon){
-            Image(option.icon).imageStyle()
-        }else if(option.type){
-            if(option.type == "loading"){
-                IBestLoading({
-                    loadingIconType: option.loadingType,
-                    loadingSize: "38lpx",
-                    loadingStrokeWidth: "3lpx"
-                }).margin({bottom: '20lpx'})
-            }else{
-                Image(option.type == "success" ? $r("app.media.success") : option.type ==
-                    "warning" ? $r("app.media.icon_warn") :$r("app.media.icon_cuo"))
-                    .imageStyle()
-                    .fillColor("#fff")
+@Component
+struct defaultContent{
+    /**
+     * 全局公共样式
+     */
+    @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+    @Prop option: ToastParams
+    build() {
+        Column(){
+            if(this.option.icon){
+                Image(this.option.icon).imageStyle()
+            }else if(this.option.type){
+                if(this.option.type == "loading"){
+                    IBestLoading({
+                        loadingIconType: this.option.loadingType,
+                        loadingSize: "38lpx",
+                        loadingStrokeWidth: "3lpx"
+                    }).margin({bottom: '20lpx'})
+                }else{
+                    Image(this.option.type == "success" ? $r("app.media.success") : this.option.type ==
+                        "warning" ? $r("app.media.icon_warn") :$r("app.media.icon_cuo"))
+                        .imageStyle()
+                        .fillColor("#fff")
+                }
             }
+            Text(this.option.message)
+                .fontColor('#fff')
+                .fontSize(getDefaultBaseStyle().fontSizeMd)
+                .wordBreak(this.option.wordBreak == "normal" ? WordBreak.NORMAL : this.option.wordBreak == "break-all" ? WordBreak.BREAK_ALL : WordBreak.BREAK_WORD)
         }
-        Text(option.message)
-            .fontColor('#fff')
-            .fontSize(getDefaultBaseStyle().fontSizeMd)
-            .wordBreak(option.wordBreak == "normal" ? WordBreak.NORMAL : option.wordBreak == "break-all" ? WordBreak.BREAK_ALL : WordBreak.BREAK_WORD)
+        .constraintSize({minWidth: "192lpx", maxWidth: "60%", minHeight: this.option.type == "" && this.option.icon == "" ? 0 :
+            "196lpx"})
+        .backgroundColor("rgba(0,0,0,0.7)")
+        .borderRadius("12lpx")
+        .padding({left: this.baseStyle.spaceSm, right: this.baseStyle.spaceSm, top: this.baseStyle.spaceXs, bottom: this.baseStyle.spaceXs})
+        .justifyContent(FlexAlign.Center)
     }
-    .constraintSize({minWidth: "192lpx", maxWidth: "60%", minHeight: option.type == "" && option.icon == "" ? 0 :
-        "196lpx"})
-    .backgroundColor("rgba(0,0,0,0.7)")
-    .borderRadius("12lpx")
-    .padding({left: spaceData.spaceSm, right: spaceData.spaceSm, top: spaceData.spaceXs, bottom: spaceData.spaceXs})
-    .justifyContent(FlexAlign.Center)
+}
+@Builder function defaultBuilder(option: ToastParams){
+    defaultContent({ option })
 }
 
 class Toast{
@@ -143,7 +154,7 @@ class Toast{
         let windowClass = await window.getLastWindow(getContext())
         let uiContext = windowClass.getUIContext()
         let uiObserver = uiContext.getUIObserver()
-        let loadingDialog = new ComponentContent(uiContext, wrapBuilder(toastBuilder), params)
+        let loadingDialog = new ComponentContent(uiContext, wrapBuilder(defaultBuilder), params)
         let promptAction = uiContext.getPromptAction()
         Toast._instance = Toast.getInstance(params, uiObserver, loadingDialog, promptAction)
         await promptAction.openCustomDialog(Toast._instance.loadingDialog, {

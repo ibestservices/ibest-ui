@@ -1,8 +1,7 @@
 import { emitter } from '../../utils/EventEmitter';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { SPACE } from '../../theme-chalk/src/space.type';
 import { CheckedItem, updateCheckboxStoreByKey } from '../checkboxGroup/store';
 import { CHECKBOX_GROUP_EVENT_NAME, getCheckboxNamespace } from '../checkboxGroup/utils';
 import { MaxChangeArgs, BuilderArgs } from './index.type';
@@ -261,8 +260,8 @@ export struct IBestCheckbox {
       }
     }
     .margin({
-      left: this.isLeftLabel() ? 0 : SPACE.XS,
-      right: this.isLeftLabel() ? SPACE.XS : 0
+      left: this.isLeftLabel() ? 0 : this.baseStyle.spaceXs,
+      right: this.isLeftLabel() ? this.baseStyle.spaceXs : 0
     })
     .onClick(() => {
       !this.labelDisabled && this.handleCheckedChange()

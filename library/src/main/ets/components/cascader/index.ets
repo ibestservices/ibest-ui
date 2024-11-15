@@ -1,7 +1,6 @@
 import { getIsLandscape, sleep } from '../../utils/utils'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { spaceData } from '../../theme-chalk/src/space'
 import { IBestTabs } from '../tab'
 import { IBestTabController, IBestTabItem } from '../tab/index.type'
 import { IBestCascaderOption, IBestCascaderOptionInstance, IBestCascaderOptionInstanceType } from './index.type'
@@ -209,7 +208,7 @@ export struct IBestCascaderContent{
 					}
 				})
 			}
-			.padding({ left: spaceData.spaceXs, right: spaceData.spaceXs })
+			.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs })
 			Swiper(this.swiperController) {
 				ForEach(this.optionsInstance, (item: IBestCascaderOptionInstance[], index: number) => {
 					Scroll(){
@@ -224,12 +223,12 @@ export struct IBestCascaderContent{
 							})
 						}
 						.alignItems(HorizontalAlign.Start)
-						.padding({ left: spaceData.spaceMd, right: spaceData.spaceMd })
+						.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
 					}
 					.width("100%")
 					.height("100%")
 					.align(Alignment.Top)
-					.padding({ bottom: spaceData.spaceMd })
+					.padding({ bottom: this.baseStyle.spaceMd })
 				}, (item: IBestCascaderOptionInstance[], index: number) => index + "")
 			}
 			.width("100%")

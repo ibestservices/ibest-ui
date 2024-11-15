@@ -1,7 +1,7 @@
 import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
 import { generateId } from '../utils/utils'
 import { IBestDialogView } from '../components/dialog/dialog'
-import { GRAY_COLOR } from '../theme-chalk/src/color.type'
+import { GRAY_COLOR } from '../theme-chalk/src/color'
 class IBestDialogOption {
 	/**
 	 * 标题区域的builder
@@ -266,8 +266,7 @@ async function handleBtnClick(option: IBestDialogParams, action: 'cancel' | 'con
 /**
  * 默认内容 Builder
  */
-@Builder
-function defaultContentBuilder(option: IBestDialogParams) {
+@Builder function defaultContentBuilder(option: IBestDialogParams) {
 	IBestDialogView({
 		titleBuilder: option.titleBuilder,
 		defaultBuilder: option.defaultBuilder,

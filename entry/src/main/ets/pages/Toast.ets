@@ -44,6 +44,15 @@ struct ToastPage {
     }, 1000)
   }
 
+  aboutToAppear(): void {
+    IBestToast.showLoading({message: "loading1"})
+    IBestToast.showLoading({message: "loading2"})
+
+    setTimeout(() => {
+      IBestToast.hide()
+    }, 1500)
+  }
+
   build() {
     Column() {
       TitleBar({

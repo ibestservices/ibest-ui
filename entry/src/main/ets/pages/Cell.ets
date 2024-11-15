@@ -14,7 +14,7 @@ struct CellPage {
   @State inputValue: string = ''
 
   @Builder
-  StarIcon(width = '36lpx') {
+  StarIcon(width = '32lpx') {
     Image($r('app.media.app_icon')).width(width)
   }
 

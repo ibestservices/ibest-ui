@@ -1,5 +1,5 @@
 import { UIContext } from '@ohos.arkui.UIContext';
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
 
 class Point {
   x: number

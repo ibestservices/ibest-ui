@@ -30,20 +30,24 @@ export interface ComAvoidAreaSize{
     navigationSize: number
 }
 
-type IBestLengthUnit = "vp" | "px" | "fp" | "lpx"
+type IBestLengthUnit = "vp" | "px" | "lpx"
+type IBestFontUnit = IBestLengthUnit | "fp"
 /**
  * 全局配置信息
  */
 export class IBestGlobalConfigType{
+    /**
+     * 标识页面设计基准宽度 默认720px
+     */
     designWidth?: number
     /**
      * 全局尺寸单位, 默认vp
      */
     unit?: IBestLengthUnit
     /**
-     * 全局字体尺寸单位, 默认fp
+     * 全局字体尺寸单位, 默认与unit一致
      */
-    fontUnit?: IBestLengthUnit
+    fontUnit?: IBestFontUnit
 }
 export class IBestGlobalConfig extends IBestGlobalConfigType {
     constructor(option?: IBestGlobalConfigType) {

@@ -1,4 +1,3 @@
-import { spaceData } from '../../theme-chalk/src/space'
 import { getIsLandscape, getWindowAvoidSize } from '../../utils/utils'
 import { common } from '@kit.AbilityKit'
 import { PopupAlign, PopupBaseController } from './index.type'
@@ -318,7 +317,7 @@ struct PopupTitle {
 			Text(this.title)
 				.fontSize(this.baseStyle.fontSizeLg)
 			Image(this.closeIcon || $r("app.media.close"))
-				.width(spaceData.spaceMd)
+				.width(this.baseStyle.spaceMd)
 				.aspectRatio(1)
 				.fillColor("#ccc")
 				.visibility(this.isShowClose ? Visibility.Visible : Visibility.None)
@@ -328,7 +327,7 @@ struct PopupTitle {
 		}
 		.width("100%")
 		.height("80lpx")
-		.padding({ left: spaceData.spaceMd, right: spaceData.spaceMd })
+		.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
 		.justifyContent(FlexAlign.SpaceBetween)
 		.alignItems(VerticalAlign.Center)
 	}
