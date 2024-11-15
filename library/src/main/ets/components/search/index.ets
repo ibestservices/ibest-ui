@@ -93,6 +93,10 @@ export struct IBestSearch {
 	 */
 	@Prop enterKeyType: EnterKeyType = EnterKeyType.Search
 	/**
+	 * 输入法回车键类型
+	 */
+	@Prop inputFontColor: ResourceColor = ''
+	/**
 	 * 自定义右侧按钮
 	 */
 	@BuilderParam customRightButton?: CustomBuilder
@@ -140,6 +144,7 @@ export struct IBestSearch {
 					.borderRadius(0)
 					.placeholderColor(this.placeholderColor)
 					.backgroundColor("transparent")
+					.fontColor(this.inputFontColor)
 					.enableAutoFill(false)
 					.defaultFocus(this.autoFocus)
 					.enterKeyType(this.enterKeyType)
