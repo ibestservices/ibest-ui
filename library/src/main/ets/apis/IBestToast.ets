@@ -3,6 +3,7 @@ import { IBestLoading } from '../components/loading'
 import { LoadingIconType, WordBreakType } from '../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src/index'
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type'
+import { debounce } from '../utils/DebounceThrottle'
 
 class LoadingOption{
     /**
@@ -146,7 +147,7 @@ class Toast{
     /**
      * 根据参数打开弹框
      */
-    private async open(option?: string | ToastOption){
+    private open: (option?: string | ToastOption) => void = debounce(async (option?: string | ToastOption) => {
         let params: ToastParams = typeof option == "string" ? new ToastParams({ message: option }) : new ToastParams(option)
         if(Toast._instance.loadingDialog){
             this.hide()
@@ -168,24 +169,22 @@ class Toast{
             }
         })
         params.onOpened?.()
-        return params
-    }
+        // 监听路由变化，关闭toast
+        Toast._instance?.uiObserver?.on("routerPageUpdate", ()=>{
+            this.hide()
+        })
+        // 非loading自动关闭
+        if(params.type!="loading" && params.duration){
+            Toast._instance.timer = setTimeout(()=>{
+                this.hide()
+            }, params.duration)
+        }
+    }, 100)
     /**
      * 显示toast
      */
     public show(option?: string | ToastOption){
-        this.open(option).then((params)=>{
-            // 监听路由变化，关闭toast
-            Toast._instance?.uiObserver?.on("routerPageUpdate", ()=>{
-                this.hide()
-            })
-            // 非loading自动关闭
-            if(params.type!="loading" && params.duration){
-                Toast._instance.timer = setTimeout(()=>{
-                    this.hide()
-                }, params.duration)
-            }
-        })
+        this.open(option)
         return Toast._instance
     }
     /**

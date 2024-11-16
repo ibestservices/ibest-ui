@@ -1,5 +1,11 @@
-import { IBestButton, IBestPicker, IBestPickerGroup, IBestPickerOption, IBestDatePicker, IBestToast,
-	Throttle } from '@ibestservices/ibest-ui'
+import {
+    IBestButton,
+    IBestDatePicker,
+    IBestPicker,
+    IBestPickerGroup,
+    IBestPickerOption,
+    IBestToast
+} from '@ibestservices/ibest-ui'
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
@@ -38,7 +44,7 @@ struct PickerGroupPage {
 	@State selectValue6: string[] = []
 
 	@State currentName: string = "0"
-	@Throttle(1000)
+
 	changeName(){
 		this.currentName = this.currentName === "0" ? "1" : "0"
 	}

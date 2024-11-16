@@ -188,11 +188,16 @@ struct Index {
   ]
 
   aboutToAppear(): void {
-    console.log('aboutToAppear', px2fp(vp2px(16)))
+    console.log('aboutToAppear', px2lpx(vp2px(16)), lpx2px(16))
   }
 
   build() {
     Column() {
+      Text("测试文字").fontSize("28lpx")
+      Text("测试文字").fontSize(lpx2px(16) + "lpx")
+      Text("测试文字").fontSize(14)
+      Text("测试文字").fontSize(px2lpx(vp2px(14))+"lpx")
+      Text("测试文字").fontSize(lpx2px(14)+"lpx")
       List() {
         ForEach(this.componentList, (part: ComponentPart) => {
           ListItem() {

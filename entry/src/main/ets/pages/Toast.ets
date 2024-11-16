@@ -1,4 +1,4 @@
-import { IBestCell, IBestCellGroup, IBestToast } from "@ibestservices/ibest-ui"
+import { IBestCell, IBestCellGroup, IBestToast } from '@ibestservices/ibest-ui'
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { router } from '@kit.ArkUI'
@@ -42,15 +42,6 @@ struct ToastPage {
         IBestToast.hide()
       }
     }, 1000)
-  }
-
-  aboutToAppear(): void {
-    IBestToast.showLoading({message: "loading1"})
-    IBestToast.showLoading({message: "loading2"})
-
-    setTimeout(() => {
-      IBestToast.hide()
-    }, 1500)
   }
 
   build() {

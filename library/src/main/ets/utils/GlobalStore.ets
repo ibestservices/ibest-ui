@@ -1,7 +1,7 @@
-import window from '@ohos.window'
+import window from '@ohos.window';
 import font from '@ohos.font';
-import { getWindowAvoidSize } from './utils'
-import { common } from '@kit.AbilityKit'
+import { getWindowAvoidSize } from './utils';
+import { common } from '@kit.AbilityKit';
 import { IBestGlobalConfig, IBestGlobalConfigType } from '../model/Global.type';
 import { setIBestUIBaseStyle } from '../theme-chalk/src';
 
@@ -41,7 +41,7 @@ export default class GlobalStore {
 		let screenInfo: window.WindowProperties = mainWindow.getWindowProperties()
 		GlobalStore.screenWidth = screenInfo.windowRect.width
 		GlobalStore.screenHeight = screenInfo.windowRect.height
-		// console.log("屏幕宽度", GlobalStore.screenWidth)
+		console.log("屏幕宽度", GlobalStore.screenWidth)
 	}
 	/**
 	 * 设置全局配置

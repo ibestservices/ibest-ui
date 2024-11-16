@@ -20,8 +20,7 @@ export {
 	IBestDialogUtil,
 	IBestNotify
 }
-export { Throttle } from './src/main/ets/utils/Throttle'
-export { Debounce } from './src/main/ets/utils/Debounce'
+export { debounce, throttle } from './src/main/ets/utils/DebounceThrottle'
 
 export { IBestUIBaseStyleType } from './src/main/ets/theme-chalk/src/index.type'
 
