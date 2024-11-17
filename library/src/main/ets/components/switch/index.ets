@@ -101,25 +101,15 @@ export struct IBestSwitch {
             //   .transition({})
           }
         }
-      }.width(`${this.switchSize}lpx`)
-      .height(`${this.switchSize}lpx`)
+      }.width(`${this.switchSize-2}lpx`)
+      .height(`${this.switchSize-2}lpx`)
       .alignItems(HorizontalAlign.Center)
       .justifyContent(FlexAlign.Center)
       .borderRadius(`${this.switchSize / 2}lpx`)
-      .shadow({
-        color: 'rgba(0, 0, 0, 0.05)',
-        offsetY: px2vp(3),
-        radius:  px2vp(1)
-      })
-      .margin({
-        left: '4lpx',
-        right: '4lpx'
-      })
       .backgroundColor('#fff')
       .translate({
-        x: this.value ? `${this.switchSize - 4}lpx` : 0
-      })
-      .animation({
+        x: this.value ? `${this.switchSize+2}lpx` : 2
+      }).animation({
         duration: this.baseStyle.animationDuration as number,
       })
     }
