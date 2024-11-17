@@ -1,12 +1,9 @@
 import router from '@ohos.router';
-import { IBestIcon, IBestTabItemType, IBestTabs, IBestIconClassify,
-  IBestNotify } from '@ibestservices/ibest-ui'
-import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, FONT_SIZE, SPACE } from '../assets/styles/BaseStyle'
-import TitleBar from '../components/TitleBar'
-import ComponentShowContainer from '../components/ComponentShowContainer'
-import { ComponentRouterParams } from '../assets/global.type'
-import { pasteboard } from '@kit.BasicServicesKit'
-import { promptAction } from '@kit.ArkUI'
+import { IBestIcon, IBestIconClassify, IBestTabItemType, IBestTabs } from '@ibestservices/ibest-ui';
+import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, FONT_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import TitleBar from '../components/TitleBar';
+import ComponentShowContainer from '../components/ComponentShowContainer';
+import { ComponentRouterParams } from '../assets/global.type';
 
 
 @Entry
@@ -67,21 +64,21 @@ struct IconsPage {
   }
 
   copyText(text: string) {
-    const pasteboardData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, text);
-    const systemPasteboard = pasteboard.getSystemPasteboard();
-    systemPasteboard.setData(pasteboardData); // 将数据放入剪切板
-    systemPasteboard.getData().then((data) => {
-      if (data) {
-        // promptAction.showToast({ message: '复制成功' });
-        IBestNotify.show({
-          message: `已复制到剪切板`,
-          color: Color.White,
-          backgroundColor: '#58be6a'
-        })
-      } else {
-        promptAction.showToast({ message: '复制失败' });
-      }
-    })
+    // const pasteboardData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, text);
+    // const systemPasteboard = pasteboard.getSystemPasteboard();
+    // systemPasteboard.setData(pasteboardData); // 将数据放入剪切板
+    // systemPasteboard.getData().then((data) => {
+    //   if (data) {
+    //     // promptAction.showToast({ message: '复制成功' });
+    //     IBestNotify.show({
+    //       message: `已复制到剪切板`,
+    //       color: Color.White,
+    //       backgroundColor: '#58be6a'
+    //     })
+    //   } else {
+    //     promptAction.showToast({ message: '复制失败' });
+    //   }
+    // })
   }
 
   @Builder iconShowList(list: string[]) {

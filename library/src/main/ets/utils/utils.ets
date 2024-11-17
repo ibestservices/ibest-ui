@@ -1,5 +1,5 @@
-import { componentUtils, ComponentUtils, LengthUnit, window } from '@kit.ArkUI'
-import { ComInfoType, ComAvoidAreaSize, IBestGlobalConfig } from '../model/Global.type'
+import { componentUtils, ComponentUtils, window } from '@kit.ArkUI'
+import { ComAvoidAreaSize, ComInfoType, IBestGlobalConfig } from '../model/Global.type'
 import { common } from '@kit.AbilityKit'
 import { AnyType } from '../model/AnyType'
 import { resourceManager } from '@kit.LocalizationKit'
@@ -198,7 +198,6 @@ export function getSizeByUnit(val: string | number, isFont?: boolean): string {
 export function convertDimensionsByUnit(val: number, isFont?: boolean): string{
   let config: IBestGlobalConfig = AppStorage.get("iBestGlobalConfig") as IBestGlobalConfig
   if(config){
-    // console.log("convertDimensionsByUnit", JSON.stringify(config))
     let unit = isFont ? config.fontUnit : config.unit
     switch (unit){
       case "lpx":

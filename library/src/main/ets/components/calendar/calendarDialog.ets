@@ -1,5 +1,5 @@
-import { ColorType, COLOR_TYPE } from '../../theme-chalk/src/color.type'
-import {IBestCalendar} from "./index"
+import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
+import { IBestCalendar } from './index'
 import { CalendarConfirmResultType, SelectedStyleType, SelectType, WeekDayType } from './index.type'
 
 @Component
@@ -11,7 +11,7 @@ export struct IBestCalendarDialog {
     /**
      * 底部偏移
      */
-    @Prop offsetY: number = 0
+    @Prop offsetY: Length = 0
     /**
      * 是否为模态窗口
      */

@@ -3,7 +3,6 @@ import hilog from '@ohos.hilog';
 import UIAbility from '@ohos.app.ability.UIAbility';
 import Want from '@ohos.app.ability.Want';
 import window from '@ohos.window';
-import { BusinessError } from '@kit.BasicServicesKit';
 import { IBestInit, setGlobalConfig } from '@ibestservices/ibest-ui';
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
@@ -21,7 +20,8 @@ export default class EntryAbility extends UIAbility {
       // 组件库初始化
       IBestInit(windowStage, this.context)
       setGlobalConfig({
-        unit: "lpx"
+        unit: "lpx",
+        fontUnit: "lpx"
       })
       if (err.code) {
         hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');

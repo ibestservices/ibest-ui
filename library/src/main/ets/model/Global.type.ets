@@ -45,7 +45,7 @@ export class IBestGlobalConfigType{
      */
     unit?: IBestLengthUnit
     /**
-     * 全局字体尺寸单位, 默认与unit一致
+     * 全局字体尺寸单位, 默认fp
      */
     fontUnit?: IBestFontUnit
 }
@@ -54,6 +54,6 @@ export class IBestGlobalConfig extends IBestGlobalConfigType {
         super()
         this.designWidth = option?.designWidth || 720
         this.unit = option?.unit || "vp"
-        this.fontUnit = option?.fontUnit || this.unit
+        this.fontUnit = option?.fontUnit || "fp"
     }
 }

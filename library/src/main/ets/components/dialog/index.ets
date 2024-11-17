@@ -1,6 +1,5 @@
-import { IBestDialogView } from './dialog'
+import { IBestDialogView } from './dialog';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { sleep } from '../../utils/utils';
 
@@ -14,15 +13,15 @@ export struct IBestDialog {
   /**
    * 标题区域的builder
    */
-  @BuilderParam titleBuilder?: CustomBuilder;
+  @BuilderParam titleBuilder?: CustomBuilder
   /**
    * 内容区域的builder
    */
-  @BuilderParam defaultBuilder?: CustomBuilder;
+  @BuilderParam defaultBuilder?: CustomBuilder
   /**
    * 底部区域的builder
    */
-  @BuilderParam footerBuilder?: CustomBuilder;
+  @BuilderParam footerBuilder?: CustomBuilder
   /**
    * 全局公共样式
    */
@@ -30,143 +29,143 @@ export struct IBestDialog {
   /**
    * 弹窗宽度
    */
-  @Prop dialogWidth: string = '640lpx';
+  @Prop dialogWidth: string | number
   /**
-   * 弹窗border-radius 默认 32lpx
+   * 弹窗border-radius
    */
-  @Prop dialogBorderRadius: string = this.baseStyle.spaceMd as string;
+  @Prop dialogBorderRadius: string | number
   /**
    * 标题
    */
-  @Prop title: string = '';
+  @Prop title: string
   /**
    * 标题颜色
    */
-  @Prop titleColor: ResourceColor = GRAY_COLOR.GRAY_8;
+  @Prop titleColor: ResourceColor
   /**
    * 标题的padding-top值
    */
-  @Prop titlePaddingTop: string = '52lpx';
+  @Prop titlePaddingTop: string | number
   /**
-   * 标题的padding-left与padding-right值 默认48lpx
+   * 标题的padding-left与padding-right值
    */
-  @Prop titlePaddingX: string = '48lpx';
+  @Prop titlePaddingX: string | number
   /**
    * 标题的padding-top值
    */
-  @Prop titleLineHeight: string = '48lpx';
+  @Prop titleLineHeight: string | number
   /**
    * 标题的fontSize
    */
-  @Prop titleFontSize: string = this.baseStyle.fontSizeLg as string;
+  @Prop titleFontSize: string | number
   /**
    * 标题的对齐方式
    */
-  @Prop titleTextAlign: 'left' | 'center' | 'right' = 'center';
+  @Prop titleTextAlign: 'left' | 'center' | 'right'
   /**
    * 文本内容，支持通过 \n 换行
    */
-  @Prop message: string = '';
+  @Prop message: string
   /**
-   * 内容区域的padding-left与padding-right值 默认48lpx
+   * 内容区域的padding-left与padding-right值
    */
-  @Prop messagePaddingX: string = '48lpx';
+  @Prop messagePaddingX: string | number
   /**
    * 内容区域的padding-top值 默认16lpx
    */
-  @Prop messagePaddingTop: string = '16lpx';
+  @Prop messagePaddingTop: string | number
   /**
    * 内容区域的padding-bottom值 默认52lpx
    */
-  @Prop messagePaddingBottom: string = '52lpx';
+  @Prop messagePaddingBottom: string | number
   /**
    * 内容区域的字体色 默认#323233
    */
-  @Prop messageFontColor: ResourceColor = '#323233';
+  @Prop messageFontColor: ResourceColor
   /**
    * 内容区域的fontSize
    */
-  @Prop messageFontSize: string = this.baseStyle.fontSizeMd as string;
+  @Prop messageFontSize: string | number
   /**
    * 内容区域的行高 lineHeight 默认 40lpx
    */
-  @Prop messageLineHeight: string = this.baseStyle.lineHeightMd as string;
+  @Prop messageLineHeight: string | number
   /**
    * 内容区域的文字对齐方式
    */
-  @Prop messageTextAlign: 'left' | 'center' | 'right' = 'center';
+  @Prop messageTextAlign: 'left' | 'center' | 'right'
   /**
    * 内容区域的滚动区域最大高度
    */
-  @Prop messageMaxHeight: string = '60%';
+  @Prop messageMaxHeight: string | number
   /**
    * 按钮样式风格
    * @since 1.16.0
    */
-  @Prop theme: 'default' | 'round-button' = 'default';
+  @Prop theme: 'default' | 'round-button'
   /**
    * 按钮间距 单位lpx
    * @since 1.16.0
    */
-  @Prop buttonSpace: number = 0
+  @Prop buttonSpace: number | number
   /**
    * 是否展示确认按钮
    */
-  @Prop showConfirmButton: boolean = true;
+  @Prop showConfirmButton: boolean
   /**
    * 是否展示取消按钮
    */
-  @Prop showCancelButton: boolean = false;
+  @Prop showCancelButton: boolean
   /**
    * 确认按钮文案
    */
-  @Prop confirmButtonText: string = '确认';
+  @Prop confirmButtonText: string
   /**
    * 取消按钮的文案
    */
-  @Prop cancelButtonText: string = '取消';
+  @Prop cancelButtonText: string
   /**
    * 确认按钮的颜色
    */
-  @Prop confirmButtonColor: ResourceColor = ""
+  @Prop confirmButtonColor: ResourceColor
   /**
    * 确认按钮的背景颜色
    * @since 1.16.0
    */
-  @Prop confirmButtonBgColor: ResourceColor = ""
+  @Prop confirmButtonBgColor: ResourceColor
   /**
    * 取消按钮的颜色
    */
-  @Prop cancelButtonColor: ResourceColor = '#646566';
+  @Prop cancelButtonColor: ResourceColor
   /**
    * 取消按钮的背景颜色
    * @since 1.16.0
    */
-  @Prop cancelButtonBgColor: ResourceColor = this.baseStyle.default
+  @Prop cancelButtonBgColor: ResourceColor
   /**
    * 是否禁用确认按钮
    */
-  @Prop confirmButtonDisabled: boolean = false;
+  @Prop confirmButtonDisabled: boolean
   /**
    * 是否禁用取消按钮
    */
-  @Prop cancelButtonDisabled: boolean = false;
+  @Prop cancelButtonDisabled: boolean
   /**
    * 按钮的文字大小
    */
-  @Prop buttonFontSize: string = this.baseStyle.fontSizeLg as string;
+  @Prop buttonFontSize: string | number
   /**
    * 确认按钮的loading
    */
-  @State confirmButtonLoading: boolean = false;
+  @State confirmButtonLoading: boolean = false
   /**
    * 取消按钮的loading
    */
-  @State cancelButtonLoading: boolean = false;
+  @State cancelButtonLoading: boolean = false
   /**
    * 是否在点击遮罩层后关闭弹窗
    */
-  @Prop closeOnClickOverlay: boolean = false;
+  @Prop closeOnClickOverlay: boolean
   /**
    * 是否允许返回键关闭
    * @since 1.16.0
@@ -175,26 +174,26 @@ export struct IBestDialog {
   /**
    * 弹窗在竖直方向上的对齐方式 默认center
    */
-  @Prop alignment: 'center' | 'top' | 'bottom' = 'center';
+  @Prop alignment: 'center' | 'top' | 'bottom' = 'center'
   /**
    * 弹窗相对alignment所在位置的横向偏移量。
    */
-  @Prop offsetX: string | number = 0;
+  @Prop offsetX: string | number = 0
   /**
    * 弹窗相对alignment所在位置的纵向偏移量。
    */
-  @Prop offsetY: string | number = 0;
+  @Prop offsetY: string | number = 0
   /**
    * 弹窗是否为模态窗口，模态窗口有蒙层，非模态窗口无蒙层。
    * API11+
    */
-  @Prop showOverlay: boolean = true;
+  @Prop showOverlay: boolean = true
   /**
    * 某弹框需要显示在主窗口之外时，是否在子窗口显示此弹窗。
    * 默认值：false，弹窗显示在应用内，而非独立子窗口。
    * API 10 +
    */
-  @Prop showInSubWindow: boolean = false;
+  @Prop showInSubWindow: boolean = false
   /**
    * 自定义蒙层颜色。默认值: 0x33000000 API10以上支持
    */
@@ -349,8 +348,8 @@ export struct IBestDialog {
       showCancelButton: this.showCancelButton,
       confirmButtonText: this.confirmButtonText,
       cancelButtonText: this.cancelButtonText,
-      confirmButtonColor: this.confirmButtonColor || (this.theme == 'round-button' ? '#fff' : '#3D8AF2'),
-      confirmButtonBgColor: this.confirmButtonBgColor || (this.theme == 'round-button' ? '#3D8AF2' : '#fff'),
+      confirmButtonColor: this.confirmButtonColor,
+      confirmButtonBgColor: this.confirmButtonBgColor,
       cancelButtonColor: this.cancelButtonColor,
       cancelButtonBgColor: this.cancelButtonBgColor,
       confirmButtonDisabled: this.confirmButtonDisabled,

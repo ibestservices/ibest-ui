@@ -4,11 +4,13 @@ import { getWindowAvoidSize } from './utils';
 import { common } from '@kit.AbilityKit';
 import { IBestGlobalConfig, IBestGlobalConfigType } from '../model/Global.type';
 import { setIBestUIBaseStyle } from '../theme-chalk/src';
+import { display } from '@kit.ArkUI';
+import mediaquery from '@ohos.mediaquery';
 
 // 全局存储中心
 export default class GlobalStore {
 	// windowStage
-	public static windowStage: window.WindowStage | null = null
+	public static windowStage: window.WindowStage
 	// 顶部规避尺寸
 	public static topAvoidHeight: number = 0
 	// 底部导航条高度
@@ -26,7 +28,8 @@ export default class GlobalStore {
 			GlobalStore.topAvoidHeight = res.topSize
 			GlobalStore.bottomBarHeight = res.navigationSize
 		})
-		GlobalStore.getScreenSize(windowStage)
+		GlobalStore.getScreenSize()
+		GlobalStore.screenRotateListener()
 		// 注册字体
 		font.registerFont({
 			familyName: 'ibestFont',
@@ -36,12 +39,19 @@ export default class GlobalStore {
 	/**
 	 * 获取屏幕尺寸
      */
-	private static getScreenSize(windowStage: window.WindowStage){
-		let mainWindow = windowStage.getMainWindowSync()
+	private static getScreenSize(){
+		let mainWindow = GlobalStore.windowStage.getMainWindowSync()
 		let screenInfo: window.WindowProperties = mainWindow.getWindowProperties()
-		GlobalStore.screenWidth = screenInfo.windowRect.width
-		GlobalStore.screenHeight = screenInfo.windowRect.height
-		console.log("屏幕宽度", GlobalStore.screenWidth)
+		let o = display.getDefaultDisplaySync().orientation
+		GlobalStore.screenWidth = o == 1 || o == 3 ? screenInfo.windowRect.height : screenInfo.windowRect.width
+		GlobalStore.screenHeight = o == 1 || o == 3 ? screenInfo.windowRect.width : screenInfo.windowRect.height
+	}
+	/**
+	 * 监听屏幕旋转
+	 */
+	private static screenRotateListener() {
+		let listener = mediaquery.matchMediaSync('(orientation: landscape)')
+		listener.on('change', (): void => GlobalStore.getScreenSize())
 	}
 	/**
 	 * 设置全局配置

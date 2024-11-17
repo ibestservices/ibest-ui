@@ -1,7 +1,7 @@
 import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
 import { generateId } from '../utils/utils'
 import { IBestDialogView } from '../components/dialog/dialog'
-import { GRAY_COLOR } from '../theme-chalk/src/color'
+
 class IBestDialogOption {
 	/**
 	 * 标题区域的builder
@@ -18,11 +18,11 @@ class IBestDialogOption {
 	/**
 	 * 弹窗宽度
 	 */
-	dialogWidth?: string
+	dialogWidth?: string | number
 	/**
-	 * 弹窗border-radius 默认 32lpx
+	 * 弹窗border-radius
 	 */
-	dialogBorderRadius?: string
+	dialogBorderRadius?: string | number
 	/**
 	 * 标题
 	 */
@@ -34,19 +34,19 @@ class IBestDialogOption {
 	/**
 	 * 标题的padding-top值
 	 */
-	titlePaddingTop?: string
+	titlePaddingTop?: string | number
 	/**
-	 * 标题的padding-left与padding-right值 默认48lpx
+	 * 标题的padding-left与padding-right值
 	 */
-	titlePaddingX?: string
+	titlePaddingX?: string | number
 	/**
 	 * 标题的padding-top值
 	 */
-	titleLineHeight?: string
+	titleLineHeight?: string | number
 	/**
 	 * 标题的fontSize
 	 */
-	titleFontSize?: string
+	titleFontSize?: string | number
 	/**
 	 * 标题的对齐方式
 	 */
@@ -56,29 +56,29 @@ class IBestDialogOption {
 	 */
 	message?: string
 	/**
-	 * 内容区域的padding-left与padding-right值 默认48lpx
+	 * 内容区域的padding-left与padding-right值
 	 */
-	messagePaddingX?: string
+	messagePaddingX?: string | number
 	/**
-	 * 内容区域的padding-top值 默认16lpx
+	 * 内容区域的padding-top值
 	 */
-	messagePaddingTop?: string
+	messagePaddingTop?: string | number
 	/**
-	 * 内容区域的padding-bottom值 默认52lpx
+	 * 内容区域的padding-bottom值
 	 */
-	messagePaddingBottom?: string
+	messagePaddingBottom?: string | number
 	/**
-	 * 内容区域的fontColor 默认#323233
+	 * 内容区域的fontColor
 	 */
 	messageFontColor?: string
 	/**
 	 * 内容区域的fontSize
 	 */
-	messageFontSize?: string
+	messageFontSize?: string | number
 	/**
-	 * 内容区域的行高 lineHeight 默认 40lpx
+	 * 内容区域的行高 lineHeight
 	 */
-	messageLineHeight?: string
+	messageLineHeight?: string | number
 	/**
 	 * 内容区域的文字对齐方式
 	 */
@@ -86,15 +86,15 @@ class IBestDialogOption {
 	/**
 	 * 内容区域的滚动区域最大高度
 	 */
-	messageMaxHeight?: string
+	messageMaxHeight?: string | number
 	/**
 	 * 样式风格
 	 */
 	theme?: 'default' | 'round-button'
 	/**
-	 * 按钮间距 单位lpx
+	 * 按钮间距
 	 */
-	buttonSpace?: number
+	buttonSpace?: number | number
 	/**
 	 * 是否展示确认按钮
 	 */
@@ -132,7 +132,7 @@ class IBestDialogOption {
 	/**
 	 * 按钮的文字大小
 	 */
-	buttonFontSize?: string
+	buttonFontSize?: string | number
 	/**
 	 * 取消按钮的loading
 	 */
@@ -197,41 +197,41 @@ class IBestDialogParams extends IBestDialogOption {
 		this.titleBuilder = option.titleBuilder
 		this.defaultBuilder = option.defaultBuilder
 		this.footerBuilder = option.footerBuilder
-		this.dialogWidth = option.dialogWidth || "640lpx"
-		this.dialogBorderRadius = option.dialogBorderRadius || "32lpx"
-		this.title = option.title || ""
-		this.titleColor = option.titleColor || GRAY_COLOR.GRAY_8
-		this.titlePaddingTop = option.titlePaddingTop || "52lpx"
-		this.titlePaddingX = option.titlePaddingX || "48lpx"
-		this.titleLineHeight = option.titleLineHeight || "48lpx"
-		this.titleFontSize = option.titleFontSize || "32lpx"
-		this.titleTextAlign = option.titleTextAlign || "center"
-		this.message = option.message || ""
-		this.messagePaddingX = option.messagePaddingX || "48lpx"
-		this.messagePaddingTop = option.messagePaddingTop || "16lpx"
-		this.messagePaddingBottom = option.messagePaddingBottom || "52lpx"
-		this.messageFontColor = option.messageFontColor || "#323233"
-		this.messageFontSize = option.messageFontSize || "28lpx"
-		this.messageLineHeight = option.messageLineHeight || "40lpx"
-		this.messageTextAlign = option.messageTextAlign || "center"
-		this.messageMaxHeight = option.messageMaxHeight || "60%"
-		this.theme = option.theme || 'default'
-		this.buttonSpace = option.buttonSpace || 0
-		this.showConfirmButton = option.showConfirmButton || true
-		this.showCancelButton = option.showCancelButton || false
-		this.confirmButtonText = option.confirmButtonText || '确认'
-		this.cancelButtonText = option.cancelButtonText || '取消'
-		this.confirmButtonColor = option.confirmButtonColor || (this.theme == 'round-button' ? '#fff' : '#3D8AF2')
-		this.confirmButtonBgColor = option.confirmButtonBgColor || (this.theme == 'round-button' ? '#3D8AF2' : '#fff')
-		this.cancelButtonColor = option.cancelButtonColor || '#646566'
-		this.cancelButtonBgColor = option.cancelButtonBgColor || '#fff'
-		this.buttonFontSize = option.buttonFontSize || "32lpx"
-		this.confirmButtonLoading = option.confirmButtonLoading || false
-		this.showOverlay = option.showOverlay || true
-		this.showInSubWindow = option.showInSubWindow || false
-		this.overlayColor = option.overlayColor || '0x33000000'
-		this.closeOnClickOverlay = option.closeOnClickOverlay || false
-		this.closeOnBackPress = option.closeOnBackPress || false
+		this.dialogWidth = option.dialogWidth
+		this.dialogBorderRadius = option.dialogBorderRadius
+		this.title = option.title
+		this.titleColor = option.titleColor
+		this.titlePaddingTop = option.titlePaddingTop
+		this.titlePaddingX = option.titlePaddingX
+		this.titleLineHeight = option.titleLineHeight
+		this.titleFontSize = option.titleFontSize
+		this.titleTextAlign = option.titleTextAlign
+		this.message = option.message
+		this.messagePaddingX = option.messagePaddingX
+		this.messagePaddingTop = option.messagePaddingTop
+		this.messagePaddingBottom = option.messagePaddingBottom
+		this.messageFontColor = option.messageFontColor
+		this.messageFontSize = option.messageFontSize
+		this.messageLineHeight = option.messageLineHeight
+		this.messageTextAlign = option.messageTextAlign
+		this.messageMaxHeight = option.messageMaxHeight
+		this.theme = option.theme
+		this.buttonSpace = option.buttonSpace
+		this.showConfirmButton = option.showConfirmButton
+		this.showCancelButton = option.showCancelButton
+		this.confirmButtonText = option.confirmButtonText
+		this.cancelButtonText = option.cancelButtonText
+		this.confirmButtonColor = option.confirmButtonColor
+		this.confirmButtonBgColor = option.confirmButtonBgColor
+		this.cancelButtonColor = option.cancelButtonColor
+		this.cancelButtonBgColor = option.cancelButtonBgColor
+		this.buttonFontSize = option.buttonFontSize
+		this.confirmButtonLoading = option.confirmButtonLoading
+		this.showOverlay = option.showOverlay
+		this.showInSubWindow = option.showInSubWindow
+		this.overlayColor = option.overlayColor
+		this.closeOnClickOverlay = option.closeOnClickOverlay
+		this.closeOnBackPress = option.closeOnBackPress
 		this.beforeClose = option.beforeClose
 		this.onCancel = option.onCancel
 		this.onConfirm = option.onConfirm
@@ -330,9 +330,9 @@ class Dialog{
 		let uiContext = windowClass.getUIContext()
 		let promptAction = uiContext.getPromptAction()
 		let params = new IBestDialogParams(option)
+		let contentNode = new ComponentContent(uiContext, wrapBuilder(defaultContentBuilder), params)
 		params.id = key
 		params.close = (id: string): void => this.close(id)
-		let contentNode = new ComponentContent(uiContext, wrapBuilder(defaultContentBuilder), params)
 		params.contentNode = contentNode
 		this.contentNodeMap.set(key, {
 			contentNode: contentNode,

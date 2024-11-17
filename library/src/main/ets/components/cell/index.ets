@@ -143,9 +143,9 @@ export struct IBestCell {
     const cellSize = this.cellSize;
     switch (cellSize){
         case SIZE.LARGE:
-          return new CellSizeData(this.baseStyle.spaceSm, this.baseStyle.fontSizeLg, this.baseStyle.fontSizeMd)
+          return new CellSizeData(this.baseStyle.spaceMd, this.baseStyle.fontSizeLg, this.baseStyle.fontSizeMd)
       default:
-        return new CellSizeData(convertDimensionsByUnit(10), this.baseStyle.fontSizeMd, this.baseStyle.fontSizeSm)
+        return new CellSizeData(convertDimensionsByUnit(12), this.baseStyle.fontSizeMd, this.baseStyle.fontSizeSm)
     }
   }
 
