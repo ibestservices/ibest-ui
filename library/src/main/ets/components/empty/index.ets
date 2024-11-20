@@ -33,7 +33,7 @@ export struct IBestEmpty {
   /**
    * 描述文字大小 默认 28lpx
    */
-  @Prop descriptionFontSize: string | number =  convertDimensionsByUnit(14);
+  @Prop descriptionFontSize: string | number = convertDimensionsByUnit(14);
   /**
    * 空占位图的高度
    */

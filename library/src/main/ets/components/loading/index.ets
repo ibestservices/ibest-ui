@@ -4,6 +4,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { LoadingIconType } from '../../model/Global.type';
 import {IBestLoadingCircular} from './circular'
 import {IBestLoadingSpinner} from './spinner'
+import { convertDimensionsByUnit } from '../../utils/utils';
 
 @Component
 export struct IBestLoading {
@@ -30,7 +31,7 @@ export struct IBestLoading {
   /**
    * loading的尺寸
    */
-  @Prop loadingSize: string = '60lpx'
+  @Prop loadingSize: string = convertDimensionsByUnit(30)
   /**
    * loading的颜色
    */
@@ -38,7 +39,7 @@ export struct IBestLoading {
   /**
    * loading的线条宽度
    */
-  @Prop loadingStrokeWidth: string = '6lpx';
+  @Prop loadingStrokeWidth: string = convertDimensionsByUnit(3);
   /**
    * loading的遮罩颜色
    */
@@ -70,7 +71,7 @@ export struct IBestLoading {
   /**
    * 菊花图的每条线的长度
    */
-  @Prop spinnerStrokeHeight: string | number = '15lpx';
+  @Prop spinnerStrokeHeight: string | number = convertDimensionsByUnit(7.5);
   /**
    * 是否垂直排列图标和文字内容
    */
