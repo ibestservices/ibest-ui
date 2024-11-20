@@ -2,7 +2,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-
+import { convertDimensionsByUnit } from '../../utils/utils';
 @Component
 export struct IBestCellGroup {
   /**
@@ -32,7 +32,7 @@ export struct IBestCellGroup {
    * @returns
    */
   getBorderWidth() {
-    return this.hasBorder && !this.inset ? '2lpx' : 0
+    return this.hasBorder && !this.inset ? 1 : 0
   }
 
   /**
@@ -63,7 +63,7 @@ export struct IBestCellGroup {
             color: GRAY_COLOR.GRAY_3,
           })
           .padding(this.baseStyle.spaceMd)
-          .lineHeight('32lpx')
+          .lineHeight(convertDimensionsByUnit(16))
           .fontSize(this.baseStyle.fontSizeMd)
           .fontColor(GRAY_COLOR.GRAY_6)
       }

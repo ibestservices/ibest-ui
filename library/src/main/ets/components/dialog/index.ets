@@ -71,11 +71,11 @@ export struct IBestDialog {
    */
   @Prop messagePaddingX: string | number
   /**
-   * 内容区域的padding-top值 默认16lpx
+   * 内容区域的padding-top值
    */
   @Prop messagePaddingTop: string | number
   /**
-   * 内容区域的padding-bottom值 默认52lpx
+   * 内容区域的padding-bottom值
    */
   @Prop messagePaddingBottom: string | number
   /**
@@ -87,7 +87,7 @@ export struct IBestDialog {
    */
   @Prop messageFontSize: string | number
   /**
-   * 内容区域的行高 lineHeight 默认 40lpx
+   * 内容区域的行高 lineHeight
    */
   @Prop messageLineHeight: string | number
   /**
@@ -104,7 +104,7 @@ export struct IBestDialog {
    */
   @Prop theme: 'default' | 'round-button'
   /**
-   * 按钮间距 单位lpx
+   * 按钮间距
    * @since 1.16.0
    */
   @Prop buttonSpace: number | number

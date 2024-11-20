@@ -1,5 +1,5 @@
 import { emitter } from "../../utils/EventEmitter"
-import { getComponentsInfo, clamp } from "../../utils/utils"
+import { getComponentsInfo, clamp, getSizeByUnit } from "../../utils/utils"
 
 type SwipeCellSide = 'left' | 'right'
 
@@ -63,7 +63,7 @@ export struct IBestSwipeCell{
 				this.startX = event.touches[0].x
 				break
 			case TouchType.Move:
-				let newOffset = px2lpx(vp2px(event.touches[0].x - this.startX))
+				let newOffset = event.touches[0].x - this.startX
 				this.transX = clamp(newOffset + this.startTransX, -this.rightWidth, this.leftWidth)
 				break
 			case TouchType.Up:
@@ -101,7 +101,7 @@ export struct IBestSwipeCell{
 					Row(){
 						this.leftContent()
 					}
-					.height(`${this.centerHeight}lpx`)
+					.height(getSizeByUnit(this.centerHeight))
 					.id("ibest_swipe_left_" + this.uniId)
 					.position({ left: 0 })
 					.translate({ x: "-100%" })
@@ -126,13 +126,13 @@ export struct IBestSwipeCell{
 					Row(){
 						this.rightContent()
 					}
-					.height(`${this.centerHeight}lpx`)
+					.height(getSizeByUnit(this.centerHeight))
 					.id("ibest_swipe_right_" + this.uniId)
 					.position({ right: 0 })
 					.translate({ x: "100%" })
 				}
 			}
-			.translate({ x: this.transX + "lpx" })
+			.translate({ x: getSizeByUnit(this.transX) })
 			.animation({
 				duration: 200
 			})

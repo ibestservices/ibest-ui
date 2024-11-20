@@ -140,11 +140,11 @@ export struct IBestRate {
 	// TODO 手指移动  实时计算当前手指之前的选项数量
 	onFingerMove(event: GestureEvent){
 		this.offsetX = this.startX + event.offsetX
-		// this.offsetY = px2lpx(vp2px(this.startY + event.offsetY))
+		// this.offsetY = this.startY + event.offsetY
 		this.value = clamp(Math.ceil(this.offsetX/(this.getIconSize() + this.space)), 0, this.count)
 	}
 	build() {
-		// Row({ space: `${this.space}lpx` }){
+		// Row({ space: getSizeByUnit(this.space) }){
 		Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap, space: { main: new LengthMetrics(this.space) } }) {
 			ForEach(this.optionsList, (item: RateOption, index: number) => {
 				RateItem({ item: item })

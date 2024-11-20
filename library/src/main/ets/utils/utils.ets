@@ -1,4 +1,4 @@
-import { componentUtils, ComponentUtils, window } from '@kit.ArkUI'
+import { componentUtils, ComponentUtils, LengthUnit, window } from '@kit.ArkUI'
 import { ComAvoidAreaSize, ComInfoType, IBestGlobalConfig } from '../model/Global.type'
 import { common } from '@kit.AbilityKit'
 import { AnyType } from '../model/AnyType'
@@ -191,6 +191,13 @@ export function getSizeByUnit(val: string | number, isFont?: boolean): string {
   let config: IBestGlobalConfig = AppStorage.get("iBestGlobalConfig") as IBestGlobalConfig
   let unit = isFont ? config.fontUnit : config.unit
   return `${val}${unit}`
+}
+/**
+ * 根据配置获取LengthUnit
+ */
+export function getLengthUnit(): LengthUnit{
+  let config: IBestGlobalConfig = AppStorage.get("iBestGlobalConfig") as IBestGlobalConfig
+  return config.unit == "lpx" ? LengthUnit.LPX : config.unit == "vp" ? LengthUnit.VP : LengthUnit.PX
 }
 /**
  * 根据单位转换尺寸 用于框架固定尺寸格式化

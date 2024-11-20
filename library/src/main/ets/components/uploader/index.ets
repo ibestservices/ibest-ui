@@ -11,7 +11,7 @@ import { photoAccessHelper } from '@kit.MediaLibraryKit'
 import { IBestLoading } from '../loading'
 import fs from '@ohos.file.fs'
 import { IBestImagePreview } from '../../../../../Index'
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils'
+import { convertDimensionsByUnit, getLengthUnit, getSizeByUnit } from '../../utils/utils'
 @Component
 export struct IBestUploader {
 	/**
@@ -171,7 +171,10 @@ export struct IBestUploader {
 	}
 
 	build() {
-		Flex({ wrap: FlexWrap.Wrap, space: { main: new LengthMetrics(16, LengthUnit.LPX), cross: new LengthMetrics(16, LengthUnit.LPX) } }){
+		Flex({ wrap: FlexWrap.Wrap, space: {
+			main: new LengthMetrics(parseFloat(convertDimensionsByUnit(8)), getLengthUnit()),
+			cross: new LengthMetrics(parseFloat(convertDimensionsByUnit(8)), getLengthUnit())
+		}}){
 			if(this.fileList.length){
 				ForEach(this.fileList, (item: IBestUploaderFile, index: number) => {
 					UploadItem({

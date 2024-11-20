@@ -169,9 +169,6 @@ export struct IBestCell {
               })
               .fontSize(this.baseStyle.fontSizeSm)
               .fontColor(this.baseStyle.danger)
-              // .constraintSize({
-              //   minHeight: '48lpx'
-              // })
           }
           // 标题与描述
           Column(){
@@ -180,9 +177,6 @@ export struct IBestCell {
               Row() {
                 this.titleBuilder()
               }
-              // .constraintSize({
-              //   minHeight: '48lpx'
-              // })
             } else {
               Row() {
                 if (this.iconBuilder) {
@@ -195,13 +189,9 @@ export struct IBestCell {
                     .fillColor(this.leftIconColor)
                     .margin({right: this.baseStyle.spaceBase})
                 }
-                // .constraintSize({
-                //   minHeight: '48lpx'
-                // })
                 // 默认标题内容
                 Text(String(this.title))
                   .layoutWeight(1)
-                  // .lineHeight('48lpx')
                   .fontSize(this.getCellSize().fontSize)
                   .fontColor(this.titleColor)
               }.width(CONTAINER_SIZE.FULL)
@@ -213,14 +203,10 @@ export struct IBestCell {
               Row() {
                 this.labelBuilder()
               }
-              // .constraintSize({
-              //   minHeight: '36lpx'
-              // })
             } else {
               if (this.isHasLabel()) {
                 Text(String(this.label))
                   .width(CONTAINER_SIZE.FULL)
-                  // .lineHeight('36lpx')
                   .fontSize(this.getCellSize().labelFontSize)
                   .margin({
                     top: this.baseStyle.spaceBase
@@ -238,24 +224,17 @@ export struct IBestCell {
             Row() {
               this.valueBuilder()
             }
-            // .constraintSize({
-            //   minHeight: '48lpx'
-            // })
             .layoutWeight(1)
           } else {
             Row() {
               Text(String(this.value))
                 .textAlign(TextAlign.Start)
-                // .lineHeight('48lpx')
                 .fontSize(this.getCellSize().fontSize)
                 .fontColor(this.valueColor)
               if (this.rightIconBuilder) {
                 Row() {
                   this.rightIconBuilder()
                 }.margin({left: this.baseStyle.spaceBase})
-                // .constraintSize({
-                //   minHeight: '48lpx'
-                // })
 
                 // 如果是link箭头
               } else if(this.rightIcon){
@@ -275,11 +254,7 @@ export struct IBestCell {
                     .animation({
                       duration: this.baseStyle.animationDuration as number
                     })
-                  // 行高会导致对不齐 所以要加个做小高度和行高一样
                 }
-                // .constraintSize({
-                //   minHeight: '48lpx'
-                // })
               }
             }.layoutWeight(1)
             .justifyContent(FlexAlign.End)

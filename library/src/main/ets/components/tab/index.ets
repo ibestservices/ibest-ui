@@ -32,7 +32,7 @@ export struct IBestTabs{
      */
     @Provide({ allowOverride: "tabsList" }) @Watch("tabsListChange") tabsList: IBestTabItem[] = []
     /**
-     * 单个tab内边距，单位lpx
+     * 单个tab内边距
      */
     @Provide({allowOverride: "tabPadding"}) tabPadding: number | string = this.baseStyle.spaceXs
     /**
@@ -56,11 +56,11 @@ export struct IBestTabs{
      */
     @Prop isTabLineWidthFixed: boolean = false
     /**
-     * 标记线宽度，单位lpx
+     * 标记线宽度
      */
     @Provide({allowOverride: "tabLineWidth"}) tabLineWidth: number | string = convertDimensionsByUnit(40)
     /**
-     * 标记线高度，单位lpx
+     * 标记线高度
      */
     @Provide({allowOverride: "tabLineHeight"}) tabLineHeight: number | string = convertDimensionsByUnit(2)
     /**
@@ -96,7 +96,7 @@ export struct IBestTabs{
      */
     @Provide({allowOverride: "tabBgColor"}) tabBgColor: ResourceColor  = this.baseStyle.default
     /**
-     * 字体大小 单位lpx
+     * 字体大小
      * @since 1.15.0
      */
     @Provide({allowOverride: "fontSize"}) fontSize: number | string = this.baseStyle.fontSizeMd
@@ -215,7 +215,7 @@ export struct IBestTabs{
     scrollCenter(){
         if(this.tabWidthType == "auto"){
             this.scroller.scrollTo({
-                xOffset: ((this.type == "line" ? this.translateX : this.tabBoxTranslateX) - this.tabContentWidth/2 + this.tabBoxWidth/2) + "lpx",
+                xOffset: getSizeByUnit((this.type == "line" ? this.translateX : this.tabBoxTranslateX) - this.tabContentWidth/2 + this.tabBoxWidth/2),
                 yOffset: 0,
                 animation: {
                     duration: 100,
@@ -239,7 +239,7 @@ export struct IBestTabs{
                 // let time = (Date.now() - this.startTime) / 1000
                 // let speed = Math.abs(this.touchOffsetX / time)
                 // console.log("滑动距离", Math.abs(this.touchOffsetX), "时间 s", time, "速度 vp/s", speed)
-                if(Math.abs(this.touchOffsetX) >= px2vp(lpx2px(this.tabContentWidth/2))){
+                if(Math.abs(this.touchOffsetX) >= this.tabContentWidth/2){
                     let index = this.touchOffsetX > 0 ? this.swiperIndex - 1 : this.swiperIndex + 1
                     this.currentName = this.tabsList[index].name
                 }else{
@@ -293,7 +293,7 @@ export struct IBestTabs{
             //     .onGestureSwipe((index: number, extraInfo: SwiperAnimationEvent) => {
             //         let curOffset = extraInfo.currentOffset
             //         let transX = curOffset > 0 ? this.translateXList[index] - this.translateXList[index-1] : this.translateXList[index+1] - this.translateXList[index]
-            //         let x = - px2lpx(vp2px(curOffset))*transX/this.tabContentWidth
+            //         let x = - curOffset*transX/this.tabContentWidth
             //         this.translateX = this.startTransX + x
             //     })
             //     .onTouch((event: TouchEvent) => {

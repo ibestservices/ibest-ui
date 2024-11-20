@@ -1,4 +1,5 @@
-import { clamp, addNumber, getComponentsInfo, convertDimensionsByUnit, getSizeByUnit } from "../../utils/utils"
+import { clamp, addNumber, getComponentsInfo, convertDimensionsByUnit, getSizeByUnit,
+	getLengthUnit } from "../../utils/utils"
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
 import { GRAY_COLOR } from "../../theme-chalk/src/color"
 import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
@@ -283,8 +284,8 @@ struct DragBar{
 
 	getBarPosition(): LocalizedEdges{
 		let value: LengthMetrics = {
-			value: -(this.buttonWidth || this.buttonSize)/2,
-			unit: this.config.unit == "lpx" ? LengthUnit.LPX : this.config.unit == "vp" ? LengthUnit.VP : LengthUnit.PX
+			value: -parseFloat(convertDimensionsByUnit((this.buttonWidth || this.buttonSize)/2)),
+			unit: getLengthUnit()
 		}
 		if(Array.isArray(this.value)){
 			if(this.vertical){
