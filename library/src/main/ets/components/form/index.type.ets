@@ -50,7 +50,7 @@ export function getFormEventName(formId: string, eventName: string): string {
  */
 export interface IBestFormSendFieldCallResult {
 	rules: IBestFormRuleItem[]
-	labelWidth: number
+	labelWidth: number | string
 	labelPosition: LabelPositionType
 	labelAlign: FieldTextAlign
 	colon: boolean

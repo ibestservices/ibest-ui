@@ -1,4 +1,4 @@
-import { clamp, getComponentsInfo } from '../../utils/utils'
+import { clamp, convertDimensionsByUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
@@ -35,11 +35,11 @@ export struct IBestRate {
 	/**
 	 * 图标大小
 	 */
-	@Provide({allowOverride: "iconSize"}) iconSize: number = 40
+	@Provide({allowOverride: "iconSize"}) iconSize: number | string = convertDimensionsByUnit(20)
 	/**
 	 * 间距
 	 */
-	@Prop space: number = 8
+	@Prop space: number = 4
 	/**
 	 * 选中图标
 	 */
@@ -114,12 +114,15 @@ export struct IBestRate {
 		this.containerWidth = getComponentsInfo(this.context, `IBestRate_${this.uniId}`).width
 		console.log("containerWidth", this.containerWidth)
 	}
+	getIconSize(){
+		return typeof this.iconSize == "string" ? parseInt(this.iconSize) : this.iconSize
+	}
 	// 点击
 	rateClick(event: ClickEvent, index: number){
-		let x = px2lpx(vp2px(event.x))
+		let x = event.x
 		let value = 0
 		if(this.allowHalf){
-			value = index + (x <= this.iconSize/2 ? 0.5 : 1)
+			value = index + (x <= this.getIconSize()/2 ? 0.5 : 1)
 		}else{
 			value = index + 1
 		}
@@ -136,13 +139,13 @@ export struct IBestRate {
 	}
 	// TODO 手指移动  实时计算当前手指之前的选项数量
 	onFingerMove(event: GestureEvent){
-		this.offsetX = px2lpx(vp2px(this.startX + event.offsetX))
+		this.offsetX = this.startX + event.offsetX
 		// this.offsetY = px2lpx(vp2px(this.startY + event.offsetY))
-		this.value = clamp(Math.ceil(this.offsetX/(this.iconSize + this.space)), 0, this.count)
+		this.value = clamp(Math.ceil(this.offsetX/(this.getIconSize() + this.space)), 0, this.count)
 	}
 	build() {
 		// Row({ space: `${this.space}lpx` }){
-		Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap, space: { main: new LengthMetrics(this.space, LengthUnit.LPX) } }) {
+		Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap, space: { main: new LengthMetrics(this.space) } }) {
 			ForEach(this.optionsList, (item: RateOption, index: number) => {
 				RateItem({ item: item })
 				.onClick((event: ClickEvent) => {
@@ -193,8 +196,8 @@ struct RateItem {
 				.visibility(this.item.value == 1 ? Visibility.None : Visibility.Visible)
 			Row() {
 				Image(this.activeIcon)
-					.width(`${this.iconSize}lpx`)
-					.height(`${this.iconSize}lpx`)
+					.width(getSizeByUnit(this.iconSize))
+					.height(getSizeByUnit(this.iconSize))
 					.draggable(false)
 					.fillColor(this.disabled ? this.disabledColor : this.activeColor)
 			}
@@ -202,7 +205,7 @@ struct RateItem {
 			.height(CONTAINER_SIZE.FULL)
 			.clip(true)
 		}
-		.width(`${this.iconSize}lpx`)
+		.width(getSizeByUnit(this.iconSize))
 		.aspectRatio(1)
 	}
 }

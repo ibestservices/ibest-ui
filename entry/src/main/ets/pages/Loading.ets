@@ -62,14 +62,14 @@ struct LoadingPage {
 
         ListItem() {
           ComponentShowContainer({ title: '自定义大小' }) {
-            Row() {
+            Row({ space: 20 }) {
               IBestLoading({
-                loadingSize: '80lpx'
+                loadingSize: 40
               })
               IBestLoading({
-                loadingSize: '80lpx',
+                loadingSize: 40,
                 loadingIconType: 'spinner'
-              }).margin({ left: '40lpx' })
+              })
 
             }
           }

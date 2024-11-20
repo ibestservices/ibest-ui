@@ -5,18 +5,17 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { CheckedItem, updateCheckboxStoreByKey } from '../checkboxGroup/store';
 import { CHECKBOX_GROUP_EVENT_NAME, getCheckboxNamespace } from '../checkboxGroup/utils';
 import { MaxChangeArgs, BuilderArgs } from './index.type';
-
-
+import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
 @Component
 export struct IBestCheckbox {
   /**
    * 自定义文本插槽
    */
-  @BuilderParam defaultBuilder: (data: BuilderArgs) => CustomBuilder;
+  @BuilderParam defaultBuilder?: (data: BuilderArgs) => void;
   /**
    * 自定义图标插槽
    */
-  @BuilderParam iconBuilder: (data: BuilderArgs) => void;
+  @BuilderParam iconBuilder?: (data: BuilderArgs) => void;
   /**
    * 全局公共样式
    */
@@ -35,10 +34,9 @@ export struct IBestCheckbox {
    */
   @Prop checkedColor: ResourceColor = '';
   /**
-   * 图标大小 单位lpx
-   * 默认40lpx
+   * 图标大小
    */
-  @Prop iconSize: number = 40;
+  @Prop iconSize: number | string = convertDimensionsByUnit(20)
   /**
    * 默认是否选中 非双向绑定
    * 如果要更改数据请从onChange回调中获取最新的值
@@ -52,6 +50,11 @@ export struct IBestCheckbox {
    * 显示的文本
    */
   @Prop label: string = ''
+  /**
+   * 文本大小
+   * @since 1.18.0
+   */
+  @Prop labelFontSize: number | string = convertDimensionsByUnit(16)
   /**
    * 文本位置，可选值为 left
    */
@@ -256,7 +259,7 @@ export struct IBestCheckbox {
       } else {
         Text(this.label)
           .fontColor(this.getLabelColor())
-          .fontSize(`${this.iconSize * .7}lpx`)
+          .fontSize(getSizeByUnit(this.labelFontSize))
       }
     }
     .margin({
@@ -282,27 +285,22 @@ export struct IBestCheckbox {
 
           Image(this.isShowIndeterminateImg ? $r('app.media.indeterminate') : $r('app.media.success'))
             .fillColor(this.getIconColor())
-            .width(`${this.iconSize}lpx`)
+            .width(getSizeByUnit(this.iconSize))
             .opacity(this.isShowBackground() ? 1 : 0)
             .animation({
               duration: this.baseStyle.animationDuration as number,
             })
-            .scale({
-              x: .9,
-              y: .9
-            })// 升级api11后图形移位了
-            .translate({ x: `${this.iconSize * .02}lpx}` })
         }
       }
-      .width(`${this.iconSize}lpx`)
-      .height(`${this.iconSize}lpx`)
+      .padding(1)
       .justifyContent(FlexAlign.Center)
       .alignItems(HorizontalAlign.Center)
-      .border({ color: this.getBorderColor(), width: '2lpx' })
-      .borderRadius(this.shape === 'round' ? `${this.iconSize / 2}lpx` : 0)
+      .border({ color: this.getBorderColor(), width: 1 })
+      .borderRadius(this.shape === 'round' ? this.baseStyle.borderRadiusMax : 0)
       .backgroundColor(this.getBackgroundColor())
+      .clip(true)
       .animation({
-        duration: this.baseStyle.animationDuration as number,
+        duration: this.baseStyle.animationDuration as number
       })
       .onClick(() => {
         this.handleCheckedChange()

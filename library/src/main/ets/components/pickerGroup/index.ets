@@ -4,6 +4,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestTabs } from '../tab';
 import { IBestTabController, IBestTabItemType } from '../tab/index.type';
+import { convertDimensionsByUnit } from '../../utils/utils';
 @Component
 export struct IBestPickerGroup{
 	/**
@@ -50,7 +51,7 @@ export struct IBestPickerGroup{
 	/**
 	 * 默认插槽
 	 */
-	@BuilderParam defaultBuilder: () => void
+	@BuilderParam defaultBuilder?: CustomBuilder
 	/**
 	 * 确认按钮点击事件
 	 */
@@ -121,7 +122,7 @@ export struct IBestPickerGroup{
 							})
 					}
 					.width(CONTAINER_SIZE.FULL)
-					.height("88lpx")
+					.height(convertDimensionsByUnit(44))
 					.justifyContent(FlexAlign.SpaceBetween)
 					Text(this.title)
 						.constraintSize({ maxWidth: "50%" })
@@ -145,7 +146,9 @@ export struct IBestPickerGroup{
 			.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs, bottom: this.baseStyle.spaceXs })
 
 			Swiper(this.swiperController) {
-				this.defaultBuilder()
+				if(this.defaultBuilder){
+					this.defaultBuilder()
+				}
 			}
 			.width("100%")
 			.disableSwipe(true)

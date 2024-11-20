@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { IBestCell, IBestField, IBestCellGroup, IBestNumberKeyboard } from '@ibestservices/ibest-ui';
+import { IBestCell, IBestCellGroup, IBestNumberKeyboard } from '@ibestservices/ibest-ui';
 import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import { ComponentRouterParams } from '../assets/global.type';
@@ -78,14 +78,12 @@ struct NumberKeyboardPage {
 								this.visible5 = true
 							}
 						})
-						IBestField({
-							label: "最大长度",
-							value: $value6,
-							readOnly: true,
+						IBestCell({
+							title: '最大长度',
+							value: this.value6 || "点此输入",
 							clickable: true,
-							placeholder: "点此输入",
 							hasBorder: false,
-							onFieldClick: () => {
+							onClickCell: () => {
 								this.visible6 = true
 							}
 						})

@@ -1,5 +1,5 @@
 import { ComponentContent, UIContext, window } from '@kit.ArkUI';
-import { generateId } from '../utils/utils';
+import { convertDimensionsByUnit, generateId, getSizeByUnit } from '../utils/utils';
 import CustomContent from '../common/components/CustomContent';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src';
 import { GRAY_COLOR } from '../theme-chalk/src/color';
@@ -193,7 +193,7 @@ struct defaultContent{
 					if(this.option.closeable){
 						Row(){
 							Image(this.option.closeIcon)
-								.width("44lpx")
+								.width(convertDimensionsByUnit(22))
 								.aspectRatio(1)
 						}
 						.height(CONTAINER_SIZE.FULL)
@@ -203,7 +203,7 @@ struct defaultContent{
 						})
 					}
 				}
-				.height("96lpx")
+				.height(convertDimensionsByUnit(48))
 				.backgroundColor(this.option.titleBgColor)
 				.border({ width: { bottom: 1 }, color: GRAY_COLOR.GRAY_3 })
 			}
@@ -228,9 +228,9 @@ struct defaultContent{
 									Button(){
 										Column() {
 											Image(action.icon)
-												.width("96lpx")
+												.width(convertDimensionsByUnit(48))
 												.fillColor(GRAY_COLOR.GRAY_8)
-												.borderRadius(999)
+												.borderRadius(this.baseStyle.borderRadiusMax)
 												.aspectRatio(1)
 												.margin({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd, bottom: this.baseStyle.spaceXs })
 												.draggable(false)
@@ -242,7 +242,7 @@ struct defaultContent{
 												Text(action.subName)
 													.fontSize(this.baseStyle.fontSizeSm)
 													.fontColor(GRAY_COLOR.GRAY_5)
-													.margin({ top: "12lpx" })
+													.margin({ top: convertDimensionsByUnit(6) })
 													.padding({ left: this.baseStyle.spaceBase, right: this.baseStyle.spaceBase })
 											}
 										}.alignItems(HorizontalAlign.Center)
@@ -280,7 +280,7 @@ struct defaultContent{
 								Row(){
 									if(typeof action == "object" && action.icon){
 										Image(action.icon)
-											.width("36lpx")
+											.width(convertDimensionsByUnit(18))
 											.aspectRatio(1)
 											.fillColor(typeof action == "object" && action.isDisabled ? GRAY_COLOR.GRAY_5 : GRAY_COLOR.GRAY_8)
 											.margin({ right: this.baseStyle.spaceXs })
@@ -319,7 +319,7 @@ struct defaultContent{
 			if(this.option.cancelText){
 				Divider()
 					.width(CONTAINER_SIZE.FULL)
-					.strokeWidth("16lpx")
+					.strokeWidth(convertDimensionsByUnit(8))
 					.color(GRAY_COLOR.GRAY_1)
 				Button({ type: ButtonType.Normal }){
 					Column(){
@@ -336,7 +336,7 @@ struct defaultContent{
 			}
 		}
 		.width(CONTAINER_SIZE.FULL)
-		.padding({ bottom: this.option.safeAreaInsetBottom ? `${GlobalStore.bottomBarHeight}lpx` : 0 })
+		.padding({ bottom: this.option.safeAreaInsetBottom ? getSizeByUnit(GlobalStore.bottomBarHeight) : 0 })
 	}
 }
 

@@ -10,7 +10,7 @@ import type { IBestFieldType, ClearTriggerType, FieldTextAlign, IBestFieldValueT
     FormatTriggerType} from './index.type'
 import { emitter } from '../../utils/EventEmitter'
 import { runRuleValidator, runSyncRule } from './utils'
-
+import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils'
 @Component
 export struct IBestField{
     /**
@@ -44,7 +44,7 @@ export struct IBestField{
     /**
      * 文本宽度
      */
-    @Provide({allowOverride: "labelWidth"}) labelWidth: number = 0
+    @Provide({allowOverride: "labelWidth"}) labelWidth: number | string = 0
     /**
      * 文本位置
      */
@@ -160,11 +160,11 @@ export struct IBestField{
     /**
      * 右侧按钮builder
      */
-    @BuilderParam buttonBuilder: () => void
+    @BuilderParam buttonBuilder?: CustomBuilder
     /**
      * 自定义右侧内容
      */
-    @BuilderParam customRightContent: () => void
+    @BuilderParam customRightContent?: CustomBuilder
     /**
      * 执行格式化函数触发时机
      */
@@ -221,9 +221,9 @@ export struct IBestField{
         })
     }
     @Styles fieldContentStyles(){
-        .padding({ top: '20lpx', bottom: '20lpx' })
+        .padding({ top: convertDimensionsByUnit(10), bottom: convertDimensionsByUnit(10) })
         .border({
-            width: { bottom: this.hasBorder ? '2lpx' : 0 },
+            width: { bottom: this.hasBorder ? 1 : 0 },
             color: GRAY_COLOR.GRAY_3
         })
     }
@@ -249,7 +249,7 @@ export struct IBestField{
     init(results?: IBestFormSendFieldCallResult){
         this.rules = this.rules.length ? this.rules : (results?.rules || [])
         this.required = typeof this.required != "undefined" ? this.required : this.rules.length > 0 && this.rules.some((item: IBestFormRuleItem) => item.required)
-        this.labelWidth = this.labelWidth || results?.labelWidth || 160
+        this.labelWidth = this.labelWidth || results?.labelWidth || convertDimensionsByUnit(80)
         this.labelPosition = this.labelPosition || results?.labelPosition || 'left'
         this.labelAlign = this.labelAlign || results?.labelAlign || 'left'
         this.colon = typeof this.colon != "undefined" ? this.colon : results ? results.colon : false
@@ -393,7 +393,7 @@ struct Label{
     @Consume colon: string
     @Consume labelPosition: 'left' | 'top'
     @Consume labelAlign: FieldTextAlign
-    @Consume labelWidth: number
+    @Consume labelWidth: number | string
     @Consume requireAsteriskPosition: string
     @Consume leftIcon: string | Resource
     @Consume leftIconColor: string
@@ -402,7 +402,7 @@ struct Label{
         Row(){
             if(this.leftIcon){
                 Image(this.leftIcon)
-                    .width("28lpx")
+                    .width(convertDimensionsByUnit(14))
                     .fillColor(this.leftIconColor)
                     .aspectRatio(1)
                     .margin({right: this.baseStyle.spaceBase})
@@ -416,14 +416,14 @@ struct Label{
             Text(this.label + (this.colon ? ":" : ""))
                 .fontSize(this.baseStyle.fontSizeMd)
                 .layoutWeight(1)
-                .constraintSize({ minHeight: "40lpx" })
+                .constraintSize({ minHeight: convertDimensionsByUnit(20) })
                 .lineHeight(this.baseStyle.lineHeightMd)
                 .textAlign(this.labelAlign == "left" ? TextAlign.Start : this.labelAlign == "center" ? TextAlign.Center : TextAlign.End)
             if(this.requireAsteriskPosition == "right"){
                 Asterisk()
             }
         }
-        .width(this.labelPosition == "left" ? `${this.labelWidth}lpx` : CONTAINER_SIZE.FULL)
+        .width(this.labelPosition == "left" ? getSizeByUnit(this.labelWidth) : CONTAINER_SIZE.FULL)
         .margin({right: this.baseStyle.spaceSm})
         .alignItems(VerticalAlign.Center)
     }
@@ -477,8 +477,8 @@ struct Content{
     @Consume clearTrigger: ClearTriggerType
     @Consume showMessage: boolean
     @Consume validateMessage: string
-    @BuilderParam buttonBuilder: () => void
-    @BuilderParam customRightContent?: () => void
+    @BuilderParam buttonBuilder?: CustomBuilder
+    @BuilderParam customRightContent?: CustomBuilder
     @Consume formatTrigger: FormatTriggerType
     formatter?: (value: string) => string
     onChange: (value: IBestFieldValueType) => void = () => {}
@@ -562,7 +562,7 @@ struct Content{
                             .placeholderFont({
                                 size: this.baseStyle.fontSizeMd
                             })
-                            .constraintSize({ minHeight: `${this.rows * 40}lpx` })
+                            .constraintSize({ minHeight: convertDimensionsByUnit(this.rows * 20) })
                             .lineHeight(this.baseStyle.lineHeightMd)
                             .maxLength(this.maxlength)
                             // .showCounter(this.showWordLimit, {
@@ -624,7 +624,7 @@ struct Content{
                     // 清除图标
                     if (this.clearable && this.value && (this.clearTrigger == 'always' || this.isFocus)) {
                         Image($r("app.media.icon_clear"))
-                            .width("40lpx")
+                            .width(convertDimensionsByUnit(20))
                             .aspectRatio(1)
                             .margin({ left: this.baseStyle.spaceBase })
                             .onClick(() => {
@@ -640,7 +640,7 @@ struct Content{
                 // 右侧图标
                 if(this.rightIcon){
                     Image(this.rightIcon)
-                        .width("28lpx")
+                        .width(this.baseStyle.fontSizeMd)
                         .aspectRatio(1)
                         .fillColor(this.rightIconColor)
                         .margin({left: this.baseStyle.spaceBase})
@@ -651,7 +651,7 @@ struct Content{
                 // link箭头
                 if(this.isLink){
                     Image($r("app.media.arrow_right"))
-                        .width("28lpx")
+                        .width(this.baseStyle.fontSizeMd)
                         .aspectRatio(1)
                         .fillColor(this.rightIconColor)
                         .margin({left: this.baseStyle.spaceBase})

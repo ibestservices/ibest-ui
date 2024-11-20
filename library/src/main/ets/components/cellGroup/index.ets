@@ -12,11 +12,10 @@ export struct IBestCellGroup {
   /**
    * 默认插槽
    */
-  @BuilderParam defaultBuilder: CustomBuilder;
+  @BuilderParam defaultBuilder?: CustomBuilder;
   /**
    * 分组标题
    * title没有设计成builder是因为如果设计成了builder就没法用尾随闭包方式初始化Cell或别的组件了
-   * must have one and only one property decorated with @BuilderParam, and its @BuilderParam expects no parameter.
    */
   @Prop title: string | number = '';
   /**

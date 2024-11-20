@@ -5,7 +5,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { NumberKeyboard } from '../numberKeyboard';
 import { IBestPasswordInputModel, NumberKeyboardConfig } from './index.type';
 import { FocusController } from '@ohos.arkui.UIContext';
-
+import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
 @Extend(TextInput) function passwordInputStyle(id: number, inputLength: number){
 	.width(CONTAINER_SIZE.FULL)
 	.height(CONTAINER_SIZE.FULL)
@@ -50,7 +50,7 @@ export struct IBestPasswordInput {
 	/**
 	 * 输入框高度
 	 */
-	@Prop inputHeight: number = 100
+	@Prop inputHeight: number | string = convertDimensionsByUnit(50)
 	/**
 	 * 格子间距
 	 */
@@ -58,7 +58,7 @@ export struct IBestPasswordInput {
 	/**
 	 * 圆角
 	 */
-	@Provide({allowOverride: "radius"}) radius: number = 10
+	@Provide({allowOverride: "radius"}) radius: number | string = convertDimensionsByUnit(5)
 	/**
 	 * 是否高亮当前正在输入的格子
 	 */
@@ -162,7 +162,7 @@ export struct IBestPasswordInput {
 							this.stopEdit()
 						})
 				}
-				Row({ space: `${this.space}lpx` }){
+				Row({ space: getSizeByUnit(this.space) }){
 					ForEach(this.inputList, (item: IBestPasswordInputModel, index: number) => {
 						InputField({
 							item: item,
@@ -182,7 +182,7 @@ export struct IBestPasswordInput {
 				})
 			}
 			.width(CONTAINER_SIZE.FULL)
-			.height(`${this.inputHeight}lpx`)
+			.height(getSizeByUnit(this.inputHeight))
 			// 提示信息
 			if(this.tip || this.errorTip){
 				Text(this.value.length == this.inputLength && this.errorTip ? this.errorTip : this.tip)
@@ -193,7 +193,7 @@ export struct IBestPasswordInput {
 			}
 		}
 		.width(CONTAINER_SIZE.FULL)
-		.padding("10lpx")
+		.padding(convertDimensionsByUnit(5))
 	}
 }
 
@@ -237,12 +237,12 @@ struct InputField {
 	build() {
 		Row(){
 			Text(this.isHidden ? "•" : this.item.value)
-				.fontSize(this.isHidden ? "80lpx" : this.baseStyle.fontSizeXl)
+				.fontSize(this.isHidden ? convertDimensionsByUnit(40) : this.baseStyle.fontSizeXl)
 				.fontColor(GRAY_COLOR.GRAY_8)
 				.visibility(this.item.value ? Visibility.Visible : Visibility.None)
 			if(this.focused && this.currentFocusIndex == this.index){
 				Divider()
-					.width("2lpx")
+					.width(1)
 					.height("50%")
 					.vertical(true)
 					.color(GRAY_COLOR.GRAY_8)
@@ -260,9 +260,9 @@ struct InputField {
 			width: { left: this.space == 0 && this.index > 0 ? 1 : 0 },
 			color: GRAY_COLOR.GRAY_3
 		})
-		.borderRadius(this.space ? `${this.radius}lpx` : 0)
+		.borderRadius(this.space ? getSizeByUnit(this.radius) : 0)
 		.shadow({
-			radius: this.isHighlightCurrent && this.focused && this.space && this.currentFocusIndex == this.index ? px2lpx(40) : 0,
+			radius: this.isHighlightCurrent && this.focused && this.space && this.currentFocusIndex == this.index ? 20 : 0,
 			color: this.highlightColor,
 			type: ShadowType.COLOR
 		})

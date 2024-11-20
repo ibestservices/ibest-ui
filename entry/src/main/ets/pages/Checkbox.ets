@@ -156,7 +156,7 @@ struct CheckboxPage {
             Column() {
               IBestCheckbox({
                 value: true,
-                iconSize: 60,
+                iconSize: 30,
                 label: '自定义大小',
                 name: 'checkbox7'
               })

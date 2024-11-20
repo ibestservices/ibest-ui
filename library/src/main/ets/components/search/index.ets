@@ -2,6 +2,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils'
 @Component
 export struct IBestSearch {
 	/**
@@ -21,6 +22,11 @@ export struct IBestSearch {
 	 */
 	@Link value: string
 	/**
+	 * 输入框文字颜色
+	 * @since 1.18.0
+     */
+	@Prop textColor: ResourceColor = GRAY_COLOR.GRAY_8
+	/**
 	 * 输入框 placeholder 提示文字
 	 */
 	@Prop placeholder: string = '请输入搜索关键词'
@@ -31,7 +37,7 @@ export struct IBestSearch {
 	/**
 	 * 搜索框高度
 	 */
-	@Prop contentHeight: number = 108
+	@Prop contentHeight: number | string = convertDimensionsByUnit(34)
 	/**
 	 * 外侧背景色
 	 */
@@ -124,90 +130,92 @@ export struct IBestSearch {
 	build() {
 		Row(){
 			Row(){
-				if(this.label){
-					Text(this.label)
-						.fontSize(this.baseStyle.fontSizeMd)
-						.fontColor(GRAY_COLOR.GRAY_8)
-						.margin({ right: this.baseStyle.spaceBase })
-				}
-				Image(this.leftIcon)
-					.width("36lpx")
-					.margin({ right: this.baseStyle.spaceBase })
-					.fillColor(this.leftIconColor)
-				TextInput({ text: $$this.value, placeholder: this.placeholder })
-					.layoutWeight(1)
-					.padding(0)
-					.borderRadius(0)
-					.placeholderColor(this.placeholderColor)
-					.backgroundColor("transparent")
-					.enableAutoFill(false)
-					.defaultFocus(this.autoFocus)
-					.enterKeyType(this.enterKeyType)
-					.focusable(!(this.disabled || this.readOnly))
-					.onChange((value: string) => {
-						if(!this.clearLock){
-							this.onInput(value)
-						}
-					})
-					.onSubmit(() => {
-						this.onSearch()
-					})
-					.onFocus(() => {
-						this.isFocus = true
-						this.onInputFocus()
-					})
-					.onBlur(() => {
-						this.isFocus = false
-						this.onInputBlur()
-					})
-				if(this.clearable){
-					Row(){
-						Image(this.clearIcon)
-							.width("36lpx")
-							.fillColor(GRAY_COLOR.GRAY_5)
+				Row(){
+					if(this.label){
+						Text(this.label)
+							.fontSize(this.baseStyle.fontSizeMd)
+							.fontColor(GRAY_COLOR.GRAY_8)
+							.margin({ right: this.baseStyle.spaceBase })
 					}
-					.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs })
-					.visibility(this.value && (this.clearTrigger == "always" || this.isFocus) ? Visibility.Visible : Visibility.None)
-					.onClick(() => {
-						this.clearLock = true
-						this.value = ""
-						this.onClear()
-						setTimeout(() => {
-							this.clearLock = false
-						}, 10)
-					})
+					Image(this.leftIcon)
+						.width(convertDimensionsByUnit(18))
+						.margin({ right: this.baseStyle.spaceBase })
+						.fillColor(this.leftIconColor)
+					TextInput({ text: $$this.value, placeholder: this.placeholder })
+						.layoutWeight(1)
+						.padding(0)
+						.borderRadius(0)
+						.placeholderColor(this.placeholderColor)
+						.backgroundColor("transparent")
+						.enableAutoFill(false)
+						.defaultFocus(this.autoFocus)
+						.enterKeyType(this.enterKeyType)
+						.focusable(!(this.disabled || this.readOnly))
+						.onChange((value: string) => {
+							if(!this.clearLock){
+								this.onInput(value)
+							}
+						})
+						.onSubmit(() => {
+							this.onSearch()
+						})
+						.onFocus(() => {
+							this.isFocus = true
+							this.onInputFocus()
+						})
+						.onBlur(() => {
+							this.isFocus = false
+							this.onInputBlur()
+						})
+					if(this.clearable){
+						Row(){
+							Image(this.clearIcon)
+								.width(convertDimensionsByUnit(18))
+								.fillColor(GRAY_COLOR.GRAY_5)
+						}
+						.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs })
+						.visibility(this.value && (this.clearTrigger == "always" || this.isFocus) ? Visibility.Visible : Visibility.None)
+						.onClick(() => {
+							this.clearLock = true
+							this.value = ""
+							this.onClear()
+							setTimeout(() => {
+								this.clearLock = false
+							}, 10)
+						})
+					}
+				}
+				.layoutWeight(1)
+				.height(CONTAINER_SIZE.FULL)
+				.backgroundColor(this.innerBgColor)
+				.borderRadius(this.isRound ? this.baseStyle.borderRadiusMax : getSizeByUnit(this.radius))
+				.padding({ left: this.baseStyle.spaceSm })
+				.alignItems(VerticalAlign.Center)
+				if(this.customRightButton){
+					this.customRightButton()
+				}else if(this.showRightButton){
+					Text(this.rightButtonText)
+						.width(convertDimensionsByUnit(44))
+						.height(CONTAINER_SIZE.FULL)
+						.fontSize(this.baseStyle.fontSizeMd)
+						.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs })
+						.stateStyles({
+							normal: {
+								.backgroundColor(this.baseStyle.default)
+							},
+							pressed: {
+								.backgroundColor(GRAY_COLOR.GRAY_2)
+							}
+						})
+						.onClick(() => {
+							this.onRightButtonClick()
+						})
 				}
 			}
-			.layoutWeight(1)
-			.height(CONTAINER_SIZE.FULL)
-			.backgroundColor(this.innerBgColor)
-			.borderRadius(this.radius ? `${this.radius}lpx` : this.isRound ? 999999 : 0)
-			.padding({ left:  this.baseStyle.spaceSm })
-			.alignItems(VerticalAlign.Center)
-			if(this.customRightButton){
-				this.customRightButton()
-			}else if(this.showRightButton){
-				Text(this.rightButtonText)
-					.width("88lpx")
-					.height(CONTAINER_SIZE.FULL)
-					.fontSize(this.baseStyle.fontSizeMd)
-					.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs })
-					.stateStyles({
-						normal: {
-							.backgroundColor(this.baseStyle.default)
-						},
-						pressed: {
-							.backgroundColor(GRAY_COLOR.GRAY_2)
-						}
-					})
-					.onClick(() => {
-						this.onRightButtonClick()
-					})
-			}
+			.height(getSizeByUnit(this.contentHeight))
 		}
 		.width(CONTAINER_SIZE.FULL)
-		.height(`${this.contentHeight}lpx`)
-		.padding({ left: this.baseStyle.spaceSm, right: this.customRightButton || this.showRightButton ? 0 : this.baseStyle.spaceSm, top: "20lpx", bottom: "20lpx" })
+		.padding({ left: this.baseStyle.spaceSm, right: this.customRightButton || this.showRightButton ? 0 : this.baseStyle.spaceSm, top: convertDimensionsByUnit(10), bottom: convertDimensionsByUnit(10) })
 		.backgroundColor(this.outBgColor)
 		.enabled(!this.disabled)
 	}

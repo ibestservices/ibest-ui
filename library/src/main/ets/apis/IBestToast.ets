@@ -4,7 +4,7 @@ import { LoadingIconType, WordBreakType } from '../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src/index'
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type'
 import { debounce } from '../utils/DebounceThrottle'
-
+import { convertDimensionsByUnit, getSizeByUnit } from '../utils/utils'
 class LoadingOption{
     /**
      * 展示文本
@@ -24,7 +24,7 @@ class ToastOption extends LoadingOption {
     /**
      * 展示类型
      */
-    type?: "success" | "warning" | "fail" | "loading" | ""
+    type?: "success" | "warning" | "fail" | "loading"
     /**
      * 换行方式
      */
@@ -33,6 +33,11 @@ class ToastOption extends LoadingOption {
      * 自定义图标
      */
     icon?: string | Resource
+    /**
+     * 自定义图标宽度
+     * @since 1.18.0
+     */
+    iconWidth?: number | string
     /**
      * 是否显示背景遮罩层
      */
@@ -54,11 +59,12 @@ class ToastOption extends LoadingOption {
 class ToastParams extends ToastOption{
     constructor(value?: ToastOption) {
         super()
-        this.type = value?.type || ""
+        this.type = value?.type
         this.message = value?.message || "加载中"
         this.duration = typeof value?.duration != "undefined" ? value.duration : 1500
         this.wordBreak = value?.wordBreak || "normal"
-        this.icon = value?.icon || ""
+        this.icon = value?.icon
+        this.iconWidth = value?.iconWidth
         this.isShowMask = value?.isShowMask || false
         this.loadingType = value?.loadingType || "circular"
         this.position = value?.position || "center"
@@ -67,10 +73,10 @@ class ToastParams extends ToastOption{
     }
 }
 
-@Extend(Image) function imageStyle(){
-    .width('72lpx')
+@Extend(Image) function imageStyle(width: number | string | undefined){
+    .width(width ? getSizeByUnit(width) : convertDimensionsByUnit(36))
     .aspectRatio(1)
-    .margin({bottom: '20lpx'})
+    .margin({bottom: convertDimensionsByUnit(10)})
 }
 
 @Component
@@ -83,30 +89,30 @@ struct defaultContent{
     build() {
         Column(){
             if(this.option.icon){
-                Image(this.option.icon).imageStyle()
+                Image(this.option.icon).imageStyle(this.option.iconWidth)
             }else if(this.option.type){
                 if(this.option.type == "loading"){
                     IBestLoading({
                         loadingIconType: this.option.loadingType,
-                        loadingSize: "38lpx",
-                        loadingStrokeWidth: "3lpx"
-                    }).margin({bottom: '20lpx'})
+                        loadingSize: convertDimensionsByUnit(19),
+                        loadingStrokeWidth: convertDimensionsByUnit(2)
+                    }).margin({bottom: convertDimensionsByUnit(10)})
                 }else{
                     Image(this.option.type == "success" ? $r("app.media.success") : this.option.type ==
                         "warning" ? $r("app.media.icon_warn") :$r("app.media.icon_cuo"))
-                        .imageStyle()
+                        .imageStyle(this.option.iconWidth)
                         .fillColor("#fff")
                 }
             }
             Text(this.option.message)
                 .fontColor('#fff')
-                .fontSize(getDefaultBaseStyle().fontSizeMd)
+                .fontSize(this.baseStyle.fontSizeMd)
                 .wordBreak(this.option.wordBreak == "normal" ? WordBreak.NORMAL : this.option.wordBreak == "break-all" ? WordBreak.BREAK_ALL : WordBreak.BREAK_WORD)
         }
-        .constraintSize({minWidth: "192lpx", maxWidth: "60%", minHeight: this.option.type == "" && this.option.icon == "" ? 0 :
-            "196lpx"})
+        .constraintSize({minWidth: convertDimensionsByUnit(96), minHeight: !this.option.type && !this.option.icon ? 0 :
+            convertDimensionsByUnit(98)})
         .backgroundColor("rgba(0,0,0,0.7)")
-        .borderRadius("12lpx")
+        .borderRadius(convertDimensionsByUnit(6))
         .padding({left: this.baseStyle.spaceSm, right: this.baseStyle.spaceSm, top: this.baseStyle.spaceXs, bottom: this.baseStyle.spaceXs})
         .justifyContent(FlexAlign.Center)
     }

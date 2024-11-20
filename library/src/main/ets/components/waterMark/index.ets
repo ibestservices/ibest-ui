@@ -5,23 +5,23 @@ export struct IBestWatermark {
   /**
    * 默认的插槽
    */
-  @BuilderParam defaultSlot: () => void;
+  @BuilderParam defaultSlot?: CustomBuilder
   /**
    * 图片水印的宽度
    */
-  @Prop waterMarkWidth: number = 100;
+  @Prop waterMarkWidth: number
   /**
    * 图片水印的高度
    */
-  @Prop waterMarkHeight: number = 100;
+  @Prop waterMarkHeight: number
   /**
    * 水印透明度
    */
-  @Prop waterMarkOpacity: number = 0.3;
+  @Prop waterMarkOpacity: number
   /**
    * 水印之间的水平间隔 默认0
    */
-  @Prop gapX: number = 0;
+  @Prop gapX: number
   /**
    * 水印之间的垂直间隔 默认0
    */
@@ -29,19 +29,19 @@ export struct IBestWatermark {
   /**
    * 旋转角度
    */
-  @Prop rotateDeg: number = -22;
+  @Prop rotateDeg: number
   /**
    * 图片水印的链接
    */
-  @Prop imageUrl: string = '';
+  @Prop imageUrl: string
   /**
    * 文字水印
    */
-  @Prop text: string = '';
+  @Prop text: string
   /**
    * 文字的大小
    */
-  @Prop fontSize: number = 30;
+  @Prop fontSize: number
   /**
    * 文字字体
    */
@@ -81,7 +81,9 @@ export struct IBestWatermark {
         gapX: this.gapX,
         text: this.text,
       })
-      this.defaultSlot()
+      if(this.defaultSlot){
+        this.defaultSlot()
+      }
       //   通过这个事件的回调可以拿到组件的宽高
     }.onAreaChange((oldValue: Area, newValue: Area) => {
       this.waterMarkContainHeight = newValue.height as number;

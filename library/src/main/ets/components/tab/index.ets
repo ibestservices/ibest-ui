@@ -1,4 +1,4 @@
-import { getComponentsInfo, sleep } from '../../utils/utils';
+import { convertDimensionsByUnit, getComponentsInfo, getSizeByUnit, sleep } from '../../utils/utils';
 import { IBestTabController, IBestTabItem, TabWidthType } from './index.type';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
@@ -22,7 +22,7 @@ export struct IBestTabs{
     /**
      * tab高度
      */
-    @Provide({allowOverride: "tabHeight"}) tabHeight: number = 70
+    @Provide({allowOverride: "tabHeight"}) tabHeight: number | string = convertDimensionsByUnit(35)
     /**
      * tab宽度类型
      */
@@ -34,7 +34,7 @@ export struct IBestTabs{
     /**
      * 单个tab内边距，单位lpx
      */
-    @Provide({allowOverride: "tabPadding"}) tabPadding: number = 16
+    @Provide({allowOverride: "tabPadding"}) tabPadding: number | string = this.baseStyle.spaceXs
     /**
      * tab盒子宽度
      */
@@ -58,11 +58,11 @@ export struct IBestTabs{
     /**
      * 标记线宽度，单位lpx
      */
-    @Provide({allowOverride: "tabLineWidth"}) tabLineWidth: number = 80
+    @Provide({allowOverride: "tabLineWidth"}) tabLineWidth: number | string = convertDimensionsByUnit(40)
     /**
      * 标记线高度，单位lpx
      */
-    @Provide({allowOverride: "tabLineHeight"}) tabLineHeight: number = 4
+    @Provide({allowOverride: "tabLineHeight"}) tabLineHeight: number | string = convertDimensionsByUnit(2)
     /**
      * 标记块宽度
      */
@@ -70,7 +70,7 @@ export struct IBestTabs{
     /**
      * 标记线X偏移量
      */
-    @State translateX: number = this.tabPadding
+    @State translateX: number = typeof this.tabPadding == "number" ? this.tabPadding : parseFloat(this.tabPadding)
     /**
      * 标记块X偏移量
      */
@@ -99,7 +99,7 @@ export struct IBestTabs{
      * 字体大小 单位lpx
      * @since 1.15.0
      */
-    @Provide({allowOverride: "fontSize"}) fontSize: number = 28
+    @Provide({allowOverride: "fontSize"}) fontSize: number | string = this.baseStyle.fontSizeMd
     /**
      * onChange事件回调
      */
@@ -113,7 +113,7 @@ export struct IBestTabs{
      * tabContent 内容列表
      * @since 1.17.0
      */
-    // @BuilderParam tabContent: CustomBuilder
+    // @BuilderParam tabContent?: CustomBuilder
     /**
      * controller 控制器
      */
@@ -181,7 +181,7 @@ export struct IBestTabs{
         this.tabsList.forEach((item: IBestTabItem) => {
             let boxInfo = getComponentsInfo(this.context, `ibestTab_${this.uniId}_box_${item.name}`)
             let textInfo = getComponentsInfo(this.context, `ibestTab_${this.uniId}_text_${item.name}`)
-            let tabLineWidth = this.isTabLineWidthFixed ? this.tabLineWidth : textInfo.width
+            let tabLineWidth = this.isTabLineWidthFixed ? this.getTabLineWidth() : textInfo.width
             tabWidthList.push({
                 boxWidth: boxInfo.width,
                 boxLocalLeft: boxInfo.localLeft,
@@ -207,6 +207,9 @@ export struct IBestTabs{
                 this.startTransX = this.tabBoxTranslateX = tabInfo.boxLocalLeft
             }
         }
+    }
+    getTabLineWidth(){
+        return typeof this.tabLineWidth == "number" ? this.tabLineWidth : parseFloat(this.tabLineWidth)
     }
     // 滚动居中
     scrollCenter(){
@@ -248,7 +251,7 @@ export struct IBestTabs{
         }
     }
     build() {
-        Column({ space: "30lpx" }){
+        Column({ space: convertDimensionsByUnit(15) }){
             if(this.tabWidthType == "auto"){
                 Scroll(this.scroller){
                     IBestTabBox({
@@ -264,7 +267,7 @@ export struct IBestTabs{
                 .scrollBar(BarState.Off)
                 .align(Alignment.Start)
                 .layoutWeight(1)
-                .constraintSize({ maxHeight: `${this.tabHeight}lpx` })
+                .constraintSize({ maxHeight: getSizeByUnit(this.tabHeight) })
                 .id(`tabContent_${this.uniId}`)
             }else{
                 IBestTabBox({
@@ -332,23 +335,23 @@ struct IBestTabBox{
             // 标记线
             if(this.type == "line"){
                 Row()
-                    .width(`${this.tabLineWidth}lpx`)
-                    .height(`${this.tabLineHeight}lpx`)
+                    .width(getSizeByUnit(this.tabLineWidth))
+                    .height(getSizeByUnit(this.tabLineHeight))
                     .backgroundColor(this.tabLineColor)
-                    .translate({ x: this.translateX + "lpx" })
+                    .translate({ x: getSizeByUnit(this.translateX) })
                     .animation({
                         duration: 100,
                         curve: Curve.FastOutSlowIn
                     })
-                    .offset({ y: `-${this.lineOffsetY}lpx` })
+                    .offset({ y: `-${getSizeByUnit(this.lineOffsetY)}` })
             }
             // 标记块
             if(this.type == "card"){
                 Row()
-                    .width(`${this.tabBoxWidth + 2}lpx`)
-                    .height(`${this.tabHeight}lpx`)
+                    .width(getSizeByUnit(this.tabBoxWidth + 2))
+                    .height(getSizeByUnit(this.tabHeight))
                     .backgroundColor(this.tabLineColor)
-                    .translate({ x: this.tabBoxTranslateX + "lpx" })
+                    .translate({ x: getSizeByUnit(this.tabBoxTranslateX) })
                     .animation({
                         duration: 100,
                         curve: Curve.FastOutSlowIn
@@ -366,9 +369,9 @@ struct IBestTabBox{
                 }, (item: string, index: number) => index+'')
             }
             .width(this.tabWidthType == "flex" ? "100%" : "")
-            .height(this.tabHeight + "lpx")
+            .height(getSizeByUnit(this.tabHeight))
             .borderRadius(this.baseStyle.borderRadiusSm)
-            .border({ width: this.type == "card" ? "2lpx" : 0, color: this.tabLineColor })
+            .border({ width: this.type == "card" ? 1 : 0, color: this.tabLineColor })
         }
         .width(this.tabWidthType == "flex" ? "100%" : "")
         .backgroundColor(this.tabBgColor)
@@ -402,7 +405,7 @@ struct IBestTab{
             Text(){
                 if (this.item.icon) {
                     ImageSpan(this.item.icon)
-                        .width(`${this.fontSize}lpx`)
+                        .width(getSizeByUnit(this.fontSize))
                         .aspectRatio(1)
                         .verticalAlign(ImageSpanAlignment.CENTER)
                         .margin({right: this.baseStyle.spaceBase})
@@ -413,7 +416,7 @@ struct IBestTab{
                 }
             }
             .height(CONTAINER_SIZE.FULL)
-            .fontSize(`${this.fontSize}lpx`)
+            .fontSize(getSizeByUnit(this.fontSize, true))
             .fontColor(this.currentName == this.item.name ? this.type == "card" ? "#fff" : this.activeTextColor :
                 this.type == "card" ? this.tabLineColor : this.inactiveTextColor)
             .maxLines(1)
@@ -421,9 +424,9 @@ struct IBestTab{
             .id(`ibestTab_${this.uniId}_text_${this.item.name}`)
         }
         .justifyContent(FlexAlign.Center)
-        .padding({left: this.tabPadding + "lpx", right: this.tabPadding + "lpx"})
+        .padding({left: getSizeByUnit(this.tabPadding), right: getSizeByUnit(this.tabPadding)})
         .layoutWeight(this.tabWidthType == "flex" ? 1 : 0)
-        .border({ width: { left: this.type == "card" && this.index > 0 ? "2lpx" : 0 }, color: this.tabLineColor })
+        .border({ width: { left: this.type == "card" && this.index > 0 ? 1 : 0 }, color: this.tabLineColor })
         .enabled(!this.item.isDisable)
         .opacity(this.item.isDisable ? 0.3 : 1)
         .id(`ibestTab_${this.uniId}_box_${this.item.name}`)

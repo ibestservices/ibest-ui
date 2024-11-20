@@ -19,10 +19,10 @@ export default class EntryAbility extends UIAbility {
     windowStage.loadContent('pages/Index', (err, data) => {
       // 组件库初始化
       IBestInit(windowStage, this.context)
-      setGlobalConfig({
-        unit: "lpx",
-        fontUnit: "lpx"
-      })
+      // setGlobalConfig({
+      //   unit: "lpx",
+      //   fontUnit: "lpx"
+      // })
       if (err.code) {
         hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
         return;

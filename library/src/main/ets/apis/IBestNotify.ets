@@ -4,6 +4,7 @@ import { CONTAINER_SIZE } from '../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type'
 import CustomContent from '../common/components/CustomContent'
 import GlobalStore from '../utils/GlobalStore'
+import { convertDimensionsByUnit, getSizeByUnit } from '../utils/utils'
 class IBestNotifyOption{
 	/**
 	 * 展示类型
@@ -24,7 +25,7 @@ class IBestNotifyOption{
 	/**
 	 * 字体大小
 	 */
-	fontSize?: number
+	fontSize?: number | string
 	/**
 	 * 背景色
      */
@@ -54,7 +55,7 @@ class IBestNotifyParams extends IBestNotifyOption{
 		this.message = value.message || ""
 		this.duration = typeof value.duration != "undefined" ? value.duration : 1500
 		this.color = value.color || "#fff"
-		this.fontSize = typeof value.fontSize != "undefined" ? value.fontSize : 28
+		this.fontSize = typeof value.fontSize != "undefined" ? value.fontSize : convertDimensionsByUnit(14)
 		this.backgroundColor = value.backgroundColor || getDefaultBaseStyle()[this.type]
 		this.customContent = value.customContent
 		this.onOpen = value.onOpen
@@ -85,7 +86,7 @@ struct defaultContent{
 					Row(){
 						Text(this.option.message)
 							.fontColor(this.option.color)
-							.fontSize(this.option.fontSize + "lpx")
+							.fontSize(this.option.fontSize ? getSizeByUnit(this.option.fontSize) : "")
 							.textAlign(TextAlign.Center)
 							.wordBreak(WordBreak.BREAK_WORD)
 					}
@@ -109,7 +110,7 @@ struct defaultContent{
 				}, 100)
 			})
 		}
-		.margin({ top: GlobalStore.topAvoidHeight + 'lpx' })
+		.margin({ top: getSizeByUnit(GlobalStore.topAvoidHeight) })
 		.clip(true)
 	}
 }

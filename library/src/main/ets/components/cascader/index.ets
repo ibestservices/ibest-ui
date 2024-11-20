@@ -1,4 +1,4 @@
-import { getIsLandscape, sleep } from '../../utils/utils'
+import { convertDimensionsByUnit, getIsLandscape, getSizeByUnit, sleep } from '../../utils/utils'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestTabs } from '../tab'
@@ -35,7 +35,7 @@ export struct IBestCascaderContent{
 	/**
 	 * 可选项数据源
 	 */
-	@Provide({allowOverride: "options"}) options: IBestCascaderOption[] = []
+	@Prop options: IBestCascaderOption[] = []
 	/**
 	 * 数据源实例
 	 */
@@ -51,15 +51,15 @@ export struct IBestCascaderContent{
 	/**
 	 * 列表区域高度
 	 */
-	@Provide({allowOverride: "listHeight"}) listHeight: number = 700
+	@Prop listHeight: number | string = convertDimensionsByUnit(350)
 	/**
 	 * 单项高度
 	 */
-	@Provide({allowOverride: "itemHeight"}) itemHeight: number = 80
+	@Provide({allowOverride: "itemHeight"}) itemHeight: number | string = convertDimensionsByUnit(40)
 	/**
 	 * 是否开启动态加载
 	 */
-	@Provide({allowOverride: "lazy"}) lazy: boolean = false
+	@Prop lazy: boolean = false
 	/**
 	 * 动态加载函数
 	 */
@@ -232,7 +232,7 @@ export struct IBestCascaderContent{
 				}, (item: IBestCascaderOptionInstance[], index: number) => index + "")
 			}
 			.width("100%")
-			.height(this.isLandscape ? "" : `${this.listHeight}lpx`)
+			.height(getSizeByUnit(this.isLandscape ? "" : this.listHeight))
 			.layoutWeight(this.isLandscape ? 1 : 0)
 			.indicator(false)
 			.loop(false)
@@ -280,13 +280,13 @@ struct CascaderOptionItem{
 				.fontColor(this.option.actived ? this.activeColor : "#333")
 				.fontSize(this.baseStyle.fontSizeMd)
 			Image($r("app.media.success"))
-				.width("36lpx")
+				.width(convertDimensionsByUnit(18))
 				.aspectRatio(1)
 				.fillColor(this.activeColor)
 				.visibility(this.option.actived ? Visibility.Visible : Visibility.Hidden)
 		}
 		.width("100%")
-		.height(`${this.itemHeight}lpx`)
+		.height(getSizeByUnit(this.itemHeight))
 		.justifyContent(FlexAlign.SpaceBetween)
 		.alignItems(VerticalAlign.Center)
 		.onClick(() => {
@@ -314,23 +314,23 @@ export struct IBestCascader{
 	/**
 	 * 可选项数据源
 	 */
-	@Provide({allowOverride: "options"}) options: IBestCascaderOption[] = []
+	@Prop options: IBestCascaderOption[] = []
 	/**
 	 * 选中颜色
 	 */
-	@Provide({allowOverride: "activeColor"}) activeColor: ResourceColor = this.baseStyle.primary
+	@Prop activeColor: ResourceColor = this.baseStyle.primary
 	/**
 	 * 列表区域高度
 	 */
-	@Provide({allowOverride: "listHeight"}) listHeight: number = 700
+	@Prop listHeight: number | string
 	/**
 	 * 单项高度
 	 */
-	@Provide({allowOverride: "itemHeight"}) itemHeight: number = 80
+	@Prop itemHeight: number | string
 	/**
 	 * 是否开启动态加载
 	 */
-	@Provide({allowOverride: "lazy"}) lazy: boolean = false
+	@Prop lazy: boolean
 	/**
 	 * 动态加载函数
 	 */
@@ -352,6 +352,10 @@ export struct IBestCascader{
 		IBestCascaderContent({
 			value: $value,
 			options: this.options,
+			activeColor: this.activeColor,
+			listHeight: this.listHeight,
+			itemHeight: this.itemHeight,
+			lazy: this.lazy,
 			lazyLoad: this.lazyLoad,
 			onChange: this.onChange,
 			onConfirm: (value: IBestCascaderOption[]) => {

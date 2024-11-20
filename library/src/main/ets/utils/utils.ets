@@ -111,14 +111,14 @@ export const getComponentsInfo = (context: UIContext, key: string): ComInfoType 
   let comUtils: ComponentUtils = context.getComponentUtils()
   let info:componentUtils.ComponentInfo = comUtils.getRectangleById(key)
   return {
-    width: px2lpx(info.size.width),
-    height: px2lpx(info.size.height),
-    localLeft: px2lpx(info.localOffset.x),
-    localTop: px2lpx(info.localOffset.y),
-    screenLeft: px2lpx(info.screenOffset.x),
-    screenTop: px2lpx(info.screenOffset.y),
-    windowLeft: px2lpx(info.windowOffset.x),
-    windowTop: px2lpx(info.windowOffset.y)
+    width: px2vp(info.size.width),
+    height: px2vp(info.size.height),
+    localLeft: px2vp(info.localOffset.x),
+    localTop: px2vp(info.localOffset.y),
+    screenLeft: px2vp(info.screenOffset.x),
+    screenTop: px2vp(info.screenOffset.y),
+    windowLeft: px2vp(info.windowOffset.x),
+    windowTop: px2vp(info.windowOffset.y)
   }
 }
 /**
@@ -132,11 +132,11 @@ export const getWindowAvoidSize = async (context: common.BaseContext): Promise<C
   // console.log("avoidArea", JSON.stringify(avoidArea))
   // console.log("systemDht.bottomRect", JSON.stringify(systemDht))
   return {
-    topSize: px2lpx(avoidArea.topRect.height),
-    bottomSize: px2lpx(avoidArea.bottomRect.height),
-    leftSize: px2lpx(avoidArea.leftRect.width),
-    rightSize: px2lpx(avoidArea.rightRect.width),
-    navigationSize: px2lpx(systemDht.bottomRect.height)
+    topSize: px2vp(avoidArea.topRect.height),
+    bottomSize: px2vp(avoidArea.bottomRect.height),
+    leftSize: px2vp(avoidArea.leftRect.width),
+    rightSize: px2vp(avoidArea.rightRect.width),
+    navigationSize: px2vp(systemDht.bottomRect.height)
   }
 }
 /**

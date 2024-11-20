@@ -9,15 +9,15 @@ export struct IBestSwipeCell{
 	/**
 	 * 自定义左侧滑动区域的内容
   	 */
-	@BuilderParam leftContent: CustomBuilder
+	@BuilderParam leftContent?: CustomBuilder
 	/**
 	 * 自定义右侧滑动区域的内容
   	 */
-	@BuilderParam rightContent: CustomBuilder
+	@BuilderParam rightContent?: CustomBuilder
 	/**
 	 * 中间内容
   	 */
-	@BuilderParam defaultContent: CustomBuilder
+	@BuilderParam defaultContent?: CustomBuilder
 	/**
 	 * 中间内容点击回调
   	 */

@@ -11,7 +11,7 @@ import { photoAccessHelper } from '@kit.MediaLibraryKit'
 import { IBestLoading } from '../loading'
 import fs from '@ohos.file.fs'
 import { IBestImagePreview } from '../../../../../Index'
-
+import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils'
 @Component
 export struct IBestUploader {
 	/**
@@ -29,7 +29,7 @@ export struct IBestUploader {
 	/**
 	 * 触发器图标大小
 	 */
-	@Prop uploaderIconSize: number = 48
+	@Prop uploaderIconSize: number | string = convertDimensionsByUnit(24)
 	/**
 	 * 触发器图标颜色
 	 */
@@ -45,7 +45,7 @@ export struct IBestUploader {
 	/**
 	 * 预览大小
 	 */
-	@Provide({allowOverride: "previewSize"}) previewSize: number = 160
+	@Provide({allowOverride: "previewSize"}) previewSize: number | string = convertDimensionsByUnit(80)
 	/**
 	 * 是否在点击预览图后展示全屏图片预览
 	 */
@@ -73,11 +73,11 @@ export struct IBestUploader {
 	/**
 	 * 自定义上传触发器
 	 */
-	@BuilderParam customUploader: CustomBuilder
+	@BuilderParam customUploader?: CustomBuilder
 	/**
 	 * 自定义预览样式
 	 */
-	@BuilderParam customPreview: (file: IBestUploaderFile) => void
+	@BuilderParam customPreview?: (file: IBestUploaderFile) => void
 	/**
 	 * 文件插入前回调
 	 */
@@ -143,7 +143,7 @@ export struct IBestUploader {
 			let obj = new IBestUploaderFile({
 				previewUri: e,
 				internalUri: `internal://cache/${fileName}`,
-				cacheUri: cacheUri,
+				cacheUri,
 				name: fileName,
 				size: stat.size,
 				isImage: this.selectType == "image" || isImageUrl(e)
@@ -194,15 +194,15 @@ export struct IBestUploader {
 			}else{
 				Row(){
 					Image(this.uploaderIcon)
-						.width(`${this.uploaderIconSize}lpx`)
+						.width(getSizeByUnit(this.uploaderIconSize))
 						.aspectRatio(1)
 						.fillColor(this.uploaderIconColor)
 						.draggable(false)
 				}
-				.width(`${this.previewSize}lpx`)
+				.width(getSizeByUnit(this.previewSize))
 				.aspectRatio(1)
 				.justifyContent(FlexAlign.Center)
-				.borderRadius(`${ this.cornerRadius }lpx`)
+				.borderRadius(getSizeByUnit(this.cornerRadius))
 				.clip(true)
 				.enabled(!this.disabled)
 				.opacity(this.disabled ? 0.5 : 1)
@@ -238,7 +238,7 @@ struct UploadItem{
 	@Consume cornerRadius: number
 	@Consume showDelete: boolean
 	@Consume disabled: boolean
-	@BuilderParam customPreview: (file: IBestUploaderFile) => void
+	@BuilderParam customPreview?: (file: IBestUploaderFile) => void
 
 	// 移除文件
 	remove: (index: number) => void = () => {}
@@ -252,7 +252,7 @@ struct UploadItem{
 			} else {
 				if (isImageFile(this.file)) {
 					Image(this.isError ? $r("app.media.icon_photo_fail") : (this.file.url || this.file.previewUri))
-						.width(this.isError ? "64lpx" : CONTAINER_SIZE.FULL)
+						.width(this.isError ? convertDimensionsByUnit(32) : CONTAINER_SIZE.FULL)
 						.aspectRatio(1)
 						.objectFit(this.imageFit)
 						.draggable(false)
@@ -264,7 +264,7 @@ struct UploadItem{
 						})
 				} else {
 					Image($r("app.media.icon_file"))
-						.width("40lpx")
+						.width(convertDimensionsByUnit(20))
 						.aspectRatio(1)
 						.draggable(false)
 						.fillColor(GRAY_COLOR.GRAY_7)
@@ -283,16 +283,16 @@ struct UploadItem{
 			}
 			// 状态展示
 			if (this.file.status && this.file.status != 'done') {
-				Column({ space: "12lpx" }) {
+				Column({ space: convertDimensionsByUnit(6) }) {
 					if (this.file.status == 'uploading') {
 						IBestLoading({
-							loadingSize: "36lpx",
-							loadingStrokeWidth: "2lpx",
+							loadingSize: 18,
+							loadingStrokeWidth: 1,
 							loadingColor: this.baseStyle.default
 						})
 					} else {
 						Image($r("app.media.icon_close_circle"))
-							.width("40lpx")
+							.width(convertDimensionsByUnit(20))
 							.aspectRatio(1)
 							.fillColor(this.baseStyle.default)
 					}
@@ -321,19 +321,19 @@ struct UploadItem{
 				.aspectRatio(1)
 				.position({ right: 0, top: 0 })
 				.backgroundColor("rgba(0,0,0,0.7)")
-				.borderRadius({ bottomLeft: 9999 })
+				.borderRadius({ bottomLeft: this.baseStyle.borderRadiusMax })
 				.visibility(this.file.status == 'uploading' ? Visibility.None : Visibility.Visible)
 				.onClick(() => {
 					this.remove(this.index)
 				})
 			}
 		}
-		.width(`${this.previewSize}lpx`)
+		.width(getSizeByUnit(this.previewSize))
 		.aspectRatio(1)
 		.justifyContent(FlexAlign.Center)
 		.alignItems(HorizontalAlign.Center)
 		.backgroundColor(GRAY_COLOR.GRAY_1)
-		.borderRadius(`${ this.cornerRadius }lpx`)
+		.borderRadius(getSizeByUnit(this.cornerRadius))
 		.clip(true)
 	}
 }

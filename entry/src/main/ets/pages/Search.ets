@@ -36,7 +36,7 @@ struct SearchPage {
 					ComponentShowContainer({ title: '圆角' }) {
 						IBestSearch({
 							value: $value,
-							radius: 12
+							radius: 6
 						})
 					}
 				}

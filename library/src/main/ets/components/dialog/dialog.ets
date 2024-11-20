@@ -21,15 +21,15 @@ export struct IBestDialogView {
   /**
    * 标题区域的builder
    */
-  @BuilderParam titleBuilder: CustomBuilder;
+  @BuilderParam titleBuilder?: CustomBuilder;
   /**
    * 内容区域的builder
    */
-  @BuilderParam defaultBuilder: CustomBuilder;
+  @BuilderParam defaultBuilder?: CustomBuilder;
   /**
    * 底部区域的builder
    */
-  @BuilderParam footerBuilder: CustomBuilder;
+  @BuilderParam footerBuilder?: CustomBuilder;
   /**
    * 全局公共样式
    */

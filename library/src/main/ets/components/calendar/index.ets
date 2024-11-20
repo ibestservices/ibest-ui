@@ -640,7 +640,7 @@ export struct IBestCalendar{
                     }
                     .id(`calender_${this.uniId}`)
                     Text(this.curMonth)
-                        .fontSize(convertDimensionsByUnit(150))
+                        .fontSize(convertDimensionsByUnit(150, true))
                         .height(getSizeByUnit(this.contentHeight))
                         .fontColor(GRAY_COLOR.GRAY_2)
                         .zIndex(-1)

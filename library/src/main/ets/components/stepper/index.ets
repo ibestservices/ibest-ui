@@ -2,7 +2,8 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestStepperBtn } from './stepperBtn'
-import { accAdd, accSub } from '../../utils/utils'
+import { accAdd, accSub, convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils'
+import { IBestIcon } from '../icon'
 
 enum STEPPER_BTN_TYPE {
   PLUS = 'PLUS',
@@ -18,19 +19,19 @@ export struct IBestStepper {
   /**
    * 输入框宽度
    */
-  @Prop inputWidth: string = '64lpx'
+  @Prop inputWidth: number | string = convertDimensionsByUnit(32)
   /**
    * 按钮大小以及输入框高度
    */
-  @Prop buttonSize: string = '54lpx'
+  @Prop buttonSize: number | string = convertDimensionsByUnit(27)
   /**
    * 图标大小
    */
-  @Prop iconSize: string = '40lpx'
+  @Prop iconSize: number | string = convertDimensionsByUnit(20)
   /**
    * 加减按钮图标的左右radius值
    */
-  @Prop buttonRadius: string = this.baseStyle.borderRadiusSm as string;
+  @Prop buttonRadius: number | string = this.baseStyle.borderRadiusSm
   /**
    * 默认值
    */
@@ -263,7 +264,7 @@ export struct IBestStepper {
           onClickBtn: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.REDUCE),
           onLongPress: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.REDUCE)
         }) {
-          Image($r('app.media.minus')).width(this.iconSize)
+          Image($r("app.media.minus")).width(getSizeByUnit(this.iconSize))
         }
       }
 
@@ -271,14 +272,14 @@ export struct IBestStepper {
       // 输入框
       if (this.showInput) {
         TextInput({ text: this.inputNumValue })
-          .width(this.inputWidth)
-          .height(this.buttonSize)
+          .width(getSizeByUnit(this.inputWidth))
+          .height(getSizeByUnit(this.buttonSize))
           .padding(0)
           .margin({
             top: 0,
             bottom: 0,
-            left: '4lpx',
-            right: '4lpx'
+            left: convertDimensionsByUnit(2),
+            right: convertDimensionsByUnit(2)
           })
           .fontSize(this.baseStyle.fontSizeMd)
           .fontColor(GRAY_COLOR.GRAY_8)
@@ -287,7 +288,8 @@ export struct IBestStepper {
           .textAlign(TextAlign.Center)
           .inputFilter(this.integer ? '[0-9-]' : '[0-9\.-]')
           .onChange((val) => this.handleInputNumChange(val, true))
-          .enabled(!this.disabled && !this.disableInput && !this.loading)
+          .focusable(!this.disableInput)
+          .enabled(!this.disabled && !this.loading)
       }
 
       if (this.showPlus) {
@@ -300,16 +302,7 @@ export struct IBestStepper {
           onClickBtn: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.PLUS),
           onLongPress: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.PLUS)
         }) {
-          Column() {
-            Image($r('app.media.minus')).width(this.iconSize)
-            Image($r('app.media.minus'))
-              .width(this.iconSize)
-              .position({ top: 0 })
-              .rotate({
-                angle: '90deg'
-              })
-          }
-
+          Image($r("app.media.icon_plus")).width(getSizeByUnit(this.iconSize))
         }
       }
     }

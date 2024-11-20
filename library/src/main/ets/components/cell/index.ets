@@ -15,25 +15,25 @@ export struct IBestCell {
   /**
    * title的插槽 优先级大于 title
    */
-  @BuilderParam titleBuilder: CustomBuilder;
+  @BuilderParam titleBuilder?: CustomBuilder;
   /**
    * value的插槽 优先级大于 value
    */
-  @BuilderParam valueBuilder: CustomBuilder;
+  @BuilderParam valueBuilder?: CustomBuilder;
   /**
    * value的插槽 优先级大于 label
    */
-  @BuilderParam labelBuilder: CustomBuilder;
+  @BuilderParam labelBuilder?: CustomBuilder;
   /**
    * 自定义title左侧icon的插槽
    * 使用titleBuilder时，该插槽不生效
    */
-  @BuilderParam iconBuilder: CustomBuilder;
+  @BuilderParam iconBuilder?: CustomBuilder;
   /**
    * 自定义value右侧icon的插槽
    * 使用valueBuilder时，该插槽不生效
    */
-  @BuilderParam rightIconBuilder: CustomBuilder;
+  @BuilderParam rightIconBuilder?: CustomBuilder;
   /**
    * 左侧标题
    */
@@ -145,7 +145,7 @@ export struct IBestCell {
         case SIZE.LARGE:
           return new CellSizeData(this.baseStyle.spaceMd, this.baseStyle.fontSizeLg, this.baseStyle.fontSizeMd)
       default:
-        return new CellSizeData(convertDimensionsByUnit(12), this.baseStyle.fontSizeMd, this.baseStyle.fontSizeSm)
+        return new CellSizeData(convertDimensionsByUnit(14), this.baseStyle.fontSizeMd, this.baseStyle.fontSizeSm)
     }
   }
 

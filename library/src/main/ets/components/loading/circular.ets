@@ -1,6 +1,6 @@
 import { UIContext } from '@ohos.arkui.UIContext';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
-
+import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
 class Point {
   x: number
   y: number
@@ -35,7 +35,7 @@ export struct IBestLoadingCircular {
   /**
    * loading的尺寸
    */
-  @Prop circularSize: string = '60lpx'
+  @Prop circularSize: number | string = convertDimensionsByUnit(30)
   /**
    * loading的颜色
    */
@@ -43,7 +43,7 @@ export struct IBestLoadingCircular {
   /**
    * 圆的边框粗细
    */
-  @Prop strokeWidth: Length = '6lpx';
+  @Prop strokeWidth: number | string = convertDimensionsByUnit(2)
   /**
    * 旋转角度
    */
@@ -54,8 +54,11 @@ export struct IBestLoadingCircular {
   private uiContext: UIContext = this.getUIContext()
 
   aboutToAppear() {
-    this.maxPerimeter = Math.floor(Math.PI * parseFloat(this.circularSize)) + 20
+    this.maxPerimeter = Math.floor(Math.PI * this.getCircleSize()) + 20
     this.strokeDashArray = new Point(0,this.maxPerimeter)
+  }
+  getCircleSize(){
+    return typeof this.circularSize == "number" ? this.circularSize : parseFloat(this.circularSize)
   }
 
   keyframeAnimateTo(){
@@ -83,7 +86,7 @@ export struct IBestLoadingCircular {
         duration: 700,
         curve: Curve.EaseInOut,
         event: () => {
-          this.strokeDashOffset = -this.maxPerimeter*0.5
+          this.strokeDashOffset = -this.maxPerimeter*0.8
           this.strokeDashArray = new Point(this.maxPerimeter*0.6,this.maxPerimeter)
         }
       }
@@ -93,7 +96,7 @@ export struct IBestLoadingCircular {
   build() {
     Circle({width: this.circularSize, height: this.circularSize})
       .fill("transparent")
-      .strokeWidth(2)
+      .strokeWidth(getSizeByUnit(this.strokeWidth))
       .stroke(this.color)
       .strokeLineCap(LineCapStyle.Round)
       .animatableDashArray(this.strokeDashArray)

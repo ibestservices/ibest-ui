@@ -6,7 +6,7 @@ import { http } from '@kit.NetworkKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { image } from '@kit.ImageKit';
 import { IBestLoading } from '../loading';
-
+import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
 @Component
 export struct IBestIcon {
   @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
@@ -19,9 +19,9 @@ export struct IBestIcon {
    */
   @Prop color: ResourceColor = ''
   /**
-   * 图标大小，如 20px 20vp
+   * 图标大小
    */
-  @Prop iconSize: number | string = 20
+  @Prop iconSize: number | string = convertDimensionsByUnit(20)
   /**
    * 点击回调
    */
@@ -35,15 +35,15 @@ export struct IBestIcon {
     Row() {
       if(typeof this.name == "string"){
         if (this.isOnlineImage()) {
-          Image(this.name).width(this.iconSize).aspectRatio(1)
+          Image(this.name).width(getSizeByUnit(this.iconSize)).aspectRatio(1)
         } else {
           Text(Object(IBestIconData)[this.name])
             .fontFamily('ibestFont')
             .fontColor(this.color)
-            .fontSize(this.iconSize)
+            .fontSize(getSizeByUnit(this.iconSize))
         }
       }else{
-        Image(this.name).width(this.iconSize).aspectRatio(1).fillColor(this.color)
+        Image(this.name).width(getSizeByUnit(this.iconSize)).aspectRatio(1).fillColor(this.color)
       }
     }
     .onClick(() => {

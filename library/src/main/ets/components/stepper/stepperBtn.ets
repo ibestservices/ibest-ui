@@ -1,20 +1,20 @@
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
-
+import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
 @Component
 export struct IBestStepperBtn {
-  @BuilderParam defaultSlot: CustomBuilder;
-  @Prop buttonSize: string = '40lpx';
-  @Prop radiusLeftTop: string = '0';
-  @Prop radiusLeftBottom: string = '0';
-  @Prop radiusRightTop: string = '0';
-  @Prop radiusRightBottom: string = '0';
+  @BuilderParam defaultSlot?: CustomBuilder;
+  @Prop buttonSize: string | number = convertDimensionsByUnit(20)
+  @Prop radiusLeftTop: string | number = 0
+  @Prop radiusLeftBottom: string | number = 0
+  @Prop radiusRightTop: string | number = 0
+  @Prop radiusRightBottom: string | number = 0
   @Prop disabled: boolean = false;
-  onClickBtn?: () => void;
-  onLongPress?: () => void;
+  onClickBtn: () => void = () => {}
+  onLongPress: () => void = () => {}
 
   build() {
     Button() {
-      if (typeof this.defaultSlot === 'function') {
+      if (this.defaultSlot) {
         this.defaultSlot()
       }
     }
@@ -22,29 +22,28 @@ export struct IBestStepperBtn {
       ButtonType.Normal
     )
     .backgroundColor(GRAY_COLOR.GRAY_2)
-    .width(this.buttonSize)
-    .height(this.buttonSize)
+    .width(getSizeByUnit(this.buttonSize))
+    .height(getSizeByUnit(this.buttonSize))
     .borderRadius({
-      topLeft: this.radiusLeftTop,
-      topRight: this.radiusRightTop,
-      bottomLeft: this.radiusLeftBottom,
-      bottomRight: this.radiusRightBottom
+      topLeft: getSizeByUnit(this.radiusLeftTop),
+      topRight: getSizeByUnit(this.radiusRightTop),
+      bottomLeft: getSizeByUnit(this.radiusLeftBottom),
+      bottomRight: getSizeByUnit(this.radiusRightBottom)
     })
     .opacity(this.disabled ? 0.4 : 1)
     .enabled(!this.disabled)
     .onClick(() => {
-      typeof this.onClickBtn === 'function' && this.onClickBtn()
+      this.onClickBtn()
     })
     .gesture(
       // duration时间过段会影响click事件生效
       LongPressGesture({ repeat: true, duration: 200 })
         // 由于repeat设置为true，长按动作存在时会连续触发，触发间隔为duration（默认值500ms）
         .onAction((event: GestureEvent) => {
-          if (event && event.repeat && typeof this.onLongPress === 'function') {
+          if (event && event.repeat) {
             this.onLongPress()
           }
         })
-
     )
   }
 }

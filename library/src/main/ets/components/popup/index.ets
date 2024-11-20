@@ -1,4 +1,4 @@
-import { getIsLandscape, getWindowAvoidSize } from '../../utils/utils'
+import { convertDimensionsByUnit, getIsLandscape, getSizeByUnit, getWindowAvoidSize } from '../../utils/utils'
 import { common } from '@kit.AbilityKit'
 import { PopupAlign, PopupBaseController } from './index.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
@@ -50,11 +50,11 @@ struct IBestPopupBaseContent {
 	/**
 	 * 自定义内容
 	 */
-	@BuilderParam contentBuilder: CustomBuilder
+	@BuilderParam contentBuilder?: CustomBuilder
 	close: () => void = () => {}
 	controller?: CustomDialogController
 
-	private baseController: PopupBaseController = new PopupBaseController()
+	baseController: PopupBaseController = new PopupBaseController()
 
 	aboutToAppear(): void {
 		this.baseController.hide = (): void => this.init()
@@ -108,12 +108,12 @@ struct IBestPopupBaseContent {
 			.backgroundColor("#fff")
 			.padding({
 				top: this.safeAreaInsetTop && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
-					== "top") ? this.topAvoidSize + "lpx" : 0,
+					== "top") ? convertDimensionsByUnit(this.topAvoidSize) : 0,
 				bottom: this.safeAreaInsetBottom && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
-					== "bottom") ? this.bottomAvoidSize + "lpx" : 0
+					== "bottom") ? convertDimensionsByUnit(this.bottomAvoidSize) : 0
 			})
 			.alignItems(HorizontalAlign.Start)
-			.borderRadius(this.cornerRadius + "lpx")
+			.borderRadius(getSizeByUnit(this.cornerRadius))
 			.translate({
 				x: (this.popupAlign == "left" || this.popupAlign == "right") ? this.transX : "",
 				y: (this.popupAlign == "top" || this.popupAlign == 'bottom') ? this.transY : "" })
@@ -257,24 +257,24 @@ export struct IBestPopup{
 			case "left":
 			case "right":
 				if(this.isLandscape){
-					this.popupWidth = this.popupWidth === "" ? "70%" : typeof this.popupWidth == "string" ? this.popupWidth : (this.popupWidth + "lpx")
+					this.popupWidth = getSizeByUnit(this.popupWidth || "70%")
 				}else{
-					this.popupWidth = this.popupWidth === "" ? "60%" : typeof this.popupWidth == "string" ? this.popupWidth : (this.popupWidth + "lpx")
+					this.popupWidth = getSizeByUnit(this.popupWidth || "60%")
 				}
-				this.popupHeight = this.popupHeight || "100%"
+				this.popupHeight = getSizeByUnit(this.popupHeight || "100%")
 				break
 			case "top":
 			case "bottom":
-				this.popupWidth = this.popupWidth || "100%"
+				this.popupWidth = getSizeByUnit(this.popupWidth || "100%")
 				if(this.isLandscape){
-					this.popupHeight = this.popupHeight === "" ? "70%" : typeof this.popupHeight == "string" ? this.popupHeight : (this.popupHeight + "lpx")
+					this.popupHeight = getSizeByUnit(this.popupHeight || "70%")
 				}else{
-					this.popupHeight = this.popupHeight === "" ? "40%" : typeof this.popupHeight == "string" ? this.popupHeight : (this.popupHeight + "lpx")
+					this.popupHeight = getSizeByUnit(this.popupHeight || "40%")
 				}
 				break
 			case "center":
-				this.popupWidth = this.popupWidth ? typeof this.popupWidth == "string" ? this.popupWidth : this.popupWidth + "lpx" : ""
-				this.popupHeight = ""
+				this.popupWidth = getSizeByUnit(this.popupWidth || "")
+				this.popupHeight = getSizeByUnit(this.popupHeight || "")
 				break
 		}
 		this.topAvoidSize = res.topSize
@@ -326,7 +326,7 @@ struct PopupTitle {
 				})
 		}
 		.width("100%")
-		.height("80lpx")
+		.height(convertDimensionsByUnit(40))
 		.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
 		.justifyContent(FlexAlign.SpaceBetween)
 		.alignItems(VerticalAlign.Center)

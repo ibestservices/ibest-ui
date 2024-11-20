@@ -1,6 +1,6 @@
 import router from '@ohos.router';
-import { IBestCell, CheckboxGroupContext, IBestRadio, IBestRadioGroup } from '@ibestservices/ibest-ui';
-import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, DISABLE_COLOR, SPACE } from '../assets/styles/BaseStyle';
+import { IBestCell, IBestRadio, IBestRadioGroup } from '@ibestservices/ibest-ui';
+import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { ComponentRouterParams } from '../assets/global.type';
@@ -212,7 +212,7 @@ struct CheckboxPage {
             Column() {
               IBestRadio({
                 value: true,
-                iconSize: 60,
+                iconSize: 30,
                 group: 'group8',
                 label: '自定义大小',
                 name: 'radio'
@@ -221,7 +221,7 @@ struct CheckboxPage {
 
             Column() {
               IBestRadio({
-                iconSize: 60,
+                iconSize: 30,
                 group: 'group8',
                 label: '自定义大小',
                 name: 'radio2'

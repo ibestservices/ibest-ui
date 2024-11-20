@@ -59,8 +59,8 @@ struct SignaturePage {
 				ListItem() {
 					ComponentShowContainer({ title: '自定义宽高' }) {
 						IBestSignature({
-							boardWidth: 300,
-							boardHeight: 200,
+							boardWidth: 200,
+							boardHeight: 100,
 							onConfirm: (url: string) => {
 								this.imgUrl2 = url
 							}

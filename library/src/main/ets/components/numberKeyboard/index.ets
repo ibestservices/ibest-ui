@@ -5,12 +5,12 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { LengthMetrics, LengthUnit } from '@kit.ArkUI';
 import { KeyboardType } from './index.type';
 import { IBestPopup } from '../popup';
-import { getWindowAvoidSize } from '../../utils/utils';
+import { convertDimensionsByUnit, getWindowAvoidSize } from '../../utils/utils';
 import { common } from '@kit.AbilityKit';
-
+import GlobalStore from '../../utils/GlobalStore';
 @Extend(Row) function keyBoxStyle(fullWidth?: boolean){
-	.width(fullWidth ? "calc((100% - 24lpx)/3*2 + 12lpx)" : "calc((100% - 24lpx)/3)")
-	.height("96lpx")
+	.width(fullWidth ? `calc((100% - ${convertDimensionsByUnit(12)})/3*2 + ${convertDimensionsByUnit(6)})` : `calc((100% - ${convertDimensionsByUnit(12)})/3)`)
+	.height(convertDimensionsByUnit(48))
 	.backgroundColor(getDefaultBaseStyle().default)
 	.borderRadius(getDefaultBaseStyle().borderRadiusMd)
 	.justifyContent(FlexAlign.Center)
@@ -22,11 +22,11 @@ import { common } from '@kit.AbilityKit';
 	})
 }
 @Extend(Text) function keyTextStyle(){
-	.fontSize("56lpx")
+	.fontSize(convertDimensionsByUnit(28, true))
 }
 @Extend(Row) function keyCustomBoxStyle(bg?: boolean){
 	.width(CONTAINER_SIZE.FULL)
-	.height("204lpx")
+	.height(convertDimensionsByUnit(102))
 	.borderRadius(getDefaultBaseStyle().borderRadiusMd)
 	.justifyContent(FlexAlign.Center)
 	.backgroundColor(bg ? getDefaultBaseStyle().primary : getDefaultBaseStyle().default)
@@ -82,10 +82,6 @@ export struct NumberKeyboard{
 	 */
 	@Prop maxLength: number = -1
 	/**
-	 * 底部规避尺寸
-	 */
-	@State navigationSize: number = 0
-	/**
 	 * 输入回调
 	 */
 	onInput: (value: string) => void = () => {}
@@ -99,16 +95,13 @@ export struct NumberKeyboard{
 	onClose: () => void = () => {}
 
 	@State keysList: KeyboardType[] = []
-	private controller?: CustomDialogController
-	private context = getContext(this) as common.BaseContext
+	controller?: CustomDialogController
 
 	aboutToAppear(): void {
 		this.init()
 	}
 	// 初始化键盘
-	async init(){
-		let res = await getWindowAvoidSize(this.context)
-		this.navigationSize = res.navigationSize
+	init(){
 		if (this.styleType == 'default') {
 			this.keysList = this.genDefaultKeys()
 		} else {
@@ -208,11 +201,11 @@ export struct NumberKeyboard{
 						})
 				}
 				.width(CONTAINER_SIZE.FULL)
-				.height("80lpx")
-				.padding({ top: "12lpx" })
+				.height(convertDimensionsByUnit(40))
+				.padding({ top: convertDimensionsByUnit(6) })
 			}
-			Row({ space: "12lpx" }){
-				Flex({ justifyContent: FlexAlign.SpaceBetween, wrap: FlexWrap.Wrap, space: { cross: new LengthMetrics(12, LengthUnit.LPX) } }){
+			Row({ space:6 }){
+				Flex({ justifyContent: FlexAlign.SpaceBetween, wrap: FlexWrap.Wrap, space: { cross: new LengthMetrics(6) } }){
 					ForEach(this.keysList, (item: KeyboardType) => {
 						Row() {
 							ExtraButton({ item: item })
@@ -225,7 +218,7 @@ export struct NumberKeyboard{
 				}
 				.layoutWeight(1)
 				if(this.styleType == "custom"){
-					Column({ space: "12lpx" }){
+					Column({ space: 6 }){
 						Row() {
 							ExtraButton({ item: { type: 'delete' } })
 						}
@@ -243,15 +236,15 @@ export struct NumberKeyboard{
 							this.selectKey({ type: 'close' })
 						})
 					}
-					.width("160lpx")
+					.width(convertDimensionsByUnit(80))
 				}
 			}
 			.width(CONTAINER_SIZE.FULL)
-			.padding("12lpx")
+			.padding(6)
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.backgroundColor(GRAY_COLOR.GRAY_2)
-		.padding({ bottom: `${this.navigationSize}lpx` })
+		.padding({ bottom: convertDimensionsByUnit(GlobalStore.bottomBarHeight) })
 	}
 }
 
@@ -265,10 +258,10 @@ struct ExtraButton{
 				.keyTextStyle()
 		}else if(this.item.type == "delete"){
 			Image($r("app.media.delete"))
-				.width("64lpx")
+				.width(convertDimensionsByUnit(32))
 		}else{
 			Image($r("app.media.key_board"))
-				.width("60lpx")
+				.width(convertDimensionsByUnit(30))
 		}
 	}
 }

@@ -26,15 +26,15 @@ export struct IBestButton {
   /**
    * defaultSlot 默认插槽
    */
-  @BuilderParam defaultBuilder: CustomBuilder;
+  @BuilderParam defaultBuilder?: CustomBuilder
   /**
    * 图标的builder
    */
-  @BuilderParam iconBuilder: CustomBuilder;
+  @BuilderParam iconBuilder?: CustomBuilder;
   /**
    * 加载图标的builder
    */
-  @BuilderParam loadingIconBuilder: CustomBuilder;
+  @BuilderParam loadingIconBuilder?: CustomBuilder;
   /**
    * 全局公共样式
    */

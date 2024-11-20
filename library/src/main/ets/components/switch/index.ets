@@ -1,5 +1,6 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
+import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
 import { IBestLoading } from '../loading'
 
 @Component
@@ -11,11 +12,11 @@ export struct IBestSwitch {
   /**
    * 自定义按钮的内容
    */
-  @BuilderParam nodeBuilder: CustomBuilder
+  @BuilderParam nodeBuilder?: CustomBuilder
   /**
-   * 开关按钮的尺寸，默认单位为 lpx
+   * 开关按钮的尺寸
    */
-  @Prop switchSize: number = 52;
+  @Prop switchSize: number | string = convertDimensionsByUnit(26)
   /**
    * 打开时的背景色
    */
@@ -49,28 +50,24 @@ export struct IBestSwitch {
   /**
    * 改变的回调
    */
-  onChange?: (value: boolean) => void;
+  onChange: (value: boolean) => void = () => {}
   /**
    * 改变前的回调 接受一个promise 如果promise rejcet了那么将不会改变
    */
-  onBeforeChange?: (value: boolean) => Promise<void>;
+  onBeforeChange: (value: boolean) => Promise<void> = () => Promise.resolve()
   /**
    * 点击的回调
    */
-  onClickSwitch?: (event: ClickEvent) => void;
+  onClickSwitch: (event: ClickEvent) => void = () => {}
 
   /**
    * 改变的回调
    */
   async handleChange(){
-    const nextValue = !this.value;
-    if(typeof this.onBeforeChange === 'function'){
-      await this.onBeforeChange(nextValue)
-    }
-    if(typeof this.onChange === 'function'){
-      this.onChange(nextValue)
-    }
-    this.value = nextValue;
+    const nextValue = !this.value
+    await this.onBeforeChange(nextValue)
+    this.onChange(nextValue)
+    this.value = nextValue
   }
 
   /**
@@ -81,43 +78,43 @@ export struct IBestSwitch {
   getActiveColor(){
     return this.activeColor || this.baseStyle.primary as string
   }
+  getSwitchSize(){
+    return typeof this.switchSize === 'number' ? this.switchSize : parseFloat(this.switchSize)
+  }
 
 
   build(){
     Column(){
       // 圆
       Column(){
-        if(typeof this.nodeBuilder === 'function'){
+        if(this.nodeBuilder){
           this.nodeBuilder()
         }else{
           if(this.loading){
             IBestLoading({
-              loadingSize: `${this.switchSize / 1.5}lpx`,
+              loadingSize: getSizeByUnit(this.getSwitchSize() / 1.5),
               loadingColor: this.value ? this.loadingActiveColor || this.getActiveColor() : this.loadingInactiveColor || this.activeColor
-            }).transition({})
-            // LoadingProgress()
-            //   .width(`${this.switchSize / 1.5}lpx`)
-            //   .color( this.value ? this.loadingActiveColor || this.getActiveColor() : this.loadingInactiveColor || this.activeColor )
-            //   .transition({})
+            })
           }
         }
-      }.width(`${this.switchSize}lpx`)
-      .height(`${this.switchSize}lpx`)
+      }
+      .width(getSizeByUnit(this.switchSize))
+      .height(getSizeByUnit(this.switchSize))
       .alignItems(HorizontalAlign.Center)
       .justifyContent(FlexAlign.Center)
-      .borderRadius(`${this.switchSize / 2}lpx`)
+      .borderRadius(getSizeByUnit(this.getSwitchSize() / 2))
       .shadow({
         color: 'rgba(0, 0, 0, 0.05)',
         offsetY: px2vp(3),
         radius:  px2vp(1)
       })
       .margin({
-        left: '4lpx',
-        right: '4lpx'
+        left: convertDimensionsByUnit(2),
+        right: convertDimensionsByUnit(2)
       })
       .backgroundColor('#fff')
       .translate({
-        x: this.value ? `${this.switchSize - 4}lpx` : 0
+        x: this.value ? getSizeByUnit(this.getSwitchSize()) : 0
       })
       .animation({
         duration: this.baseStyle.animationDuration as number,
@@ -125,15 +122,15 @@ export struct IBestSwitch {
     }
     .alignItems(HorizontalAlign.Start)
     .justifyContent(FlexAlign.Center)
-    .width(`${this.switchSize * 2 + 4}lpx`)
-    .height(`${this.switchSize + 4}lpx`)
+    .width(getSizeByUnit(this.getSwitchSize() * 2 + 4))
+    .height(getSizeByUnit(this.getSwitchSize() + 4))
     .backgroundColor( this.value ? this.getActiveColor() : this.inactiveColor )
-    .borderRadius('52lpx')
+    .borderRadius(convertDimensionsByUnit(26))
     .opacity(this.disabled ? 0.5 : 1)
     .animation({
       duration: this.baseStyle.animationDuration as number,
     }).onClick((event)=>{
-      typeof this.onClickSwitch === 'function' && this.onClickSwitch(event)
+      this.onClickSwitch(event)
       this.handleChange()
     })
     .enabled(!this.disabled && !this.loading)

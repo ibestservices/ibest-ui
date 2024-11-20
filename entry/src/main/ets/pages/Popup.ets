@@ -36,7 +36,7 @@ struct PopupPage {
 	@Builder centerBuilder() {
 		Row() {
 			Text("内容")
-				.fontSize("24lpx")
+				.fontSize(14)
 		}
 		.width("100%")
 		.aspectRatio(1)
@@ -44,8 +44,8 @@ struct PopupPage {
 	}
 	@Builder safeBuilder() {
 		Column(){
-			Text("内容").fontSize("24lpx")
-			Text("内容").fontSize("24lpx")
+			Text("内容").fontSize(14)
+			Text("内容").fontSize(14)
 		}
 		.width("100%")
 		.height("100%")

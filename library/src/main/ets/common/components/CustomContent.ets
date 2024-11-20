@@ -1,7 +1,9 @@
 @Component
 export default struct customContent {
-	@BuilderParam customBuilder: () => void
+	@BuilderParam customBuilder?: () => void
 	build() {
-		this.customBuilder()
+		if(this.customBuilder){
+			this.customBuilder()
+		}
 	}
 }

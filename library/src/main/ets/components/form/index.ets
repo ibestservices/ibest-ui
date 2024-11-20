@@ -1,4 +1,5 @@
 import { emitter } from '../../utils/EventEmitter'
+import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils'
 import { FieldTextAlign, IBestFieldValueType,
 	LabelPositionType,
 	RequireAsteriskPositionType } from '../field/index.type'
@@ -29,11 +30,11 @@ export struct IBestForm {
 	/**
 	 * 表单项间距
   	 */
-	@Prop space: number = 20
+	@Prop space: number | string = convertDimensionsByUnit(10)
 	/**
      * 文本宽度
      */
-	@Prop labelWidth: number = 160
+	@Prop labelWidth: number | string = convertDimensionsByUnit(80)
 	/**
      * 文本位置
      */
@@ -61,7 +62,7 @@ export struct IBestForm {
 	/**
 	 * 表单内容
 	 */
-	@BuilderParam defaultBuilder: () => void
+	@BuilderParam defaultBuilder?: CustomBuilder
 	/**
 	 * 表单控制器
 	 */
@@ -150,8 +151,10 @@ export struct IBestForm {
 		return result
 	}
 	build() {
-		Column({ space: this.space + 'lpx' }){
-			this.defaultBuilder()
+		Column({ space: getSizeByUnit(this.space) }){
+			if(this.defaultBuilder){
+				this.defaultBuilder()
+			}
 		}
 		.width('100%')
 		.alignItems(HorizontalAlign.Start)

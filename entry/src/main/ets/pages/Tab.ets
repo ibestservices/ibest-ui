@@ -154,26 +154,26 @@ struct TabPage {
                     ComponentShowContainer({ title: '收缩布局' }) {
                         Column({space: 20}){
                             IBestTabs({
-                                tabHeight: 60,
+                                tabHeight: 40,
                                 tabWidthType: "auto",
                                 tabsList: this.tabsList,
                                 currentName: $curTabName
                             })
                             IBestTabs({
-                                tabHeight: 60,
+                                tabHeight: 40,
                                 tabWidthType: "auto",
                                 tabsList: this.tabsList1,
                                 currentName: $curTabName2
                             })
                             IBestTabs({
-                                tabHeight: 60,
+                                tabHeight: 40,
                                 tabWidthType: "auto",
                                 type: "card",
                                 tabsList: this.tabsList,
                                 currentName: $curTabName
                             })
                             IBestTabs({
-                                tabHeight: 60,
+                                tabHeight: 40,
                                 tabWidthType: "auto",
                                 type: "card",
                                 tabsList: this.tabsList1,
@@ -187,10 +187,9 @@ struct TabPage {
                     ComponentShowContainer({ title: '固定线宽' }) {
                         IBestTabs({
                             tabsList: this.tabsList,
-                            tabHeight: 80,
                             isTabLineWidthFixed: true,
                             tabLineWidth: 30,
-                            lineOffsetY: 10,
+                            lineOffsetY: 5,
                             currentName: $curTabName
                         })
                     }

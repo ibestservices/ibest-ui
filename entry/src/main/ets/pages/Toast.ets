@@ -117,7 +117,8 @@ struct ToastPage {
                   onClickCell: () => {
                     IBestToast.show({
                       icon: $r("app.media.app_icon"),
-                      message: "提示内容"
+                      message: "提示内容",
+                      iconWidth: 50
                     })
                   }
                 })
