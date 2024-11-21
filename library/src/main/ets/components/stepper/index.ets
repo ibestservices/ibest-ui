@@ -2,7 +2,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestStepperBtn } from './stepperBtn'
-import { accAdd, accSub, convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils'
+import { accAdd, accSub, convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { IBestIcon } from '../icon'
 
 enum STEPPER_BTN_TYPE {
@@ -19,15 +19,15 @@ export struct IBestStepper {
   /**
    * 输入框宽度
    */
-  @Prop inputWidth: number | string = convertDimensionsByUnit(32)
+  @Prop inputWidth: number | string = convertDimensionsWidthUnit(32)
   /**
    * 按钮大小以及输入框高度
    */
-  @Prop buttonSize: number | string = convertDimensionsByUnit(27)
+  @Prop buttonSize: number | string = convertDimensionsWidthUnit(27)
   /**
    * 图标大小
    */
-  @Prop iconSize: number | string = convertDimensionsByUnit(20)
+  @Prop iconSize: number | string = convertDimensionsWidthUnit(20)
   /**
    * 加减按钮图标的左右radius值
    */
@@ -278,8 +278,8 @@ export struct IBestStepper {
           .margin({
             top: 0,
             bottom: 0,
-            left: convertDimensionsByUnit(2),
-            right: convertDimensionsByUnit(2)
+            left: convertDimensionsWidthUnit(2),
+            right: convertDimensionsWidthUnit(2)
           })
           .fontSize(this.baseStyle.fontSizeMd)
           .fontColor(GRAY_COLOR.GRAY_8)

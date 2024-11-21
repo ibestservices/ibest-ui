@@ -4,7 +4,7 @@ import { LoadingIconType, WordBreakType } from '../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src/index'
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type'
 import { debounce } from '../utils/DebounceThrottle'
-import { convertDimensionsByUnit, getSizeByUnit } from '../utils/utils'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../utils/utils'
 class LoadingOption{
     /**
      * 展示文本
@@ -74,9 +74,9 @@ class ToastParams extends ToastOption{
 }
 
 @Extend(Image) function imageStyle(width: number | string | undefined){
-    .width(width ? getSizeByUnit(width) : convertDimensionsByUnit(36))
+    .width(width ? getSizeByUnit(width) : convertDimensionsWidthUnit(36))
     .aspectRatio(1)
-    .margin({bottom: convertDimensionsByUnit(10)})
+    .margin({bottom: convertDimensionsWidthUnit(10)})
 }
 
 @Component
@@ -94,9 +94,9 @@ struct defaultContent{
                 if(this.option.type == "loading"){
                     IBestLoading({
                         loadingIconType: this.option.loadingType,
-                        loadingSize: convertDimensionsByUnit(19),
-                        loadingStrokeWidth: convertDimensionsByUnit(2)
-                    }).margin({bottom: convertDimensionsByUnit(10)})
+                        loadingSize: convertDimensionsWidthUnit(20),
+                        loadingStrokeWidth: 2
+                    }).margin({bottom: convertDimensionsWidthUnit(10)})
                 }else{
                     Image(this.option.type == "success" ? $r("app.media.success") : this.option.type ==
                         "warning" ? $r("app.media.icon_warn") :$r("app.media.icon_cuo"))
@@ -109,10 +109,10 @@ struct defaultContent{
                 .fontSize(this.baseStyle.fontSizeMd)
                 .wordBreak(this.option.wordBreak == "normal" ? WordBreak.NORMAL : this.option.wordBreak == "break-all" ? WordBreak.BREAK_ALL : WordBreak.BREAK_WORD)
         }
-        .constraintSize({minWidth: convertDimensionsByUnit(96), minHeight: !this.option.type && !this.option.icon ? 0 :
-            convertDimensionsByUnit(98)})
+        .constraintSize({minWidth: convertDimensionsWidthUnit(96), maxWidth: "60%", minHeight: !this.option.type && !this.option.icon ? 0 :
+            convertDimensionsWidthUnit(98)})
         .backgroundColor("rgba(0,0,0,0.7)")
-        .borderRadius(convertDimensionsByUnit(6))
+        .borderRadius(convertDimensionsWidthUnit(6))
         .padding({left: this.baseStyle.spaceSm, right: this.baseStyle.spaceSm, top: this.baseStyle.spaceXs, bottom: this.baseStyle.spaceXs})
         .justifyContent(FlexAlign.Center)
     }

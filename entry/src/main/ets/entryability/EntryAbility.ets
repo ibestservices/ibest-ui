@@ -3,7 +3,7 @@ import hilog from '@ohos.hilog';
 import UIAbility from '@ohos.app.ability.UIAbility';
 import Want from '@ohos.app.ability.Want';
 import window from '@ohos.window';
-import { IBestInit, setGlobalConfig } from '@ibestservices/ibest-ui';
+import { IBestInit, IBestSetGlobalConfig } from '@ibestservices/ibest-ui';
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
@@ -19,7 +19,7 @@ export default class EntryAbility extends UIAbility {
     windowStage.loadContent('pages/Index', (err, data) => {
       // 组件库初始化
       IBestInit(windowStage, this.context)
-      // setGlobalConfig({
+      // IBestSetGlobalConfig({
       //   unit: "lpx",
       //   fontUnit: "lpx"
       // })

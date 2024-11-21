@@ -10,7 +10,7 @@ import type { IBestFieldType, ClearTriggerType, FieldTextAlign, IBestFieldValueT
     FormatTriggerType} from './index.type'
 import { emitter } from '../../utils/EventEmitter'
 import { runRuleValidator, runSyncRule } from './utils'
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 @Component
 export struct IBestField{
     /**
@@ -221,7 +221,7 @@ export struct IBestField{
         })
     }
     @Styles fieldContentStyles(){
-        .padding({ top: convertDimensionsByUnit(10), bottom: convertDimensionsByUnit(10) })
+        .padding({ top: convertDimensionsWidthUnit(10), bottom: convertDimensionsWidthUnit(10) })
         .border({
             width: { bottom: this.hasBorder ? 1 : 0 },
             color: GRAY_COLOR.GRAY_3
@@ -249,7 +249,7 @@ export struct IBestField{
     init(results?: IBestFormSendFieldCallResult){
         this.rules = this.rules.length ? this.rules : (results?.rules || [])
         this.required = typeof this.required != "undefined" ? this.required : this.rules.length > 0 && this.rules.some((item: IBestFormRuleItem) => item.required)
-        this.labelWidth = this.labelWidth || results?.labelWidth || convertDimensionsByUnit(80)
+        this.labelWidth = this.labelWidth || results?.labelWidth || convertDimensionsWidthUnit(80)
         this.labelPosition = this.labelPosition || results?.labelPosition || 'left'
         this.labelAlign = this.labelAlign || results?.labelAlign || 'left'
         this.colon = typeof this.colon != "undefined" ? this.colon : results ? results.colon : false
@@ -402,7 +402,7 @@ struct Label{
         Row(){
             if(this.leftIcon){
                 Image(this.leftIcon)
-                    .width(convertDimensionsByUnit(14))
+                    .width(convertDimensionsWidthUnit(14))
                     .fillColor(this.leftIconColor)
                     .aspectRatio(1)
                     .margin({right: this.baseStyle.spaceBase})
@@ -416,7 +416,7 @@ struct Label{
             Text(this.label + (this.colon ? ":" : ""))
                 .fontSize(this.baseStyle.fontSizeMd)
                 .layoutWeight(1)
-                .constraintSize({ minHeight: convertDimensionsByUnit(20) })
+                .constraintSize({ minHeight: convertDimensionsWidthUnit(20) })
                 .lineHeight(this.baseStyle.lineHeightMd)
                 .textAlign(this.labelAlign == "left" ? TextAlign.Start : this.labelAlign == "center" ? TextAlign.Center : TextAlign.End)
             if(this.requireAsteriskPosition == "right"){
@@ -562,7 +562,7 @@ struct Content{
                             .placeholderFont({
                                 size: this.baseStyle.fontSizeMd
                             })
-                            .constraintSize({ minHeight: convertDimensionsByUnit(this.rows * 20) })
+                            .constraintSize({ minHeight: convertDimensionsWidthUnit(this.rows * 20) })
                             .lineHeight(this.baseStyle.lineHeightMd)
                             .maxLength(this.maxlength)
                             // .showCounter(this.showWordLimit, {
@@ -624,7 +624,7 @@ struct Content{
                     // 清除图标
                     if (this.clearable && this.value && (this.clearTrigger == 'always' || this.isFocus)) {
                         Image($r("app.media.icon_clear"))
-                            .width(convertDimensionsByUnit(20))
+                            .width(convertDimensionsWidthUnit(20))
                             .aspectRatio(1)
                             .margin({ left: this.baseStyle.spaceBase })
                             .onClick(() => {

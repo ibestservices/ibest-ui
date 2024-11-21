@@ -5,12 +5,12 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { LengthMetrics, LengthUnit } from '@kit.ArkUI';
 import { KeyboardType } from './index.type';
 import { IBestPopup } from '../popup';
-import { convertDimensionsByUnit, getWindowAvoidSize } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getWindowAvoidSize } from '../../utils/utils';
 import { common } from '@kit.AbilityKit';
 import GlobalStore from '../../utils/GlobalStore';
 @Extend(Row) function keyBoxStyle(fullWidth?: boolean){
-	.width(fullWidth ? `calc((100% - ${convertDimensionsByUnit(12)})/3*2 + ${convertDimensionsByUnit(6)})` : `calc((100% - ${convertDimensionsByUnit(12)})/3)`)
-	.height(convertDimensionsByUnit(48))
+	.width(fullWidth ? `calc((100% - ${convertDimensionsWidthUnit(12)})/3*2 + ${convertDimensionsWidthUnit(6)})` : `calc((100% - ${convertDimensionsWidthUnit(12)})/3)`)
+	.height(convertDimensionsWidthUnit(48))
 	.backgroundColor(getDefaultBaseStyle().default)
 	.borderRadius(getDefaultBaseStyle().borderRadiusMd)
 	.justifyContent(FlexAlign.Center)
@@ -22,11 +22,11 @@ import GlobalStore from '../../utils/GlobalStore';
 	})
 }
 @Extend(Text) function keyTextStyle(){
-	.fontSize(convertDimensionsByUnit(28, true))
+	.fontSize(convertDimensionsWidthUnit(28, true))
 }
 @Extend(Row) function keyCustomBoxStyle(bg?: boolean){
 	.width(CONTAINER_SIZE.FULL)
-	.height(convertDimensionsByUnit(102))
+	.height(convertDimensionsWidthUnit(102))
 	.borderRadius(getDefaultBaseStyle().borderRadiusMd)
 	.justifyContent(FlexAlign.Center)
 	.backgroundColor(bg ? getDefaultBaseStyle().primary : getDefaultBaseStyle().default)
@@ -201,8 +201,8 @@ export struct NumberKeyboard{
 						})
 				}
 				.width(CONTAINER_SIZE.FULL)
-				.height(convertDimensionsByUnit(40))
-				.padding({ top: convertDimensionsByUnit(6) })
+				.height(convertDimensionsWidthUnit(40))
+				.padding({ top: convertDimensionsWidthUnit(6) })
 			}
 			Row({ space:6 }){
 				Flex({ justifyContent: FlexAlign.SpaceBetween, wrap: FlexWrap.Wrap, space: { cross: new LengthMetrics(6) } }){
@@ -236,7 +236,7 @@ export struct NumberKeyboard{
 							this.selectKey({ type: 'close' })
 						})
 					}
-					.width(convertDimensionsByUnit(80))
+					.width(convertDimensionsWidthUnit(80))
 				}
 			}
 			.width(CONTAINER_SIZE.FULL)
@@ -244,7 +244,7 @@ export struct NumberKeyboard{
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.backgroundColor(GRAY_COLOR.GRAY_2)
-		.padding({ bottom: convertDimensionsByUnit(GlobalStore.bottomBarHeight) })
+		.padding({ bottom: convertDimensionsWidthUnit(GlobalStore.bottomBarHeight) })
 	}
 }
 
@@ -258,10 +258,10 @@ struct ExtraButton{
 				.keyTextStyle()
 		}else if(this.item.type == "delete"){
 			Image($r("app.media.delete"))
-				.width(convertDimensionsByUnit(32))
+				.width(convertDimensionsWidthUnit(32))
 		}else{
 			Image($r("app.media.key_board"))
-				.width(convertDimensionsByUnit(30))
+				.width(convertDimensionsWidthUnit(30))
 		}
 	}
 }

@@ -1,9 +1,9 @@
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 @Component
 export struct IBestStepperBtn {
   @BuilderParam defaultSlot?: CustomBuilder;
-  @Prop buttonSize: string | number = convertDimensionsByUnit(20)
+  @Prop buttonSize: string | number = convertDimensionsWidthUnit(20)
   @Prop radiusLeftTop: string | number = 0
   @Prop radiusLeftBottom: string | number = 0
   @Prop radiusRightTop: string | number = 0

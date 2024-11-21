@@ -2,7 +2,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 @Component
 export struct IBestEmpty {
   /**
@@ -32,11 +32,11 @@ export struct IBestEmpty {
   /**
    * 描述文字大小
    */
-  @Prop descriptionFontSize: string | number = convertDimensionsByUnit(14)
+  @Prop descriptionFontSize: string | number = convertDimensionsWidthUnit(14)
   /**
    * 空占位图的高度
    */
-  @Prop imageSize: string | number = convertDimensionsByUnit(160)
+  @Prop imageSize: string | number = convertDimensionsWidthUnit(160)
   /**
    * 图片类型，可选值为 error network search default 默认default
    */

@@ -4,7 +4,7 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE } from '../../theme-chalk/src/size.type';
 import { TagSizeData } from './index.type';
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 @Extend(Row) function tagSizeStyle(data: TagSizeData) {
   .padding({ top: 0, right: data.padding, bottom: 0, left: data.padding })
   .height(data.height)
@@ -105,11 +105,11 @@ export struct IBestTag {
     const tagSize = this.tagSize;
     switch (tagSize) {
       case 'medium':
-        return new TagSizeData(convertDimensionsByUnit(6), convertDimensionsByUnit(20), this.baseStyle.fontSizeSm, this.getBorderRadius(convertDimensionsByUnit(2)) ) ;
+        return new TagSizeData(convertDimensionsWidthUnit(6), convertDimensionsWidthUnit(20), this.baseStyle.fontSizeSm, this.getBorderRadius(convertDimensionsWidthUnit(2)) ) ;
       case SIZE.LARGE:
-        return new TagSizeData(this.baseStyle.spaceXs, convertDimensionsByUnit(24), this.baseStyle.fontSizeMd,  this.getBorderRadius(convertDimensionsByUnit(4)) ) ;
+        return new TagSizeData(this.baseStyle.spaceXs, convertDimensionsWidthUnit(24), this.baseStyle.fontSizeMd,  this.getBorderRadius(convertDimensionsWidthUnit(4)) ) ;
       default:
-        return new TagSizeData(this.baseStyle.spaceBase, convertDimensionsByUnit(17), this.baseStyle.fontSizeSm, this.getBorderRadius(convertDimensionsByUnit(2)) ) ;
+        return new TagSizeData(this.baseStyle.spaceBase, convertDimensionsWidthUnit(17), this.baseStyle.fontSizeSm, this.getBorderRadius(convertDimensionsWidthUnit(2)) ) ;
     }
   }
 

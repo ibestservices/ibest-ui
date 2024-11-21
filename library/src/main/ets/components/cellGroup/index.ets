@@ -2,7 +2,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { convertDimensionsByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit } from '../../utils/utils';
 @Component
 export struct IBestCellGroup {
   /**
@@ -63,7 +63,7 @@ export struct IBestCellGroup {
             color: GRAY_COLOR.GRAY_3,
           })
           .padding(this.baseStyle.spaceMd)
-          .lineHeight(convertDimensionsByUnit(16))
+          .lineHeight(convertDimensionsWidthUnit(16))
           .fontSize(this.baseStyle.fontSizeMd)
           .fontColor(GRAY_COLOR.GRAY_6)
       }

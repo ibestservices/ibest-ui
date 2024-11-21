@@ -44,7 +44,7 @@ struct PullRefresh {
 							.backgroundColor(0x89CFF0)
 					}.width("100%")
 				}, (item: string) => item)
-			}.width("100%")
+			}.width("100%").edgeEffect(EdgeEffect.None)
 		}else if(type == "2"){
 			Scroll(this.scroller){
 				Column(){

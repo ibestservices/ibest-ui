@@ -2,7 +2,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 @Component
 export struct IBestSearch {
 	/**
@@ -37,7 +37,7 @@ export struct IBestSearch {
 	/**
 	 * 搜索框高度
 	 */
-	@Prop contentHeight: number | string = convertDimensionsByUnit(34)
+	@Prop contentHeight: number | string = convertDimensionsWidthUnit(34)
 	/**
 	 * 外侧背景色
 	 */
@@ -138,7 +138,7 @@ export struct IBestSearch {
 							.margin({ right: this.baseStyle.spaceBase })
 					}
 					Image(this.leftIcon)
-						.width(convertDimensionsByUnit(18))
+						.width(convertDimensionsWidthUnit(18))
 						.margin({ right: this.baseStyle.spaceBase })
 						.fillColor(this.leftIconColor)
 					TextInput({ text: $$this.value, placeholder: this.placeholder })
@@ -170,7 +170,7 @@ export struct IBestSearch {
 					if(this.clearable){
 						Row(){
 							Image(this.clearIcon)
-								.width(convertDimensionsByUnit(18))
+								.width(convertDimensionsWidthUnit(18))
 								.fillColor(GRAY_COLOR.GRAY_5)
 						}
 						.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs })
@@ -195,7 +195,7 @@ export struct IBestSearch {
 					this.customRightButton()
 				}else if(this.showRightButton){
 					Text(this.rightButtonText)
-						.width(convertDimensionsByUnit(44))
+						.width(convertDimensionsWidthUnit(44))
 						.height(CONTAINER_SIZE.FULL)
 						.fontSize(this.baseStyle.fontSizeMd)
 						.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs })
@@ -215,7 +215,7 @@ export struct IBestSearch {
 			.height(getSizeByUnit(this.contentHeight))
 		}
 		.width(CONTAINER_SIZE.FULL)
-		.padding({ left: this.baseStyle.spaceSm, right: this.customRightButton || this.showRightButton ? 0 : this.baseStyle.spaceSm, top: convertDimensionsByUnit(10), bottom: convertDimensionsByUnit(10) })
+		.padding({ left: this.baseStyle.spaceSm, right: this.customRightButton || this.showRightButton ? 0 : this.baseStyle.spaceSm, top: convertDimensionsWidthUnit(10), bottom: convertDimensionsWidthUnit(10) })
 		.backgroundColor(this.outBgColor)
 		.enabled(!this.disabled)
 	}

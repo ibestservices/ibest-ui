@@ -4,7 +4,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestTabs } from '../tab';
 import { IBestTabController, IBestTabItemType } from '../tab/index.type';
-import { convertDimensionsByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit } from '../../utils/utils';
 @Component
 export struct IBestPickerGroup{
 	/**
@@ -122,7 +122,7 @@ export struct IBestPickerGroup{
 							})
 					}
 					.width(CONTAINER_SIZE.FULL)
-					.height(convertDimensionsByUnit(44))
+					.height(convertDimensionsWidthUnit(44))
 					.justifyContent(FlexAlign.SpaceBetween)
 					Text(this.title)
 						.constraintSize({ maxWidth: "50%" })

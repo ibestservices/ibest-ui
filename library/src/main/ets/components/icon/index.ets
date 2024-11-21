@@ -6,7 +6,7 @@ import { http } from '@kit.NetworkKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { image } from '@kit.ImageKit';
 import { IBestLoading } from '../loading';
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 @Component
 export struct IBestIcon {
   @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
@@ -21,7 +21,7 @@ export struct IBestIcon {
   /**
    * 图标大小
    */
-  @Prop iconSize: number | string = convertDimensionsByUnit(20)
+  @Prop iconSize: number | string = convertDimensionsWidthUnit(20)
   /**
    * 点击回调
    */
@@ -40,7 +40,7 @@ export struct IBestIcon {
           Text(Object(IBestIconData)[this.name])
             .fontFamily('ibestFont')
             .fontColor(this.color)
-            .fontSize(getSizeByUnit(this.iconSize))
+            .fontSize(getSizeByUnit(this.iconSize, true))
         }
       }else{
         Image(this.name).width(getSizeByUnit(this.iconSize)).aspectRatio(1).fillColor(this.color)

@@ -4,7 +4,7 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestLoading } from '../loading'
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
 @Component
 export struct IBestPullRefresh {
 	/**
@@ -38,7 +38,7 @@ export struct IBestPullRefresh {
 	/**
 	 * 顶部内容高度
 	 */
-	@Prop headHeight: number | string = convertDimensionsByUnit(50)
+	@Prop headHeight: number | string = convertDimensionsWidthUnit(50)
 	/**
 	 * 默认内容
      */
@@ -68,19 +68,26 @@ export struct IBestPullRefresh {
   	 */
 	scroller: Scroller = new Scroller()
 
+	@State uniId: number = 0
 	@State transY: number = 0
 	@State startY: number = 0
 	@Provide refreshStatus: PullRefreshStatus = "normal"
 	@State scrollTop: number = 0
+	@State headSize: number = 0
+	private uiContext = this.getUIContext()
+
+	aboutToAppear(): void {
+		this.uniId = this.getUniqueId()
+		setTimeout(() => {
+			this.headSize = getComponentsInfo(this.uiContext, `ibest_pull_${this.uniId}`).height
+		}, 10)
+	}
 
 	isTouchable(){
 		return this.refreshStatus != "loading" && this.refreshStatus != "success"
 	}
-	getHeadHeight(){
-		return typeof this.headHeight == "number" ? this.headHeight : parseFloat(this.headHeight)
-	}
 	ease(distance: number) {
-		const pullDistance = this.getHeadHeight()
+		const pullDistance = this.headSize
 		if (distance > pullDistance) {
 			if (distance < pullDistance * 2) {
 				distance = pullDistance + (distance - pullDistance) / 2;
@@ -97,7 +104,7 @@ export struct IBestPullRefresh {
 			this.refreshStatus = "loading"
 		}else if(distance == 0){
 			this.refreshStatus = "normal"
-		}else if(distance < this.getHeadHeight()){
+		}else if(distance < this.headSize){
 			this.refreshStatus = "pulling"
 		} else {
 			this.refreshStatus = 'loosing'
@@ -118,7 +125,7 @@ export struct IBestPullRefresh {
 					break
 				case TouchType.Up:
 					if(this.refreshStatus == "loosing"){
-						this.setRefreshStatus(this.getHeadHeight(), true)
+						this.setRefreshStatus(this.headSize, true)
 						this.loading = true
 						this.onRefresh()
 					}else{
@@ -142,7 +149,7 @@ export struct IBestPullRefresh {
 					break
 				case "end":
 					if(this.refreshStatus == "loosing"){
-						this.setRefreshStatus(this.getHeadHeight(), true)
+						this.setRefreshStatus(this.headSize, true)
 						this.loading = true
 						this.onRefresh()
 					}else{
@@ -154,7 +161,7 @@ export struct IBestPullRefresh {
 	}
 	loadingChange(){
 		if(this.loading){
-			this.setRefreshStatus(this.getHeadHeight(), true)
+			this.setRefreshStatus(this.headSize, true)
 		}else if(this.successContent || this.successText){
 			this.refreshStatus = "success"
 			setTimeout(() => {
@@ -203,12 +210,13 @@ export struct IBestPullRefresh {
 				.justifyContent(FlexAlign.Center)
 				.position({ x: 0, y: 0 })
 				.translate({ y: "-100%" })
+				.id(`ibest_pull_${this.uniId}`)
 				if(this.defaultContent){
 					this.defaultContent()
 				}
 			}
 			.width(CONTAINER_SIZE.FULL)
-			.translate({ y: getSizeByUnit(this.transY) })
+			.translate({ y: this.transY })
 			.animation({
 				duration: this.duration
 			})
@@ -253,7 +261,7 @@ struct TextTip{
 		}
 	}
 	build() {
-		Row({space: convertDimensionsByUnit(5)}){
+		Row({space: convertDimensionsWidthUnit(5)}){
 			if(this.refreshStatus == "loading") {
 				IBestLoading({
 					loadingSize: this.baseStyle.fontSizeMd

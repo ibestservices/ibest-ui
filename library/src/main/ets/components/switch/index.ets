@@ -1,6 +1,6 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
+import { convertDimensions, convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils';
 import { IBestLoading } from '../loading'
 
 @Component
@@ -16,7 +16,7 @@ export struct IBestSwitch {
   /**
    * 开关按钮的尺寸
    */
-  @Prop switchSize: number | string = convertDimensionsByUnit(26)
+  @Prop switchSize: number | string = convertDimensionsWidthUnit(26)
   /**
    * 打开时的背景色
    */
@@ -60,6 +60,17 @@ export struct IBestSwitch {
    */
   onClickSwitch: (event: ClickEvent) => void = () => {}
 
+  @State uniId: number = 0
+  @State switchBarSize: number = 0
+  private uiContext = this.getUIContext()
+
+  aboutToAppear(): void {
+    this.uniId = this.getUniqueId()
+    setTimeout(() => {
+      this.switchBarSize = getComponentsInfo(this.uiContext, `ibest_switch_${this.uniId}`).width
+    }, 10)
+  }
+
   /**
    * 改变的回调
    */
@@ -102,30 +113,27 @@ export struct IBestSwitch {
       .height(getSizeByUnit(this.switchSize))
       .alignItems(HorizontalAlign.Center)
       .justifyContent(FlexAlign.Center)
-      .borderRadius(getSizeByUnit(this.getSwitchSize() / 2))
+      .borderRadius(this.baseStyle.borderRadiusMax)
       .shadow({
         color: 'rgba(0, 0, 0, 0.05)',
         offsetY: px2vp(3),
         radius:  px2vp(1)
       })
-      .margin({
-        left: convertDimensionsByUnit(2),
-        right: convertDimensionsByUnit(2)
-      })
       .backgroundColor('#fff')
       .translate({
-        x: this.value ? getSizeByUnit(this.getSwitchSize()) : 0
+        x: this.value ? this.switchBarSize - 4 : 0
       })
+      .id(`ibest_switch_${this.uniId}`)
       .animation({
         duration: this.baseStyle.animationDuration as number,
       })
     }
     .alignItems(HorizontalAlign.Start)
     .justifyContent(FlexAlign.Center)
-    .width(getSizeByUnit(this.getSwitchSize() * 2 + 4))
-    .height(getSizeByUnit(this.getSwitchSize() + 4))
+    .width(this.switchBarSize * 2)
+    .padding(2)
     .backgroundColor( this.value ? this.getActiveColor() : this.inactiveColor )
-    .borderRadius(convertDimensionsByUnit(26))
+    .borderRadius(this.baseStyle.borderRadiusMax)
     .opacity(this.disabled ? 0.5 : 1)
     .animation({
       duration: this.baseStyle.animationDuration as number,

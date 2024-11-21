@@ -1,5 +1,6 @@
-import { clamp, addNumber, getComponentsInfo, convertDimensionsByUnit, getSizeByUnit,
-	getLengthUnit } from "../../utils/utils"
+import { clamp, addNumber, getComponentsInfo, convertDimensionsWidthUnit, getSizeByUnit,
+	getLengthUnit,
+	convertDimensions} from "../../utils/utils"
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
 import { GRAY_COLOR } from "../../theme-chalk/src/color"
 import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
@@ -39,11 +40,11 @@ export struct IBestSlider{
 	/**
 	 * 进度条高度
 	 */
-	@Prop barHeight: number | string = convertDimensionsByUnit(2)
+	@Prop barHeight: number | string = convertDimensionsWidthUnit(2)
 	/**
 	 * 滑块大小
 	 */
-	@Provide({allowOverride: "buttonSize"}) buttonSize: number | string = convertDimensionsByUnit(24)
+	@Provide({allowOverride: "buttonSize"}) buttonSize: number = convertDimensions(24)
 	/**
 	 * 进度条激活态颜色
 	 */
@@ -89,7 +90,6 @@ export struct IBestSlider{
 		let size = getComponentsInfo(this.uiContext, `buttonBox_${this.uniId}`)
 		this.buttonWidth = size.width
 		this.buttonHeight = size.height
-		console.log('buttonSize', this.buttonWidth, this.buttonHeight)
 	}
 	getBarPosition(): LocalizedEdges{
 		if(this.reverse){
@@ -235,8 +235,8 @@ export struct IBestSlider{
 							})
 						}
 					}
-					.width(this.vertical ? getSizeByUnit(this.buttonWidth || this.buttonSize) : "")
-					.height(this.vertical ? "" : getSizeByUnit(this.buttonHeight || this.buttonSize))
+					.width(this.vertical ? convertDimensionsWidthUnit(this.buttonWidth || this.buttonSize) : "")
+					.height(this.vertical ? "" : convertDimensionsWidthUnit(this.buttonHeight || this.buttonSize))
 					.justifyContent(FlexAlign.Center)
 					.position(this.getBarPosition())
 				}
@@ -252,14 +252,14 @@ export struct IBestSlider{
 						this.onBgTouch(event)
 					})
 			}
-			.width(this.vertical ? getSizeByUnit(this.buttonWidth) : CONTAINER_SIZE.FULL)
-			.height(this.vertical ? CONTAINER_SIZE.FULL : getSizeByUnit(this.buttonHeight))
+			.width(this.vertical ? convertDimensionsWidthUnit(this.buttonWidth) : CONTAINER_SIZE.FULL)
+			.height(this.vertical ? CONTAINER_SIZE.FULL : convertDimensionsWidthUnit(this.buttonHeight))
 		}
 		.padding({
-			left: this.vertical ? 0 : getSizeByUnit(this.buttonWidth/2 + this.space),
-			right: this.vertical ? 0 : getSizeByUnit(this.buttonWidth/2 + this.space),
-			top: this.vertical ? getSizeByUnit(this.buttonHeight/2 + this.space) : getSizeByUnit(this.space),
-			bottom: this.vertical ? getSizeByUnit(this.buttonHeight/2 + this.space) : getSizeByUnit(this.space)
+			left: this.vertical ? 0 : convertDimensionsWidthUnit(this.buttonWidth/2 + this.space),
+			right: this.vertical ? 0 : convertDimensionsWidthUnit(this.buttonWidth/2 + this.space),
+			top: this.vertical ? convertDimensionsWidthUnit(this.buttonHeight/2 + this.space) : convertDimensionsWidthUnit(this.space),
+			bottom: this.vertical ? convertDimensionsWidthUnit(this.buttonHeight/2 + this.space) : convertDimensionsWidthUnit(this.space)
 		})
 		.enabled(!this.disabled)
 	}
@@ -276,7 +276,7 @@ struct DragBar{
 	@Prop uniId: number
 	@Consume buttonWidth: number
 	@Consume buttonHeight: number
-	@Consume buttonSize: number
+	@Consume buttonSize: number | string
 	@Consume vertical: boolean
 	@Consume reverse: boolean
 	@Prop buttonIndex: 0 | 1 = 0
@@ -284,7 +284,7 @@ struct DragBar{
 
 	getBarPosition(): LocalizedEdges{
 		let value: LengthMetrics = {
-			value: -parseFloat(convertDimensionsByUnit((this.buttonWidth || this.buttonSize)/2)),
+			value: -convertDimensions(this.buttonWidth/2),
 			unit: getLengthUnit()
 		}
 		if(Array.isArray(this.value)){

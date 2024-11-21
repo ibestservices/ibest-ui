@@ -1,6 +1,6 @@
 import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
 import { CONTAINER_SIZE } from '../theme-chalk/src/container'
-import { clamp, convertDimensionsByUnit, getComponentsInfo, getSizeByUnit } from '../utils/utils'
+import { clamp, convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../utils/utils'
 import { getDefaultBaseStyle } from '../theme-chalk/src'
 
 type IBestPreviewImgType = PixelMap | ResourceStr | DrawableDescriptor
@@ -96,9 +96,9 @@ class IBestImagePreviewParams extends IBestImagePreviewOption {
 		this.swipeDuration = params?.swipeDuration || 200
 		this.showIndex = params?.showIndex != undefined ? params.showIndex : list.length > 1
 		this.indexPosition = params?.indexPosition || 'bottom'
-		this.indexOffset = params?.indexOffset || convertDimensionsByUnit(52)
+		this.indexOffset = params?.indexOffset || convertDimensionsWidthUnit(52)
 		this.indexFontColor = params?.indexFontColor != undefined ? params.indexFontColor : baseStyle.default as string
-		this.indexFontSize = params?.indexFontSize != undefined ? params.indexFontSize : convertDimensionsByUnit(14, true)
+		this.indexFontSize = params?.indexFontSize != undefined ? params.indexFontSize : convertDimensionsWidthUnit(14, true)
 		this.loop = params?.loop != undefined ? params.loop : true
 		this.doubleScale = params?.doubleScale != undefined ? params.doubleScale : true
 		this.closeOnClickOverlay = params?.closeOnClickOverlay != undefined ? params.closeOnClickOverlay : true

@@ -1,4 +1,4 @@
-import { convertDimensionsByUnit, getIsLandscape, getSizeByUnit, sleep } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getIsLandscape, getSizeByUnit, sleep } from '../../utils/utils'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestTabs } from '../tab'
@@ -51,11 +51,11 @@ export struct IBestCascaderContent{
 	/**
 	 * 列表区域高度
 	 */
-	@Prop listHeight: number | string = convertDimensionsByUnit(350)
+	@Prop listHeight: number | string = convertDimensionsWidthUnit(350)
 	/**
 	 * 单项高度
 	 */
-	@Provide({allowOverride: "itemHeight"}) itemHeight: number | string = convertDimensionsByUnit(40)
+	@Provide({allowOverride: "itemHeight"}) itemHeight: number | string = convertDimensionsWidthUnit(40)
 	/**
 	 * 是否开启动态加载
 	 */
@@ -280,7 +280,7 @@ struct CascaderOptionItem{
 				.fontColor(this.option.actived ? this.activeColor : "#333")
 				.fontSize(this.baseStyle.fontSizeMd)
 			Image($r("app.media.success"))
-				.width(convertDimensionsByUnit(18))
+				.width(convertDimensionsWidthUnit(18))
 				.aspectRatio(1)
 				.fillColor(this.activeColor)
 				.visibility(this.option.actived ? Visibility.Visible : Visibility.Hidden)

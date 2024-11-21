@@ -1,4 +1,4 @@
-import { clamp, convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
+import { clamp, convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
@@ -49,7 +49,7 @@ export struct IBestPicker{
 	/**
 	 * 单项高度
 	 */
-	@Prop itemHeight: number | string = convertDimensionsByUnit(44)
+	@Prop itemHeight: number | string = convertDimensionsWidthUnit(44)
 	/**
 	 * 确认按钮文字
 	 */
@@ -294,7 +294,7 @@ export struct IBestPicker{
 							})
 					}
 					.width(CONTAINER_SIZE.FULL)
-					.height(convertDimensionsByUnit(44))
+					.height(convertDimensionsWidthUnit(44))
 					.justifyContent(FlexAlign.SpaceBetween)
 					Text(this.title)
 						.constraintSize({ maxWidth: "50%" })

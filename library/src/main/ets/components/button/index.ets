@@ -6,7 +6,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE, SizeType } from '../../theme-chalk/src/size.type';
 import { ButtonSizeData } from './index.type'
 import { IBestLoading } from '../loading/index'
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 
 @Extend(Button)
 function btnSizeStyle(data: ButtonSizeData) {
@@ -112,19 +112,19 @@ export struct IBestButton {
    */
   getBtnSize() {
     if (this.btnWidth || this.btnHeight) {
-      return new ButtonSizeData(this.btnWidth ? 0 : convertDimensionsByUnit(15), this.btnHeight != undefined ? getSizeByUnit(this.btnHeight) : convertDimensionsByUnit(44),
+      return new ButtonSizeData(this.btnWidth ? 0 : convertDimensionsWidthUnit(15), this.btnHeight != undefined ? getSizeByUnit(this.btnHeight) : convertDimensionsWidthUnit(44),
         this.getBtnFontSize() || this.baseStyle.fontSizeMd, this.btnWidth != undefined ? getSizeByUnit(this.btnWidth) : '')
     }
     const buttonSize = this.buttonSize;
     switch (buttonSize) {
       case SIZE.SMALL:
-        return new ButtonSizeData(this.baseStyle.spaceXs, convertDimensionsByUnit(32), this.getBtnFontSize() || this.baseStyle.fontSizeSm);
+        return new ButtonSizeData(this.baseStyle.spaceXs, convertDimensionsWidthUnit(32), this.getBtnFontSize() || this.baseStyle.fontSizeSm);
       case SIZE.MINI:
-        return new ButtonSizeData(this.baseStyle.spaceBase, convertDimensionsByUnit(32), this.getBtnFontSize() || this.baseStyle.fontSizeXs);
+        return new ButtonSizeData(this.baseStyle.spaceBase, convertDimensionsWidthUnit(32), this.getBtnFontSize() || this.baseStyle.fontSizeXs);
       case SIZE.LARGE:
-        return new ButtonSizeData(this.baseStyle.spaceXs, convertDimensionsByUnit(50), this.getBtnFontSize() || this.baseStyle.fontSizeLg, CONTAINER_SIZE.FULL);
+        return new ButtonSizeData(this.baseStyle.spaceXs, convertDimensionsWidthUnit(50), this.getBtnFontSize() || this.baseStyle.fontSizeLg, CONTAINER_SIZE.FULL);
       default:
-        return new ButtonSizeData(convertDimensionsByUnit(15), convertDimensionsByUnit(44), this.getBtnFontSize() || this.baseStyle.fontSizeMd);
+        return new ButtonSizeData(convertDimensionsWidthUnit(15), convertDimensionsWidthUnit(44), this.getBtnFontSize() || this.baseStyle.fontSizeMd);
     }
   }
   getBtnFontSize(){
@@ -207,7 +207,7 @@ export struct IBestButton {
 
     }
     .btnSizeStyle(this.getBtnSize())
-    .borderWidth(convertDimensionsByUnit(this.hairline ? 0.5 : 1))
+    .borderWidth(convertDimensionsWidthUnit(this.hairline ? 0.5 : 1))
     .borderRadius(this.getBtnBorderRadius())
     .fontColor(this.getBtnColor(this.plain))
     .backgroundColor(this.getBtnColor(!this.plain))

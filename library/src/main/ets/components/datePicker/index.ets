@@ -3,7 +3,7 @@ import { IBestPicker } from '../picker'
 import { IBestPickerOption } from '../picker/index.type'
 import { DatePickerColumnType, getPickerEventName, IBestDatePickerResultType, DATE_PICKER_EVENT_NAME } from './index.type'
 import { emitter } from '../../utils/EventEmitter'
-import { clamp, convertDimensionsByUnit } from '../../utils/utils'
+import { clamp, convertDimensionsWidthUnit } from '../../utils/utils'
 
 @Component
 export struct IBestDatePicker {
@@ -48,7 +48,7 @@ export struct IBestDatePicker {
 	/**
 	 * 单项高度
 	 */
-	@Prop itemHeight: number | string = convertDimensionsByUnit(44)
+	@Prop itemHeight: number | string = convertDimensionsWidthUnit(44)
 	/**
 	 * 确认按钮文字
 	 */

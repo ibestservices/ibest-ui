@@ -5,7 +5,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { CheckedItem, updateRadioGroupStoreByKey } from '../radioGroup/store';
 import { getRadioGroupNamespace, RADIO_GROUP_EVENT_NAME } from '../radioGroup/utils';
 import { BuilderArgs } from './index.type';
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 @Component
 export struct IBestRadio {
   /**
@@ -37,7 +37,7 @@ export struct IBestRadio {
   /**
    * 图标大小
    */
-  @Prop iconSize: number | string = convertDimensionsByUnit(20)
+  @Prop iconSize: number | string = convertDimensionsWidthUnit(20)
   /**
    * 默认是否选中 非双向绑定
    * 如果要更改数据请从onChange回调中获取最新的值
@@ -55,7 +55,7 @@ export struct IBestRadio {
    * 文本大小
    * @since 1.18.0
    */
-  @Prop labelFontSize: number | string = convertDimensionsByUnit(16)
+  @Prop labelFontSize: number | string = convertDimensionsWidthUnit(16)
   /**
    * 文本位置，可选值为 left
    */
@@ -178,7 +178,7 @@ export struct IBestRadio {
       }else {
         Text(this.label)
           .fontColor(this.getLabelColor())
-          .fontSize(getSizeByUnit(this.labelFontSize))
+          .fontSize(getSizeByUnit(this.labelFontSize, true))
       }
     }
     .margin({

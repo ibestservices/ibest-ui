@@ -1,7 +1,7 @@
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUploaderFile, FileSelectOptions, IBestUploaderSelectType } from './index.type'
 import { isImageFile, isImageUrl } from './utils'
-import { LengthMetrics, LengthUnit } from '@kit.ArkUI'
+import { LengthMetrics } from '@kit.ArkUI'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
@@ -11,7 +11,7 @@ import { photoAccessHelper } from '@kit.MediaLibraryKit'
 import { IBestLoading } from '../loading'
 import fs from '@ohos.file.fs'
 import { IBestImagePreview } from '../../../../../Index'
-import { convertDimensionsByUnit, getLengthUnit, getSizeByUnit } from '../../utils/utils'
+import { convertDimensions, convertDimensionsWidthUnit, getLengthUnit, getSizeByUnit } from '../../utils/utils'
 @Component
 export struct IBestUploader {
 	/**
@@ -29,7 +29,7 @@ export struct IBestUploader {
 	/**
 	 * 触发器图标大小
 	 */
-	@Prop uploaderIconSize: number | string = convertDimensionsByUnit(24)
+	@Prop uploaderIconSize: number | string = convertDimensionsWidthUnit(24)
 	/**
 	 * 触发器图标颜色
 	 */
@@ -45,7 +45,7 @@ export struct IBestUploader {
 	/**
 	 * 预览大小
 	 */
-	@Provide({allowOverride: "previewSize"}) previewSize: number | string = convertDimensionsByUnit(80)
+	@Provide({allowOverride: "previewSize"}) previewSize: number | string = convertDimensionsWidthUnit(80)
 	/**
 	 * 是否在点击预览图后展示全屏图片预览
 	 */
@@ -172,8 +172,8 @@ export struct IBestUploader {
 
 	build() {
 		Flex({ wrap: FlexWrap.Wrap, space: {
-			main: new LengthMetrics(parseFloat(convertDimensionsByUnit(8)), getLengthUnit()),
-			cross: new LengthMetrics(parseFloat(convertDimensionsByUnit(8)), getLengthUnit())
+			main: new LengthMetrics(convertDimensions(8), getLengthUnit()),
+			cross: new LengthMetrics(convertDimensions(8), getLengthUnit())
 		}}){
 			if(this.fileList.length){
 				ForEach(this.fileList, (item: IBestUploaderFile, index: number) => {
@@ -255,7 +255,7 @@ struct UploadItem{
 			} else {
 				if (isImageFile(this.file)) {
 					Image(this.isError ? $r("app.media.icon_photo_fail") : (this.file.url || this.file.previewUri))
-						.width(this.isError ? convertDimensionsByUnit(32) : CONTAINER_SIZE.FULL)
+						.width(this.isError ? convertDimensionsWidthUnit(32) : CONTAINER_SIZE.FULL)
 						.aspectRatio(1)
 						.objectFit(this.imageFit)
 						.draggable(false)
@@ -267,7 +267,7 @@ struct UploadItem{
 						})
 				} else {
 					Image($r("app.media.icon_file"))
-						.width(convertDimensionsByUnit(20))
+						.width(convertDimensionsWidthUnit(20))
 						.aspectRatio(1)
 						.draggable(false)
 						.fillColor(GRAY_COLOR.GRAY_7)
@@ -286,16 +286,16 @@ struct UploadItem{
 			}
 			// 状态展示
 			if (this.file.status && this.file.status != 'done') {
-				Column({ space: convertDimensionsByUnit(6) }) {
+				Column({ space: convertDimensionsWidthUnit(6) }) {
 					if (this.file.status == 'uploading') {
 						IBestLoading({
-							loadingSize: 18,
-							loadingStrokeWidth: 1,
+							loadingSize: convertDimensionsWidthUnit(18),
+							loadingStrokeWidth: 2,
 							loadingColor: this.baseStyle.default
 						})
 					} else {
 						Image($r("app.media.icon_close_circle"))
-							.width(convertDimensionsByUnit(20))
+							.width(convertDimensionsWidthUnit(20))
 							.aspectRatio(1)
 							.fillColor(this.baseStyle.default)
 					}

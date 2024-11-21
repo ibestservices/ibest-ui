@@ -1,4 +1,4 @@
-import { convertDimensionsByUnit, getIsLandscape, getSizeByUnit, getWindowAvoidSize } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getIsLandscape, getSizeByUnit, getWindowAvoidSize } from '../../utils/utils'
 import { common } from '@kit.AbilityKit'
 import { PopupAlign, PopupBaseController } from './index.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
@@ -108,9 +108,9 @@ struct IBestPopupBaseContent {
 			.backgroundColor("#fff")
 			.padding({
 				top: this.safeAreaInsetTop && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
-					== "top") ? convertDimensionsByUnit(this.topAvoidSize) : 0,
+					== "top") ? convertDimensionsWidthUnit(this.topAvoidSize) : 0,
 				bottom: this.safeAreaInsetBottom && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
-					== "bottom") ? convertDimensionsByUnit(this.bottomAvoidSize) : 0
+					== "bottom") ? convertDimensionsWidthUnit(this.bottomAvoidSize) : 0
 			})
 			.alignItems(HorizontalAlign.Start)
 			.borderRadius(getSizeByUnit(this.cornerRadius))
@@ -326,7 +326,7 @@ struct PopupTitle {
 				})
 		}
 		.width("100%")
-		.height(convertDimensionsByUnit(40))
+		.height(convertDimensionsWidthUnit(40))
 		.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
 		.justifyContent(FlexAlign.SpaceBetween)
 		.alignItems(VerticalAlign.Center)

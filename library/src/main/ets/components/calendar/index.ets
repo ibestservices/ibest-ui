@@ -6,7 +6,7 @@ import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CalendarConfirmResultType, SelectedStyleType, SelectType, WeekDayType } from './index.type'
 import promptAction from '@ohos.promptAction'
-import { convertDimensionsByUnit, getComponentsInfo, getIsLandscape, getSizeByUnit } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getComponentsInfo, getIsLandscape, getSizeByUnit } from '../../utils/utils'
 import { UIContext } from '@kit.ArkUI'
 class DayItemObj{
     date: Dayjs = dayjs()
@@ -589,12 +589,12 @@ export struct IBestCalendar{
             Row(){
                 Row(){
                     Image($r("app.media.arrow_left_double"))
-                        .width(convertDimensionsByUnit(14))
+                        .width(convertDimensionsWidthUnit(14))
                         .onClick(() => {
                             this.changeYearMonth("preYear")
                         })
                     Image($r("app.media.arrow_left"))
-                        .width(convertDimensionsByUnit(14))
+                        .width(convertDimensionsWidthUnit(14))
                         .onClick(() => {
                             this.changeYearMonth("preMonth")
                         })
@@ -603,19 +603,19 @@ export struct IBestCalendar{
                     .fontSize(this.baseStyle.fontSizeMd)
                 Row(){
                     Image($r("app.media.arrow_right"))
-                        .width(convertDimensionsByUnit(14))
+                        .width(convertDimensionsWidthUnit(14))
                         .onClick(() => {
                             this.changeYearMonth("nextMonth")
                         })
                     Image($r("app.media.arrow_right_double"))
-                        .width(convertDimensionsByUnit(14))
+                        .width(convertDimensionsWidthUnit(14))
                         .onClick(() => {
                             this.changeYearMonth("nextYear")
                         })
                 }
             }
             .width('100%')
-            .height(convertDimensionsByUnit(this.isLandscape ? 20 : 40))
+            .height(convertDimensionsWidthUnit(this.isLandscape ? 20 : 40))
             .padding({left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd})
             .justifyContent(FlexAlign.SpaceBetween)
             .visibility(this.isShowHeader ? Visibility.Visible : Visibility.None)
@@ -625,7 +625,7 @@ export struct IBestCalendar{
                 }, (item: HeaderItemType) => item.text)
             }
             .width('100%')
-            .height(convertDimensionsByUnit(this.isLandscape ? 20 : 40))
+            .height(convertDimensionsWidthUnit(this.isLandscape ? 20 : 40))
             .justifyContent(FlexAlign.SpaceBetween)
             .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
             Scroll() {
@@ -640,8 +640,8 @@ export struct IBestCalendar{
                     }
                     .id(`calender_${this.uniId}`)
                     Text(this.curMonth)
-                        .fontSize(convertDimensionsByUnit(150, true))
-                        .height(getSizeByUnit(this.contentHeight))
+                        .fontSize(convertDimensionsWidthUnit(150, true))
+                        .height(convertDimensionsWidthUnit(this.contentHeight))
                         .fontColor(GRAY_COLOR.GRAY_2)
                         .zIndex(-1)
                         .visibility(this.isShowMark ? Visibility.Visible : Visibility.Hidden)
@@ -653,7 +653,7 @@ export struct IBestCalendar{
             Button(this.confirmBtnText)
                 .type(ButtonType.Capsule)
                 .width('90%')
-                .height(convertDimensionsByUnit(this.isLandscape ? 20 : 30))
+                .height(convertDimensionsWidthUnit(this.isLandscape ? 20 : 30))
                 .fontSize(this.baseStyle.fontSizeSm)
                 .margin({top: this.baseStyle.spaceXs})
                 .backgroundColor(this.confirmBtnColor || this.baseStyle[this.type])

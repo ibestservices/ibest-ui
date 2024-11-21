@@ -5,7 +5,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { CheckedItem, updateCheckboxStoreByKey } from '../checkboxGroup/store';
 import { CHECKBOX_GROUP_EVENT_NAME, getCheckboxNamespace } from '../checkboxGroup/utils';
 import { MaxChangeArgs, BuilderArgs } from './index.type';
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 @Component
 export struct IBestCheckbox {
   /**
@@ -36,7 +36,7 @@ export struct IBestCheckbox {
   /**
    * 图标大小
    */
-  @Prop iconSize: number | string = convertDimensionsByUnit(20)
+  @Prop iconSize: number | string = convertDimensionsWidthUnit(20)
   /**
    * 默认是否选中 非双向绑定
    * 如果要更改数据请从onChange回调中获取最新的值
@@ -54,7 +54,7 @@ export struct IBestCheckbox {
    * 文本大小
    * @since 1.18.0
    */
-  @Prop labelFontSize: number | string = convertDimensionsByUnit(16)
+  @Prop labelFontSize: number | string = convertDimensionsWidthUnit(16)
   /**
    * 文本位置，可选值为 left
    */
@@ -259,7 +259,7 @@ export struct IBestCheckbox {
       } else {
         Text(this.label)
           .fontColor(this.getLabelColor())
-          .fontSize(getSizeByUnit(this.labelFontSize))
+          .fontSize(getSizeByUnit(this.labelFontSize, true))
       }
     }
     .margin({

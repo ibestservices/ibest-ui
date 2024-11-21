@@ -5,7 +5,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { NumberKeyboard } from '../numberKeyboard';
 import { IBestPasswordInputModel, NumberKeyboardConfig } from './index.type';
 import { FocusController } from '@ohos.arkui.UIContext';
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 @Extend(TextInput) function passwordInputStyle(id: number, inputLength: number){
 	.width(CONTAINER_SIZE.FULL)
 	.height(CONTAINER_SIZE.FULL)
@@ -50,7 +50,7 @@ export struct IBestPasswordInput {
 	/**
 	 * 输入框高度
 	 */
-	@Prop inputHeight: number | string = convertDimensionsByUnit(50)
+	@Prop inputHeight: number | string = convertDimensionsWidthUnit(50)
 	/**
 	 * 格子间距
 	 */
@@ -58,7 +58,7 @@ export struct IBestPasswordInput {
 	/**
 	 * 圆角
 	 */
-	@Provide({allowOverride: "radius"}) radius: number | string = convertDimensionsByUnit(5)
+	@Provide({allowOverride: "radius"}) radius: number | string = convertDimensionsWidthUnit(5)
 	/**
 	 * 是否高亮当前正在输入的格子
 	 */
@@ -193,7 +193,7 @@ export struct IBestPasswordInput {
 			}
 		}
 		.width(CONTAINER_SIZE.FULL)
-		.padding(convertDimensionsByUnit(5))
+		.padding(convertDimensionsWidthUnit(5))
 	}
 }
 
@@ -237,7 +237,7 @@ struct InputField {
 	build() {
 		Row(){
 			Text(this.isHidden ? "•" : this.item.value)
-				.fontSize(this.isHidden ? convertDimensionsByUnit(40) : this.baseStyle.fontSizeXl)
+				.fontSize(this.isHidden ? convertDimensionsWidthUnit(40) : this.baseStyle.fontSizeXl)
 				.fontColor(GRAY_COLOR.GRAY_8)
 				.visibility(this.item.value ? Visibility.Visible : Visibility.None)
 			if(this.focused && this.currentFocusIndex == this.index){

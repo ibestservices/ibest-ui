@@ -4,7 +4,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { LoadingIconType } from '../../model/Global.type';
 import {IBestLoadingCircular} from './circular'
 import {IBestLoadingSpinner} from './spinner'
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 @Component
 export struct IBestLoading {
   /**
@@ -38,7 +38,7 @@ export struct IBestLoading {
   /**
    * loading的线条宽度
    */
-  @Prop loadingStrokeWidth: number | string
+  @Prop loadingStrokeWidth: Length
   /**
    * loading的遮罩颜色
    */
@@ -120,12 +120,6 @@ export struct IBestLoading {
     }
   }
 
-  aboutToAppear(): void {
-    if(this.loadingStrokeWidth === undefined){
-      this.loadingStrokeWidth = convertDimensionsByUnit(this.loadingIconType == "spinner" ? 3 : 2)
-    }
-  }
-
   build(){
     Stack(){
       if(this.defaultBuilder){
@@ -138,8 +132,6 @@ export struct IBestLoading {
           this.LoadingContent()
         }
         .justifyContent(FlexAlign.Center)
-        // 避免边框超过绘制区域
-        .padding(getSizeByUnit(this.loadingStrokeWidth))
         .width(this.sizeValue?.width || 'auto')
         .height(this.sizeValue?.height || 'auto')
         .backgroundColor(this.loadingMaskColor)
@@ -148,8 +140,6 @@ export struct IBestLoading {
           this.LoadingContent()
         }
         .justifyContent(FlexAlign.Center)
-        // 避免边框超过绘制区域
-        .padding(getSizeByUnit(this.loadingStrokeWidth))
         .width(this.sizeValue?.width || 'auto')
         .height(this.sizeValue?.height || 'auto')
         .backgroundColor(this.loadingMaskColor)

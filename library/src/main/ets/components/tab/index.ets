@@ -1,4 +1,4 @@
-import { convertDimensionsByUnit, getComponentsInfo, getSizeByUnit, sleep } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit, sleep } from '../../utils/utils';
 import { IBestTabController, IBestTabItem, TabWidthType } from './index.type';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
@@ -22,7 +22,7 @@ export struct IBestTabs{
     /**
      * tab高度
      */
-    @Provide({allowOverride: "tabHeight"}) tabHeight: number | string = convertDimensionsByUnit(35)
+    @Provide({allowOverride: "tabHeight"}) tabHeight: number | string = convertDimensionsWidthUnit(35)
     /**
      * tab宽度类型
      */
@@ -58,11 +58,11 @@ export struct IBestTabs{
     /**
      * 标记线宽度
      */
-    @Provide({allowOverride: "tabLineWidth"}) tabLineWidth: number | string = convertDimensionsByUnit(40)
+    @Provide({allowOverride: "tabLineWidth"}) tabLineWidth: number = 0
     /**
      * 标记线高度
      */
-    @Provide({allowOverride: "tabLineHeight"}) tabLineHeight: number | string = convertDimensionsByUnit(2)
+    @Provide({allowOverride: "tabLineHeight"}) tabLineHeight: number | string = convertDimensionsWidthUnit(2)
     /**
      * 标记块宽度
      */
@@ -90,7 +90,7 @@ export struct IBestTabs{
     /**
      * 标记线Y偏移量
      */
-    @Provide({allowOverride: "lineOffsetY"}) lineOffsetY: number = 0
+    @Provide({allowOverride: "lineOffsetY"}) lineOffsetY: number | string = 0
     /**
      * tab区域背景颜色
      */
@@ -251,7 +251,7 @@ export struct IBestTabs{
         }
     }
     build() {
-        Column({ space: convertDimensionsByUnit(15) }){
+        Column({ space: convertDimensionsWidthUnit(15) }){
             if(this.tabWidthType == "auto"){
                 Scroll(this.scroller){
                     IBestTabBox({
@@ -318,27 +318,27 @@ struct IBestTabBox{
     @Link currentName: string
     @Consume type: 'line' | 'card'
     @Consume tabWidthType: "auto" | "flex"
-    @Consume tabHeight: number
+    @Consume tabHeight: number | string
     @Consume tabsList: IBestTabItem[]
     @Consume tabBgColor: ResourceColor
     @Consume tabLineWidth: number
-    @Consume tabLineHeight: string
+    @Consume tabLineHeight: number | string
     @Consume tabLineColor: ResourceColor
-    @Consume lineOffsetY: number
+    @Consume lineOffsetY: number | string
     @Prop translateX: number
     @Prop tabBoxTranslateX: number
     @Prop tabBoxWidth: number
-    initSize: () => Promise<void> = () => new Promise(() => {})
+    initSize: () => Promise<void> = () => Promise.resolve()
     onTabClick: (name: string) => void = () => {}
     build() {
         Stack({alignContent: Alignment.BottomStart}){
             // 标记线
             if(this.type == "line"){
                 Row()
-                    .width(getSizeByUnit(this.tabLineWidth))
+                    .width(this.tabLineWidth)
                     .height(getSizeByUnit(this.tabLineHeight))
                     .backgroundColor(this.tabLineColor)
-                    .translate({ x: getSizeByUnit(this.translateX) })
+                    .translate({ x: this.translateX })
                     .animation({
                         duration: 100,
                         curve: Curve.FastOutSlowIn
@@ -348,10 +348,10 @@ struct IBestTabBox{
             // 标记块
             if(this.type == "card"){
                 Row()
-                    .width(getSizeByUnit(this.tabBoxWidth + 2))
+                    .width(this.tabBoxWidth + 2)
                     .height(getSizeByUnit(this.tabHeight))
                     .backgroundColor(this.tabLineColor)
-                    .translate({ x: getSizeByUnit(this.tabBoxTranslateX) })
+                    .translate({ x: this.tabBoxTranslateX })
                     .animation({
                         duration: 100,
                         curve: Curve.FastOutSlowIn

@@ -200,20 +200,31 @@ export function getLengthUnit(): LengthUnit{
   return config.unit == "lpx" ? LengthUnit.LPX : config.unit == "vp" ? LengthUnit.VP : LengthUnit.PX
 }
 /**
- * 根据单位转换尺寸 用于框架固定尺寸格式化
+ * 根据单位转换尺寸 用于框架固定尺寸格式化 带单位
  */
-export function convertDimensionsByUnit(val: number, isFont?: boolean): string{
+export function convertDimensionsWidthUnit(val: number, isFont?: boolean): string{
+  let config: IBestGlobalConfig = AppStorage.get("iBestGlobalConfig") as IBestGlobalConfig
+  let unit = "vp"
+  if(config){
+    unit = (isFont ? config.fontUnit : config.unit) as string
+  }
+  return convertDimensions(val, isFont) + unit
+}
+/**
+ * 根据单位转换尺寸
+ */
+export function convertDimensions(val: number, isFont?: boolean): number{
   let config: IBestGlobalConfig = AppStorage.get("iBestGlobalConfig") as IBestGlobalConfig
   if(config){
     let unit = isFont ? config.fontUnit : config.unit
     switch (unit){
       case "lpx":
-        return `${val*GlobalStore.screenWidth/(config.designWidth as number)}${unit}`
+        return val*GlobalStore.screenWidth/(config.designWidth as number)
       case "px":
-        return `${vp2px(val)}${unit}`
+        return vp2px(val)
       default :
-        return `${val}${unit}`
+        return val
     }
   }
-  return val + "vp"
+  return val
 }

@@ -3,7 +3,7 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE } from '../../theme-chalk/src/size.type';
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { ARROW_DIRECTION, CellSizeData } from './index.type';
 
 @Component
@@ -143,9 +143,9 @@ export struct IBestCell {
     const cellSize = this.cellSize;
     switch (cellSize){
         case SIZE.LARGE:
-          return new CellSizeData(this.baseStyle.spaceMd, this.baseStyle.fontSizeLg, this.baseStyle.fontSizeMd)
+          return new CellSizeData(convertDimensionsWidthUnit(14), this.baseStyle.fontSizeLg, this.baseStyle.fontSizeMd)
       default:
-        return new CellSizeData(convertDimensionsByUnit(14), this.baseStyle.fontSizeMd, this.baseStyle.fontSizeSm)
+        return new CellSizeData(convertDimensionsWidthUnit(12), this.baseStyle.fontSizeMd, this.baseStyle.fontSizeSm)
     }
   }
 
@@ -247,8 +247,8 @@ export struct IBestCell {
                   Image($r("app.media.arrow_right"))
                     .width(this.baseStyle.fontSizeSm)
                     .margin({
-                      top: convertDimensionsByUnit(3),
-                      left: convertDimensionsByUnit(4)
+                      top: convertDimensionsWidthUnit(3),
+                      left: convertDimensionsWidthUnit(4)
                     })
                     .rotate({ angle: this.getArrowRotateAngle() })
                     .animation({
@@ -265,7 +265,7 @@ export struct IBestCell {
         .alignItems(this.getAlignItems())
         .width(CONTAINER_SIZE.FULL)
         .border({
-          width: { bottom: this.hasBorder ? convertDimensionsByUnit(1) : 0 },
+          width: { bottom: this.hasBorder ? 1 : 0 },
           color: GRAY_COLOR.GRAY_3,
         })
         .padding({

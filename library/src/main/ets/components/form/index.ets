@@ -1,5 +1,5 @@
 import { emitter } from '../../utils/EventEmitter'
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { FieldTextAlign, IBestFieldValueType,
 	LabelPositionType,
 	RequireAsteriskPositionType } from '../field/index.type'
@@ -30,11 +30,11 @@ export struct IBestForm {
 	/**
 	 * 表单项间距
   	 */
-	@Prop space: number | string = convertDimensionsByUnit(10)
+	@Prop space: number | string = convertDimensionsWidthUnit(10)
 	/**
      * 文本宽度
      */
-	@Prop labelWidth: number | string = convertDimensionsByUnit(80)
+	@Prop labelWidth: number | string = convertDimensionsWidthUnit(80)
 	/**
      * 文本位置
      */

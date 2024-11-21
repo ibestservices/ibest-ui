@@ -15,7 +15,7 @@ export {
 	IBestToast,
 	IBestActionSheet,
 	init as IBestInit,
-	setGlobalConfig,
+	setGlobalConfig as IBestSetGlobalConfig,
 	IBestImagePreview,
 	IBestDialogUtil,
 	IBestNotify

@@ -1,5 +1,5 @@
 import router from '@ohos.router'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, SPACE } from '../assets/styles/BaseStyle'
+import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, SPACE } from '../assets/styles/BaseStyle'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 
 interface ComponentPart{
@@ -190,6 +190,15 @@ struct Index {
   build() {
     Column() {
       List() {
+        ListItem(){
+          Column({space: 16}){
+            Row({space: 16}){
+              Image($r("app.media.app_icon")).width(32)
+              Text("IBestUI").fontSize(32)
+            }
+            Text("轻量、可定制化主题的鸿蒙组件库").fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
+          }.width("100%").alignItems(HorizontalAlign.Start).padding({left: 10})
+        }.margin({bottom: 30})
         ForEach(this.componentList, (part: ComponentPart) => {
           ListItem() {
             ComponentShowContainer({ title: part.title, titlePaddingLeft: SPACE.SMALL }) {

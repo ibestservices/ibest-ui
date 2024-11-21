@@ -2,13 +2,13 @@ import { IBestGlobalConfig } from '../../model/Global.type';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 
 @Extend(Button)
 function defaultBtnStyles(theme: 'default' | 'round-button') {
   .layoutWeight(1)
   .backgroundColor('transparent')
-  .height(convertDimensionsByUnit(theme == 'default' ? 48 : 36))
+  .height(convertDimensionsWidthUnit(theme == 'default' ? 48 : 36))
 }
 
 @CustomDialog
@@ -37,7 +37,7 @@ export struct IBestDialogView {
   /**
    * 弹窗宽度
    */
-  @Prop dialogWidth: string | number = convertDimensionsByUnit(this.iBestGlobalConfig.unit == "lpx" ? 290 : 320)
+  @Prop dialogWidth: string | number = convertDimensionsWidthUnit(320)
   /**
    * 弹窗圆角
    */
@@ -53,15 +53,15 @@ export struct IBestDialogView {
   /**
    * 标题的padding-top值
    */
-  @Prop titlePaddingTop: string | number = convertDimensionsByUnit(26)
+  @Prop titlePaddingTop: string | number = convertDimensionsWidthUnit(26)
   /**
    * 标题的padding-left与padding-right值
    */
-  @Prop titlePaddingX: string | number = convertDimensionsByUnit(24)
+  @Prop titlePaddingX: string | number = convertDimensionsWidthUnit(24)
   /**
    * 标题的padding-top值
    */
-  @Prop titleLineHeight: string | number = convertDimensionsByUnit(24)
+  @Prop titleLineHeight: string | number = convertDimensionsWidthUnit(24)
   /**
    * 标题的fontSize
    */
@@ -77,15 +77,15 @@ export struct IBestDialogView {
   /**
    * 内容区域的padding-left与padding-right值
    */
-  @Prop messagePaddingX: string | number = convertDimensionsByUnit(24)
+  @Prop messagePaddingX: string | number = convertDimensionsWidthUnit(24)
   /**
    * 内容区域的padding-top值
    */
-  @Prop messagePaddingTop: string | number = convertDimensionsByUnit(8)
+  @Prop messagePaddingTop: string | number = convertDimensionsWidthUnit(8)
   /**
    * 内容区域的padding-bottom值
    */
-  @Prop messagePaddingBottom: string | number = convertDimensionsByUnit(26)
+  @Prop messagePaddingBottom: string | number = convertDimensionsWidthUnit(26)
   /**
    * 内容区域的fontColor 默认#323233
    */
@@ -235,7 +235,7 @@ export struct IBestDialogView {
       } else {
         if (this.isHasTitle()) {
           Text(this.title)
-            .fontSize(getSizeByUnit(this.titleFontSize))
+            .fontSize(getSizeByUnit(this.titleFontSize, true))
             .fontWeight(FontWeight.Medium)
             .lineHeight(getSizeByUnit(this.titleLineHeight))
             .padding({
@@ -264,7 +264,7 @@ export struct IBestDialogView {
             .margin({top: this.isHasTitle() ? 0 : getSizeByUnit(this.messagePaddingBottom)})
             .textAlign(this.getFormatAlign(this.messageTextAlign))
             .lineHeight(getSizeByUnit(this.messageLineHeight))
-            .fontSize(getSizeByUnit(this.messageFontSize))
+            .fontSize(getSizeByUnit(this.messageFontSize, true))
             .fontColor(this.getMsgColor())
         }
         .scrollBarColor(this.baseStyle.scrollBarColor)
@@ -296,14 +296,14 @@ export struct IBestDialogView {
                 } else {
                   Text(this.cancelButtonText)
                     .fontColor(this.getCancelBtnFontColor())
-                    .fontSize(getSizeByUnit(this.buttonFontSize))
+                    .fontSize(getSizeByUnit(this.buttonFontSize, true))
                     .transition({ type: TransitionType.Insert, opacity: 1 })
                     .transition({ type: TransitionType.Delete, opacity: 0 })
                 }
               }
             }
             .border({
-              width: this.theme == 'default' ? { right: this.showConfirmButton ? convertDimensionsByUnit(1) : 0 } : convertDimensionsByUnit(1), color: '#ecedf0'
+              width: this.theme == 'default' ? { right: this.showConfirmButton ? 1 : 0 } : 1, color: '#ecedf0'
             })
             .enabled(!this.cancelButtonDisabled || !this.cancelButtonLoading)
             .defaultBtnStyles(this.theme)
@@ -330,7 +330,7 @@ export struct IBestDialogView {
                 } else {
                   Text(this.confirmButtonText)
                     .fontColor(this.getConfirmBtnFontColor())
-                    .fontSize(getSizeByUnit(this.buttonFontSize))
+                    .fontSize(getSizeByUnit(this.buttonFontSize, true))
                     .transition({ type: TransitionType.Insert, opacity: 1 })
                     .transition({ type: TransitionType.Delete, opacity: 0 })
                 }
@@ -347,7 +347,7 @@ export struct IBestDialogView {
 
         }.border({
           width: {
-            top: this.theme == 'default' ? convertDimensionsByUnit(1) : 0
+            top: this.theme == 'default' ? 1 : 0
           },
           color: '#ecedf0'
         })

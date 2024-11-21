@@ -1,7 +1,7 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
 import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
 import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { convertDimensionsByUnit, getSizeByUnit } from "../../utils/utils"
+import { convertDimensions, convertDimensionsWidthUnit, getSizeByUnit } from "../../utils/utils"
 import { IBestButton } from "../button"
 import { IBestSignatureController } from "./index.type"
 @Component
@@ -17,7 +17,7 @@ export struct IBestSignature{
 	/**
 	 * 高度
 	 */
-	@Prop boardHeight: number | string = convertDimensionsByUnit(200)
+	@Prop boardHeight: number | string = convertDimensionsWidthUnit(200)
 	/**
 	 * 导出图片类型
 	 */
@@ -130,9 +130,9 @@ export struct IBestSignature{
 				Row({ space: this.baseStyle.spaceXs }){
 					IBestButton({
 						text: this.clearText,
-						btnWidth: 60,
-						btnHeight: 32,
-						btnFontSize: 12,
+						btnWidth: convertDimensions(60),
+						btnHeight: convertDimensions(32),
+						btnFontSize: convertDimensions(12),
 						onClickBtn: () => {
 							this.clearCanvas()
 						}
@@ -140,9 +140,9 @@ export struct IBestSignature{
 					IBestButton({
 						type: 'primary',
 						text: this.confirmText,
-						btnWidth: 60,
-						btnHeight: 32,
-						btnFontSize: 12,
+						btnWidth: convertDimensions(60),
+						btnHeight: convertDimensions(32),
+						btnFontSize: convertDimensions(12),
 						onClickBtn: () => {
 							this.confirm()
 						}

@@ -1,17 +1,17 @@
 import { UIContext } from '@ohos.arkui.UIContext';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { curves } from '@kit.ArkUI';
-import { convertDimensionsByUnit, getSizeByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 @Component
 export struct IBestLoadingSpinner {
   /**
    * 菊花图尺寸
    */
-  @Prop spinnerSize: number | string = convertDimensionsByUnit(30)
+  @Prop spinnerSize: number | string = convertDimensionsWidthUnit(30)
   /**
    * 菊花图线的宽度
    */
-  @Prop strokeWidth: number | string = convertDimensionsByUnit(3)
+  @Prop strokeWidth: Length = 3
   /**
    * 滚动的角度
    */
@@ -19,7 +19,7 @@ export struct IBestLoadingSpinner {
   /**
    * 当前菊花图的每条线的长度
    */
-  @Prop strokeHeight: string | number = convertDimensionsByUnit(8)
+  @Prop strokeHeight: string | number = convertDimensionsWidthUnit(8)
   /**
    * loading的颜色
    */
@@ -34,7 +34,7 @@ export struct IBestLoadingSpinner {
       ForEach(this.list, (item: number, index) => {
         Column() {
           Column()
-            .width(getSizeByUnit(this.strokeWidth))
+            .width(this.strokeWidth)
             .height(getSizeByUnit(this.strokeHeight))
             .borderRadius(1)
             .backgroundColor(this.color)

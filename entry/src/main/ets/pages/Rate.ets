@@ -46,8 +46,8 @@ struct RatePage {
 					ComponentShowContainer({ title: '自定义样式' }) {
 						IBestRate({
 							value: $value2,
-							iconSize: 30,
-							space: 16,
+							iconSize: 40,
+							space: 10,
 							activeColor: '#ffd21e',
 							inactiveIcon: $r("app.media.icon_star_o"),
 							inactiveColor: '#eee'

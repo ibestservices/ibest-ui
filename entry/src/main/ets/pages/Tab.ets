@@ -154,26 +154,22 @@ struct TabPage {
                     ComponentShowContainer({ title: '收缩布局' }) {
                         Column({space: 20}){
                             IBestTabs({
-                                tabHeight: 40,
                                 tabWidthType: "auto",
                                 tabsList: this.tabsList,
                                 currentName: $curTabName
                             })
                             IBestTabs({
-                                tabHeight: 40,
                                 tabWidthType: "auto",
                                 tabsList: this.tabsList1,
                                 currentName: $curTabName2
                             })
                             IBestTabs({
-                                tabHeight: 40,
                                 tabWidthType: "auto",
                                 type: "card",
                                 tabsList: this.tabsList,
                                 currentName: $curTabName
                             })
                             IBestTabs({
-                                tabHeight: 40,
                                 tabWidthType: "auto",
                                 type: "card",
                                 tabsList: this.tabsList1,
@@ -188,7 +184,7 @@ struct TabPage {
                         IBestTabs({
                             tabsList: this.tabsList,
                             isTabLineWidthFixed: true,
-                            tabLineWidth: 30,
+                            tabLineWidth: 15,
                             lineOffsetY: 5,
                             currentName: $curTabName
                         })
