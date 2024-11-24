@@ -1,6 +1,11 @@
-import { IBestButton, IBestTabController, IBestTabItem,
+import {
+    IBestButton,
+    IBestTabController,
+    IBestTabItem,
     IBestTabItemType,
-    IBestTabs, IBestToast } from '@ibestservices/ibest-ui'
+    IBestTabs,
+    IBestToast
+} from '@ibestservices/ibest-ui'
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../assets/global.type'
 import TitleBar from '../components/TitleBar'
@@ -73,6 +78,26 @@ struct TabPage {
         {
             label: "标签十",
             name: "10"
+        },
+        {
+            label: "标签十一",
+            name: "11"
+        },
+        {
+            label: "标签十二",
+            name: "12"
+        },
+        {
+            label: "标签十三",
+            name: "13"
+        },
+        {
+            label: "标签十四",
+            name: "14"
+        },
+        {
+            label: "标签十五",
+            name: "15"
         }
     ]
     @State tabsList2: IBestTabItem[] = [

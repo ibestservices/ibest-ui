@@ -1,14 +1,22 @@
-import { convertDimensionsWidthUnit, getIsLandscape, getSizeByUnit, getWindowAvoidSize } from '../../utils/utils'
-import { common } from '@kit.AbilityKit'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { PopupAlign, PopupBaseController } from './index.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import GlobalStore from '../../utils/GlobalStore'
+
 const popupDuration = 200
 const hideDuration = 220
+
+interface PopupSize{
+	width: string | number
+	height: string | number
+}
 
 @CustomDialog
 @Component
 struct IBestPopupBaseContent {
+	// 是否横屏
+	@StorageProp("isLandscape") @Watch("initSize") isLandscape: boolean = false
 	@State transX: string | number = ""
 	@State transY: string | number = ""
 	/**
@@ -30,7 +38,7 @@ struct IBestPopupBaseContent {
 	/**
 	 * 背板的圆角半径
 	 */
-	@Prop cornerRadius: number = 0
+	@Prop cornerRadius: number | string = 0
 	/**
 	 * 是否开启顶部安全区适配
 	 */
@@ -40,13 +48,10 @@ struct IBestPopupBaseContent {
 	 */
 	@Consume safeAreaInsetBottom: boolean
 	/**
-	 * 顶部规避尺寸
-	 */
-	@Prop topAvoidSize: number
-	/**
-	 * 底部规避尺寸
-	 */
-	@Prop bottomAvoidSize: number
+	 * 自定义头部
+	 * @since 1.18.0
+     */
+	@BuilderParam headerBuilder?: CustomBuilder
 	/**
 	 * 自定义内容
 	 */
@@ -59,6 +64,28 @@ struct IBestPopupBaseContent {
 	aboutToAppear(): void {
 		this.baseController.hide = (): void => this.init()
 		this.init()
+	}
+	// 初始化尺寸
+	initSize(): PopupSize{
+		switch (this.popupAlign){
+			case "left":
+			case "right":
+				return {
+					width: getSizeByUnit(this.popupWidth || (this.isLandscape ? "70%" : "60%")),
+					height: getSizeByUnit(this.popupHeight || "100%")
+				}
+			case "top":
+			case "bottom":
+				return {
+					width: getSizeByUnit(this.popupWidth || "100%"),
+					height: getSizeByUnit(this.popupHeight || (this.isLandscape ? "70%" : "40%"))
+				}
+			case "center":
+				return {
+					width: getSizeByUnit(this.popupWidth || ""),
+					height: getSizeByUnit(this.popupHeight || "")
+				}
+		}
 	}
 	// 初始化
 	init(){
@@ -95,22 +122,26 @@ struct IBestPopupBaseContent {
 		Column(){
 			Column(){
 				if(this.isShowHeader){
-					PopupTitle({
-						close: this.close
-					})
+					if(this.headerBuilder){
+						this.headerBuilder()
+					}else{
+						PopupTitle({
+							close: this.close
+						})
+					}
 				}
 				if(this.contentBuilder){
 					this.contentBuilder()
 				}
 			}
-			.width(this.popupWidth)
-			.height(this.popupHeight)
+			.width(this.initSize().width)
+			.height(this.initSize().height)
 			.backgroundColor("#fff")
 			.padding({
 				top: this.safeAreaInsetTop && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
-					== "top") ? convertDimensionsWidthUnit(this.topAvoidSize) : 0,
+					== "top") ? convertDimensionsWidthUnit(GlobalStore.topAvoidHeight) : 0,
 				bottom: this.safeAreaInsetBottom && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
-					== "bottom") ? convertDimensionsWidthUnit(this.bottomAvoidSize) : 0
+					== "bottom") ? convertDimensionsWidthUnit(GlobalStore.bottomBarHeight) : 0
 			})
 			.alignItems(HorizontalAlign.Start)
 			.borderRadius(getSizeByUnit(this.cornerRadius))
@@ -133,8 +164,6 @@ struct IBestPopupBaseContent {
 
 @Component
 export struct IBestPopup{
-	// 是否横屏
-	@State isLandscape: boolean = getIsLandscape(getContext(this))
 	/**
 	 * 弹框展示状态
 	 */
@@ -164,6 +193,11 @@ export struct IBestPopup{
 	 */
 	@Prop offsetY: number = 0
 	/**
+	 * 是否为模态窗口
+	 * @since 1.18.0
+	 */
+	@Prop isModal: boolean = true
+	/**
 	 * 蒙层颜色
 	 * @since 1.15.0
 	 */
@@ -171,7 +205,7 @@ export struct IBestPopup{
 	/**
 	 * 背板的圆角半径
 	 */
-	@Prop cornerRadius: number = 0
+	@Prop cornerRadius: number | string = 0
 	/**
 	 * 是否允许点击遮罩关闭
 	 */
@@ -197,14 +231,6 @@ export struct IBestPopup{
 	 */
 	@Provide({allowOverride: "safeAreaInsetBottom"}) safeAreaInsetBottom: boolean = false
 	/**
-	 * 顶部规避尺寸
-	 */
-	@State topAvoidSize: number = 0
-	/**
-	 * 底部规避尺寸
-	 */
-	@State bottomAvoidSize: number = 0
-	/**
 	 * 自定义内容
 	 */
 	@BuilderParam contentBuilder?: CustomBuilder
@@ -216,7 +242,7 @@ export struct IBestPopup{
 	 * 弹框关闭回调
 	 */
 	onClose: () => void = () => {}
-	private context = getContext(this) as common.BaseContext
+
 	private baseController: PopupBaseController = new PopupBaseController()
 	dialogController: CustomDialogController = new CustomDialogController({
 		builder: IBestPopupBaseContent({
@@ -225,8 +251,6 @@ export struct IBestPopup{
 			popupAlign: this.popupAlign,
 			popupWidth: this.popupWidth,
 			popupHeight: this.popupHeight,
-			topAvoidSize: this.topAvoidSize,
-			bottomAvoidSize: this.bottomAvoidSize,
 			cornerRadius: this.cornerRadius,
 			close: (): void => this.close()
 		}),
@@ -234,7 +258,7 @@ export struct IBestPopup{
 		DialogAlignment.TopEnd : this.popupAlign == "top" ? DialogAlignment.Top : this.popupAlign == "bottom" ?
 			DialogAlignment.Bottom : DialogAlignment.Center,
 		offset: { dx: 0, dy: -this.offsetY },
-		isModal: true,
+		isModal: this.isModal,
 		maskColor: this.maskColor,
 		customStyle: true,
 		onWillDismiss:(dismissDialogAction: DismissDialogAction)=> {
@@ -247,39 +271,6 @@ export struct IBestPopup{
 		cancel: this.close
 	})
 
-	aboutToAppear(){
-		this.initSize()
-	}
-	// 初始化尺寸
-	async initSize(){
-		let res = await getWindowAvoidSize(this.context)
-		switch (this.popupAlign){
-			case "left":
-			case "right":
-				if(this.isLandscape){
-					this.popupWidth = getSizeByUnit(this.popupWidth || "70%")
-				}else{
-					this.popupWidth = getSizeByUnit(this.popupWidth || "60%")
-				}
-				this.popupHeight = getSizeByUnit(this.popupHeight || "100%")
-				break
-			case "top":
-			case "bottom":
-				this.popupWidth = getSizeByUnit(this.popupWidth || "100%")
-				if(this.isLandscape){
-					this.popupHeight = getSizeByUnit(this.popupHeight || "70%")
-				}else{
-					this.popupHeight = getSizeByUnit(this.popupHeight || "40%")
-				}
-				break
-			case "center":
-				this.popupWidth = getSizeByUnit(this.popupWidth || "")
-				this.popupHeight = getSizeByUnit(this.popupHeight || "")
-				break
-		}
-		this.topAvoidSize = res.topSize
-		this.bottomAvoidSize = res.navigationSize
-	}
 	visibleChange(){
 		if(this.visible){
 			this.dialogController.open()
@@ -307,9 +298,6 @@ struct PopupTitle {
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@Consume title: string
 	@Consume isShowClose: boolean
-	/**
-	 * 自定义关闭图标
-	 */
 	@Consume closeIcon: string | Resource
 	close: () => void = () => {}
 	build() {

@@ -373,7 +373,6 @@ struct IBestTabBox{
             .borderRadius(this.baseStyle.borderRadiusSm)
             .border({ width: this.type == "card" ? 1 : 0, color: this.tabLineColor })
         }
-        .width(this.tabWidthType == "flex" ? "100%" : "")
         .backgroundColor(this.tabBgColor)
     }
 }

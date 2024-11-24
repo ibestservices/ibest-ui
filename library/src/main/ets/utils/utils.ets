@@ -2,7 +2,6 @@ import { componentUtils, ComponentUtils, LengthUnit, window } from '@kit.ArkUI'
 import { ComAvoidAreaSize, ComInfoType, IBestGlobalConfig } from '../model/Global.type'
 import { common } from '@kit.AbilityKit'
 import { AnyType } from '../model/AnyType'
-import { resourceManager } from '@kit.LocalizationKit'
 import GlobalStore from './GlobalStore'
 /**
  * 休眠
@@ -155,12 +154,7 @@ export const isFunction = (val: AnyType): boolean => typeof val === 'function'
  * 是否是Promise
  */
 export const isPromise = (val: AnyType): boolean => isObject(val) && isFunction(val.then) && isFunction(val.catch)
-/**
- * 获取是否横屏
- */
-export const getIsLandscape = (context: Context): boolean => {
-  return context.resourceManager.getConfigurationSync().direction == resourceManager.Direction.DIRECTION_HORIZONTAL
-}
+
 /**
  * 生成随机id
  */

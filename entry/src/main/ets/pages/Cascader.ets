@@ -1,9 +1,17 @@
-import { IBestCascader, IBestCascaderContent, IBestCascaderOption, IBestCellGroup, IBestCell, IBestToast } from '@ibestservices/ibest-ui'
+import {
+    IBestCascader,
+    IBestCascaderContent,
+    IBestCascaderOption,
+    IBestCell,
+    IBestCellGroup,
+    IBestToast
+} from '@ibestservices/ibest-ui'
 import TitleBar from '../components/TitleBar'
 import { ComponentRouterParams } from '../assets/global.type'
 import router from '@ohos.router'
 import { CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
 import ComponentShowContainer from '../components/ComponentShowContainer'
+import { regionData } from '@ibestservices/area-data'
 @Entry
 @Component
 struct CascaderPage {
@@ -19,81 +27,11 @@ struct CascaderPage {
 	@State visible2: boolean = false
 	@State fieldValue2: string = '江苏省,南京市,雨花台区'
 	@State selectValue2: string[] = ["320000", "320100", "320114"]
-	@State data: IBestCascaderOption[] = [
-		{
-			text: "江苏省",
-			value: "320000",
-			children: [
-				{
-					text: "南京市",
-					value: "320100",
-					children: [
-						{
-							text: "秦淮区",
-							value: "320104"
-						},
-						{
-							text: "雨花台区",
-							value: "320114"
-						}
-					]
-				},
-				{
-					text: "苏州市",
-					value: "320500",
-					children: [
-						{
-							text: "姑苏区",
-							value: "320508"
-						},
-						{
-							text: "昆山市",
-							value: "320583"
-						}
-					]
-				}
-			]
-		},
-		{
-			text: "安徽省",
-			value: "340000",
-			children: [
-				{
-					text: "合肥市",
-					value: "340100",
-					children: [
-						{
-							text: "蜀山区",
-							value: "340104"
-						},
-						{
-							text: "合肥高新技术产业开发区",
-							value: "340171"
-						}
-					]
-				},
-				{
-					text: "黄山市",
-					value: "341000",
-					children: [
-						{
-							text: "屯溪区",
-							value: "341002"
-						},
-						{
-							text: "黄山区",
-							value: "341003"
-						}
-					]
-				}
-			]
-		}
-	]
 
 	@State visible3: boolean = false
 	@State fieldValue3: string = '请选择地区'
 	@State selectValue3: string[] = []
-	@State data3: IBestCascaderOption[] = [
+	@State data1: IBestCascaderOption[] = [
 		{
 			text: "江苏省",
 			value: "320000"
@@ -138,7 +76,7 @@ struct CascaderPage {
 	@State visible4: boolean = false
 	@State fieldValue4: string = '请选择地区'
 	@State selectValue4: string[] = []
-	@State data4: IBestCascaderOption[] = [
+	@State data2: IBestCascaderOption[] = [
 		{
 			text: "江苏省",
 			value: "320000",
@@ -308,7 +246,7 @@ struct CascaderPage {
 					ComponentShowContainer({ title: '平铺展示', titlePaddingLeft: SPACE.SMALL }) {
 						IBestCascaderContent({
 							value: $selectValue5,
-							options: this.data4
+							options: regionData
 						})
 					}
 				}
@@ -317,7 +255,7 @@ struct CascaderPage {
 			// 基础用法
 			IBestCascader({
 				visible: $visible,
-				options: this.data,
+				options: regionData,
 				value: $selectValue,
 				onConfirm: (value: IBestCascaderOption[]) => {
 					this.fieldValue = value.map(item => item.text).join(',')
@@ -326,7 +264,7 @@ struct CascaderPage {
 			// 自定义颜色
 			IBestCascader({
 				visible: $visible1,
-				options: this.data,
+				options: regionData,
 				activeColor: '#ee0a24',
 				value: $selectValue1,
 				onConfirm: (value: IBestCascaderOption[]) => {
@@ -336,7 +274,7 @@ struct CascaderPage {
 			// 自定义高度
 			IBestCascader({
 				visible: $visible2,
-				options: this.data,
+				options: regionData,
 				value: $selectValue2,
 				itemHeight: 100,
 				onConfirm: (value: IBestCascaderOption[]) => {
@@ -346,7 +284,7 @@ struct CascaderPage {
 			// 异步加载
 			IBestCascader({
 				visible: $visible3,
-				options: this.data3,
+				options: this.data1,
 				value: $selectValue3,
 				lazy: true,
 				lazyLoad: this.lazyLoad,
@@ -357,7 +295,7 @@ struct CascaderPage {
 			// 禁用选项
 			IBestCascader({
 				visible: $visible4,
-				options: this.data4,
+				options: this.data2,
 				value: $selectValue4,
 				onConfirm: (value: IBestCascaderOption[]) => {
 					this.fieldValue4 = value.map(item => item.text).join(',')

@@ -1,7 +1,7 @@
-import TitleBar from '../components/TitleBar'
+import TitleBar from '../components/TitleBar';
 import router from '@ohos.router';
 import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import ComponentShowContainer from '../components/ComponentShowContainer'
+import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 import { IBestStepper } from '@ibestservices/ibest-ui';
 
@@ -97,8 +97,8 @@ struct StepperPage {
         ListItem() {
           ComponentShowContainer({ title: '自定义大小' }) {
             IBestStepper({
-              inputWidth: '80lpx',
-              buttonSize: '64lpx'
+              inputWidth: 40,
+              buttonSize: 32
             })
           }
         }.margin({

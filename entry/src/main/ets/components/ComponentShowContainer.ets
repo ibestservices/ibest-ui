@@ -1,4 +1,4 @@
-import { COLOR_GRAY, FONT_SIZE, SPACE, CONTAINER_SIZE } from '../assets/styles/BaseStyle'
+import { COLOR_GRAY, CONTAINER_SIZE, FONT_SIZE, SPACE } from '../assets/styles/BaseStyle';
 
 @Component
 export default struct ComponentShowContainer {
@@ -25,7 +25,7 @@ export default struct ComponentShowContainer {
         }
       }
       .margin({ left: this.card ? SPACE.BASE : 0, right: this.card ? SPACE.BASE : 0  })
-      .borderRadius(this.card ? SPACE.SMALL : 0)
+      // .borderRadius(this.card ? SPACE.SMALL : 0)
       .clip(true)
     }.width(CONTAINER_SIZE.FULL)
     .justifyContent(FlexAlign.Start)

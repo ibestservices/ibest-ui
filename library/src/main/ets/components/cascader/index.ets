@@ -1,4 +1,4 @@
-import { convertDimensionsWidthUnit, getIsLandscape, getSizeByUnit, sleep } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getSizeByUnit, sleep } from '../../utils/utils'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestTabs } from '../tab'
@@ -13,6 +13,8 @@ export struct IBestCascaderContent{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	// 是否横屏
+	@StorageProp("isLandscape") @Watch("getListHeight") isLandscape: boolean = false
 	/**
 	 * 顶部tab栏数据
 	 */
@@ -30,8 +32,6 @@ export struct IBestCascaderContent{
 	 * swiper默认显示选项
 	 */
 	@State swiperDefaultIndex: number = 0
-	// 是否横屏
-	@State isLandscape: boolean = getIsLandscape(getContext(this))
 	/**
 	 * 可选项数据源
 	 */
@@ -51,7 +51,7 @@ export struct IBestCascaderContent{
 	/**
 	 * 列表区域高度
 	 */
-	@Prop listHeight: number | string = convertDimensionsWidthUnit(350)
+	@Prop listHeight: number | string
 	/**
 	 * 单项高度
 	 */
@@ -83,6 +83,9 @@ export struct IBestCascaderContent{
 		}else {
 			this.optionsInstance.push(this.createOptionsInstance(this.options))
 		}
+	}
+	getListHeight(){
+		return this.listHeight ? getSizeByUnit(this.listHeight) : (this.isLandscape ? "60%" : convertDimensionsWidthUnit(350))
 	}
 	// 创建当前tab下的选项实例
 	createOptionsInstance(children: IBestCascaderOption[] = []): IBestCascaderOptionInstance[]{
@@ -232,8 +235,7 @@ export struct IBestCascaderContent{
 				}, (item: IBestCascaderOptionInstance[], index: number) => index + "")
 			}
 			.width("100%")
-			.height(getSizeByUnit(this.isLandscape ? "" : this.listHeight))
-			.layoutWeight(this.isLandscape ? 1 : 0)
+			.height(this.getListHeight())
 			.indicator(false)
 			.loop(false)
 			.duration(100)
@@ -302,7 +304,7 @@ export struct IBestCascader{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 弹框显隐
 	 */
@@ -374,6 +376,7 @@ export struct IBestCascader{
 			title: this.title,
 			isShowHeader: true,
 			popupAlign: "bottom",
+			popupHeight: "auto",
 			safeAreaInsetBottom: true,
 			contentBuilder: ():void => this.baseBuilder()
 		})

@@ -45,6 +45,7 @@ export default class GlobalStore {
 		let o = display.getDefaultDisplaySync().orientation
 		GlobalStore.screenWidth = o == 1 || o == 3 ? screenInfo.windowRect.height : screenInfo.windowRect.width
 		GlobalStore.screenHeight = o == 1 || o == 3 ? screenInfo.windowRect.width : screenInfo.windowRect.height
+		AppStorage.setOrCreate("isLandscape", o == 1 || o == 3)
 	}
 	/**
 	 * 监听屏幕旋转

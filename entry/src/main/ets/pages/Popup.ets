@@ -1,18 +1,26 @@
-import { IBestCell, IBestCellGroup, IBestPopup, IBestToast } from "@ibestservices/ibest-ui"
+import { IBestCell, IBestCellGroup, IBestPopup, IBestToast } from '@ibestservices/ibest-ui'
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../assets/global.type'
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, FONT_SIZE, SPACE } from '../assets/styles/BaseStyle'
+import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
 
 @Extend(Column) function positionColStyle(bd: boolean = false){
 	.layoutWeight(1)
-	.height("150lpx")
+	.height(75)
 	.justifyContent(FlexAlign.Center)
 	.border({width:{left: bd ? 1 : 0}, color: "#ebedf0"})
+	.stateStyles({
+		normal:{
+			.backgroundColor("#fff")
+		},
+		pressed:{
+			.backgroundColor("#f5f7fa")
+		}
+	})
 }
 @Extend(Image) function positionImageStyle(){
-	.width("50lpx")
+	.width(25)
 	.aspectRatio(1)
 	.fillColor("#333")
 }
@@ -79,45 +87,41 @@ struct PopupPage {
 					ComponentShowContainer({ title: '弹出位置', titlePaddingLeft: SPACE.MEDIA }) {
 						IBestCellGroup({ inset: true }) {
 							Row(){
-								Column(){
+								Column({space: 8}){
 									Image($r("app.media.arrow_up"))
 										.positionImageStyle()
 									Text("顶部弹出")
-										.margin({top: "16lpx"})
-										.fontSize(FONT_SIZE.MINI)
+										.fontSize(12)
 								}
 								.positionColStyle()
 								.onClick(() => {
 									this.upVisible = true
 								})
-								Column(){
+								Column({space: 8}){
 									Image($r("app.media.arrow_down"))
 										.positionImageStyle()
 									Text("底部弹出")
-										.margin({top: "16lpx"})
-										.fontSize(FONT_SIZE.MINI)
+										.fontSize(12)
 								}
 								.positionColStyle(true)
 								.onClick(() => {
 									this.downVisible = true
 								})
-								Column(){
+								Column({space: 8}){
 									Image($r("app.media.arrow_left"))
 										.positionImageStyle()
 									Text("左侧弹出")
-										.margin({top: "16lpx"})
-										.fontSize(FONT_SIZE.MINI)
+										.fontSize(12)
 								}
 								.positionColStyle(true)
 								.onClick(() => {
 									this.leftVisible = true
 								})
-								Column(){
+								Column({space: 8}){
 									Image($r("app.media.arrow_right"))
 										.positionImageStyle()
 									Text("右侧弹出")
-										.margin({top: "16lpx"})
-										.fontSize(FONT_SIZE.MINI)
+										.fontSize(12)
 								}
 								.positionColStyle(true)
 								.onClick(() => {
