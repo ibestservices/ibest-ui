@@ -194,7 +194,6 @@ export struct IBestPopup{
 	@Prop offsetY: number = 0
 	/**
 	 * 是否为模态窗口
-	 * @since 1.18.0
 	 */
 	@Prop isModal: boolean = true
 	/**
@@ -221,7 +220,7 @@ export struct IBestPopup{
 	/**
 	 * 自定义关闭图标
 	 */
-	@Provide({allowOverride: "closeIcon"}) closeIcon: string | Resource = ""
+	@Provide({allowOverride: "closeIcon"}) closeIcon: ResourceStr = ""
 	/**
 	 * 是否开启顶部安全区适配
 	 */
@@ -230,6 +229,11 @@ export struct IBestPopup{
 	 * 是否开启底部安全区适配
 	 */
 	@Provide({allowOverride: "safeAreaInsetBottom"}) safeAreaInsetBottom: boolean = false
+	/**
+	 * 自定义头部 优先级大于title
+	 * @since 1.18.0
+	 */
+	@BuilderParam headerBuilder?: CustomBuilder
 	/**
 	 * 自定义内容
 	 */
@@ -247,6 +251,7 @@ export struct IBestPopup{
 	dialogController: CustomDialogController = new CustomDialogController({
 		builder: IBestPopupBaseContent({
 			baseController: this.baseController,
+			headerBuilder: this.headerBuilder,
 			contentBuilder: this.contentBuilder,
 			popupAlign: this.popupAlign,
 			popupWidth: this.popupWidth,
@@ -298,7 +303,7 @@ struct PopupTitle {
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@Consume title: string
 	@Consume isShowClose: boolean
-	@Consume closeIcon: string | Resource
+	@Consume closeIcon: ResourceStr
 	close: () => void = () => {}
 	build() {
 		Row(){

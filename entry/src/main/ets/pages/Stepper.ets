@@ -26,7 +26,7 @@ struct StepperPage {
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
@@ -36,7 +36,7 @@ struct StepperPage {
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
@@ -48,7 +48,7 @@ struct StepperPage {
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
@@ -58,7 +58,7 @@ struct StepperPage {
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
@@ -68,7 +68,7 @@ struct StepperPage {
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
@@ -79,7 +79,7 @@ struct StepperPage {
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
@@ -91,7 +91,7 @@ struct StepperPage {
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
@@ -102,14 +102,14 @@ struct StepperPage {
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
       }
       .layoutWeight(1)
       .padding({
-        left: SPACE.BASE,
-        right: SPACE.BASE
+        left: SPACE.SM,
+        right: SPACE.SM
       })
     }
     .width(CONTAINER_SIZE.FULL)

@@ -7,7 +7,7 @@ import { ComponentRouterParams } from '../assets/global.type';
 
 @Styles
 function btnMargin() {
-  .margin({ right: SPACE.BASE, bottom: SPACE.BASE })
+  .margin({ right: SPACE.SM, bottom: SPACE.SM })
 }
 
 
@@ -17,7 +17,7 @@ struct CheckboxPage {
   @State title: string = (router.getParams() as ComponentRouterParams).title || ''
 
   /**
-   * 全选反选的chekboxGroup的this指向
+   * 全选反选的checkboxGroup的this指向
    */
   checkboxGroupContext: CheckboxGroupContext | null = null;
   /**
@@ -29,7 +29,7 @@ struct CheckboxPage {
    */
   @State isIndeterminateCheckAll: boolean = false;
   /**
-   * 全选反选的chekboxGroup的this指向
+   * 全选反选的checkboxGroup的this指向
    */
   checkboxGroupIndeterminateContext: CheckboxGroupContext | null = null;
 
@@ -360,11 +360,11 @@ struct CheckboxPage {
             .alignItems(HorizontalAlign.Start)
             .width(CONTAINER_SIZE.FULL)
             .padding({
-              bottom: SPACE.BASE
+              bottom: SPACE.SM
             })
-            .border({width:  {bottom: '2lpx'}, color: DISABLE_COLOR.VERY_MINI})
+            .border({width:  {bottom: 1}, color: DISABLE_COLOR.VERY_MINI})
             .margin({
-              bottom: SPACE.BASE
+              bottom: SPACE.SM
             })
 
             IBestCheckboxGroup({
@@ -423,14 +423,14 @@ struct CheckboxPage {
             })
           }
         }.margin({
-          bottom: SPACE.MEDIA
+          bottom: SPACE.MD
         })
 
       }
       .layoutWeight(1)
       .padding({
-        left: SPACE.BASE,
-        right: SPACE.BASE
+        left: SPACE.SM,
+        right: SPACE.SM
       })
 
     }

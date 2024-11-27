@@ -44,7 +44,7 @@ struct ActionSheetPage {
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.alignItems(HorizontalAlign.Center)
-			.padding(SPACE.BASE)
+			.padding(SPACE.SM)
 		}
 		.layoutWeight(1)
 	}
@@ -123,9 +123,9 @@ struct ActionSheetPage {
 								IBestActionSheet.show({
 									description: '这是一段描述信息',
 									actions: [
-										{ name: '选项一', color: '#ff0000' },
-										{ name: '选项二', isDisabled: true },
-										{ name: '选项三' }
+										{ name: '正常选项', color: '#ff0000' },
+										{ name: '禁用选项', isDisabled: true },
+										{ name: '只读选项', readonly: true }
 									],
 									cancelText: '取消',
 									cancelTextColor: '#3d8af2'
@@ -209,9 +209,9 @@ struct ActionSheetPage {
 			}
 			.layoutWeight(1)
 			.padding({
-				top: SPACE.BASE,
-				left: SPACE.BASE,
-				right: SPACE.BASE
+				top: SPACE.SM,
+				left: SPACE.SM,
+				right: SPACE.SM
 			})
 		}
 		.width(CONTAINER_SIZE.FULL)

@@ -260,7 +260,7 @@ struct FieldPage {
 			}).backgroundColor('#FFF')
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MEDIA }) {
+					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
 						IBestForm({
 							formId: this.formId1,
 							controller: this.controller1
@@ -306,13 +306,13 @@ struct FieldPage {
 										})
 									}
 								})
-									.margin({ top: SPACE.SMALL})
-							}.padding({ left: SPACE.MEDIA, right: SPACE.MEDIA })
+									.margin({ top: SPACE.XS})
+							}.padding({ left: SPACE.MD, right: SPACE.MD })
 						}
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '校验规则', titlePaddingLeft: SPACE.MEDIA }) {
+					ComponentShowContainer({ title: '校验规则', titlePaddingLeft: SPACE.MD }) {
 						IBestForm({
 							formId: this.formId2,
 							rules: this.rules2,
@@ -360,13 +360,13 @@ struct FieldPage {
 										})
 									}
 								})
-									.margin({ top: SPACE.SMALL })
-							}.padding({ left: SPACE.MEDIA, right: SPACE.MEDIA })
+									.margin({ top: SPACE.XS })
+							}.padding({ left: SPACE.MD, right: SPACE.MD })
 						}
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '自定义表单项类型', titlePaddingLeft: SPACE.MEDIA }) {
+					ComponentShowContainer({ title: '自定义表单项类型', titlePaddingLeft: SPACE.MD }) {
 						IBestForm({
 							formId: this.formId3,
 							rules: this.rules3,
@@ -451,8 +451,8 @@ struct FieldPage {
 										})
 									}
 								})
-									.margin({ top: SPACE.SMALL })
-							}.padding({ left: SPACE.MEDIA, right: SPACE.MEDIA })
+									.margin({ top: SPACE.XS })
+							}.padding({ left: SPACE.MD, right: SPACE.MD })
 						}
 					}
 				}

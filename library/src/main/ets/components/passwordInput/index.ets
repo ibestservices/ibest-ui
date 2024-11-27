@@ -54,7 +54,7 @@ export struct IBestPasswordInput {
 	/**
 	 * 格子间距
 	 */
-	@Provide({allowOverride: "space"}) space: number = 0
+	@Provide({allowOverride: "space"}) space: number | string = 0
 	/**
 	 * 圆角
 	 */
@@ -257,7 +257,7 @@ struct InputField {
 		.justifyContent(FlexAlign.Center)
 		.backgroundColor(this.baseStyle.default)
 		.border({
-			width: { left: this.space == 0 && this.index > 0 ? 1 : 0 },
+			width: { left: !this.space && this.index > 0 ? 1 : 0 },
 			color: GRAY_COLOR.GRAY_3
 		})
 		.borderRadius(this.space ? getSizeByUnit(this.radius) : 0)

@@ -57,7 +57,7 @@ export struct IBestUploader {
 	/**
 	 * 圆角大小
 	 */
-	@Provide({allowOverride: "cornerRadius"}) cornerRadius: number = 0
+	@Provide({allowOverride: "cornerRadius"}) cornerRadius: number | string = 0
 	/**
 	 * 是否显示删除按钮
 	 */

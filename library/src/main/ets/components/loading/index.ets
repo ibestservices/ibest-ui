@@ -4,7 +4,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { LoadingIconType } from '../../model/Global.type';
 import {IBestLoadingCircular} from './circular'
 import {IBestLoadingSpinner} from './spinner'
-import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
+import { getSizeByUnit } from '../../utils/utils';
 @Component
 export struct IBestLoading {
   /**

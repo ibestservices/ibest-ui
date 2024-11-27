@@ -37,7 +37,7 @@ export struct IBestRadio {
   /**
    * 图标大小
    */
-  @Prop iconSize: number | string = convertDimensionsWidthUnit(20)
+  @Prop iconSize: number | string = convertDimensionsWidthUnit(18)
   /**
    * 默认是否选中 非双向绑定
    * 如果要更改数据请从onChange回调中获取最新的值

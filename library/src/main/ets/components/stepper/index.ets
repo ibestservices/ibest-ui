@@ -3,7 +3,6 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestStepperBtn } from './stepperBtn'
 import { accAdd, accSub, convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
-import { IBestIcon } from '../icon'
 
 enum STEPPER_BTN_TYPE {
   PLUS = 'PLUS',
@@ -59,7 +58,7 @@ export struct IBestStepper {
   /**
    * 固定显示的小数位数
    */
-  @Prop decimalLength: number | string = '';
+  @Prop decimalLength: number = 0
   /**
    * 是否只允许输入整数
    */

@@ -4,6 +4,10 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
+import { mediaquery } from '@kit.ArkUI';
+import { debounce } from '../../utils/DebounceThrottle';
+
+let listener = mediaquery.matchMediaSync('(orientation: landscape)')
 
 @Component
 export struct IBestTabs{
@@ -131,18 +135,22 @@ export struct IBestTabs{
     aboutToAppear(): void {
         this.uniId = this.getUniqueId().toString()
         this.tabController.changeTab = (name: string): void => this.changeTab(name)
+
+        listener.on('change', (): void => this.initSize())
+    }
+    aboutToDisappear(): void {
+        listener.off('change', (): void => this.initSize())
     }
 
     onDidBuild(): void {
         this.initSize()
     }
-    async initSize(){
-        await sleep(30)
+    initSize: () => void = debounce(() => {
         let index = this.tabsList.findIndex((item: IBestTabItem) => item.name == this.currentName)
         this.getTabsWidth()
         this.getAndSetLineWidth(index)
         this.swiperChange(index, false)
-    }
+    }, 50)
     // 列表变化
     tabsListChange(){
         sleep(20).then(() => {
@@ -259,7 +267,7 @@ export struct IBestTabs{
                         translateX: this.translateX,
                         tabBoxWidth: this.tabBoxWidth,
                         tabBoxTranslateX: this.tabBoxTranslateX,
-                        initSize: (): Promise<void> => this.initSize(),
+                        initSize: (): void => this.initSize(),
                         onTabClick: (name: string): void => this.onTabClick(name)
                     })
                 }
@@ -275,7 +283,7 @@ export struct IBestTabs{
                     translateX: this.translateX,
                     tabBoxWidth: this.tabBoxWidth,
                     tabBoxTranslateX: this.tabBoxTranslateX,
-                    initSize: (): Promise<void> => this.initSize(),
+                    initSize: (): void => this.initSize(),
                     onTabClick: (name: string): void => this.onTabClick(name)
                 }).id(`tabContent_${this.uniId}`)
             }
@@ -328,7 +336,7 @@ struct IBestTabBox{
     @Prop translateX: number
     @Prop tabBoxTranslateX: number
     @Prop tabBoxWidth: number
-    initSize: () => Promise<void> = () => Promise.resolve()
+    initSize: () => void = () => () => {}
     onTabClick: (name: string) => void = () => {}
     build() {
         Stack({alignContent: Alignment.BottomStart}){
@@ -394,7 +402,7 @@ struct IBestTab{
     @Consume activeTextColor: ResourceColor
     @Consume tabLineColor: ResourceColor
     @Consume fontSize: number
-    initSize: () => Promise<void> = () => new Promise(() => {})
+    initSize: () => void = () => {}
     onTabClick: (name: string) => void = () => {}
     itemChange(){
         this.initSize()

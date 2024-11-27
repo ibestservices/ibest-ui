@@ -7,7 +7,7 @@ import { ComponentRouterParams } from '../assets/global.type';
 
 @Styles
 function btnMargin() {
-  .margin({ right: SPACE.BASE, bottom: SPACE.BASE })
+  .margin({ right: SPACE.SM, bottom: SPACE.SM })
 }
 
 
@@ -141,7 +141,7 @@ struct CheckboxPage {
                   name: 'radio5'
                 })
               }.btnMargin().padding({
-                bottom: SPACE.BASE
+                bottom: SPACE.SM
               })
 
 
@@ -304,14 +304,14 @@ struct CheckboxPage {
             })
           }
         }.margin({
-          bottom: SPACE.MEDIA
+          bottom: SPACE.MD
         })
 
       }
       .layoutWeight(1)
       .padding({
-        left: SPACE.BASE,
-        right: SPACE.BASE
+        left: SPACE.SM,
+        right: SPACE.SM
       })
 
     }

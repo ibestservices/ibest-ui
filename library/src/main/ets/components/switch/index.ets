@@ -1,6 +1,6 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { convertDimensions, convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils';
 import { IBestLoading } from '../loading'
 
 @Component
@@ -26,7 +26,7 @@ export struct IBestSwitch {
   /**
    * 关闭时的背景色
    */
-  @Prop inactiveColor: ResourceColor = 'rgba(120, 120, 128, 0.16)';
+  @Prop inactiveColor: ResourceColor = 'rgba(120, 120, 128, 0.2)'
   /**
    * 开关默认选中的状态
    */
@@ -115,7 +115,7 @@ export struct IBestSwitch {
       .justifyContent(FlexAlign.Center)
       .borderRadius(this.baseStyle.borderRadiusMax)
       .shadow({
-        color: 'rgba(0, 0, 0, 0.05)',
+        color: 'rgba(0, 0, 0, 0.1)',
         offsetY: px2vp(3),
         radius:  px2vp(1)
       })

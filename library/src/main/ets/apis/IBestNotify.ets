@@ -53,9 +53,9 @@ class IBestNotifyParams extends IBestNotifyOption{
 		super()
 		this.type = value.type || "danger"
 		this.message = value.message || ""
-		this.duration = typeof value.duration != "undefined" ? value.duration : 1500
+		this.duration = value.duration || 1500
 		this.color = value.color || "#fff"
-		this.fontSize = typeof value.fontSize != "undefined" ? value.fontSize : convertDimensionsWidthUnit(14)
+		this.fontSize = value.fontSize || convertDimensionsWidthUnit(14)
 		this.backgroundColor = value.backgroundColor || getDefaultBaseStyle()[this.type]
 		this.customContent = value.customContent
 		this.onOpen = value.onOpen

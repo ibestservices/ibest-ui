@@ -68,7 +68,7 @@ struct PopupPage {
 			}).backgroundColor('#FFF')
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MEDIA }) {
+					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							Column() {
 								IBestCell({
@@ -84,7 +84,7 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '弹出位置', titlePaddingLeft: SPACE.MEDIA }) {
+					ComponentShowContainer({ title: '弹出位置', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							Row(){
 								Column({space: 8}){
@@ -134,7 +134,7 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '显示标题', titlePaddingLeft: SPACE.MEDIA }) {
+					ComponentShowContainer({ title: '显示标题', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							Column() {
 								IBestCell({
@@ -157,7 +157,7 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '圆角弹窗', titlePaddingLeft: SPACE.MEDIA }) {
+					ComponentShowContainer({ title: '圆角弹窗', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							Column() {
 								IBestCell({
@@ -180,7 +180,7 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '事件监听', titlePaddingLeft: SPACE.MEDIA }) {
+					ComponentShowContainer({ title: '事件监听', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							Column() {
 								IBestCell({
@@ -196,7 +196,7 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '安全区域适配', titlePaddingLeft: SPACE.MEDIA }) {
+					ComponentShowContainer({ title: '安全区域适配', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							Column() {
 								IBestCell({

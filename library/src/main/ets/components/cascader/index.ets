@@ -35,7 +35,7 @@ export struct IBestCascaderContent{
 	/**
 	 * 可选项数据源
 	 */
-	@Prop options: IBestCascaderOption[] = []
+	@Provide({allowOverride: "options"}) options: IBestCascaderOption[] = []
 	/**
 	 * 数据源实例
 	 */
@@ -138,7 +138,7 @@ export struct IBestCascaderContent{
 		this.swiperController.changeIndex(index, true)
 	}
 	// 选中item
-	async selectItem(index1: number, index2: number, item: IBestCascaderOptionInstance) {
+	selectItem(index1: number, index2: number, item: IBestCascaderOptionInstance) {
 		// console.log(`选中${index1} ${index2} children ${item.children?.length} isEnd ${item.isEnd}`)
 		// 如果选中索引小于当前tab数量,清空tab在索引后的所有项
 		if (index1 < this.optionsInstance.length - 1) {
@@ -146,26 +146,39 @@ export struct IBestCascaderContent{
 			this.optionsInstance.splice(index1 + 1)
 		}
 		// 设置当前列表项为选中状态
-		this.optionsInstance[index1].forEach((item: IBestCascaderOptionInstance) => {
-			item.actived = false
+		this.optionsInstance[index1].forEach((item: IBestCascaderOptionInstance, index: number) => {
+			item.actived = index == index2
 		})
-		this.optionsInstance[index1][index2].actived = true
 		// 设置当前tab的文字
 		this.tabList[index1].label = item.text
 		// 如果还有选项 添加一项(请添加)
+		let selectOption = this.getSelectedOptions()
 		if (!(item.children && item.children.length) && (!this.lazy || item.isEnd)) {
-			this.onConfirm(this.getSelectedOptions())
+			this.value = selectOption.map((e: IBestCascaderOption) => e.value)
+			this.onConfirm(selectOption)
 		} else {
-			this.onChange(item.value, this.getSelectedOptions(), index1)
+			this.onChange(item.value, selectOption, index1)
 			if (item.children && item.children.length) {
 				this.createNextSwiperData(item.children, index1 + 1)
 			} else if (this.lazy && this.lazyLoad) {
 				this.lazyLoad(item.value, index1 + 1, (arr: IBestCascaderOption[]) => {
 					if (arr.length) {
-						item.children = arr
 						this.createNextSwiperData(arr, index1 + 1)
+						this.changeOriginOption(this.options, arr, index1, 0)
 					}
 				})
+			}
+		}
+	}
+	// 改变原数组
+	changeOriginOption(children: IBestCascaderOption[], arr: IBestCascaderOption[], level: number, index: number){
+		let selected = this.getSelectedOptions()
+		let item = children.find(e => e.value == selected[index].value)
+		if(item){
+			if(level == index){
+				item.children = arr
+			}else if(item.children){
+				this.changeOriginOption(item.children, arr, level, index + 1)
 			}
 		}
 	}
@@ -221,7 +234,7 @@ export struct IBestCascaderContent{
 									option: item1,
 									index: index,
 									index1: index1,
-									onSelect: (index: number, index1: number, item1: IBestCascaderOptionInstance): Promise<void> => this.selectItem(index, index1, item1)
+									onSelect: (index: number, index1: number, item1: IBestCascaderOptionInstance): void => this.selectItem(index, index1, item1)
 								})
 							})
 						}
@@ -267,15 +280,9 @@ struct CascaderOptionItem{
 	 * 当前选项索引
 	 */
 	@Prop index1: number
-	/**
-	 * 选中颜色
-	 */
 	@Consume activeColor: ResourceColor
-	/**
-	 * item高度
-	 */
 	@Consume itemHeight: number
-	onSelect: (index: number, index1: number, item1: IBestCascaderOptionInstance)=> Promise<void> = () => new Promise((resolve, reject) => {})
+	onSelect: (index: number, index1: number, item1: IBestCascaderOptionInstance)=> void = () => {}
 	build() {
 		Row(){
 			Text(this.option.text)
@@ -316,7 +323,7 @@ export struct IBestCascader{
 	/**
 	 * 可选项数据源
 	 */
-	@Prop options: IBestCascaderOption[] = []
+	@Provide({allowOverride: "options"}) options: IBestCascaderOption[] = []
 	/**
 	 * 选中颜色
 	 */
@@ -360,13 +367,10 @@ export struct IBestCascader{
 			lazy: this.lazy,
 			lazyLoad: this.lazyLoad,
 			onChange: this.onChange,
-			onConfirm: (value: IBestCascaderOption[]) => {
-				this.onGetResult(value)
-			}
+			onConfirm: (value: IBestCascaderOption[]): void => this.onGetResult(value)
 		})
 	}
 	onGetResult(value: IBestCascaderOption[]){
-		this.value = value.map((e: IBestCascaderOption) => e.value)
 		this.onConfirm(value)
 		this.visible = false
 	}

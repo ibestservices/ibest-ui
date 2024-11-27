@@ -14,22 +14,22 @@ struct CellPage {
   @State inputValue: string = ''
 
   @Builder
-  StarIcon(width = '32lpx') {
+  StarIcon(width = 16) {
     Image($r('app.media.app_icon')).width(width)
   }
 
   @Builder
   Arrow() {
-    Image($r('app.media.title_back')).height('24lpx').margin({ left: SPACE.MINI, top: '6lpx' }).rotate({ angle: 180 })
+    Image($r('app.media.title_back')).height(14).margin({ left: SPACE.BASE }).rotate({ angle: 180 })
   }
 
   @Builder
   Title() {
     Row() {
       Text('单元格')
-        .fontSize('28lpx')
+        .fontSize(14)
       IBestTag({ text: '标签' }).margin({
-        left: SPACE.MINI
+        left: SPACE.BASE
       })
     }
   }
@@ -48,7 +48,7 @@ struct CellPage {
 
       List() {
         ListItem() {
-          ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
             IBestCellGroup() {
               IBestCell({ title: '标题', value: '内容' })
               IBestCell({
@@ -60,9 +60,24 @@ struct CellPage {
             }
           }
         }
+        ListItem() {
+          ComponentShowContainer({ title: '下边框样式', titlePaddingLeft: SPACE.XS }) {
+            IBestCellGroup() {
+              IBestCell({ title: 'full', value: '内容', borderSizeType: 'full' })
+              IBestCell({ title: 'center', value: '内容', borderSizeType: 'center' })
+              IBestCell({
+                leftIcon: $r("app.media.icon_like_o"),
+                title: 'right',
+                value: '内容',
+                borderSizeType: 'right'
+              })
+              IBestCell({ title: '占位', value: '内容', hasBorder: false })
+            }
+          }
+        }
 
         ListItem() {
-          ComponentShowContainer({ title: '卡片风格', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '卡片风格', titlePaddingLeft: SPACE.XS }) {
             IBestCellGroup({ inset: true }) {
               IBestCell({ title: '标题', value: '内容' })
               IBestCell({
@@ -76,7 +91,7 @@ struct CellPage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: '分组标题', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '分组标题', titlePaddingLeft: SPACE.XS }) {
             IBestCellGroup({ title: '分组1' }) {
               IBestCell({
                 title: '标题',
@@ -99,7 +114,7 @@ struct CellPage {
 
 
         ListItem() {
-          ComponentShowContainer({ title: '单元格大小', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '单元格大小', titlePaddingLeft: SPACE.XS }) {
             IBestCell({ title: '标题', value: '内容', cellSize: 'large' })
             IBestCell({
               title: '标题',
@@ -112,7 +127,7 @@ struct CellPage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: '展示图标', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '展示图标', titlePaddingLeft: SPACE.XS }) {
             IBestCell({
               title: '标题',
               value: '内容',
@@ -136,7 +151,7 @@ struct CellPage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: '展示箭头', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '展示箭头', titlePaddingLeft: SPACE.XS }) {
             IBestCell({ title: '标题', value: '箭头朝右', isLink: true })
             IBestCell({
               title: '标题',
@@ -162,7 +177,7 @@ struct CellPage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: '必填项', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '必填项', titlePaddingLeft: SPACE.XS }) {
             IBestCell({
               title: '标题',
               value: '内容',
@@ -175,13 +190,14 @@ struct CellPage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: '内容居中', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '内容居中', titlePaddingLeft: SPACE.XS }) {
             IBestCell({
               title: '居中',
               label: '描述内容',
+              leftContentWidth: 100,
               value: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容',
               center: true,
-              iconBuilder: () => this.StarIcon('32lpx'),
+              iconBuilder: () => this.StarIcon(),
               isLink: true
             })
             IBestCell({
@@ -189,18 +205,18 @@ struct CellPage {
               label: '描述内容',
               value: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容',
               hasBorder: false,
-              iconBuilder: () => this.StarIcon('32lpx'),
+              iconBuilder: () => this.StarIcon(),
               isLink: true
             })
           }
         }
 
         ListItem() {
-          ComponentShowContainer({ title: '使用插槽', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '使用插槽', titlePaddingLeft: SPACE.XS }) {
             IBestCell({
               title: '标题',
               value: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容',
-              iconBuilder: () => this.StarIcon('32lpx'),
+              iconBuilder: () => this.StarIcon(),
               rightIconBuilder: this.Arrow,
               clickable: true
             })
@@ -219,7 +235,7 @@ struct CellPage {
             })
           }
         }.margin({
-          bottom: SPACE.MEDIA
+          bottom: SPACE.MD
         })
 
       }

@@ -31,6 +31,10 @@ export struct IBestCalendarDialog {
      */
     @Prop defaultSelectedDate: Array<string> = []
     /**
+     * 单项宽度
+     */
+    @Prop itemWidth: number | string = convertDimensionsWidthUnit(50)
+    /**
      * 每周第一天是周几
      */
     @Prop weekFirstDay: WeekDayType = "一"
@@ -90,6 +94,7 @@ export struct IBestCalendarDialog {
     @Builder baseBuilder() {
         IBestCalendar({
             defaultSelectedDate: this.selectedDate.length ? this.selectedDate.map(item => item.dateStr) : this.defaultSelectedDate,
+            itemWidth: this.itemWidth,
             isShowLunar: this.isShowLunar,
             selectType: this.selectType,
             selectedStyleType: this.selectedStyleType,

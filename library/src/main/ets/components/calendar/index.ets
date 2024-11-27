@@ -64,6 +64,8 @@ struct CalendarItem {
     @State fontColor: ResourceColor = "#333"
     @State bgColor: ResourceColor = "transparent"
     @ObjectLink @Watch("itemChange") dayItem: DayItemType
+    @Consume daysList: Array<DayItemType>
+    @Prop index: number
     @Consume itemWidth: number | string
     @Consume isShowLunar: boolean
     @Consume type: ColorType
@@ -128,8 +130,34 @@ struct CalendarItem {
         }
         return ''
     }
-    getOutBorderRadius():  Length | BorderRadiuses {
-        if(this.selectedList.length <= 1){
+    getDisabledBorderRadius(): Length | BorderRadiuses{
+        let borderRadius = this.baseStyle.borderRadiusMd
+        const prevDay = this.daysList[this.index - 1]
+        const nextDay = this.daysList[this.index + 1]
+        const prevDisabled = prevDay?.isDisabled
+        const nextDisabled = nextDay?.isDisabled
+
+        if (prevDisabled && nextDisabled) {
+            return ""
+        }
+        if (prevDisabled) {// 6 13 20
+            return {
+                topRight: borderRadius,
+                bottomRight: borderRadius
+            }
+        }
+        if (nextDisabled) { // 0 7 14
+            return {
+                topLeft: borderRadius,
+                bottomLeft: borderRadius
+            }
+        }
+        return borderRadius
+    }
+    getOutBorderRadius(): Length | BorderRadiuses {
+        if(this.dayItem.isDisabled){
+            return this.getDisabledBorderRadius()
+        }else if(this.selectedList.length <= 1){
             return this.baseStyle.borderRadiusMd
         }else {
             return this.getMultipleBorderRadius()
@@ -236,7 +264,7 @@ export struct IBestCalendar{
     /**
      * 列表日期
      */
-    @State daysList: Array<DayItemType> = []
+    @Provide daysList: Array<DayItemType> = []
     // 日期区域高度
     @State contentHeight: number = 0
     /**
@@ -662,9 +690,9 @@ export struct IBestCalendar{
                         .fontColor(GRAY_COLOR.GRAY_2)
                         .visibility(this.isShowMark ? Visibility.Visible : Visibility.Hidden)
                     GridRow({ columns: 7, gutter: { x: 0, y: convertDimensionsWidthUnit(5) }}) {
-                        ForEach(this.daysList, (item: DayItemType) => {
+                        ForEach(this.daysList, (item: DayItemType, index: number) => {
                             GridCol() {
-                                CalendarItem({ dayItem: item })
+                                CalendarItem({ dayItem: item, index: index })
                                     .onClick(() => {
                                         this.selectDate(item)
                                     })
@@ -691,6 +719,9 @@ export struct IBestCalendar{
         }
         .width('100%')
         .backgroundColor("#fff")
-        .borderRadius(this.cornerRadius)
+        .borderRadius({
+            topLeft: this.cornerRadius,
+            topRight: this.cornerRadius
+        })
     }
 }

@@ -39,7 +39,7 @@ struct IconsPage {
       }
       ListItem() {
         ComponentShowContainer({ title: '图标颜色' }) {
-          Row({space: SPACE.BASE}){
+          Row({space: SPACE.SM}){
             IBestIcon({ name: 'cart-o', color: '#1989fa' })
             IBestIcon({ name: 'fire-o', color: '#ee0a24' })
           }
@@ -47,7 +47,7 @@ struct IconsPage {
       }
       ListItem() {
         ComponentShowContainer({ title: '图标大小' }) {
-          Row({space: SPACE.BASE}){
+          Row({space: SPACE.SM}){
             IBestIcon({ name: 'chat-o', iconSize: 20 })
             IBestIcon({ name: 'chat-o', iconSize: 40 })
           }
@@ -56,11 +56,11 @@ struct IconsPage {
     }
     .layoutWeight(1)
     .padding({
-      left: SPACE.MEDIA,
-      right: SPACE.MEDIA
+      left: SPACE.MD,
+      right: SPACE.MD
     })
     .backgroundColor("#fff")
-    .borderRadius(SPACE.BASE)
+    .borderRadius(SPACE.SM)
   }
 
   copyText(text: string) {
@@ -85,16 +85,16 @@ struct IconsPage {
     Grid(){
       ForEach(list, (item: string) => {
         GridItem() {
-          Column({space: SPACE.MEDIA}) {
+          Column({space: SPACE.MD}) {
             IBestIcon({ name: item, iconSize: 30 })
             Text(item)
-              .fontSize(FONT_SIZE.MINI)
+              .fontSize(FONT_SIZE.SM)
               .textAlign(TextAlign.Center)
-              .padding({ left: SPACE.MINI, right: SPACE.MINI })
+              .padding({ left: SPACE.BASE, right: SPACE.BASE })
           }
           .width(CONTAINER_SIZE.FULL)
           .alignItems(HorizontalAlign.Center)
-          .padding({ top: SPACE.MEDIA, bottom: SPACE.MEDIA })
+          .padding({ top: SPACE.MD, bottom: SPACE.MD })
           .stateStyles({
             pressed:{
               .backgroundColor(COLOR_GRAY.GRAY_2)
@@ -113,7 +113,7 @@ struct IconsPage {
     .cellLength(100)
     .layoutWeight(1)
     .backgroundColor(BACKGROUND_COLOR.DEFAULT)
-    .borderRadius(SPACE.BASE)
+    .borderRadius(SPACE.SM)
   }
 
   build() {
@@ -138,11 +138,11 @@ struct IconsPage {
       }
       .layoutWeight(1)
       .padding({
-        left: SPACE.BASE,
-        right: SPACE.BASE,
-        bottom: SPACE.BASE
+        left: SPACE.SM,
+        right: SPACE.SM,
+        bottom: SPACE.SM
       })
-      .margin({top: SPACE.BASE})
+      .margin({top: SPACE.SM})
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)

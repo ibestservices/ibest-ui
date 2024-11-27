@@ -91,7 +91,7 @@ struct NumberKeyboardPage {
 				}
 			}
 			.layoutWeight(1)
-			.padding({ top: SPACE.BASE, bottom: SPACE.BASE })
+			.padding({ top: SPACE.SM, bottom: SPACE.SM })
 			IBestNumberKeyboard({
 				visible: $visible,
 				value: $value,

@@ -21,7 +21,7 @@ export struct IBestIcon {
   /**
    * 图标大小
    */
-  @Prop iconSize: number | string = convertDimensionsWidthUnit(20)
+  @Prop iconSize: number | string = convertDimensionsWidthUnit(16)
   /**
    * 点击回调
    */
@@ -37,13 +37,28 @@ export struct IBestIcon {
         if (this.isOnlineImage()) {
           Image(this.name).width(getSizeByUnit(this.iconSize)).aspectRatio(1)
         } else {
-          Text(Object(IBestIconData)[this.name])
-            .fontFamily('ibestFont')
-            .fontColor(this.color)
-            .fontSize(getSizeByUnit(this.iconSize, true))
+          if(this.color){
+            Text(Object(IBestIconData)[this.name])
+              .fontFamily('ibestFont')
+              .fontColor(this.color)
+              .fontSize(getSizeByUnit(this.iconSize, true))
+          }else{
+             Text(Object(IBestIconData)[this.name])
+              .fontFamily('ibestFont')
+              .fontSize(getSizeByUnit(this.iconSize, true))
+          }
         }
       }else{
-        Image(this.name).width(getSizeByUnit(this.iconSize)).aspectRatio(1).fillColor(this.color)
+        if(this.color){
+          Image(this.name)
+            .width(getSizeByUnit(this.iconSize))
+            .aspectRatio(1)
+            .fillColor(this.color)
+        }else{
+          Image(this.name)
+            .width(getSizeByUnit(this.iconSize))
+            .aspectRatio(1)
+        }
       }
     }
     .onClick(() => {

@@ -71,7 +71,7 @@ export struct IBestButton {
   /**
    * loading加载的文案
    */
-  @Prop loadingText: string | null = null;
+  @Prop loadingText: string = ""
   /**
    * 按钮展示的文字
    */

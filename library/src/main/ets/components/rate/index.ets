@@ -175,8 +175,8 @@ struct RateItem {
 	@ObjectLink item: RateOption
 	@Prop index: number
 	@Consume uniId: number
-	@Consume inactiveIcon: string | Resource
-	@Consume activeIcon: string | Resource
+	@Consume inactiveIcon: ResourceStr
+	@Consume activeIcon: ResourceStr
 	@Consume activeColor: ResourceColor
 	@Consume inactiveColor: ResourceColor
 	@Consume iconSize: number | string

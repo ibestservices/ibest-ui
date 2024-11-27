@@ -1,4 +1,3 @@
-import { UIContext } from '@ohos.arkui.UIContext';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { curves } from '@kit.ArkUI';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';

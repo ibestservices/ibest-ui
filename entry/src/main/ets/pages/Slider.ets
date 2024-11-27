@@ -182,9 +182,9 @@ struct SliderPage {
 			.width(CONTAINER_SIZE.FULL)
 			.layoutWeight(1)
 			.padding({
-				left: SPACE.SMALL,
-				right: SPACE.SMALL,
-				bottom: SPACE.SMALL
+				left: SPACE.XS,
+				right: SPACE.XS,
+				bottom: SPACE.XS
 			})
 		}
 		.width(CONTAINER_SIZE.FULL)

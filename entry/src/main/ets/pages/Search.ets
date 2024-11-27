@@ -54,7 +54,8 @@ struct SearchPage {
 							value: $value,
 							isRound: true,
 							outBgColor: "#4fc08d",
-							innerBgColor: "#F29C73"
+							innerBgColor: "#F29C73",
+							textColor: "#ed4040"
 						})
 					}
 				}
@@ -100,9 +101,9 @@ struct SearchPage {
 			.width(CONTAINER_SIZE.FULL)
 			.layoutWeight(1)
 			.padding({
-				left: SPACE.BASE,
-				right: SPACE.BASE,
-				bottom: SPACE.BASE
+				left: SPACE.SM,
+				right: SPACE.SM,
+				bottom: SPACE.SM
 			})
 		}
 		.width(CONTAINER_SIZE.FULL)

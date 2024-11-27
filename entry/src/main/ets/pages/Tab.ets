@@ -166,127 +166,127 @@ struct TabPage {
                         })
                     }
                 }
-                ListItem() {
-                    ComponentShowContainer({ title: '样式风格' }) {
-                        IBestTabs({
-                            type: "card",
-                            tabsList: this.tabsList,
-                            currentName: $curTabName
-                        })
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: '收缩布局' }) {
-                        Column({space: 20}){
-                            IBestTabs({
-                                tabWidthType: "auto",
-                                tabsList: this.tabsList,
-                                currentName: $curTabName
-                            })
-                            IBestTabs({
-                                tabWidthType: "auto",
-                                tabsList: this.tabsList1,
-                                currentName: $curTabName2
-                            })
-                            IBestTabs({
-                                tabWidthType: "auto",
-                                type: "card",
-                                tabsList: this.tabsList,
-                                currentName: $curTabName
-                            })
-                            IBestTabs({
-                                tabWidthType: "auto",
-                                type: "card",
-                                tabsList: this.tabsList1,
-                                currentName: $curTabName2
-                            })
-                        }
-                        .alignItems(HorizontalAlign.Start)
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: '固定线宽' }) {
-                        IBestTabs({
-                            tabsList: this.tabsList,
-                            isTabLineWidthFixed: true,
-                            tabLineWidth: 15,
-                            lineOffsetY: 5,
-                            currentName: $curTabName
-                        })
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: '禁用标签' }) {
-                        Column({space: 20}){
-                            IBestTabs({
-                                tabsList: this.tabsList2,
-                                currentName: $curTabName3
-                            })
-                            IBestButton({
-                                text: "禁用标签3",
-                                buttonSize: "small",
-                                onClickBtn: () => {
-                                    this.tabsList2[2].isDisable = true
-                                }
-                            })
-                        }
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: 'change事件' }) {
-                        IBestTabs({
-                            tabsList: this.tabsList,
-                            currentName: $curTabName4,
-                            onChange: (name: string) => {
-                                IBestToast.show("当前点击的是：" + name)
-                            }
-                        })
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: '自定义标签' }) {
-                        Column({space: 20}){
-                            IBestTabs({
-                                tabsList: this.tabsList3,
-                                currentName: $curTabName5
-                            })
-                            IBestButton({
-                                text: "修改数字",
-                                buttonSize: "small",
-                                onClickBtn: () => {
-                                    if(this.tabsList3[1].number != undefined){
-                                        this.tabsList3[1].number += 1
-                                    }
-                                }
-                            })
-                        }
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: 'controller 切换' }) {
-                        Column({space: 20}){
-                            IBestTabs({
-                                tabsList: this.tabsList,
-                                currentName: $curTabName6,
-                                tabController: this.tabController
-                            })
-                            IBestButton({
-                                text: "跳转标签3",
-                                buttonSize: "small",
-                                onClickBtn: () => {
-                                    this.tabController.changeTab("3")
-                                }
-                            })
-                        }
-                    }
-                }
+                // ListItem() {
+                //     ComponentShowContainer({ title: '样式风格' }) {
+                //         IBestTabs({
+                //             type: "card",
+                //             tabsList: this.tabsList,
+                //             currentName: $curTabName
+                //         })
+                //     }
+                // }
+                // ListItem() {
+                //     ComponentShowContainer({ title: '收缩布局' }) {
+                //         Column({space: 20}){
+                //             IBestTabs({
+                //                 tabWidthType: "auto",
+                //                 tabsList: this.tabsList,
+                //                 currentName: $curTabName
+                //             })
+                //             IBestTabs({
+                //                 tabWidthType: "auto",
+                //                 tabsList: this.tabsList1,
+                //                 currentName: $curTabName2
+                //             })
+                //             IBestTabs({
+                //                 tabWidthType: "auto",
+                //                 type: "card",
+                //                 tabsList: this.tabsList,
+                //                 currentName: $curTabName
+                //             })
+                //             IBestTabs({
+                //                 tabWidthType: "auto",
+                //                 type: "card",
+                //                 tabsList: this.tabsList1,
+                //                 currentName: $curTabName2
+                //             })
+                //         }
+                //         .alignItems(HorizontalAlign.Start)
+                //     }
+                // }
+                // ListItem() {
+                //     ComponentShowContainer({ title: '固定线宽' }) {
+                //         IBestTabs({
+                //             tabsList: this.tabsList,
+                //             isTabLineWidthFixed: true,
+                //             tabLineWidth: 15,
+                //             lineOffsetY: 5,
+                //             currentName: $curTabName
+                //         })
+                //     }
+                // }
+                // ListItem() {
+                //     ComponentShowContainer({ title: '禁用标签' }) {
+                //         Column({space: 20}){
+                //             IBestTabs({
+                //                 tabsList: this.tabsList2,
+                //                 currentName: $curTabName3
+                //             })
+                //             IBestButton({
+                //                 text: "禁用标签3",
+                //                 buttonSize: "small",
+                //                 onClickBtn: () => {
+                //                     this.tabsList2[2].isDisable = true
+                //                 }
+                //             })
+                //         }
+                //     }
+                // }
+                // ListItem() {
+                //     ComponentShowContainer({ title: 'change事件' }) {
+                //         IBestTabs({
+                //             tabsList: this.tabsList,
+                //             currentName: $curTabName4,
+                //             onChange: (name: string) => {
+                //                 IBestToast.show("当前点击的是：" + name)
+                //             }
+                //         })
+                //     }
+                // }
+                // ListItem() {
+                //     ComponentShowContainer({ title: '自定义标签' }) {
+                //         Column({space: 20}){
+                //             IBestTabs({
+                //                 tabsList: this.tabsList3,
+                //                 currentName: $curTabName5
+                //             })
+                //             IBestButton({
+                //                 text: "修改数字",
+                //                 buttonSize: "small",
+                //                 onClickBtn: () => {
+                //                     if(this.tabsList3[1].number != undefined){
+                //                         this.tabsList3[1].number += 1
+                //                     }
+                //                 }
+                //             })
+                //         }
+                //     }
+                // }
+                // ListItem() {
+                //     ComponentShowContainer({ title: 'controller 切换' }) {
+                //         Column({space: 20}){
+                //             IBestTabs({
+                //                 tabsList: this.tabsList,
+                //                 currentName: $curTabName6,
+                //                 tabController: this.tabController
+                //             })
+                //             IBestButton({
+                //                 text: "跳转标签3",
+                //                 buttonSize: "small",
+                //                 onClickBtn: () => {
+                //                     this.tabController.changeTab("3")
+                //                 }
+                //             })
+                //         }
+                //     }
+                // }
             }
             .width(CONTAINER_SIZE.FULL)
             .layoutWeight(1)
             .padding({
-                left: SPACE.BASE,
-                right: SPACE.BASE,
-                bottom: SPACE.BASE
+                left: SPACE.SM,
+                right: SPACE.SM,
+                bottom: SPACE.SM
             })
         }
         .width(CONTAINER_SIZE.FULL)

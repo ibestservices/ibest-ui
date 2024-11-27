@@ -137,9 +137,9 @@ export struct IBestPullRefresh {
 	}
 	onPanGestureChange(type: string, event: GestureEvent){
 		let scrollTop = this.scroller.currentOffset()?.yOffset
-		// console.log("scrollTop", scrollTop)
 		this.scrollTop = scrollTop == undefined || scrollTop < 0 ? 0 : scrollTop
-		if(this.isTouchable() && this.scrollTop < 0.001) {
+		// console.log("scrollTop", scrollTop)
+		if(this.isTouchable() && this.scrollTop < 1) {
 			switch (type) {
 				case "move":
 					let newOffset = event.offsetY
@@ -148,12 +148,14 @@ export struct IBestPullRefresh {
 					}
 					break
 				case "end":
-					if(this.refreshStatus == "loosing"){
-						this.setRefreshStatus(this.headSize, true)
-						this.loading = true
-						this.onRefresh()
-					}else{
-						this.setRefreshStatus(0)
+					if(this.transY > 0){
+						if(this.refreshStatus == "loosing"){
+							this.setRefreshStatus(this.headSize, true)
+							this.loading = true
+							this.onRefresh()
+						}else{
+							this.setRefreshStatus(0)
+						}
 					}
 					break
 			}

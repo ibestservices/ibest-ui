@@ -18,7 +18,7 @@ struct LoadingPage {
 
   @Builder
   ImageContain() {
-    Image($r('app.media.icon')).width('40lpx')
+    Image($r('app.media.icon')).width(20)
   }
 
   build() {
@@ -34,12 +34,12 @@ struct LoadingPage {
               IBestLoading()
               IBestLoading({
                 loadingIconType: 'spinner'
-              }).margin({ left: '40lpx' })
+              }).margin({ left: 20 })
 
             }
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
@@ -51,12 +51,12 @@ struct LoadingPage {
               IBestLoading({
                 loadingColor: '#DB3131',
                 loadingIconType: 'spinner'
-              }).margin({ left: '40lpx' })
+              }).margin({ left: 20 })
 
             }
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
 
@@ -74,7 +74,7 @@ struct LoadingPage {
             }
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
 
@@ -88,7 +88,7 @@ struct LoadingPage {
             }
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
@@ -102,7 +102,7 @@ struct LoadingPage {
             }
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
@@ -116,11 +116,11 @@ struct LoadingPage {
                 loadingText: '加载中...',
                 loadingColor: '#3D8AF2',
                 loadingTextColor: 'rgb(25, 137, 250)'
-              }).margin({ left: '40lpx' })
+              }).margin({ left: 20 })
             }
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
@@ -132,14 +132,14 @@ struct LoadingPage {
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
       }
       .layoutWeight(1)
       .padding({
-        left: SPACE.BASE,
-        right: SPACE.BASE
+        left: SPACE.SM,
+        right: SPACE.SM
       })
     }
     .width(CONTAINER_SIZE.FULL)

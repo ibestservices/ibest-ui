@@ -53,7 +53,7 @@ struct PasswordInputPage {
 					ComponentShowContainer({ title: '格子间距' }) {
 						IBestPasswordInput({
 							value: $value2,
-							space: 20
+							space: 12
 						})
 					}
 				}
@@ -86,9 +86,9 @@ struct PasswordInputPage {
 			.width(CONTAINER_SIZE.FULL)
 			.layoutWeight(1)
 			.padding({
-				left: SPACE.BASE,
-				right: SPACE.BASE,
-				bottom: SPACE.BASE
+				left: SPACE.SM,
+				right: SPACE.SM,
+				bottom: SPACE.SM
 			})
 		}
 		.width(CONTAINER_SIZE.FULL)

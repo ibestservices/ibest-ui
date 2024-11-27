@@ -6,11 +6,13 @@ import { IBestGlobalConfig, IBestGlobalConfigType } from '../model/Global.type';
 import { setIBestUIBaseStyle } from '../theme-chalk/src';
 import { display } from '@kit.ArkUI';
 import mediaquery from '@ohos.mediaquery';
-
+import { emitter } from './EventEmitter';
 // 全局存储中心
 export default class GlobalStore {
 	// windowStage
 	public static windowStage: window.WindowStage
+	// context
+	public static context: common.BaseContext
 	// 顶部规避尺寸
 	public static topAvoidHeight: number = 0
 	// 底部导航条高度
@@ -23,17 +25,27 @@ export default class GlobalStore {
 	 */
 	public static init(windowStage: window.WindowStage, context: common.BaseContext){
 		GlobalStore.windowStage = windowStage
+		GlobalStore.context = context
 		// 获取顶部和底部规避尺寸
-		getWindowAvoidSize(context).then(res => {
-			GlobalStore.topAvoidHeight = res.topSize
-			GlobalStore.bottomBarHeight = res.navigationSize
-		})
+		GlobalStore.getAvoidSize()
+		// 获取屏幕尺寸
 		GlobalStore.getScreenSize()
+		// 设置旋转监听
 		GlobalStore.screenRotateListener()
 		// 注册字体
 		font.registerFont({
 			familyName: 'ibestFont',
 			familySrc: $rawfile('vant_font.woff')
+		})
+	}
+	/**
+	 * 获取规避尺寸
+     */
+	private static getAvoidSize(){
+		getWindowAvoidSize(GlobalStore.context).then(res => {
+			// console.log('getWindowAvoidSize', res.topSize, res.navigationSize)
+			GlobalStore.topAvoidHeight = res.topSize
+			GlobalStore.bottomBarHeight = res.navigationSize
 		})
 	}
 	/**
@@ -52,7 +64,10 @@ export default class GlobalStore {
 	 */
 	private static screenRotateListener() {
 		let listener = mediaquery.matchMediaSync('(orientation: landscape)')
-		listener.on('change', (): void => GlobalStore.getScreenSize())
+		listener.on('change', () => {
+			GlobalStore.getAvoidSize()
+			GlobalStore.getScreenSize()
+		})
 	}
 	/**
 	 * 设置全局配置

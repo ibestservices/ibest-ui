@@ -19,7 +19,7 @@ struct EmptyPage {
 
   @Builder
   Btn() {
-    IBestButton({ text: '按钮', type: 'primary' }).margin({ top: SPACE.BASE })
+    IBestButton({ text: '按钮', type: 'primary' }).margin({ top: SPACE.SM })
   }
 
   build() {
@@ -57,7 +57,7 @@ struct EmptyPage {
         ListItem() {
           ComponentShowContainer({ title: '自定义大小' }) {
             IBestEmpty({
-              imageSize: '200lpx',
+              imageSize: 100,
               description: '描述文字'
             })
           }
@@ -80,14 +80,14 @@ struct EmptyPage {
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
       }
       .layoutWeight(1)
       .padding({
-        left: SPACE.BASE,
-        right: SPACE.BASE
+        left: SPACE.SM,
+        right: SPACE.SM
       })
     }
     .width(CONTAINER_SIZE.FULL)

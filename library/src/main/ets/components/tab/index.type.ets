@@ -16,7 +16,7 @@ export interface IBestTabItemType{
     label: string
     name: string
     number?: number
-    icon?: string | Resource
+    icon?: ResourceStr
     isDisable?: boolean
 }
 @Observed
@@ -24,7 +24,7 @@ export class IBestTabItem implements IBestTabItemType{
     label: string
     name: string
     number?: number
-    icon?: string | Resource
+    icon?: ResourceStr
     isDisable?: boolean
     constructor(value: IBestTabItemType) {
         this.label = value.label

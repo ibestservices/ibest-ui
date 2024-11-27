@@ -26,7 +26,7 @@ struct DatePickerPage {
 			}).backgroundColor('#FFF')
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.BASE, card: true }) {
+					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SM, card: true }) {
 						IBestDatePicker({
 							title: "选择日期",
 							minDate: new Date("2020-05-01"),
@@ -42,7 +42,7 @@ struct DatePickerPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: "选项类型", titlePaddingLeft: SPACE.BASE, card: true }) {
+					ComponentShowContainer({ title: "选项类型", titlePaddingLeft: SPACE.SM, card: true }) {
 						IBestDatePicker({
 							title: "选择年月",
 							minDate: new Date("2020-05"),
@@ -59,7 +59,7 @@ struct DatePickerPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: "显示单位", titlePaddingLeft: SPACE.BASE, card: true }) {
+					ComponentShowContainer({ title: "显示单位", titlePaddingLeft: SPACE.SM, card: true }) {
 						IBestDatePicker({
 							title: "选择日期",
 							minDate: new Date("2020-05-01"),
@@ -76,7 +76,7 @@ struct DatePickerPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: "过滤选项", titlePaddingLeft: SPACE.BASE, card: true }) {
+					ComponentShowContainer({ title: "过滤选项", titlePaddingLeft: SPACE.SM, card: true }) {
 						IBestDatePicker({
 							title: "选择年月",
 							minDate: new Date("2020-05"),
@@ -95,7 +95,7 @@ struct DatePickerPage {
 				}
 			}
 			.layoutWeight(1)
-			.padding({ bottom: SPACE.LARGE })
+			.padding({ bottom: SPACE.LG })
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)

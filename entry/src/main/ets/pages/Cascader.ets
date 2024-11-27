@@ -158,7 +158,7 @@ struct CascaderPage {
 			}).backgroundColor('#FFF')
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL }) {
+					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup() {
 							Column() {
 								IBestCell({
@@ -175,7 +175,7 @@ struct CascaderPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '自定义颜色', titlePaddingLeft: SPACE.SMALL }) {
+					ComponentShowContainer({ title: '自定义颜色', titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup() {
 							Column() {
 								IBestCell({
@@ -192,7 +192,7 @@ struct CascaderPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '自定义单项高度', titlePaddingLeft: SPACE.SMALL }) {
+					ComponentShowContainer({ title: '自定义单项高度', titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup() {
 							Column() {
 								IBestCell({
@@ -209,7 +209,7 @@ struct CascaderPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '异步加载选项', titlePaddingLeft: SPACE.SMALL }) {
+					ComponentShowContainer({ title: '异步加载选项', titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup() {
 							Column() {
 								IBestCell({
@@ -226,7 +226,7 @@ struct CascaderPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '禁用选项', titlePaddingLeft: SPACE.SMALL }) {
+					ComponentShowContainer({ title: '禁用选项', titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup() {
 							Column() {
 								IBestCell({
@@ -243,7 +243,7 @@ struct CascaderPage {
 					}
 				}
 				ListItem(){
-					ComponentShowContainer({ title: '平铺展示', titlePaddingLeft: SPACE.SMALL }) {
+					ComponentShowContainer({ title: '平铺展示', titlePaddingLeft: SPACE.XS }) {
 						IBestCascaderContent({
 							value: $selectValue5,
 							options: regionData
@@ -276,7 +276,7 @@ struct CascaderPage {
 				visible: $visible2,
 				options: regionData,
 				value: $selectValue2,
-				itemHeight: 100,
+				itemHeight: 50,
 				onConfirm: (value: IBestCascaderOption[]) => {
 					this.fieldValue2 = value.map(item => item.text).join(',')
 				}

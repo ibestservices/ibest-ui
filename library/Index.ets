@@ -16,6 +16,7 @@ export {
 	IBestActionSheet,
 	init as IBestInit,
 	setGlobalConfig as IBestSetGlobalConfig,
+	setIBestUIBaseStyle as IBestSetUIBaseStyle,
 	IBestImagePreview,
 	IBestDialogUtil,
 	IBestNotify
@@ -102,3 +103,5 @@ export { IBestRefreshContentParams } from './src/main/ets/components/pullRefresh
 
 export { IBestIcon } from './src/main/ets/components/icon/index'
 export {IBestIconClassify, IBestIconData} from './src/main/ets/components/icon/config'
+
+export { IBestBadge } from './src/main/ets/components/badge/index'

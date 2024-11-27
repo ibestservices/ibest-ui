@@ -2,11 +2,10 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { LengthMetrics, LengthUnit } from '@kit.ArkUI';
+import { LengthMetrics } from '@kit.ArkUI';
 import { KeyboardType } from './index.type';
 import { IBestPopup } from '../popup';
-import { convertDimensionsWidthUnit, getWindowAvoidSize } from '../../utils/utils';
-import { common } from '@kit.AbilityKit';
+import { convertDimensionsWidthUnit } from '../../utils/utils'
 import GlobalStore from '../../utils/GlobalStore';
 @Extend(Row) function keyBoxStyle(fullWidth?: boolean){
 	.width(fullWidth ? `calc((100% - ${convertDimensionsWidthUnit(12)})/3*2 + ${convertDimensionsWidthUnit(6)})` : `calc((100% - ${convertDimensionsWidthUnit(12)})/3)`)

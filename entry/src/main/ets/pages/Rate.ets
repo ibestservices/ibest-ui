@@ -117,9 +117,9 @@ struct RatePage {
 			.width(CONTAINER_SIZE.FULL)
 			.layoutWeight(1)
 			.padding({
-				left: SPACE.BASE,
-				right: SPACE.BASE,
-				bottom: SPACE.BASE
+				left: SPACE.SM,
+				right: SPACE.SM,
+				bottom: SPACE.SM
 			})
 		}
 		.width(CONTAINER_SIZE.FULL)

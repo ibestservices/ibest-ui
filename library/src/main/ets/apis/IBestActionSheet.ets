@@ -1,5 +1,5 @@
 import { ComponentContent, UIContext, window } from '@kit.ArkUI';
-import { convertDimensionsWidthUnit, generateId, getSizeByUnit } from '../utils/utils';
+import { convertDimensionsWidthUnit, generateId } from '../utils/utils';
 import CustomContent from '../common/components/CustomContent';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src';
 import { GRAY_COLOR } from '../theme-chalk/src/color';
@@ -14,6 +14,7 @@ class IBestActionType {
 	color?: ResourceColor
 	icon?: ResourceStr
 	isDisabled?: boolean
+	readonly?: boolean
 }
 
 class IBestActionMultiLine extends IBestActionType {
@@ -83,7 +84,7 @@ class IBestActionSheetOption {
 	/**
 	 * 自定义关闭图标
 	 */
-	closeIcon?: string | Resource
+	closeIcon?: ResourceStr
 	/**
 	 * 底部按钮文字
 	 */
@@ -197,7 +198,7 @@ struct defaultContent{
 								.aspectRatio(1)
 						}
 						.height(CONTAINER_SIZE.FULL)
-						.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd})
+						.padding({left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd})
 						.onClick(() => {
 							this.option.close(this.option.id)
 						})
@@ -250,10 +251,10 @@ struct defaultContent{
 									.type(ButtonType.Normal)
 									.borderRadius(0)
 									.backgroundColor(this.baseStyle.default)
-									.stateEffect(!action.isDisabled)
+									.stateEffect(!(action.isDisabled || action.readonly))
 									.opacity(action.isDisabled ? 0.5 : 1)
 									.onClick(() => {
-										if(!action.isDisabled){
+										if(!(action.isDisabled || action.readonly)){
 											if(action.value){
 												this.option.onSelect?.(listIndex, index, action.value)
 											}else{
@@ -302,9 +303,9 @@ struct defaultContent{
 							.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd, top: this.baseStyle.spaceSm, bottom: this.baseStyle.spaceSm })
 						}
 						.actionSheetButtonStyle(this.option.actions && index < this.option.actions.length - 1)
-						.stateEffect(typeof action == "string" || !action.isDisabled)
+						.stateEffect(typeof action == "string" || !(action.isDisabled || action.readonly))
 						.onClick(() => {
-							if(typeof action == "string" || !action.isDisabled){
+							if(typeof action == "string" || !(action.isDisabled || action.readonly)){
 								if(typeof action == "object" && action.value){
 									this.option.onSelect?.(index, action.value)
 								}else{

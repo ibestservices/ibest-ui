@@ -395,20 +395,30 @@ struct Label{
     @Consume labelAlign: FieldTextAlign
     @Consume labelWidth: number | string
     @Consume requireAsteriskPosition: string
-    @Consume leftIcon: string | Resource
-    @Consume leftIconColor: string
+    @Consume leftIcon: ResourceStr
+    @Consume leftIconColor: ResourceColor
     onLeftIconClick: () => void = () => {}
     build() {
         Row(){
             if(this.leftIcon){
-                Image(this.leftIcon)
-                    .width(convertDimensionsWidthUnit(14))
-                    .fillColor(this.leftIconColor)
-                    .aspectRatio(1)
-                    .margin({right: this.baseStyle.spaceBase})
-                    .onClick(() => {
-                        this.onLeftIconClick()
-                    })
+                if(this.leftIconColor){
+                    Image(this.leftIcon)
+                        .width(convertDimensionsWidthUnit(14))
+                        .fillColor(this.leftIconColor)
+                        .aspectRatio(1)
+                        .margin({right: this.baseStyle.spaceBase})
+                        .onClick(() => {
+                            this.onLeftIconClick()
+                        })
+                }else{
+                    Image(this.leftIcon)
+                        .width(convertDimensionsWidthUnit(14))
+                        .aspectRatio(1)
+                        .margin({right: this.baseStyle.spaceBase})
+                        .onClick(() => {
+                            this.onLeftIconClick()
+                        })
+                }
             }
             if(this.requireAsteriskPosition == "left"){
                 Asterisk()
@@ -466,14 +476,14 @@ struct Content{
     @Consume maxlength: number
     @Consume showWordLimit: boolean
     @Consume inputAlign: FieldTextAlign
-    @Consume rightIcon: string | Resource
+    @Consume rightIcon: ResourceStr
     @Consume rightIconColor: string
     @Consume placeholder: string
     @Consume disabled: boolean
     @Consume readOnly: boolean
     @Consume clearable: boolean
     @Consume isLink: boolean
-    @Consume clearIcon: string | Resource
+    @Consume clearIcon: ResourceStr
     @Consume clearTrigger: ClearTriggerType
     @Consume showMessage: boolean
     @Consume validateMessage: string
@@ -639,22 +649,39 @@ struct Content{
                 }
                 // 右侧图标
                 if(this.rightIcon){
-                    Image(this.rightIcon)
-                        .width(this.baseStyle.fontSizeMd)
-                        .aspectRatio(1)
-                        .fillColor(this.rightIconColor)
-                        .margin({left: this.baseStyle.spaceBase})
-                        .onClick(() => {
-                            this.onRightIconClick()
-                        })
+                    if(this.rightIconColor){
+                        Image(this.rightIcon)
+                            .width(this.baseStyle.fontSizeMd)
+                            .aspectRatio(1)
+                            .fillColor(this.rightIconColor)
+                            .margin({left: this.baseStyle.spaceBase})
+                            .onClick(() => {
+                                this.onRightIconClick()
+                            })
+                    }else{
+                        Image(this.rightIcon)
+                            .width(this.baseStyle.fontSizeMd)
+                            .aspectRatio(1)
+                            .margin({left: this.baseStyle.spaceBase})
+                            .onClick(() => {
+                                this.onRightIconClick()
+                            })
+                    }
                 }
                 // link箭头
                 if(this.isLink){
-                    Image($r("app.media.arrow_right"))
-                        .width(this.baseStyle.fontSizeMd)
-                        .aspectRatio(1)
-                        .fillColor(this.rightIconColor)
-                        .margin({left: this.baseStyle.spaceBase})
+                    if(this.rightIconColor){
+                        Image($r("app.media.arrow_right"))
+                            .width(this.baseStyle.fontSizeMd)
+                            .aspectRatio(1)
+                            .fillColor(this.rightIconColor)
+                            .margin({left: this.baseStyle.spaceBase})
+                    }else {
+                        Image($r("app.media.arrow_right"))
+                            .width(this.baseStyle.fontSizeMd)
+                            .aspectRatio(1)
+                            .margin({left: this.baseStyle.spaceBase})
+                    }
                 }
             }
             .width(CONTAINER_SIZE.FULL)

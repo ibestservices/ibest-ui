@@ -30,10 +30,10 @@ struct ThemePage {
           ComponentShowContainer({ title: '更改primary颜色' }) {
             Row(){
               TextInput({placeholder: '请输入合法颜色值，如red、#07c16', text: this.colorText})
-                .fontSize(FONT_SIZE.MINI)
+                .fontSize(FONT_SIZE.SM)
                 .layoutWeight(1)
                 .margin({
-                  right: SPACE.BASE
+                  right: SPACE.SM
                 })
                 .onChange(value=>{
                   this.colorText = value
@@ -79,7 +79,7 @@ struct ThemePage {
               IBestSwitch({
                 value: true
               }).margin({
-                right: SPACE.BASE
+                right: SPACE.SM
               })
               IBestSwitch({
                 value: true,
@@ -102,8 +102,8 @@ struct ThemePage {
       }
       .layoutWeight(1)
       .padding({
-        left: SPACE.BASE,
-        right: SPACE.BASE
+        left: SPACE.SM,
+        right: SPACE.SM
       })
     }
     .width(CONTAINER_SIZE.FULL)

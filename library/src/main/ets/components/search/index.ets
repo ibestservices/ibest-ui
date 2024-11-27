@@ -53,11 +53,11 @@ export struct IBestSearch {
 	/**
 	 * 圆角大小
 	 */
-	@Prop radius: number = 0
+	@Prop radius: number | string = 0
 	/**
 	 * 左侧图标
 	 */
-	@Prop leftIcon: string | Resource = $r("app.media.icon_search")
+	@Prop leftIcon: ResourceStr = $r("app.media.icon_search")
 	/**
 	 * 左侧图标颜色
 	 */
@@ -69,7 +69,7 @@ export struct IBestSearch {
 	/**
 	 * 清除图片地址
 	 */
-	@Prop clearIcon: string | Resource = $r("app.media.icon_clear")
+	@Prop clearIcon: ResourceStr = $r("app.media.icon_clear")
 	/**
 	 * 清除图标显示时机
 	 */
@@ -145,6 +145,7 @@ export struct IBestSearch {
 						.layoutWeight(1)
 						.padding(0)
 						.borderRadius(0)
+						.fontColor(this.textColor)
 						.placeholderColor(this.placeholderColor)
 						.backgroundColor("transparent")
 						.enableAutoFill(false)

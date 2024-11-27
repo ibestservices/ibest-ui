@@ -20,7 +20,7 @@ struct WatermarkPage {
       List() {
 
         ListItem() {
-          ComponentShowContainer({ title: '文字水印', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '文字水印', titlePaddingLeft: SPACE.XS }) {
             IBestWatermark({
               text: 'IBest-UI',
               waterMarkZIndex: 1,
@@ -36,7 +36,7 @@ struct WatermarkPage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: '图片水印', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '图片水印', titlePaddingLeft: SPACE.XS }) {
             IBestWatermark({
               imageUrl: 'https://fastly.jsdelivr.net/npm/@vant/assets/logo.png',
               waterMarkWidth: 40,
@@ -56,7 +56,7 @@ struct WatermarkPage {
 
 
         ListItem() {
-          ComponentShowContainer({ title: '自定义间隔', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '自定义间隔', titlePaddingLeft: SPACE.XS }) {
             IBestWatermark({
               text: 'IBest-UI',
               waterMarkZIndex: 1,
@@ -72,7 +72,7 @@ struct WatermarkPage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: '自定义倾斜角度', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '自定义倾斜角度', titlePaddingLeft: SPACE.XS }) {
             IBestWatermark({
               text: 'IBest-UI',
               waterMarkZIndex: 1,
@@ -88,7 +88,7 @@ struct WatermarkPage {
             }
           }
         }.margin({
-          bottom: SPACE.MEDIA
+          bottom: SPACE.MD
         })
       }
       .layoutWeight(1)

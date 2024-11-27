@@ -4,7 +4,7 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE } from '../../theme-chalk/src/size.type';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
-import { ARROW_DIRECTION, CellSizeData } from './index.type';
+import { ARROW_DIRECTION, BorderSizeType, CellSizeData } from './index.type';
 
 @Component
 export struct IBestCell {
@@ -59,7 +59,7 @@ export struct IBestCell {
    */
   @Prop labelColor: ResourceColor = GRAY_COLOR.GRAY_6;
   /**
-   * 是否显示内边框
+   * 是否显示底部边框
    */
   @Prop hasBorder: boolean = true;
   /**
@@ -104,7 +104,12 @@ export struct IBestCell {
    * 左侧图标大小
    * @since 1.17.0
    */
-  @Prop leftIconSize: number | string = this.baseStyle.fontSizeMd
+  @Prop leftIconSize: number | string = convertDimensionsWidthUnit(16)
+  /**
+   * 左侧图标与title间距
+   * @since 1.18.0
+   */
+  @Prop leftIconMarginRight: number | string = this.baseStyle.spaceBase
   /**
    * 右侧图标
    * @since 1.17.0
@@ -119,7 +124,38 @@ export struct IBestCell {
    * 右侧图标大小
    * @since 1.17.0
    */
-  @Prop rightIconSize: number | string = this.baseStyle.fontSizeMd
+  @Prop rightIconSize: number | string = convertDimensionsWidthUnit(16)
+  /**
+   * 右侧图标与内容间距
+   * @since 1.18.0
+   */
+  @Prop rightIconMarginLeft: number | string = this.baseStyle.spaceBase
+  /**
+   * 左侧内容宽度
+   * @since 1.18.0
+   */
+  @Prop leftContentWidth: number | string = 0
+  /**
+   * 左右padding
+   * @since 1.18.0
+   */
+  @Prop leftRightPadding: number | string = this.baseStyle.spaceMd
+  /**
+   * 底部分割线尺寸类型
+   * @since 1.18.0
+   */
+  @Provide borderSizeType: BorderSizeType = "center"
+  /**
+   * 底部分割线left值
+   * @since 1.18.0
+   */
+  @Prop borderLeft: Dimension = this.baseStyle.spaceMd as Dimension
+  /**
+   * 底部分割线颜色
+   * @since 1.18.0
+   */
+  @Provide bdColor: ResourceColor = GRAY_COLOR.GRAY_3
+
   /**
    * 根据arrow direction获取图标旋转角度
    */
@@ -143,9 +179,9 @@ export struct IBestCell {
     const cellSize = this.cellSize;
     switch (cellSize){
         case SIZE.LARGE:
-          return new CellSizeData(convertDimensionsWidthUnit(14), this.baseStyle.fontSizeLg, this.baseStyle.fontSizeMd)
+          return new CellSizeData(convertDimensionsWidthUnit(14), this.baseStyle.fontSizeLg as string, this.baseStyle.fontSizeMd as string)
       default:
-        return new CellSizeData(convertDimensionsWidthUnit(12), this.baseStyle.fontSizeMd, this.baseStyle.fontSizeSm)
+        return new CellSizeData(convertDimensionsWidthUnit(12), this.baseStyle.fontSizeMd as string, this.baseStyle.fontSizeSm as string)
     }
   }
 
@@ -159,124 +195,137 @@ export struct IBestCell {
 
   build() {
     Column() {
-        // 标题与内容
-        Row() {
-          // 必选符号
-          if (this.required) {
-            Text('*')
-              .margin({
-                right: this.baseStyle.spaceMini
-              })
-              .fontSize(this.baseStyle.fontSizeSm)
-              .fontColor(this.baseStyle.danger)
-          }
-          // 标题与描述
-          Column(){
-            // 标题
-            if (this.titleBuilder) {
-              Row() {
-                this.titleBuilder()
-              }
-            } else {
-              Row() {
-                if (this.iconBuilder) {
-                  Row() {
-                    this.iconBuilder()
-                  }.margin({right: this.baseStyle.spaceBase})
-                }else if(this.leftIcon){
+      // 标题与内容
+      Row() {
+        // 必选符号
+        if (this.required) {
+          Text('*')
+            .margin({
+              right: this.baseStyle.spaceMini
+            })
+            .fontSize(this.baseStyle.fontSizeSm)
+            .fontColor(this.baseStyle.danger)
+        }
+        // 标题与描述
+        Column(){
+          // 标题
+          if (this.titleBuilder) {
+            Row() {
+              this.titleBuilder()
+            }
+          } else {
+            Row() {
+              if (this.iconBuilder) {
+                Row() {
+                  this.iconBuilder()
+                }.margin({right: getSizeByUnit(this.leftIconMarginRight)})
+              }else if(this.leftIcon){
+                if(this.leftIconColor){
                   Image(this.leftIcon)
                     .height(getSizeByUnit(this.leftIconSize))
                     .fillColor(this.leftIconColor)
-                    .margin({right: this.baseStyle.spaceBase})
+                    .margin({right: getSizeByUnit(this.leftIconMarginRight)})
+                }else {
+                  Image(this.leftIcon)
+                  .height(getSizeByUnit(this.leftIconSize))
+                  .margin({right: getSizeByUnit(this.leftIconMarginRight)})
                 }
-                // 默认标题内容
-                Text(String(this.title))
-                  .layoutWeight(1)
-                  .fontSize(this.getCellSize().fontSize)
-                  .fontColor(this.titleColor)
-              }.width(CONTAINER_SIZE.FULL)
-              .alignItems(this.getAlignItems())
-            }
+              }
+              // 默认标题内容
+              Text(String(this.title))
+                .layoutWeight(1)
+                .fontSize(this.getCellSize().fontSize)
+                .fontColor(this.titleColor)
+            }.width(CONTAINER_SIZE.FULL)
+            .alignItems(this.getAlignItems())
+          }
 
-            // 描述信息
-            if (this.labelBuilder) {
-              Row() {
-                this.labelBuilder()
-              }
-            } else {
-              if (this.isHasLabel()) {
-                Text(String(this.label))
-                  .width(CONTAINER_SIZE.FULL)
-                  .fontSize(this.getCellSize().labelFontSize)
-                  .margin({
-                    top: this.baseStyle.spaceBase
-                  })
-                  .fontColor(this.labelColor)
-              }
+          // 描述信息
+          if (this.labelBuilder) {
+            Row() {
+              this.labelBuilder()
+            }
+          } else {
+            if (this.isHasLabel()) {
+              Text(String(this.label))
+                .width(CONTAINER_SIZE.FULL)
+                .fontSize(this.getCellSize().labelFontSize)
+                .margin({
+                  top: this.baseStyle.spaceBase
+                })
+                .fontColor(this.labelColor)
             }
           }
+        }
+        .layoutWeight(this.leftContentWidth ? 0 : 1)
+        .width(getSizeByUnit(this.leftContentWidth))
+        .alignItems( this.center ? HorizontalAlign.Center : HorizontalAlign.Start)
+        // 内容
+        if (this.valueBuilder) {
+          Row() {
+            this.valueBuilder()
+          }
           .layoutWeight(1)
-          .alignItems( this.center ? HorizontalAlign.Center : HorizontalAlign.Start)
-
-
-          // 内容
-          if (this.valueBuilder) {
-            Row() {
-              this.valueBuilder()
-            }
-            .layoutWeight(1)
-          } else {
-            Row() {
+        } else {
+          Row() {
+            Row(){
               Text(String(this.value))
                 .textAlign(TextAlign.Start)
                 .fontSize(this.getCellSize().fontSize)
                 .fontColor(this.valueColor)
-              if (this.rightIconBuilder) {
-                Row() {
-                  this.rightIconBuilder()
-                }.margin({left: this.baseStyle.spaceBase})
-
-                // 如果是link箭头
-              } else if(this.rightIcon){
+            }.justifyContent(FlexAlign.End).layoutWeight(1)
+            if (this.rightIconBuilder) {
+              Row() {
+                this.rightIconBuilder()
+              }
+              .margin({left: getSizeByUnit(this.rightIconMarginLeft)})
+            } else if(this.rightIcon){
+              if(this.rightIconColor){
                 Image(this.rightIcon)
                   .width(getSizeByUnit(this.rightIconSize))
                   .fillColor(this.rightIconColor)
-                  .margin({left: this.baseStyle.spaceBase})
-              } else if (this.isLink) {
-                Row() {
-                  Image($r("app.media.arrow_right"))
-                    .width(this.baseStyle.fontSizeSm)
-                    .margin({
-                      top: convertDimensionsWidthUnit(3),
-                      left: convertDimensionsWidthUnit(4)
-                    })
-                    .rotate({ angle: this.getArrowRotateAngle() })
-                    .animation({
-                      duration: this.baseStyle.animationDuration as number
-                    })
-                }
+                  .margin({left: getSizeByUnit(this.rightIconMarginLeft)})
+              }else{
+                Image(this.rightIcon)
+                .width(getSizeByUnit(this.rightIconSize))
+                .margin({left: getSizeByUnit(this.rightIconMarginLeft)})
               }
-            }.layoutWeight(1)
-            .justifyContent(FlexAlign.End)
-            .alignItems(this.getAlignItems())
+            } else if (this.isLink) { // 如果是link箭头
+              Row() {
+                Image($r("app.media.arrow_right"))
+                  .width(this.baseStyle.fontSizeSm)
+                  .margin({
+                    left: getSizeByUnit(this.rightIconMarginLeft)
+                  })
+                  .rotate({ angle: this.getArrowRotateAngle() })
+                  .animation({
+                    duration: this.baseStyle.animationDuration as number
+                  })
+              }.height(convertDimensionsWidthUnit(16))
+            }
           }
-
+            .layoutWeight(1)
+            .alignItems(this.getAlignItems())
         }
-        .alignItems(this.getAlignItems())
-        .width(CONTAINER_SIZE.FULL)
-        .border({
-          width: { bottom: this.hasBorder ? 1 : 0 },
-          color: GRAY_COLOR.GRAY_3,
+        // 底部边框线
+        if(this.hasBorder && this.borderSizeType == "center"){
+          CellDivider({bottom: "-" + this.getCellSize().padding as Dimension})
+        }
+      }
+      .alignItems(this.getAlignItems())
+      .width(CONTAINER_SIZE.FULL)
+      .padding({
+        top: this.getCellSize().padding,
+        bottom: this.getCellSize().padding,
+        left: getSizeByUnit(this.leftRightPadding),
+        right: getSizeByUnit(this.leftRightPadding)
+      })
+      if(this.hasBorder && this.borderSizeType != "center"){
+        CellDivider({
+          left: this.borderSizeType == "right" ? this.borderLeft : 0
         })
-        .padding({
-          top: this.getCellSize().padding,
-          bottom: this.getCellSize().padding,
-        })
-
-    }.padding({
-      left: this.baseStyle.spaceMd,
-      right: this.baseStyle.spaceMd
-    })
+      }
+    }
     .stateStyles({
       normal: {
         .backgroundColor('#fff')
@@ -291,6 +340,19 @@ export struct IBestCell {
     .onClick((event) => {
       this.onClickCell(event)
     })
+  }
+}
 
+@Component
+struct CellDivider{
+  @Consume bdColor: ResourceStr
+  @Prop left: Dimension = 0
+  @Prop bottom: Dimension = 0
+  build() {
+    Divider()
+      .width("100%")
+      .height(1)
+      .color(this.bdColor)
+      .position({left: this.left, bottom: this.bottom})
   }
 }

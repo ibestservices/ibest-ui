@@ -32,7 +32,7 @@ class ToastOption extends LoadingOption {
     /**
      * 自定义图标
      */
-    icon?: string | Resource
+    icon?: ResourceStr
     /**
      * 自定义图标宽度
      * @since 1.18.0

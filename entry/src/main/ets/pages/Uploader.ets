@@ -172,8 +172,8 @@ struct UploaderPage {
 			}
 			.layoutWeight(1)
 			.padding({
-				left: SPACE.BASE,
-				right: SPACE.BASE
+				left: SPACE.SM,
+				right: SPACE.SM
 			})
 		}
 		.width(CONTAINER_SIZE.FULL)

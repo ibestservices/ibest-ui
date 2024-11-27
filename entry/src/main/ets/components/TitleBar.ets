@@ -26,10 +26,10 @@ function btnNormalStyles() {
 @Extend(Button)
 function btnStyles(isLeft = true) {
   .padding({
-    right: isLeft ? SPACE.SEVEN : SPACE.THIRTY,
-    top: SPACE.BASE,
-    bottom: SPACE.BASE,
-    left: isLeft ? SPACE.THIRTY : SPACE.SEVEN
+    right: isLeft ? SPACE.BASE : SPACE.MD,
+    top: SPACE.SM,
+    bottom: SPACE.SM,
+    left: isLeft ? SPACE.MD : SPACE.BASE
   })
   .backgroundColor('transparent')
   .stateStyles({
@@ -51,11 +51,11 @@ export default struct TitleBar {
   /**
    * 标题 如果传入contentBuilder 那么该传参不生效
    */
-  title?: string | Resource = '';
+  title: string | Resource = '';
   /**
    * 点击右侧按钮
    */
-  onClickRightBtn?: () => void
+  onClickRightBtn: () => void = () => {}
 
   build() {
     Row() {
@@ -64,7 +64,7 @@ export default struct TitleBar {
         type: ButtonType.Normal,
         stateEffect: false
       }) {
-        Image($r('app.media.title_back')).width(CONTAINER_SIZE.FORTY_FOUR)
+        Image($r('app.media.title_back')).width(CONTAINER_SIZE.TWENTY_TWO)
       }
       .onClick(() => {
         router.back()
@@ -73,22 +73,22 @@ export default struct TitleBar {
 
       // 内容区域
       Row() {
-        if (typeof this.contentBuilder === 'function') {
+        if (this.contentBuilder) {
           this.contentBuilder()
         } else {
           Text(this.title)
             .layoutWeight(1)
             .textOverflow({ overflow: TextOverflow.Ellipsis })
             .maxLines(1)
-            .lineHeight(LINE_HEIGHT.FORTY_FOUR)
-            .fontSize(FONT_SIZE.MEDIUM)
+            .lineHeight(LINE_HEIGHT.LG)
+            .fontSize(FONT_SIZE.LG)
             .fontWeight(FONT_WEIGHT.MEDIUM)
             .fontColor(COLOR_BLUE.MEDIUM)
         }
       }.layoutWeight(1)
 
       // 右侧按钮区域
-      if (typeof this.rightIconBuilder === 'function') {
+      if (this.rightIconBuilder) {
         Button({ type: ButtonType.Normal, stateEffect: false }) {
           this.rightIconBuilder()
         }.btnStyles(false)

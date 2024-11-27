@@ -62,7 +62,7 @@ export function setIBestUIBaseStyle(styleData?: Partial<IBestUIBaseStyleType>) {
   if (typeof styleData === 'object' && styleData !== null) {
     Object.keys(styleData).forEach(item => {
       if (newStyleData[item]) {
-        newStyleData[item] = (styleData as IBestUIBaseStyleObjType )[item] ?? newStyleData[item]
+        newStyleData[item] = (styleData as IBestUIBaseStyleObjType)[item] ?? newStyleData[item]
       }
     })
   }
