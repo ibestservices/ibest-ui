@@ -118,3 +118,20 @@ IBestDialog 组件显隐控制方式由原来的controller方式变为由 visibl
 
 1. 修复bug
 
+## 1.18.0
+#### 新增:
+1. 新增 IBestBadge 徽标组件;
+2. Search 增加 textColor 属性;
+3. IBestCell 增加 leftContentWidth、leftIconMarginRight、rightIconMarginLeft、leftRightPadding、borderSizeType、borderLeft、bdColor 属性;
+4. IBestToast 增加 iconWidth 属性;
+5. IBestCheckBox IBestRadio 增加 labelFontSize 属性;
+6. IBestEmpty 增加 emptyImgUrl 属性;
+7. IBestPopup 增加 headerBuilder 插槽;
+8. IBestSearch 增加 textColor 属性;
+
+#### 重要变更:   
+1. 组件库全局尺寸单位默认为vp, 可自定义配置, 升级后可能会出现部分组件尺寸偏大情况, 只需将原先传递的尺寸改为原来一半即可.   
+#### BUG修复:   
+1. IBestToast 同时打开无法关闭问题;
+2. IBestCascader 异步加载时崩溃问题;
+

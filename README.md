@@ -2,7 +2,9 @@
 
 ## 简介
 
-IBest-ui是一个简单易用的鸿蒙开源UI库。
+IBest-UI是一个轻量、简单易用、可定制的鸿蒙开源UI组件库。  
+
+![IBest-UI](./screenshot/IBest-UI.png)
 
 ## 下载安装
 
@@ -27,18 +29,20 @@ https://github.com/ibestservices/ibest-ui
 ## QQ群
 953492584
 
+![QQ群](./screenshot/QQ群.jpg)
+
 ## 微信群
 先进QQ群，拉你进微信群
 
 ## 约束与限制
 在下述版本验证通过：
 ```text
-DevEco Studio 5.0.0 Release
-Build #DS-233.14475.28.36.503906
-构建版本：5.0.3.906, built on October 21, 2024
+DevEco Studio 5.0.1 Beta3
+Build #DS-233.14475.28.36.505200
+构建版本：5.0.5.200, built on November 9, 2024
 Runtime version: 17.0.12+1-b1087.25 x86_64
 VM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.
-macOS 15.0.1
+macOS 15.1.1
 GC: G1 Young Generation, G1 Old Generation
 Memory: 2048M
 Cores: 12

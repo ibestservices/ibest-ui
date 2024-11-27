@@ -200,7 +200,7 @@ struct Index {
               Image($r("app.media.app_icon")).width(32)
               Text("IBest-UI").fontSize(32)
             }
-            Text("轻量、可定制化主题的鸿蒙组件库").fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
+            Text("轻量、可定制化主题的鸿蒙组件库。").fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
           }.width("100%").alignItems(HorizontalAlign.Start).padding({left: 10})
         }.margin({bottom: 30})
         ForEach(this.componentList, (part: ComponentPart) => {
