@@ -1,5 +1,5 @@
 import router from '@ohos.router'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, SPACE } from '../assets/styles/BaseStyle'
+import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, SPACE } from '../assets/styles/BaseStyle'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 
 interface ComponentPart{
@@ -159,6 +159,10 @@ struct Index {
       title: '展示组件',
       list: [
         {
+          name: 'Badge 徽标',
+          path: 'pages/Badge'
+        },
+        {
           name: 'Empty 空状态',
           path: 'pages/Empty'
         },
@@ -190,33 +194,42 @@ struct Index {
   build() {
     Column() {
       List() {
+        ListItem(){
+          Column({space: 16}){
+            Row({space: 16}){
+              Image($r("app.media.app_icon")).width(32)
+              Text("IBest-UI").fontSize(32)
+            }
+            Text("轻量、可定制化主题的鸿蒙组件库。").fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
+          }.width("100%").alignItems(HorizontalAlign.Start).padding({left: 10})
+        }.margin({bottom: 30})
         ForEach(this.componentList, (part: ComponentPart) => {
           ListItem() {
-            ComponentShowContainer({ title: part.title, titlePaddingLeft: SPACE.SMALL }) {
+            ComponentShowContainer({ title: part.title, titlePaddingLeft: SPACE.XS }) {
               ForEach(part.list, (item: ComponentItem) => {
                 Row() {
                   Text(item.name)
-                    .fontSize(FONT_SIZE.BASE)
+                    .fontSize(FONT_SIZE.MD)
                     .fontWeight(FONT_WEIGHT.MEDIUM)
                     .textAlign(TextAlign.Start)
                     .fontColor('#34495e')
                     .layoutWeight(1)
 
                   Image($r('app.media.title_back'))
-                    .width(CONTAINER_SIZE.THIRTY)
+                    .width(CONTAINER_SIZE.FOURTEEN)
                     .margin({
-                      right: SPACE.BASE
+                      right: SPACE.SM
                     })
                     .rotate({
                       angle: 180
                     })
                 }
                 .width(CONTAINER_SIZE.FULL)
-                .height(CONTAINER_SIZE.EIGHTY)
+                .height(CONTAINER_SIZE.FORTY)
                 .borderRadius(99)
-                .padding({ left: SPACE.LARGE })
+                .padding({ left: SPACE.LG })
                 .margin({
-                  bottom: SPACE.BASE
+                  bottom: SPACE.SM
                 })
                 .backgroundColor(0xFFFFFF)
                 .stateStyles({
@@ -250,7 +263,7 @@ struct Index {
         })
       }
       .listDirection(Axis.Vertical) // 排列方向
-      .padding(SPACE.MEDIA)
+      .padding(SPACE.MD)
     }.width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)
     .backgroundColor(BACKGROUND_COLOR.BASE)

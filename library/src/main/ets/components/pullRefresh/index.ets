@@ -1,10 +1,10 @@
 import { IBestRefreshContentParams, PullRefreshStatus } from './index.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type'
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type'
+import { GRAY_COLOR } from '../../theme-chalk/src/color'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestLoading } from '../loading'
-
+import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
 @Component
 export struct IBestPullRefresh {
 	/**
@@ -38,27 +38,27 @@ export struct IBestPullRefresh {
 	/**
 	 * 顶部内容高度
 	 */
-	@Prop headHeight: number = 100
+	@Prop headHeight: number | string = convertDimensionsWidthUnit(50)
 	/**
 	 * 默认内容
      */
-	@BuilderParam defaultContent: CustomBuilder
+	@BuilderParam defaultContent?: CustomBuilder
 	/**
 	 * 自定义下拉过程顶部内容
   	 */
-	@BuilderParam pullingContent: ($$: IBestRefreshContentParams) => void
+	@BuilderParam pullingContent?: ($$: IBestRefreshContentParams) => void
 	/**
 	 * 自定义释放过程顶部内容
   	 */
-	@BuilderParam loosingContent: ($$: IBestRefreshContentParams) => void
+	@BuilderParam loosingContent?: ($$: IBestRefreshContentParams) => void
 	/**
 	 * 自定义加载过程顶部内容
   	 */
-	@BuilderParam loadingContent: CustomBuilder
+	@BuilderParam loadingContent?: CustomBuilder
 	/**
 	 * 自定义刷新成功提示内容
 	 */
-	@BuilderParam successContent: CustomBuilder
+	@BuilderParam successContent?: CustomBuilder
 	/**
 	 * 触发下拉刷新时的回调
 	 */
@@ -68,16 +68,26 @@ export struct IBestPullRefresh {
   	 */
 	scroller: Scroller = new Scroller()
 
+	@State uniId: number = 0
 	@State transY: number = 0
 	@State startY: number = 0
 	@Provide refreshStatus: PullRefreshStatus = "normal"
 	@State scrollTop: number = 0
+	@State headSize: number = 0
+	private uiContext = this.getUIContext()
+
+	aboutToAppear(): void {
+		this.uniId = this.getUniqueId()
+		setTimeout(() => {
+			this.headSize = getComponentsInfo(this.uiContext, `ibest_pull_${this.uniId}`).height
+		}, 10)
+	}
 
 	isTouchable(){
 		return this.refreshStatus != "loading" && this.refreshStatus != "success"
 	}
 	ease(distance: number) {
-		const pullDistance = this.headHeight
+		const pullDistance = this.headSize
 		if (distance > pullDistance) {
 			if (distance < pullDistance * 2) {
 				distance = pullDistance + (distance - pullDistance) / 2;
@@ -94,7 +104,7 @@ export struct IBestPullRefresh {
 			this.refreshStatus = "loading"
 		}else if(distance == 0){
 			this.refreshStatus = "normal"
-		}else if(distance < this.headHeight){
+		}else if(distance < this.headSize){
 			this.refreshStatus = "pulling"
 		} else {
 			this.refreshStatus = 'loosing'
@@ -108,14 +118,14 @@ export struct IBestPullRefresh {
 					this.startY = event.touches[0].y
 					break
 				case TouchType.Move:
-					let newOffset = px2lpx(vp2px(event.touches[0].y - this.startY))
+					let newOffset = event.touches[0].y - this.startY
 					if(newOffset >= 0){
 						this.setRefreshStatus(this.ease(newOffset))
 					}
 					break
 				case TouchType.Up:
 					if(this.refreshStatus == "loosing"){
-						this.setRefreshStatus(this.headHeight, true)
+						this.setRefreshStatus(this.headSize, true)
 						this.loading = true
 						this.onRefresh()
 					}else{
@@ -127,23 +137,25 @@ export struct IBestPullRefresh {
 	}
 	onPanGestureChange(type: string, event: GestureEvent){
 		let scrollTop = this.scroller.currentOffset()?.yOffset
-		// console.log("scrollTop", scrollTop)
 		this.scrollTop = scrollTop == undefined || scrollTop < 0 ? 0 : scrollTop
-		if(this.isTouchable() && this.scrollTop < 0.001) {
+		// console.log("scrollTop", scrollTop)
+		if(this.isTouchable() && this.scrollTop < 1) {
 			switch (type) {
 				case "move":
-					let newOffset = px2lpx(vp2px(event.offsetY))
+					let newOffset = event.offsetY
 					if(newOffset >= 0){
 						this.setRefreshStatus(this.ease(newOffset))
 					}
 					break
 				case "end":
-					if(this.refreshStatus == "loosing"){
-						this.setRefreshStatus(this.headHeight, true)
-						this.loading = true
-						this.onRefresh()
-					}else{
-						this.setRefreshStatus(0)
+					if(this.transY > 0){
+						if(this.refreshStatus == "loosing"){
+							this.setRefreshStatus(this.headSize, true)
+							this.loading = true
+							this.onRefresh()
+						}else{
+							this.setRefreshStatus(0)
+						}
 					}
 					break
 			}
@@ -151,7 +163,7 @@ export struct IBestPullRefresh {
 	}
 	loadingChange(){
 		if(this.loading){
-			this.setRefreshStatus(this.headHeight, true)
+			this.setRefreshStatus(this.headSize, true)
 		}else if(this.successContent || this.successText){
 			this.refreshStatus = "success"
 			setTimeout(() => {
@@ -196,16 +208,17 @@ export struct IBestPullRefresh {
 					}.visibility(this.refreshStatus == "success" ? Visibility.Visible : Visibility.None)
 				}
 				.width(CONTAINER_SIZE.FULL)
-				.height(`${this.headHeight}lpx`)
+				.height(getSizeByUnit(this.headHeight))
 				.justifyContent(FlexAlign.Center)
 				.position({ x: 0, y: 0 })
 				.translate({ y: "-100%" })
+				.id(`ibest_pull_${this.uniId}`)
 				if(this.defaultContent){
 					this.defaultContent()
 				}
 			}
 			.width(CONTAINER_SIZE.FULL)
-			.translate({ y: `${ this.transY }lpx` })
+			.translate({ y: this.transY })
 			.animation({
 				duration: this.duration
 			})
@@ -250,10 +263,10 @@ struct TextTip{
 		}
 	}
 	build() {
-		Row({space: "10lpx"}){
+		Row({space: convertDimensionsWidthUnit(5)}){
 			if(this.refreshStatus == "loading") {
 				IBestLoading({
-					loadingSize: this.baseStyle.fontSizeMd as string
+					loadingSize: this.baseStyle.fontSizeMd
 				})
 			}
 			Text(this.getStatusText())

@@ -1,13 +1,13 @@
-import { clamp } from '../../assets/ets/utils';
+import { clamp, convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type'
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { ColumnType, IBestPickerOption } from './index.type';
 
 @Extend(Text) function pickerItemStyle(itemHeight: number){
 	.width(CONTAINER_SIZE.FULL)
-	.height(`${itemHeight}lpx`)
+	.height(getSizeByUnit(itemHeight))
 	.padding({ left: getDefaultBaseStyle().spaceBase, right: getDefaultBaseStyle().spaceBase })
 	.fontSize(getDefaultBaseStyle().fontSizeLg)
 	.align(Alignment.Center)
@@ -49,7 +49,7 @@ export struct IBestPicker{
 	/**
 	 * 单项高度
 	 */
-	@Prop itemHeight: number = 88
+	@Prop itemHeight: number | string = convertDimensionsWidthUnit(44)
 	/**
 	 * 确认按钮文字
 	 */
@@ -172,17 +172,20 @@ export struct IBestPicker{
 	optionsChange(){
 		this.init("change")
 	}
+	getItemHeight(){
+		return typeof this.itemHeight == "number" ? this.itemHeight : parseInt(this.itemHeight)
+	}
 	// 获取初始位置
 	getBaseOffset(): number{
-		return this.itemHeight * (this.visibleItemCount-1) / 2
+		return this.getItemHeight() * (this.visibleItemCount-1) / 2
 	}
 	// 通过偏移量获取索引
 	getIndexByOffset(columnIndex: number, offset: number) {
-		return clamp(Math.round(-offset / this.itemHeight), 0, this.columns[columnIndex].length - 1)
+		return clamp(Math.round(-offset / this.getItemHeight()), 0, this.columns[columnIndex].length - 1)
 	}
 	// 通过索引更新偏移量
 	updateOffsetByIndex(columnIndex: number, index: number){
-		const offset = - index * this.itemHeight
+		const offset = - index * this.getItemHeight()
 		this.offsetList[columnIndex] = offset
 	}
 	// 重置列表数据
@@ -218,13 +221,14 @@ export struct IBestPicker{
 	}
 	// 手指移动
 	onTouchMove(event: GestureEvent, columnIndex: number): void {
-		let bl = px2lpx(vp2px(event.offsetY))
+		let bl = event.offsetY
+		let itemHeight = this.getItemHeight()
 		let newOffset = this.startOffset + bl
 		let list = this.columns[columnIndex]
-		if(bl > 0 && newOffset > this.itemHeight){
-			newOffset = this.itemHeight
-		}else if(bl < 0 && newOffset < - list.length * this.itemHeight){
-			newOffset = - list.length * this.itemHeight
+		if(bl > 0 && newOffset > itemHeight){
+			newOffset = itemHeight
+		}else if(bl < 0 && newOffset < - list.length * itemHeight){
+			newOffset = - list.length * itemHeight
 		}
 		const now = Date.now()
 		if (now - this.touchStartTime > MOMENTUM_TIME) {
@@ -280,8 +284,7 @@ export struct IBestPicker{
 							.onClick(() => {
 								this.onCancel()
 							})
-						Text(this
-							.confirmText)
+						Text(this.confirmText)
 							.height(CONTAINER_SIZE.FULL)
 							.fontSize(this.baseStyle.fontSizeMd)
 							.fontColor(this.baseStyle.primary)
@@ -291,7 +294,7 @@ export struct IBestPicker{
 							})
 					}
 					.width(CONTAINER_SIZE.FULL)
-					.height("88lpx")
+					.height(convertDimensionsWidthUnit(44))
 					.justifyContent(FlexAlign.SpaceBetween)
 					Text(this.title)
 						.constraintSize({ maxWidth: "50%" })
@@ -308,10 +311,10 @@ export struct IBestPicker{
 						Column() {
 							ForEach(item, (e: IBestPickerOption) => {
 								Text(e.text)
-									.pickerItemStyle(this.itemHeight)
+									.pickerItemStyle(this.getItemHeight())
 							})
 						}
-						.translate({ x: 0, y: `${this.offsetList[index] + this.getBaseOffset()}lpx`, z: 0 })
+						.translate({ x: 0, y: getSizeByUnit(this.offsetList[index] + this.getBaseOffset()), z: 0 })
 						.columnItemStyle()
 						.animation({
 							duration: swipeDuration,
@@ -326,12 +329,12 @@ export struct IBestPicker{
 				Column(){
 					Row()
 						.width(CONTAINER_SIZE.FULL)
-						.height(`calc(50% - ${this.itemHeight/2}lpx)`)
+						.height(`calc(50% - ${getSizeByUnit(this.getItemHeight()/2)})`)
 						.linearGradient({ angle: 180, colors: [["rgba(255,255,255,0.9)", 0.1], [ "rgba(255,255,255,0.4)", 0.9]] })
 						.border({ width: { bottom: 1 }, color: "#ededed" })
 					Row()
 						.width(CONTAINER_SIZE.FULL)
-						.height(`calc(50% - ${this.itemHeight/2}lpx)`)
+						.height(`calc(50% - ${getSizeByUnit(this.getItemHeight()/2)})`)
 						.linearGradient({ angle: 0, colors: [["rgba(255,255,255,0.9)", 0.1], [ "rgba(255,255,255,0.4)", 0.9]] })
 						.border({ width: { top: 1 }, color: "#ededed" })
 				}
@@ -364,7 +367,7 @@ export struct IBestPicker{
 				.height(CONTAINER_SIZE.FULL)
 				.justifyContent(FlexAlign.Center)
 			}
-			.height(`${this.itemHeight * this.visibleItemCount}lpx`)
+			.height(getSizeByUnit(this.getItemHeight() * this.visibleItemCount))
 			.clip(true)
 		}
 		.width(CONTAINER_SIZE.FULL)

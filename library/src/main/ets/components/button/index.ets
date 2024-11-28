@@ -1,10 +1,12 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { ColorType, COLOR_TYPE, GRAY_COLOR } from '../../theme-chalk/src/color.type'
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
+import { ColorType, COLOR_TYPE } from '../../theme-chalk/src/color.type'
+import { GRAY_COLOR } from '../../theme-chalk/src/color'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE, SizeType } from '../../theme-chalk/src/size.type';
 import { ButtonSizeData } from './index.type'
 import { IBestLoading } from '../loading/index'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 
 @Extend(Button)
 function btnSizeStyle(data: ButtonSizeData) {
@@ -24,15 +26,15 @@ export struct IBestButton {
   /**
    * defaultSlot 默认插槽
    */
-  @BuilderParam defaultBuilder: CustomBuilder;
+  @BuilderParam defaultBuilder?: CustomBuilder
   /**
    * 图标的builder
    */
-  @BuilderParam iconBuilder: CustomBuilder;
+  @BuilderParam iconBuilder?: CustomBuilder;
   /**
    * 加载图标的builder
    */
-  @BuilderParam loadingIconBuilder: CustomBuilder;
+  @BuilderParam loadingIconBuilder?: CustomBuilder;
   /**
    * 全局公共样式
    */
@@ -69,7 +71,7 @@ export struct IBestButton {
   /**
    * loading加载的文案
    */
-  @Prop loadingText: string | null = null;
+  @Prop loadingText: string = ""
   /**
    * 按钮展示的文字
    */
@@ -83,9 +85,9 @@ export struct IBestButton {
    */
   @Prop @Watch('handleColorChange') color: ResourceColor = '';
   /**
-   * 加载图标的大小，默认单位为 lpx 如果为-1就是默认值 默认值跟随字体大小
+   * 加载图标的大小, 如果为-1就是默认值 默认值跟随字体大小
    */
-  @Prop loadingSize: number = -1;
+  @Prop loadingSize: number | string = -1;
   @Prop btnWidth?: number | string = undefined;
   @Prop btnHeight?: number | string = undefined;
   @Prop btnFontSize?: number | string = undefined;
@@ -110,20 +112,23 @@ export struct IBestButton {
    */
   getBtnSize() {
     if (this.btnWidth || this.btnHeight) {
-      return new ButtonSizeData(this.btnWidth ? 0 : '30lpx', typeof this.btnHeight != undefined ? `${this.btnHeight}${typeof this.btnHeight == 'number' ? 'lpx' : ''}` : '88lpx',
-        typeof this.btnFontSize != undefined ? `${this.btnFontSize}${typeof this.btnFontSize == 'number' ? 'lpx' : ''}` : this.baseStyle.fontSizeMd, typeof this.btnWidth != undefined ? `${this.btnWidth}${typeof this.btnWidth == 'number' ? 'lpx' : ''}` : '')
+      return new ButtonSizeData(this.btnWidth ? 0 : convertDimensionsWidthUnit(15), this.btnHeight != undefined ? getSizeByUnit(this.btnHeight) : convertDimensionsWidthUnit(44),
+        this.getBtnFontSize() || this.baseStyle.fontSizeMd, this.btnWidth != undefined ? getSizeByUnit(this.btnWidth) : '')
     }
     const buttonSize = this.buttonSize;
     switch (buttonSize) {
       case SIZE.SMALL:
-        return new ButtonSizeData(this.baseStyle.spaceXs, '64lpx', this.baseStyle.fontSizeSm);
+        return new ButtonSizeData(this.baseStyle.spaceXs, convertDimensionsWidthUnit(32), this.getBtnFontSize() || this.baseStyle.fontSizeSm);
       case SIZE.MINI:
-        return new ButtonSizeData(this.baseStyle.spaceBase, '64lpx', this.baseStyle.fontSizeXs);
+        return new ButtonSizeData(this.baseStyle.spaceBase, convertDimensionsWidthUnit(32), this.getBtnFontSize() || this.baseStyle.fontSizeXs);
       case SIZE.LARGE:
-        return new ButtonSizeData(this.baseStyle.spaceXs, '100lpx', this.baseStyle.fontSizeLg, CONTAINER_SIZE.FULL);
+        return new ButtonSizeData(this.baseStyle.spaceXs, convertDimensionsWidthUnit(50), this.getBtnFontSize() || this.baseStyle.fontSizeLg, CONTAINER_SIZE.FULL);
       default:
-        return new ButtonSizeData('30lpx', '88lpx', this.baseStyle.fontSizeMd);
+        return new ButtonSizeData(convertDimensionsWidthUnit(15), convertDimensionsWidthUnit(44), this.getBtnFontSize() || this.baseStyle.fontSizeMd);
     }
+  }
+  getBtnFontSize(){
+    return this.btnFontSize != undefined ? getSizeByUnit(this.btnFontSize, true) : ""
   }
 
   /**
@@ -156,7 +161,7 @@ export struct IBestButton {
    * @returns
    */
   getLoadingSize() {
-    return this.loadingSize != -1 ? `${this.loadingSize}lpx` : this.getBtnSize()?.fontSize as string
+    return this.loadingSize != -1 ? getSizeByUnit(this.loadingSize) : this.getBtnSize()?.fontSize as string
   }
 
   /**
@@ -202,7 +207,7 @@ export struct IBestButton {
 
     }
     .btnSizeStyle(this.getBtnSize())
-    .borderWidth(this.hairline ? '1lpx' : '2lpx')
+    .borderWidth(convertDimensionsWidthUnit(this.hairline ? 0.5 : 1))
     .borderRadius(this.getBtnBorderRadius())
     .fontColor(this.getBtnColor(this.plain))
     .backgroundColor(this.getBtnColor(!this.plain))

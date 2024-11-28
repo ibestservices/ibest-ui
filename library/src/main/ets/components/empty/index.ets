@@ -1,21 +1,26 @@
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type'
-import { SPACE } from '../../theme-chalk/src/space.type';
-
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 @Component
 export struct IBestEmpty {
   /**
+   * 全局公共样式
+   */
+  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+  /**
    * 描述文字底部的builder
    */
-  @BuilderParam defaultBuilder: CustomBuilder;
+  @BuilderParam defaultBuilder?: CustomBuilder;
   /**
-   * 空状态的builder
+   * 占位图的builder
    */
-  @BuilderParam emptyImgBuilder: CustomBuilder;
+  @BuilderParam emptyImgBuilder?: CustomBuilder;
   /**
    * 描述文字的builder
    */
-  @BuilderParam descriptionBuilder: CustomBuilder;
+  @BuilderParam descriptionBuilder?: CustomBuilder;
   /**
    * 图片下方的描述文字 默认空字符串
    */
@@ -25,60 +30,68 @@ export struct IBestEmpty {
    */
   @Prop descriptionColor: ResourceColor = GRAY_COLOR.GRAY_6;
   /**
-   * 描述文字大小 默认 28lpx
+   * 描述文字大小
    */
-  @Prop descriptionFontSize: string | number = '28lpx';
+  @Prop descriptionFontSize: string | number = convertDimensionsWidthUnit(14)
   /**
    * 空占位图的高度
    */
-  @Prop imageSize: string | number = '320lpx';
+  @Prop imageSize: string | number = convertDimensionsWidthUnit(160)
   /**
    * 图片类型，可选值为 error network search default 默认default
    */
   @Prop emptyImage: 'error' | 'network' | 'search' | 'default' = 'default';
+  /**
+   * 自定义占位图
+   * @since 1.18.0
+   */
+  @Prop emptyImgUrl: ResourceStr = ''
 
-  @Builder
-  EmptyImg() {
-    if (this.emptyImage === 'default') {
-      Image($r('app.media.empty')).height(this.imageSize)
+  @Styles imgStyle(){
+    .height(getSizeByUnit(this.imageSize))
+  }
+
+  @Builder EmptyImg() {
+    if(this.emptyImgUrl){
+      Image(this.emptyImage).imgStyle()
+    }else if (this.emptyImage === 'default') {
+      Image($r('app.media.empty')).imgStyle()
     } else if (this.emptyImage === 'network') {
-      Image($r('app.media.empty_network_error')).height(this.imageSize)
+      Image($r('app.media.empty_network_error')).imgStyle()
     } else if (this.emptyImage === 'search') {
-      Image($r('app.media.empty_search_error')).height(this.imageSize)
+      Image($r('app.media.empty_search_error')).imgStyle()
     } else if (this.emptyImage === 'error') {
-      Image($r('app.media.empty_error')).height(this.imageSize)
-    } else {
-      Image(this.emptyImage).height(this.imageSize)
+      Image($r('app.media.empty_error')).imgStyle()
     }
   }
 
   build() {
     Column() {
       // 空占位图
-      if (typeof this.emptyImgBuilder === 'function') {
+      if (this.emptyImgBuilder) {
         this.emptyImgBuilder()
       } else {
         this.EmptyImg()
       }
 
       // 描述
-      if (typeof this.descriptionBuilder === 'function') {
+      if (this.descriptionBuilder) {
         this.descriptionBuilder()
       } else {
         Text(this.description)
           .margin({
-            top: this.description ?? false ? SPACE.MD : 0
+            top: this.description ?? false ? this.baseStyle.spaceMd : 0
           })
           .padding({
-            left: SPACE.XL,
-            right: SPACE.XL
+            left: this.baseStyle.spaceXl,
+            right: this.baseStyle.spaceXl
           })
           .fontColor(this.descriptionColor)
-          .fontSize(this.descriptionFontSize)
+          .fontSize(getSizeByUnit(this.descriptionFontSize, true))
       }
 
       // 底部插槽
-      if (typeof this.defaultBuilder === 'function') {
+      if (this.defaultBuilder) {
         this.defaultBuilder()
       }
 

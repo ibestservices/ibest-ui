@@ -1,6 +1,6 @@
 import router from '@ohos.router';
 import { IBestWatermark } from '@ibestservices/ibest-ui'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, FONT_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import TitleBar from '../components/TitleBar';
 import { ComponentRouterParams } from '../assets/global.type';
@@ -20,11 +20,10 @@ struct WatermarkPage {
       List() {
 
         ListItem() {
-          ComponentShowContainer({ title: '文字水印', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '文字水印', titlePaddingLeft: SPACE.XS }) {
             IBestWatermark({
               text: 'IBest-UI',
               waterMarkZIndex: 1,
-              fontSize: 14,
               gapX: 40,
               gapY: 40
             }){
@@ -37,7 +36,7 @@ struct WatermarkPage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: '图片水印', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '图片水印', titlePaddingLeft: SPACE.XS }) {
             IBestWatermark({
               imageUrl: 'https://fastly.jsdelivr.net/npm/@vant/assets/logo.png',
               waterMarkWidth: 40,
@@ -57,11 +56,10 @@ struct WatermarkPage {
 
 
         ListItem() {
-          ComponentShowContainer({ title: '自定义间隔', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '自定义间隔', titlePaddingLeft: SPACE.XS }) {
             IBestWatermark({
               text: 'IBest-UI',
               waterMarkZIndex: 1,
-              fontSize: 14,
               gapX: 80,
               gapY: 80
             }){
@@ -74,7 +72,7 @@ struct WatermarkPage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: '自定义倾斜角度', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '自定义倾斜角度', titlePaddingLeft: SPACE.XS }) {
             IBestWatermark({
               text: 'IBest-UI',
               waterMarkZIndex: 1,
@@ -90,7 +88,7 @@ struct WatermarkPage {
             }
           }
         }.margin({
-          bottom: SPACE.MEDIA
+          bottom: SPACE.MD
         })
       }
       .layoutWeight(1)

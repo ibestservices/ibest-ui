@@ -1,10 +1,13 @@
-import { clamp, addNumber, getComponentsInfo } from "../../assets/ets/utils"
+import { clamp, addNumber, getComponentsInfo, convertDimensionsWidthUnit, getSizeByUnit,
+	getLengthUnit,
+	convertDimensions} from "../../utils/utils"
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { GRAY_COLOR } from "../../theme-chalk/src/color.type"
-import { CONTAINER_SIZE } from "../../theme-chalk/src/container.type"
+import { GRAY_COLOR } from "../../theme-chalk/src/color"
+import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
 import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
 import { LengthUnit } from "@kit.ArkUI"
 import { IBestSliderValue } from "./index.type"
+import { IBestGlobalConfig } from "../../model/Global.type"
 @Component
 export struct IBestSlider{
 	/**
@@ -12,7 +15,7 @@ export struct IBestSlider{
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@State uniId: number = 0
-	@State space: number = 5
+	@State space: number = 2.5
 	@State percentage: number = 0
 	@State barOffset: number = 0
 	@State buttonIndex: 0 | 1 = 0
@@ -37,11 +40,11 @@ export struct IBestSlider{
 	/**
 	 * 进度条高度
 	 */
-	@Prop barHeight: number = 4
+	@Prop barHeight: number | string = convertDimensionsWidthUnit(2)
 	/**
 	 * 滑块大小
 	 */
-	@Provide({allowOverride: "buttonSize"}) buttonSize: number = 48
+	@Provide({allowOverride: "buttonSize"}) buttonSize: number = convertDimensions(24)
 	/**
 	 * 进度条激活态颜色
 	 */
@@ -65,7 +68,7 @@ export struct IBestSlider{
 	/**
 	 * 自定义滑块
 	 */
-	@BuilderParam customButton: CustomBuilder
+	@BuilderParam customButton?: CustomBuilder
 	/**
 	 * 进度变化且拖动结束后触发
 	 */
@@ -73,17 +76,13 @@ export struct IBestSlider{
 
 	private uiContext = this.getUIContext()
 
-	@Styles stackStyle(){
-		.width(this.vertical ? `${this.barHeight}lpx` : CONTAINER_SIZE.FULL)
-		.height(this.vertical ? CONTAINER_SIZE.FULL : `${this.barHeight}lpx`)
-	}
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
 		this.updateValue(this.value)
 		this.calcMainAxis()
 		setTimeout(() => {
 			this.getButtonSize()
-		}, 0)
+		}, 50)
 	}
 
 	// 获取slider 内容容器尺寸
@@ -207,18 +206,18 @@ export struct IBestSlider{
 				Row(){
 					// 底层背景
 					Row()
-						.width(this.vertical ? `${this.barHeight}lpx` : CONTAINER_SIZE.FULL)
-						.height(this.vertical ? CONTAINER_SIZE.FULL : `${this.barHeight}lpx`)
+						.width(this.vertical ? getSizeByUnit(this.barHeight) : CONTAINER_SIZE.FULL)
+						.height(this.vertical ? CONTAINER_SIZE.FULL : getSizeByUnit(this.barHeight))
 						.backgroundColor(this.barBgColor)
-						.borderRadius(999999)
+						.borderRadius(this.baseStyle.borderRadiusMax)
 						.opacity(this.disabled ? 0.5 : 1)
 					// 激活条
 					Row(){
 						Row()
-							.width(this.vertical ? `${this.barHeight}lpx` : `${this.percentage}%`)
-							.height(this.vertical ? `${this.percentage}%` : `${this.barHeight}lpx`)
+							.width(this.vertical ? getSizeByUnit(this.barHeight) : `${this.percentage}%`)
+							.height(this.vertical ? `${this.percentage}%` : getSizeByUnit(this.barHeight))
 							.backgroundColor(this.activeColor)
-							.borderRadius(999999)
+							.borderRadius(this.baseStyle.borderRadiusMax)
 							.opacity(this.disabled ? 0.5 : 1)
 						// 拖动按钮1
 						DragBar({
@@ -236,8 +235,8 @@ export struct IBestSlider{
 							})
 						}
 					}
-					.width(this.vertical ? `${(this.buttonWidth || this.buttonSize)}lpx` : "")
-					.height(this.vertical ? "" : `${(this.buttonHeight || this.buttonSize)}lpx`)
+					.width(this.vertical ? convertDimensionsWidthUnit(this.buttonWidth || this.buttonSize) : "")
+					.height(this.vertical ? "" : convertDimensionsWidthUnit(this.buttonHeight || this.buttonSize))
 					.justifyContent(FlexAlign.Center)
 					.position(this.getBarPosition())
 				}
@@ -253,14 +252,14 @@ export struct IBestSlider{
 						this.onBgTouch(event)
 					})
 			}
-			.width(this.vertical ? `${(this.buttonWidth || this.buttonSize)}lpx` : CONTAINER_SIZE.FULL)
-			.height(this.vertical ? CONTAINER_SIZE.FULL : `${(this.buttonHeight || this.buttonSize)}lpx`)
+			.width(this.vertical ? convertDimensionsWidthUnit(this.buttonWidth) : CONTAINER_SIZE.FULL)
+			.height(this.vertical ? CONTAINER_SIZE.FULL : convertDimensionsWidthUnit(this.buttonHeight))
 		}
 		.padding({
-			left: this.vertical ? 0 : `${(this.buttonWidth || this.buttonSize)/2 + this.space}lpx`,
-			right: this.vertical ? 0 : `${(this.buttonWidth || this.buttonSize)/2 + this.space}lpx`,
-			top: this.vertical ? `${(this.buttonHeight || this.buttonSize)/2 + this.space}lpx` : `${this.space}lpx`,
-			bottom: this.vertical ? `${(this.buttonHeight || this.buttonSize)/2 + this.space}lpx` : `${this.space}lpx`
+			left: this.vertical ? 0 : convertDimensionsWidthUnit(this.buttonWidth/2 + this.space),
+			right: this.vertical ? 0 : convertDimensionsWidthUnit(this.buttonWidth/2 + this.space),
+			top: this.vertical ? convertDimensionsWidthUnit(this.buttonHeight/2 + this.space) : convertDimensionsWidthUnit(this.space),
+			bottom: this.vertical ? convertDimensionsWidthUnit(this.buttonHeight/2 + this.space) : convertDimensionsWidthUnit(this.space)
 		})
 		.enabled(!this.disabled)
 	}
@@ -272,18 +271,22 @@ struct DragBar{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp("iBestGlobalConfig") config: IBestGlobalConfig = new IBestGlobalConfig()
 	@Prop value: IBestSliderValue
 	@Prop uniId: number
 	@Consume buttonWidth: number
 	@Consume buttonHeight: number
-	@Consume buttonSize: number
+	@Consume buttonSize: number | string
 	@Consume vertical: boolean
 	@Consume reverse: boolean
 	@Prop buttonIndex: 0 | 1 = 0
-	@BuilderParam customButton: CustomBuilder
+	@BuilderParam customButton?: CustomBuilder
 
 	getBarPosition(): LocalizedEdges{
-		let value: LengthMetrics = { value: -(this.buttonWidth || this.buttonSize)/2, unit: LengthUnit.LPX }
+		let value: LengthMetrics = {
+			value: -convertDimensions(this.buttonWidth/2),
+			unit: getLengthUnit()
+		}
 		if(Array.isArray(this.value)){
 			if(this.vertical){
 				return this.buttonIndex == 0 ? {
@@ -321,10 +324,10 @@ struct DragBar{
 				this.customButton()
 			}else{
 				Row()
-					.width(`${this.buttonSize}lpx`)
+					.width(getSizeByUnit(this.buttonSize))
 					.aspectRatio(1)
 					.backgroundColor(this.baseStyle.default)
-					.borderRadius(999)
+					.borderRadius(this.baseStyle.borderRadiusMax)
 					.shadow({ radius: 2, color: "rgba(0,0,0,0.5)", offsetY: 1 })
 			}
 		}

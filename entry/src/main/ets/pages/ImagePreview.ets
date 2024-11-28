@@ -25,7 +25,7 @@ struct ImagePreviewPage {
 			}).backgroundColor('#FFF')
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MEDIA }) {
+					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							IBestCell({
 								title: '预览图片',
@@ -39,7 +39,7 @@ struct ImagePreviewPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '传入配置项', titlePaddingLeft: SPACE.MEDIA }) {
+					ComponentShowContainer({ title: '传入配置项', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							IBestCell({
 								title: '自定义遮罩颜色',

@@ -1,5 +1,7 @@
-import { ColorType, COLOR_TYPE } from '../../theme-chalk/src/color.type'
-import {IBestCalendar} from "./index"
+import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
+import { convertDimensionsWidthUnit } from '../../utils/utils'
+import { IBestPopup } from '../popup'
+import { IBestCalendar } from './index'
 import { CalendarConfirmResultType, SelectedStyleType, SelectType, WeekDayType } from './index.type'
 
 @Component
@@ -19,15 +21,19 @@ export struct IBestCalendarDialog {
     /**
      * 背板的圆角半径
      */
-    @Prop cornerRadius: number = 10
+    @Prop cornerRadius: number | string = convertDimensionsWidthUnit(10)
     /**
      * 弹框展示状态
      */
-    @Link @Watch("visibleChange") visible: boolean
+    @Link visible: boolean
     /**
      * 默认选中日期
      */
     @Prop defaultSelectedDate: Array<string> = []
+    /**
+     * 单项宽度
+     */
+    @Prop itemWidth: number | string = convertDimensionsWidthUnit(50)
     /**
      * 每周第一天是周几
      */
@@ -51,7 +57,7 @@ export struct IBestCalendarDialog {
     /**
      * 自定义选中颜色
      */
-    @Prop selectedColor: ResourceColor = ""
+    @Prop selectedColor: string = ""
     /**
      * 日期区间最多可选天数 默认无限制
      */
@@ -85,9 +91,10 @@ export struct IBestCalendarDialog {
      */
     onConfirm: (value: Array<CalendarConfirmResultType>) => void = () => {}
 
-    dialogController: CustomDialogController | null = new CustomDialogController({
-        builder: IBestCalendar({
+    @Builder baseBuilder() {
+        IBestCalendar({
             defaultSelectedDate: this.selectedDate.length ? this.selectedDate.map(item => item.dateStr) : this.defaultSelectedDate,
+            itemWidth: this.itemWidth,
             isShowLunar: this.isShowLunar,
             selectType: this.selectType,
             selectedStyleType: this.selectedStyleType,
@@ -103,22 +110,9 @@ export struct IBestCalendarDialog {
             confirmBtnColor: this.confirmBtnColor,
             confirmBtnText: this.confirmBtnText,
             onConfirm: (value): void => this.onGetCalendarResult(value)
-        }),
-        alignment: DialogAlignment.Bottom,
-        offset: { dx: 0, dy: this.offsetY },
-        isModal: this.isModal,
-        cornerRadius: this.cornerRadius,
-        cancel: () => {
-            this.visible = false
-        }
-    })
-    visibleChange(){
-        if(this.visible){
-            this.dialogController?.open()
-        }else{
-            this.dialogController?.close()
-        }
+        })
     }
+
     /**
      * 获取日历选择结果 触发onConfirm回调函数 并关闭弹框
      */
@@ -128,5 +122,15 @@ export struct IBestCalendarDialog {
         this.visible = false
     }
     build() {
+        IBestPopup({
+            visible: $visible,
+            offsetY: this.offsetY,
+            isModal: this.isModal,
+            cornerRadius: this.cornerRadius,
+            popupAlign: "bottom",
+            popupHeight: "auto",
+            safeAreaInsetBottom: true,
+            contentBuilder: ():void => this.baseBuilder()
+        })
     }
 }

@@ -1,9 +1,10 @@
 import { ComponentContent, PromptAction, UIObserver, window } from '@kit.ArkUI'
 import { IBestLoading } from '../components/loading'
-import { LoadingIconType, WordBreakType } from '../utils/Global.type'
-import { fontSizeData } from '../theme-chalk/src/font'
-import { spaceData } from '../theme-chalk/src/space'
-
+import { LoadingIconType, WordBreakType } from '../model/Global.type'
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src/index'
+import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type'
+import { debounce } from '../utils/DebounceThrottle'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../utils/utils'
 class LoadingOption{
     /**
      * 展示文本
@@ -23,7 +24,7 @@ class ToastOption extends LoadingOption {
     /**
      * 展示类型
      */
-    type?: "success" | "warning" | "fail" | "loading" | ""
+    type?: "success" | "warning" | "fail" | "loading"
     /**
      * 换行方式
      */
@@ -31,7 +32,12 @@ class ToastOption extends LoadingOption {
     /**
      * 自定义图标
      */
-    icon?: string | Resource
+    icon?: ResourceStr
+    /**
+     * 自定义图标宽度
+     * @since 1.18.0
+     */
+    iconWidth?: number | string
     /**
      * 是否显示背景遮罩层
      */
@@ -53,11 +59,12 @@ class ToastOption extends LoadingOption {
 class ToastParams extends ToastOption{
     constructor(value?: ToastOption) {
         super()
-        this.type = value?.type || ""
+        this.type = value?.type
         this.message = value?.message || "加载中"
         this.duration = typeof value?.duration != "undefined" ? value.duration : 1500
         this.wordBreak = value?.wordBreak || "normal"
-        this.icon = value?.icon || ""
+        this.icon = value?.icon
+        this.iconWidth = value?.iconWidth
         this.isShowMask = value?.isShowMask || false
         this.loadingType = value?.loadingType || "circular"
         this.position = value?.position || "center"
@@ -66,41 +73,52 @@ class ToastParams extends ToastOption{
     }
 }
 
-@Extend(Image) function imageStyle(){
-    .width('72lpx')
+@Extend(Image) function imageStyle(width: number | string | undefined){
+    .width(width ? getSizeByUnit(width) : convertDimensionsWidthUnit(36))
     .aspectRatio(1)
-    .margin({bottom: '20lpx'})
+    .margin({bottom: convertDimensionsWidthUnit(10)})
 }
 
-@Builder function toastBuilder(option: ToastParams){
-    Column(){
-        if(option.icon){
-            Image(option.icon).imageStyle()
-        }else if(option.type){
-            if(option.type == "loading"){
-                IBestLoading({
-                    loadingIconType: option.loadingType,
-                    loadingSize: "38lpx",
-                    loadingStrokeWidth: "3lpx"
-                }).margin({bottom: '20lpx'})
-            }else{
-                Image(option.type == "success" ? $r("app.media.success") : option.type ==
-                    "warning" ? $r("app.media.icon_warn") :$r("app.media.icon_cuo"))
-                    .imageStyle()
-                    .fillColor("#fff")
+@Component
+struct defaultContent{
+    /**
+     * 全局公共样式
+     */
+    @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+    @Prop option: ToastParams
+    build() {
+        Column(){
+            if(this.option.icon){
+                Image(this.option.icon).imageStyle(this.option.iconWidth)
+            }else if(this.option.type){
+                if(this.option.type == "loading"){
+                    IBestLoading({
+                        loadingIconType: this.option.loadingType,
+                        loadingSize: convertDimensionsWidthUnit(20),
+                        loadingStrokeWidth: 2
+                    }).margin({bottom: convertDimensionsWidthUnit(10)})
+                }else{
+                    Image(this.option.type == "success" ? $r("app.media.success") : this.option.type ==
+                        "warning" ? $r("app.media.icon_warn") :$r("app.media.icon_cuo"))
+                        .imageStyle(this.option.iconWidth)
+                        .fillColor("#fff")
+                }
             }
+            Text(this.option.message)
+                .fontColor('#fff')
+                .fontSize(this.baseStyle.fontSizeMd)
+                .wordBreak(this.option.wordBreak == "normal" ? WordBreak.NORMAL : this.option.wordBreak == "break-all" ? WordBreak.BREAK_ALL : WordBreak.BREAK_WORD)
         }
-        Text(option.message)
-            .fontColor('#fff')
-            .fontSize(fontSizeData.fontSizeMd)
-            .wordBreak(option.wordBreak == "normal" ? WordBreak.NORMAL : option.wordBreak == "break-all" ? WordBreak.BREAK_ALL : WordBreak.BREAK_WORD)
+        .constraintSize({minWidth: convertDimensionsWidthUnit(96), maxWidth: "60%", minHeight: !this.option.type && !this.option.icon ? 0 :
+            convertDimensionsWidthUnit(98)})
+        .backgroundColor("rgba(0,0,0,0.7)")
+        .borderRadius(convertDimensionsWidthUnit(6))
+        .padding({left: this.baseStyle.spaceSm, right: this.baseStyle.spaceSm, top: this.baseStyle.spaceXs, bottom: this.baseStyle.spaceXs})
+        .justifyContent(FlexAlign.Center)
     }
-    .constraintSize({minWidth: "192lpx", maxWidth: "60%", minHeight: option.type == "" && option.icon == "" ? 0 :
-        "196lpx"})
-    .backgroundColor("rgba(0,0,0,0.7)")
-    .borderRadius("12lpx")
-    .padding({left: spaceData.spaceSm, right: spaceData.spaceSm, top: spaceData.spaceXs, bottom: spaceData.spaceXs})
-    .justifyContent(FlexAlign.Center)
+}
+@Builder function defaultBuilder(option: ToastParams){
+    defaultContent({ option })
 }
 
 class Toast{
@@ -135,7 +153,7 @@ class Toast{
     /**
      * 根据参数打开弹框
      */
-    private async open(option?: string | ToastOption){
+    private open: (option?: string | ToastOption) => void = debounce(async (option?: string | ToastOption) => {
         let params: ToastParams = typeof option == "string" ? new ToastParams({ message: option }) : new ToastParams(option)
         if(Toast._instance.loadingDialog){
             this.hide()
@@ -143,7 +161,7 @@ class Toast{
         let windowClass = await window.getLastWindow(getContext())
         let uiContext = windowClass.getUIContext()
         let uiObserver = uiContext.getUIObserver()
-        let loadingDialog = new ComponentContent(uiContext, wrapBuilder(toastBuilder), params)
+        let loadingDialog = new ComponentContent(uiContext, wrapBuilder(defaultBuilder), params)
         let promptAction = uiContext.getPromptAction()
         Toast._instance = Toast.getInstance(params, uiObserver, loadingDialog, promptAction)
         await promptAction.openCustomDialog(Toast._instance.loadingDialog, {
@@ -157,24 +175,22 @@ class Toast{
             }
         })
         params.onOpened?.()
-        return params
-    }
+        // 监听路由变化，关闭toast
+        Toast._instance?.uiObserver?.on("routerPageUpdate", ()=>{
+            this.hide()
+        })
+        // 非loading自动关闭
+        if(params.type!="loading" && params.duration){
+            Toast._instance.timer = setTimeout(()=>{
+                this.hide()
+            }, params.duration)
+        }
+    }, 100)
     /**
      * 显示toast
      */
     public show(option?: string | ToastOption){
-        this.open(option).then((params)=>{
-            // 监听路由变化，关闭toast
-            Toast._instance?.uiObserver?.on("routerPageUpdate", ()=>{
-                this.hide()
-            })
-            // 非loading自动关闭
-            if(params.type!="loading" && params.duration){
-                Toast._instance.timer = setTimeout(()=>{
-                    this.hide()
-                }, params.duration)
-            }
-        })
+        this.open(option)
         return Toast._instance
     }
     /**

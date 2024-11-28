@@ -46,8 +46,8 @@ struct RatePage {
 					ComponentShowContainer({ title: '自定义样式' }) {
 						IBestRate({
 							value: $value2,
-							iconSize: 60,
-							space: 16,
+							iconSize: 40,
+							space: 10,
 							activeColor: '#ffd21e',
 							inactiveIcon: $r("app.media.icon_star_o"),
 							inactiveColor: '#eee'
@@ -117,9 +117,9 @@ struct RatePage {
 			.width(CONTAINER_SIZE.FULL)
 			.layoutWeight(1)
 			.padding({
-				left: SPACE.BASE,
-				right: SPACE.BASE,
-				bottom: SPACE.BASE
+				left: SPACE.SM,
+				right: SPACE.SM,
+				bottom: SPACE.SM
 			})
 		}
 		.width(CONTAINER_SIZE.FULL)

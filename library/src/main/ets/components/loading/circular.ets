@@ -1,6 +1,7 @@
 import { UIContext } from '@ohos.arkui.UIContext';
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-
+import { IBestGlobalConfig } from '../../model/Global.type';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 class Point {
   x: number
   y: number
@@ -35,7 +36,7 @@ export struct IBestLoadingCircular {
   /**
    * loading的尺寸
    */
-  @Prop circularSize: string = '60lpx'
+  @Prop circularSize: number | string = convertDimensionsWidthUnit(30)
   /**
    * loading的颜色
    */
@@ -43,7 +44,7 @@ export struct IBestLoadingCircular {
   /**
    * 圆的边框粗细
    */
-  @Prop strokeWidth: Length = '6lpx';
+  @Prop strokeWidth: Length = 2
   /**
    * 旋转角度
    */
@@ -51,11 +52,15 @@ export struct IBestLoadingCircular {
   @State maxPerimeter: number = 0
   @State strokeDashArray: Point = new Point(0,0)
   @State strokeDashOffset: number = 0
+  @StorageProp("iBestGlobalConfig") iBestGlobalConfig: IBestGlobalConfig = new IBestGlobalConfig()
   private uiContext: UIContext = this.getUIContext()
 
   aboutToAppear() {
-    this.maxPerimeter = Math.floor(Math.PI * parseFloat(this.circularSize)) + 20
+    this.maxPerimeter = Math.floor(Math.PI * (this.getCircleSize() + (this.iBestGlobalConfig.unit == "vp" ? 20 : 0)))
     this.strokeDashArray = new Point(0,this.maxPerimeter)
+  }
+  getCircleSize(){
+    return typeof this.circularSize == "number" ? this.circularSize : parseFloat(this.circularSize)
   }
 
   keyframeAnimateTo(){
@@ -91,23 +96,28 @@ export struct IBestLoadingCircular {
   }
 
   build() {
-    Circle({width: this.circularSize, height: this.circularSize})
-      .fill("transparent")
-      .strokeWidth(2)
-      .stroke(this.color)
-      .strokeLineCap(LineCapStyle.Round)
-      .animatableDashArray(this.strokeDashArray)
-      .animatableDashOffset(this.strokeDashOffset)
-      .rotate({ angle: this.rotateAngle })
-      .animation({
-        duration: 2000,
-        iterations: -1,
-        curve: Curve.Linear,
-        playMode: PlayMode.Normal
-      })
-      .onAppear(() => {
-        this.rotateAngle = 360
-        this.keyframeAnimateTo()
-      })
+    Row(){
+      Circle({width: "100%", height: "100%"})
+        .fill("transparent")
+        .strokeWidth(this.strokeWidth)
+        .stroke(this.color)
+        .strokeLineCap(LineCapStyle.Round)
+        .animatableDashArray(this.strokeDashArray)
+        .animatableDashOffset(this.strokeDashOffset)
+        .rotate({ angle: this.rotateAngle })
+        .animation({
+          duration: 2000,
+          iterations: -1,
+          curve: Curve.Linear,
+          playMode: PlayMode.Normal
+        })
+        .onAppear(() => {
+          this.rotateAngle = 360
+          this.keyframeAnimateTo()
+        })
+    }
+    .width(getSizeByUnit(this.circularSize))
+    .aspectRatio(1)
+    .padding(1)
   }
 }

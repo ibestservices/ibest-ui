@@ -1,7 +1,7 @@
-import TitleBar from '../components/TitleBar'
+import TitleBar from '../components/TitleBar';
 import router from '@ohos.router';
 import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import ComponentShowContainer from '../components/ComponentShowContainer'
+import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 import { IBestStepper } from '@ibestservices/ibest-ui';
 
@@ -26,7 +26,7 @@ struct StepperPage {
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
@@ -36,7 +36,7 @@ struct StepperPage {
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
@@ -48,7 +48,7 @@ struct StepperPage {
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
@@ -58,7 +58,7 @@ struct StepperPage {
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
@@ -68,7 +68,7 @@ struct StepperPage {
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
@@ -79,7 +79,7 @@ struct StepperPage {
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
@@ -91,25 +91,25 @@ struct StepperPage {
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
         ListItem() {
           ComponentShowContainer({ title: '自定义大小' }) {
             IBestStepper({
-              inputWidth: '80lpx',
-              buttonSize: '64lpx'
+              inputWidth: 40,
+              buttonSize: 32
             })
           }
         }.margin({
-          bottom: SPACE.BASE
+          bottom: SPACE.SM
         })
 
       }
       .layoutWeight(1)
       .padding({
-        left: SPACE.BASE,
-        right: SPACE.BASE
+        left: SPACE.SM,
+        right: SPACE.SM
       })
     }
     .width(CONTAINER_SIZE.FULL)

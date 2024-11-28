@@ -15,7 +15,7 @@ struct SwitchPage {
   @Builder Arrow(){
     Row(){
       Image($r('app.media.title_back'))
-        .width(CONTAINER_SIZE.THIRTY)
+        .width(CONTAINER_SIZE.FOURTEEN)
         .fillColor(this.arrowDirection === 'left' ? '#db3131' : '#e2e3e7')
         .rotate({
           angle: this.arrowDirection === 'left' ? 0 : -180
@@ -46,7 +46,7 @@ struct SwitchPage {
               value: false,
               disabled: true,
             }).margin({
-              bottom: SPACE.BASE
+              bottom: SPACE.SM
             })
             IBestSwitch({
               disabled: true,
@@ -61,7 +61,7 @@ struct SwitchPage {
               loading: true,
               value: true
             }).margin({
-              bottom: SPACE.BASE
+              bottom: SPACE.SM
             })
 
             IBestSwitch({
@@ -69,7 +69,7 @@ struct SwitchPage {
               value: false,
               activeColor: '#07c160'
             }).margin({
-              bottom: SPACE.BASE
+              bottom: SPACE.SM
             })
           }
         }
@@ -137,8 +137,8 @@ struct SwitchPage {
       }
       .layoutWeight(1)
       .padding({
-        left: SPACE.BASE,
-        right: SPACE.BASE
+        left: SPACE.SM,
+        right: SPACE.SM
       })
 
     }

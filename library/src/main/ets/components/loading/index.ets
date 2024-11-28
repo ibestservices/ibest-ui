@@ -1,10 +1,10 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { LoadingIconType } from '../../utils/Global.type';
+import { LoadingIconType } from '../../model/Global.type';
 import {IBestLoadingCircular} from './circular'
 import {IBestLoadingSpinner} from './spinner'
-
+import { getSizeByUnit } from '../../utils/utils';
 @Component
 export struct IBestLoading {
   /**
@@ -14,15 +14,15 @@ export struct IBestLoading {
   /**
    * 默认插槽 loading覆盖的插槽
    */
-  @BuilderParam defaultBuilder: CustomBuilder;
+  @BuilderParam defaultBuilder?: CustomBuilder;
   /**
    * loading的图标的插槽
    */
-  @BuilderParam loadingIconBuilder: CustomBuilder;
+  @BuilderParam loadingIconBuilder?: CustomBuilder;
   /**
    * loading的文案的插槽
    */
-  @BuilderParam loadingTextBuilder: CustomBuilder;
+  @BuilderParam loadingTextBuilder?: CustomBuilder;
   /**
    * 类型，可选值为 spinner
    */
@@ -30,7 +30,7 @@ export struct IBestLoading {
   /**
    * loading的尺寸
    */
-  @Prop loadingSize: string = '60lpx'
+  @Prop loadingSize: number | string
   /**
    * loading的颜色
    */
@@ -38,7 +38,7 @@ export struct IBestLoading {
   /**
    * loading的线条宽度
    */
-  @Prop loadingStrokeWidth: string = '6lpx';
+  @Prop loadingStrokeWidth: Length
   /**
    * loading的遮罩颜色
    */
@@ -46,7 +46,7 @@ export struct IBestLoading {
   /**
    * loading的图标距离顶部的margin 因为默认loading是垂直居中布局的 可通过该属性调整loading图标的上下位置 只有在vertical为true 即垂直布局时有效
    */
-  @Prop loadingIconMarginTop: string | number = '0';
+  @Prop loadingIconMarginTop: string | number = 0
   /**
    * loadingText的marginLeft值 只有在vertical为false 即横向布局时有效
    */
@@ -66,11 +66,11 @@ export struct IBestLoading {
   /**
    * loading的文字大小
    */
-  @Prop loadingTextFontSize: string = this.baseStyle.fontSizeMd as string;
+  @Prop loadingTextFontSize: number | string = this.baseStyle.fontSizeMd as string;
   /**
    * 菊花图的每条线的长度
    */
-  @Prop spinnerStrokeHeight: string | number = '15lpx';
+  @Prop spinnerStrokeHeight: string | number
   /**
    * 是否垂直排列图标和文字内容
    */
@@ -99,7 +99,7 @@ export struct IBestLoading {
           color: this.loadingColor,
           strokeWidth: this.loadingStrokeWidth
         }).margin({
-          top: this.vertical ? this.loadingIconMarginTop : 0
+          top: this.vertical ? getSizeByUnit(this.loadingIconMarginTop) : 0
         })
       }
 
@@ -111,15 +111,14 @@ export struct IBestLoading {
       if(this.loadingText?.trim()){
         Text(this.loadingText)
           .margin({
-            top: this.vertical ? this.loadingTextMarginTop : 0,
-            left: this.vertical ? 0 : this.loadingTextMarginLeft
+            top: this.vertical ? getSizeByUnit(this.loadingTextMarginTop) : 0,
+            left: this.vertical ? 0 : getSizeByUnit(this.loadingTextMarginLeft)
           })
-          .fontSize(this.loadingTextFontSize)
+          .fontSize(getSizeByUnit(this.loadingTextFontSize, true))
           .fontColor(this.loadingTextColor)
       }
     }
   }
-
 
   build(){
     Stack(){
@@ -133,8 +132,6 @@ export struct IBestLoading {
           this.LoadingContent()
         }
         .justifyContent(FlexAlign.Center)
-        // 避免边框超过绘制区域
-        .padding(this.loadingStrokeWidth)
         .width(this.sizeValue?.width || 'auto')
         .height(this.sizeValue?.height || 'auto')
         .backgroundColor(this.loadingMaskColor)
@@ -143,8 +140,6 @@ export struct IBestLoading {
           this.LoadingContent()
         }
         .justifyContent(FlexAlign.Center)
-        // 避免边框超过绘制区域
-        .padding(this.loadingStrokeWidth)
         .width(this.sizeValue?.width || 'auto')
         .height(this.sizeValue?.height || 'auto')
         .backgroundColor(this.loadingMaskColor)

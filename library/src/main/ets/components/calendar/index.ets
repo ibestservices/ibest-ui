@@ -1,16 +1,16 @@
 import dayjs, { Dayjs } from '@hview/dayjs'
 import { Lunar } from 'lunar'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { IBestUIBaseStyleObjType, IbestUIBaseStyleValue } from '../../theme-chalk/src/index.type'
-import { COLOR_TYPE, ColorType, GRAY_COLOR } from '../../theme-chalk/src/color.type'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
+import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CalendarConfirmResultType, SelectedStyleType, SelectType, WeekDayType } from './index.type'
-import { FONT_SIZE } from '../../theme-chalk/src/font.type'
-import { spaceData } from '../../theme-chalk/src/space'
-import { borderRadiusData } from '../../theme-chalk/src/border'
-import { fontSizeData } from '../../theme-chalk/src/font'
 import promptAction from '@ohos.promptAction'
-import { getComponentsInfo, getIsLandscape } from '../../assets/ets/utils'
+import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
 import { UIContext } from '@kit.ArkUI'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { getNextDay, getPrevDay, set16ToRgb } from './utils'
+
 class DayItemObj{
     date: Dayjs = dayjs()
     dateStr: string = ""
@@ -48,10 +48,11 @@ interface HeaderItemType{
     key: number
 }
 
-@Extend(Text) function headerStyle(itemWidth: string){
-    .width(itemWidth)
+@Extend(Text) function headerStyle(itemWidth: number | string){
+    .width(getSizeByUnit(itemWidth))
+    .height(CONTAINER_SIZE.FULL)
     .textAlign(TextAlign.Center)
-    .fontSize(fontSizeData.fontSizeSm)
+    .fontSize(getDefaultBaseStyle().fontSizeSm)
     .fontColor("#999")
 }
 @Component
@@ -60,17 +61,17 @@ struct CalendarItem {
      * 全局公共样式
      */
     @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
-    // 是否横屏
-    @State isLandscape: boolean = getIsLandscape(getContext(this))
     @State fontColor: ResourceColor = "#333"
     @State bgColor: ResourceColor = "transparent"
     @ObjectLink @Watch("itemChange") dayItem: DayItemType
-    @Consume itemWidth: string
+    @Consume daysList: Array<DayItemType>
+    @Prop index: number
+    @Consume itemWidth: number | string
     @Consume isShowLunar: boolean
     @Consume type: ColorType
     @Consume selectType: SelectType
     @Consume selectedStyleType: SelectedStyleType
-    @Consume selectedColor: ResourceColor
+    @Consume selectedColor: string
     @Consume @Watch("itemChange") selectedList: Array<DayItemType>
 
     aboutToAppear(): void {
@@ -89,55 +90,102 @@ struct CalendarItem {
                 this.fontColor = item.isSelected ? dateStr == first.dateStr || dateStr == last.dateStr ? this
                     .baseStyle.default : this.selectedColor || this.baseStyle[this.type] : item.isCurMonthDay ? "#333" : "#999"
                 this.bgColor = item.isSelected ? dateStr == first.dateStr || dateStr == last.dateStr ? this.selectedColor || this.baseStyle[this.type]
-                    : this.selectedColor ? this.set16ToRgb(this.selectedColor as string) : this.baseStyle[this.type + "Opacity"] :
+                    : this.selectedColor ? set16ToRgb(this.selectedColor) : this.baseStyle[this.type + "Opacity"] :
                     "transparent"
             }else{
                 this.fontColor = item.isSelected ? this.selectedColor || this.baseStyle[this.type] : item.isCurMonthDay ? "#333" : "#999"
-                this.bgColor = item.isSelected ? this.selectedColor ? this.set16ToRgb(this.selectedColor as string) : this.baseStyle[this.type + "Opacity"] : "transparent"
+                this.bgColor = item.isSelected ? this.selectedColor ? set16ToRgb(this.selectedColor) : this.baseStyle[this.type + "Opacity"] : "transparent"
             }
         }else{
             this.fontColor = this.dayItem.isCurMonthDay ? this.dayItem.isSelected ? this.baseStyle.default : "#333" : "#999"
             this.bgColor = this.dayItem.isSelected ? this.selectedColor || this.baseStyle[this.type] : "transparent"
         }
     }
-    // 16进制转rgb
-    set16ToRgb(str:string): string{
-        let reg = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/
-        if(!reg.test(str)) return this.set16ToRgb("#999999")
-        let newStr = (str.toLowerCase()).replace(/\#/g,'')
-        let len = newStr.length
-        if(len == 3){
-            let t = ''
-            for(let i = 0; i < len; i++){
-                t += newStr.slice(i,i+1).concat(newStr.slice(i,i+1))
+    getMultipleBorderRadius (): Length | BorderRadiuses{
+        let borderRadius = this.baseStyle.borderRadiusMd
+        let dateStr = this.dayItem.dateStr
+        const isSelected = (dateStr: string) => this.selectedList.some(item => item.dateStr == dateStr)
+        if (isSelected(dateStr)) {
+            const prevDay = getPrevDay(dateStr)
+            const nextDay = getNextDay(dateStr)
+            const prevSelected = isSelected(prevDay)
+            const nextSelected = isSelected(nextDay)
+
+            if (prevSelected && nextSelected) {
+                return ""
             }
-            newStr = t
+            if (prevSelected) {
+                return {
+                    topRight: borderRadius,
+                    bottomRight: borderRadius
+                }
+            }
+            if (nextSelected) {
+                return {
+                    topLeft: borderRadius,
+                    bottomLeft: borderRadius
+                }
+            }
+            return borderRadius
         }
-        let arr: Array<number> = []
-        for(let i = 0; i < 6; i = i + 2){
-            let s = newStr.slice(i,i+2)
-            arr.push(parseInt("0x" + s))
+        return ''
+    }
+    getDisabledBorderRadius(): Length | BorderRadiuses{
+        let borderRadius = this.baseStyle.borderRadiusMd
+        const prevDay = this.daysList[this.index - 1]
+        const nextDay = this.daysList[this.index + 1]
+        const prevDisabled = prevDay?.isDisabled
+        const nextDisabled = nextDay?.isDisabled
+
+        if (prevDisabled && nextDisabled) {
+            return ""
         }
-        return 'rgba(' + arr.join(",")  + ', 0.2)'
+        if (prevDisabled) {// 6 13 20
+            return {
+                topRight: borderRadius,
+                bottomRight: borderRadius
+            }
+        }
+        if (nextDisabled) { // 0 7 14
+            return {
+                topLeft: borderRadius,
+                bottomLeft: borderRadius
+            }
+        }
+        return borderRadius
+    }
+    getOutBorderRadius(): Length | BorderRadiuses {
+        if(this.dayItem.isDisabled){
+            return this.getDisabledBorderRadius()
+        }else if(this.selectedList.length <= 1){
+            return this.baseStyle.borderRadiusMd
+        }else {
+            return this.getMultipleBorderRadius()
+        }
     }
 
     build() {
-        Column({space: spaceData.spaceMini}){
-            Text(this.dayItem.day)
-                .fontSize(FONT_SIZE.MD)
-                .fontColor(this.fontColor)
-            if(this.isShowLunar){
-                Text(this.dayItem.lunarDay)
-                    .fontSize(FONT_SIZE.SM)
+        Row() {
+            Column({ space: this.baseStyle.spaceMini }) {
+                Text(this.dayItem.day)
+                    .fontSize(this.baseStyle.fontSizeMd)
                     .fontColor(this.fontColor)
+                if (this.isShowLunar) {
+                    Text(this.dayItem.lunarDay)
+                        .fontSize(this.baseStyle.fontSizeSm)
+                        .fontColor(this.fontColor)
+                }
             }
+            .width(getSizeByUnit(this.itemWidth))
+            .aspectRatio(1)
+            .backgroundColor(this.selectType == "single" ? this.bgColor : "")
+            .borderRadius(this.selectedStyleType == "circle" ? this.baseStyle.borderRadiusMax : this.baseStyle.borderRadiusMd)
+            .justifyContent(FlexAlign.Center)
         }
-        .width(this.itemWidth)
-        .aspectRatio(this.isLandscape ? 0 : 1)
-        .borderRadius(this.selectedStyleType == "circle" ? 999 : borderRadiusData.borderRadiusSm)
-        .backgroundColor(this.bgColor)
+        .width(CONTAINER_SIZE.FULL)
         .justifyContent(FlexAlign.Center)
-        .margin({bottom: this.baseStyle.spaceBase})
+        .backgroundColor(this.selectType == "single" ? "" : this.bgColor)
+        .borderRadius(this.getOutBorderRadius())
     }
 }
 
@@ -151,7 +199,7 @@ export struct IBestCalendar{
     // 唯一id
     @State uniId: number = 0
     // 是否横屏
-    @State isLandscape: boolean = getIsLandscape(getContext(this))
+    @StorageProp("isLandscape") isLandscape: boolean = false
     /**
      * 默认选中日期
      */
@@ -159,7 +207,7 @@ export struct IBestCalendar{
     /**
      * 单项宽度
      */
-    @Provide({allowOverride: "itemWidth"}) itemWidth: string = "13%"
+    @Provide({allowOverride: "itemWidth"}) itemWidth: number | string = convertDimensionsWidthUnit(50)
     /**
      * 每周第一天是周几
      */
@@ -216,7 +264,7 @@ export struct IBestCalendar{
     /**
      * 列表日期
      */
-    @State daysList: Array<DayItemType> = []
+    @Provide daysList: Array<DayItemType> = []
     // 日期区域高度
     @State contentHeight: number = 0
     /**
@@ -238,7 +286,7 @@ export struct IBestCalendar{
     /**
      * 自定义选中颜色
      */
-    @Provide({allowOverride: "selectedColor"}) selectedColor: ResourceColor = ""
+    @Provide({allowOverride: "selectedColor"}) selectedColor: string = ""
     /**
      * 日期区间最多可选天数 默认无限制
      */
@@ -271,6 +319,10 @@ export struct IBestCalendar{
      * 确认按钮文案
      */
     @Prop confirmBtnText: string = "确认"
+    /**
+     * 圆角
+     */
+    @Prop cornerRadius: number | string = convertDimensionsWidthUnit(10)
     /**
      * 选择回调
      */
@@ -409,11 +461,9 @@ export struct IBestCalendar{
      * 获取日期区域高度
      */
     getDateAreaHeight(){
-        if(this.isShowMark){
-            setTimeout(()=>{
-                this.contentHeight = getComponentsInfo(this.context, `calender_${this.uniId}`).height
-            }, 0)
-        }
+        setTimeout(()=>{
+            this.contentHeight = getComponentsInfo(this.context, `calender_${this.uniId}`).height
+        }, 0)
     }
     /**
      * 刷新字段
@@ -592,12 +642,12 @@ export struct IBestCalendar{
             Row(){
                 Row(){
                     Image($r("app.media.arrow_left_double"))
-                        .width("28lpx")
+                        .width(convertDimensionsWidthUnit(14))
                         .onClick(() => {
                             this.changeYearMonth("preYear")
                         })
                     Image($r("app.media.arrow_left"))
-                        .width("28lpx")
+                        .width(convertDimensionsWidthUnit(14))
                         .onClick(() => {
                             this.changeYearMonth("preMonth")
                         })
@@ -606,57 +656,59 @@ export struct IBestCalendar{
                     .fontSize(this.baseStyle.fontSizeMd)
                 Row(){
                     Image($r("app.media.arrow_right"))
-                        .width("28lpx")
+                        .width(convertDimensionsWidthUnit(14))
                         .onClick(() => {
                             this.changeYearMonth("nextMonth")
                         })
                     Image($r("app.media.arrow_right_double"))
-                        .width("28lpx")
+                        .width(convertDimensionsWidthUnit(14))
                         .onClick(() => {
                             this.changeYearMonth("nextYear")
                         })
                 }
             }
             .width('100%')
-            .height(this.isLandscape ? "40lpx" : "80lpx")
-            .padding({left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd})
+            .height(convertDimensionsWidthUnit(40))
+            .padding({left: this.baseStyle.spaceLg, right: this.baseStyle.spaceLg})
             .justifyContent(FlexAlign.SpaceBetween)
             .visibility(this.isShowHeader ? Visibility.Visible : Visibility.None)
-            Row() {
+            GridRow({ columns: 7 }) {
                 ForEach(this.headerList, (item: HeaderItemType) => {
-                    Text(item.text).headerStyle(this.itemWidth)
+                    GridCol() {
+                        Text(item.text).headerStyle(this.itemWidth)
+                    }
                 }, (item: HeaderItemType) => item.text)
             }
             .width('100%')
-            .height(this.isLandscape ? "40lpx" : "80lpx")
-            .justifyContent(FlexAlign.SpaceBetween)
+            .height(convertDimensionsWidthUnit(30))
             .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
             Scroll() {
                 Stack({alignContent: Alignment.Top}) {
-                    Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.SpaceBetween }) {
-                        ForEach(this.daysList, (item: DayItemType) => {
-                            CalendarItem({ dayItem: item })
-                                .onClick(() => {
-                                    this.selectDate(item)
-                                })
-                        }) // 这里写 (item: DayItemType) => item.dateStr 渲染会有问题  不知为啥！！！！！
-                    }
-                    .id(`calender_${this.uniId}`)
                     Text(this.curMonth)
-                        .fontSize("300lpx")
-                        .height(`${this.contentHeight}lpx`)
+                        .fontSize(convertDimensionsWidthUnit(150, true))
+                        .height(convertDimensionsWidthUnit(this.contentHeight))
                         .fontColor(GRAY_COLOR.GRAY_2)
-                        .zIndex(-1)
                         .visibility(this.isShowMark ? Visibility.Visible : Visibility.Hidden)
+                    GridRow({ columns: 7, gutter: { x: 0, y: convertDimensionsWidthUnit(5) }}) {
+                        ForEach(this.daysList, (item: DayItemType, index: number) => {
+                            GridCol() {
+                                CalendarItem({ dayItem: item, index: index })
+                                    .onClick(() => {
+                                        this.selectDate(item)
+                                    })
+                            }
+                        })
+                    }
+                    .width("100%")
+                    .id(`calender_${this.uniId}`)
                 }
             }
-            .scrollable(this.isLandscape ? ScrollDirection.Vertical : ScrollDirection.None)
-            .layoutWeight(this.isLandscape ? 1 : 0)
+            .height(this.isLandscape ? '60%' : "")
             .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
             Button(this.confirmBtnText)
                 .type(ButtonType.Capsule)
                 .width('90%')
-                .height(this.isLandscape ? "40lpx" : "60lpx")
+                .height(convertDimensionsWidthUnit(30))
                 .fontSize(this.baseStyle.fontSizeSm)
                 .margin({top: this.baseStyle.spaceXs})
                 .backgroundColor(this.confirmBtnColor || this.baseStyle[this.type])
@@ -666,7 +718,10 @@ export struct IBestCalendar{
                 })
         }
         .width('100%')
-        .padding({top: this.baseStyle.spaceXs, bottom: this.baseStyle.spaceXs})
         .backgroundColor("#fff")
+        .borderRadius({
+            topLeft: this.cornerRadius,
+            topRight: this.cornerRadius
+        })
     }
 }

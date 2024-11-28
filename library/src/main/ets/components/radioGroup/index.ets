@@ -1,5 +1,5 @@
-import { emitter } from '../../assets/ets/EventEmitter';
-import { sleep } from '../../assets/ets/utils';
+import { emitter } from '../../utils/EventEmitter';
+import { sleep } from '../../utils/utils';
 import { CheckedItem, initRadioGroupStore, removeRadioGroupStore } from './store';
 import { getRadioGroupNamespace, RADIO_GROUP_EVENT_NAME } from './utils';
 

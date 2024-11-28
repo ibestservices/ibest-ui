@@ -1,9 +1,9 @@
 import { ComponentContent, UIContext, window } from '@kit.ArkUI';
-import { generateId } from '../assets/ets/utils';
+import { convertDimensionsWidthUnit, generateId } from '../utils/utils';
 import CustomContent from '../common/components/CustomContent';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src';
-import { GRAY_COLOR } from '../theme-chalk/src/color.type';
-import { CONTAINER_SIZE } from '../theme-chalk/src/container.type';
+import { GRAY_COLOR } from '../theme-chalk/src/color';
+import { CONTAINER_SIZE } from '../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type';
 import GlobalStore from '../utils/GlobalStore';
 // 选项类型
@@ -14,6 +14,7 @@ class IBestActionType {
 	color?: ResourceColor
 	icon?: ResourceStr
 	isDisabled?: boolean
+	readonly?: boolean
 }
 
 class IBestActionMultiLine extends IBestActionType {
@@ -83,7 +84,7 @@ class IBestActionSheetOption {
 	/**
 	 * 自定义关闭图标
 	 */
-	closeIcon?: string | Resource
+	closeIcon?: ResourceStr
 	/**
 	 * 底部按钮文字
 	 */
@@ -193,17 +194,17 @@ struct defaultContent{
 					if(this.option.closeable){
 						Row(){
 							Image(this.option.closeIcon)
-								.width("44lpx")
+								.width(convertDimensionsWidthUnit(22))
 								.aspectRatio(1)
 						}
 						.height(CONTAINER_SIZE.FULL)
-						.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd})
+						.padding({left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd})
 						.onClick(() => {
 							this.option.close(this.option.id)
 						})
 					}
 				}
-				.height("96lpx")
+				.height(convertDimensionsWidthUnit(48))
 				.backgroundColor(this.option.titleBgColor)
 				.border({ width: { bottom: 1 }, color: GRAY_COLOR.GRAY_3 })
 			}
@@ -228,9 +229,9 @@ struct defaultContent{
 									Button(){
 										Column() {
 											Image(action.icon)
-												.width("96lpx")
+												.width(convertDimensionsWidthUnit(48))
 												.fillColor(GRAY_COLOR.GRAY_8)
-												.borderRadius(999)
+												.borderRadius(this.baseStyle.borderRadiusMax)
 												.aspectRatio(1)
 												.margin({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd, bottom: this.baseStyle.spaceXs })
 												.draggable(false)
@@ -242,7 +243,7 @@ struct defaultContent{
 												Text(action.subName)
 													.fontSize(this.baseStyle.fontSizeSm)
 													.fontColor(GRAY_COLOR.GRAY_5)
-													.margin({ top: "12lpx" })
+													.margin({ top: convertDimensionsWidthUnit(6) })
 													.padding({ left: this.baseStyle.spaceBase, right: this.baseStyle.spaceBase })
 											}
 										}.alignItems(HorizontalAlign.Center)
@@ -250,10 +251,10 @@ struct defaultContent{
 									.type(ButtonType.Normal)
 									.borderRadius(0)
 									.backgroundColor(this.baseStyle.default)
-									.stateEffect(!action.isDisabled)
+									.stateEffect(!(action.isDisabled || action.readonly))
 									.opacity(action.isDisabled ? 0.5 : 1)
 									.onClick(() => {
-										if(!action.isDisabled){
+										if(!(action.isDisabled || action.readonly)){
 											if(action.value){
 												this.option.onSelect?.(listIndex, index, action.value)
 											}else{
@@ -280,7 +281,7 @@ struct defaultContent{
 								Row(){
 									if(typeof action == "object" && action.icon){
 										Image(action.icon)
-											.width("36lpx")
+											.width(convertDimensionsWidthUnit(18))
 											.aspectRatio(1)
 											.fillColor(typeof action == "object" && action.isDisabled ? GRAY_COLOR.GRAY_5 : GRAY_COLOR.GRAY_8)
 											.margin({ right: this.baseStyle.spaceXs })
@@ -302,9 +303,9 @@ struct defaultContent{
 							.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd, top: this.baseStyle.spaceSm, bottom: this.baseStyle.spaceSm })
 						}
 						.actionSheetButtonStyle(this.option.actions && index < this.option.actions.length - 1)
-						.stateEffect(typeof action == "string" || !action.isDisabled)
+						.stateEffect(typeof action == "string" || !(action.isDisabled || action.readonly))
 						.onClick(() => {
-							if(typeof action == "string" || !action.isDisabled){
+							if(typeof action == "string" || !(action.isDisabled || action.readonly)){
 								if(typeof action == "object" && action.value){
 									this.option.onSelect?.(index, action.value)
 								}else{
@@ -319,7 +320,7 @@ struct defaultContent{
 			if(this.option.cancelText){
 				Divider()
 					.width(CONTAINER_SIZE.FULL)
-					.strokeWidth("16lpx")
+					.strokeWidth(convertDimensionsWidthUnit(8))
 					.color(GRAY_COLOR.GRAY_1)
 				Button({ type: ButtonType.Normal }){
 					Column(){
@@ -336,7 +337,7 @@ struct defaultContent{
 			}
 		}
 		.width(CONTAINER_SIZE.FULL)
-		.padding({ bottom: this.option.safeAreaInsetBottom ? `${GlobalStore.bottomBarHeight}lpx` : 0 })
+		.padding({ bottom: this.option.safeAreaInsetBottom ? convertDimensionsWidthUnit(GlobalStore.bottomBarHeight) : 0 })
 	}
 }
 

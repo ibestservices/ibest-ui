@@ -135,7 +135,7 @@ struct PickerPage {
 			}).backgroundColor('#FFF')
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.BASE, card: true }) {
+					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SM, card: true }) {
 						IBestPicker({
 							options: this.options1,
 							title: "标题",
@@ -150,7 +150,7 @@ struct PickerPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '搭配弹出层使用', titlePaddingLeft: SPACE.BASE, card: true }) {
+					ComponentShowContainer({ title: '搭配弹出层使用', titlePaddingLeft: SPACE.SM, card: true }) {
 						IBestField({
 							label: '城市',
 							value: $filedValue,
@@ -164,7 +164,7 @@ struct PickerPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '默认选中', titlePaddingLeft: SPACE.BASE, card: true }) {
+					ComponentShowContainer({ title: '默认选中', titlePaddingLeft: SPACE.SM, card: true }) {
 						IBestPicker({
 							options: this.options1,
 							title: "标题",
@@ -179,7 +179,7 @@ struct PickerPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '多列选择', titlePaddingLeft: SPACE.BASE, card: true }) {
+					ComponentShowContainer({ title: '多列选择', titlePaddingLeft: SPACE.SM, card: true }) {
 						IBestPicker({
 							options: this.options3,
 							title: "标题",
@@ -194,7 +194,7 @@ struct PickerPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '级联选择', titlePaddingLeft: SPACE.BASE, card: true }) {
+					ComponentShowContainer({ title: '级联选择', titlePaddingLeft: SPACE.SM, card: true }) {
 						IBestPicker({
 							options: this.options4,
 							title: "标题",
@@ -210,7 +210,7 @@ struct PickerPage {
 				}
 			}
 			.layoutWeight(1)
-			.padding({ bottom: SPACE.LARGE })
+			.padding({ bottom: SPACE.LG })
 			// 弹出层
 			IBestPopup({
 				visible: $visible,

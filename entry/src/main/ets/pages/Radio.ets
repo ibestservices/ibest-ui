@@ -1,13 +1,13 @@
 import router from '@ohos.router';
-import { IBestCell, CheckboxGroupContext, IBestRadio, IBestRadioGroup } from '@ibestservices/ibest-ui';
-import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, DISABLE_COLOR, SPACE } from '../assets/styles/BaseStyle';
+import { IBestCell, IBestRadio, IBestRadioGroup } from '@ibestservices/ibest-ui';
+import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { ComponentRouterParams } from '../assets/global.type';
 
 @Styles
 function btnMargin() {
-  .margin({ right: SPACE.BASE, bottom: SPACE.BASE })
+  .margin({ right: SPACE.SM, bottom: SPACE.SM })
 }
 
 
@@ -141,7 +141,7 @@ struct CheckboxPage {
                   name: 'radio5'
                 })
               }.btnMargin().padding({
-                bottom: SPACE.BASE
+                bottom: SPACE.SM
               })
 
 
@@ -212,7 +212,7 @@ struct CheckboxPage {
             Column() {
               IBestRadio({
                 value: true,
-                iconSize: 60,
+                iconSize: 30,
                 group: 'group8',
                 label: '自定义大小',
                 name: 'radio'
@@ -221,7 +221,7 @@ struct CheckboxPage {
 
             Column() {
               IBestRadio({
-                iconSize: 60,
+                iconSize: 30,
                 group: 'group8',
                 label: '自定义大小',
                 name: 'radio2'
@@ -304,14 +304,14 @@ struct CheckboxPage {
             })
           }
         }.margin({
-          bottom: SPACE.MEDIA
+          bottom: SPACE.MD
         })
 
       }
       .layoutWeight(1)
       .padding({
-        left: SPACE.BASE,
-        right: SPACE.BASE
+        left: SPACE.SM,
+        right: SPACE.SM
       })
 
     }

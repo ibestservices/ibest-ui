@@ -27,7 +27,7 @@ struct TimerPickerPage {
             }).backgroundColor('#FFF')
             List() {
                 ListItem() {
-                    ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.BASE, card: true }) {
+                    ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SM, card: true }) {
                         IBestTimePicker({
                             title: "选择时间",
                             value: $selectValue,
@@ -41,7 +41,7 @@ struct TimerPickerPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: "选项类型", titlePaddingLeft: SPACE.BASE, card: true }) {
+                    ComponentShowContainer({ title: "选项类型", titlePaddingLeft: SPACE.SM, card: true }) {
                         IBestTimePicker({
                             title: "选择时分",
                             listType: ["hour", "minute"],
@@ -56,7 +56,7 @@ struct TimerPickerPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '时间范围', titlePaddingLeft: SPACE.BASE, card: true }) {
+                    ComponentShowContainer({ title: '时间范围', titlePaddingLeft: SPACE.SM, card: true }) {
                         IBestTimePicker({
                             title: "选择时间",
                             minTime: "08:30:00",
@@ -72,7 +72,7 @@ struct TimerPickerPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: "显示单位", titlePaddingLeft: SPACE.BASE, card: true }) {
+                    ComponentShowContainer({ title: "显示单位", titlePaddingLeft: SPACE.SM, card: true }) {
                         IBestTimePicker({
                             title: "选择时间",
                             showUnit: true,
@@ -87,7 +87,7 @@ struct TimerPickerPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: "过滤选项", titlePaddingLeft: SPACE.BASE, card: true }) {
+                    ComponentShowContainer({ title: "过滤选项", titlePaddingLeft: SPACE.SM, card: true }) {
                         IBestTimePicker({
                             title: "选择日期",
                             filter: this.filter,
@@ -103,7 +103,7 @@ struct TimerPickerPage {
                 }
             }
             .layoutWeight(1)
-            .padding({ bottom: SPACE.LARGE })
+            .padding({ bottom: SPACE.LG })
         }
         .width(CONTAINER_SIZE.FULL)
         .height(CONTAINER_SIZE.FULL)

@@ -7,17 +7,17 @@ import { ComponentRouterParams } from '../assets/global.type';
 
 @Extend(Row) function rowStyles(hasBottomBorder: boolean = true){
   .width(CONTAINER_SIZE.FULL)
-    .padding({top: SPACE.BASE, bottom: SPACE.BASE})
+    .padding({top: SPACE.SM, bottom: SPACE.SM})
     .justifyContent(FlexAlign.SpaceBetween)
-    .border({width: {bottom:  hasBottomBorder ? '2lpx' : 0}, color: '#f5f6f8'})
+    .border({width: {bottom:  hasBottomBorder ? 1 : 0}, color: '#f5f6f8'})
 }
 
 @Extend(List) function listStyles(){
   .backgroundColor('#fff')
-  .borderRadius('8lpx')
+  .borderRadius(4)
   .padding({
-    left: SPACE.BASE,
-    right: SPACE.BASE
+    left: SPACE.SM,
+    right: SPACE.SM
   })
 }
 
@@ -40,7 +40,7 @@ struct TagPage {
             List(){
               ListItem(){
                 Row(){
-                  Text('primary 类型').fontSize(FONT_SIZE.BASE)
+                  Text('primary 类型').fontSize(FONT_SIZE.MD)
                   IBestTag({
                     text: '标签',
                     type: 'primary'
@@ -49,7 +49,7 @@ struct TagPage {
               }.width(CONTAINER_SIZE.FULL)
               ListItem(){
                 Row(){
-                  Text('success 类型').fontSize(FONT_SIZE.BASE)
+                  Text('success 类型').fontSize(FONT_SIZE.MD)
                   IBestTag({
                     text: '标签',
                     type: 'success'
@@ -58,7 +58,7 @@ struct TagPage {
               }.width(CONTAINER_SIZE.FULL)
               ListItem(){
                 Row(){
-                  Text('warning 类型').fontSize(FONT_SIZE.BASE)
+                  Text('warning 类型').fontSize(FONT_SIZE.MD)
                   IBestTag({
                     text: '标签',
                     type: 'warning'
@@ -67,7 +67,7 @@ struct TagPage {
               }.width(CONTAINER_SIZE.FULL)
               ListItem(){
                 Row(){
-                  Text('danger 类型').fontSize(FONT_SIZE.BASE)
+                  Text('danger 类型').fontSize(FONT_SIZE.MD)
                   IBestTag({
                     text: '标签',
                     type: 'danger'
@@ -76,7 +76,7 @@ struct TagPage {
               }.width(CONTAINER_SIZE.FULL)
               ListItem(){
                 Row(){
-                  Text('default 类型').fontSize(FONT_SIZE.BASE)
+                  Text('default 类型').fontSize(FONT_SIZE.MD)
                   IBestTag({
                     text: '标签',
                     type: 'default'
@@ -92,7 +92,7 @@ struct TagPage {
             List(){
               ListItem(){
                 Row(){
-                  Text('空心样式').fontSize(FONT_SIZE.BASE)
+                  Text('空心样式').fontSize(FONT_SIZE.MD)
                   IBestTag({
                     text: '标签',
                     type: 'primary',
@@ -102,7 +102,7 @@ struct TagPage {
               }.width(CONTAINER_SIZE.FULL)
               ListItem(){
                 Row(){
-                  Text('圆角样式').fontSize(FONT_SIZE.BASE)
+                  Text('圆角样式').fontSize(FONT_SIZE.MD)
                   IBestTag({
                     text: '标签',
                     type: 'primary',
@@ -112,7 +112,7 @@ struct TagPage {
               }.width(CONTAINER_SIZE.FULL)
               ListItem(){
                 Row(){
-                  Text('标记样式').fontSize(FONT_SIZE.BASE)
+                  Text('标记样式').fontSize(FONT_SIZE.MD)
                   IBestTag({
                     text: '标签',
                     type: 'primary',
@@ -122,7 +122,7 @@ struct TagPage {
               }.width(CONTAINER_SIZE.FULL)
               ListItem(){
                 Row(){
-                  Text('可关闭标签').fontSize(FONT_SIZE.BASE)
+                  Text('可关闭标签').fontSize(FONT_SIZE.MD)
                   IBestTag({
                     text: '标签',
                     type: 'primary',
@@ -144,7 +144,7 @@ struct TagPage {
             List(){
               ListItem(){
                 Row(){
-                  Text('小号标签').fontSize(FONT_SIZE.BASE)
+                  Text('小号标签').fontSize(FONT_SIZE.MD)
                   IBestTag({
                     type: 'primary',
                     text: '标签',
@@ -153,7 +153,7 @@ struct TagPage {
               }.width(CONTAINER_SIZE.FULL)
               ListItem(){
                 Row(){
-                  Text('中号标签').fontSize(FONT_SIZE.BASE)
+                  Text('中号标签').fontSize(FONT_SIZE.MD)
                   IBestTag({
                     type: 'primary',
                     text: '标签',
@@ -163,7 +163,7 @@ struct TagPage {
               }.width(CONTAINER_SIZE.FULL)
               ListItem(){
                 Row(){
-                  Text('大号标签').fontSize(FONT_SIZE.BASE)
+                  Text('大号标签').fontSize(FONT_SIZE.MD)
                   IBestTag({
                     type: 'primary',
                     text: '标签',
@@ -180,7 +180,7 @@ struct TagPage {
             List(){
               ListItem(){
                 Row(){
-                  Text('背景颜色').fontSize(FONT_SIZE.BASE)
+                  Text('背景颜色').fontSize(FONT_SIZE.MD)
                   IBestTag({
                     text: '标签',
                     type: 'primary',
@@ -190,7 +190,7 @@ struct TagPage {
               }.width(CONTAINER_SIZE.FULL)
               ListItem(){
                 Row(){
-                  Text('文字颜色').fontSize(FONT_SIZE.BASE)
+                  Text('文字颜色').fontSize(FONT_SIZE.MD)
                   IBestTag({
                     text: '标签',
                     color: "#ffe1e1",
@@ -200,7 +200,7 @@ struct TagPage {
               }.width(CONTAINER_SIZE.FULL)
               ListItem(){
                 Row(){
-                  Text('空心颜色').fontSize(FONT_SIZE.BASE)
+                  Text('空心颜色').fontSize(FONT_SIZE.MD)
                   IBestTag({
                     text: '标签',
                     color: "#7232dd",
@@ -212,14 +212,14 @@ struct TagPage {
           }
         }
         .margin({
-          bottom: SPACE.MEDIA
+          bottom: SPACE.MD
         })
 
       }
       .layoutWeight(1)
       .padding({
-        left: SPACE.BASE,
-        right: SPACE.BASE
+        left: SPACE.SM,
+        right: SPACE.SM
       })
 
     }

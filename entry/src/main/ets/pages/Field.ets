@@ -52,7 +52,7 @@ struct FieldPage {
                 console.log('group1', val)
             }
         })
-        Flex({wrap: FlexWrap.Wrap, space: {main: LengthMetrics.lpx(20), cross: LengthMetrics.lpx(20)}}){
+        Flex({wrap: FlexWrap.Wrap, space: {main: LengthMetrics.vp(20), cross: LengthMetrics.vp(20)}}){
             IBestRadio({
                 label: '单选框1',
                 name: '1',
@@ -92,7 +92,7 @@ struct FieldPage {
             }).backgroundColor('#FFF')
             List() {
                 ListItem() {
-                    ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MEDIA }) {
+                    ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
                         IBestCellGroup({inset: true}) {
                             IBestField({
                                 value: $value,
@@ -104,7 +104,7 @@ struct FieldPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '自定义类型', titlePaddingLeft: SPACE.MEDIA }) {
+                    ComponentShowContainer({ title: '自定义类型', titlePaddingLeft: SPACE.MD }) {
                         IBestCellGroup({inset: true}) {
                             // 密码
                             IBestField({
@@ -140,7 +140,7 @@ struct FieldPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '禁用输入框', titlePaddingLeft: SPACE.MEDIA }) {
+                    ComponentShowContainer({ title: '禁用输入框', titlePaddingLeft: SPACE.MD }) {
                         IBestCellGroup({inset: true}) {
                             IBestField({
                                 value: $value5,
@@ -157,7 +157,7 @@ struct FieldPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '显示图标', titlePaddingLeft: SPACE.MEDIA }) {
+                    ComponentShowContainer({ title: '显示图标', titlePaddingLeft: SPACE.MD }) {
                         IBestCellGroup({inset: true}) {
                             IBestField({
                                 value: $value7,
@@ -177,7 +177,7 @@ struct FieldPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '点击反馈', titlePaddingLeft: SPACE.MEDIA }) {
+                    ComponentShowContainer({ title: '点击反馈', titlePaddingLeft: SPACE.MD }) {
                         IBestCellGroup({inset: true}) {
                             IBestField({
                                 value: $value9,
@@ -193,7 +193,7 @@ struct FieldPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '必填星号', titlePaddingLeft: SPACE.MEDIA }) {
+                    ComponentShowContainer({ title: '必填星号', titlePaddingLeft: SPACE.MD }) {
                         IBestCellGroup({inset: true}) {
                             IBestField({
                                 value: $value10,
@@ -206,7 +206,7 @@ struct FieldPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '插入按钮', titlePaddingLeft: SPACE.MEDIA }) {
+                    ComponentShowContainer({ title: '插入按钮', titlePaddingLeft: SPACE.MD }) {
                         IBestCellGroup({inset: true}) {
                             IBestField({
                                 value: $value11,
@@ -219,7 +219,7 @@ struct FieldPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '格式化输入内容', titlePaddingLeft: SPACE.MEDIA }) {
+                    ComponentShowContainer({ title: '格式化输入内容', titlePaddingLeft: SPACE.MD }) {
                         IBestCellGroup({inset: true}) {
                             IBestField({
                                 value: $value12,
@@ -239,7 +239,7 @@ struct FieldPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '高度自适应', titlePaddingLeft: SPACE.MEDIA }) {
+                    ComponentShowContainer({ title: '高度自适应', titlePaddingLeft: SPACE.MD }) {
                         IBestCellGroup({inset: true}) {
                             IBestField({
                                 value: $value14,
@@ -253,7 +253,7 @@ struct FieldPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '显示字数统计', titlePaddingLeft: SPACE.MEDIA }) {
+                    ComponentShowContainer({ title: '显示字数统计', titlePaddingLeft: SPACE.MD }) {
                         IBestCellGroup({inset: true}) {
                             IBestField({
                                 value: $value15,
@@ -278,7 +278,7 @@ struct FieldPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '输入框内容对齐', titlePaddingLeft: SPACE.MEDIA }) {
+                    ComponentShowContainer({ title: '输入框内容对齐', titlePaddingLeft: SPACE.MD }) {
                         IBestCellGroup({inset: true}) {
                             IBestField({
                                 value: $value17,
@@ -291,7 +291,7 @@ struct FieldPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '输入框文本位置', titlePaddingLeft: SPACE.MEDIA }) {
+                    ComponentShowContainer({ title: '输入框文本位置', titlePaddingLeft: SPACE.MD }) {
                         IBestCellGroup({inset: true}) {
                             IBestField({
                                 value: $value18,
@@ -322,7 +322,7 @@ struct FieldPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '自定义右侧区域内容', titlePaddingLeft: SPACE.MEDIA }) {
+                    ComponentShowContainer({ title: '自定义右侧区域内容', titlePaddingLeft: SPACE.MD }) {
                         IBestCellGroup({inset: true}) {
                             IBestField({
                                 value: $value22,
@@ -335,7 +335,7 @@ struct FieldPage {
                 }
             }
             .layoutWeight(1)
-            .padding({bottom: SPACE.MEDIA})
+            .padding({bottom: SPACE.MD})
         }
         .width(CONTAINER_SIZE.FULL)
         .height(CONTAINER_SIZE.FULL)

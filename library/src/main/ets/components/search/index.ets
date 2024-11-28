@@ -1,7 +1,8 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type'
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type'
+import { GRAY_COLOR } from '../../theme-chalk/src/color'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 @Component
 export struct IBestSearch {
 	/**
@@ -21,6 +22,11 @@ export struct IBestSearch {
 	 */
 	@Link value: string
 	/**
+	 * 输入框文字颜色
+	 * @since 1.18.0
+     */
+	@Prop textColor: ResourceColor = GRAY_COLOR.GRAY_8
+	/**
 	 * 输入框 placeholder 提示文字
 	 */
 	@Prop placeholder: string = '请输入搜索关键词'
@@ -31,7 +37,7 @@ export struct IBestSearch {
 	/**
 	 * 搜索框高度
 	 */
-	@Prop contentHeight: number = 108
+	@Prop contentHeight: number | string = convertDimensionsWidthUnit(34)
 	/**
 	 * 外侧背景色
 	 */
@@ -47,11 +53,11 @@ export struct IBestSearch {
 	/**
 	 * 圆角大小
 	 */
-	@Prop radius: number = 0
+	@Prop radius: number | string = 0
 	/**
 	 * 左侧图标
 	 */
-	@Prop leftIcon: string | Resource = $r("app.media.icon_search")
+	@Prop leftIcon: ResourceStr = $r("app.media.icon_search")
 	/**
 	 * 左侧图标颜色
 	 */
@@ -63,7 +69,7 @@ export struct IBestSearch {
 	/**
 	 * 清除图片地址
 	 */
-	@Prop clearIcon: string | Resource = $r("app.media.icon_clear")
+	@Prop clearIcon: ResourceStr = $r("app.media.icon_clear")
 	/**
 	 * 清除图标显示时机
 	 */
@@ -92,10 +98,6 @@ export struct IBestSearch {
 	 * 输入法回车键类型
 	 */
 	@Prop enterKeyType: EnterKeyType = EnterKeyType.Search
-	/**
-	 * 输入法回车键类型
-	 */
-	@Prop inputFontColor: ResourceColor = ''
 	/**
 	 * 自定义右侧按钮
 	 */
@@ -128,91 +130,93 @@ export struct IBestSearch {
 	build() {
 		Row(){
 			Row(){
-				if(this.label){
-					Text(this.label)
-						.fontSize(this.baseStyle.fontSizeMd)
-						.fontColor(GRAY_COLOR.GRAY_8)
-						.margin({ right: this.baseStyle.spaceBase })
-				}
-				Image(this.leftIcon)
-					.width("36lpx")
-					.margin({ right: this.baseStyle.spaceBase })
-					.fillColor(this.leftIconColor)
-				TextInput({ text: $$this.value, placeholder: this.placeholder })
-					.layoutWeight(1)
-					.padding(0)
-					.borderRadius(0)
-					.placeholderColor(this.placeholderColor)
-					.backgroundColor("transparent")
-					.fontColor(this.inputFontColor)
-					.enableAutoFill(false)
-					.defaultFocus(this.autoFocus)
-					.enterKeyType(this.enterKeyType)
-					.focusable(!(this.disabled || this.readOnly))
-					.onChange((value: string) => {
-						if(!this.clearLock){
-							this.onInput(value)
-						}
-					})
-					.onSubmit(() => {
-						this.onSearch()
-					})
-					.onFocus(() => {
-						this.isFocus = true
-						this.onInputFocus()
-					})
-					.onBlur(() => {
-						this.isFocus = false
-						this.onInputBlur()
-					})
-				if(this.clearable){
-					Row(){
-						Image(this.clearIcon)
-							.width("36lpx")
-							.fillColor(GRAY_COLOR.GRAY_5)
+				Row(){
+					if(this.label){
+						Text(this.label)
+							.fontSize(this.baseStyle.fontSizeMd)
+							.fontColor(GRAY_COLOR.GRAY_8)
+							.margin({ right: this.baseStyle.spaceBase })
 					}
-					.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs })
-					.visibility(this.value && (this.clearTrigger == "always" || this.isFocus) ? Visibility.Visible : Visibility.None)
-					.onClick(() => {
-						this.clearLock = true
-						this.value = ""
-						this.onClear()
-						setTimeout(() => {
-							this.clearLock = false
-						}, 10)
-					})
+					Image(this.leftIcon)
+						.width(convertDimensionsWidthUnit(18))
+						.margin({ right: this.baseStyle.spaceBase })
+						.fillColor(this.leftIconColor)
+					TextInput({ text: $$this.value, placeholder: this.placeholder })
+						.layoutWeight(1)
+						.padding(0)
+						.borderRadius(0)
+						.fontColor(this.textColor)
+						.placeholderColor(this.placeholderColor)
+						.backgroundColor("transparent")
+						.enableAutoFill(false)
+						.defaultFocus(this.autoFocus)
+						.enterKeyType(this.enterKeyType)
+						.focusable(!(this.disabled || this.readOnly))
+						.onChange((value: string) => {
+							if(!this.clearLock){
+								this.onInput(value)
+							}
+						})
+						.onSubmit(() => {
+							this.onSearch()
+						})
+						.onFocus(() => {
+							this.isFocus = true
+							this.onInputFocus()
+						})
+						.onBlur(() => {
+							this.isFocus = false
+							this.onInputBlur()
+						})
+					if(this.clearable){
+						Row(){
+							Image(this.clearIcon)
+								.width(convertDimensionsWidthUnit(18))
+								.fillColor(GRAY_COLOR.GRAY_5)
+						}
+						.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs })
+						.visibility(this.value && (this.clearTrigger == "always" || this.isFocus) ? Visibility.Visible : Visibility.None)
+						.onClick(() => {
+							this.clearLock = true
+							this.value = ""
+							this.onClear()
+							setTimeout(() => {
+								this.clearLock = false
+							}, 10)
+						})
+					}
+				}
+				.layoutWeight(1)
+				.height(CONTAINER_SIZE.FULL)
+				.backgroundColor(this.innerBgColor)
+				.borderRadius(this.isRound ? this.baseStyle.borderRadiusMax : getSizeByUnit(this.radius))
+				.padding({ left: this.baseStyle.spaceSm })
+				.alignItems(VerticalAlign.Center)
+				if(this.customRightButton){
+					this.customRightButton()
+				}else if(this.showRightButton){
+					Text(this.rightButtonText)
+						.width(convertDimensionsWidthUnit(44))
+						.height(CONTAINER_SIZE.FULL)
+						.fontSize(this.baseStyle.fontSizeMd)
+						.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs })
+						.stateStyles({
+							normal: {
+								.backgroundColor(this.baseStyle.default)
+							},
+							pressed: {
+								.backgroundColor(GRAY_COLOR.GRAY_2)
+							}
+						})
+						.onClick(() => {
+							this.onRightButtonClick()
+						})
 				}
 			}
-			.layoutWeight(1)
-			.height(CONTAINER_SIZE.FULL)
-			.backgroundColor(this.innerBgColor)
-			.borderRadius(this.radius ? `${this.radius}lpx` : this.isRound ? 999999 : 0)
-			.padding({ left:  this.baseStyle.spaceSm })
-			.alignItems(VerticalAlign.Center)
-			if(this.customRightButton){
-				this.customRightButton()
-			}else if(this.showRightButton){
-				Text(this.rightButtonText)
-					.width("88lpx")
-					.height(CONTAINER_SIZE.FULL)
-					.fontSize(this.baseStyle.fontSizeMd)
-					.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs })
-					.stateStyles({
-						normal: {
-							.backgroundColor(this.baseStyle.default)
-						},
-						pressed: {
-							.backgroundColor(GRAY_COLOR.GRAY_2)
-						}
-					})
-					.onClick(() => {
-						this.onRightButtonClick()
-					})
-			}
+			.height(getSizeByUnit(this.contentHeight))
 		}
 		.width(CONTAINER_SIZE.FULL)
-		.height(`${this.contentHeight}lpx`)
-		.padding({ left: this.baseStyle.spaceSm, right: this.customRightButton || this.showRightButton ? 0 : this.baseStyle.spaceSm, top: "20lpx", bottom: "20lpx" })
+		.padding({ left: this.baseStyle.spaceSm, right: this.customRightButton || this.showRightButton ? 0 : this.baseStyle.spaceSm, top: convertDimensionsWidthUnit(10), bottom: convertDimensionsWidthUnit(10) })
 		.backgroundColor(this.outBgColor)
 		.enabled(!this.disabled)
 	}

@@ -69,7 +69,7 @@ struct CalendarPage {
             }).backgroundColor('#FFF')
             List() {
                 ListItem() {
-                    ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL }) {
+                    ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
                         IBestCellGroup() {
                             Column() {
                                 IBestCell({
@@ -99,7 +99,7 @@ struct CalendarPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '自定义日历', titlePaddingLeft: SPACE.SMALL }) {
+                    ComponentShowContainer({ title: '自定义日历', titlePaddingLeft: SPACE.XS }) {
                         IBestCellGroup() {
                             Column() {
                                 IBestCell({
@@ -150,7 +150,7 @@ struct CalendarPage {
                     }
                 }
                 ListItem(){
-                    ComponentShowContainer({ title: '平铺展示', titlePaddingLeft: SPACE.SMALL }) {
+                    ComponentShowContainer({ title: '平铺展示', titlePaddingLeft: SPACE.XS }) {
                         IBestCalendar({
                             isShowLunar: true,
                             weekFirstDay: "日",
@@ -209,8 +209,8 @@ struct CalendarPage {
                 visible: $customRangeVisible,
                 selectType: "multiple",
                 selectedStyleType: "circle",
-                minDate: new Date("2024-07-09"),
-                maxDate: new Date("2024-07-31"),
+                minDate: new Date("2024-11-01"),
+                maxDate: new Date("2030-07-31"),
                 confirmBtnColor: "#ed4040",
                 confirmBtnText: "完成",
                 onConfirm: (value: Array<CalendarConfirmResultType>): void => this.onDialogConfirm("customRangeDate", value)

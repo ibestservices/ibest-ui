@@ -1,8 +1,8 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-
+import { convertDimensionsWidthUnit } from '../../utils/utils';
 @Component
 export struct IBestCellGroup {
   /**
@@ -12,11 +12,10 @@ export struct IBestCellGroup {
   /**
    * 默认插槽
    */
-  @BuilderParam defaultBuilder: CustomBuilder;
+  @BuilderParam defaultBuilder?: CustomBuilder;
   /**
    * 分组标题
    * title没有设计成builder是因为如果设计成了builder就没法用尾随闭包方式初始化Cell或别的组件了
-   * must have one and only one property decorated with @BuilderParam, and its @BuilderParam expects no parameter.
    */
   @Prop title: string | number = '';
   /**
@@ -33,7 +32,7 @@ export struct IBestCellGroup {
    * @returns
    */
   getBorderWidth() {
-    return this.hasBorder && !this.inset ? '2lpx' : 0
+    return this.hasBorder && !this.inset ? 1 : 0
   }
 
   /**
@@ -64,7 +63,7 @@ export struct IBestCellGroup {
             color: GRAY_COLOR.GRAY_3,
           })
           .padding(this.baseStyle.spaceMd)
-          .lineHeight('32lpx')
+          .lineHeight(convertDimensionsWidthUnit(16))
           .fontSize(this.baseStyle.fontSizeMd)
           .fontColor(GRAY_COLOR.GRAY_6)
       }

@@ -36,6 +36,7 @@
 		"pages/Uploader",
 		"pages/Notify",
 		"pages/PullRefresh",
-		"pages/SwipeCell"
+		"pages/SwipeCell",
+		"pages/Badge"
 	]
 }

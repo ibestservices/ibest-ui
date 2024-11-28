@@ -1,9 +1,13 @@
-import { getComponentsInfo, sleep } from '../../assets/ets/utils';
+import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit, sleep } from '../../utils/utils';
 import { IBestTabController, IBestTabItem, TabWidthType } from './index.type';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
+import { mediaquery } from '@kit.ArkUI';
+import { debounce } from '../../utils/DebounceThrottle';
+
+let listener = mediaquery.matchMediaSync('(orientation: landscape)')
 
 @Component
 export struct IBestTabs{
@@ -22,7 +26,7 @@ export struct IBestTabs{
     /**
      * tab高度
      */
-    @Provide({allowOverride: "tabHeight"}) tabHeight: number = 70
+    @Provide({allowOverride: "tabHeight"}) tabHeight: number | string = convertDimensionsWidthUnit(35)
     /**
      * tab宽度类型
      */
@@ -32,9 +36,9 @@ export struct IBestTabs{
      */
     @Provide({ allowOverride: "tabsList" }) @Watch("tabsListChange") tabsList: IBestTabItem[] = []
     /**
-     * 单个tab内边距，单位lpx
+     * 单个tab内边距
      */
-    @Provide({allowOverride: "tabPadding"}) tabPadding: number = 16
+    @Provide({allowOverride: "tabPadding"}) tabPadding: number | string = this.baseStyle.spaceXs
     /**
      * tab盒子宽度
      */
@@ -56,13 +60,13 @@ export struct IBestTabs{
      */
     @Prop isTabLineWidthFixed: boolean = false
     /**
-     * 标记线宽度，单位lpx
+     * 标记线宽度
      */
-    @Provide({allowOverride: "tabLineWidth"}) tabLineWidth: number = 80
+    @Provide({allowOverride: "tabLineWidth"}) tabLineWidth: number = 0
     /**
-     * 标记线高度，单位lpx
+     * 标记线高度
      */
-    @Provide({allowOverride: "tabLineHeight"}) tabLineHeight: number = 4
+    @Provide({allowOverride: "tabLineHeight"}) tabLineHeight: number | string = convertDimensionsWidthUnit(2)
     /**
      * 标记块宽度
      */
@@ -70,7 +74,7 @@ export struct IBestTabs{
     /**
      * 标记线X偏移量
      */
-    @State translateX: number = this.tabPadding
+    @State translateX: number = typeof this.tabPadding == "number" ? this.tabPadding : parseFloat(this.tabPadding)
     /**
      * 标记块X偏移量
      */
@@ -90,16 +94,16 @@ export struct IBestTabs{
     /**
      * 标记线Y偏移量
      */
-    @Provide({allowOverride: "lineOffsetY"}) lineOffsetY: number = 0
+    @Provide({allowOverride: "lineOffsetY"}) lineOffsetY: number | string = 0
     /**
      * tab区域背景颜色
      */
     @Provide({allowOverride: "tabBgColor"}) tabBgColor: ResourceColor  = this.baseStyle.default
     /**
-     * 字体大小 单位lpx
+     * 字体大小
      * @since 1.15.0
      */
-    @Provide({allowOverride: "fontSize"}) fontSize: number = 28
+    @Provide({allowOverride: "fontSize"}) fontSize: number | string = this.baseStyle.fontSizeMd
     /**
      * onChange事件回调
      */
@@ -113,7 +117,7 @@ export struct IBestTabs{
      * tabContent 内容列表
      * @since 1.17.0
      */
-    // @BuilderParam tabContent: CustomBuilder
+    // @BuilderParam tabContent?: CustomBuilder
     /**
      * controller 控制器
      */
@@ -131,18 +135,22 @@ export struct IBestTabs{
     aboutToAppear(): void {
         this.uniId = this.getUniqueId().toString()
         this.tabController.changeTab = (name: string): void => this.changeTab(name)
+
+        listener.on('change', (): void => this.initSize())
+    }
+    aboutToDisappear(): void {
+        listener.off('change', (): void => this.initSize())
     }
 
     onDidBuild(): void {
         this.initSize()
     }
-    async initSize(){
-        await sleep(30)
+    initSize: () => void = debounce(() => {
         let index = this.tabsList.findIndex((item: IBestTabItem) => item.name == this.currentName)
         this.getTabsWidth()
         this.getAndSetLineWidth(index)
         this.swiperChange(index, false)
-    }
+    }, 50)
     // 列表变化
     tabsListChange(){
         sleep(20).then(() => {
@@ -181,7 +189,7 @@ export struct IBestTabs{
         this.tabsList.forEach((item: IBestTabItem) => {
             let boxInfo = getComponentsInfo(this.context, `ibestTab_${this.uniId}_box_${item.name}`)
             let textInfo = getComponentsInfo(this.context, `ibestTab_${this.uniId}_text_${item.name}`)
-            let tabLineWidth = this.isTabLineWidthFixed ? this.tabLineWidth : textInfo.width
+            let tabLineWidth = this.isTabLineWidthFixed ? this.getTabLineWidth() : textInfo.width
             tabWidthList.push({
                 boxWidth: boxInfo.width,
                 boxLocalLeft: boxInfo.localLeft,
@@ -208,11 +216,14 @@ export struct IBestTabs{
             }
         }
     }
+    getTabLineWidth(){
+        return typeof this.tabLineWidth == "number" ? this.tabLineWidth : parseFloat(this.tabLineWidth)
+    }
     // 滚动居中
     scrollCenter(){
         if(this.tabWidthType == "auto"){
             this.scroller.scrollTo({
-                xOffset: ((this.type == "line" ? this.translateX : this.tabBoxTranslateX) - this.tabContentWidth/2 + this.tabBoxWidth/2) + "lpx",
+                xOffset: getSizeByUnit((this.type == "line" ? this.translateX : this.tabBoxTranslateX) - this.tabContentWidth/2 + this.tabBoxWidth/2),
                 yOffset: 0,
                 animation: {
                     duration: 100,
@@ -236,7 +247,7 @@ export struct IBestTabs{
                 // let time = (Date.now() - this.startTime) / 1000
                 // let speed = Math.abs(this.touchOffsetX / time)
                 // console.log("滑动距离", Math.abs(this.touchOffsetX), "时间 s", time, "速度 vp/s", speed)
-                if(Math.abs(this.touchOffsetX) >= px2vp(lpx2px(this.tabContentWidth/2))){
+                if(Math.abs(this.touchOffsetX) >= this.tabContentWidth/2){
                     let index = this.touchOffsetX > 0 ? this.swiperIndex - 1 : this.swiperIndex + 1
                     this.currentName = this.tabsList[index].name
                 }else{
@@ -248,7 +259,7 @@ export struct IBestTabs{
         }
     }
     build() {
-        Column({ space: "30lpx" }){
+        Column({ space: convertDimensionsWidthUnit(15) }){
             if(this.tabWidthType == "auto"){
                 Scroll(this.scroller){
                     IBestTabBox({
@@ -256,7 +267,7 @@ export struct IBestTabs{
                         translateX: this.translateX,
                         tabBoxWidth: this.tabBoxWidth,
                         tabBoxTranslateX: this.tabBoxTranslateX,
-                        initSize: (): Promise<void> => this.initSize(),
+                        initSize: (): void => this.initSize(),
                         onTabClick: (name: string): void => this.onTabClick(name)
                     })
                 }
@@ -264,7 +275,7 @@ export struct IBestTabs{
                 .scrollBar(BarState.Off)
                 .align(Alignment.Start)
                 .layoutWeight(1)
-                .constraintSize({ maxHeight: `${this.tabHeight}lpx` })
+                .constraintSize({ maxHeight: getSizeByUnit(this.tabHeight) })
                 .id(`tabContent_${this.uniId}`)
             }else{
                 IBestTabBox({
@@ -272,7 +283,7 @@ export struct IBestTabs{
                     translateX: this.translateX,
                     tabBoxWidth: this.tabBoxWidth,
                     tabBoxTranslateX: this.tabBoxTranslateX,
-                    initSize: (): Promise<void> => this.initSize(),
+                    initSize: (): void => this.initSize(),
                     onTabClick: (name: string): void => this.onTabClick(name)
                 }).id(`tabContent_${this.uniId}`)
             }
@@ -290,7 +301,7 @@ export struct IBestTabs{
             //     .onGestureSwipe((index: number, extraInfo: SwiperAnimationEvent) => {
             //         let curOffset = extraInfo.currentOffset
             //         let transX = curOffset > 0 ? this.translateXList[index] - this.translateXList[index-1] : this.translateXList[index+1] - this.translateXList[index]
-            //         let x = - px2lpx(vp2px(curOffset))*transX/this.tabContentWidth
+            //         let x = - curOffset*transX/this.tabContentWidth
             //         this.translateX = this.startTransX + x
             //     })
             //     .onTouch((event: TouchEvent) => {
@@ -315,40 +326,40 @@ struct IBestTabBox{
     @Link currentName: string
     @Consume type: 'line' | 'card'
     @Consume tabWidthType: "auto" | "flex"
-    @Consume tabHeight: number
+    @Consume tabHeight: number | string
     @Consume tabsList: IBestTabItem[]
     @Consume tabBgColor: ResourceColor
     @Consume tabLineWidth: number
-    @Consume tabLineHeight: string
+    @Consume tabLineHeight: number | string
     @Consume tabLineColor: ResourceColor
-    @Consume lineOffsetY: number
+    @Consume lineOffsetY: number | string
     @Prop translateX: number
     @Prop tabBoxTranslateX: number
     @Prop tabBoxWidth: number
-    initSize: () => Promise<void> = () => new Promise(() => {})
+    initSize: () => void = () => () => {}
     onTabClick: (name: string) => void = () => {}
     build() {
         Stack({alignContent: Alignment.BottomStart}){
             // 标记线
             if(this.type == "line"){
                 Row()
-                    .width(`${this.tabLineWidth}lpx`)
-                    .height(`${this.tabLineHeight}lpx`)
+                    .width(this.tabLineWidth)
+                    .height(getSizeByUnit(this.tabLineHeight))
                     .backgroundColor(this.tabLineColor)
-                    .translate({ x: this.translateX + "lpx" })
+                    .translate({ x: this.translateX })
                     .animation({
                         duration: 100,
                         curve: Curve.FastOutSlowIn
                     })
-                    .offset({ y: `-${this.lineOffsetY}lpx` })
+                    .offset({ y: `-${getSizeByUnit(this.lineOffsetY)}` })
             }
             // 标记块
             if(this.type == "card"){
                 Row()
-                    .width(`${this.tabBoxWidth + 2}lpx`)
-                    .height(`${this.tabHeight}lpx`)
+                    .width(this.tabBoxWidth + 2)
+                    .height(getSizeByUnit(this.tabHeight))
                     .backgroundColor(this.tabLineColor)
-                    .translate({ x: this.tabBoxTranslateX + "lpx" })
+                    .translate({ x: this.tabBoxTranslateX })
                     .animation({
                         duration: 100,
                         curve: Curve.FastOutSlowIn
@@ -366,11 +377,10 @@ struct IBestTabBox{
                 }, (item: string, index: number) => index+'')
             }
             .width(this.tabWidthType == "flex" ? "100%" : "")
-            .height(this.tabHeight + "lpx")
+            .height(getSizeByUnit(this.tabHeight))
             .borderRadius(this.baseStyle.borderRadiusSm)
-            .border({ width: this.type == "card" ? "2lpx" : 0, color: this.tabLineColor })
+            .border({ width: this.type == "card" ? 1 : 0, color: this.tabLineColor })
         }
-        .width(this.tabWidthType == "flex" ? "100%" : "")
         .backgroundColor(this.tabBgColor)
     }
 }
@@ -392,7 +402,7 @@ struct IBestTab{
     @Consume activeTextColor: ResourceColor
     @Consume tabLineColor: ResourceColor
     @Consume fontSize: number
-    initSize: () => Promise<void> = () => new Promise(() => {})
+    initSize: () => void = () => {}
     onTabClick: (name: string) => void = () => {}
     itemChange(){
         this.initSize()
@@ -402,7 +412,7 @@ struct IBestTab{
             Text(){
                 if (this.item.icon) {
                     ImageSpan(this.item.icon)
-                        .width(`${this.fontSize}lpx`)
+                        .width(getSizeByUnit(this.fontSize))
                         .aspectRatio(1)
                         .verticalAlign(ImageSpanAlignment.CENTER)
                         .margin({right: this.baseStyle.spaceBase})
@@ -413,7 +423,7 @@ struct IBestTab{
                 }
             }
             .height(CONTAINER_SIZE.FULL)
-            .fontSize(`${this.fontSize}lpx`)
+            .fontSize(getSizeByUnit(this.fontSize, true))
             .fontColor(this.currentName == this.item.name ? this.type == "card" ? "#fff" : this.activeTextColor :
                 this.type == "card" ? this.tabLineColor : this.inactiveTextColor)
             .maxLines(1)
@@ -421,9 +431,9 @@ struct IBestTab{
             .id(`ibestTab_${this.uniId}_text_${this.item.name}`)
         }
         .justifyContent(FlexAlign.Center)
-        .padding({left: this.tabPadding + "lpx", right: this.tabPadding + "lpx"})
+        .padding({left: getSizeByUnit(this.tabPadding), right: getSizeByUnit(this.tabPadding)})
         .layoutWeight(this.tabWidthType == "flex" ? 1 : 0)
-        .border({ width: { left: this.type == "card" && this.index > 0 ? "2lpx" : 0 }, color: this.tabLineColor })
+        .border({ width: { left: this.type == "card" && this.index > 0 ? 1 : 0 }, color: this.tabLineColor })
         .enabled(!this.item.isDisable)
         .opacity(this.item.isDisable ? 0.3 : 1)
         .id(`ibestTab_${this.uniId}_box_${this.item.name}`)

@@ -1,8 +1,6 @@
-import { getIsLandscape, sleep } from '../../assets/ets/utils'
+import { convertDimensionsWidthUnit, getSizeByUnit, sleep } from '../../utils/utils'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { fontSizeData } from '../../theme-chalk/src/font'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { spaceData } from '../../theme-chalk/src/space'
 import { IBestTabs } from '../tab'
 import { IBestTabController, IBestTabItem } from '../tab/index.type'
 import { IBestCascaderOption, IBestCascaderOptionInstance, IBestCascaderOptionInstanceType } from './index.type'
@@ -15,6 +13,8 @@ export struct IBestCascaderContent{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	// 是否横屏
+	@StorageProp("isLandscape") @Watch("getListHeight") isLandscape: boolean = false
 	/**
 	 * 顶部tab栏数据
 	 */
@@ -32,8 +32,6 @@ export struct IBestCascaderContent{
 	 * swiper默认显示选项
 	 */
 	@State swiperDefaultIndex: number = 0
-	// 是否横屏
-	@State isLandscape: boolean = getIsLandscape(getContext(this))
 	/**
 	 * 可选项数据源
 	 */
@@ -53,15 +51,15 @@ export struct IBestCascaderContent{
 	/**
 	 * 列表区域高度
 	 */
-	@Provide({allowOverride: "listHeight"}) listHeight: number = 700
+	@Prop listHeight: number | string
 	/**
 	 * 单项高度
 	 */
-	@Provide({allowOverride: "itemHeight"}) itemHeight: number = 80
+	@Provide({allowOverride: "itemHeight"}) itemHeight: number | string = convertDimensionsWidthUnit(40)
 	/**
 	 * 是否开启动态加载
 	 */
-	@Provide({allowOverride: "lazy"}) lazy: boolean = false
+	@Prop lazy: boolean = false
 	/**
 	 * 动态加载函数
 	 */
@@ -85,6 +83,9 @@ export struct IBestCascaderContent{
 		}else {
 			this.optionsInstance.push(this.createOptionsInstance(this.options))
 		}
+	}
+	getListHeight(){
+		return this.listHeight ? getSizeByUnit(this.listHeight) : (this.isLandscape ? "60%" : convertDimensionsWidthUnit(350))
 	}
 	// 创建当前tab下的选项实例
 	createOptionsInstance(children: IBestCascaderOption[] = []): IBestCascaderOptionInstance[]{
@@ -137,7 +138,7 @@ export struct IBestCascaderContent{
 		this.swiperController.changeIndex(index, true)
 	}
 	// 选中item
-	async selectItem(index1: number, index2: number, item: IBestCascaderOptionInstance) {
+	selectItem(index1: number, index2: number, item: IBestCascaderOptionInstance) {
 		// console.log(`选中${index1} ${index2} children ${item.children?.length} isEnd ${item.isEnd}`)
 		// 如果选中索引小于当前tab数量,清空tab在索引后的所有项
 		if (index1 < this.optionsInstance.length - 1) {
@@ -145,26 +146,39 @@ export struct IBestCascaderContent{
 			this.optionsInstance.splice(index1 + 1)
 		}
 		// 设置当前列表项为选中状态
-		this.optionsInstance[index1].forEach((item: IBestCascaderOptionInstance) => {
-			item.actived = false
+		this.optionsInstance[index1].forEach((item: IBestCascaderOptionInstance, index: number) => {
+			item.actived = index == index2
 		})
-		this.optionsInstance[index1][index2].actived = true
 		// 设置当前tab的文字
 		this.tabList[index1].label = item.text
 		// 如果还有选项 添加一项(请添加)
+		let selectOption = this.getSelectedOptions()
 		if (!(item.children && item.children.length) && (!this.lazy || item.isEnd)) {
-			this.onConfirm(this.getSelectedOptions())
+			this.value = selectOption.map((e: IBestCascaderOption) => e.value)
+			this.onConfirm(selectOption)
 		} else {
-			this.onChange(item.value, this.getSelectedOptions(), index1)
+			this.onChange(item.value, selectOption, index1)
 			if (item.children && item.children.length) {
 				this.createNextSwiperData(item.children, index1 + 1)
 			} else if (this.lazy && this.lazyLoad) {
 				this.lazyLoad(item.value, index1 + 1, (arr: IBestCascaderOption[]) => {
 					if (arr.length) {
-						item.children = arr
 						this.createNextSwiperData(arr, index1 + 1)
+						this.changeOriginOption(this.options, arr, index1, 0)
 					}
 				})
+			}
+		}
+	}
+	// 改变原数组
+	changeOriginOption(children: IBestCascaderOption[], arr: IBestCascaderOption[], level: number, index: number){
+		let selected = this.getSelectedOptions()
+		let item = children.find(e => e.value == selected[index].value)
+		if(item){
+			if(level == index){
+				item.children = arr
+			}else if(item.children){
+				this.changeOriginOption(item.children, arr, level, index + 1)
 			}
 		}
 	}
@@ -210,7 +224,7 @@ export struct IBestCascaderContent{
 					}
 				})
 			}
-			.padding({ left: spaceData.spaceXs, right: spaceData.spaceXs })
+			.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs })
 			Swiper(this.swiperController) {
 				ForEach(this.optionsInstance, (item: IBestCascaderOptionInstance[], index: number) => {
 					Scroll(){
@@ -220,22 +234,21 @@ export struct IBestCascaderContent{
 									option: item1,
 									index: index,
 									index1: index1,
-									onSelect: (index: number, index1: number, item1: IBestCascaderOptionInstance): Promise<void> => this.selectItem(index, index1, item1)
+									onSelect: (index: number, index1: number, item1: IBestCascaderOptionInstance): void => this.selectItem(index, index1, item1)
 								})
 							})
 						}
 						.alignItems(HorizontalAlign.Start)
-						.padding({ left: spaceData.spaceMd, right: spaceData.spaceMd })
+						.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
 					}
 					.width("100%")
 					.height("100%")
 					.align(Alignment.Top)
-					.padding({ bottom: spaceData.spaceMd })
+					.padding({ bottom: this.baseStyle.spaceMd })
 				}, (item: IBestCascaderOptionInstance[], index: number) => index + "")
 			}
 			.width("100%")
-			.height(this.isLandscape ? "" : `${this.listHeight}lpx`)
-			.layoutWeight(this.isLandscape ? 1 : 0)
+			.height(this.getListHeight())
 			.indicator(false)
 			.loop(false)
 			.duration(100)
@@ -252,6 +265,10 @@ export struct IBestCascaderContent{
 @Component
 struct CascaderOptionItem{
 	/**
+	 * 全局公共样式
+	 */
+	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	/**
 	 * 选项数据
 	 */
 	@ObjectLink option: IBestCascaderOptionInstance
@@ -263,28 +280,22 @@ struct CascaderOptionItem{
 	 * 当前选项索引
 	 */
 	@Prop index1: number
-	/**
-	 * 选中颜色
-	 */
 	@Consume activeColor: ResourceColor
-	/**
-	 * item高度
-	 */
 	@Consume itemHeight: number
-	onSelect: (index: number, index1: number, item1: IBestCascaderOptionInstance)=> Promise<void> = () => new Promise((resolve, reject) => {})
+	onSelect: (index: number, index1: number, item1: IBestCascaderOptionInstance)=> void = () => {}
 	build() {
 		Row(){
 			Text(this.option.text)
 				.fontColor(this.option.actived ? this.activeColor : "#333")
-				.fontSize(fontSizeData.fontSizeMd)
+				.fontSize(this.baseStyle.fontSizeMd)
 			Image($r("app.media.success"))
-				.width("36lpx")
+				.width(convertDimensionsWidthUnit(18))
 				.aspectRatio(1)
 				.fillColor(this.activeColor)
 				.visibility(this.option.actived ? Visibility.Visible : Visibility.Hidden)
 		}
 		.width("100%")
-		.height(`${this.itemHeight}lpx`)
+		.height(getSizeByUnit(this.itemHeight))
 		.justifyContent(FlexAlign.SpaceBetween)
 		.alignItems(VerticalAlign.Center)
 		.onClick(() => {
@@ -300,7 +311,7 @@ export struct IBestCascader{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 弹框显隐
 	 */
@@ -316,19 +327,19 @@ export struct IBestCascader{
 	/**
 	 * 选中颜色
 	 */
-	@Provide({allowOverride: "activeColor"}) activeColor: ResourceColor = this.baseStyle.primary
+	@Prop activeColor: ResourceColor = this.baseStyle.primary
 	/**
 	 * 列表区域高度
 	 */
-	@Provide({allowOverride: "listHeight"}) listHeight: number = 700
+	@Prop listHeight: number | string
 	/**
 	 * 单项高度
 	 */
-	@Provide({allowOverride: "itemHeight"}) itemHeight: number = 80
+	@Prop itemHeight: number | string
 	/**
 	 * 是否开启动态加载
 	 */
-	@Provide({allowOverride: "lazy"}) lazy: boolean = false
+	@Prop lazy: boolean
 	/**
 	 * 动态加载函数
 	 */
@@ -350,15 +361,16 @@ export struct IBestCascader{
 		IBestCascaderContent({
 			value: $value,
 			options: this.options,
+			activeColor: this.activeColor,
+			listHeight: this.listHeight,
+			itemHeight: this.itemHeight,
+			lazy: this.lazy,
 			lazyLoad: this.lazyLoad,
 			onChange: this.onChange,
-			onConfirm: (value: IBestCascaderOption[]) => {
-				this.onGetResult(value)
-			}
+			onConfirm: (value: IBestCascaderOption[]): void => this.onGetResult(value)
 		})
 	}
 	onGetResult(value: IBestCascaderOption[]){
-		this.value = value.map((e: IBestCascaderOption) => e.value)
 		this.onConfirm(value)
 		this.visible = false
 	}
@@ -368,6 +380,7 @@ export struct IBestCascader{
 			title: this.title,
 			isShowHeader: true,
 			popupAlign: "bottom",
+			popupHeight: "auto",
 			safeAreaInsetBottom: true,
 			contentBuilder: ():void => this.baseBuilder()
 		})

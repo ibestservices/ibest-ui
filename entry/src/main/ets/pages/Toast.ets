@@ -1,4 +1,4 @@
-import { IBestCell, IBestCellGroup, IBestToast } from "@ibestservices/ibest-ui"
+import { IBestCell, IBestCellGroup, IBestToast } from '@ibestservices/ibest-ui'
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { router } from '@kit.ArkUI'
@@ -52,7 +52,7 @@ struct ToastPage {
 
       List() {
         ListItem() {
-          ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
             IBestCellGroup() {
               Column() {
                 IBestCell({
@@ -108,7 +108,7 @@ struct ToastPage {
           }
         }
         ListItem() {
-          ComponentShowContainer({ title: '自定义图标', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '自定义图标', titlePaddingLeft: SPACE.XS }) {
             IBestCellGroup() {
               Column() {
                 IBestCell({
@@ -117,7 +117,8 @@ struct ToastPage {
                   onClickCell: () => {
                     IBestToast.show({
                       icon: $r("app.media.app_icon"),
-                      message: "提示内容"
+                      message: "提示内容",
+                      iconWidth: 50
                     })
                   }
                 })
@@ -144,7 +145,7 @@ struct ToastPage {
           }
         }
         ListItem() {
-          ComponentShowContainer({ title: '自定义位置', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '自定义位置', titlePaddingLeft: SPACE.XS }) {
             IBestCellGroup() {
               Column() {
                 IBestCell({
@@ -175,7 +176,7 @@ struct ToastPage {
           }
         }
         ListItem() {
-          ComponentShowContainer({ title: '文字换行方式', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '文字换行方式', titlePaddingLeft: SPACE.XS }) {
             IBestCellGroup() {
               Column() {
                 IBestCell({
@@ -204,7 +205,7 @@ struct ToastPage {
           }
         }
         ListItem() {
-          ComponentShowContainer({ title: '动态更新提示', titlePaddingLeft: SPACE.SMALL }) {
+          ComponentShowContainer({ title: '动态更新提示', titlePaddingLeft: SPACE.XS }) {
             IBestCellGroup() {
               Column() {
                 IBestCell({
@@ -220,7 +221,7 @@ struct ToastPage {
           }
         }
       }.layoutWeight(1)
-      .padding({ bottom: SPACE.BASE })
+      .padding({ bottom: SPACE.SM })
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)

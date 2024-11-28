@@ -7,7 +7,8 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "@ibestservices/ibest-ui": "file:library"
+    "@ibestservices/ibest-ui": "file:library",
+    "@ibestservices/area-data": "^0.0.1"
   },
   "devDependencies": {
     "@ohos/hypium": "1.0.11"

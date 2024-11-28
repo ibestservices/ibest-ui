@@ -44,7 +44,7 @@ struct SwipeCellPage {
 			}).backgroundColor('#FFF')
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SMALL }) {
+					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
 						// IBestSwipeCell({
 						// 	defaultContent: this.cellContent,
 						// 	leftContent: this.leftContent,

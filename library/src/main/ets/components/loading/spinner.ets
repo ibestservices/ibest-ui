@@ -1,16 +1,16 @@
-import { UIContext } from '@ohos.arkui.UIContext';
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { curves } from '@kit.ArkUI';
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 @Component
 export struct IBestLoadingSpinner {
   /**
    * 菊花图尺寸
    */
-  @Prop spinnerSize: string = '';
+  @Prop spinnerSize: number | string = convertDimensionsWidthUnit(30)
   /**
    * 菊花图线的宽度
    */
-  @Prop strokeWidth: string = '6lpx';
+  @Prop strokeWidth: Length = 3
   /**
    * 滚动的角度
    */
@@ -18,7 +18,7 @@ export struct IBestLoadingSpinner {
   /**
    * 当前菊花图的每条线的长度
    */
-  @Prop strokeHeight: string | number = '15lpx';
+  @Prop strokeHeight: string | number = convertDimensionsWidthUnit(8)
   /**
    * loading的颜色
    */
@@ -34,21 +34,22 @@ export struct IBestLoadingSpinner {
         Column() {
           Column()
             .width(this.strokeWidth)
-            .height(this.strokeHeight)
-            .borderRadius('2.4lpx')
+            .height(getSizeByUnit(this.strokeHeight))
+            .borderRadius(1)
             .backgroundColor(this.color)
         }
         .position({ top: 0, left: 0 })
-        .width(this.spinnerSize)
-        .height(this.spinnerSize)
+        .width(getSizeByUnit(this.spinnerSize))
+        .height(getSizeByUnit(this.spinnerSize))
         .rotate({
           angle: (index + 1) * 30 + 'deg'
         })
         .opacity(1 - index * 0.083)
         .align(Alignment.Top)
       })
-    }.width(this.spinnerSize)
-    .height(this.spinnerSize)
+    }
+    .width(getSizeByUnit(this.spinnerSize))
+    .height(getSizeByUnit(this.spinnerSize))
     .rotate({ angle: this.rotateAngle })
     .animation({
       duration: 800,

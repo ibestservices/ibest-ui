@@ -7,7 +7,7 @@ import { ComponentRouterParams } from '../assets/global.type';
 
 @Styles
 function btnMargin() {
-  .margin({ right: SPACE.BASE, bottom: SPACE.BASE })
+  .margin({ right: SPACE.SM, bottom: SPACE.SM })
 }
 
 @Entry
@@ -23,7 +23,7 @@ struct ButtonPage {
 
   @Builder Arrow(color = '#fff'){
     Image($r('app.media.title_back'))
-      .width(CONTAINER_SIZE.FORTY_FOUR)
+      .width(CONTAINER_SIZE.SIXTEEN)
       .fillColor(color)
   }
 
@@ -95,6 +95,21 @@ struct ButtonPage {
                   text: '朴素按钮',
                   plain: true,
                   type: 'success'
+                })
+              }.btnMargin()
+
+            }
+          }
+        }
+        ListItem() {
+          ComponentShowContainer({ title: '细边框' }) {
+            Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
+              Column() {
+                IBestButton({
+                  text: '朴素按钮',
+                  type: 'primary',
+                  plain: true,
+                  hairline: true
                 })
               }.btnMargin()
 
@@ -211,7 +226,7 @@ struct ButtonPage {
                   type: 'primary',
                   buttonSize: 'large'
                 }).margin({
-                  bottom: SPACE.BASE
+                  bottom: SPACE.SM
                 })
 
               Column() {
@@ -288,8 +303,8 @@ struct ButtonPage {
       }
       .layoutWeight(1)
       .padding({
-        left: SPACE.BASE,
-        right: SPACE.BASE
+        left: SPACE.SM,
+        right: SPACE.SM
       })
     }
     .width(CONTAINER_SIZE.FULL)

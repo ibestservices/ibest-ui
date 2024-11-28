@@ -2,8 +2,8 @@ import dayjs from '@hview/dayjs'
 import { IBestPicker } from '../picker'
 import { IBestPickerOption } from '../picker/index.type'
 import { DatePickerColumnType, getPickerEventName, IBestDatePickerResultType, DATE_PICKER_EVENT_NAME } from './index.type'
-import { emitter } from '../../assets/ets/EventEmitter'
-import { clamp } from '../../assets/ets/utils'
+import { emitter } from '../../utils/EventEmitter'
+import { clamp, convertDimensionsWidthUnit } from '../../utils/utils'
 
 @Component
 export struct IBestDatePicker {
@@ -48,7 +48,7 @@ export struct IBestDatePicker {
 	/**
 	 * 单项高度
 	 */
-	@Prop itemHeight: number = 88
+	@Prop itemHeight: number | string = convertDimensionsWidthUnit(44)
 	/**
 	 * 确认按钮文字
 	 */

@@ -21,12 +21,12 @@ struct SliderPage {
 
 	@Builder customBtn(){
 		Text(this.value6.toString())
-			.height("36lpx")
+			.height(18)
 			.borderRadius(9999)
 			.padding({ left: 10, right: 10 })
 			.backgroundColor(COLOR_BLUE.TEXT)
 			.fontColor(COLOR_BLUE.DEFAULT)
-			.fontSize("24lpx")
+			.fontSize(12)
 	}
 
 	build() {
@@ -182,9 +182,9 @@ struct SliderPage {
 			.width(CONTAINER_SIZE.FULL)
 			.layoutWeight(1)
 			.padding({
-				left: SPACE.SMALL,
-				right: SPACE.SMALL,
-				bottom: SPACE.SMALL
+				left: SPACE.XS,
+				right: SPACE.XS,
+				bottom: SPACE.XS
 			})
 		}
 		.width(CONTAINER_SIZE.FULL)

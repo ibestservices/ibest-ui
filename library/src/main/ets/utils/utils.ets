@@ -1,9 +1,8 @@
-import { componentUtils, ComponentUtils, window } from '@kit.ArkUI'
-import { ComInfoType, ComAvoidAreaSize } from '../../utils/Global.type'
+import { componentUtils, ComponentUtils, LengthUnit, window } from '@kit.ArkUI'
+import { ComAvoidAreaSize, ComInfoType, IBestGlobalConfig } from '../model/Global.type'
 import { common } from '@kit.AbilityKit'
-import { AnyType } from '../../utils/AnyType'
-import { resourceManager } from '@kit.LocalizationKit'
-import GlobalStore from '../../utils/GlobalStore'
+import { AnyType } from '../model/AnyType'
+import GlobalStore from './GlobalStore'
 /**
  * 休眠
  * @param {number} time 休眠时间
@@ -111,14 +110,14 @@ export const getComponentsInfo = (context: UIContext, key: string): ComInfoType 
   let comUtils: ComponentUtils = context.getComponentUtils()
   let info:componentUtils.ComponentInfo = comUtils.getRectangleById(key)
   return {
-    width: px2lpx(info.size.width),
-    height: px2lpx(info.size.height),
-    localLeft: px2lpx(info.localOffset.x),
-    localTop: px2lpx(info.localOffset.y),
-    screenLeft: px2lpx(info.screenOffset.x),
-    screenTop: px2lpx(info.screenOffset.y),
-    windowLeft: px2lpx(info.windowOffset.x),
-    windowTop: px2lpx(info.windowOffset.y)
+    width: px2vp(info.size.width),
+    height: px2vp(info.size.height),
+    localLeft: px2vp(info.localOffset.x),
+    localTop: px2vp(info.localOffset.y),
+    screenLeft: px2vp(info.screenOffset.x),
+    screenTop: px2vp(info.screenOffset.y),
+    windowLeft: px2vp(info.windowOffset.x),
+    windowTop: px2vp(info.windowOffset.y)
   }
 }
 /**
@@ -132,11 +131,11 @@ export const getWindowAvoidSize = async (context: common.BaseContext): Promise<C
   // console.log("avoidArea", JSON.stringify(avoidArea))
   // console.log("systemDht.bottomRect", JSON.stringify(systemDht))
   return {
-    topSize: px2lpx(avoidArea.topRect.height),
-    bottomSize: px2lpx(avoidArea.bottomRect.height),
-    leftSize: px2lpx(avoidArea.leftRect.width),
-    rightSize: px2lpx(avoidArea.rightRect.width),
-    navigationSize: px2lpx(systemDht.bottomRect.height)
+    topSize: px2vp(avoidArea.topRect.height),
+    bottomSize: px2vp(avoidArea.bottomRect.height),
+    leftSize: px2vp(avoidArea.leftRect.width),
+    rightSize: px2vp(avoidArea.rightRect.width),
+    navigationSize: px2vp(systemDht.bottomRect.height)
   }
 }
 /**
@@ -155,12 +154,7 @@ export const isFunction = (val: AnyType): boolean => typeof val === 'function'
  * 是否是Promise
  */
 export const isPromise = (val: AnyType): boolean => isObject(val) && isFunction(val.then) && isFunction(val.catch)
-/**
- * 获取是否横屏
- */
-export const getIsLandscape = (context: Context): boolean => {
-  return context.resourceManager.getConfigurationSync().direction == resourceManager.Direction.DIRECTION_HORIZONTAL
-}
+
 /**
  * 生成随机id
  */
@@ -168,13 +162,63 @@ export function generateId(){
   return Math.random().toString(36).substring(2, 9)
 }
 
-// 加法避免浮点数
+/**
+ * 加法避免浮点数
+ */
 export function addNumber(num1: number, num2: number) {
   const cardinal = 10 ** 10
   return Math.round((num1 + num2) * cardinal) / cardinal
 }
 
-// 生成事件名称
+/**
+ * 生成事件名称
+ */
 export function getEventName(id: string, eventName: string) {
   return `${id}_${eventName}`
+}
+
+/**
+ * 根据类型和单位拼接尺寸 用于组件尺寸类属性格式化
+ */
+export function getSizeByUnit(val: string | number, isFont?: boolean): string {
+  if(typeof val == "string") return val
+  let config: IBestGlobalConfig = AppStorage.get("iBestGlobalConfig") as IBestGlobalConfig
+  let unit = isFont ? config.fontUnit : config.unit
+  return `${val}${unit}`
+}
+/**
+ * 根据配置获取LengthUnit
+ */
+export function getLengthUnit(): LengthUnit{
+  let config: IBestGlobalConfig = AppStorage.get("iBestGlobalConfig") as IBestGlobalConfig
+  return config.unit == "lpx" ? LengthUnit.LPX : config.unit == "vp" ? LengthUnit.VP : LengthUnit.PX
+}
+/**
+ * 根据单位转换尺寸 用于框架固定尺寸格式化 带单位
+ */
+export function convertDimensionsWidthUnit(val: number, isFont?: boolean): string{
+  let config: IBestGlobalConfig = AppStorage.get("iBestGlobalConfig") as IBestGlobalConfig
+  let unit = "vp"
+  if(config){
+    unit = (isFont ? config.fontUnit : config.unit) as string
+  }
+  return convertDimensions(val, isFont) + unit
+}
+/**
+ * 根据单位转换尺寸
+ */
+export function convertDimensions(val: number, isFont?: boolean): number{
+  let config: IBestGlobalConfig = AppStorage.get("iBestGlobalConfig") as IBestGlobalConfig
+  if(config){
+    let unit = isFont ? config.fontUnit : config.unit
+    switch (unit){
+      case "lpx":
+        return val*GlobalStore.screenWidth/(config.designWidth as number)
+      case "px":
+        return vp2px(val)
+      default :
+        return val
+    }
+  }
+  return val
 }

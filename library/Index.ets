@@ -6,20 +6,22 @@ import IBestDialogUtil from './src/main/ets/apis/IBestDialog'
 import IBestNotify from './src/main/ets/apis/IBestNotify'
 import GlobalStore from './src/main/ets/utils/GlobalStore'
 const init = GlobalStore.init
+const setGlobalConfig = GlobalStore.setGlobalConfig
 
-setIBestUIBaseStyle()
+setGlobalConfig()
 
 export {
 	setIBestUIBaseStyle,
 	IBestToast,
 	IBestActionSheet,
 	init as IBestInit,
+	setGlobalConfig as IBestSetGlobalConfig,
+	setIBestUIBaseStyle as IBestSetUIBaseStyle,
 	IBestImagePreview,
 	IBestDialogUtil,
 	IBestNotify
 }
-export { Throttle } from './src/main/ets/utils/Throttle'
-export { Debounce } from './src/main/ets/utils/Debounce'
+export { debounce, throttle } from './src/main/ets/utils/DebounceThrottle'
 
 export { IBestUIBaseStyleType } from './src/main/ets/theme-chalk/src/index.type'
 
@@ -101,3 +103,5 @@ export { IBestRefreshContentParams } from './src/main/ets/components/pullRefresh
 
 export { IBestIcon } from './src/main/ets/components/icon/index'
 export {IBestIconClassify, IBestIconData} from './src/main/ets/components/icon/config'
+
+export { IBestBadge } from './src/main/ets/components/badge/index'

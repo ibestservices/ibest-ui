@@ -44,7 +44,7 @@ struct PullRefresh {
 							.backgroundColor(0x89CFF0)
 					}.width("100%")
 				}, (item: string) => item)
-			}.width("100%")
+			}.width("100%").edgeEffect(EdgeEffect.None)
 		}else if(type == "2"){
 			Scroll(this.scroller){
 				Column(){
@@ -66,7 +66,7 @@ struct PullRefresh {
 	@Builder customPullingContent($$: IBestRefreshContentParams){
 		Image($r("app.media.icon_loading_point_static"))
 			.width(60)
-			.scale({ x: $$.distance / 100, y: $$.distance / 100 })
+			.scale({ x: $$.distance / 50, y: $$.distance / 50 })
 	}
 	@Builder customLoosingContent(){
 		Image($r("app.media.icon_loading_point_static"))

@@ -1,17 +1,19 @@
+import { IBestGlobalConfig } from '../../model/Global.type';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { GRAY_COLOR } from '../../theme-chalk/src/color.type';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { SPACE } from '../../theme-chalk/src/space.type';
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 
 @Extend(Button)
 function defaultBtnStyles(theme: 'default' | 'round-button') {
   .layoutWeight(1)
   .backgroundColor('transparent')
-  .height(theme == 'default' ? '96lpx' : "72lpx")
+  .height(convertDimensionsWidthUnit(theme == 'default' ? 48 : 36))
 }
 
 @CustomDialog
 export struct IBestDialogView {
+  @StorageLink("iBestGlobalConfig") iBestGlobalConfig: IBestGlobalConfig = new IBestGlobalConfig()
   /**
    * 控制器
    */
@@ -19,15 +21,15 @@ export struct IBestDialogView {
   /**
    * 标题区域的builder
    */
-  @BuilderParam titleBuilder: CustomBuilder;
+  @BuilderParam titleBuilder?: CustomBuilder;
   /**
    * 内容区域的builder
    */
-  @BuilderParam defaultBuilder: CustomBuilder;
+  @BuilderParam defaultBuilder?: CustomBuilder;
   /**
    * 底部区域的builder
    */
-  @BuilderParam footerBuilder: CustomBuilder;
+  @BuilderParam footerBuilder?: CustomBuilder;
   /**
    * 全局公共样式
    */
@@ -35,139 +37,139 @@ export struct IBestDialogView {
   /**
    * 弹窗宽度
    */
-  @Prop dialogWidth: string;
+  @Prop dialogWidth: string | number = convertDimensionsWidthUnit(320)
   /**
-   * 弹窗border-radius 默认 32lpx
+   * 弹窗圆角
    */
-  @Prop dialogBorderRadius: string;
+  @Prop dialogBorderRadius: string | number = this.baseStyle.spaceMd
   /**
    * 标题
    */
-  @Prop title: string;
+  @Prop title: string = ''
   /**
    * 标题颜色
    */
-  @Prop titleColor: ResourceColor;
+  @Prop titleColor: ResourceColor = GRAY_COLOR.GRAY_8
   /**
    * 标题的padding-top值
    */
-  @Prop titlePaddingTop: string;
+  @Prop titlePaddingTop: string | number = convertDimensionsWidthUnit(26)
   /**
-   * 标题的padding-left与padding-right值 默认48lpx
+   * 标题的padding-left与padding-right值
    */
-  @Prop titlePaddingX: string;
+  @Prop titlePaddingX: string | number = convertDimensionsWidthUnit(24)
   /**
    * 标题的padding-top值
    */
-  @Prop titleLineHeight: string;
+  @Prop titleLineHeight: string | number = convertDimensionsWidthUnit(24)
   /**
    * 标题的fontSize
    */
-  @Prop titleFontSize: string;
+  @Prop titleFontSize: string | number = this.baseStyle.fontSizeLg
   /**
    * 标题的对齐方式
    */
-  @Prop titleTextAlign: 'left' | 'center' | 'right';
+  @Prop titleTextAlign: 'left' | 'center' | 'right' = 'center'
   /**
    * 文本内容，支持通过 \n 换行
    */
-  @Prop message: string;
+  @Prop message: string = ''
   /**
-   * 内容区域的padding-left与padding-right值 默认48lpx
+   * 内容区域的padding-left与padding-right值
    */
-  @Prop messagePaddingX: string;
+  @Prop messagePaddingX: string | number = convertDimensionsWidthUnit(24)
   /**
-   * 内容区域的padding-top值 默认16lpx
+   * 内容区域的padding-top值
    */
-  @Prop messagePaddingTop: string;
+  @Prop messagePaddingTop: string | number = convertDimensionsWidthUnit(8)
   /**
-   * 内容区域的padding-bottom值 默认52lpx
+   * 内容区域的padding-bottom值
    */
-  @Prop messagePaddingBottom: string;
+  @Prop messagePaddingBottom: string | number = convertDimensionsWidthUnit(26)
   /**
    * 内容区域的fontColor 默认#323233
    */
-  @Prop messageFontColor: ResourceColor;
+  @Prop messageFontColor: ResourceColor = GRAY_COLOR.GRAY_8
   /**
    * 内容区域的fontSize
    */
-  @Prop messageFontSize: string;
+  @Prop messageFontSize: string | number = this.baseStyle.fontSizeMd
   /**
-   * 内容区域的行高 lineHeight 默认 40lpx
+   * 内容区域的行高 lineHeight
    */
-  @Prop messageLineHeight: string;
+  @Prop messageLineHeight: string | number = this.baseStyle.lineHeightMd
   /**
    * 内容区域的文字对齐方式
    */
-  @Prop messageTextAlign: 'left' | 'center' | 'right';
+  @Prop messageTextAlign: 'left' | 'center' | 'right' = 'center'
   /**
    * 内容区域的滚动区域最大高度
    */
-  @Prop messageMaxHeight: string;
+  @Prop messageMaxHeight: string | number = '60%'
   /**
    * 样式风格
    * @since 1.16.0
    */
-  @Prop theme: 'default' | 'round-button'
+  @Prop theme: 'default' | 'round-button' = 'default'
   /**
-   * 按钮间距 单位lpx
+   * 按钮间距
    * @since 1.16.0
    */
-  @Prop buttonSpace: number = 0
+  @Prop buttonSpace: string | number = 0
   /**
    * 是否展示确认按钮
    */
-  @Prop showConfirmButton: boolean;
+  @Prop showConfirmButton: boolean = true
   /**
    * 是否展示取消按钮
    */
-  @Prop showCancelButton: boolean;
+  @Prop showCancelButton: boolean = false
   /**
    * 确认按钮文案
    */
-  @Prop confirmButtonText: string;
+  @Prop confirmButtonText: string = '确认'
   /**
    * 取消按钮的文案
    */
-  @Prop cancelButtonText: string;
+  @Prop cancelButtonText: string = '取消'
   /**
    * 确认按钮的字体颜色
    */
-  @Prop confirmButtonColor: ResourceColor;
+  @Prop confirmButtonColor: ResourceColor = this.theme == 'round-button' ? '#fff' : '#3D8AF2'
   /**
    * 确认按钮的背景颜色
    * @since 1.16.0
    */
-  @Prop confirmButtonBgColor: ResourceColor;
+  @Prop confirmButtonBgColor: ResourceColor = this.theme == 'round-button' ? '#3D8AF2' : '#fff'
   /**
    * 取消按钮的字体颜色
    */
-  @Prop cancelButtonColor: ResourceColor;
+  @Prop cancelButtonColor: ResourceColor = GRAY_COLOR.GRAY_7
   /**
    * 取消按钮的背景颜色
    * @since 1.16.0
    */
-  @Prop cancelButtonBgColor: ResourceColor;
+  @Prop cancelButtonBgColor: ResourceColor = this.baseStyle.default
   /**
    * 是否禁用确认按钮
    */
-  @Prop confirmButtonDisabled: boolean;
+  @Prop confirmButtonDisabled: boolean = false
   /**
    * 是否禁用取消按钮
    */
-  @Prop cancelButtonDisabled: boolean;
+  @Prop cancelButtonDisabled: boolean = false
   /**
    * 按钮的文字大小
    */
-  @Prop buttonFontSize: string;
+  @Prop buttonFontSize: string | number = this.baseStyle.fontSizeLg
   /**
    * 确认按钮的loading
    */
-  @Prop confirmButtonLoading: boolean;
+  @Prop confirmButtonLoading: boolean = false
   /**
    * 取消按钮的loading
    */
-  @Prop cancelButtonLoading: boolean;
+  @Prop cancelButtonLoading: boolean = false
   /**
    * 点击取消的回调
    */
@@ -233,13 +235,13 @@ export struct IBestDialogView {
       } else {
         if (this.isHasTitle()) {
           Text(this.title)
-            .fontSize(this.titleFontSize)
+            .fontSize(getSizeByUnit(this.titleFontSize, true))
             .fontWeight(FontWeight.Medium)
-            .lineHeight(this.titleLineHeight)
+            .lineHeight(getSizeByUnit(this.titleLineHeight))
             .padding({
-              top: this.titlePaddingTop,
-              left: this.titlePaddingX,
-              right: this.titlePaddingX
+              top: getSizeByUnit(this.titlePaddingTop),
+              left: getSizeByUnit(this.titlePaddingX),
+              right: getSizeByUnit(this.titlePaddingX)
             })
             .textAlign(this.getFormatAlign(this.titleTextAlign))
             .fontColor(this.titleColor)
@@ -254,20 +256,20 @@ export struct IBestDialogView {
         Scroll() {
           Text(this.message)
             .padding({
-              top: this.messagePaddingTop,
-              left: this.messagePaddingX,
-              right: this.messagePaddingX,
-              bottom: this.messagePaddingBottom
+              top: getSizeByUnit(this.messagePaddingTop),
+              left: getSizeByUnit(this.messagePaddingX),
+              right: getSizeByUnit(this.messagePaddingX),
+              bottom: getSizeByUnit(this.messagePaddingBottom)
             })
-            .margin({top: this.isHasTitle() ? 0 : this.messagePaddingBottom})
+            .margin({top: this.isHasTitle() ? 0 : getSizeByUnit(this.messagePaddingBottom)})
             .textAlign(this.getFormatAlign(this.messageTextAlign))
-            .lineHeight(this.messageLineHeight)
-            .fontSize(this.messageFontSize)
+            .lineHeight(getSizeByUnit(this.messageLineHeight))
+            .fontSize(getSizeByUnit(this.messageFontSize, true))
             .fontColor(this.getMsgColor())
         }
         .scrollBarColor(this.baseStyle.scrollBarColor)
         .constraintSize({
-          maxHeight: this.messageMaxHeight
+          maxHeight: getSizeByUnit(this.messageMaxHeight)
         })
         .edgeEffect(EdgeEffect.Spring)
       }
@@ -277,32 +279,31 @@ export struct IBestDialogView {
       if (this.footerBuilder) {
         this.footerBuilder()
       } else {
-        Row({ space: `${this.buttonSpace}lpx` }) {
+        Row({ space: getSizeByUnit(this.buttonSpace) }) {
           // 取消按钮
           if (this.showCancelButton) {
             Button({ type: ButtonType.Normal }) {
               Row() {
                 if (this.cancelButtonLoading) {
                   LoadingProgress()
-                    .width(this.buttonFontSize)
+                    .width(getSizeByUnit(this.buttonFontSize))
                     .color(this.getCancelBtnFontColor())
                     .margin({
-                      right: SPACE.MINI
+                      right: this.baseStyle.spaceMini
                     })
                     .transition({ type: TransitionType.Insert, opacity: 1 })
                     .transition({ type: TransitionType.Delete, opacity: 0 })
                 } else {
                   Text(this.cancelButtonText)
                     .fontColor(this.getCancelBtnFontColor())
-                    .fontSize(this.buttonFontSize)
+                    .fontSize(getSizeByUnit(this.buttonFontSize, true))
                     .transition({ type: TransitionType.Insert, opacity: 1 })
                     .transition({ type: TransitionType.Delete, opacity: 0 })
                 }
               }
             }
             .border({
-              width: this.theme == 'default' ? { right: this.showConfirmButton ? '2lpx' : 0 } : "2lpx",
-              color: '#ecedf0'
+              width: this.theme == 'default' ? { right: this.showConfirmButton ? 1 : 0 } : 1, color: '#ecedf0'
             })
             .enabled(!this.cancelButtonDisabled || !this.cancelButtonLoading)
             .defaultBtnStyles(this.theme)
@@ -319,17 +320,17 @@ export struct IBestDialogView {
               Row() {
                 if (this.confirmButtonLoading) {
                   LoadingProgress()
-                    .width(this.buttonFontSize)
+                    .width(getSizeByUnit(this.buttonFontSize))
                     .color(this.getConfirmBtnFontColor())
                     .margin({
-                      right: SPACE.MINI
+                      right: this.baseStyle.spaceMini
                     })
                     .transition({ type: TransitionType.Insert, opacity: 1 })
                     .transition({ type: TransitionType.Delete, opacity: 0 })
                 } else {
                   Text(this.confirmButtonText)
                     .fontColor(this.getConfirmBtnFontColor())
-                    .fontSize(this.buttonFontSize)
+                    .fontSize(getSizeByUnit(this.buttonFontSize, true))
                     .transition({ type: TransitionType.Insert, opacity: 1 })
                     .transition({ type: TransitionType.Delete, opacity: 0 })
                 }
@@ -346,7 +347,7 @@ export struct IBestDialogView {
 
         }.border({
           width: {
-            top: this.theme == 'default' ? '2lpx' : 0
+            top: this.theme == 'default' ? 1 : 0
           },
           color: '#ecedf0'
         })
@@ -354,8 +355,8 @@ export struct IBestDialogView {
       }
     }
     .backgroundColor('#fff')
-    .width(this.dialogWidth)
-    .borderRadius(this.dialogBorderRadius)
+    .width(getSizeByUnit(this.dialogWidth))
+    .borderRadius(getSizeByUnit(this.dialogBorderRadius))
     .clip(true)
   }
 }

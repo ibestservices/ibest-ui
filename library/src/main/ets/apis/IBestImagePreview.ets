@@ -1,6 +1,6 @@
 import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
-import { CONTAINER_SIZE } from '../theme-chalk/src/container.type'
-import { clamp, getComponentsInfo } from '../assets/ets/utils'
+import { CONTAINER_SIZE } from '../theme-chalk/src/container'
+import { clamp, convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../utils/utils'
 import { getDefaultBaseStyle } from '../theme-chalk/src'
 
 type IBestPreviewImgType = PixelMap | ResourceStr | DrawableDescriptor
@@ -40,7 +40,7 @@ class IBestImagePreviewOption{
 	/**
 	 * 页码距离顶部或底部距离
 	 */
-	indexOffset?: number = 104
+	indexOffset?: number | string = 52
 	/**
 	 * 页码字体颜色
 	 */
@@ -48,7 +48,7 @@ class IBestImagePreviewOption{
 	/**
 	 * 页码字体大小
 	 */
-	indexFontSize?: number = 28
+	indexFontSize?: number | string = 14
 	/**
 	 * 是否循环
 	 */
@@ -96,9 +96,9 @@ class IBestImagePreviewParams extends IBestImagePreviewOption {
 		this.swipeDuration = params?.swipeDuration || 200
 		this.showIndex = params?.showIndex != undefined ? params.showIndex : list.length > 1
 		this.indexPosition = params?.indexPosition || 'bottom'
-		this.indexOffset = params?.indexOffset || 104
+		this.indexOffset = params?.indexOffset || convertDimensionsWidthUnit(52)
 		this.indexFontColor = params?.indexFontColor != undefined ? params.indexFontColor : baseStyle.default as string
-		this.indexFontSize = params?.indexFontSize != undefined ? params.indexFontSize : 28
+		this.indexFontSize = params?.indexFontSize != undefined ? params.indexFontSize : convertDimensionsWidthUnit(14, true)
 		this.loop = params?.loop != undefined ? params.loop : true
 		this.doubleScale = params?.doubleScale != undefined ? params.doubleScale : true
 		this.closeOnClickOverlay = params?.closeOnClickOverlay != undefined ? params.closeOnClickOverlay : true
@@ -142,8 +142,8 @@ struct PreviewContent{
 			if(this.params.showIndex){
 				Text(`${this.active + 1} / ${this.params.list.length}`)
 					.fontColor(this.params.indexFontColor)
-					.fontSize(this.params.indexFontSize + "lpx")
-					.offset({ y: `${this.params.indexPosition == "top" ? "" : "-"}${this.params.indexOffset}lpx` })
+					.fontSize(this.params.indexFontSize ? getSizeByUnit(this.params.indexFontSize, true) : "")
+					.offset({ y: `${this.params.indexPosition == "top" ? "" : "-"}${getSizeByUnit(this.params.indexOffset)}` })
 			}
 		}
 	}
@@ -187,8 +187,8 @@ struct SwiperItem{
 		this.imgWidth = px2vp(width)
 		this.imgHeight = px2vp(height)
 		this.imageRatio = height / width
-		this.rootWidth = px2vp(lpx2px(comInfo.width))
-		this.rootHeight = px2vp(lpx2px(comInfo.height))
+		this.rootWidth = comInfo.width
+		this.rootHeight = comInfo.height
 
 		this.isLongImage = this.imageRatio > rootRatio && this.imageRatio >= this.longImageRatio
 		this.imgDraggable = !this.params.onImgLongPress
@@ -325,20 +325,10 @@ struct SwiperItem{
 					}
 				})
 				.gesture(
-					GestureGroup(GestureMode.Exclusive,
-						// 双击
-						TapGesture({ fingers: 1, count: 2 }).onAction((event) => {
-							this.doubleClick(event.fingerList)
-						}),
-						// 单击
-						TapGesture({ fingers: 1, count: 1 }).onAction(() => {
-							this.singleClick("img")
-						}),
-						// 长按
-						LongPressGesture({ fingers: 1 }).onAction(() => {
-							this.params.onImgLongPress && this.params.onImgLongPress(this.index)
-						})
-					)
+					// 长按
+					LongPressGesture({ fingers: 1 }).onAction(() => {
+						this.params.onImgLongPress && this.params.onImgLongPress(this.index)
+					})
 				)
 		}
 		.justifyContent(FlexAlign.Center)
@@ -346,7 +336,7 @@ struct SwiperItem{
 		.onTouch((event) => {
 			this.onFingerMove(event)
 		})
-		.gesture(
+		.parallelGesture(
 			GestureGroup(GestureMode.Exclusive,
 				// 双击
 				TapGesture({ fingers: 1, count: 2 }).onAction((event) => {
@@ -358,6 +348,9 @@ struct SwiperItem{
 				}),
 				// 缩放
 				PinchGesture({ fingers: 2 })
+					.onActionStart(() => {
+						this.pinchValue = this.curScale
+					})
 					.onActionUpdate((event: GestureEvent) => {
 						let scale = Number((this.pinchValue * event.scale).toFixed(1))
 						let lastCenter = this.getCenter(event.fingerList)

@@ -1,4 +1,4 @@
-import { emitter } from '../../assets/ets/EventEmitter'
+import { emitter } from '../../utils/EventEmitter'
 import { FieldTextAlign, IBestFieldValueType,
 	LabelPositionType,
 	RequireAsteriskPositionType } from '../field/index.type'
@@ -50,7 +50,7 @@ export function getFormEventName(formId: string, eventName: string): string {
  */
 export interface IBestFormSendFieldCallResult {
 	rules: IBestFormRuleItem[]
-	labelWidth: number
+	labelWidth: number | string
 	labelPosition: LabelPositionType
 	labelAlign: FieldTextAlign
 	colon: boolean

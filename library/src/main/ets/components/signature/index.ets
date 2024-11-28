@@ -1,6 +1,7 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { CONTAINER_SIZE } from "../../theme-chalk/src/container.type"
+import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
 import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
+import { convertDimensions, convertDimensionsWidthUnit, getSizeByUnit } from "../../utils/utils"
 import { IBestButton } from "../button"
 import { IBestSignatureController } from "./index.type"
 @Component
@@ -12,11 +13,11 @@ export struct IBestSignature{
 	/**
 	 * 宽度
 	 */
-	@Prop boardWidth: number | string = -1
+	@Prop boardWidth: number | string = CONTAINER_SIZE.FULL
 	/**
 	 * 高度
 	 */
-	@Prop boardHeight: number | string = 400
+	@Prop boardHeight: number | string = convertDimensionsWidthUnit(200)
 	/**
 	 * 导出图片类型
 	 */
@@ -69,8 +70,6 @@ export struct IBestSignature{
 	}
 	// 初始化
 	init(){
-		this.boardWidth = typeof this.boardWidth == "string" ? this.boardWidth : this.boardWidth < -1 ? CONTAINER_SIZE.FULL : `${this.boardWidth}lpx`
-		this.boardHeight = typeof this.boardHeight == "string" ? this.boardHeight : this.boardHeight < -1 ? 400 : `${this.boardHeight}lpx`
 		if(this.controller){
 			this.controller.confirm = (): void => this.confirm()
 			this.controller.clear = (): void => this.clearCanvas()
@@ -118,7 +117,7 @@ export struct IBestSignature{
 		Column() {
 			Canvas(this.context)
 				.width(CONTAINER_SIZE.FULL)
-				.height(this.boardHeight)
+				.height(getSizeByUnit(this.boardHeight))
 				.borderRadius(this.baseStyle.borderRadiusLg)
 				.monopolizeEvents(true)
 				.onReady(() => {
@@ -131,9 +130,9 @@ export struct IBestSignature{
 				Row({ space: this.baseStyle.spaceXs }){
 					IBestButton({
 						text: this.clearText,
-						btnWidth: 120,
-						btnHeight: 64,
-						btnFontSize: 24,
+						btnWidth: convertDimensions(60),
+						btnHeight: convertDimensions(32),
+						btnFontSize: convertDimensions(12),
 						onClickBtn: () => {
 							this.clearCanvas()
 						}
@@ -141,9 +140,9 @@ export struct IBestSignature{
 					IBestButton({
 						type: 'primary',
 						text: this.confirmText,
-						btnWidth: 120,
-						btnHeight: 64,
-						btnFontSize: 24,
+						btnWidth: convertDimensions(60),
+						btnHeight: convertDimensions(32),
+						btnFontSize: convertDimensions(12),
 						onClickBtn: () => {
 							this.confirm()
 						}
@@ -154,6 +153,6 @@ export struct IBestSignature{
 				.justifyContent(FlexAlign.End)
 			}
 		}
-		.width(this.boardWidth)
+		.width(getSizeByUnit(this.boardWidth))
 	}
 }

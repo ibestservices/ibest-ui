@@ -27,7 +27,7 @@ struct NotifyPage {
 			}).backgroundColor('#FFF')
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MEDIA }) {
+					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							IBestCell({
 								title: '基础用法',
@@ -43,7 +43,7 @@ struct NotifyPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '通知类型', titlePaddingLeft: SPACE.MEDIA }) {
+					ComponentShowContainer({ title: '通知类型', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							IBestCell({
 								title: '主要通知',
@@ -90,7 +90,7 @@ struct NotifyPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '自定义配置', titlePaddingLeft: SPACE.MEDIA }) {
+					ComponentShowContainer({ title: '自定义配置', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							IBestCell({
 								title: '自定义颜色',
@@ -128,7 +128,7 @@ struct NotifyPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '自定义内容', titlePaddingLeft: SPACE.MEDIA }) {
+					ComponentShowContainer({ title: '自定义内容', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							IBestCell({
 								title: '自定义内容',

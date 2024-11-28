@@ -57,7 +57,7 @@ export struct WatermarkCanvas {
   /**
    * 文字的大小
    */
-  @Prop @Watch('drawWaterMark') fontSize: number = 30;
+  @Prop @Watch('drawWaterMark') fontSize: number = 14
   /**
    * 文字字体
    */

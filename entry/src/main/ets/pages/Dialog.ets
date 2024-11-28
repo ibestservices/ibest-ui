@@ -30,8 +30,8 @@ struct DialogPage {
   @Builder formInputContain() {
     Column() {
       TextInput({ 'placeholder': '请输入' })
-        .fontSize('28lpx')
-        .placeholderFont({ size: '28lpx' })
+        .fontSize(14)
+        .placeholderFont({ size: 14 })
         .onChange((value) => {
           this.inputValue = value;
           this.formInputError = false
@@ -41,16 +41,16 @@ struct DialogPage {
           .width(CONTAINER_SIZE.FULL)
           .textAlign(TextAlign.Start)
           .margin({
-            top: SPACE.BASE,
-            left: SPACE.MINI
+            top: SPACE.SM,
+            left: SPACE.BASE
           })
           .fontColor(Color.Red)
-          .fontSize('24lpx')
+          .fontSize(12)
           .transition({ type: TransitionType.Insert, opacity: 1 })
           .transition({ type: TransitionType.Delete, opacity: 0 })
       }
 
-    }.width('90%').margin({ top: SPACE.LARGE, bottom: SPACE.LARGE })
+    }.width('90%').margin({ top: SPACE.LG, bottom: SPACE.LG })
   }
 
   @Builder customComponentContent() {
@@ -84,7 +84,7 @@ struct DialogPage {
 
       List() {
         ListItem() {
-          ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MEDIA }) {
+          ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
             IBestCellGroup({ inset: true }) {
               IBestCell({
                 title: '提示弹窗',
@@ -128,7 +128,7 @@ struct DialogPage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: '圆角按钮样式', titlePaddingLeft: SPACE.MEDIA }) {
+          ComponentShowContainer({ title: '圆角按钮样式', titlePaddingLeft: SPACE.MD }) {
             IBestCellGroup({ inset: true }) {
               IBestCell({
                 title: '提示弹窗',
@@ -170,7 +170,7 @@ struct DialogPage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: '异步关闭', titlePaddingLeft: SPACE.MEDIA }) {
+          ComponentShowContainer({ title: '异步关闭', titlePaddingLeft: SPACE.MD }) {
             IBestCellGroup({ inset: true }) {
               IBestCell({
                 title: '异步关闭',
@@ -207,7 +207,7 @@ struct DialogPage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: '使用插槽', titlePaddingLeft: SPACE.MEDIA }) {
+          ComponentShowContainer({ title: '使用插槽', titlePaddingLeft: SPACE.MD }) {
             IBestCellGroup({ inset: true }) {
               IBestCell({
                 title: '使用插槽',
@@ -227,7 +227,7 @@ struct DialogPage {
         }
 
         ListItem() {
-          ComponentShowContainer({ title: '使用组件', titlePaddingLeft: SPACE.MEDIA }) {
+          ComponentShowContainer({ title: '使用组件', titlePaddingLeft: SPACE.MD }) {
             IBestCellGroup({ inset: true }) {
               IBestCell({
                 title: '使用组件',

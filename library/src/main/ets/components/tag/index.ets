@@ -1,12 +1,11 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { ColorType, COLOR_TYPE, GRAY_COLOR } from '../../theme-chalk/src/color.type';
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container.type';
-import { IBestUIBaseStyleObjType, IBestUIBaseStyleType } from '../../theme-chalk/src/index.type';
+import { ColorType, COLOR_TYPE } from '../../theme-chalk/src/color.type';
+import { GRAY_COLOR } from '../../theme-chalk/src/color'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE } from '../../theme-chalk/src/size.type';
 import { TagSizeData } from './index.type';
-
-@Extend(Row)
-function tagSizeStyle(data: TagSizeData) {
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
+@Extend(Row) function tagSizeStyle(data: TagSizeData) {
   .padding({ top: 0, right: data.padding, bottom: 0, left: data.padding })
   .height(data.height)
   .borderRadius(data.borderRadius)
@@ -62,11 +61,11 @@ export struct IBestTag {
   /**
    * 点击关闭按钮触发的回调
    */
-  onClose?: (event: ClickEvent) => void;
+  onClose: (event: ClickEvent) => void = () => {}
   /**
    * 点击标签触发的回调
    */
-  onClickTag?: (event: ClickEvent) => void
+  onClickTag: (event: ClickEvent) => void = () => {}
 
 
   /**
@@ -106,11 +105,11 @@ export struct IBestTag {
     const tagSize = this.tagSize;
     switch (tagSize) {
       case 'medium':
-        return new TagSizeData('12lpx', '40lpx', this.baseStyle.fontSizeSm, this.getBorderRadius('4lpx') ) ;
+        return new TagSizeData(convertDimensionsWidthUnit(6), convertDimensionsWidthUnit(20), this.baseStyle.fontSizeSm, this.getBorderRadius(convertDimensionsWidthUnit(2)) ) ;
       case SIZE.LARGE:
-        return new TagSizeData(this.baseStyle.spaceXs, '48lpx', this.baseStyle.fontSizeMd,  this.getBorderRadius('8lpx') ) ;
+        return new TagSizeData(this.baseStyle.spaceXs, convertDimensionsWidthUnit(24), this.baseStyle.fontSizeMd,  this.getBorderRadius(convertDimensionsWidthUnit(4)) ) ;
       default:
-        return new TagSizeData(this.baseStyle.spaceBase, '34lpx', this.baseStyle.fontSizeSm, this.getBorderRadius('4lpx') ) ;
+        return new TagSizeData(this.baseStyle.spaceBase, convertDimensionsWidthUnit(17), this.baseStyle.fontSizeSm, this.getBorderRadius(convertDimensionsWidthUnit(2)) ) ;
     }
   }
 
@@ -119,7 +118,7 @@ export struct IBestTag {
    * @param borderRadius
    * @returns
    */
-  getBorderRadius(borderRadius: string): BorderRadiuses | Length {
+  getBorderRadius(borderRadius: number | string): BorderRadiuses | Length {
     if (this.round) {
       return this.baseStyle.borderRadiusMax
     } else if (this.mark) {
@@ -130,7 +129,7 @@ export struct IBestTag {
         bottomRight: this.baseStyle.borderRadiusMax
       }
     } else {
-      return borderRadius
+      return getSizeByUnit(borderRadius)
     }
   }
 
@@ -150,7 +149,7 @@ export struct IBestTag {
           .justifyContent(FlexAlign.Center)
           .onClick((event) => {
             animateTo({ duration: this.baseStyle.animationDuration as number}, () => {
-              typeof this.onClose === 'function' && this.onClose(event)
+              this.onClose(event)
             })
           })
         }
@@ -159,13 +158,13 @@ export struct IBestTag {
       .tagSizeStyle(this.getTagSize())
       .alignItems(VerticalAlign.Center)
       .justifyContent(FlexAlign.Center)
-      .borderWidth('2lpx')
+      .borderWidth(1)
       .backgroundColor(this.getTagColor(!this.plain))
       .borderColor(this.type === COLOR_TYPE.DEFAULT && !this.textColor && !this.color ? GRAY_COLOR.GRAY_4 : this.getTagColor(this.plain))
       .transition({ type: TransitionType.Insert, opacity: 1 })
       .transition({ type: TransitionType.Delete, opacity: 0 })
       .onClick((event)=>{
-        typeof this.onClickTag === 'function' && this.onClickTag(event)
+        this.onClickTag(event)
       })
     }
   }
