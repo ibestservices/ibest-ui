@@ -412,7 +412,7 @@ export struct IBestCalendar{
                     day: val.format('D'),
                     isCurMonthDay: false,
                     isSelected: this.selectedList.some((item) => item.dateStr === dateStr),
-                    isDisabled: this.getIsDisabled(day)
+                    isDisabled: this.getIsDisabled(val)
                 })
                 list.push(dayItem)
             }

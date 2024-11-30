@@ -96,6 +96,6 @@ export default struct TitleBar {
           typeof this.onClickRightBtn === 'function' && this.onClickRightBtn()
         })
       }
-    }
+    }.backgroundColor(COLOR_BLUE.DEFAULT)
   }
 }

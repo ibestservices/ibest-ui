@@ -37,6 +37,7 @@
 		"pages/Notify",
 		"pages/PullRefresh",
 		"pages/SwipeCell",
-		"pages/Badge"
+		"pages/Badge",
+		"pages/NavBar"
 	]
 }

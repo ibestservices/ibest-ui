@@ -9,6 +9,7 @@ interface GeneratedObjectLiteralInterface_1 {
  * 红色
  */
 export const COLOR_RED: GeneratedObjectLiteralInterface_1 = {
+  DEFAULT: "#DB3131",
   BASE: '#F56C6C'
 };
 
