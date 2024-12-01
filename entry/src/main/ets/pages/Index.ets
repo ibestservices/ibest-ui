@@ -18,10 +18,6 @@ struct Index {
 			title: '基础组件',
 			list: [
 				{
-					name: 'NavBar 导航栏',
-					path: 'pages/NavBar'
-				},
-				{
 					name: 'Button 按钮',
 					path: 'pages/Button'
 				},
@@ -151,10 +147,10 @@ struct Index {
 					name: 'PullRefresh 下拉刷新',
 					path: 'pages/PullRefresh'
 				},
-			// {
-			//   name: 'SwipeCell 滑动单元格',
-			//   path: 'pages/SwipeCell'
-			// }
+				// {
+				//   name: 'SwipeCell 滑动单元格',
+				//   path: 'pages/SwipeCell'
+				// }
 			]
 		},
 		{
@@ -163,6 +159,14 @@ struct Index {
 				{
 					name: 'Badge 徽标',
 					path: 'pages/Badge'
+				},
+				{
+					name: 'CircleProgress 环形进度条',
+					path: 'pages/CircleProgress'
+				},
+				{
+					name: 'Collapse 折叠面板',
+					path: 'pages/Collapse'
 				},
 				{
 					name: 'Empty 空状态',
@@ -200,9 +204,9 @@ struct Index {
 	aboutToAppear(): void {
 		setTimeout(() => {
 			router.pushUrl({
-				url: 'pages/NavBar',
+				url: 'pages/Collapse',
 				params: {
-					title: "导航栏"
+					title: "Collapse Collapse 折叠面板"
 				}
 			})
 		}, 500)

@@ -1,9 +1,9 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { GRAY_COLOR } from "../../theme-chalk/src/color"
-import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
-import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { convertDimensions, convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from "../../utils/utils"
-import { IBestIcon } from "../icon"
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { GRAY_COLOR } from '../../theme-chalk/src/color'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
+import { IBestIcon } from '../icon'
 
 @Component
 export struct IBestNavBar{
@@ -15,14 +15,11 @@ export struct IBestNavBar{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	/**
-	 * 标题栏高度
-     */
-	@Prop navBarHeight: number | string = convertDimensionsWidthUnit(46)
+	@StorageProp("iBestTopAvoidHeight") topAvoidHeight: number = 0
 	/**
 	 * 标题栏背景色
      */
-	@Prop bgColor: ResourceColor = this.baseStyle.default
+	@Prop @Watch("navBarBgColorChange") navBarBgColor: ResourceColor = this.baseStyle.default
 	/**
 	 * 标题栏渐变色
      */
@@ -31,6 +28,10 @@ export struct IBestNavBar{
 	 * 标题栏左右内边距
      */
 	@Prop leftRightPadding: number | string = convertDimensionsWidthUnit(16)
+	/**
+	 * 是否显示下边框
+     */
+	@Prop isShowBorder: boolean = true
 	/**
 	 * 标题内容
 	 */
@@ -43,6 +44,18 @@ export struct IBestNavBar{
 	 * 标题文字大小
      */
 	@Prop titleFontSize: number | string = convertDimensionsWidthUnit(16, true)
+	/**
+	 * 标题图标
+     */
+	@Prop titleIcon: ResourceStr = ""
+	/**
+	 * 标题图标颜色
+     */
+	@Prop titleIconColor: ResourceColor = GRAY_COLOR.GRAY_8
+	/**
+	 * 标题图标大小
+     */
+	@Prop titleIconSize: number | string = convertDimensionsWidthUnit(20)
 	/**
 	 * 标题是否加粗
 	 */
@@ -144,6 +157,18 @@ export struct IBestNavBar{
      */
 	@BuilderParam titleBuilder?: CustomBuilder
 	/**
+	 * 是否显示状态栏
+	 */
+	@Prop isShowStatusBar: boolean = false
+	/**
+	 * 状态栏背景色
+	 */
+	@Prop statusBarBgColor: ResourceColor = this.navBarBgColor
+	/**
+	 * 标题栏高度
+	 */
+	@Prop navBarHeight: number | string = convertDimensionsWidthUnit(46)
+	/**
 	 * 左侧点击回调
      */
 	onLeftClick: () => void = () => {}
@@ -162,6 +187,9 @@ export struct IBestNavBar{
 		this.uniId = this.getUniqueId()
 		this.getMaxWidth()
 	}
+	navBarBgColorChange(){
+		this.statusBarBgColor = this.navBarBgColor
+	}
 	getMaxWidth(){
 		setTimeout(() => {
 			let leftWidth = 0
@@ -178,116 +206,132 @@ export struct IBestNavBar{
 	}
 
 	build() {
-		Row(){
-			if(this.isShowLeft){
-				Row({space: this.baseStyle.spaceBase}){
-					if(this.leftBuilder){
-						this.leftBuilder()
-					}else {
-						if(this.leftIcon){
-							Image(this.leftIcon)
-								.width(getSizeByUnit(this.leftIconSize))
-								.fillColor(this.leftIconColor)
-								.borderRadius(getSizeByUnit(this.leftIconRadius))
-						}else{
-							IBestIcon({
-								name: this.leftIconName,
-								color: this.leftIconColor,
-								iconSize: this.leftIconSize,
-								iconRadius: this.leftIconRadius,
-								onIconClick: () => {
-									this.onLeftClick()
-								}
-							})
+		Column(){
+			if(this.isShowStatusBar){
+				Row()
+					.width(CONTAINER_SIZE.FULL)
+					.height(this.topAvoidHeight)
+					.backgroundColor(this.statusBarBgColor)
+			}
+			Row(){
+				if(this.isShowLeft){
+					Row({space: this.baseStyle.spaceBase}){
+						if(this.leftBuilder){
+							this.leftBuilder()
+						}else {
+							if(this.leftIcon){
+								Image(this.leftIcon)
+									.width(getSizeByUnit(this.leftIconSize))
+									.fillColor(this.leftIconColor)
+									.borderRadius(getSizeByUnit(this.leftIconRadius))
+							}else{
+								IBestIcon({
+									name: this.leftIconName,
+									color: this.leftIconColor,
+									iconSize: this.leftIconSize,
+									iconRadius: this.leftIconRadius,
+									onIconClick: () => {
+										this.onLeftClick()
+									}
+								})
+							}
+							if(this.leftLabel){
+								Text(this.leftLabel)
+									.fontSize(getSizeByUnit(this.leftLabelSize))
+									.fontColor(this.leftLabelColor)
+									.lineHeight(this.baseStyle.lineHeightMd)
+							}
 						}
-						if(this.leftLabel){
-							Text(this.leftLabel)
-								.fontSize(getSizeByUnit(this.leftLabelSize))
-								.fontColor(this.leftLabelColor)
-								.lineHeight(this.baseStyle.lineHeightMd)
+					}
+					.height(CONTAINER_SIZE.FULL)
+					.position({left: 0})
+					.padding({left: getSizeByUnit(this.leftRightPadding), right: this.baseStyle.spaceXs})
+					.id(`ibest_navbar_left_${this.uniId}`)
+					.onClick(() => {
+						this.onLeftClick()
+					})
+				}
+				Column({space: this.baseStyle.spaceMini}){
+					if(this.titleBuilder){
+						this.titleBuilder()
+					}else{
+						Row({space: this.baseStyle.spaceXs}){
+							if(this.titleIcon){
+								Image(this.titleIcon)
+									.height(getSizeByUnit(this.titleIconSize))
+									.fillColor(this.titleIconColor)
+							}
+							if(this.title){
+								Text(this.title)
+									.fontColor(this.titleColor)
+									.fontSize(getSizeByUnit(this.titleFontSize))
+									.textAlign(TextAlign.Center)
+									.maxLines(1)
+									.textOverflow({overflow: TextOverflow.Ellipsis})
+									.fontWeight(this.isTitleBold ? FontWeight.Bold : FontWeight.Normal)
+									.onClick(() => {
+										this.onTitleClick()
+									})
+							}
+						}
+						if(this.subTitle){
+							Text(this.subTitle)
+								.fontSize(getSizeByUnit(this.subTitleFontSize))
+								.fontColor(this.subTitleColor)
+								.textAlign(TextAlign.Center)
+								.maxLines(1)
+								.textOverflow({overflow: TextOverflow.Ellipsis})
 						}
 					}
 				}
+				.width(CONTAINER_SIZE.FULL)
 				.height(CONTAINER_SIZE.FULL)
-				.position({left: 0})
-				.padding({left: getSizeByUnit(this.leftRightPadding), right: this.baseStyle.spaceXs})
-				.id(`ibest_navbar_left_${this.uniId}`)
-				.onClick(() => {
-					this.onLeftClick()
-				})
-			}
-			Column({space: this.baseStyle.spaceMini}){
-				if(this.titleBuilder){
-					this.titleBuilder()
-				}else{
-					if(this.title){
-						Text(this.title)
-							.fontColor(this.titleColor)
-							.fontSize(getSizeByUnit(this.titleFontSize))
-							.textAlign(TextAlign.Center)
-							.maxLines(1)
-							.textOverflow({overflow: TextOverflow.Ellipsis})
-							.fontWeight(this.isTitleBold ? FontWeight.Bold : FontWeight.Normal)
-							.onClick(() => {
-								this.onTitleClick()
-							})
+				.constraintSize({maxWidth: this.titleBuilder ? "100%" : "60%"})
+				.justifyContent(FlexAlign.Center)
+				.alignItems(this.titleBuilder ? HorizontalAlign.Start : HorizontalAlign.Center)
+				.padding(this.titleBuilder ? {left: this.leftWidth, right: this.rightWidth} : 0)
+				if(this.isShowRight){
+					Row({space: this.baseStyle.spaceBase}){
+						if(this.rightBuilder){
+							this.rightBuilder()
+						}else{
+							if(this.rightLabel){
+								Text(this.rightLabel)
+									.fontSize(getSizeByUnit(this.rightLabelSize))
+									.fontColor(this.rightLabelColor)
+									.lineHeight(this.baseStyle.lineHeightMd)
+							}
+							if(this.rightIcon){
+								Image(this.rightIcon)
+									.width(getSizeByUnit(this.rightIconSize))
+									.fillColor(this.rightIconColor)
+							}else if(this.rightIconName){
+								IBestIcon({
+									name: this.rightIconName,
+									color: this.rightIconColor,
+									iconSize: this.rightIconSize,
+									onIconClick: () => {
+										this.onRightClick()
+									}
+								})
+							}
+						}
 					}
-					if(this.subTitle){
-						Text(this.subTitle)
-							.fontSize(getSizeByUnit(this.subTitleFontSize))
-							.fontColor(this.subTitleColor)
-							.textAlign(TextAlign.Center)
-							.maxLines(1)
-							.textOverflow({overflow: TextOverflow.Ellipsis})
-					}
+					.height(CONTAINER_SIZE.FULL)
+					.position({right: 0})
+					.padding({left: this.baseStyle.spaceXs, right: getSizeByUnit(this.leftRightPadding)})
+					.id(`ibest_navbar_right_${this.uniId}`)
+					.onClick(() => {
+						this.onRightClick()
+					})
 				}
 			}
 			.width(CONTAINER_SIZE.FULL)
-			.height(CONTAINER_SIZE.FULL)
-			.constraintSize({maxWidth: this.titleBuilder ? "100%" : "60%"})
+			.height(getSizeByUnit(this.navBarHeight))
 			.justifyContent(FlexAlign.Center)
-			.alignItems(this.titleBuilder ? HorizontalAlign.Start : HorizontalAlign.Center)
-			.padding(this.titleBuilder ? {left: this.leftWidth, right: this.rightWidth} : 0)
-			if(this.isShowRight){
-				Row({space: this.baseStyle.spaceBase}){
-					if(this.rightBuilder){
-						this.rightBuilder()
-					}else{
-						if(this.rightLabel){
-							Text(this.rightLabel)
-								.fontSize(getSizeByUnit(this.rightLabelSize))
-								.fontColor(this.rightLabelColor)
-								.lineHeight(this.baseStyle.lineHeightMd)
-						}
-						if(this.rightIcon){
-							Image(this.rightIcon)
-								.width(getSizeByUnit(this.rightIconSize))
-								.fillColor(this.rightIconColor)
-						}else if(this.rightIconName){
-							IBestIcon({
-								name: this.rightIconName,
-								color: this.rightIconColor,
-								iconSize: this.rightIconSize,
-								onIconClick: () => {
-									this.onRightClick()
-								}
-							})
-						}
-					}
-				}
-				.height(CONTAINER_SIZE.FULL)
-				.position({right: 0})
-				.padding({left: this.baseStyle.spaceXs, right: getSizeByUnit(this.leftRightPadding)})
-				.id(`ibest_navbar_right_${this.uniId}`)
-				.onClick(() => {
-					this.onRightClick()
-				})
-			}
+			.backgroundColor(this.navBarBgColor)
+			.linearGradient(this.bgLinearGradient)
+			.border({width:{bottom: this.isShowBorder ? 1 : 0}, color: GRAY_COLOR.GRAY_3})
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(getSizeByUnit(this.navBarHeight))
-		.justifyContent(FlexAlign.Center)
-		.backgroundColor(this.bgColor)
-		.linearGradient(this.bgLinearGradient)
 	}
 }

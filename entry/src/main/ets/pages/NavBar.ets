@@ -1,13 +1,16 @@
 import router from '@ohos.router';
-import { IBestNavBar, IBestToast } from '@ibestservices/ibest-ui'
-import { BACKGROUND_COLOR, COLOR_BLUE, COLOR_RED, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import ComponentShowContainer from '../components/ComponentShowContainer'
+import { IBestNavBar } from '@ibestservices/ibest-ui';
+import { BACKGROUND_COLOR, COLOR_BLUE, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
+import { getRandomColor } from '../utils/utils';
+
 @Entry
 @Component
 struct NavBarPage {
 	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
 	@State searchVal: string = ''
+	@State navBarBgColor: string = "#3D8AF2"
 
 	@Builder leftBuilder(){
 		Row({space: SPACE.BASE}){
@@ -30,7 +33,7 @@ struct NavBarPage {
 	build() {
 		Column() {
 			IBestNavBar({
-				title: this.title,
+				leftLabel: this.title,
 				onLeftClick: () => {
 					router.back()
 				}
@@ -39,7 +42,7 @@ struct NavBarPage {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }){
 						IBestNavBar({
-							title: "标题"
+							title: "IBest-UI"
 						})
 					}
 				}
@@ -47,15 +50,15 @@ struct NavBarPage {
 					ComponentShowContainer({ title: '自定义样式', titlePaddingLeft: SPACE.MD }){
 						Column({space: SPACE.XS}){
 							IBestNavBar({
-								title: "标题",
+								title: "IBest-UI",
 								titleColor: COLOR_BLUE.DEFAULT,
 								titleFontSize: 14,
 								isTitleBold: true,
-								bgColor: COLOR_BLUE.MINI,
+								navBarBgColor: COLOR_BLUE.MINI,
 								leftIconColor: COLOR_BLUE.DEFAULT
 							})
 							IBestNavBar({
-								title: "标题",
+								title: "IBest-UI",
 								titleColor: COLOR_BLUE.DEFAULT,
 								bgLinearGradient: {
 									angle: 90,
@@ -69,13 +72,20 @@ struct NavBarPage {
 					ComponentShowContainer({ title: '自定义显示区域', titlePaddingLeft: SPACE.MD }){
 						Column({space: SPACE.XS}){
 							IBestNavBar({
-								leftIcon: $r("app.media.app_icon"),
+								leftIcon: "https://img1.baidu.com/it/u=498751481,2849377151&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=800",
 								leftLabel: "IBest-UI",
-								leftIconRadius: "50%"
+								leftIconRadius: 999
 							})
 							IBestNavBar({
-								title: "标题",
-								leftIcon: $r("app.media.icon_star_o"),
+								isShowLeft: false,
+								title: "IBest-UI",
+								titleIcon: $r("app.media.app_icon"),
+							})
+							IBestNavBar({
+								isShowLeft: false,
+								isShowRight: true,
+								rightIcon: "https://img1.baidu.com/it/u=498751481,2849377151&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=800",
+								rightLabel: "IBest-UI"
 							})
 						}
 					}
@@ -93,23 +103,17 @@ struct NavBarPage {
 					ComponentShowContainer({ title: '自定义左右内容', titlePaddingLeft: SPACE.MD }){
 						Column({space: SPACE.XS}){
 							IBestNavBar({
-								title: "标题",
+								title: "IBest-UI",
 								leftLabel: "返回",
 								isShowRight: true,
 								rightIconName: "wap-nav",
 								rightLabel: "更多"
 							})
 							IBestNavBar({
-								title: "标题",
+								title: "IBest-UI",
 								leftBuilder: (): void => this.leftBuilder(),
 								isShowRight: true,
-								rightBuilder: (): void => this.rightBuilder(),
-								// onLeftClick: () => {
-								// 	IBestToast.show("点击左侧")
-								// },
-								// onRightClick: (): void => {
-								// 	IBestToast.show("点击右侧")
-								// }
+								rightBuilder: (): void => this.rightBuilder()
 							})
 						}
 					}
@@ -117,15 +121,29 @@ struct NavBarPage {
 				ListItem() {
 					ComponentShowContainer({ title: '二级标题', titlePaddingLeft: SPACE.MD }){
 						IBestNavBar({
-							title: "标题",
+							title: "IBest-UI",
 							subTitle: "二级标题"
 						})
 					}
 				}
+				ListItem() {
+					ComponentShowContainer({ title: '显示状态栏', titlePaddingLeft: SPACE.MD }){
+						IBestNavBar({
+							title: "点我修改颜色",
+							titleColor: COLOR_BLUE.DEFAULT,
+							leftIconColor: COLOR_BLUE.DEFAULT,
+							navBarBgColor: this.navBarBgColor,
+							isShowStatusBar: true,
+							onTitleClick: () => {
+								this.navBarBgColor = getRandomColor()
+							}
+						})
+					}
+				}
 			}
+			.width(CONTAINER_SIZE.FULL)
 			.layoutWeight(1)
 		}
-		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
 		.backgroundColor(BACKGROUND_COLOR.BASE)
 	}

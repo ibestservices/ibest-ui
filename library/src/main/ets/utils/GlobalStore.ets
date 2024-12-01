@@ -6,7 +6,6 @@ import { IBestGlobalConfig, IBestGlobalConfigType } from '../model/Global.type';
 import { setIBestUIBaseStyle } from '../theme-chalk/src';
 import { display } from '@kit.ArkUI';
 import mediaquery from '@ohos.mediaquery';
-import { emitter } from './EventEmitter';
 // 全局存储中心
 export default class GlobalStore {
 	// windowStage
@@ -46,6 +45,8 @@ export default class GlobalStore {
 			// console.log('getWindowAvoidSize', res.topSize, res.navigationSize)
 			GlobalStore.topAvoidHeight = res.topSize
 			GlobalStore.bottomBarHeight = res.navigationSize
+			AppStorage.setOrCreate("iBestTopAvoidHeight", GlobalStore.topAvoidHeight)
+			AppStorage.setOrCreate("iBestBottomBarHeight", GlobalStore.bottomBarHeight)
 		})
 	}
 	/**

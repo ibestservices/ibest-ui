@@ -107,3 +107,8 @@ export {IBestIconClassify, IBestIconData} from './src/main/ets/components/icon/c
 export { IBestBadge } from './src/main/ets/components/badge/index'
 
 export { IBestNavBar } from './src/main/ets/components/navBar/index'
+
+export { IBestCircleProgress } from './src/main/ets/components/circleProgress/index'
+
+export { IBestCollapse } from './src/main/ets/components/collapse/index'
+export { IBestCollapseItem } from './src/main/ets/components/collapseItem/index'

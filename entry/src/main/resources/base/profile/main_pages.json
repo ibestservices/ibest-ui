@@ -38,6 +38,8 @@
 		"pages/PullRefresh",
 		"pages/SwipeCell",
 		"pages/Badge",
-		"pages/NavBar"
+		"pages/NavBar",
+		"pages/CircleProgress",
+		"pages/Collapse"
 	]
 }

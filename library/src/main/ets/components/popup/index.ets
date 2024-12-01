@@ -2,7 +2,6 @@ import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { PopupAlign, PopupBaseController } from './index.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import GlobalStore from '../../utils/GlobalStore'
 
 const popupDuration = 200
 const hideDuration = 220
@@ -17,6 +16,8 @@ interface PopupSize{
 struct IBestPopupBaseContent {
 	// 是否横屏
 	@StorageProp("isLandscape") @Watch("initSize") isLandscape: boolean = false
+	@StorageProp("iBestTopAvoidHeight") topAvoidHeight: number = 0
+	@StorageProp("iBestBottomBarHeight") bottomBarHeight: number = 0
 	@State transX: string | number = ""
 	@State transY: string | number = ""
 	/**
@@ -139,9 +140,9 @@ struct IBestPopupBaseContent {
 			.backgroundColor("#fff")
 			.padding({
 				top: this.safeAreaInsetTop && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
-					== "top") ? convertDimensionsWidthUnit(GlobalStore.topAvoidHeight) : 0,
+					== "top") ? convertDimensionsWidthUnit(this.topAvoidHeight) : 0,
 				bottom: this.safeAreaInsetBottom && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
-					== "bottom") ? convertDimensionsWidthUnit(GlobalStore.bottomBarHeight) : 0
+					== "bottom") ? convertDimensionsWidthUnit(this.bottomBarHeight) : 0
 			})
 			.alignItems(HorizontalAlign.Start)
 			.borderRadius(getSizeByUnit(this.cornerRadius))
