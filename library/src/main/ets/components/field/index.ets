@@ -2,7 +2,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { FieldValidateResult, FORM_EVENT_NAME, getFormEventName, IBestFormRuleItem,
+import { FieldValidateResult, FORM_EVENT_NAME, IBestFormRuleItem,
     IBestFormSendFieldCallResult } from '../form/index.type'
 import type { IBestFieldType, ClearTriggerType, FieldTextAlign, IBestFieldValueType,
     RequireAsteriskPositionType,
@@ -10,7 +10,7 @@ import type { IBestFieldType, ClearTriggerType, FieldTextAlign, IBestFieldValueT
     FormatTriggerType} from './index.type'
 import { emitter } from '../../utils/EventEmitter'
 import { runRuleValidator, runSyncRule } from './utils'
-import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getSizeByUnit, getEventName } from '../../utils/utils'
 @Component
 export struct IBestField{
     /**
@@ -170,6 +170,26 @@ export struct IBestField{
      */
     @Provide({allowOverride: "formatTrigger"}) formatTrigger: FormatTriggerType = 'onchange'
     /**
+     * label字体大小
+     * @since 1.19.0
+     */
+    @Provide({allowOverride: "labelFontSize"}) labelFontSize: string | number = this.baseStyle.fontSizeMd
+    /**
+     * label字体颜色
+     * @since 1.19.0
+     */
+    @Provide({allowOverride: "labelColor"}) labelColor: ResourceColor = GRAY_COLOR.GRAY_8
+    /**
+     * 左侧图标大小
+     * @since 1.19.0
+     */
+    @Provide({allowOverride: "leftIconSize"}) leftIconSize: number | string = convertDimensionsWidthUnit(14)
+    /**
+     * 右侧图标大小
+     * @since 1.19.0
+     */
+    @Provide({allowOverride: "rightIconSize"}) rightIconSize: number | string = convertDimensionsWidthUnit(14)
+    /**
      * 格式化函数
      */
     formatter?: ((value: string) => string) | undefined
@@ -230,7 +250,7 @@ export struct IBestField{
 
     aboutToAppear(): void {
         if(this.formId && this.prop){
-            emitter.emit(getFormEventName(this.formId, FORM_EVENT_NAME.SEND_FIELD), {
+            emitter.emit(getEventName(this.formId, FORM_EVENT_NAME.SEND_FIELD), {
                 prop: this.prop,
                 validate: (rules: IBestFormRuleItem[]):Promise<void | FieldValidateResult> => this.validate(rules),
                 getValue: (): IBestFieldValueType => this.value,
@@ -242,7 +262,7 @@ export struct IBestField{
     }
     aboutToDisappear(): void {
         if(this.formId && this.prop) {
-            emitter.off(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (result: IBestFormSendFieldCallResult): void => this.init(result))
+            emitter.off(getEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (result: IBestFormSendFieldCallResult): void => this.init(result))
         }
     }
     // 初始化参数
@@ -330,7 +350,7 @@ export struct IBestField{
         if(this.formId && this.prop){
             let rules: IBestFormRuleItem[] = this.getFilteredRule(trigger)
             if(rules.length) {
-                emitter.emit(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), this.prop)
+                emitter.emit(getEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), this.prop)
             }
         }
     }
@@ -390,6 +410,8 @@ struct Label{
      */
     @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
     @Consume label: string
+    @Consume labelFontSize: number | string
+    @Consume labelColor: ResourceColor
     @Consume colon: string
     @Consume labelPosition: 'left' | 'top'
     @Consume labelAlign: FieldTextAlign
@@ -397,13 +419,14 @@ struct Label{
     @Consume requireAsteriskPosition: string
     @Consume leftIcon: ResourceStr
     @Consume leftIconColor: ResourceColor
+    @Consume leftIconSize: number | string
     onLeftIconClick: () => void = () => {}
     build() {
         Row(){
             if(this.leftIcon){
                 if(this.leftIconColor){
                     Image(this.leftIcon)
-                        .width(convertDimensionsWidthUnit(14))
+                        .width(getSizeByUnit(this.leftIconSize))
                         .fillColor(this.leftIconColor)
                         .aspectRatio(1)
                         .margin({right: this.baseStyle.spaceBase})
@@ -412,7 +435,7 @@ struct Label{
                         })
                 }else{
                     Image(this.leftIcon)
-                        .width(convertDimensionsWidthUnit(14))
+                        .width(getSizeByUnit(this.leftIconSize))
                         .aspectRatio(1)
                         .margin({right: this.baseStyle.spaceBase})
                         .onClick(() => {
@@ -424,7 +447,8 @@ struct Label{
                 Asterisk()
             }
             Text(this.label + (this.colon ? ":" : ""))
-                .fontSize(this.baseStyle.fontSizeMd)
+                .fontSize(getSizeByUnit(this.labelFontSize, true))
+                .fontColor(this.labelColor)
                 .layoutWeight(1)
                 .constraintSize({ minHeight: convertDimensionsWidthUnit(20) })
                 .lineHeight(this.baseStyle.lineHeightMd)
@@ -477,7 +501,8 @@ struct Content{
     @Consume showWordLimit: boolean
     @Consume inputAlign: FieldTextAlign
     @Consume rightIcon: ResourceStr
-    @Consume rightIconColor: string
+    @Consume rightIconColor: ResourceColor
+    @Consume rightIconSize: number | string
     @Consume placeholder: string
     @Consume disabled: boolean
     @Consume readOnly: boolean
@@ -634,7 +659,7 @@ struct Content{
                     // 清除图标
                     if (this.clearable && this.value && (this.clearTrigger == 'always' || this.isFocus)) {
                         Image($r("app.media.icon_clear"))
-                            .width(convertDimensionsWidthUnit(20))
+                            .width(getSizeByUnit(this.rightIconSize))
                             .aspectRatio(1)
                             .margin({ left: this.baseStyle.spaceBase })
                             .onClick(() => {
@@ -649,39 +674,22 @@ struct Content{
                 }
                 // 右侧图标
                 if(this.rightIcon){
-                    if(this.rightIconColor){
-                        Image(this.rightIcon)
-                            .width(this.baseStyle.fontSizeMd)
-                            .aspectRatio(1)
-                            .fillColor(this.rightIconColor)
-                            .margin({left: this.baseStyle.spaceBase})
-                            .onClick(() => {
-                                this.onRightIconClick()
-                            })
-                    }else{
-                        Image(this.rightIcon)
-                            .width(this.baseStyle.fontSizeMd)
-                            .aspectRatio(1)
-                            .margin({left: this.baseStyle.spaceBase})
-                            .onClick(() => {
-                                this.onRightIconClick()
-                            })
-                    }
+                    Image(this.rightIcon)
+                        .width(getSizeByUnit(this.rightIconSize))
+                        .aspectRatio(1)
+                        .fillColor(this.rightIconColor)
+                        .margin({left: this.baseStyle.spaceBase})
+                        .onClick(() => {
+                            this.onRightIconClick()
+                        })
                 }
                 // link箭头
                 if(this.isLink){
-                    if(this.rightIconColor){
-                        Image($r("app.media.arrow_right"))
-                            .width(this.baseStyle.fontSizeMd)
-                            .aspectRatio(1)
-                            .fillColor(this.rightIconColor)
-                            .margin({left: this.baseStyle.spaceBase})
-                    }else {
-                        Image($r("app.media.arrow_right"))
-                            .width(this.baseStyle.fontSizeMd)
-                            .aspectRatio(1)
-                            .margin({left: this.baseStyle.spaceBase})
-                    }
+                    Image($r("app.media.arrow_right"))
+                        .width(getSizeByUnit(this.rightIconSize))
+                        .aspectRatio(1)
+                        .fillColor(this.rightIconColor)
+                        .margin({left: this.baseStyle.spaceBase})
                 }
             }
             .width(CONTAINER_SIZE.FULL)

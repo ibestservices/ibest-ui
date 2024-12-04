@@ -53,13 +53,14 @@ struct NavBarPage {
 								title: "IBest-UI",
 								titleColor: COLOR_BLUE.DEFAULT,
 								titleFontSize: 14,
-								isTitleBold: true,
+								titleFontWeight: FontWeight.Bold,
 								navBarBgColor: COLOR_BLUE.MINI,
 								leftIconColor: COLOR_BLUE.DEFAULT
 							})
 							IBestNavBar({
 								title: "IBest-UI",
 								titleColor: COLOR_BLUE.DEFAULT,
+								leftIconColor: COLOR_BLUE.DEFAULT,
 								bgLinearGradient: {
 									angle: 90,
 									colors: [[0xff0000, 0.0], [0x0000ff, 0.3], [0xffff00, 1.0]]
@@ -122,7 +123,7 @@ struct NavBarPage {
 					ComponentShowContainer({ title: '二级标题', titlePaddingLeft: SPACE.MD }){
 						IBestNavBar({
 							title: "IBest-UI",
-							subTitle: "二级标题"
+							subTitle: "一套轻量、可定制化主题的鸿蒙UI组件库"
 						})
 					}
 				}

@@ -1,12 +1,11 @@
 import { emitter } from '../../utils/EventEmitter'
-import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getSizeByUnit, getEventName } from '../../utils/utils'
 import { FieldTextAlign, IBestFieldValueType,
 	LabelPositionType,
 	RequireAsteriskPositionType } from '../field/index.type'
 import {
 	FieldValidateResult,
 	FORM_EVENT_NAME,
-	getFormEventName,
 	IBestFormController,
 	IBestFormRule,
 	IBestFieldItem,
@@ -77,15 +76,15 @@ export struct IBestForm {
 		}
 		if(this.formId){
 			// 初始化收集表单项信息
-			emitter.on(getFormEventName(this.formId, FORM_EVENT_NAME.SEND_FIELD), (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void): void => this.init(data, callBack))
+			emitter.on(getEventName(this.formId, FORM_EVENT_NAME.SEND_FIELD), (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void): void => this.init(data, callBack))
 			// 验证单个表单
-			emitter.on(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (name: string): void => this.validateField(name))
+			emitter.on(getEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (name: string): void => this.validateField(name))
 		}
 	}
 	aboutToDisappear(): void {
 		if(this.formId){
-			emitter.off(getFormEventName(this.formId, FORM_EVENT_NAME.SEND_FIELD), (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void): void => this.init(data, callBack))
-			emitter.off(getFormEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (name: string): void => this.validateField(name))
+			emitter.off(getEventName(this.formId, FORM_EVENT_NAME.SEND_FIELD), (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void): void => this.init(data, callBack))
+			emitter.off(getEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (name: string): void => this.validateField(name))
 		}
 	}
 	// 初始化

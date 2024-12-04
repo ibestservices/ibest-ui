@@ -314,13 +314,13 @@ struct UploadItem{
 			if (this.showDelete && !this.disabled) {
 				Row() {
 					Image($r("app.media.icon_cuo"))
-						.width(this.baseStyle.fontSizeMd)
+						.width(CONTAINER_SIZE.FULL)
 						.aspectRatio(1)
 						.fillColor(this.baseStyle.default)
 						.scale({ x: 0.7, y: 0.7 })
 						.translate({ x: "10%", y: "-10%" })
 				}
-				.width(this.baseStyle.fontSizeMd)
+				.width(convertDimensionsWidthUnit(16))
 				.aspectRatio(1)
 				.position({ right: 0, top: 0 })
 				.backgroundColor("rgba(0,0,0,0.7)")

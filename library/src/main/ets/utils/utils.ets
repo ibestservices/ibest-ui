@@ -174,7 +174,7 @@ export function addNumber(num1: number, num2: number) {
  * 生成事件名称
  */
 export function getEventName(id: string, eventName: string) {
-  return `${id}_${eventName}`
+  return `IBest_${id}_${eventName}`
 }
 
 /**

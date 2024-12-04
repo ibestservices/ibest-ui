@@ -40,7 +40,7 @@ export struct IBestCircleProgress{
     /**
      * 进度值
      */
-    @Link @Watch("valueChange") value: number
+    @Prop @Watch("valueChange") value: number = 0
     /**
      * 进度条直径
      */
@@ -68,7 +68,7 @@ export struct IBestCircleProgress{
     /**
      * 进度条颜色
      */
-    @Prop color: string = '#3d8af2'
+    @Prop color: ResourceColor = this.baseStyle.primary
     /**
      * 进度条背景颜色
      */
@@ -102,7 +102,7 @@ export struct IBestCircleProgress{
         this.valueChange()
     }
     valueChange(){
-        this.strokeDashArray = new Point((this.maxPerimeter * this.value) / 100, this.maxPerimeter)
+        this.strokeDashArray = new Point((this.maxPerimeter * this.value) / this.target, this.maxPerimeter)
     }
     getSize(){
         return getSizeByUnit(this.diameter - this.strokeWidth)

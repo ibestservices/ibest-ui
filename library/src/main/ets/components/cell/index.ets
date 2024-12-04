@@ -124,7 +124,7 @@ export struct IBestCell {
    * 右侧图标大小
    * @since 1.17.0
    */
-  @Prop rightIconSize: number | string = convertDimensionsWidthUnit(16)
+  @Prop rightIconSize: number | string = convertDimensionsWidthUnit(14)
   /**
    * 右侧图标与内容间距
    * @since 1.18.0
@@ -293,7 +293,7 @@ export struct IBestCell {
             } else if (this.isLink) { // 如果是link箭头
               Row() {
                 Image($r("app.media.arrow_right"))
-                  .width(this.baseStyle.fontSizeSm)
+                  .width(getSizeByUnit(this.rightIconSize))
                   .margin({
                     left: getSizeByUnit(this.rightIconMarginLeft)
                   })

@@ -40,6 +40,7 @@
 		"pages/Badge",
 		"pages/NavBar",
 		"pages/CircleProgress",
-		"pages/Collapse"
+		"pages/Collapse",
+		"pages/Divider"
 	]
 }

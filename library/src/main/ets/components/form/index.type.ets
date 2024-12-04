@@ -40,12 +40,6 @@ export enum FORM_EVENT_NAME {
 	GET_VALUES = 'GET_VALUES'
 }
 /**
- * 获取事件名称
- */
-export function getFormEventName(formId: string, eventName: string): string {
-	return `IBestForm_${formId}_${eventName}`
-}
-/**
  * SEND_FIELD 回调参数
  */
 export interface IBestFormSendFieldCallResult {

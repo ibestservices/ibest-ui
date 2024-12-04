@@ -169,6 +169,10 @@ struct Index {
 					path: 'pages/Collapse'
 				},
 				{
+					name: 'Divider 分割线',
+					path: 'pages/Divider'
+				},
+				{
 					name: 'Empty 空状态',
 					path: 'pages/Empty'
 				},
@@ -201,16 +205,16 @@ struct Index {
 		}
 	]
 
-	aboutToAppear(): void {
-		setTimeout(() => {
-			router.pushUrl({
-				url: 'pages/Collapse',
-				params: {
-					title: "Collapse Collapse 折叠面板"
-				}
-			})
-		}, 500)
-	}
+	// aboutToAppear(): void {
+	// 	setTimeout(() => {
+	// 		router.pushUrl({
+	// 			url: 'pages/Divider',
+	// 			params: {
+	// 				title: "Divider 分割线"
+	// 			}
+	// 		})
+	// 	}, 100)
+	// }
 
 	build() {
 		Column() {
@@ -218,7 +222,7 @@ struct Index {
 				ListItem() {
 					Column({ space: 16 }) {
 						Row({ space: 16 }) {
-							Image($r("app.media.app_icon")).width(32)
+							Image($r("app.media.app_icon")).width(32).borderRadius(6)
 							Text("IBest-UI").fontSize(32)
 						}
 						Text("轻量、可定制化主题的鸿蒙组件库。").fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
