@@ -7,7 +7,8 @@
 3. 增加 IBestCollapse 折叠面板组件;
 4. 增加 IBestDivider 分割线组件;
 5. IBestIcon 增加 iconRadius 属性;
-6. IBestField 增加 leftIconSize rightIconSize labelFontSize labelColor 属性.
+6. IBestField 增加 leftIconSize rightIconSize labelFontSize labelColor 属性;
+7. IBestPasswordInput 增加 isShowBorder bdColor cellBgColor cellTextColor dotFontSize textFontSize tipFontSize 属性.
 
 #### bug修复:
 1. 修复 IBestCalendar 在设定的跨月时间范围时, 如果翻到下月, 上月日期会被禁用.

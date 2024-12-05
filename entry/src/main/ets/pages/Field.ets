@@ -68,7 +68,7 @@ struct FieldPage {
     }
 
     sendCode() {
-        if (this.timer) {
+        if (this.count < 60) {
             return
         }
         this.count = 60

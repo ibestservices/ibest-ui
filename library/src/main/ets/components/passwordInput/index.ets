@@ -56,7 +56,7 @@ export struct IBestPasswordInput {
 	 */
 	@Provide({allowOverride: "space"}) space: number | string = 0
 	/**
-	 * 圆角
+	 * 圆角, 仅有间距时有效
 	 */
 	@Provide({allowOverride: "radius"}) radius: number | string = convertDimensionsWidthUnit(5)
 	/**
@@ -87,6 +87,41 @@ export struct IBestPasswordInput {
 	 * 自定义键盘配置
 	 */
 	@Prop numberKeyboardConfig: NumberKeyboardConfig
+	/**
+	 * 是否显示边框线
+	 * @since 1.19.0
+     */
+	@Provide({allowOverride: "isShowBorder"}) isShowBorder: boolean = true
+	/**
+	 * 边框线颜色
+	 * @since 1.19.0
+     */
+	@Provide({allowOverride: "bdColor"}) bdColor: string = GRAY_COLOR.GRAY_3
+	/**
+	 * 格子背景色
+	 * @since 1.19.0
+     */
+	@Provide({allowOverride: "cellBgColor"}) cellBgColor: ResourceColor = "#fff"
+	/**
+	 * 格子内文字颜色
+	 * @since 1.19.0
+     */
+	@Provide({allowOverride: "cellTextColor"}) cellTextColor: ResourceColor = GRAY_COLOR.GRAY_8
+	/**
+	 * 黑点大小
+	 * @since 1.19.0
+     */
+	@Provide({allowOverride: "dotFontSize"}) dotFontSize: number | string = convertDimensionsWidthUnit(40)
+	/**
+	 * 明文展示时文字大小
+	 * @since 1.19.0
+     */
+	@Provide({allowOverride: "textFontSize"}) textFontSize: number | string = this.baseStyle.fontSizeXl
+	/**
+	 * 提示文字大小
+	 * @since 1.19.0
+	 */
+	@Prop tipFontSize: number | string = this.baseStyle.fontSizeLg
 	/**
 	 * 区域点击
 	 */
@@ -174,7 +209,7 @@ export struct IBestPasswordInput {
 				}
 				.width(CONTAINER_SIZE.FULL)
 				.height(CONTAINER_SIZE.FULL)
-				.border({ width: this.space ? 0 : 1, color: GRAY_COLOR.GRAY_3 })
+				.border({ width: this.isShowBorder && this.space == 0 ? 1 : 0, color: this.bdColor })
 				.justifyContent(FlexAlign.SpaceBetween)
 				.onClick(() => {
 					this.onFieldClick()
@@ -188,7 +223,7 @@ export struct IBestPasswordInput {
 				Text(this.value.length == this.inputLength && this.errorTip ? this.errorTip : this.tip)
 					.width(CONTAINER_SIZE.FULL)
 					.textAlign(TextAlign.Center)
-					.fontSize(this.baseStyle.fontSizeLg)
+					.fontSize(getSizeByUnit(this.tipFontSize, true))
 					.fontColor(this.value.length == this.inputLength && this.errorTip ? this.baseStyle.danger : GRAY_COLOR.GRAY_6)
 			}
 		}
@@ -199,15 +234,17 @@ export struct IBestPasswordInput {
 
 @Component
 struct InputField {
-	/**
-	 * 全局公共样式
-	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@Consume isHidden: boolean
 	@Consume space: number
 	@Consume radius: number
 	@Consume isHighlightCurrent: boolean
 	@Consume highlightColor: ResourceColor
+	@Consume isShowBorder: boolean
+	@Consume bdColor: ResourceColor
+	@Consume cellBgColor: ResourceColor
+	@Consume cellTextColor: ResourceColor
+	@Consume dotFontSize: number | string
+	@Consume textFontSize: number | string
 	@Prop focused: boolean
 	@Prop currentFocusIndex: number
 	@Prop index: number = 0
@@ -237,15 +274,15 @@ struct InputField {
 	build() {
 		Row(){
 			Text(this.isHidden ? "•" : this.item.value)
-				.fontSize(this.isHidden ? convertDimensionsWidthUnit(40) : this.baseStyle.fontSizeXl)
-				.fontColor(GRAY_COLOR.GRAY_8)
+				.fontSize(getSizeByUnit(this.isHidden ? this.dotFontSize : this.textFontSize, true))
+				.fontColor(this.cellTextColor)
 				.visibility(this.item.value ? Visibility.Visible : Visibility.None)
 			if(this.focused && this.currentFocusIndex == this.index){
 				Divider()
-					.width(1)
+					.strokeWidth(1)
 					.height("50%")
 					.vertical(true)
-					.color(GRAY_COLOR.GRAY_8)
+					.color(this.cellTextColor)
 					.opacity(this.cursorOpacity)
 					.onAppear(() => {
 						this.cursorBlink()
@@ -255,10 +292,13 @@ struct InputField {
 		.layoutWeight(1)
 		.height(CONTAINER_SIZE.FULL)
 		.justifyContent(FlexAlign.Center)
-		.backgroundColor(this.baseStyle.default)
-		.border({
-			width: { left: !this.space && this.index > 0 ? 1 : 0 },
-			color: GRAY_COLOR.GRAY_3
+		.backgroundColor(this.cellBgColor)
+		.border(this.space ? {
+			width: this.isShowBorder ? 1 : 0,
+			color: this.bdColor
+		} : {
+			width: { left: this.index > 0 && this.isShowBorder ? 1 : 0 },
+			color: this.bdColor
 		})
 		.borderRadius(this.space ? getSizeByUnit(this.radius) : 0)
 		.shadow({
