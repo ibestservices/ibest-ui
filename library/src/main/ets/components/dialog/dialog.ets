@@ -135,12 +135,12 @@ export struct IBestDialogView {
   /**
    * 确认按钮的字体颜色
    */
-  @Prop confirmButtonColor: ResourceColor = this.theme == 'round-button' ? '#fff' : '#3D8AF2'
+  @Prop confirmButtonColor: ResourceColor = this.theme == 'round-button' ? '#fff' : this.baseStyle.primary
   /**
    * 确认按钮的背景颜色
    * @since 1.16.0
    */
-  @Prop confirmButtonBgColor: ResourceColor = this.theme == 'round-button' ? '#3D8AF2' : '#fff'
+  @Prop confirmButtonBgColor: ResourceColor = this.theme == 'round-button' ? this.baseStyle.primary : '#fff'
   /**
    * 取消按钮的字体颜色
    */

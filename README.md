@@ -4,7 +4,7 @@
 
 IBest-UI是一个轻量、简单易用、可定制的鸿蒙开源UI组件库。  
 
-![IBest-UI](screenshot/IBest-UI.png)
+![IBest-UI](library/screenshot/IBest-UI.png)
 
 ## 下载安装
 
@@ -29,7 +29,7 @@ https://github.com/ibestservices/ibest-ui
 ## QQ群
 953492584
 
-![QQ群](screenshot/QQ群.jpg)
+![QQ群](library/screenshot/QQ群.jpg)
 
 ## 微信群
 先进QQ群，拉你进微信群

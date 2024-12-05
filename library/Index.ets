@@ -105,3 +105,13 @@ export { IBestIcon } from './src/main/ets/components/icon/index'
 export {IBestIconClassify, IBestIconData} from './src/main/ets/components/icon/config'
 
 export { IBestBadge } from './src/main/ets/components/badge/index'
+
+export { IBestNavBar } from './src/main/ets/components/navBar/index'
+
+export { IBestCircleProgress } from './src/main/ets/components/circleProgress/index'
+
+export { IBestCollapse } from './src/main/ets/components/collapse/index'
+export { IBestCollapseController } from './src/main/ets/components/collapse/index.type'
+export { IBestCollapseItem } from './src/main/ets/components/collapseItem/index'
+
+export { IBestDivider } from './src/main/ets/components/divider/index'

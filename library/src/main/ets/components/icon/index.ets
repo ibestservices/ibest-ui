@@ -9,60 +9,70 @@ import { IBestLoading } from '../loading';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 @Component
 export struct IBestIcon {
-  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-  /**
-   * 图标名称或图片链接
-   */
-  @Prop name: keyof IBestIconDataType | ResourceStr = 'arrow'
-  /**
-   * 图标颜色
-   */
-  @Prop color: ResourceColor = ''
-  /**
-   * 图标大小
-   */
-  @Prop iconSize: number | string = convertDimensionsWidthUnit(16)
-  /**
-   * 点击回调
-   */
-  onIconClick: () => void = () => {}
-
-  isOnlineImage(): boolean {
-    return (this.name as string).startsWith("http")
-  }
-
-  build() {
-    Row() {
-      if(typeof this.name == "string"){
-        if (this.isOnlineImage()) {
-          Image(this.name).width(getSizeByUnit(this.iconSize)).aspectRatio(1)
-        } else {
-          if(this.color){
-            Text(Object(IBestIconData)[this.name])
-              .fontFamily('ibestFont')
-              .fontColor(this.color)
-              .fontSize(getSizeByUnit(this.iconSize, true))
-          }else{
-             Text(Object(IBestIconData)[this.name])
-              .fontFamily('ibestFont')
-              .fontSize(getSizeByUnit(this.iconSize, true))
-          }
-        }
-      }else{
-        if(this.color){
-          Image(this.name)
-            .width(getSizeByUnit(this.iconSize))
-            .aspectRatio(1)
-            .fillColor(this.color)
-        }else{
-          Image(this.name)
-            .width(getSizeByUnit(this.iconSize))
-            .aspectRatio(1)
-        }
-      }
-    }
-    .onClick(() => {
-      this.onIconClick()
-    })
-  }
+	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	/**
+	 * 图标名称或图片链接
+	 */
+	@Prop name: keyof IBestIconDataType | ResourceStr = 'arrow'
+	/**
+	 * 图标颜色
+	 */
+	@Prop color: ResourceColor = ''
+	/**
+	 * 图标大小
+	 */
+	@Prop iconSize: number | string = convertDimensionsWidthUnit(16)
+	/**
+	 * 图标圆角
+	 * @since 1.19.0
+	 */
+	@Prop iconRadius: number | string = 0
+	/**
+	 * 点击回调
+	 */
+	onIconClick: () => void = () => {}
+	isOnlineImage(): boolean {
+		return (this.name as string).startsWith("http")
+	}
+	build() {
+		Row() {
+			if (typeof this.name == "string") {
+				if (this.isOnlineImage()) {
+					Image(this.name)
+						.width(getSizeByUnit(this.iconSize))
+						.aspectRatio(1)
+						.borderRadius(getSizeByUnit(this.iconRadius))
+				} else {
+					if (this.color) {
+						Text(Object(IBestIconData)[this.name])
+							.fontFamily('ibestFont')
+							.fontColor(this.color)
+							.fontSize(getSizeByUnit(this.iconSize, true))
+							.borderRadius(getSizeByUnit(this.iconRadius))
+					} else {
+						Text(Object(IBestIconData)[this.name])
+							.fontFamily('ibestFont')
+							.fontSize(getSizeByUnit(this.iconSize, true))
+							.borderRadius(getSizeByUnit(this.iconRadius))
+					}
+				}
+			} else {
+				if (this.color) {
+					Image(this.name)
+						.width(getSizeByUnit(this.iconSize))
+						.aspectRatio(1)
+						.fillColor(this.color)
+						.borderRadius(getSizeByUnit(this.iconRadius))
+				} else {
+					Image(this.name)
+						.width(getSizeByUnit(this.iconSize))
+						.aspectRatio(1)
+						.borderRadius(getSizeByUnit(this.iconRadius))
+				}
+			}
+		}
+		.onClick(() => {
+			this.onIconClick()
+		})
+	}
 }

@@ -1,17 +1,30 @@
 {
 	"app": {
 		"signingConfigs": [
+			//			{
+			//				"name": "default",
+			//				"type": "HarmonyOS",
+			//				"material": {
+			//					"certpath": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.cer",
+			//					"storePassword": "0000001A5CBCFE7C9A5C3044B1407F2D2A38B7EB5EA750B8E7C57F82EB3574FF64934064BF651FA8C798",
+			//					"keyAlias": "debugKey",
+			//					"keyPassword": "0000001A4923DC9F8F4D443112C743975573D6673353D1B8C8B39460F3A48D1ACDBF2965BB353239C7D9",
+			//					"profile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p7b",
+			//					"signAlg": "SHA256withECDSA",
+			//					"storeFile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p12"
+			//				}
+			//			}
 //			{
 //				"name": "default",
 //				"type": "HarmonyOS",
 //				"material": {
-//					"certpath": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.cer",
-//					"storePassword": "0000001A5CBCFE7C9A5C3044B1407F2D2A38B7EB5EA750B8E7C57F82EB3574FF64934064BF651FA8C798",
+//					"certpath": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.cer",
+//					"storePassword": "0000001ADD07EB1D995BB679F00D6F5423A44AC64F74579E0B64B7DFC9D4E4DE9915F8A4D046CB306E12",
 //					"keyAlias": "debugKey",
-//					"keyPassword": "0000001A4923DC9F8F4D443112C743975573D6673353D1B8C8B39460F3A48D1ACDBF2965BB353239C7D9",
-//					"profile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p7b",
+//					"keyPassword": "0000001AE3D06B16B0E313ECE120A3C5C9B792678C382570A194E37CA6E086A255C6CDA925F24E7D3403",
+//					"profile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p7b",
 //					"signAlg": "SHA256withECDSA",
-//					"storeFile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p12"
+//					"storeFile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p12"
 //				}
 //			}
 		],
@@ -19,7 +32,7 @@
 			{
 				"name": "default",
 				"signingConfig": "default",
-				"compatibleSdkVersion": "5.0.0(12)",
+				"compatibleSdkVersion": "5.0.1(13)",
 				"runtimeOS": "HarmonyOS"
 			}
 		],

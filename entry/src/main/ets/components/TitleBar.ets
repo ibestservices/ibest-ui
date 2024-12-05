@@ -51,7 +51,7 @@ export default struct TitleBar {
   /**
    * 标题 如果传入contentBuilder 那么该传参不生效
    */
-  title: string | Resource = '';
+  @Prop title: string | Resource = '';
   /**
    * 点击右侧按钮
    */
@@ -96,6 +96,6 @@ export default struct TitleBar {
           typeof this.onClickRightBtn === 'function' && this.onClickRightBtn()
         })
       }
-    }
+    }.backgroundColor(COLOR_BLUE.DEFAULT)
   }
 }

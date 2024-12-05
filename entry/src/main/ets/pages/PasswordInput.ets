@@ -66,6 +66,23 @@ struct PasswordInputPage {
 					}
 				}
 				ListItem() {
+					ComponentShowContainer({ title: '自定义样式' }) {
+						Column({space: SPACE.SM}){
+							IBestPasswordInput({
+								value: $value3,
+								bdColor: '#3d8af2',
+								cellTextColor: '#3d8af2'
+							})
+							IBestPasswordInput({
+								value: $value3,
+								space: 12,
+								cellBgColor: "#1c1c1e",
+								cellTextColor: "#fff"
+							})
+						}
+					}
+				}
+				ListItem() {
 					ComponentShowContainer({ title: '提示信息' }) {
 						IBestPasswordInput({
 							value: $value4,

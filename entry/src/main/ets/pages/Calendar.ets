@@ -209,8 +209,8 @@ struct CalendarPage {
                 visible: $customRangeVisible,
                 selectType: "multiple",
                 selectedStyleType: "circle",
-                minDate: new Date("2024-11-01"),
-                maxDate: new Date("2030-07-31"),
+                minDate: new Date(),
+                maxDate: new Date("2024-12-13"),
                 confirmBtnColor: "#ed4040",
                 confirmBtnText: "完成",
                 onConfirm: (value: Array<CalendarConfirmResultType>): void => this.onDialogConfirm("customRangeDate", value)

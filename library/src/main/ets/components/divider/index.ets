@@ -1,0 +1,109 @@
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
+import { GRAY_COLOR } from "../../theme-chalk/src/color"
+import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
+import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
+import { convertDimensionsWidthUnit, getSizeByUnit } from "../../utils/utils"
+@Component
+export struct IBestDivider{
+	/**
+	 * 全局公共样式
+	 */
+	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	/**
+	 * 是否使用虚线
+	 */
+	@Prop dashed: boolean = false
+	/**
+	 * 是否使用细线
+     */
+	@Prop hairline: boolean = true
+	/**
+	 * 是否垂直
+     */
+	@Prop vertical: boolean = false
+	/**
+	 * 分割线高度, 仅垂直时生效
+     */
+	@Prop lineHeight: number | string = convertDimensionsWidthUnit(14)
+	/**
+	 * 线颜色
+     */
+	@Prop lineColor: ResourceColor = GRAY_COLOR.GRAY_3
+	/**
+	 * 文本内容, 仅水平时生效
+     */
+	@Prop text: string = ""
+	/**
+	 * 文字颜色, 仅水平时生效
+     */
+	@Prop color: ResourceColor = GRAY_COLOR.GRAY_6
+	/**
+	 * 文本大小, 仅水平时生效
+     */
+	@Prop texFontSize: number | string = convertDimensionsWidthUnit(14, true)
+	/**
+	 * 文本与线段间距, 仅水平时生效
+     */
+	@Prop textLineSpace: number | string = this.baseStyle.spaceMd
+	/**
+	 * 左侧线段宽度, 仅水平时生效
+     */
+	@Prop leftLineWidth: number | string = ""
+	/**
+	 * 右侧线段宽度, 仅水平时生效
+     */
+	@Prop rightLineWidth: number | string = ""
+	/**
+	 * 左右内边距, 仅水平时生效
+     */
+	@Prop leftRightPadding: number | string = 0
+	/**
+	 * 左右外边距, 仅垂直时生效
+     */
+	@Prop leftRightMargin: number | string = this.baseStyle.spaceXs
+	/**
+	 * 自定义文本内容
+     */
+	@BuilderParam textBuilder?: CustomBuilder
+
+	build() {
+		if(this.vertical){
+			Row()
+				.width(1)
+				.height(getSizeByUnit(this.lineHeight))
+				.scale({x: this.hairline ? 0.5 : 1})
+				.border({ width: { left: 1 }, color: this.lineColor, style: this.dashed ? BorderStyle.Dashed : BorderStyle.Solid })
+				.margin({left: getSizeByUnit(this.leftRightMargin), right: getSizeByUnit(this.leftRightMargin)})
+		}else{
+			Row(){
+				Row()
+					.width(this.leftLineWidth)
+					.height(1)
+					.layoutWeight(this.leftLineWidth ? "" : 1)
+					.scale({y: this.hairline ? 0.5 : 1})
+					.border({ width: { top: 1 }, color: this.lineColor, style: this.dashed ? BorderStyle.Dashed : BorderStyle.Solid })
+				if(this.textBuilder || this.text){
+					Row(){
+						if(this.textBuilder){
+							this.textBuilder()
+						}else{
+							Text(this.text)
+								.fontColor(this.color)
+								.fontSize(getSizeByUnit(this.texFontSize, true))
+						}
+					}
+					.margin({left: getSizeByUnit(this.textLineSpace), right: getSizeByUnit(this.textLineSpace)})
+					Row()
+						.width(this.rightLineWidth)
+						.height(1)
+						.layoutWeight(this.rightLineWidth ? "" : 1)
+						.scale({y: this.hairline ? 0.5 : 1})
+						.border({ width: { top: 1 }, color: this.lineColor, style: this.dashed ? BorderStyle.Dashed : BorderStyle.Solid })
+				}
+			}
+			.width(CONTAINER_SIZE.FULL)
+			.padding({left: getSizeByUnit(this.leftRightPadding), right: getSizeByUnit(this.leftRightPadding)})
+			.alignItems(VerticalAlign.Center)
+		}
+	}
+}
