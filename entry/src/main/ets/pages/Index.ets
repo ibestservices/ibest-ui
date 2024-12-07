@@ -168,6 +168,10 @@ struct Index {
 					name: 'Collapse 折叠面板',
 					path: 'pages/Collapse'
 				},
+				// {
+				// 	name: 'CountDown 倒计时',
+				// 	path: 'pages/CountDown'
+				// },
 				{
 					name: 'Divider 分割线',
 					path: 'pages/Divider'
@@ -179,6 +183,14 @@ struct Index {
 				{
 					name: 'ImagePreview 图片预览',
 					path: 'pages/ImagePreview'
+				},
+				{
+					name: 'NoticeBar 通知栏',
+					path: 'pages/NoticeBar'
+				},
+				{
+					name: 'Progress 进度条',
+					path: 'pages/Progress'
 				},
 				{
 					name: 'Tag 标签',
@@ -205,16 +217,16 @@ struct Index {
 		}
 	]
 
-	// aboutToAppear(): void {
-	// 	setTimeout(() => {
-	// 		router.pushUrl({
-	// 			url: 'pages/Divider',
-	// 			params: {
-	// 				title: "Divider 分割线"
-	// 			}
-	// 		})
-	// 	}, 100)
-	// }
+	aboutToAppear(): void {
+		setTimeout(() => {
+			router.pushUrl({
+				url: 'pages/CountDown',
+				params: {
+					title: "CountDown 倒计时"
+				}
+			})
+		}, 100)
+	}
 
 	build() {
 		Column() {

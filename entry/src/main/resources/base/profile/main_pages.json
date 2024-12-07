@@ -41,6 +41,9 @@
 		"pages/NavBar",
 		"pages/CircleProgress",
 		"pages/Collapse",
-		"pages/Divider"
+		"pages/Divider",
+		"pages/NoticeBar",
+		"pages/Progress",
+		"pages/CountDown"
 	]
 }

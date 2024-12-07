@@ -115,3 +115,9 @@ export { IBestCollapseController } from './src/main/ets/components/collapse/inde
 export { IBestCollapseItem } from './src/main/ets/components/collapseItem/index'
 
 export { IBestDivider } from './src/main/ets/components/divider/index'
+
+export { IBestNoticeBar } from './src/main/ets/components/noticeBar/index'
+
+export { IBestProgress } from './src/main/ets/components/progress/index'
+
+export { IBestCountDown } from './src/main/ets/components/countDown/index'

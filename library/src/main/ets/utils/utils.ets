@@ -102,6 +102,20 @@ export const accDiv = (arg1: number, arg2: number) => {
 }
 
 /**
+ * 根据targetLength 补0
+ * @param num
+ * @param targetLength
+ * @returns
+ */
+export function padZero(num: number, targetLength = 2): string {
+  let str = num + ''
+  while (str.length < targetLength) {
+    str = '0' + str
+  }
+  return str
+}
+
+/**
  * 获取组件信息
  * @param {context} UIContext
  * @param {key} 组件id
