@@ -120,4 +120,9 @@ export { IBestNoticeBar } from './src/main/ets/components/noticeBar/index'
 
 export { IBestProgress } from './src/main/ets/components/progress/index'
 
-export { IBestCountDown } from './src/main/ets/components/countDown/index'
+// export { IBestCountDown } from './src/main/ets/components/countDown/index'
+
+export { IBestPopover } from './src/main/ets/components/popover/index'
+export { IBestPopoverAction, IBestPopoverController } from './src/main/ets/components/popover/index.type'
+
+// export { IBestTextEllipsis } from './src/main/ets/components/textEllipsis/index'

@@ -189,6 +189,10 @@ struct Index {
 					path: 'pages/NoticeBar'
 				},
 				{
+					name: 'Popover 气泡弹出框',
+					path: 'pages/Popover'
+				},
+				{
 					name: 'Progress 进度条',
 					path: 'pages/Progress'
 				},
@@ -196,6 +200,10 @@ struct Index {
 					name: 'Tag 标签',
 					path: 'pages/Tag'
 				},
+				// {
+				// 	name: 'TextEllipsis 文本省略',
+				// 	path: 'pages/TextEllipsis'
+				// },
 				{
 					name: 'Watermark 水印',
 					path: 'pages/Watermark'
@@ -219,12 +227,12 @@ struct Index {
 
 	aboutToAppear(): void {
 		setTimeout(() => {
-			router.pushUrl({
-				url: 'pages/CountDown',
-				params: {
-					title: "CountDown 倒计时"
-				}
-			})
+			// router.pushUrl({
+			// 	url: 'pages/TextEllipsis',
+			// 	params: {
+			// 		title: "TextEllipsis 文本省略"
+			// 	}
+			// })
 		}, 100)
 	}
 

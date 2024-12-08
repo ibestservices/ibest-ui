@@ -44,6 +44,8 @@
 		"pages/Divider",
 		"pages/NoticeBar",
 		"pages/Progress",
-		"pages/CountDown"
+		"pages/CountDown",
+		"pages/Popover",
+		"pages/TextEllipsis"
 	]
 }

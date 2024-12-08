@@ -1,8 +1,7 @@
 import router from '@ohos.router';
-import { IBestButton, IBestCountDown, IBestProgress } from '@ibestservices/ibest-ui'
+// import { IBestButton, IBestCountDown } from '@ibestservices/ibest-ui'
 import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar'
-import ComponentShowContainer from '../components/ComponentShowContainer'
+import TitleBar from '../components/TitleBar';
 import { ComponentRouterParams } from '../assets/global.type';
 @Entry
 @Component
@@ -16,18 +15,18 @@ struct CountDownPage {
 				title: this.title
 			}).backgroundColor('#FFF')
 			List() {
-				ListItem() {
-					ComponentShowContainer({ title: '基础用法' }) {
-						IBestCountDown({
-							time: this.time
-						}){
-							IBestButton({
-								type: "primary",
-								text: "浅色风格"
-							})
-						}
-					}
-				}
+				// ListItem() {
+				// 	ComponentShowContainer({ title: '基础用法' }) {
+				// 		IBestCountDown({
+				// 			time: this.time
+				// 		}){
+				// 			IBestButton({
+				// 				type: "primary",
+				// 				text: "浅色风格"
+				// 			})
+				// 		}
+				// 	}
+				// }
 				// ListItem() {
 				// 	ComponentShowContainer({ title: '毫秒级渲染' }) {
 				// 		IBestCountDown({

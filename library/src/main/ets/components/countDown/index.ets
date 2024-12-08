@@ -1,7 +1,7 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { GRAY_COLOR } from "../../theme-chalk/src/color"
-import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { getSizeByUnit, padZero } from "../../utils/utils"
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
+import { getSizeByUnit, padZero } from '../../utils/utils';
 
 interface CurrentTime {
 	days: number;
@@ -68,13 +68,10 @@ export struct IBestCountDown{
 	@State remain: number = 0
 	endTime: number = 0
 	timer: number = 0
-	@State isShow: boolean = false
-
-	@BuilderParam defaultBuilder?: CustomBuilder
 
 	aboutToAppear(): void {
 		this.endTime = Date.now() + this.time
-		// this.startCountDown()
+		this.startCountDown()
 	}
 
 	aboutToDisappear(): void {
@@ -169,46 +166,9 @@ export struct IBestCountDown{
 		return format;
 	}
 
-	@Builder customContent(){
-		Column(){
-			Text("1").height(30)
-			Text("2").height(30)
-			Text("3").height(30)
-		}
-		.width(100)
-	}
-
 	build() {
-		// Text(this.getTimeText())
-		// 	.fontColor(this.color)
-		// 	.fontSize(getSizeByUnit(this.fontSize, true))
-
-		Column(){
-			if(this.defaultBuilder){
-				this.defaultBuilder()
-			}
-		}
-		// .onClick(() => {
-		// 	this.isShow = !this.isShow
-		// })
-		.onTouch((e: TouchEvent) => {
-			if(e.type == TouchType.Up){
-				this.isShow = !this.isShow
-			}
-		})
-		// .gesture(
-		//   	TapGesture({fingers: 1})
-		// 		.onAction(()=>{
-		// 			this.isShow = !this.isShow
-		// 		})
-		// )
-		.bindPopup(this.isShow, {
-			builder: (): void => this.customContent(),
-			backgroundBlurStyle: BlurStyle.NONE,
-			shadow: {radius: 0},
-			onWillDismiss: () => {
-				this.isShow = false
-			}
-		})
+		Text(this.getTimeText())
+			.fontColor(this.color)
+			.fontSize(getSizeByUnit(this.fontSize, true))
 	}
 }
