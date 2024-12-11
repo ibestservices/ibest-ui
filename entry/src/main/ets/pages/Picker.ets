@@ -150,6 +150,22 @@ struct PickerPage {
 					}
 				}
 				ListItem() {
+					ComponentShowContainer({ title: '横向滚动', titlePaddingLeft: SPACE.SM, card: true }) {
+						IBestPicker({
+							options: this.options1,
+							title: "标题",
+							value: $selectValue,
+							horizontal: true,
+							onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => {
+								IBestToast.show(selectTexts.join('-'))
+							},
+							onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => {
+								IBestToast.show(selectTexts.join('-'))
+							}
+						})
+					}
+				}
+				ListItem() {
 					ComponentShowContainer({ title: '搭配弹出层使用', titlePaddingLeft: SPACE.SM, card: true }) {
 						IBestField({
 							label: '城市',

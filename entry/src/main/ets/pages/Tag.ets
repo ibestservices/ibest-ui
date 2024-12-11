@@ -1,6 +1,6 @@
 import router from '@ohos.router';
 import { IBestTag } from '@ibestservices/ibest-ui'
-import { BACKGROUND_COLOR, COLOR_BLUE, COLOR_GRAY, CONTAINER_SIZE, FONT_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import { BACKGROUND_COLOR, CONTAINER_SIZE, FONT_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { ComponentRouterParams } from '../assets/global.type';

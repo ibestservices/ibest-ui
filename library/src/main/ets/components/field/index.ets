@@ -190,6 +190,10 @@ export struct IBestField{
      */
     @Provide({allowOverride: "rightIconSize"}) rightIconSize: number | string = convertDimensionsWidthUnit(14)
     /**
+     * 是否显示label
+     */
+    @Prop showLabel: boolean = true
+    /**
      * 格式化函数
      */
     formatter?: ((value: string) => string) | undefined
@@ -359,7 +363,9 @@ export struct IBestField{
         if(this.labelPosition == "left"){
             Row(){
                 Row(){
-                    Label()
+                    if(this.showLabel){
+                        Label()
+                    }
                     Content({
                         value: $value,
                         buttonBuilder: this.buttonBuilder,
@@ -380,7 +386,9 @@ export struct IBestField{
         }else{
             Column(){
                 Column(){
-                    Label()
+                    if(this.showLabel){
+                        Label()
+                    }
                     Content({
                         value: $value,
                         buttonBuilder: this.buttonBuilder,

@@ -1,5 +1,9 @@
+import { IBestToast } from '@ibestservices/ibest-ui'
+import BuildProfile from '@ibestservices/ibest-ui/BuildProfile'
 import router from '@ohos.router'
-import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, SPACE } from '../assets/styles/BaseStyle'
+import { BACKGROUND_COLOR,
+	BORDER_RADIUS,
+	COLOR_GRAY, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, SPACE } from '../assets/styles/BaseStyle'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 
 interface ComponentPart {
@@ -169,6 +173,10 @@ struct Index {
 					path: 'pages/Collapse'
 				},
 				{
+					name: 'CountDown 倒计时',
+					path: 'pages/CountDown'
+				},
+				{
 					name: 'Divider 分割线',
 					path: 'pages/Divider'
 				},
@@ -181,8 +189,24 @@ struct Index {
 					path: 'pages/ImagePreview'
 				},
 				{
+					name: 'NoticeBar 通知栏',
+					path: 'pages/NoticeBar'
+				},
+				{
+					name: 'Popover 气泡弹出框',
+					path: 'pages/Popover'
+				},
+				{
+					name: 'Progress 进度条',
+					path: 'pages/Progress'
+				},
+				{
 					name: 'Tag 标签',
 					path: 'pages/Tag'
+				},
+				{
+					name: 'TextEllipsis 文本省略',
+					path: 'pages/TextEllipsis'
 				},
 				{
 					name: 'Watermark 水印',
@@ -198,6 +222,10 @@ struct Index {
 					path: 'pages/NavBar'
 				},
 				{
+					name: 'SideBar 侧边导航',
+					path: 'pages/SideBar'
+				},
+				{
 					name: 'Tab 标签页',
 					path: 'pages/Tab'
 				}
@@ -205,91 +233,92 @@ struct Index {
 		}
 	]
 
-	// aboutToAppear(): void {
-	// 	setTimeout(() => {
-	// 		router.pushUrl({
-	// 			url: 'pages/Divider',
-	// 			params: {
-	// 				title: "Divider 分割线"
-	// 			}
-	// 		})
-	// 	}, 100)
-	// }
+	aboutToAppear(): void {
+		// setTimeout(() => {
+		// 	router.pushUrl({
+		// 		url: 'pages/SideBar',
+		// 		params: {
+		// 			title: "SideBar 侧边导航"
+		// 		}
+		// 	})
+		// }, 100)
+	}
+	getCount(){
+		return this.componentList.map(item => item.list.length).reduce((acc, cur) => acc + cur, 0)
+	}
 
 	build() {
-		Column() {
-			List() {
+		List() {
+			ListItem() {
+				Column({ space: SPACE.MD }) {
+					Row({ space: SPACE.MD }) {
+						Image($r("app.media.app_icon")).width(32).borderRadius(BORDER_RADIUS.BASE)
+						Text(`IBest-UI(v${BuildProfile.HAR_VERSION})`).fontSize(32)
+					}
+					Text(`一个轻量、可定制化主题的鸿蒙UI组件库, 目前共有组件${this.getCount()}个。`).fontSize(FONT_SIZE.MD).fontColor(COLOR_GRAY.GRAY_6)
+				}.width("100%").alignItems(HorizontalAlign.Start).padding({ left: 10 })
+			}.margin({ bottom: SPACE.MD })
+			ForEach(this.componentList, (part: ComponentPart) => {
 				ListItem() {
-					Column({ space: 16 }) {
-						Row({ space: 16 }) {
-							Image($r("app.media.app_icon")).width(32).borderRadius(6)
-							Text("IBest-UI").fontSize(32)
-						}
-						Text("轻量、可定制化主题的鸿蒙组件库。").fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
-					}.width("100%").alignItems(HorizontalAlign.Start).padding({ left: 10 })
-				}.margin({ bottom: 30 })
-				ForEach(this.componentList, (part: ComponentPart) => {
-					ListItem() {
-						ComponentShowContainer({ title: part.title, titlePaddingLeft: SPACE.XS }) {
-							ForEach(part.list, (item: ComponentItem) => {
-								Row() {
-									Text(item.name)
-										.fontSize(FONT_SIZE.MD)
-										.fontWeight(FONT_WEIGHT.MEDIUM)
-										.textAlign(TextAlign.Start)
-										.fontColor('#34495e')
-										.layoutWeight(1)
-									Image($r('app.media.title_back'))
-										.width(CONTAINER_SIZE.FOURTEEN)
-										.margin({
-											right: SPACE.SM
-										})
-										.rotate({
-											angle: 180
-										})
+					ComponentShowContainer({ title: `${part.title}(${part.list.length})`, titlePaddingLeft: SPACE.XS }) {
+						ForEach(part.list, (item: ComponentItem) => {
+							Row() {
+								Text(item.name)
+									.fontSize(FONT_SIZE.MD)
+									.fontWeight(FONT_WEIGHT.MEDIUM)
+									.textAlign(TextAlign.Start)
+									.fontColor('#34495e')
+									.layoutWeight(1)
+								Image($r('app.media.title_back'))
+									.width(CONTAINER_SIZE.FOURTEEN)
+									.margin({
+										right: SPACE.SM
+									})
+									.rotate({
+										angle: 180
+									})
+							}
+							.width(CONTAINER_SIZE.FULL)
+							.height(CONTAINER_SIZE.FORTY)
+							.borderRadius(99)
+							.padding({ left: SPACE.LG })
+							.margin({
+								bottom: SPACE.SM
+							})
+							.backgroundColor(0xFFFFFF)
+							.stateStyles({
+								normal: {
+									.scale({
+										x: 1,
+										y: 1
+									})
+								},
+								pressed: {
+									.scale({
+										x: .98,
+										y: .98
+									})
 								}
-								.width(CONTAINER_SIZE.FULL)
-								.height(CONTAINER_SIZE.FORTY)
-								.borderRadius(99)
-								.padding({ left: SPACE.LG })
-								.margin({
-									bottom: SPACE.SM
-								})
-								.backgroundColor(0xFFFFFF)
-								.stateStyles({
-									normal: {
-										.scale({
-											x: 1,
-											y: 1
-										})
-									},
-									pressed: {
-										.scale({
-											x: .98,
-											y: .98
-										})
+							})
+							.animation({
+								duration: 200
+							})
+							.onClick(() => {
+								router.pushUrl({
+									url: item.path,
+									params: {
+										title: item.name
 									}
 								})
-								.animation({
-									duration: 200
-								})
-								.onClick(() => {
-									router.pushUrl({
-										url: item.path,
-										params: {
-											title: item.name
-										}
-									})
-								})
 							})
-						}
+						})
 					}
-				})
-			}
-			.listDirection(Axis.Vertical) // 排列方向
-			.padding(SPACE.MD)
-		}.width(CONTAINER_SIZE.FULL)
+				}
+			})
+		}
+		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
+		.padding({ top: SPACE.MD, left: SPACE.MD, right: SPACE.MD })
 		.backgroundColor(BACKGROUND_COLOR.BASE)
 		.expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM])
 	}

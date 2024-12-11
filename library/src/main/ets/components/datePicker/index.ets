@@ -66,6 +66,26 @@ export struct IBestDatePicker {
   	 */
 	@Prop visibleItemCount: number = 6
 	/**
+	 * 是否横向
+	 * @since 2.0.0
+	 */
+	@Prop horizontal: boolean
+	/**
+	 * 单项宽度, 仅横向时生效
+	 * @since 2.0.0
+	 */
+	@Prop itemWidth: number | string
+	/**
+	 * 高度, 仅横向时生效
+	 * @since 2.0.0
+	 */
+	@Prop contentHeight: number | string
+	/**
+	 * 选项字体大小
+	 * @since 2.0.0
+	 */
+	@Prop optionFontSize: number | string
+	/**
 	 * 过滤器
 	 */
 	filter: (type: DatePickerColumnType, options: IBestPickerOption[]) => IBestPickerOption[] = (type: DatePickerColumnType, options: IBestPickerOption[]) => options
@@ -233,6 +253,10 @@ export struct IBestDatePicker {
 			itemHeight: this.itemHeight,
 			confirmText: this.confirmText,
 			cancelText: this.cancelText,
+			horizontal: this.horizontal,
+			itemWidth: this.itemWidth,
+			contentHeight: this.contentHeight,
+			optionFontSize: this.optionFontSize,
 			onConfirm: () => {
 				this.onConfirm(this.getResult())
 			},

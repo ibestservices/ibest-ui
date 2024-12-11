@@ -1,5 +1,5 @@
 import { ComponentContent, UIContext, window } from '@kit.ArkUI';
-import { convertDimensionsWidthUnit, generateId } from '../utils/utils';
+import { convertDimensionsWidthUnit, generateId, getSizeByUnit } from '../utils/utils';
 import CustomContent from '../common/components/CustomContent';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src';
 import { GRAY_COLOR } from '../theme-chalk/src/color';
@@ -131,6 +131,11 @@ class IBestActionSheetOption {
 	 * @since 1.17.0
 	 */
 	beforeClose?: () => Promise<boolean> | boolean
+	/**
+	 * 选项高度
+	 * @since 2.0.0
+     */
+	itemHeight?: number | string
 }
 
 class IBestActionSheetParams extends IBestActionSheetOption {
@@ -165,6 +170,7 @@ class IBestActionSheetParams extends IBestActionSheetOption {
 		this.onClose = option.onClose || undefined
 		this.cancelTextColor = option.cancelTextColor || GRAY_COLOR.GRAY_7
 		this.beforeClose = option.beforeClose || undefined
+		this.itemHeight = option.itemHeight || convertDimensionsWidthUnit(50)
 	}
 }
 
@@ -300,8 +306,9 @@ struct defaultContent{
 								}
 							}
 							.width(CONTAINER_SIZE.FULL)
-							.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd, top: this.baseStyle.spaceSm, bottom: this.baseStyle.spaceSm })
+							.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
 						}
+						.height(getSizeByUnit(this.option.itemHeight || 'auto'))
 						.actionSheetButtonStyle(this.option.actions && index < this.option.actions.length - 1)
 						.stateEffect(typeof action == "string" || !(action.isDisabled || action.readonly))
 						.onClick(() => {

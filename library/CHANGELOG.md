@@ -1,5 +1,15 @@
 # 版本记录
 
+## 2.0.0
+1. 增加 IBestNoticeBar 通知栏组件;
+2. 增加 IBestProgress 进度条组件;
+3. 增加 IBestPopover 气泡弹出框组件;
+4. 增加 IBestTextEllipsis 文本省略组件;
+5. 增加 IBestCountDown 倒计时组件;
+6. 增加 IBestSideBar 侧边导航组件;
+7. IBestPicker、IBestDatePicker、IBestTimePicker 增加 horizontal、itemWidth、contentHeight、optionFontSize 属性;
+8. IBestField 增加 showLabel 属性.
+
 ## 1.19.0
 #### 新增:
 1. 增加 IBestNavBar 导航栏组件;

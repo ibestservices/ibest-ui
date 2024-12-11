@@ -3,7 +3,7 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestTabs } from '../tab';
-import { IBestTabController, IBestTabItemType } from '../tab/index.type';
+import { IBestTabItemType } from '../tab/index.type';
 import { convertDimensionsWidthUnit } from '../../utils/utils';
 @Component
 export struct IBestPickerGroup{
@@ -79,7 +79,7 @@ export struct IBestPickerGroup{
 			return obj
 		})
 	}
-	// tabname 改变
+	// tabName 改变
 	tabNameChange(){
 		this.tabChange(Number(this.currentName))
 	}

@@ -1,20 +1,30 @@
-import { clamp, convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
+import { clamp, convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { ColumnType, IBestPickerOption } from './index.type';
 
-@Extend(Text) function pickerItemStyle(itemHeight: number){
+@Extend(Text) function pickerItemStyle(itemHeight: number | string, fontSize: number | string){
 	.width(CONTAINER_SIZE.FULL)
 	.height(getSizeByUnit(itemHeight))
 	.padding({ left: getDefaultBaseStyle().spaceBase, right: getDefaultBaseStyle().spaceBase })
-	.fontSize(getDefaultBaseStyle().fontSizeLg)
+	.fontSize(getSizeByUnit(fontSize, true))
 	.align(Alignment.Center)
 	.textAlign(TextAlign.Center)
 	.maxLines(1)
 	.textOverflow({ overflow: TextOverflow.Ellipsis })
 }
+
+@Extend(Text) function horizontalPickerItemStyle(itemWidth: number | string, fontSize: number | string){
+	.width(getSizeByUnit(itemWidth))
+	.padding({ left: getDefaultBaseStyle().spaceBase, right: getDefaultBaseStyle().spaceBase })
+	.fontSize(getSizeByUnit(fontSize, true))
+	.textAlign(TextAlign.Center)
+	.maxLines(1)
+	.textOverflow({ overflow: TextOverflow.Ellipsis })
+}
+
 
 // 惯性滑动思路:
 // 在手指离开屏幕时，如果和上一次 move 时的间隔小于 `MOMENTUM_TIME` 且 move
@@ -33,7 +43,7 @@ export struct IBestPicker{
 	/**
 	 * 分组id
 	 */
-	@Prop groupId: string = ""
+	@Provide({allowOverride: "groupId"}) groupId: string = ""
 	/**
 	 * 当前选中的值
 	 */
@@ -45,7 +55,7 @@ export struct IBestPicker{
 	/**
 	 * 标题
 	 */
-	@Prop title: string = ""
+	@Provide({allowOverride: "title"}) title: string = ""
 	/**
 	 * 单项高度
 	 */
@@ -53,19 +63,39 @@ export struct IBestPicker{
 	/**
 	 * 确认按钮文字
 	 */
-	@Prop confirmText: string = "确定"
+	@Provide({allowOverride: "confirmText"}) confirmText: string = "确定"
 	/**
 	 * 取消按钮文字
 	 */
-	@Prop cancelText: string = "取消"
+	@Provide({allowOverride: "cancelText"}) cancelText: string = "取消"
 	/**
 	 * 是否显示顶部栏
 	 */
-	@Prop showToolBar: boolean = true
+	@Provide({allowOverride: "showToolBar"}) showToolBar: boolean = true
 	/**
 	 * 可见选项数量
   	 */
 	@Prop visibleItemCount: number = 6
+	/**
+	 * 是否横向
+	 * @since 2.0.0
+	 */
+	@Prop horizontal: boolean = false
+	/**
+	 * 单项宽度, 仅横向时生效
+	 * @since 2.0.0
+     */
+	@Prop itemWidth: number | string = convertDimensionsWidthUnit(44)
+	/**
+	 * 整体高度, 仅横向时生效
+	 * @since 2.0.0
+     */
+	@Prop contentHeight: number | string = convertDimensionsWidthUnit(44)
+	/**
+	 * 选项字体大小
+	 * @since 2.0.0
+     */
+	@Prop optionFontSize: number | string = this.baseStyle.fontSizeLg
 	/**
 	 * 确认按钮点击事件
 	 */
@@ -79,6 +109,7 @@ export struct IBestPicker{
 	 */
 	onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => void = () => {}
 
+	@State uniId: number = 0
 	// 列表类型
 	@State columnType: ColumnType = "multiple"
 	// 每列选中索引
@@ -87,19 +118,168 @@ export struct IBestPicker{
 	@State touchStartTime: number = 0
 	@State startOffset: number = 0
 	@State momentumOffset: number = 0
-	@State startY: number = 0
 	// 选项列表
 	@State columns: IBestPickerOption[][] = []
 	// offset 列表
 	@State offsetList: number[] = []
+	@State itemCalcHeight: number = 0
+	@State itemCalcWidth: number = 0
+	@State leftWidth: number = 0
+	@State isReady: boolean = false
+	private uiContext = this.getUIContext()
 
 	@Styles columnItemStyle(){
 		.height(CONTAINER_SIZE.FULL)
 		.layoutWeight(1)
 		.monopolizeEvents(true)
 	}
+	@Styles rowItemStyle(){
+		.width(CONTAINER_SIZE.FULL)
+		.layoutWeight(1)
+		.monopolizeEvents(true)
+	}
+	@Builder verticalBuilder(){
+		Stack() {
+			// 数据层
+			Row() {
+				ForEach(this.columns, (item: IBestPickerOption[], index) => {
+					Column() {
+						ForEach(item, (e: IBestPickerOption, index: number) => {
+							Text(e.text)
+								.pickerItemStyle(this.itemHeight, this.optionFontSize)
+								.id(`ibest_picker_text_${this.uniId}_${index}`)
+						})
+					}
+					.translate({ y: this.offsetList[index] + this.getBaseOffset() })
+					.columnItemStyle()
+					.animation({
+						duration: this.isReady ? swipeDuration : 0,
+						curve: Curve.Ease
+					})
+				})
+			}
+			.width(CONTAINER_SIZE.FULL)
+			.height(CONTAINER_SIZE.FULL)
+			.justifyContent(FlexAlign.Center)
+			// 模糊蒙层
+			Column(){
+				Row()
+					.width(CONTAINER_SIZE.FULL)
+					.height(`calc(50% - ${this.itemCalcHeight/2}vp)`)
+					.linearGradient({ angle: 180, colors: [["rgba(255,255,255,0.9)", 0.1], [ "rgba(255,255,255,0.5)", 1]] })
+					.border({ width: { bottom: 1 }, color: "#ededed" })
+				Row()
+					.width(CONTAINER_SIZE.FULL)
+					.height(`calc(50% - ${this.itemCalcHeight/2}vp)`)
+					.linearGradient({ angle: 0, colors: [["rgba(255,255,255,0.9)", 0.1], [ "rgba(255,255,255,0.5)", 1]] })
+					.border({ width: { top: 1 }, color: "#ededed" })
+			}
+			.height(CONTAINER_SIZE.FULL)
+			.justifyContent(FlexAlign.SpaceBetween)
+			// 触摸层
+			Row() {
+				ForEach(this.columns, (item: IBestPickerOption[], index) => {
+					Column()
+						.columnItemStyle()
+						.gesture(
+							PanGesture({
+								fingers: 1,
+								direction: PanDirection.Vertical,
+								distance: 1
+							})
+								.onActionStart(() => {
+									this.onTouchStart(index)
+								})
+								.onActionUpdate((event: GestureEvent) => {
+									this.onTouchMove(event, index)
+								})
+								.onActionEnd(() => {
+									this.onTouchEnd(index)
+								})
+						)
+				})
+			}
+			.width(CONTAINER_SIZE.FULL)
+			.height(CONTAINER_SIZE.FULL)
+			.justifyContent(FlexAlign.Center)
+		}
+		.height(this.itemCalcHeight * this.visibleItemCount)
+		.clip(true)
+	}
+
+	@Builder horizontalBuilder(){
+		Stack() {
+			// 数据层
+			Column() {
+				ForEach(this.columns, (item: IBestPickerOption[], index) => {
+					Row() {
+						ForEach(item, (e: IBestPickerOption) => {
+							Text(e.text)
+								.horizontalPickerItemStyle(this.itemWidth, this.optionFontSize)
+								.id(`ibest_picker_text_${this.uniId}_${index}`)
+						})
+					}
+					.translate({ x: this.offsetList[index] + this.getBaseOffset() })
+					.rowItemStyle()
+					.animation({
+						duration: this.isReady ? swipeDuration : 0,
+						curve: Curve.Ease
+					})
+				})
+			}
+			.width(CONTAINER_SIZE.FULL)
+			.height(CONTAINER_SIZE.FULL)
+			.justifyContent(FlexAlign.Center)
+			// 模糊蒙层
+			Row(){
+				Row()
+					.width(`calc(50% - ${this.itemCalcWidth/2}vp)`)
+					.height(CONTAINER_SIZE.FULL)
+					.linearGradient({ angle: 90, colors: [["rgba(255,255,255,0.9)", 0.1], [ "rgba(255,255,255,0.5)", 1]] })
+					.border({ width: { right: 1 }, color: "#ededed" })
+					.id(`ibest_picker_left_${this.uniId}`)
+				Row()
+					.width(`calc(50% - ${this.itemCalcWidth/2}vp)`)
+					.height(CONTAINER_SIZE.FULL)
+					.linearGradient({ angle: -90, colors: [["rgba(255,255,255,0.9)", 0.1], [ "rgba(255,255,255,0.5)", 1]] })
+					.border({ width: { left: 1 }, color: "#ededed" })
+			}
+			.width(CONTAINER_SIZE.FULL)
+			.justifyContent(FlexAlign.SpaceBetween)
+			// 触摸层
+			Column() {
+				ForEach(this.columns, (item: IBestPickerOption[], index) => {
+					Row()
+						.rowItemStyle()
+						.gesture(
+							PanGesture({
+								fingers: 1,
+								direction: PanDirection.Horizontal,
+								distance: 1
+							})
+								.onActionStart(() => {
+									this.onTouchStart(index)
+								})
+								.onActionUpdate((event: GestureEvent) => {
+									this.onTouchMove(event, index)
+								})
+								.onActionEnd(() => {
+									this.onTouchEnd(index)
+								})
+						)
+				})
+			}
+			.width(CONTAINER_SIZE.FULL)
+			.height(CONTAINER_SIZE.FULL)
+			.justifyContent(FlexAlign.Center)
+		}
+		.width(CONTAINER_SIZE.FULL)
+		.height(getSizeByUnit(this.contentHeight))
+		.clip(true)
+	}
 
 	aboutToAppear(): void {
+		this.uniId = this.getUniqueId()
 		this.init()
 	}
 	// 获取列表类型
@@ -121,6 +301,20 @@ export struct IBestPicker{
 		}else{
 			this.initWidthMultiple(type)
 		}
+		setTimeout(() => {
+			if(this.horizontal){
+				this.itemCalcWidth = getComponentsInfo(this.uiContext, `ibest_picker_text_${this.uniId}_0`).width
+				setTimeout(() => {
+					this.leftWidth = getComponentsInfo(this.uiContext, `ibest_picker_left_${this.uniId}`).width
+				}, 50)
+			}else{
+				this.itemCalcHeight = getComponentsInfo(this.uiContext, `ibest_picker_text_${this.uniId}_0`).height
+			}
+			this.initOffset()
+			setTimeout(() => {
+				this.isReady = true
+			}, swipeDuration)
+		}, 0)
 	}
 	// 根据已选值 初始化索引位置
 	initWithSelectValue(index: number, children: IBestPickerOption[]){
@@ -129,7 +323,6 @@ export struct IBestPicker{
 			i = i > -1 ? i : children.length - 1
 			this.columns.push(children)
 			this.indexArr[index] = i
-			this.updateOffsetByIndex(index, i)
 			this.initWithSelectValue(index+1, children[i].children!)
 		}
 	}
@@ -151,9 +344,6 @@ export struct IBestPicker{
 		if(!this.value.length){
 			this.value = Array(options.length).fill(0)
 		}
-		if(!this.offsetList.length){
-			this.offsetList = Array(this.value.length).fill(0)
-		}
 		options.forEach((item, index) => {
 			let i = item.findIndex(e => e.value == this.value[index])
 			i = i > -1 ? i : 0
@@ -163,29 +353,59 @@ export struct IBestPicker{
 				if(type == "change"){
 					this.value[index] = item[i].value
 				}
-				this.updateOffsetByIndex(index, i)
 			}
 			this.columns.push(item)
 		})
+	}
+	// 初始化多列位置
+	initOffset(){
+		if(this.value.length) {
+			this.columnType = this.getColumnType()
+			if (this.columnType == "cascade") {
+				this.initCascadeOffset(0, this.options as IBestPickerOption[])
+			} else {
+				let options = this.options as IBestPickerOption[][]
+				if (!this.offsetList.length) {
+					this.offsetList = Array(this.value.length).fill(0)
+				}
+				options.forEach((item, index) => {
+					let i = item.findIndex(e => e.value == this.value[index])
+					i = i > -1 ? i : 0
+					if (i > -1) {
+						this.updateOffsetByIndex(index, i)
+					}
+				})
+			}
+		}
+	}
+	// 根据已选值 初始化索引位置
+	initCascadeOffset(index: number, children: IBestPickerOption[]){
+		if(this.value[index] != undefined && children && children.length){
+			let i = children.findIndex(item => item.value == this.value[index])
+			i = i > -1 ? i : children.length - 1
+			this.updateOffsetByIndex(index, i)
+			this.initCascadeOffset(index+1, children[i].children!)
+		}
 	}
 	// 列表变化
 	optionsChange(){
 		this.init("change")
 	}
-	getItemHeight(){
-		return typeof this.itemHeight == "number" ? this.itemHeight : parseInt(this.itemHeight)
-	}
 	// 获取初始位置
 	getBaseOffset(): number{
-		return this.getItemHeight() * (this.visibleItemCount-1) / 2
+		if(this.horizontal){
+			return this.leftWidth
+		}else{
+			return this.itemCalcHeight * (this.visibleItemCount-1) / 2
+		}
 	}
 	// 通过偏移量获取索引
 	getIndexByOffset(columnIndex: number, offset: number) {
-		return clamp(Math.round(-offset / this.getItemHeight()), 0, this.columns[columnIndex].length - 1)
+		return clamp(Math.round(-offset / (this.horizontal ? this.itemCalcWidth : this.itemCalcHeight)), 0, this.columns[columnIndex].length - 1)
 	}
 	// 通过索引更新偏移量
 	updateOffsetByIndex(columnIndex: number, index: number){
-		const offset = - index * this.getItemHeight()
+		const offset = - index * (this.horizontal ? this.itemCalcWidth : this.itemCalcHeight)
 		this.offsetList[columnIndex] = offset
 	}
 	// 重置列表数据
@@ -221,14 +441,14 @@ export struct IBestPicker{
 	}
 	// 手指移动
 	onTouchMove(event: GestureEvent, columnIndex: number): void {
-		let bl = event.offsetY
-		let itemHeight = this.getItemHeight()
+		let bl = this.horizontal ? event.offsetX : event.offsetY
+		let itemSize = this.horizontal ? this.itemCalcWidth : this.itemCalcHeight
 		let newOffset = this.startOffset + bl
 		let list = this.columns[columnIndex]
-		if(bl > 0 && newOffset > itemHeight){
-			newOffset = itemHeight
-		}else if(bl < 0 && newOffset < - list.length * itemHeight){
-			newOffset = - list.length * itemHeight
+		if(bl > 0 && newOffset > itemSize){
+			newOffset = itemSize
+		}else if(bl < 0 && newOffset < - list.length * itemSize){
+			newOffset = - list.length * itemSize
 		}
 		const now = Date.now()
 		if (now - this.touchStartTime > MOMENTUM_TIME) {
@@ -272,106 +492,67 @@ export struct IBestPicker{
 
 	build() {
 		Column() {
-			// 头部
-			if(!this.groupId && this.showToolBar){
-				Stack({alignContent: Alignment.Center}) {
-					Row(){
-						Text(this.cancelText)
-							.height(CONTAINER_SIZE.FULL)
-							.fontSize(this.baseStyle.fontSizeMd)
-							.fontColor(GRAY_COLOR.GRAY_6)
-							.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
-							.onClick(() => {
-								this.onCancel()
-							})
-						Text(this.confirmText)
-							.height(CONTAINER_SIZE.FULL)
-							.fontSize(this.baseStyle.fontSizeMd)
-							.fontColor(this.baseStyle.primary)
-							.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
-							.onClick(() => {
-								this.onConfirm(this.value, this.getTextByIndex())
-							})
-					}
-					.width(CONTAINER_SIZE.FULL)
-					.height(convertDimensionsWidthUnit(44))
-					.justifyContent(FlexAlign.SpaceBetween)
-					Text(this.title)
-						.constraintSize({ maxWidth: "50%" })
-						.fontWeight(600)
-						.fontSize(this.baseStyle.fontSizeLg)
-						.maxLines(1)
-						.textOverflow({ overflow: TextOverflow.Ellipsis })
-				}
+			PickerHeader({
+				value: this.value,
+				onConfirm: this.onConfirm,
+				onCancel: this.onCancel,
+				getTextByIndex: (): string[] => this.getTextByIndex()
+			})
+			if(this.horizontal){
+				this.horizontalBuilder()
+			}else{
+				this.verticalBuilder()
 			}
-			Stack() {
-				// 数据层
-				Row() {
-					ForEach(this.columns, (item: IBestPickerOption[], index) => {
-						Column() {
-							ForEach(item, (e: IBestPickerOption) => {
-								Text(e.text)
-									.pickerItemStyle(this.getItemHeight())
-							})
-						}
-						.translate({ x: 0, y: getSizeByUnit(this.offsetList[index] + this.getBaseOffset()), z: 0 })
-						.columnItemStyle()
-						.animation({
-							duration: swipeDuration,
-							curve: Curve.Ease
-						})
-					})
-				}
-				.width(CONTAINER_SIZE.FULL)
-				.height(CONTAINER_SIZE.FULL)
-				.justifyContent(FlexAlign.Center)
-				// 模糊蒙层
-				Column(){
-					Row()
-						.width(CONTAINER_SIZE.FULL)
-						.height(`calc(50% - ${getSizeByUnit(this.getItemHeight()/2)})`)
-						.linearGradient({ angle: 180, colors: [["rgba(255,255,255,0.9)", 0.1], [ "rgba(255,255,255,0.4)", 0.9]] })
-						.border({ width: { bottom: 1 }, color: "#ededed" })
-					Row()
-						.width(CONTAINER_SIZE.FULL)
-						.height(`calc(50% - ${getSizeByUnit(this.getItemHeight()/2)})`)
-						.linearGradient({ angle: 0, colors: [["rgba(255,255,255,0.9)", 0.1], [ "rgba(255,255,255,0.4)", 0.9]] })
-						.border({ width: { top: 1 }, color: "#ededed" })
-				}
-				.height(CONTAINER_SIZE.FULL)
-				.justifyContent(FlexAlign.SpaceBetween)
-				// 触摸层
-				Row() {
-					ForEach(this.columns, (item: IBestPickerOption[], index) => {
-						Column()
-							.columnItemStyle()
-							.gesture(
-								PanGesture({
-									fingers: 1,
-									direction: PanDirection.Vertical,
-									distance: 1
-								})
-								.onActionStart(() => {
-									this.onTouchStart(index)
-								})
-								.onActionUpdate((event: GestureEvent) => {
-									this.onTouchMove(event, index)
-								})
-								.onActionEnd(() => {
-									this.onTouchEnd(index)
-								})
-							)
-					})
-				}
-				.width(CONTAINER_SIZE.FULL)
-				.height(CONTAINER_SIZE.FULL)
-				.justifyContent(FlexAlign.Center)
-			}
-			.height(getSizeByUnit(this.getItemHeight() * this.visibleItemCount))
-			.clip(true)
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.alignItems(HorizontalAlign.Start)
 		.backgroundColor(this.baseStyle.default)
+	}
+}
+
+@Component
+struct PickerHeader{
+	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@Consume showToolBar: boolean
+	@Consume cancelText: string
+	@Consume confirmText: string
+	@Consume title: string
+	@Prop value: string[]
+	@Consume groupId: string
+	onConfirm: (value: string[], text: string[]) => void = () => {}
+	onCancel: () => void = () => {}
+	getTextByIndex: () => string[] = () => []
+	build() {
+		if(!this.groupId && this.showToolBar){
+			Stack({alignContent: Alignment.Center}) {
+				Row(){
+					Text(this.cancelText)
+						.height(CONTAINER_SIZE.FULL)
+						.fontSize(this.baseStyle.fontSizeMd)
+						.fontColor(GRAY_COLOR.GRAY_6)
+						.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
+						.onClick(() => {
+							this.onCancel()
+						})
+					Text(this.confirmText)
+						.height(CONTAINER_SIZE.FULL)
+						.fontSize(this.baseStyle.fontSizeMd)
+						.fontColor(this.baseStyle.primary)
+						.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
+						.onClick(() => {
+							this.onConfirm(this.value, this.getTextByIndex())
+						})
+				}
+				.width(CONTAINER_SIZE.FULL)
+				.height(convertDimensionsWidthUnit(44))
+				.justifyContent(FlexAlign.SpaceBetween)
+				Text(this.title)
+					.constraintSize({ maxWidth: "50%" })
+					.fontWeight(600)
+					.fontSize(this.baseStyle.fontSizeLg)
+					.maxLines(1)
+					.textOverflow({ overflow: TextOverflow.Ellipsis })
+			}
+		}
 	}
 }

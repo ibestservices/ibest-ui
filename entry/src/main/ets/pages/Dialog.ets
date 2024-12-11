@@ -49,7 +49,6 @@ struct DialogPage {
           .transition({ type: TransitionType.Insert, opacity: 1 })
           .transition({ type: TransitionType.Delete, opacity: 0 })
       }
-
     }.width('90%').margin({ top: SPACE.LG, bottom: SPACE.LG })
   }
 

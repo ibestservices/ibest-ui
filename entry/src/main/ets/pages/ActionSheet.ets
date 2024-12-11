@@ -127,6 +127,7 @@ struct ActionSheetPage {
 										{ name: '禁用选项', isDisabled: true },
 										{ name: '只读选项', readonly: true }
 									],
+									itemHeight: 60,
 									cancelText: '取消',
 									cancelTextColor: '#3d8af2'
 								})

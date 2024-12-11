@@ -34,7 +34,7 @@ struct DividerPage {
 					ComponentShowContainer({ title: '展示文本', titlePaddingLeft: SPACE.MD }) {
 						Column({space: SPACE.MD}){
 							IBestDivider({ text: '细线' })
-							IBestDivider({text: '非细线', hairline: false})
+							IBestDivider({text: '非细线', hairline: false, lineWidth: 4})
 							IBestDivider({
 								textBuilder: this.textBuilder
 							})
@@ -84,7 +84,7 @@ struct DividerPage {
 							Text("文本")
 							IBestDivider({ text: '文本', vertical: true, dashed: true })
 							Text("文本")
-							IBestDivider({ text: '文本', vertical: true, hairline: false })
+							IBestDivider({ text: '文本', vertical: true, hairline: false, lineWidth: 4 })
 							Text("文本")
 							IBestDivider({ text: '文本', vertical: true, lineColor: "#3d8af2" })
 						}.padding(SPACE.MD)

@@ -247,8 +247,6 @@ export struct IBestDialogView {
             .fontColor(this.titleColor)
         }
       }
-
-
       // content
       if (this.defaultBuilder) {
         this.defaultBuilder()
@@ -273,8 +271,6 @@ export struct IBestDialogView {
         })
         .edgeEffect(EdgeEffect.Spring)
       }
-
-
       // footer
       if (this.footerBuilder) {
         this.footerBuilder()

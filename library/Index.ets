@@ -11,12 +11,12 @@ const setGlobalConfig = GlobalStore.setGlobalConfig
 setGlobalConfig()
 
 export {
+	init as IBestInit,
 	setIBestUIBaseStyle,
+	setIBestUIBaseStyle as IBestSetUIBaseStyle,
+	setGlobalConfig as IBestSetGlobalConfig,
 	IBestToast,
 	IBestActionSheet,
-	init as IBestInit,
-	setGlobalConfig as IBestSetGlobalConfig,
-	setIBestUIBaseStyle as IBestSetUIBaseStyle,
 	IBestImagePreview,
 	IBestDialogUtil,
 	IBestNotify
@@ -115,3 +115,18 @@ export { IBestCollapseController } from './src/main/ets/components/collapse/inde
 export { IBestCollapseItem } from './src/main/ets/components/collapseItem/index'
 
 export { IBestDivider } from './src/main/ets/components/divider/index'
+
+export { IBestNoticeBar } from './src/main/ets/components/noticeBar/index'
+
+export { IBestProgress } from './src/main/ets/components/progress/index'
+
+export { IBestCountDown } from './src/main/ets/components/countDown/index'
+export { IBestCountDownController } from './src/main/ets/components/countDown/index.type'
+
+export { IBestPopover } from './src/main/ets/components/popover/index'
+export { IBestPopoverAction, IBestPopoverController } from './src/main/ets/components/popover/index.type'
+
+export { IBestTextEllipsis } from './src/main/ets/components/textEllipsis/index'
+
+export { IBestSideBar } from './src/main/ets/components/sideBar/index'
+export { IBestSideBarItem } from './src/main/ets/components/sideBarItem/index'

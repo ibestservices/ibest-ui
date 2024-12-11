@@ -185,7 +185,7 @@ export struct IBestCollapseItem {
             .height(this.getHeight())
             .clip(true)
             .animation({
-                duration: 200,
+                duration: this.isShow ? 200 : 0,
                 curve: Curve.EaseInOut
             })
             if(this.index > 0){
@@ -197,6 +197,5 @@ export struct IBestCollapseItem {
             }
         }
         .backgroundColor(this.baseStyle.default)
-        .opacity(this.isShow ? 1 : 0)
     }
 }
