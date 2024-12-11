@@ -20,10 +20,11 @@ export default struct ComponentShowContainer {
         .textAlign(TextAlign.Start)
         .fontColor(COLOR_GRAY.GRAY_6)
       Column(){
-        if(typeof this.defaultBuilder === 'function'){
+        if(this.defaultBuilder){
           this.defaultBuilder()
         }
       }
+      .alignItems(HorizontalAlign.Start)
       .margin({ left: this.card ? SPACE.SM : 0, right: this.card ? SPACE.SM : 0  })
     }.width(CONTAINER_SIZE.FULL)
     .justifyContent(FlexAlign.Start)

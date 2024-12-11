@@ -128,9 +128,9 @@ class Toast{
     private loadingDialog: ComponentContent<ToastParams> | null = null
     private promptAction: PromptAction | null = null
     private timer: number = 0
+    private isLock: boolean = false
 
     set message(msg: string){
-        // console.log("message改变为", msg)
         if(Toast._instance && Toast._instance.toastOption){
             Toast._instance.toastOption.message = msg
             Toast._instance?.loadingDialog?.update(new ToastParams(Toast._instance.toastOption))
@@ -139,8 +139,7 @@ class Toast{
 
     constructor() {}
 
-    private static getInstance(option: ToastParams, uiObserver: UIObserver, loadingDialog: ComponentContent<ToastOption>,
-        promptAction: PromptAction): Toast{
+    private static getInstance(option: ToastParams, uiObserver: UIObserver, loadingDialog: ComponentContent<ToastOption>, promptAction: PromptAction): Toast{
         if(!Toast._instance){
             Toast._instance = new Toast()
         }
@@ -153,10 +152,14 @@ class Toast{
     /**
      * 根据参数打开弹框
      */
-    private open: (option?: string | ToastOption) => void = debounce(async (option?: string | ToastOption) => {
+    private async open(option?: string | ToastOption) {
+        if(Toast._instance.isLock){
+            return
+        }
+        Toast._instance.isLock = true
         let params: ToastParams = typeof option == "string" ? new ToastParams({ message: option }) : new ToastParams(option)
         if(Toast._instance.loadingDialog){
-            this.hide()
+            this.autoHide()
         }
         let windowClass = await window.getLastWindow(getContext())
         let uiContext = windowClass.getUIContext()
@@ -164,28 +167,32 @@ class Toast{
         let loadingDialog = new ComponentContent(uiContext, wrapBuilder(defaultBuilder), params)
         let promptAction = uiContext.getPromptAction()
         Toast._instance = Toast.getInstance(params, uiObserver, loadingDialog, promptAction)
-        await promptAction.openCustomDialog(Toast._instance.loadingDialog, {
+        await promptAction.openCustomDialog(loadingDialog, {
             alignment: params.position == "top" ? DialogAlignment.Top : params.position == "bottom" ? DialogAlignment.Bottom : DialogAlignment.Center,
             offset: {dx: 0, dy: params.offsetY},
             isModal: params.isShowMask || params.type == "loading",
             maskColor: params.type == "loading" ? "transparent" : "0x33000000",
             autoCancel: false,
+            transition: TransitionEffect.IDENTITY,
             onWillDismiss: (dismissDialogAction: DismissDialogAction) => {
                 // console.log("原因", JSON.stringify(dismissDialogAction.reason))
             }
         })
         params.onOpened?.()
+        if(params.type!="loading"){
+            Toast._instance.isLock = false
+        }
         // 监听路由变化，关闭toast
         Toast._instance?.uiObserver?.on("routerPageUpdate", ()=>{
-            this.hide()
+            this.autoHide()
         })
         // 非loading自动关闭
         if(params.type!="loading" && params.duration){
             Toast._instance.timer = setTimeout(()=>{
-                this.hide()
+                this.autoHide()
             }, params.duration)
         }
-    }, 100)
+    }
     /**
      * 显示toast
      */
@@ -205,18 +212,27 @@ class Toast{
         }
         this.open(opt)
     }
-
+    private autoHide(){
+        if(Toast._instance === null || Toast._instance.loadingDialog === null){
+            return
+        }
+        Toast._instance.promptAction?.closeCustomDialog(Toast._instance.loadingDialog)
+        Toast._instance.loadingDialog?.dispose()
+        Toast._instance.uiObserver?.off("routerPageUpdate")
+        clearTimeout(Toast._instance.timer)
+        Toast._instance.loadingDialog = null
+        Toast._instance.isLock = false
+    }
     /**
      * 关闭toast
      */
     public hide(){
-        if(Toast._instance && Toast._instance.loadingDialog){
-            Toast._instance.promptAction?.closeCustomDialog(Toast._instance.loadingDialog)
-            Toast._instance.loadingDialog?.dispose()
-            Toast._instance.uiObserver?.off("routerPageUpdate")
-            clearTimeout(Toast._instance.timer)
-            Toast._instance.loadingDialog = null
-        }
+        setTimeout(() => {
+            this.autoHide()
+        }, 1)
     }
 }
-export default new Toast()
+
+const IBestToast = new Toast()
+
+export default IBestToast

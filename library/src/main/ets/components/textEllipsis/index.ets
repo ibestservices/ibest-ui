@@ -2,7 +2,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit, measureTextSize } from '../../utils/utils'
 
 @Component
 export struct IBestTextEllipsis{
@@ -13,11 +13,11 @@ export struct IBestTextEllipsis{
     /**
      * 显示文本
      */
-    @Prop text: string = ""
+    @Prop @Watch("formatText") text: string = ""
     /**
      * 文字大小
      */
-    @Prop textFontSize: number | string = convertDimensionsWidthUnit(14, true)
+    @Prop textFontSize: number | string = this.baseStyle.fontSizeMd
     /**
      * 文字颜色
      */
@@ -29,7 +29,7 @@ export struct IBestTextEllipsis{
     /**
      * 展示的行数
      */
-    @Prop rows: number = 1
+    @Prop @Watch("formatText") rows: number = 1
     /**
      * 是否显示操作
      */
@@ -53,17 +53,21 @@ export struct IBestTextEllipsis{
     /**
      * 省略位置
      */
-    @Prop omitPosition: "start" | "middle" | "end" = "end"
+    @Prop @Watch("formatText") omitPosition: "start" | "middle" | "end" = "end"
 
     @State uniId: number = 0
     @State showText: string = ""
     @State isExpand: boolean = false
-    @State contentWidth: number = 0
     @State textWidth: number = 0
+    @State textHeight: number = 0
+    @State maxLineHeight: number = 0
     private uiContext = this.getUIContext()
-    private measureUtils = this.uiContext.getMeasureUtils()
-    omitWidth: number = 0
-    expandWidth: number = 0
+
+    @Builder OmitContent(){
+        Span(this.omitContent)
+            .fontColor(this.textColor)
+            .fontSize(getSizeByUnit(this.textFontSize, true))
+    }
 
     aboutToAppear(): void {
         this.uniId = this.getUniqueId()
@@ -71,57 +75,61 @@ export struct IBestTextEllipsis{
     }
     formatText(){
         setTimeout(() => {
-            this.contentWidth = getComponentsInfo(this.uiContext, `ibest_text_${this.uniId}`).width
-            this.textWidth = this.measureText(this.text)
-            this.omitWidth = this.measureText(this.omitContent)
-            this.expandWidth = this.measureText(this.expandText)
-            this.getTextByWidth()
+            this.textWidth = getComponentsInfo(this.uiContext, `ibest_text_${this.uniId}`).width
+            this.textHeight = this.measureText(this.text)
+            this.maxLineHeight = this.measureText(this.text, this.rows)
+            if(this.textHeight > this.maxLineHeight){
+                this.getTextByWidth()
+            }else {
+                this.showText = this.text
+            }
         }, 0)
     }
     getTextByWidth(){
-        let textArr = this.text.split("")
-        let showArr: string[] = []
-        for (let i = 0; i < this.rows; i++) {
-            showArr.push(this.getStr("", textArr, i))
+        let clipText = this.text
+        let textHeight = this.textHeight
+        let centerIndex = Math.floor(clipText.length / 2)
+        let leftStr = clipText.slice(0, centerIndex)
+        let rightStr = clipText.slice(centerIndex)
+        while (textHeight > this.maxLineHeight) {
+            switch (this.omitPosition){
+                case "start":
+                    clipText = clipText.substring(1)
+                    textHeight = this.measureText(this.omitContent + clipText + (this.showAction ? this.expandText : ""))
+                    break
+                case "middle":
+                    leftStr = leftStr.substring(0, leftStr.length - 1)
+                    rightStr = rightStr.substring(1)
+                    textHeight = this.measureText(leftStr + this.omitContent + rightStr + (this.showAction ? this.expandText : ""))
+                    break
+                case "end":
+                    clipText = clipText.substring(0, clipText.length - 1)
+                    textHeight = this.measureText(clipText + (this.textHeight > this.maxLineHeight ? this.omitContent : "") + (this.showAction ? this.expandText : ""))
+                    break
+            }
         }
-        this.showText = showArr.join("")
+        this.showText = this.omitPosition == 'middle' ? leftStr + this.omitContent + rightStr : clipText
     }
-    getStr(str: string, textArr: string[], i: number): string{
-        if(!textArr.length){
-            return str
-        }
-        const isLast = i == this.rows-1
-        const curWidth = this.measureText(str)
-        const nextWordWidth = this.measureText(textArr[0])
-        const fullWidth = this.contentWidth - (isLast ? this.omitWidth : 0) - (isLast && this.showAction ? this.expandWidth : 0)
-        if(isLast){
-            console.log("width", curWidth, curWidth + nextWordWidth, fullWidth)
-        }
-        if(curWidth < fullWidth && curWidth + nextWordWidth < fullWidth - 10){
-            str += textArr.shift()
-            return this.getStr(str, textArr, i)
-        }else {
-            console.log("str", str)
-            return str
-        }
-    }
-    measureText(text: string): number{
-        return px2vp(this.measureUtils.measureTextSize({
+    measureText(text: string, rows?: number): number{
+        return measureTextSize(this.uiContext, {
             textContent: text,
+            constraintWidth: this.textWidth,
             fontSize: getSizeByUnit(this.textFontSize, true),
-            maxLines: this.rows
-        }).width as number)
+            lineHeight: getSizeByUnit(this.lineHeight),
+            maxLines: rows
+        }).height
     }
 
     build() {
         Text(){
+            if(this.textHeight > this.maxLineHeight && !this.isExpand && this.omitPosition == "start"){
+                this.OmitContent()
+            }
             Span(this.isExpand ? this.text : this.showText)
                 .fontColor(this.textColor)
                 .fontSize(getSizeByUnit(this.textFontSize, true))
-            if(this.textWidth > this.contentWidth && !this.isExpand){
-                Span(this.omitContent)
-                    .fontColor(this.textColor)
-                    .fontSize(getSizeByUnit(this.textFontSize, true))
+            if(this.textHeight > this.maxLineHeight && !this.isExpand && this.omitPosition == "end"){
+                this.OmitContent()
             }
             if(this.showAction){
                 Span(this.isExpand ? this.collapseText : this.expandText)

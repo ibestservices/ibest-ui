@@ -34,7 +34,7 @@ export struct IBestProgress{
      */
 	@Prop showText: boolean = true
 	/**
-	 * 进度条显示文字内置在进度条内
+	 * 文字显示在进度条内
      */
 	@Prop textInside: boolean = false
 	/**
@@ -58,7 +58,7 @@ export struct IBestProgress{
      */
 	@Prop duration: number = 3
 	/**
-	 * 格式化文本回调
+	 * 格式化文本函数
      */
 	format?: (value: number) => string
 

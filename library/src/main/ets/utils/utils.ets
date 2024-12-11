@@ -1,4 +1,4 @@
-import { componentUtils, ComponentUtils, LengthUnit, window } from '@kit.ArkUI'
+import { componentUtils, ComponentUtils, LengthUnit, MeasureOptions, window } from '@kit.ArkUI'
 import { ComAvoidAreaSize, ComInfoType, IBestGlobalConfig } from '../model/Global.type'
 import { common } from '@kit.AbilityKit'
 import { AnyType } from '../model/AnyType'
@@ -150,6 +150,16 @@ export const getWindowAvoidSize = async (context: common.BaseContext): Promise<C
     leftSize: px2vp(avoidArea.leftRect.width),
     rightSize: px2vp(avoidArea.rightRect.width),
     navigationSize: px2vp(systemDht.bottomRect.height)
+  }
+}
+/**
+ * 测量文字尺寸
+ */
+export const measureTextSize = (context: UIContext, option: MeasureOptions): Size => {
+  let measureUtils = context.getMeasureUtils()
+  return {
+    width: px2vp(measureUtils.measureTextSize(option).width as number),
+    height: px2vp(measureUtils.measureTextSize(option).height as number)
   }
 }
 /**

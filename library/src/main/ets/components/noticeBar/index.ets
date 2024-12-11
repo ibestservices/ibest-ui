@@ -94,9 +94,9 @@ export struct IBestNoticeBar{
      */
 	@Prop verticalTextList: string[] = []
 	/**
-	 * 垂直滚动间隔 单位毫秒
+	 * 垂直滚动间隔 单位秒
      */
-	@Prop verticalInterval: number = 3000
+	@Prop verticalInterval: number = 3
 	/**
 	 * 点击通知栏回调
      */
@@ -191,7 +191,7 @@ export struct IBestNoticeBar{
 				.layoutWeight(1)
 				.height(CONTAINER_SIZE.FULL)
 				.vertical(true)
-				.interval(this.verticalInterval)
+				.interval(this.verticalInterval*1000)
 				.autoPlay(true)
 				.indicator(false)
 				.disableSwipe(true)

@@ -10,6 +10,10 @@ export struct IBestDivider{
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
+	 * 线宽, 仅hairline为false时生效
+     */
+	@Prop lineWidth: number | string = convertDimensionsWidthUnit(1)
+	/**
 	 * 是否使用虚线
 	 */
 	@Prop dashed: boolean = false
@@ -72,7 +76,7 @@ export struct IBestDivider{
 				.width(1)
 				.height(getSizeByUnit(this.lineHeight))
 				.scale({x: this.hairline ? 0.5 : 1})
-				.border({ width: { left: 1 }, color: this.lineColor, style: this.dashed ? BorderStyle.Dashed : BorderStyle.Solid })
+				.border({ width: { left: this.hairline ? 1 : getSizeByUnit(this.lineWidth) }, color: this.lineColor, style: this.dashed ? BorderStyle.Dashed : BorderStyle.Solid })
 				.margin({left: getSizeByUnit(this.leftRightMargin), right: getSizeByUnit(this.leftRightMargin)})
 		}else{
 			Row(){
@@ -81,7 +85,7 @@ export struct IBestDivider{
 					.height(1)
 					.layoutWeight(this.leftLineWidth ? "" : 1)
 					.scale({y: this.hairline ? 0.5 : 1})
-					.border({ width: { top: 1 }, color: this.lineColor, style: this.dashed ? BorderStyle.Dashed : BorderStyle.Solid })
+					.border({ width: { top: this.hairline ? 1 : getSizeByUnit(this.lineWidth) }, color: this.lineColor, style: this.dashed ? BorderStyle.Dashed : BorderStyle.Solid })
 				if(this.textBuilder || this.text){
 					Row(){
 						if(this.textBuilder){
@@ -98,7 +102,7 @@ export struct IBestDivider{
 						.height(1)
 						.layoutWeight(this.rightLineWidth ? "" : 1)
 						.scale({y: this.hairline ? 0.5 : 1})
-						.border({ width: { top: 1 }, color: this.lineColor, style: this.dashed ? BorderStyle.Dashed : BorderStyle.Solid })
+						.border({ width: { top: this.hairline ? 1 : getSizeByUnit(this.lineWidth) }, color: this.lineColor, style: this.dashed ? BorderStyle.Dashed : BorderStyle.Solid })
 				}
 			}
 			.width(CONTAINER_SIZE.FULL)

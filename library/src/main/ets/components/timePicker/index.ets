@@ -63,6 +63,26 @@ export struct IBestTimePicker {
   	 */
 	@Prop visibleItemCount: number = 6
 	/**
+	 * 是否横向
+	 * @since 2.0.0
+	 */
+	@Prop horizontal: boolean
+	/**
+	 * 单项宽度, 仅横向时生效
+	 * @since 2.0.0
+	 */
+	@Prop itemWidth: number | string
+	/**
+	 * 高度, 仅横向时生效
+	 * @since 2.0.0
+	 */
+	@Prop contentHeight: number | string
+	/**
+	 * 选项字体大小
+	 * @since 2.0.0
+	 */
+	@Prop optionFontSize: number | string
+	/**
 	 * 过滤器
 	 */
 	filter: (type: TimePickerColumnType, options: IBestPickerOption[]) => IBestPickerOption[] = (type: TimePickerColumnType, options: IBestPickerOption[]) => options
@@ -218,6 +238,10 @@ export struct IBestTimePicker {
 			itemHeight: this.itemHeight,
 			confirmText: this.confirmText,
 			cancelText: this.cancelText,
+			horizontal: this.horizontal,
+			itemWidth: this.itemWidth,
+			contentHeight: this.contentHeight,
+			optionFontSize: this.optionFontSize,
 			onConfirm: (selectedValues: Array<string>) => {
 				this.onConfirm(selectedValues)
 			},

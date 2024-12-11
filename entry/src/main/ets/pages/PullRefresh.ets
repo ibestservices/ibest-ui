@@ -5,7 +5,7 @@ import { IBestPullRefresh, IBestRefreshContentParams, IBestTabItemType, IBestTab
 import { ComponentRouterParams } from '../assets/global.type';
 @Entry
 @Component
-struct PullRefresh {
+struct PullRefreshPage {
 	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
 	@State tabsList: Array<IBestTabItemType> = [
 		{

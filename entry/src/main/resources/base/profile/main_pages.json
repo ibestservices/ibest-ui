@@ -46,6 +46,7 @@
 		"pages/Progress",
 		"pages/CountDown",
 		"pages/Popover",
-		"pages/TextEllipsis"
+		"pages/TextEllipsis",
+		"pages/SideBar"
 	]
 }

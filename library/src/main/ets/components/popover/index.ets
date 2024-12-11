@@ -55,7 +55,6 @@ export struct IBestPopover{
     /**
      * 气泡框宽度
      */
-    // @Prop popoverWidth: string | number = convertDimensionsWidthUnit(128)
     @Provide({allowOverride: "popoverWidth"}) popoverWidth: string | number = ""
     /**
      * 背景色
@@ -65,10 +64,6 @@ export struct IBestPopover{
      * 是否显示箭头
      */
     @Prop showArrow: boolean = true
-    /**
-     * 箭头偏移量
-     */
-    @Prop arrowOffset: string | number = ""
     /**
      * 箭头宽度
      */
@@ -159,7 +154,7 @@ export struct IBestPopover{
             mask: this.popoverMask,
             targetSpace: this.space,
             radius: getSizeByUnit(this.radius) as Dimension,
-            onWillDismiss: this.close
+            onWillDismiss: (): void => this.close()
         })
     }
 }

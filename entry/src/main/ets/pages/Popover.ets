@@ -25,9 +25,6 @@ struct PopoverPage {
         },
         {
             text: '选项三'
-        },
-        {
-            text: '选项四'
         }
     ]
     @State textValue: string = ""
@@ -124,11 +121,11 @@ struct PopoverPage {
                                 })
                                 IBestPopover({
                                     actions: this.actions,
-                                    triggerBuilder: (): void => this.triggerBuilder("text", "文字触发"),
+                                    triggerBuilder: (): void => this.triggerBuilder("text", "文字触发")
                                 })
                                 IBestPopover({
                                     actions: this.actions,
-                                    triggerBuilder: (): void => this.triggerBuilder("img"),
+                                    triggerBuilder: (): void => this.triggerBuilder("img")
                                 })
                             }
                             IBestPopover({
@@ -225,14 +222,12 @@ struct PopoverPage {
                                     this.controller.open()
                                 }
                             })
-                            Row(){
-                                IBestPopover({
-                                    controller: this.controller,
-                                    actions: this.actions,
-                                    triggerBuilder: (): void => this.triggerBuilder("button", "自定义内容"),
-                                    popoverContentBuilder: (): void => this.popoverContent()
-                                })
-                            }
+                            IBestPopover({
+                                controller: this.controller,
+                                actions: this.actions,
+                                triggerBuilder: (): void => this.triggerBuilder("button", "自定义内容"),
+                                popoverContentBuilder: (): void => this.popoverContent()
+                            })
                         }
                     }
                 }
