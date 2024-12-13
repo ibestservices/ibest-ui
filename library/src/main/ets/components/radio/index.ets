@@ -3,9 +3,10 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { CheckedItem, updateRadioGroupStoreByKey } from '../radioGroup/store';
-import { getRadioGroupNamespace, RADIO_GROUP_EVENT_NAME } from '../radioGroup/utils';
+import { RADIO_GROUP_EVENT_NAME, COMPONENT_NAME } from '../radioGroup/index.type';
 import { BuilderArgs } from './index.type';
-import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils';
+
 @Component
 export struct IBestRadio {
   /**
@@ -160,13 +161,13 @@ export struct IBestRadio {
     this.value && this.updateGroupStore()
     // 如果有组 监听max change
     if (this.isHasGroup()) {
-      emitter.on(getRadioGroupNamespace(this.group, RADIO_GROUP_EVENT_NAME.ON_INIT), (name: string): void => this.handleRadioGroupInit(name))
+      emitter.on(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.ON_INIT), (name: string): void => this.handleRadioGroupInit(name))
     }
   }
 
   aboutToDisappear() {
     if (this.isHasGroup()) {
-      emitter.off(getRadioGroupNamespace(this.group, RADIO_GROUP_EVENT_NAME.ON_INIT), (name: string): void => this.handleRadioGroupInit(name))
+      emitter.off(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.ON_INIT), (name: string): void => this.handleRadioGroupInit(name))
     }
   }
 

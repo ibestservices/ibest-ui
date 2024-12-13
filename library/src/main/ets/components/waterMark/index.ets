@@ -1,7 +1,14 @@
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { WatermarkCanvas } from './watermarkCanvas'
 
 @Component
 export struct IBestWatermark {
+  /**
+   * 全局公共样式
+   */
+  @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
   /**
    * 默认的插槽
    */
@@ -17,7 +24,7 @@ export struct IBestWatermark {
   /**
    * 水印透明度
    */
-  @Prop waterMarkOpacity: number
+  @Prop waterMarkOpacity: number = 0.3
   /**
    * 水印之间的水平间隔 默认0
    */
@@ -25,7 +32,7 @@ export struct IBestWatermark {
   /**
    * 水印之间的垂直间隔 默认0
    */
-  @Prop gapY: number = 0;
+  @Prop gapY: number
   /**
    * 旋转角度
    */
@@ -45,15 +52,21 @@ export struct IBestWatermark {
   /**
    * 文字字体
    */
-  @Prop fontFamily: string = 'sans-serif';
+  @Prop fontFamily: string
   /**
    * 文字颜色
    */
-  @Prop fontColor: string | number | CanvasGradient | CanvasPattern = '#000'
+  @Prop fontColor: string | number | CanvasGradient | CanvasPattern
   /**
    * 水印的z-index
+   * @deprecated
    */
   @Prop waterMarkZIndex: number = -1;
+  /**
+   * 背景色
+   * @since 2.0.1
+   */
+  @Prop bgColor: ResourceColor = this.baseStyle.default
   /**
    * 水印区域的总高度
    */
@@ -63,29 +76,48 @@ export struct IBestWatermark {
    */
   @State waterMarkContainWidth: number = 0;
 
+  @State url: string = ''
+
+  @Builder bgBuilder(){
+    Row(){
+      Image(this.url)
+        .width(CONTAINER_SIZE.FULL)
+        .height(CONTAINER_SIZE.FULL)
+        .opacity(this.waterMarkOpacity)
+    }
+    .backgroundColor(this.bgColor)
+    .width(CONTAINER_SIZE.FULL)
+    .height(CONTAINER_SIZE.FULL)
+  }
+
   build() {
-    Stack() {
-      WatermarkCanvas({
-        waterMarkContainHeight: this.waterMarkContainHeight,
-        waterMarkContainWidth: this.waterMarkContainWidth,
-        waterMarkOpacity: this.waterMarkOpacity,
-        waterMarkZIndex: this.waterMarkZIndex,
-        waterMarkHeight: this.waterMarkHeight,
-        waterMarkWidth: this.waterMarkWidth,
-        fontFamily: this.fontFamily,
-        rotateDeg: this.rotateDeg,
-        fontColor: this.fontColor,
-        imageUrl: this.imageUrl,
-        fontSize: this.fontSize,
-        gapY: this.gapY,
-        gapX: this.gapX,
-        text: this.text,
-      })
+    Row() {
+      if(!this.url){
+        WatermarkCanvas({
+          waterMarkContainHeight: this.waterMarkContainHeight,
+          waterMarkContainWidth: this.waterMarkContainWidth,
+          waterMarkHeight: this.waterMarkHeight,
+          waterMarkWidth: this.waterMarkWidth,
+          fontFamily: this.fontFamily,
+          rotateDeg: this.rotateDeg,
+          fontColor: this.fontColor,
+          imageUrl: this.imageUrl,
+          fontSize: this.fontSize,
+          gapY: this.gapY,
+          gapX: this.gapX,
+          text: this.text,
+          onComplete: (url: string) => {
+            console.log('complete', url)
+            this.url = url
+          }
+        })
+      }
       if(this.defaultSlot){
         this.defaultSlot()
       }
-      //   通过这个事件的回调可以拿到组件的宽高
-    }.onAreaChange((oldValue: Area, newValue: Area) => {
+    }
+    .background(this.url ? this.bgBuilder : undefined)
+    .onAreaChange((oldValue: Area, newValue: Area) => {
       this.waterMarkContainHeight = newValue.height as number;
       this.waterMarkContainWidth = newValue.width as number;
     })

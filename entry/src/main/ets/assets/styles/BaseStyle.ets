@@ -2,8 +2,8 @@
  * 红色
  */
 interface GeneratedObjectLiteralInterface_1 {
-  DEFAULT?: string;
-  BASE: string;
+  DEFAULT?: ResourceColor
+  BASE: ResourceColor
 }
 /**
  * 红色
@@ -48,8 +48,8 @@ export const DISABLE_COLOR: GeneratedObjectLiteralInterface_2 = {
  * 背景色颜色
  */
 export const BACKGROUND_COLOR:GeneratedObjectLiteralInterface_1 = {
-  DEFAULT: '#FFFFFF',
-  BASE: '#F7F8FA'
+  DEFAULT: $r("app.color.background_3"),
+  BASE: $r("app.color.background")
 };
 
 /**

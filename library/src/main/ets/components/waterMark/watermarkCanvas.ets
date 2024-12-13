@@ -27,17 +27,13 @@ export struct WatermarkCanvas {
    */
   @Prop @Watch('drawWaterMark') rotateDeg: number = -22;
   /**
-   * 水印透明度
-   */
-  @Prop @Watch('drawWaterMark') waterMarkOpacity: number = 0.3;
-  /**
    * 水印区域的总高度
    */
-  @Prop @Watch('drawWaterMark') waterMarkContainHeight: number = 0;
+  @Prop waterMarkContainHeight: number = 0;
   /**
    * 水印区域的总宽度
    */
-  @Prop @Watch('drawWaterMark') waterMarkContainWidth: number = 0;
+  @Prop waterMarkContainWidth: number = 0;
   /**
    * 水印之间的水平间隔 默认0
    */
@@ -67,9 +63,9 @@ export struct WatermarkCanvas {
    */
   @Prop @Watch('drawWaterMark') fontColor: string | number | CanvasGradient | CanvasPattern = '#000'
   /**
-   * 水印的z-index
+   * 绘制完成回调
    */
-  @Prop waterMarkZIndex: number = -1;
+  onComplete: (url: string) => void = () => {}
 
   clearCanvas() {
     // 清除画布
@@ -135,6 +131,10 @@ export struct WatermarkCanvas {
         this.context.restore();
       }
     }
+    let url: string = this.context.toDataURL("png")
+    if(url != "data:image/png"){
+      this.onComplete(url)
+    }
   }
 
   /**
@@ -174,23 +174,21 @@ export struct WatermarkCanvas {
    * 绘制水印
    */
   drawWaterMark() {
-      this.context.textBaseline = 'top'
-      this.clearCanvas();
-      const rotateDeg = this.rotateDeg * Math.PI / 180;
-      this.text?.length ? this.handleLayoutText(rotateDeg) : this.handleLayoutImg(rotateDeg);
+    this.context.textBaseline = 'top'
+    this.clearCanvas();
+    const rotateDeg = this.rotateDeg * Math.PI / 180;
+    this.text?.length ? this.handleLayoutText(rotateDeg) : this.handleLayoutImg(rotateDeg);
   }
 
   build() {
     Canvas(this.context)
       .width(this.waterMarkContainWidth)
       .height(this.waterMarkContainHeight)
-      .backgroundColor('transparent')
       .onReady(() => {
         this.drawWaterMark();
       })
+      .opacity(0)
       .enabled(false)
-      .opacity(this.waterMarkOpacity)
-      .zIndex(this.waterMarkZIndex)
       .position({})
   }
 }

@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { IBestCell, IBestButton } from '@ibestservices/ibest-ui';
+import { IBestCell, IBestButton, IBestSwipeCell, IBestDialogUtil } from '@ibestservices/ibest-ui';
 import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
@@ -45,14 +45,36 @@ struct SwipeCellPage {
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
-						// IBestSwipeCell({
-						// 	defaultContent: this.cellContent,
-						// 	leftContent: this.leftContent,
-						// 	rightContent: this.rightContent,
-						// 	onContentClick: () => {
-						//
-						// 	}
-						// })
+						IBestSwipeCell({
+							defaultContent: this.cellContent,
+							leftContent: this.leftContent,
+							rightContent: this.rightContent
+						})
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '异步关闭', titlePaddingLeft: SPACE.XS }) {
+						IBestSwipeCell({
+							defaultContent: this.cellContent,
+							rightContent: this.rightContent,
+							beforeClose: (position) => {
+								if(position == 'center'){
+									return true
+								}
+								return new Promise((resolve) => {
+									IBestDialogUtil.open({
+										message: '确定删除吗?',
+										showCancelButton: true,
+										onConfirm: () => {
+											resolve(true)
+										},
+										onCancel: () => {
+											resolve(false)
+										}
+									})
+								})
+							}
+						})
 					}
 				}
 			}

@@ -1,8 +1,8 @@
 import { IBestPicker } from '../picker'
 import { IBestPickerOption } from '../picker/index.type'
-import { TimePickerColumnType, getPickerEventName, TIME_PICKER_EVENT_NAME } from './index.type'
+import { COMPONENT_NAME, TimePickerColumnType, TIME_PICKER_EVENT_NAME } from './index.type'
 import { emitter } from '../../utils/EventEmitter'
-import { clamp, convertDimensionsWidthUnit } from '../../utils/utils'
+import { clamp, convertDimensionsWidthUnit, getEventName } from '../../utils/utils'
 
 @Component
 export struct IBestTimePicker {
@@ -104,12 +104,12 @@ export struct IBestTimePicker {
 		this.init()
 		if(this.groupId){
 			// 监听日期picker变化
-			emitter.on(getPickerEventName(this.groupId, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>): void => this.handleGroupTimeChange(uniId, selectedValues))
+			emitter.on(getEventName(COMPONENT_NAME, this.groupId, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>): void => this.handleGroupTimeChange(uniId, selectedValues))
 		}
 	}
 	aboutToDisappear(): void {
 		if(this.groupId) {
-			emitter.off(getPickerEventName(this.groupId, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>): void => this.handleGroupTimeChange(uniId, selectedValues))
+			emitter.off(getEventName(COMPONENT_NAME, this.groupId, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>): void => this.handleGroupTimeChange(uniId, selectedValues))
 		}
 	}
 	// 初始化
@@ -212,7 +212,7 @@ export struct IBestTimePicker {
 		}
 		this.onChange(this.value)
 		if(this.groupId) {
-			emitter.emit(getPickerEventName(this.groupId, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE), this.uniId, this.value)
+			emitter.emit(getEventName(COMPONENT_NAME, this.groupId, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE), this.uniId, this.value)
 		}
 	}
 	// 处理同组时间变化

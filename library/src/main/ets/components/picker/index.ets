@@ -159,7 +159,6 @@ export struct IBestPicker{
 				})
 			}
 			.width(CONTAINER_SIZE.FULL)
-			.height(CONTAINER_SIZE.FULL)
 			.justifyContent(FlexAlign.Center)
 			// 模糊蒙层
 			Column(){
@@ -199,11 +198,10 @@ export struct IBestPicker{
 						)
 				})
 			}
-			.width(CONTAINER_SIZE.FULL)
 			.height(CONTAINER_SIZE.FULL)
 			.justifyContent(FlexAlign.Center)
 		}
-		.height(this.itemCalcHeight * this.visibleItemCount)
+		.height((this.itemCalcHeight || 44) * this.visibleItemCount)
 		.clip(true)
 	}
 
@@ -227,7 +225,6 @@ export struct IBestPicker{
 					})
 				})
 			}
-			.width(CONTAINER_SIZE.FULL)
 			.height(CONTAINER_SIZE.FULL)
 			.justifyContent(FlexAlign.Center)
 			// 模糊蒙层
@@ -301,6 +298,10 @@ export struct IBestPicker{
 		}else{
 			this.initWidthMultiple(type)
 		}
+		this.initSize()
+	}
+	initSize(){
+		this.isReady = false
 		setTimeout(() => {
 			if(this.horizontal){
 				this.itemCalcWidth = getComponentsInfo(this.uiContext, `ibest_picker_text_${this.uniId}_0`).width
@@ -507,6 +508,11 @@ export struct IBestPicker{
 		.width(CONTAINER_SIZE.FULL)
 		.alignItems(HorizontalAlign.Start)
 		.backgroundColor(this.baseStyle.default)
+		.onVisibleAreaChange([0, 1], (isExpanding: boolean) => {
+			if(isExpanding && !this.itemCalcHeight){
+				this.initSize()
+			}
+		})
 	}
 }
 

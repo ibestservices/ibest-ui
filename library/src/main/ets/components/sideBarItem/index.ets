@@ -3,7 +3,7 @@ import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
 import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
 import { emitter } from "../../utils/EventEmitter"
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from "../../utils/utils"
-import { SideBarConfig, SIDEBAR_EVENT_NAME } from "../sideBar/index.type"
+import { COMPONENT_NAME, SideBarConfig, SIDEBAR_EVENT_NAME } from "../sideBar/index.type"
 @Component
 export struct IBestSideBarItem{
 	/**
@@ -39,11 +39,11 @@ export struct IBestSideBarItem{
 	@State isActive: boolean = false
 
 	aboutToAppear(): void {
-		emitter.on(getEventName(this.groupId, SIDEBAR_EVENT_NAME.INIT_ITEM), (active: number, config?: SideBarConfig): void => this.init(active, config))
+		emitter.on(getEventName(COMPONENT_NAME, this.groupId, SIDEBAR_EVENT_NAME.INIT_ITEM), (active: number, config?: SideBarConfig): void => this.init(active, config))
 	}
 
 	aboutToDisappear(): void {
-		emitter.off(getEventName(this.groupId, SIDEBAR_EVENT_NAME.INIT_ITEM), (active: number, config?: SideBarConfig): void => this.init(active, config))
+		emitter.off(getEventName(COMPONENT_NAME, this.groupId, SIDEBAR_EVENT_NAME.INIT_ITEM), (active: number, config?: SideBarConfig): void => this.init(active, config))
 
 	}
 
@@ -54,7 +54,7 @@ export struct IBestSideBarItem{
 		}
 	}
 	changeActive(){
-		emitter.emit(getEventName(this.groupId, SIDEBAR_EVENT_NAME.CHANGE_ACTIVE), this.index)
+		emitter.emit(getEventName(COMPONENT_NAME, this.groupId, SIDEBAR_EVENT_NAME.CHANGE_ACTIVE), this.index)
 		this.onItemClick(this.index)
 	}
 

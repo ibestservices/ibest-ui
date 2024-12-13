@@ -1,7 +1,7 @@
 import { emitter } from '../../utils/EventEmitter';
-import { sleep } from '../../utils/utils';
+import { getEventName, sleep } from '../../utils/utils';
 import { CheckedItem, initCheckboxStore, removeCheckboxStore } from './store';
-import { CHECKBOX_GROUP_EVENT_NAME, getCheckboxNamespace } from './utils';
+import { CHECKBOX_GROUP_EVENT_NAME, COMPONENT_NAME } from './index.type';
 
 export interface CheckboxGroupContext {
   /**
@@ -67,7 +67,7 @@ export struct IBestCheckboxGroup {
    * 通过emitter通知相同group的子组件更新disabled状态
    */
   handleMaxChange() {
-    this.max > 0 && emitter.emit(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), {
+    this.max > 0 && emitter.emit(getEventName(COMPONENT_NAME, this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), {
       max: this.max,
       checkedList: this.checkedList
     })
@@ -78,7 +78,7 @@ export struct IBestCheckboxGroup {
    * @param {boolean} [isSelectAll] 切换所有复选框，传 true 为选中，false 为取消选中，不传参为取反
    */
   public async toggleAll(isSelectAll?: boolean) {
-    emitter.emit(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), isSelectAll)
+    emitter.emit(getEventName(COMPONENT_NAME, this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), isSelectAll)
   }
 
   build() {

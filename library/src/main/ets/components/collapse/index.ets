@@ -1,7 +1,7 @@
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { emitter } from '../../utils/EventEmitter'
 import { getEventName } from '../../utils/utils'
-import { CollapseItem, COLLAPSE_EVENT_NAME, IBestCollapseController, ToggleOption } from './index.type'
+import { CollapseItem, COLLAPSE_EVENT_NAME, COMPONENT_NAME, IBestCollapseController, ToggleOption } from './index.type'
 @Component
 export struct IBestCollapse {
     /**
@@ -37,8 +37,8 @@ export struct IBestCollapse {
 
     aboutToAppear(): void {
         this.controller.toggleAll = (option?: boolean | ToggleOption): void => this.toggleAll(option)
-        emitter.on(getEventName(this.groupId, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME), (name: string, disabled: boolean): void => this.getAllNames(name, disabled))
-        emitter.on(getEventName(this.groupId, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE), (name: string, isExpand: boolean): void => this.setName(name, isExpand))
+        emitter.on(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME), (name: string, disabled: boolean): void => this.getAllNames(name, disabled))
+        emitter.on(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE), (name: string, isExpand: boolean): void => this.setName(name, isExpand))
     }
     onDidBuild(): void {
         setTimeout(() => {
@@ -46,12 +46,12 @@ export struct IBestCollapse {
         }, 0)
     }
     aboutToDisappear(): void {
-        emitter.off(getEventName(this.groupId, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME), (name: string, disabled: boolean): void => this.getAllNames(name, disabled))
-        emitter.off(getEventName(this.groupId, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE), (name: string, isExpand: boolean): void => this.setName(name, isExpand))
+        emitter.off(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME), (name: string, disabled: boolean): void => this.getAllNames(name, disabled))
+        emitter.off(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE), (name: string, isExpand: boolean): void => this.setName(name, isExpand))
     }
 
     initItem(){
-        emitter.emit(getEventName(this.groupId, COLLAPSE_EVENT_NAME.INIT_ITEM), this.activeName)
+        emitter.emit(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.INIT_ITEM), this.activeName)
     }
 
     getAllNames(name: string, disabled: boolean){

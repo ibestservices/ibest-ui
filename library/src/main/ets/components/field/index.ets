@@ -2,7 +2,9 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { FieldValidateResult, FORM_EVENT_NAME, IBestFormRuleItem,
+import {
+    COMPONENT_NAME,
+    FieldValidateResult, FORM_EVENT_NAME, IBestFormRuleItem,
     IBestFormSendFieldCallResult } from '../form/index.type'
 import type { IBestFieldType, ClearTriggerType, FieldTextAlign, IBestFieldValueType,
     RequireAsteriskPositionType,
@@ -254,7 +256,7 @@ export struct IBestField{
 
     aboutToAppear(): void {
         if(this.formId && this.prop){
-            emitter.emit(getEventName(this.formId, FORM_EVENT_NAME.SEND_FIELD), {
+            emitter.emit(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.SEND_FIELD), {
                 prop: this.prop,
                 validate: (rules: IBestFormRuleItem[]):Promise<void | FieldValidateResult> => this.validate(rules),
                 getValue: (): IBestFieldValueType => this.value,
@@ -266,7 +268,7 @@ export struct IBestField{
     }
     aboutToDisappear(): void {
         if(this.formId && this.prop) {
-            emitter.off(getEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (result: IBestFormSendFieldCallResult): void => this.init(result))
+            emitter.off(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (result: IBestFormSendFieldCallResult): void => this.init(result))
         }
     }
     // 初始化参数
@@ -354,7 +356,7 @@ export struct IBestField{
         if(this.formId && this.prop){
             let rules: IBestFormRuleItem[] = this.getFilteredRule(trigger)
             if(rules.length) {
-                emitter.emit(getEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), this.prop)
+                emitter.emit(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), this.prop)
             }
         }
     }

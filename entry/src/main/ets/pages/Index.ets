@@ -151,10 +151,10 @@ struct Index {
 					name: 'PullRefresh 下拉刷新',
 					path: 'pages/PullRefresh'
 				},
-				// {
-				//   name: 'SwipeCell 滑动单元格',
-				//   path: 'pages/SwipeCell'
-				// }
+				{
+				  name: 'SwipeCell 滑动单元格',
+				  path: 'pages/SwipeCell'
+				}
 			]
 		},
 		{
@@ -236,9 +236,9 @@ struct Index {
 	aboutToAppear(): void {
 		// setTimeout(() => {
 		// 	router.pushUrl({
-		// 		url: 'pages/SideBar',
+		// 		url: 'pages/SwipeCell',
 		// 		params: {
-		// 			title: "SideBar 侧边导航"
+		// 			title: "SwipeCell 滑动单元格"
 		// 		}
 		// 	})
 		// }, 100)
@@ -285,7 +285,7 @@ struct Index {
 							.margin({
 								bottom: SPACE.SM
 							})
-							.backgroundColor(0xFFFFFF)
+							.backgroundColor(BACKGROUND_COLOR.DEFAULT)
 							.stateStyles({
 								normal: {
 									.scale({

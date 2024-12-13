@@ -1,9 +1,7 @@
 import { emitter } from '../../utils/EventEmitter';
-import { sleep } from '../../utils/utils';
 import { CheckedItem, initRadioGroupStore, removeRadioGroupStore } from './store';
-import { getRadioGroupNamespace, RADIO_GROUP_EVENT_NAME } from './utils';
-
-
+import { COMPONENT_NAME, RADIO_GROUP_EVENT_NAME } from './index.type';
+import { getEventName } from '../../utils/utils';
 @Component
 export struct IBestRadioGroup {
   /**
@@ -25,7 +23,7 @@ export struct IBestRadioGroup {
   onChange: (radioName: string) => void = () => {}
 
   handleInitRadio(radioName: string | number){
-    emitter.emit(getRadioGroupNamespace(this.group, RADIO_GROUP_EVENT_NAME.ON_INIT), radioName)
+    emitter.emit(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.ON_INIT), radioName)
   }
 
 

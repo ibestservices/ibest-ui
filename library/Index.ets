@@ -130,3 +130,5 @@ export { IBestTextEllipsis } from './src/main/ets/components/textEllipsis/index'
 
 export { IBestSideBar } from './src/main/ets/components/sideBar/index'
 export { IBestSideBarItem } from './src/main/ets/components/sideBarItem/index'
+
+export { IBestSwipeCell } from './src/main/ets/components/swipeCell/index'

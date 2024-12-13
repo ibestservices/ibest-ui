@@ -9,7 +9,8 @@ import {
 	IBestFormController,
 	IBestFormRule,
 	IBestFieldItem,
-	IBestFormSendFieldCallResult
+	IBestFormSendFieldCallResult,
+	COMPONENT_NAME
 } from './index.type'
 
 @Component
@@ -76,15 +77,15 @@ export struct IBestForm {
 		}
 		if(this.formId){
 			// 初始化收集表单项信息
-			emitter.on(getEventName(this.formId, FORM_EVENT_NAME.SEND_FIELD), (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void): void => this.init(data, callBack))
+			emitter.on(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.SEND_FIELD), (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void): void => this.init(data, callBack))
 			// 验证单个表单
-			emitter.on(getEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (name: string): void => this.validateField(name))
+			emitter.on(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (name: string): void => this.validateField(name))
 		}
 	}
 	aboutToDisappear(): void {
 		if(this.formId){
-			emitter.off(getEventName(this.formId, FORM_EVENT_NAME.SEND_FIELD), (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void): void => this.init(data, callBack))
-			emitter.off(getEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (name: string): void => this.validateField(name))
+			emitter.off(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.SEND_FIELD), (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void): void => this.init(data, callBack))
+			emitter.off(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (name: string): void => this.validateField(name))
 		}
 	}
 	// 初始化

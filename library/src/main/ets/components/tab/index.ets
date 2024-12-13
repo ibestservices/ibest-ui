@@ -115,7 +115,6 @@ export struct IBestTabs{
     onTabClick: (name: string) => void = () => {}
     /**
      * tabContent 内容列表
-     * @since 1.17.0
      */
     // @BuilderParam tabContent?: CustomBuilder
     /**
@@ -149,6 +148,7 @@ export struct IBestTabs{
         let index = this.tabsList.findIndex((item: IBestTabItem) => item.name == this.currentName)
         this.getTabsWidth()
         this.getAndSetLineWidth(index)
+        this.scrollCenter()
         this.swiperChange(index, false)
     }, 50)
     // 列表变化
@@ -173,7 +173,7 @@ export struct IBestTabs{
     }
     // 切换swiper
     swiperChange(index: number, animated: boolean){
-        this.swiperController.changeIndex(index, animated)
+        // this.swiperController.changeIndex(index, animated)
     }
     // 切换name
     changeTab(name: string){
@@ -220,15 +220,15 @@ export struct IBestTabs{
         return typeof this.tabLineWidth == "number" ? this.tabLineWidth : parseFloat(this.tabLineWidth)
     }
     // 滚动居中
-    scrollCenter(){
+    scrollCenter(animate: boolean = true){
         if(this.tabWidthType == "auto"){
             this.scroller.scrollTo({
                 xOffset: getSizeByUnit((this.type == "line" ? this.translateX : this.tabBoxTranslateX) - this.tabContentWidth/2 + this.tabBoxWidth/2),
                 yOffset: 0,
-                animation: {
-                    duration: 100,
+                animation: animate ? {
+                    duration: animate ? 100 : 0,
                     curve: Curve.FastOutSlowIn
-                }
+                } : false
             })
         }
     }
@@ -274,7 +274,6 @@ export struct IBestTabs{
                 .scrollable(ScrollDirection.Horizontal)
                 .scrollBar(BarState.Off)
                 .align(Alignment.Start)
-                .layoutWeight(1)
                 .constraintSize({ maxHeight: getSizeByUnit(this.tabHeight) })
                 .id(`tabContent_${this.uniId}`)
             }else{

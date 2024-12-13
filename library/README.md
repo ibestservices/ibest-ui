@@ -1,4 +1,4 @@
-# IBest-ui
+# IBest-UI
 
 ## 简介
 

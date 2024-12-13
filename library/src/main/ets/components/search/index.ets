@@ -99,6 +99,16 @@ export struct IBestSearch {
 	 */
 	@Prop enterKeyType: EnterKeyType = EnterKeyType.Search
 	/**
+	 * 右侧按钮背景色
+	 * @since 2.0.1
+     */
+	@Prop rightBtnBgColor: ResourceColor = this.baseStyle.default
+	/**
+	 * 右侧按钮按压背景色
+	 * @since 2.0.1
+     */
+	@Prop rightBtnPressBgColor: ResourceColor = GRAY_COLOR.GRAY_2
+	/**
 	 * 自定义右侧按钮
 	 */
 	@BuilderParam customRightButton?: CustomBuilder
@@ -196,16 +206,16 @@ export struct IBestSearch {
 					this.customRightButton()
 				}else if(this.showRightButton){
 					Text(this.rightButtonText)
-						.width(convertDimensionsWidthUnit(44))
+						.constraintSize({minWidth: convertDimensionsWidthUnit(44)})
 						.height(CONTAINER_SIZE.FULL)
 						.fontSize(this.baseStyle.fontSizeMd)
 						.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs })
 						.stateStyles({
 							normal: {
-								.backgroundColor(this.baseStyle.default)
+								.backgroundColor(this.rightBtnBgColor)
 							},
 							pressed: {
-								.backgroundColor(GRAY_COLOR.GRAY_2)
+								.backgroundColor(this.rightBtnPressBgColor)
 							}
 						})
 						.onClick(() => {

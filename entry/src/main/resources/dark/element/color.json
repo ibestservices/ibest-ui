@@ -2,35 +2,35 @@
 	"color": [
 		{
 			"name": "text_color_1",
-			"value": "#000"
+			"value": "#fff"
 		},
 		{
 			"name": "text_color_2",
-			"value": "#323232"
+			"value": "#ffffffe6"
 		},
 		{
 			"name": "text_color_3",
-			"value": "#34495e"
+			"value": "#ffffffbf"
 		},
 		{
 			"name": "text_color_4",
-			"value": "#969799"
+			"value": "#ffffff99"
 		},
 		{
 			"name": "background",
-			"value": "#f7f8fa"
+			"value": "#000"
 		},
 		{
 			"name": "background_2",
-			"value": "#fff"
+			"value": "#ffffff0f"
 		},
 		{
 			"name": "background_3",
-			"value": "#fff"
+			"value": "#ffffff1a"
 		},
 		{
 			"name": "border_color",
-			"value": "#f2f3f5"
+			"value": "#3a3a3c"
 		}
 	]
 }

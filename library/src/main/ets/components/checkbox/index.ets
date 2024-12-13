@@ -3,9 +3,9 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { CheckedItem, updateCheckboxStoreByKey } from '../checkboxGroup/store';
-import { CHECKBOX_GROUP_EVENT_NAME, getCheckboxNamespace } from '../checkboxGroup/utils';
+import { CHECKBOX_GROUP_EVENT_NAME, COMPONENT_NAME } from '../checkboxGroup/index.type';
 import { MaxChangeArgs, BuilderArgs } from './index.type';
-import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils';
 @Component
 export struct IBestCheckbox {
   /**
@@ -235,8 +235,8 @@ export struct IBestCheckbox {
     this.updateGroupStore()
     // 如果有组 监听max change
     if (this.isHasGroup()) {
-      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), (data: MaxChangeArgs): void => this.handleMaxChange(data))
-      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), (isSelectAll: boolean): void => this.handleToggleChange(isSelectAll))
+      emitter.on(getEventName(COMPONENT_NAME, this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), (data: MaxChangeArgs): void => this.handleMaxChange(data))
+      emitter.on(getEventName(COMPONENT_NAME, this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), (isSelectAll: boolean): void => this.handleToggleChange(isSelectAll))
     } else {
       this.getIsDisabled()
     }
@@ -245,8 +245,8 @@ export struct IBestCheckbox {
 
   aboutToDisappear() {
     if (this.isHasGroup()) {
-      emitter.off(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), (data: MaxChangeArgs): void => this.handleMaxChange(data))
-      emitter.on(getCheckboxNamespace(this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), (isSelectAll: boolean): void => this.handleToggleChange(isSelectAll))
+      emitter.off(getEventName(COMPONENT_NAME, this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), (data: MaxChangeArgs): void => this.handleMaxChange(data))
+      emitter.on(getEventName(COMPONENT_NAME, this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), (isSelectAll: boolean): void => this.handleToggleChange(isSelectAll))
     }
     clearTimeout(this.isShowIndeterminateTimeId)
   }

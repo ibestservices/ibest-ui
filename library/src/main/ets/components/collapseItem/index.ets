@@ -4,7 +4,7 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { emitter } from '../../utils/EventEmitter'
 import { convertDimensionsWidthUnit, getComponentsInfo, getEventName, getSizeByUnit } from '../../utils/utils'
-import { COLLAPSE_EVENT_NAME } from '../collapse/index.type'
+import { COLLAPSE_EVENT_NAME, COMPONENT_NAME } from '../collapse/index.type'
 import { IBestIcon } from '../icon'
 
 @Component
@@ -89,13 +89,13 @@ export struct IBestCollapseItem {
         this.uniId = this.getUniqueId()
         this.getContentHeight()
         if(this.groupId){
-            emitter.emit(getEventName(this.groupId, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME), this.name, this.disabled || this.readOnly)
-            emitter.on(getEventName(this.groupId, COLLAPSE_EVENT_NAME.INIT_ITEM), (activeNames: string | string[]): void => this.changeState(activeNames))
+            emitter.emit(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME), this.name, this.disabled || this.readOnly)
+            emitter.on(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.INIT_ITEM), (activeNames: string | string[]): void => this.changeState(activeNames))
         }
     }
     aboutToDisappear(): void {
         if(this.groupId){
-            emitter.off(getEventName(this.groupId, COLLAPSE_EVENT_NAME.INIT_ITEM), (activeNames: string | string[]): void => this.changeState(activeNames))
+            emitter.off(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.INIT_ITEM), (activeNames: string | string[]): void => this.changeState(activeNames))
         }
     }
     getIsDisabled(){
@@ -119,7 +119,7 @@ export struct IBestCollapseItem {
 
     toggle(){
         this.isExpand = !this.isExpand
-        emitter.emit(getEventName(this.groupId, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE), this.name, this.isExpand)
+        emitter.emit(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE), this.name, this.isExpand)
     }
 
     build() {
