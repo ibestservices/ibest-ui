@@ -1,7 +1,8 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils';
-import { IBestLoading } from '../loading'
+import { IBestLoading } from '../loading';
+import { IBestSwitchColor } from './color';
 
 @Component
 export struct IBestSwitch {
@@ -26,7 +27,7 @@ export struct IBestSwitch {
   /**
    * 关闭时的背景色
    */
-  @Prop inactiveColor: ResourceColor = 'rgba(120, 120, 128, 0.2)'
+  @Prop inactiveColor: ResourceColor = IBestSwitchColor.bg
   /**
    * 开关默认选中的状态
    */
@@ -119,7 +120,7 @@ export struct IBestSwitch {
         offsetY: px2vp(3),
         radius:  px2vp(1)
       })
-      .backgroundColor('#fff')
+      .backgroundColor(IBestSwitchColor.white)
       .translate({
         x: this.value ? this.switchBarSize - 4 : 0
       })

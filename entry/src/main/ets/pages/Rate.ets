@@ -1,8 +1,7 @@
-import { IBestRate, IBestToast } from '@ibestservices/ibest-ui'
+import { IBestNavBar, IBestRate, IBestToast } from '@ibestservices/ibest-ui'
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../assets/global.type'
-import TitleBar from '../components/TitleBar'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 
 @Entry
@@ -22,9 +21,13 @@ struct RatePage {
 
 	build() {
 		Column(){
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -124,6 +127,6 @@ struct RatePage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(BACKGROUND_COLOR.BASE)
+		.backgroundColor(modeColor.bg2)
 	}
 }

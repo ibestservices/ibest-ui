@@ -2,8 +2,8 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { LoadingIconType } from '../../model/Global.type';
-import {IBestLoadingCircular} from './circular'
-import {IBestLoadingSpinner} from './spinner'
+import { IBestLoadingCircular } from './circular';
+import { IBestLoadingSpinner } from './spinner';
 import { getSizeByUnit } from '../../utils/utils';
 @Component
 export struct IBestLoading {
@@ -50,11 +50,11 @@ export struct IBestLoading {
   /**
    * loadingText的marginLeft值 只有在vertical为false 即横向布局时有效
    */
-  @Prop loadingTextMarginLeft: string | number = this.baseStyle.spaceXs;
+  @Prop loadingTextMarginLeft: string | number = this.baseStyle.spaceXs as string
   /**
    * loadingText的marginTop值 只有在vertical为true 即垂直布局时有效
    */
-  @Prop loadingTextMarginTop: string | number = this.baseStyle.spaceXs;
+  @Prop loadingTextMarginTop: string | number = this.baseStyle.spaceXs as string
   /**
    * 加载的文案
    */

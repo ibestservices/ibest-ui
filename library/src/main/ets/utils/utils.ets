@@ -206,7 +206,7 @@ export function getEventName(componentName: string, groupId: string, eventName: 
  */
 export function getSizeByUnit(val: string | number, isFont?: boolean): string {
   if(typeof val == "string") return val
-  let config: IBestGlobalConfig = AppStorage.get("iBestGlobalConfig") as IBestGlobalConfig
+  let config: IBestGlobalConfig = AppStorage.get("IBestGlobalConfig") as IBestGlobalConfig
   let unit = isFont ? config.fontUnit : config.unit
   return `${val}${unit}`
 }
@@ -214,14 +214,14 @@ export function getSizeByUnit(val: string | number, isFont?: boolean): string {
  * 根据配置获取LengthUnit
  */
 export function getLengthUnit(): LengthUnit{
-  let config: IBestGlobalConfig = AppStorage.get("iBestGlobalConfig") as IBestGlobalConfig
+  let config: IBestGlobalConfig = AppStorage.get("IBestGlobalConfig") as IBestGlobalConfig
   return config.unit == "lpx" ? LengthUnit.LPX : config.unit == "vp" ? LengthUnit.VP : LengthUnit.PX
 }
 /**
  * 根据单位转换尺寸 用于框架固定尺寸格式化 带单位
  */
 export function convertDimensionsWidthUnit(val: number, isFont?: boolean): string{
-  let config: IBestGlobalConfig = AppStorage.get("iBestGlobalConfig") as IBestGlobalConfig
+  let config: IBestGlobalConfig = AppStorage.get("IBestGlobalConfig") as IBestGlobalConfig
   let unit = "vp"
   if(config){
     unit = (isFont ? config.fontUnit : config.unit) as string
@@ -232,7 +232,7 @@ export function convertDimensionsWidthUnit(val: number, isFont?: boolean): strin
  * 根据单位转换尺寸
  */
 export function convertDimensions(val: number, isFont?: boolean): number{
-  let config: IBestGlobalConfig = AppStorage.get("iBestGlobalConfig") as IBestGlobalConfig
+  let config: IBestGlobalConfig = AppStorage.get("IBestGlobalConfig") as IBestGlobalConfig
   if(config){
     let unit = isFont ? config.fontUnit : config.unit
     switch (unit){

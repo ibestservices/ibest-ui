@@ -4,8 +4,10 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { CheckedItem, updateCheckboxStoreByKey } from '../checkboxGroup/store';
 import { CHECKBOX_GROUP_EVENT_NAME, COMPONENT_NAME } from '../checkboxGroup/index.type';
-import { MaxChangeArgs, BuilderArgs } from './index.type';
+import { BuilderArgs, MaxChangeArgs } from './index.type';
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils';
+import { IBestCheckboxColor } from './color';
+
 @Component
 export struct IBestCheckbox {
   /**
@@ -74,7 +76,7 @@ export struct IBestCheckbox {
   /**
    * 改变的回调
    */
-  onChange?: (checked: boolean) => void;
+  onChange: (checked: boolean) => void = () => {}
   /**
    * 受checkboxgroup的最大可选数量禁用的
    */
@@ -108,9 +110,9 @@ export struct IBestCheckbox {
    */
   getBackgroundColor() {
     if (this.mergeDisabled) {
-      return GRAY_COLOR.GRAY_3
+      return IBestCheckboxColor.borderColor
     } else {
-      return this.isShowBackground() ? this.checkedColor || this.baseStyle.primary : 'transparent'
+      return this.isShowBackground() ? this.checkedColor || this.baseStyle.primary : ""
     }
   }
 
@@ -131,7 +133,7 @@ export struct IBestCheckbox {
    * @returns
    */
   getLabelColor() {
-    return this.mergeDisabled ? GRAY_COLOR.GRAY_5 : GRAY_COLOR.GRAY_8
+    return this.mergeDisabled ? IBestCheckboxColor.disabledLabelColor : IBestCheckboxColor.labelColor
   }
 
   /**
@@ -139,7 +141,7 @@ export struct IBestCheckbox {
    * @returns
    */
   getIconColor() {
-    return this.mergeDisabled ? GRAY_COLOR.GRAY_5 : '#fff'
+    return this.mergeDisabled ? GRAY_COLOR.GRAY_5 : IBestCheckboxColor.whiteColor
   }
 
   /**
@@ -172,7 +174,7 @@ export struct IBestCheckbox {
   }
 
   handleValueChange() {
-    typeof this.onChange === 'function' && this.onChange(this.value)
+    this.onChange(this.value)
     this.updateGroupStore()
   }
 
@@ -282,7 +284,6 @@ export struct IBestCheckbox {
         if (typeof this.iconBuilder === 'function') {
           this.iconBuilder({ checked: this.value, disabled: this.mergeDisabled })
         } else {
-
           Image(this.isShowIndeterminateImg ? $r('app.media.indeterminate') : $r('app.media.success'))
             .fillColor(this.getIconColor())
             .width(getSizeByUnit(this.iconSize))

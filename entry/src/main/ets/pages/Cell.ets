@@ -1,8 +1,7 @@
 import router from '@ohos.router';
-import { IBestCell, IBestTag, IBestCellGroup } from '@ibestservices/ibest-ui';
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar'
-import ComponentShowContainer from '../components/ComponentShowContainer'
+import { IBestCell, IBestCellGroup, IBestNavBar, IBestTag } from '@ibestservices/ibest-ui';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
+import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 
 
@@ -41,9 +40,13 @@ struct CellPage {
 
   build() {
     Column() {
-      TitleBar({
-        title: this.title
-      }).backgroundColor('#FFF')
+      IBestNavBar({
+        title: this.title,
+        isShowStatusBar: true,
+        onLeftClick: () => {
+          router.back()
+        }
+      })
 
 
       List() {
@@ -244,6 +247,6 @@ struct CellPage {
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)
-    .backgroundColor(BACKGROUND_COLOR.BASE)
+    .backgroundColor(modeColor.bg)
   }
 }

@@ -1,8 +1,8 @@
 import router from '@ohos.router';
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar'
-import ComponentShowContainer from '../components/ComponentShowContainer'
-import { IBestDialog, IBestCell, IBestCellGroup, IBestDialogUtil } from '@ibestservices/ibest-ui'
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
+import TitleBar from '../components/TitleBar';
+import ComponentShowContainer from '../components/ComponentShowContainer';
+import { IBestCell, IBestCellGroup, IBestDialog, IBestDialogUtil } from '@ibestservices/ibest-ui';
 import { ComponentRouterParams } from '../assets/global.type';
 
 export interface TextData {
@@ -243,6 +243,6 @@ struct DialogPage {
 
     }.width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)
-    .backgroundColor(BACKGROUND_COLOR.BASE)
+    .backgroundColor(modeColor.bg)
   }
 }

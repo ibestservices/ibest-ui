@@ -1,8 +1,8 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestStepperBtn } from './stepperBtn'
 import { accAdd, accSub, convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
+import { IBestStepperColor } from './color'
 
 enum STEPPER_BTN_TYPE {
   PLUS = 'PLUS',
@@ -30,7 +30,7 @@ export struct IBestStepper {
   /**
    * 加减按钮图标的左右radius值
    */
-  @Prop buttonRadius: number | string = this.baseStyle.borderRadiusSm
+  @Prop buttonRadius: number | string = this.baseStyle.borderRadiusSm as string
   /**
    * 默认值
    */
@@ -263,11 +263,9 @@ export struct IBestStepper {
           onClickBtn: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.REDUCE),
           onLongPress: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.REDUCE)
         }) {
-          Image($r("app.media.minus")).width(getSizeByUnit(this.iconSize))
+          Image($r("app.media.minus")).width(getSizeByUnit(this.iconSize)).fillColor(IBestStepperColor.textColor)
         }
       }
-
-
       // 输入框
       if (this.showInput) {
         TextInput({ text: this.inputNumValue })
@@ -281,16 +279,14 @@ export struct IBestStepper {
             right: convertDimensionsWidthUnit(2)
           })
           .fontSize(this.baseStyle.fontSizeMd)
-          .fontColor(GRAY_COLOR.GRAY_8)
-          .backgroundColor(GRAY_COLOR.GRAY_2)
+          .fontColor(this.disabled ? IBestStepperColor.disabledTextColor : IBestStepperColor.textColor)
+          .backgroundColor(IBestStepperColor.bg)
           .borderRadius(0)
           .textAlign(TextAlign.Center)
           .inputFilter(this.integer ? '[0-9-]' : '[0-9\.-]')
           .onChange((val) => this.handleInputNumChange(val, true))
-          .focusable(!this.disableInput)
-          .enabled(!this.disabled && !this.loading)
+          .focusable(!(this.disabled || this.disableInput || this.loading))
       }
-
       if (this.showPlus) {
         // 增加按钮
         IBestStepperBtn({
@@ -301,7 +297,7 @@ export struct IBestStepper {
           onClickBtn: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.PLUS),
           onLongPress: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.PLUS)
         }) {
-          Image($r("app.media.icon_plus")).width(getSizeByUnit(this.iconSize))
+          Image($r("app.media.icon_plus")).width(getSizeByUnit(this.iconSize)).fillColor(IBestStepperColor.textColor)
         }
       }
     }

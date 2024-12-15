@@ -1,8 +1,7 @@
 import router from '@ohos.router';
-import { IBestSwitch } from '@ibestservices/ibest-ui'
-import { BACKGROUND_COLOR, COLOR_BLUE, COLOR_GRAY, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar'
-import ComponentShowContainer from '../components/ComponentShowContainer'
+import { IBestNavBar, IBestSwitch } from '@ibestservices/ibest-ui';
+import { COLOR_GRAY, CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
+import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 
 
@@ -27,18 +26,19 @@ struct SwitchPage {
 
   build() {
     Column() {
-      TitleBar({
-        title: this.title
-      }).backgroundColor('#FFF')
-
-
+      IBestNavBar({
+        title: this.title,
+        isShowStatusBar: true,
+        onLeftClick: () => {
+          router.back()
+        }
+      })
       List() {
         ListItem() {
           ComponentShowContainer({ title: '基础用法' }) {
             IBestSwitch()
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '禁用状态' }) {
             IBestSwitch({
@@ -54,7 +54,6 @@ struct SwitchPage {
             })
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '加载状态' }) {
             IBestSwitch({
@@ -63,26 +62,21 @@ struct SwitchPage {
             }).margin({
               bottom: SPACE.SM
             })
-
             IBestSwitch({
               loading: true,
               value: false,
               activeColor: '#07c160'
-            }).margin({
-              bottom: SPACE.SM
             })
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '自定义大小' }) {
             IBestSwitch({
               value: true,
-              switchSize: 40
+              switchSize: 20
             })
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '自定义按钮' }) {
             IBestSwitch({
@@ -95,55 +89,50 @@ struct SwitchPage {
             })
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '异步控制' }) {
             IBestSwitch({
               value: true,
               onBeforeChange: ()=>{
                 return new Promise((resolve, reject)=>{
-                  AlertDialog.show(
-                    {
-                      title: '提示',
-                      message: '确定更改状态吗',
-                      autoCancel: true,
-                      alignment: DialogAlignment.Bottom,
-                      offset: { dx: 0, dy: -20 },
-                      gridCount: 3,
-                      primaryButton: {
-                        value: '取消',
-                        fontColor: COLOR_GRAY.GRAY_6,
-                        action: () => {
-                          reject()
-                        }
-                      },
-                      secondaryButton: {
-                        value: '确认',
-                        action: () => {
-                          resolve()
-                        }
-                      },
-                      cancel: () => {
+                  AlertDialog.show({
+                    title: '提示',
+                    message: '确定更改状态吗',
+                    autoCancel: true,
+                    alignment: DialogAlignment.Bottom,
+                    offset: { dx: 0, dy: -20 },
+                    gridCount: 3,
+                    primaryButton: {
+                      value: '取消',
+                      fontColor: COLOR_GRAY.GRAY_6,
+                      action: () => {
                         reject()
                       }
+                    },
+                    secondaryButton: {
+                      value: '确认',
+                      action: () => {
+                        resolve()
+                      }
+                    },
+                    cancel: () => {
+                      reject()
                     }
-                  )
+                  })
                 })
               }
             })
           }
         }
-
       }
       .layoutWeight(1)
       .padding({
         left: SPACE.SM,
         right: SPACE.SM
       })
-
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)
-    .backgroundColor(BACKGROUND_COLOR.BASE)
+    .backgroundColor(modeColor.bg)
   }
 }

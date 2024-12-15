@@ -1,8 +1,7 @@
-import { IBestSearch, IBestToast } from '@ibestservices/ibest-ui'
+import { IBestNavBar, IBestSearch, IBestToast } from '@ibestservices/ibest-ui'
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../assets/global.type'
-import TitleBar from '../components/TitleBar'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 
 @Entry
@@ -14,14 +13,18 @@ struct SearchPage {
 		Text("自定义按钮")
 			.height("100%")
 			.padding({ left: 10, right: 10 })
-			.backgroundColor("#eee")
+			.backgroundColor(modeColor.bg2)
 	}
 
 	build() {
 		Column(){
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -108,6 +111,6 @@ struct SearchPage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(BACKGROUND_COLOR.BASE)
+		.backgroundColor(modeColor.bg)
 	}
 }

@@ -11,7 +11,7 @@ export default class GlobalStore {
 	// windowStage
 	public static windowStage: window.WindowStage
 	// context
-	public static context: common.BaseContext
+	public static context: common.UIAbilityContext
 	// 顶部规避尺寸
 	public static topAvoidHeight: number = 0
 	// 底部导航条高度
@@ -22,7 +22,7 @@ export default class GlobalStore {
 	/**
 	 * 初始化
 	 */
-	public static init(windowStage: window.WindowStage, context: common.BaseContext){
+	public static init(windowStage: window.WindowStage, context: common.UIAbilityContext){
 		GlobalStore.windowStage = windowStage
 		GlobalStore.context = context
 		// 获取顶部和底部规避尺寸
@@ -31,6 +31,8 @@ export default class GlobalStore {
 		GlobalStore.getScreenSize()
 		// 设置旋转监听
 		GlobalStore.screenRotateListener()
+		// 监听颜色模式变化
+		GlobalStore.setColorModeListener()
 		// 注册字体
 		font.registerFont({
 			familyName: 'ibestFont',
@@ -45,8 +47,8 @@ export default class GlobalStore {
 			// console.log('getWindowAvoidSize', res.topSize, res.navigationSize)
 			GlobalStore.topAvoidHeight = res.topSize
 			GlobalStore.bottomBarHeight = res.navigationSize
-			AppStorage.setOrCreate("iBestTopAvoidHeight", GlobalStore.topAvoidHeight)
-			AppStorage.setOrCreate("iBestBottomBarHeight", GlobalStore.bottomBarHeight)
+			AppStorage.setOrCreate("IBestTopAvoidHeight", GlobalStore.topAvoidHeight)
+			AppStorage.setOrCreate("IBestBottomBarHeight", GlobalStore.bottomBarHeight)
 		})
 	}
 	/**
@@ -71,10 +73,24 @@ export default class GlobalStore {
 		})
 	}
 	/**
+	 * 监听颜色模式变化
+     */
+	private static setColorModeListener(){
+		let appContext = GlobalStore.context.getApplicationContext()
+		AppStorage.setOrCreate("IBestColorMode", GlobalStore.context.config.colorMode)
+		appContext.on('environment', {
+			onConfigurationUpdated(config) {
+				// 0 深色  1 浅色
+				AppStorage.setOrCreate("IBestColorMode", config.colorMode)
+			},
+			onMemoryLevel() {}
+		})
+	}
+	/**
 	 * 设置全局配置
 	 */
 	public static setGlobalConfig(option?: IBestGlobalConfigType){
-		AppStorage.setOrCreate("iBestGlobalConfig", new IBestGlobalConfig(option))
+		AppStorage.setOrCreate("IBestGlobalConfig", new IBestGlobalConfig(option))
 		setIBestUIBaseStyle()
 	}
 }

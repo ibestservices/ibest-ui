@@ -1,15 +1,14 @@
 import {
-    IBestCascader,
-    IBestCascaderContent,
-    IBestCascaderOption,
-    IBestCell,
-    IBestCellGroup,
-    IBestToast
+	IBestCascader,
+	IBestCascaderContent,
+	IBestCascaderOption,
+	IBestCell,
+	IBestNavBar,
+	IBestToast
 } from '@ibestservices/ibest-ui'
-import TitleBar from '../components/TitleBar'
 import { ComponentRouterParams } from '../assets/global.type'
 import router from '@ohos.router'
-import { CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { regionData } from '@ibestservices/area-data'
 @Entry
@@ -153,93 +152,77 @@ struct CascaderPage {
 
 	build() {
 		Column() {
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
-						IBestCellGroup() {
-							Column() {
-								IBestCell({
-									title: '地区',
-									value: this.fieldValue,
-									isLink: true,
-									hasBorder: false,
-									onClickCell: () => {
-										this.visible = true
-									}
-								})
+						IBestCell({
+							title: '地区',
+							value: this.fieldValue,
+							isLink: true,
+							hasBorder: false,
+							onClickCell: () => {
+								this.visible = true
 							}
-						}
+						})
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '自定义颜色', titlePaddingLeft: SPACE.XS }) {
-						IBestCellGroup() {
-							Column() {
-								IBestCell({
-									title: '地区',
-									value: this.fieldValue1,
-									isLink: true,
-									hasBorder: false,
-									onClickCell: () => {
-										this.visible1 = true
-									}
-								})
+						IBestCell({
+							title: '地区',
+							value: this.fieldValue1,
+							isLink: true,
+							hasBorder: false,
+							onClickCell: () => {
+								this.visible1 = true
 							}
-						}
+						})
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '自定义单项高度', titlePaddingLeft: SPACE.XS }) {
-						IBestCellGroup() {
-							Column() {
-								IBestCell({
-									title: '地区',
-									value: this.fieldValue2,
-									isLink: true,
-									hasBorder: false,
-									onClickCell: () => {
-										this.visible2 = true
-									}
-								})
+						IBestCell({
+							title: '地区',
+							value: this.fieldValue2,
+							isLink: true,
+							hasBorder: false,
+							onClickCell: () => {
+								this.visible2 = true
 							}
-						}
+						})
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '异步加载选项', titlePaddingLeft: SPACE.XS }) {
-						IBestCellGroup() {
-							Column() {
-								IBestCell({
-									title: '地区',
-									value: this.fieldValue3,
-									isLink: true,
-									hasBorder: false,
-									onClickCell: () => {
-										this.visible3 = true
-									}
-								})
+						IBestCell({
+							title: '地区',
+							value: this.fieldValue3,
+							isLink: true,
+							hasBorder: false,
+							onClickCell: () => {
+								this.visible3 = true
 							}
-						}
+						})
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '禁用选项', titlePaddingLeft: SPACE.XS }) {
-						IBestCellGroup() {
-							Column() {
-								IBestCell({
-									title: '地区',
-									value: this.fieldValue4,
-									isLink: true,
-									hasBorder: false,
-									onClickCell: () => {
-										this.visible4 = true
-									}
-								})
+						IBestCell({
+							title: '地区',
+							value: this.fieldValue4,
+							isLink: true,
+							hasBorder: false,
+							onClickCell: () => {
+								this.visible4 = true
 							}
-						}
+						})
 					}
 				}
 				ListItem(){
@@ -252,6 +235,7 @@ struct CascaderPage {
 				}
 			}
 			.layoutWeight(1)
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 			// 基础用法
 			IBestCascader({
 				visible: $visible,
@@ -304,6 +288,6 @@ struct CascaderPage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor("#fff")
+		.backgroundColor(modeColor.bg)
 	}
 }

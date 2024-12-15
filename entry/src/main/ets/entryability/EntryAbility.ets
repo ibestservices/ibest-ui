@@ -1,10 +1,11 @@
 import AbilityConstant from '@ohos.app.ability.AbilityConstant';
-import hilog from '@ohos.hilog';
 import UIAbility from '@ohos.app.ability.UIAbility';
 import Want from '@ohos.app.ability.Want';
 import window from '@ohos.window';
-import { IBestInit, IBestSetGlobalConfig } from '@ibestservices/ibest-ui';
-import { Configuration, ConfigurationConstant } from '@kit.AbilityKit';
+import { IBestInit } from '@ibestservices/ibest-ui';
+import { ConfigurationConstant } from '@kit.AbilityKit';
+import GlobalStore from '../utils/global';
+
 export default class EntryAbility extends UIAbility {
 	onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
 		let applicationContext = this.context.getApplicationContext()
@@ -15,7 +16,9 @@ export default class EntryAbility extends UIAbility {
 	// }
 	onWindowStageCreate(windowStage: window.WindowStage): void {
 		// Main window is created, set main page for this ability
+		windowStage.getMainWindowSync().setWindowLayoutFullScreen(true)
 		windowStage.loadContent('pages/Index', (err, data) => {
+			GlobalStore.init(windowStage, this.context)
 			// 组件库初始化
 			IBestInit(windowStage, this.context)
 			// IBestSetGlobalConfig({
@@ -25,9 +28,9 @@ export default class EntryAbility extends UIAbility {
 		});
 	}
 
-	onConfigurationUpdate(newConfig: Configuration): void {
-		console.log("onConfigurationUpdate", newConfig.colorMode)
-	}
+	// onConfigurationUpdate(newConfig: Configuration): void {
+	// 	console.log("onConfigurationUpdate", newConfig.colorMode)
+	// }
 	// onWindowStageDestroy(): void {
 	// Main window is destroyed, release UI related resources
 	// }

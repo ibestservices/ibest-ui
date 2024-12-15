@@ -1,6 +1,6 @@
 import router from '@ohos.router';
 import { IBestNavBar } from '@ibestservices/ibest-ui';
-import { BACKGROUND_COLOR, COLOR_BLUE, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import { COLOR_BLUE, CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 import { getRandomColor } from '../utils/utils';
@@ -146,6 +146,6 @@ struct NavBarPage {
 			.layoutWeight(1)
 		}
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(BACKGROUND_COLOR.BASE)
+		.backgroundColor(modeColor.bg)
 	}
 }

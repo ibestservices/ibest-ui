@@ -1,8 +1,8 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
-import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from "../../utils/utils"
-import { IBestIcon } from "../icon"
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
+import { IBestIcon } from '../icon'
 @Component
 export struct IBestNoticeBar{
 	/**
@@ -52,7 +52,7 @@ export struct IBestNoticeBar{
 	/**
 	 * 文本大小
      */
-	@Prop textFontSize: number | string = this.baseStyle.fontSizeMd
+	@Prop textFontSize: number | string = this.baseStyle.fontSizeMd as string
 	/**
 	 * 右侧图标名称
      */

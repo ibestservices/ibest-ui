@@ -1,12 +1,9 @@
-import { clamp,
-	convertDimensions,
-	convertDimensionsWidthUnit, getComponentsInfo, getLengthUnit, getSizeByUnit } from '../../utils/utils'
+import { clamp, convertDimensions, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { RateOption } from './index.type'
-import { LengthMetrics, LengthUnit } from '@kit.ArkUI'
 
 @Component
 export struct IBestRate {
@@ -113,10 +110,9 @@ export struct IBestRate {
 	}
 	// 获取组件容器宽度
 	getContentWidth(){
-		this.containerWidth = getComponentsInfo(this.context, `iBestRate_${this.uniId}`).width
-		this.iconWidth = getComponentsInfo(this.context, `iBestRate_${this.uniId}_0`).width
+		this.containerWidth = getComponentsInfo(this.context, `IBestRate_${this.uniId}`).width
+		this.iconWidth = getComponentsInfo(this.context, `IBestRate_${this.uniId}_0`).width
 		this.iconSpace = (this.containerWidth - this.iconWidth*this.count)/(this.count - 1)
-		console.log("containerWidth", this.containerWidth, this.iconWidth)
 	}
 	// 点击
 	rateClick(event: ClickEvent, index: number){
@@ -152,7 +148,7 @@ export struct IBestRate {
 				})
 			}, (item: RateOption, index) => index + "")
 		}
-		.id(`iBestRate_${this.uniId}`)
+		.id(`IBestRate_${this.uniId}`)
 		.enabled(!(this.disabled || this.readOnly))
 		.gesture(
 			PanGesture(this.panOption)
@@ -203,6 +199,6 @@ struct RateItem {
 		}
 		.width(getSizeByUnit(this.iconSize))
 		.aspectRatio(1)
-		.id(`iBestRate_${this.uniId}_${this.index}`)
+		.id(`IBestRate_${this.uniId}_${this.index}`)
 	}
 }

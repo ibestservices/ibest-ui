@@ -43,7 +43,7 @@ export struct IBestCountDown{
 	/**
 	 * 文字大小
      */
-	@Prop fontSize: string | number = this.baseStyle.fontSizeMd
+	@Prop fontSize: string | number = this.baseStyle.fontSizeMd as string
 	/**
 	 * 时间格式
      */

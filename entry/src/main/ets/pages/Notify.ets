@@ -1,8 +1,8 @@
 import router from '@ohos.router';
-import { IBestNotify, IBestCell, IBestCellGroup } from '@ibestservices/ibest-ui'
-import ComponentShowContainer from '../components/ComponentShowContainer'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar'
+import { IBestCell, IBestCellGroup, IBestNotify } from '@ibestservices/ibest-ui';
+import ComponentShowContainer from '../components/ComponentShowContainer';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
+import TitleBar from '../components/TitleBar';
 import { ComponentRouterParams } from '../assets/global.type';
 
 @Entry
@@ -148,6 +148,6 @@ struct NotifyPage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(BACKGROUND_COLOR.BASE)
+		.backgroundColor(modeColor.bg)
 	}
 }

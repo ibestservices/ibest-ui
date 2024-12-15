@@ -1,14 +1,34 @@
 /**
- * 红色
+ * 背景色颜色
  */
-interface GeneratedObjectLiteralInterface_1 {
-  DEFAULT?: ResourceColor
+interface ModeColor {
+  bg: ResourceColor
+  bg2: ResourceColor
+  bg3: ResourceColor
+  active: ResourceColor
+  textColor: ResourceColor
+  borderColor: ResourceColor
+}
+/**
+ * 背景色颜色
+ */
+export const modeColor: ModeColor = {
+  bg: $r("app.color.doc_background"),
+  bg2: $r("app.color.doc_background_2"),
+  bg3: $r("app.color.doc_background_3"),
+  active: $r("app.color.doc_active_color"),
+  textColor: $r("app.color.doc_text_color_1"),
+  borderColor: $r("app.color.doc_border_color")
+};
+
+interface ColorRed {
+  DEFAULT: ResourceColor
   BASE: ResourceColor
 }
 /**
  * 红色
  */
-export const COLOR_RED: GeneratedObjectLiteralInterface_1 = {
+export const COLOR_RED: ColorRed = {
   DEFAULT: "#DB3131",
   BASE: '#F56C6C'
 };
@@ -42,14 +62,6 @@ export const DISABLE_COLOR: GeneratedObjectLiteralInterface_2 = {
   MINI: 'rgba(56,65,83,0.5)',
   BASE: '#f2f3f7',
   MEDIUM: '#3E5071'
-};
-
-/**
- * 背景色颜色
- */
-export const BACKGROUND_COLOR:GeneratedObjectLiteralInterface_1 = {
-  DEFAULT: $r("app.color.background_3"),
-  BASE: $r("app.color.background")
 };
 
 /**

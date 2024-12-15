@@ -19,7 +19,7 @@ export struct IBestPopover{
     /**
      * 选项文字大小
      */
-    @Provide({allowOverride: "textFontSize"}) textFontSize: string | number = this.baseStyle.fontSizeMd
+    @Provide({allowOverride: "textFontSize"}) textFontSize: string | number = this.baseStyle.fontSizeMd as string
     /**
      * 文字颜色
      */
@@ -31,7 +31,7 @@ export struct IBestPopover{
     /**
      * 选项内边距
      */
-    @Provide({allowOverride: "itemPadding"}) itemPadding: string | number = this.baseStyle.spaceMd
+    @Provide({allowOverride: "itemPadding"}) itemPadding: string | number = this.baseStyle.spaceMd as string
     /**
      * 文字对齐方式
      */

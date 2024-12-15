@@ -1,8 +1,8 @@
 import router from '@ohos.router';
-import { IBestTag } from '@ibestservices/ibest-ui'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, FONT_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar'
-import ComponentShowContainer from '../components/ComponentShowContainer'
+import { IBestTag } from '@ibestservices/ibest-ui';
+import { CONTAINER_SIZE, FONT_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
+import TitleBar from '../components/TitleBar';
+import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 
 @Extend(Row) function rowStyles(hasBottomBorder: boolean = true){
@@ -225,6 +225,6 @@ struct TagPage {
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)
-    .backgroundColor(BACKGROUND_COLOR.BASE)
+    .backgroundColor(modeColor.bg)
   }
 }

@@ -1,9 +1,9 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { GRAY_COLOR } from "../../theme-chalk/src/color"
-import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { emitter } from "../../utils/EventEmitter"
-import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from "../../utils/utils"
-import { COMPONENT_NAME, LeftBarSize, SIDEBAR_EVENT_NAME } from "./index.type"
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { GRAY_COLOR } from '../../theme-chalk/src/color'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { emitter } from '../../utils/EventEmitter'
+import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
+import { COMPONENT_NAME, LeftBarSize, SIDEBAR_EVENT_NAME } from './index.type'
 @Component
 export struct IBestSideBar{
 	/**
@@ -37,7 +37,7 @@ export struct IBestSideBar{
 	/**
 	 * 文字大小
 	 */
-	@Prop titleFontSize: number | string = this.baseStyle.fontSizeMd
+	@Prop titleFontSize: number | string = this.baseStyle.fontSizeMd as string
 	/**
 	 * 激活背景色
      */

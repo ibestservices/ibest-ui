@@ -1,35 +1,47 @@
 {
 	"color": [
 		{
-			"name": "text_color_1",
+			"name": "white",
+			"value": "#fff"
+		},
+		{
+			"name": "doc_text_color_1",
 			"value": "#000"
 		},
 		{
-			"name": "text_color_2",
+			"name": "doc_text_color_2",
 			"value": "#323232"
 		},
 		{
-			"name": "text_color_3",
+			"name": "doc_text_color_3",
 			"value": "#34495e"
 		},
 		{
-			"name": "text_color_4",
+			"name": "doc_text_color_4",
 			"value": "#969799"
 		},
 		{
-			"name": "background",
+			"name": "doc_active_color",
+			"value": "#f2f3f5"
+		},
+		{
+			"name": "ibest_border_color",
+			"value": "#ebedf0"
+		},
+		{
+			"name": "doc_background",
 			"value": "#f7f8fa"
 		},
 		{
-			"name": "background_2",
+			"name": "doc_background_2",
 			"value": "#fff"
 		},
 		{
-			"name": "background_3",
+			"name": "doc_background_3",
 			"value": "#fff"
 		},
 		{
-			"name": "border_color",
+			"name": "doc_border_color",
 			"value": "#f2f3f5"
 		}
 	]

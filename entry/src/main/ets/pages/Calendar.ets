@@ -1,11 +1,17 @@
-import { CalendarConfirmResultType, IBestCalendar, IBestCalendarDialog, IBestCell, IBestCellGroup, SelectType} from
-    "@ibestservices/ibest-ui"
+import {
+    CalendarConfirmResultType,
+    IBestCalendar,
+    IBestCalendarDialog,
+    IBestCell,
+    IBestCellGroup,
+    IBestNavBar,
+    SelectType
+} from '@ibestservices/ibest-ui'
 import { router } from '@kit.ArkUI'
 import promptAction from '@ohos.promptAction'
 import { ComponentRouterParams } from '../assets/global.type'
-import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle'
 @Entry
 @Component
 struct CalendarPage {
@@ -64,9 +70,13 @@ struct CalendarPage {
     }
     build() {
         Column(){
-            TitleBar({
-                title: this.title
-            }).backgroundColor('#FFF')
+            IBestNavBar({
+                title: this.title,
+                isShowStatusBar: true,
+                onLeftClick: () => {
+                    router.back()
+                }
+            })
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
@@ -210,7 +220,7 @@ struct CalendarPage {
                 selectType: "multiple",
                 selectedStyleType: "circle",
                 minDate: new Date(),
-                maxDate: new Date("2024-12-13"),
+                maxDate: new Date("2099-12-13"),
                 confirmBtnColor: "#ed4040",
                 confirmBtnText: "完成",
                 onConfirm: (value: Array<CalendarConfirmResultType>): void => this.onDialogConfirm("customRangeDate", value)
@@ -238,6 +248,6 @@ struct CalendarPage {
         }
         .width(CONTAINER_SIZE.FULL)
         .height(CONTAINER_SIZE.FULL)
-        .backgroundColor(BACKGROUND_COLOR.BASE)
+        .backgroundColor(modeColor.bg)
     }
 }

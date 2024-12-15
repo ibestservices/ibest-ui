@@ -1,8 +1,9 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { convertDimensionsWidthUnit } from '../../utils/utils';
+import { IBestCellGroupColor } from './color';
+
 @Component
 export struct IBestCellGroup {
   /**
@@ -60,12 +61,12 @@ export struct IBestCellGroup {
           .width(CONTAINER_SIZE.FULL)
           .border({
             width: { bottom: this.getBorderWidth() },
-            color: GRAY_COLOR.GRAY_3,
+            color: IBestCellGroupColor.borderColor
           })
           .padding(this.baseStyle.spaceMd)
           .lineHeight(convertDimensionsWidthUnit(16))
           .fontSize(this.baseStyle.fontSizeMd)
-          .fontColor(GRAY_COLOR.GRAY_6)
+          .fontColor(IBestCellGroupColor.textColor)
       }
 
       if (typeof this.defaultBuilder === 'function') {
@@ -74,7 +75,7 @@ export struct IBestCellGroup {
     }
     .border({
       width: { bottom: this.getBorderWidth(), top: this.isHasTitle() ? 0 : this.getBorderWidth() },
-      color: GRAY_COLOR.GRAY_3,
+      color: IBestCellGroupColor.borderColor
     })
     .margin(this.getMargin())
     .borderRadius(this.inset ? this.baseStyle.borderRadiusLg : 0)

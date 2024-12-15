@@ -2,6 +2,8 @@ import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { PopupAlign, PopupBaseController } from './index.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { IBestPopupColor } from './color'
+import { GRAY_COLOR } from '../../theme-chalk/src/color'
 
 const popupDuration = 200
 const hideDuration = 220
@@ -16,8 +18,8 @@ interface PopupSize{
 struct IBestPopupBaseContent {
 	// 是否横屏
 	@StorageProp("isLandscape") @Watch("initSize") isLandscape: boolean = false
-	@StorageProp("iBestTopAvoidHeight") topAvoidHeight: number = 0
-	@StorageProp("iBestBottomBarHeight") bottomBarHeight: number = 0
+	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
+	@StorageProp("IBestBottomBarHeight") bottomBarHeight: number = 0
 	@State transX: string | number = ""
 	@State transY: string | number = ""
 	/**
@@ -137,7 +139,7 @@ struct IBestPopupBaseContent {
 			}
 			.width(this.initSize().width)
 			.height(this.initSize().height)
-			.backgroundColor("#fff")
+			.backgroundColor(IBestPopupColor.bgColor)
 			.padding({
 				top: this.safeAreaInsetTop && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
 					== "top") ? convertDimensionsWidthUnit(this.topAvoidHeight) : 0,
@@ -221,7 +223,7 @@ export struct IBestPopup{
 	/**
 	 * 自定义关闭图标
 	 */
-	@Provide({allowOverride: "closeIcon"}) closeIcon: ResourceStr = ""
+	@Provide({allowOverride: "closeIcon"}) closeIcon: ResourceStr = $r("app.media.close")
 	/**
 	 * 是否开启顶部安全区适配
 	 */
@@ -310,10 +312,10 @@ struct PopupTitle {
 		Row(){
 			Text(this.title)
 				.fontSize(this.baseStyle.fontSizeLg)
-			Image(this.closeIcon || $r("app.media.close"))
+			Image(this.closeIcon)
 				.width(this.baseStyle.spaceMd)
 				.aspectRatio(1)
-				.fillColor("#ccc")
+				.fillColor(GRAY_COLOR.GRAY_5)
 				.visibility(this.isShowClose ? Visibility.Visible : Visibility.None)
 				.onClick(() => {
 					this.close()

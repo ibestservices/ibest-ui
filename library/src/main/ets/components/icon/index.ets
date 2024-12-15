@@ -1,12 +1,10 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { IBestIconData } from './config'
-import { IBestIconDataType } from './index.type'
-import { http } from '@kit.NetworkKit';
-import { BusinessError } from '@kit.BasicServicesKit';
-import { image } from '@kit.ImageKit';
-import { IBestLoading } from '../loading';
+import { IBestIconData } from './config';
+import { IBestIconDataType } from './index.type';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
+import { IBestIconColor } from './color';
+
 @Component
 export struct IBestIcon {
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
@@ -17,7 +15,7 @@ export struct IBestIcon {
 	/**
 	 * 图标颜色
 	 */
-	@Prop color: ResourceColor = ''
+	@Prop color: ResourceColor = IBestIconColor.iconColor
 	/**
 	 * 图标大小
 	 */
@@ -43,32 +41,18 @@ export struct IBestIcon {
 						.aspectRatio(1)
 						.borderRadius(getSizeByUnit(this.iconRadius))
 				} else {
-					if (this.color) {
-						Text(Object(IBestIconData)[this.name])
-							.fontFamily('ibestFont')
-							.fontColor(this.color)
-							.fontSize(getSizeByUnit(this.iconSize, true))
-							.borderRadius(getSizeByUnit(this.iconRadius))
-					} else {
-						Text(Object(IBestIconData)[this.name])
-							.fontFamily('ibestFont')
-							.fontSize(getSizeByUnit(this.iconSize, true))
-							.borderRadius(getSizeByUnit(this.iconRadius))
-					}
+					Text(Object(IBestIconData)[this.name])
+						.fontFamily('ibestFont')
+						.fontColor(this.color)
+						.fontSize(getSizeByUnit(this.iconSize, true))
+						.borderRadius(getSizeByUnit(this.iconRadius))
 				}
 			} else {
-				if (this.color) {
-					Image(this.name)
-						.width(getSizeByUnit(this.iconSize))
-						.aspectRatio(1)
-						.fillColor(this.color)
-						.borderRadius(getSizeByUnit(this.iconRadius))
-				} else {
-					Image(this.name)
-						.width(getSizeByUnit(this.iconSize))
-						.aspectRatio(1)
-						.borderRadius(getSizeByUnit(this.iconRadius))
-				}
+				Image(this.name)
+					.width(getSizeByUnit(this.iconSize))
+					.aspectRatio(1)
+					.fillColor(this.color)
+					.borderRadius(getSizeByUnit(this.iconRadius))
 			}
 		}
 		.onClick(() => {

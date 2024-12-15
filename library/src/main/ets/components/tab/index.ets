@@ -1,5 +1,5 @@
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit, sleep } from '../../utils/utils';
-import { IBestTabController, IBestTabItem, TabWidthType } from './index.type';
+import { IBestTabController, IBestTabItem, IBestTabItemType, TabWidthType } from './index.type';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
@@ -34,11 +34,11 @@ export struct IBestTabs{
     /**
      * tab列表
      */
-    @Provide({ allowOverride: "tabsList" }) @Watch("tabsListChange") tabsList: IBestTabItem[] = []
+    @Provide({ allowOverride: "tabsList" }) @Watch("tabsListChange") tabsList: (IBestTabItemType | IBestTabItem)[] = []
     /**
      * 单个tab内边距
      */
-    @Provide({allowOverride: "tabPadding"}) tabPadding: number | string = this.baseStyle.spaceXs
+    @Provide({allowOverride: "tabPadding"}) tabPadding: number | string = this.baseStyle.spaceXs as string
     /**
      * tab盒子宽度
      */
@@ -90,7 +90,7 @@ export struct IBestTabs{
     /**
      * 标记线颜色
      */
-    @Provide({allowOverride: "tabLineColor"}) tabLineColor: ResourceColor = this.baseStyle.primary
+    @Provide({allowOverride: "tabLineColor"}) tabLineColor: ResourceColor = ""
     /**
      * 标记线Y偏移量
      */
@@ -98,12 +98,12 @@ export struct IBestTabs{
     /**
      * tab区域背景颜色
      */
-    @Provide({allowOverride: "tabBgColor"}) tabBgColor: ResourceColor  = this.baseStyle.default
+    @Provide({allowOverride: "tabBgColor"}) tabBgColor: ResourceColor = this.baseStyle.default
     /**
      * 字体大小
      * @since 1.15.0
      */
-    @Provide({allowOverride: "fontSize"}) fontSize: number | string = this.baseStyle.fontSizeMd
+    @Provide({allowOverride: "fontSize"}) fontSize: number | string = this.baseStyle.fontSizeMd as string
     /**
      * onChange事件回调
      */
@@ -337,6 +337,9 @@ struct IBestTabBox{
     @Prop tabBoxWidth: number
     initSize: () => void = () => () => {}
     onTabClick: (name: string) => void = () => {}
+    getLineColor(){
+        return this.tabLineColor || this.baseStyle.primary
+    }
     build() {
         Stack({alignContent: Alignment.BottomStart}){
             // 标记线
@@ -344,7 +347,7 @@ struct IBestTabBox{
                 Row()
                     .width(this.tabLineWidth)
                     .height(getSizeByUnit(this.tabLineHeight))
-                    .backgroundColor(this.tabLineColor)
+                    .backgroundColor(this.getLineColor())
                     .translate({ x: this.translateX })
                     .animation({
                         duration: 100,
@@ -357,7 +360,7 @@ struct IBestTabBox{
                 Row()
                     .width(this.tabBoxWidth + 2)
                     .height(getSizeByUnit(this.tabHeight))
-                    .backgroundColor(this.tabLineColor)
+                    .backgroundColor(this.getLineColor())
                     .translate({ x: this.tabBoxTranslateX })
                     .animation({
                         duration: 100,

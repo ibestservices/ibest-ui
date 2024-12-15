@@ -1,3 +1,11 @@
+export interface ThemeColor {
+  DEFAULT: ResourceColor
+  PRIMARY: ResourceColor
+  SUCCESS: ResourceColor
+  WARNING: ResourceColor
+  DANGER: ResourceColor
+}
+
 /**
  * 颜色类型枚举
  */
@@ -31,13 +39,13 @@ export type ColorType = `${COLOR_TYPE}`
 
 
 export interface ColorData {
-  primary: string;
-  success: string;
-  warning: string;
-  danger: string;
-  default: string;
-  primaryOpacity: string;
-  successOpacity: string;
-  warningOpacity: string;
-  dangerOpacity: string;
+  primary: ResourceColor;
+  success: ResourceColor;
+  warning: ResourceColor;
+  danger: ResourceColor;
+  default: ResourceColor;
+  primaryOpacity: ResourceColor;
+  successOpacity: ResourceColor;
+  warningOpacity: ResourceColor;
+  dangerOpacity: ResourceColor;
 }

@@ -1,31 +1,40 @@
 import router from '@ohos.router';
-import { IBestButton, IBestCheckbox, IBestSwitch, IBestTag, setIBestUIBaseStyle } from '@ibestservices/ibest-ui';
-import { BACKGROUND_COLOR, CONTAINER_SIZE, FONT_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import {
+    IBestButton,
+    IBestCheckbox,
+    IBestCircleProgress,
+    IBestNavBar,
+    IBestProgress,
+    IBestSwitch,
+    IBestTabs,
+    IBestTag,
+    setIBestUIBaseStyle
+} from '@ibestservices/ibest-ui';
+import { CONTAINER_SIZE, FONT_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
-import TitleBar from '../components/TitleBar';
 import { ComponentRouterParams } from '../assets/global.type';
 
 @Entry
 @Component
 struct ThemePage {
   @State title: string = (router.getParams() as ComponentRouterParams).title || ''
-
+  @State curTabName: string = "1"
   colorText: string = '#07c160';
 
   aboutToDisappear(){
-    // 还原
     setIBestUIBaseStyle({primary: '#3D8AF2'})
   }
 
   build() {
     Column() {
-      TitleBar({
-        title: this.title
-      }).backgroundColor('#FFF')
-
-
+      IBestNavBar({
+        title: this.title,
+        isShowStatusBar: true,
+        onLeftClick: () => {
+          router.back()
+        }
+      })
       List() {
-
         ListItem() {
           ComponentShowContainer({ title: '更改primary颜色' }) {
             Row(){
@@ -38,7 +47,6 @@ struct ThemePage {
                 .onChange(value=>{
                   this.colorText = value
                 })
-
               IBestButton({
                 type: 'primary',
                 text: '确定',
@@ -49,20 +57,16 @@ struct ThemePage {
                 }
               })
             }
-
           }
         }
-
-
         ListItem() {
           ComponentShowContainer({ title: 'Button组件' }) {
-              IBestButton({
-                type: 'primary',
-                text: '按钮'
-              })
+            IBestButton({
+              type: 'primary',
+              text: '按钮'
+            })
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: 'Checkbox组件' }) {
             IBestCheckbox({
@@ -72,7 +76,6 @@ struct ThemePage {
             })
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: 'Switch组件' }) {
             Row(){
@@ -88,7 +91,50 @@ struct ThemePage {
             }
           }
         }
-
+        ListItem() {
+          ComponentShowContainer({ title: 'CircleProgress组件' }) {
+            IBestCircleProgress({
+              value: 50,
+              text: `50%`
+            })
+          }
+        }
+        ListItem() {
+          ComponentShowContainer({ title: 'Progress组件' }) {
+            IBestProgress({
+              value: 50
+            })
+          }
+        }
+        ListItem() {
+          ComponentShowContainer({ title: 'Tabs组件' }) {
+            IBestTabs({
+              tabsList: [
+                {
+                  label: "标签一",
+                  name: "1"
+                },
+                {
+                  label: "标签二",
+                  name: "2"
+                },
+                {
+                  label: "标签三",
+                  name: "3"
+                },
+                {
+                  label: "标签四",
+                  name: "4"
+                },
+                {
+                  label: "标签五",
+                  name: "5"
+                }
+              ],
+              currentName: $curTabName
+            })
+          }
+        }
         ListItem() {
           ComponentShowContainer({ title: 'Tag组件' }) {
             IBestTag({
@@ -97,8 +143,6 @@ struct ThemePage {
             })
           }
         }
-
-
       }
       .layoutWeight(1)
       .padding({
@@ -108,6 +152,6 @@ struct ThemePage {
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)
-    .backgroundColor(BACKGROUND_COLOR.BASE)
+    .backgroundColor(modeColor.bg)
   }
 }

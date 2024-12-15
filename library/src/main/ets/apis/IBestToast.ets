@@ -3,7 +3,6 @@ import { IBestLoading } from '../components/loading'
 import { LoadingIconType, WordBreakType } from '../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src/index'
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type'
-import { debounce } from '../utils/DebounceThrottle'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../utils/utils'
 class LoadingOption{
     /**
@@ -105,7 +104,7 @@ struct defaultContent{
                 }
             }
             Text(this.option.message)
-                .fontColor('#fff')
+                .fontColor($r("app.color.ibest_white"))
                 .fontSize(this.baseStyle.fontSizeMd)
                 .wordBreak(this.option.wordBreak == "normal" ? WordBreak.NORMAL : this.option.wordBreak == "break-all" ? WordBreak.BREAK_ALL : WordBreak.BREAK_WORD)
         }

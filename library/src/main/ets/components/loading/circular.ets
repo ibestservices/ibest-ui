@@ -52,11 +52,11 @@ export struct IBestLoadingCircular {
   @State maxPerimeter: number = 0
   @State strokeDashArray: Point = new Point(0,0)
   @State strokeDashOffset: number = 0
-  @StorageProp("iBestGlobalConfig") iBestGlobalConfig: IBestGlobalConfig = new IBestGlobalConfig()
+  @StorageProp("IBestGlobalConfig") IBestGlobalConfig: IBestGlobalConfig = new IBestGlobalConfig()
   private uiContext: UIContext = this.getUIContext()
 
   aboutToAppear() {
-    this.maxPerimeter = Math.floor(Math.PI * (this.getCircleSize() + (this.iBestGlobalConfig.unit == "vp" ? 20 : 0)))
+    this.maxPerimeter = Math.floor(Math.PI * (this.getCircleSize() + (this.IBestGlobalConfig.unit == "vp" ? 20 : 0)))
     this.strokeDashArray = new Point(0,this.maxPerimeter)
   }
   getCircleSize(){

@@ -3,9 +3,10 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { CheckedItem, updateRadioGroupStoreByKey } from '../radioGroup/store';
-import { RADIO_GROUP_EVENT_NAME, COMPONENT_NAME } from '../radioGroup/index.type';
+import { COMPONENT_NAME, RADIO_GROUP_EVENT_NAME } from '../radioGroup/index.type';
 import { BuilderArgs } from './index.type';
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils';
+import { IBestRadioColor } from './color';
 
 @Component
 export struct IBestRadio {
@@ -80,9 +81,9 @@ export struct IBestRadio {
    */
   getBackgroundColor() {
     if (this.disabled) {
-      return GRAY_COLOR.GRAY_3
+      return IBestRadioColor.borderColor
     } else {
-      return this.value && this.shape != 'dot' ? this.checkedColor || this.baseStyle.primary : 'transparent'
+      return this.value && this.shape != 'dot' ? this.checkedColor || this.baseStyle.primary : ''
     }
   }
 
@@ -103,7 +104,7 @@ export struct IBestRadio {
    * @returns
    */
   getLabelColor() {
-    return this.disabled ? GRAY_COLOR.GRAY_5 : GRAY_COLOR.GRAY_8
+    return this.disabled ? IBestRadioColor.disabledLabelColor : IBestRadioColor.labelColor
   }
 
   /**
@@ -114,7 +115,7 @@ export struct IBestRadio {
     if (this.disabled) {
       return GRAY_COLOR.GRAY_5
     } else {
-      return this.shape === 'dot' ? this.checkedColor || this.baseStyle.primary : '#fff'
+      return this.shape === 'dot' ? this.checkedColor || this.baseStyle.primary : IBestRadioColor.whiteColor
     }
 
   }
@@ -196,7 +197,6 @@ export struct IBestRadio {
       if (this.labelPosition === 'left') {
         this.LabelContain()
       }
-
       // radio
       Column() {
         if (this.iconBuilder) {
@@ -238,12 +238,9 @@ export struct IBestRadio {
       .onClick(() => {
         this.handleCheckedChange()
       })
-
       if (this.labelPosition === 'right') {
         this.LabelContain()
       }
-
     }.enabled(!this.disabled)
-
   }
 }

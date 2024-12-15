@@ -1,6 +1,6 @@
 import router from '@ohos.router';
-import { IBestButton, IBestToast, IBestWatermark } from '@ibestservices/ibest-ui'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import { IBestButton, IBestToast, IBestWatermark } from '@ibestservices/ibest-ui';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import TitleBar from '../components/TitleBar';
 import { ComponentRouterParams } from '../assets/global.type';
@@ -94,6 +94,6 @@ struct WatermarkPage {
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)
-    .backgroundColor(BACKGROUND_COLOR.BASE)
+    .backgroundColor(modeColor.bg)
   }
 }

@@ -9,7 +9,7 @@ import {
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../assets/global.type'
 import TitleBar from '../components/TitleBar'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 
 @Entry
@@ -291,6 +291,6 @@ struct TabPage {
         }
         .width(CONTAINER_SIZE.FULL)
         .height(CONTAINER_SIZE.FULL)
-        .backgroundColor(BACKGROUND_COLOR.BASE)
+        .backgroundColor(modeColor.bg)
     }
 }

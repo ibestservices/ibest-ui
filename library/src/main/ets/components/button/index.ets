@@ -1,12 +1,13 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { ColorType, COLOR_TYPE } from '../../theme-chalk/src/color.type'
-import { GRAY_COLOR } from '../../theme-chalk/src/color'
+import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE, SizeType } from '../../theme-chalk/src/size.type';
-import { ButtonSizeData } from './index.type'
-import { IBestLoading } from '../loading/index'
+import { ButtonSizeData } from './index.type';
+import { IBestLoading } from '../loading/index';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
+import { IBestButtonColor } from './color';
 
 @Extend(Button)
 function btnSizeStyle(data: ButtonSizeData) {
@@ -97,14 +98,6 @@ export struct IBestButton {
   onClickBtn: (event?: ClickEvent) => void = () => {}
 
   /**
-   * 根据颜色type获取背景色
-   * @returns
-   */
-  getBackgroundColor(type = this.type) {
-    return this.color ? this.color : this.baseStyle[type] as string
-  }
-
-  /**
    * 根据buttonSize换对应的按钮尺寸
    * 根据size获取按钮的尺寸
    * 字典形式写起来校验问题很多 改成switch了
@@ -140,20 +133,28 @@ export struct IBestButton {
   }
 
   /**
-   * 获取按钮的颜色
-   * @param {boolean} isHasColor 是否需要展示颜色
+   * 获取按钮边框的颜色
    * @returns
    */
-  getBtnColor(isHasColor: boolean) {
-    return isHasColor ? this.getBackgroundColor() : '#fff'
+  getBorderColor() {
+    return this.color ? this.color : this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_4 : this.baseStyle[this.type]
   }
-
   /**
    * 获取按钮文字的颜色
    * @returns
    */
   getBtnTextColor() {
-    return this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_8 : this.getBtnColor(this.plain)
+    if(this.plain){
+      return this.color ? this.color : this.type === COLOR_TYPE.DEFAULT ? IBestButtonColor.textColor : this.baseStyle[this.type]
+    }
+    return this.type === COLOR_TYPE.DEFAULT ? IBestButtonColor.textColor : IBestButtonColor.whiteColor
+  }
+  /**
+   * 根据颜色type获取背景色
+   * @returns
+   */
+  getBackgroundColor() {
+    return this.plain ? "transparent" : this.color ? this.color : this.baseStyle[this.type]
   }
 
   /**
@@ -209,9 +210,9 @@ export struct IBestButton {
     .btnSizeStyle(this.getBtnSize())
     .borderWidth(convertDimensionsWidthUnit(this.hairline ? 0.5 : 1))
     .borderRadius(this.getBtnBorderRadius())
-    .fontColor(this.getBtnColor(this.plain))
-    .backgroundColor(this.getBtnColor(!this.plain))
-    .borderColor(this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_4 : this.getBtnColor(true))
+    .fontColor(this.getBtnTextColor())
+    .backgroundColor(this.getBackgroundColor())
+    .borderColor(this.getBorderColor())
     .hitTestBehavior(this.loading ? HitTestMode.None : HitTestMode.Default)
     .enabled(!this.disabled)
     .opacity(this.disabled && this.plain ? 0.5 : 1)

@@ -1,7 +1,6 @@
 import router from '@ohos.router';
-import { IBestIcon, IBestIconClassify, IBestTabItemType, IBestTabs } from '@ibestservices/ibest-ui';
-import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, FONT_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar';
+import { IBestIcon, IBestIconClassify, IBestNavBar, IBestTabItemType, IBestTabs } from '@ibestservices/ibest-ui';
+import { CONTAINER_SIZE, FONT_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 
@@ -59,7 +58,7 @@ struct IconsPage {
       left: SPACE.MD,
       right: SPACE.MD
     })
-    .backgroundColor("#fff")
+    .backgroundColor(modeColor.bg2)
     .borderRadius(SPACE.SM)
   }
 
@@ -91,16 +90,17 @@ struct IconsPage {
               .fontSize(FONT_SIZE.SM)
               .textAlign(TextAlign.Center)
               .padding({ left: SPACE.BASE, right: SPACE.BASE })
+              .fontColor(modeColor.textColor)
           }
           .width(CONTAINER_SIZE.FULL)
           .alignItems(HorizontalAlign.Center)
           .padding({ top: SPACE.MD, bottom: SPACE.MD })
           .stateStyles({
             pressed:{
-              .backgroundColor(COLOR_GRAY.GRAY_2)
+              .backgroundColor(modeColor.active)
             },
             normal:{
-              .backgroundColor(BACKGROUND_COLOR.DEFAULT)
+              .backgroundColor(modeColor.bg2)
             }
           })
         }
@@ -112,15 +112,19 @@ struct IconsPage {
     .columnsTemplate("1fr 1fr 1fr 1fr")
     .cellLength(100)
     .layoutWeight(1)
-    .backgroundColor(BACKGROUND_COLOR.DEFAULT)
+    .backgroundColor(modeColor.bg2)
     .borderRadius(SPACE.SM)
   }
 
   build() {
     Column() {
-      TitleBar({
-        title: this.title
-      }).backgroundColor('#FFF')
+      IBestNavBar({
+        title: this.title,
+        isShowStatusBar: true,
+        onLeftClick: () => {
+          router.back()
+        }
+      })
       IBestTabs({
         tabsList: this.tabsList,
         currentName: $curTabName
@@ -146,6 +150,6 @@ struct IconsPage {
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)
-    .backgroundColor(BACKGROUND_COLOR.BASE)
+    .backgroundColor(modeColor.bg)
   }
 }

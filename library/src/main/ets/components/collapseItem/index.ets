@@ -48,7 +48,7 @@ export struct IBestCollapseItem {
     /**
      * 标题文字大小
      */
-    @Prop titleFontSize: number | string = this.baseStyle.fontSizeMd
+    @Prop titleFontSize: number | string = this.baseStyle.fontSizeMd as string
     /**
      * 标题栏右侧内容
      */
@@ -60,7 +60,7 @@ export struct IBestCollapseItem {
     /**
      * 标题右侧文字大小
      */
-    @Prop valueFontSize: number | string = this.baseStyle.fontSizeMd
+    @Prop valueFontSize: number | string = this.baseStyle.fontSizeMd as string
     /**
      * 是否显示内边框
      */
@@ -144,7 +144,7 @@ export struct IBestCollapseItem {
                 }
                 IBestIcon({
                     name: "arrow-down",
-                    iconSize: this.baseStyle.fontSizeMd,
+                    iconSize: this.baseStyle.fontSizeMd as string,
                     color: GRAY_COLOR.GRAY_6,
                     onIconClick: () => {
                         this.toggle()

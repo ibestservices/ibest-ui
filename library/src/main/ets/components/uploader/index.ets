@@ -1,5 +1,5 @@
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
-import { IBestUploaderFile, FileSelectOptions, IBestUploaderSelectType } from './index.type'
+import { FileSelectOptions, IBestUploaderFile, IBestUploaderSelectType } from './index.type'
 import { isImageFile, isImageUrl } from './utils'
 import { LengthMetrics } from '@kit.ArkUI'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
@@ -12,6 +12,8 @@ import { IBestLoading } from '../loading'
 import fs from '@ohos.file.fs'
 import { IBestImagePreview } from '../../../../../Index'
 import { convertDimensions, convertDimensionsWidthUnit, getLengthUnit, getSizeByUnit } from '../../utils/utils'
+import { IBestUploaderColor } from './color'
+
 @Component
 export struct IBestUploader {
 	/**
@@ -214,7 +216,7 @@ export struct IBestUploader {
 						.backgroundColor(GRAY_COLOR.GRAY_1)
 					},
 					pressed: {
-						.backgroundColor(GRAY_COLOR.GRAY_2)
+						.backgroundColor(IBestUploaderColor.activeBg)
 					}
 				})
 				.visibility(this.max > 0 && this.fileList.length >= this.max ? Visibility.None : Visibility.Visible)
@@ -257,6 +259,7 @@ struct UploadItem{
 					Image(this.isError ? $r("app.media.icon_photo_fail") : (this.file.url || this.file.previewUri))
 						.width(this.isError ? convertDimensionsWidthUnit(32) : CONTAINER_SIZE.FULL)
 						.aspectRatio(1)
+						.fillColor(IBestUploaderColor.textColor)
 						.objectFit(this.imageFit)
 						.draggable(false)
 						.onError(() => {
@@ -268,12 +271,13 @@ struct UploadItem{
 				} else {
 					Image($r("app.media.icon_file"))
 						.width(convertDimensionsWidthUnit(20))
+						.fillColor(IBestUploaderColor.textColor)
 						.aspectRatio(1)
 						.draggable(false)
 						.fillColor(GRAY_COLOR.GRAY_7)
 					if (this.file.name) {
 						Text(this.file.name)
-							.fontColor(GRAY_COLOR.GRAY_7)
+							.fontColor(IBestUploaderColor.textColor)
 							.fontSize(this.baseStyle.fontSizeSm)
 							.width(CONTAINER_SIZE.FULL)
 							.maxLines(1)
@@ -291,17 +295,17 @@ struct UploadItem{
 						IBestLoading({
 							loadingSize: convertDimensionsWidthUnit(18),
 							loadingStrokeWidth: 2,
-							loadingColor: this.baseStyle.default
+							loadingColor: IBestUploaderColor.textColor
 						})
 					} else {
 						Image($r("app.media.icon_close_circle"))
 							.width(convertDimensionsWidthUnit(20))
 							.aspectRatio(1)
-							.fillColor(this.baseStyle.default)
+							.fillColor(IBestUploaderColor.textColor)
 					}
 					Text(this.file.status == 'failed' ? "上传失败" : "上传中...")
 						.fontSize(this.baseStyle.fontSizeSm)
-						.fontColor(this.baseStyle.default)
+						.fontColor(IBestUploaderColor.textColor)
 				}
 				.width(CONTAINER_SIZE.FULL)
 				.height(CONTAINER_SIZE.FULL)
@@ -316,7 +320,7 @@ struct UploadItem{
 					Image($r("app.media.icon_cuo"))
 						.width(CONTAINER_SIZE.FULL)
 						.aspectRatio(1)
-						.fillColor(this.baseStyle.default)
+						.fillColor(IBestUploaderColor.textColor)
 						.scale({ x: 0.7, y: 0.7 })
 						.translate({ x: "10%", y: "-10%" })
 				}
@@ -335,7 +339,6 @@ struct UploadItem{
 		.aspectRatio(1)
 		.justifyContent(FlexAlign.Center)
 		.alignItems(HorizontalAlign.Center)
-		.backgroundColor(GRAY_COLOR.GRAY_1)
 		.borderRadius(getSizeByUnit(this.cornerRadius))
 		.clip(true)
 	}

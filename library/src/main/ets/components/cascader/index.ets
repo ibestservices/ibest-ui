@@ -5,6 +5,7 @@ import { IBestTabs } from '../tab'
 import { IBestTabController, IBestTabItem } from '../tab/index.type'
 import { IBestCascaderOption, IBestCascaderOptionInstance, IBestCascaderOptionInstanceType } from './index.type'
 import { IBestPopup } from '../popup/index'
+import { IBestCascaderColor } from './color'
 
 @CustomDialog
 @Component
@@ -286,7 +287,7 @@ struct CascaderOptionItem{
 	build() {
 		Row(){
 			Text(this.option.text)
-				.fontColor(this.option.actived ? this.activeColor : "#333")
+				.fontColor(this.option.actived ? this.activeColor : IBestCascaderColor.textColor)
 				.fontSize(this.baseStyle.fontSizeMd)
 			Image($r("app.media.success"))
 				.width(convertDimensionsWidthUnit(18))

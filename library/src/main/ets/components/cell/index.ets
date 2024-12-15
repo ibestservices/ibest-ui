@@ -4,6 +4,7 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE } from '../../theme-chalk/src/size.type';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
+import { IBestCellColor } from './color';
 import { ARROW_DIRECTION, BorderSizeType, CellSizeData } from './index.type';
 
 @Component
@@ -41,7 +42,7 @@ export struct IBestCell {
   /**
    * 标题的文字颜色 默认 #323233
    */
-  @Prop titleColor: ResourceColor = GRAY_COLOR.GRAY_8;
+  @Prop titleColor: ResourceColor = IBestCellColor.titleColor
   /**
    * 右侧内容
    */
@@ -49,7 +50,7 @@ export struct IBestCell {
   /**
    * 内容的文字颜色 默认 #969799
    */
-  @Prop valueColor: ResourceColor = GRAY_COLOR.GRAY_6;
+  @Prop valueColor: ResourceColor = IBestCellColor.valueColor
   /**
    * 标题下方的描述信息
    */
@@ -57,7 +58,7 @@ export struct IBestCell {
   /**
    * 描述的文字颜色 默认 #969799
    */
-  @Prop labelColor: ResourceColor = GRAY_COLOR.GRAY_6;
+  @Prop labelColor: ResourceColor = IBestCellColor.labelColor
   /**
    * 是否显示底部边框
    */
@@ -109,7 +110,7 @@ export struct IBestCell {
    * 左侧图标与title间距
    * @since 1.18.0
    */
-  @Prop leftIconMarginRight: number | string = this.baseStyle.spaceBase
+  @Prop leftIconMarginRight: number | string = this.baseStyle.spaceBase as string
   /**
    * 右侧图标
    * @since 1.17.0
@@ -119,7 +120,7 @@ export struct IBestCell {
    * 右侧图标颜色
    * @since 1.17.0
    */
-  @Prop rightIconColor: ResourceColor = ""
+  @Prop rightIconColor: ResourceColor = GRAY_COLOR.GRAY_6
   /**
    * 右侧图标大小
    * @since 1.17.0
@@ -129,7 +130,7 @@ export struct IBestCell {
    * 右侧图标与内容间距
    * @since 1.18.0
    */
-  @Prop rightIconMarginLeft: number | string = this.baseStyle.spaceBase
+  @Prop rightIconMarginLeft: number | string = this.baseStyle.spaceBase as string
   /**
    * 左侧内容宽度
    * @since 1.18.0
@@ -139,7 +140,7 @@ export struct IBestCell {
    * 左右padding
    * @since 1.18.0
    */
-  @Prop leftRightPadding: number | string = this.baseStyle.spaceMd
+  @Prop leftRightPadding: number | string = this.baseStyle.spaceMd as string
   /**
    * 底部分割线尺寸类型
    * @since 1.18.0
@@ -154,7 +155,7 @@ export struct IBestCell {
    * 底部分割线颜色
    * @since 1.18.0
    */
-  @Provide bdColor: ResourceColor = GRAY_COLOR.GRAY_3
+  @Provide bdColor: ResourceColor = $r("app.color.ibest_border_color")
 
   /**
    * 根据arrow direction获取图标旋转角度
@@ -280,16 +281,10 @@ export struct IBestCell {
               }
               .margin({left: getSizeByUnit(this.rightIconMarginLeft)})
             } else if(this.rightIcon){
-              if(this.rightIconColor){
-                Image(this.rightIcon)
-                  .width(getSizeByUnit(this.rightIconSize))
-                  .fillColor(this.rightIconColor)
-                  .margin({left: getSizeByUnit(this.rightIconMarginLeft)})
-              }else{
-                Image(this.rightIcon)
+              Image(this.rightIcon)
                 .width(getSizeByUnit(this.rightIconSize))
+                .fillColor(this.rightIconColor)
                 .margin({left: getSizeByUnit(this.rightIconMarginLeft)})
-              }
             } else if (this.isLink) { // 如果是link箭头
               Row() {
                 Image($r("app.media.arrow_right"))
@@ -328,10 +323,10 @@ export struct IBestCell {
     }
     .stateStyles({
       normal: {
-        .backgroundColor('#fff')
+        .backgroundColor($r("app.color.ibest_background_2"))
       },
       pressed: {
-        .backgroundColor(this.isLink || this.clickable ? '#f2f3f5' : '#fff')
+        .backgroundColor(this.isLink || this.clickable ? $r("app.color.ibest_active_color") : $r("app.color.ibest_background_2"))
       }
     })
     .animation({

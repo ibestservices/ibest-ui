@@ -1,6 +1,6 @@
 import router from '@ohos.router';
 import { IBestButton, IBestCollapse, IBestCollapseController, IBestCollapseItem } from '@ibestservices/ibest-ui';
-import { BACKGROUND_COLOR, COLOR_GRAY, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import { COLOR_GRAY, CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
@@ -255,6 +255,6 @@ struct CollapsePage {
         }
         .width(CONTAINER_SIZE.FULL)
         .height(CONTAINER_SIZE.FULL)
-        .backgroundColor(BACKGROUND_COLOR.BASE)
+        .backgroundColor(modeColor.bg)
     }
 }

@@ -1,8 +1,7 @@
 import router from '@ohos.router';
-import { IBestButton } from '@ibestservices/ibest-ui'
-import { BACKGROUND_COLOR, COLOR_BLUE, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar'
-import ComponentShowContainer from '../components/ComponentShowContainer'
+import { IBestButton, IBestNavBar } from '@ibestservices/ibest-ui';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
+import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 
 @Styles
@@ -13,26 +12,22 @@ function btnMargin() {
 @Entry
 @Component
 struct ButtonPage {
-  @State message: string = 'Hello World';
   @State title: string = (router.getParams() as ComponentRouterParams).title || ''
 
-  @Builder
-  TextBuilder() {
-    Text('default slot  ' + this.message)
-  }
-
-  @Builder Arrow(color = '#fff'){
+  @Builder Arrow(){
     Image($r('app.media.title_back'))
       .width(CONTAINER_SIZE.SIXTEEN)
-      .fillColor(color)
   }
 
   build() {
     Column() {
-      TitleBar({
-        title: this.title
-      }).backgroundColor('#FFF')
-
+      IBestNavBar({
+        title: this.title,
+        isShowStatusBar: true,
+        onLeftClick: () => {
+          router.back()
+        }
+      })
 
       List() {
         ListItem() {
@@ -210,7 +205,7 @@ struct ButtonPage {
                   plain: true,
                   text: '按钮',
                   type: 'default',
-                  iconBuilder: () => this.Arrow(COLOR_BLUE.MINI)
+                  iconBuilder: this.Arrow
                 })
               }.btnMargin()
             }
@@ -309,6 +304,6 @@ struct ButtonPage {
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)
-    .backgroundColor(BACKGROUND_COLOR.BASE)
+    .backgroundColor(modeColor.bg)
   }
 }

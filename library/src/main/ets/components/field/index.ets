@@ -4,15 +4,25 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import {
     COMPONENT_NAME,
-    FieldValidateResult, FORM_EVENT_NAME, IBestFormRuleItem,
-    IBestFormSendFieldCallResult } from '../form/index.type'
-import type { IBestFieldType, ClearTriggerType, FieldTextAlign, IBestFieldValueType,
-    RequireAsteriskPositionType,
+    FieldValidateResult,
+    FORM_EVENT_NAME,
+    IBestFormRuleItem,
+    IBestFormSendFieldCallResult
+} from '../form/index.type'
+import type {
+    ClearTriggerType,
+    FieldTextAlign,
+    FormatTriggerType,
+    IBestFieldType,
+    IBestFieldValueType,
     LabelPositionType,
-    FormatTriggerType} from './index.type'
+    RequireAsteriskPositionType
+} from './index.type'
 import { emitter } from '../../utils/EventEmitter'
 import { runRuleValidator, runSyncRule } from './utils'
-import { convertDimensionsWidthUnit, getSizeByUnit, getEventName } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
+import { IBestFieldColor } from './color'
+
 @Component
 export struct IBestField{
     /**
@@ -175,12 +185,12 @@ export struct IBestField{
      * label字体大小
      * @since 1.19.0
      */
-    @Provide({allowOverride: "labelFontSize"}) labelFontSize: string | number = this.baseStyle.fontSizeMd
+    @Provide({allowOverride: "labelFontSize"}) labelFontSize: string | number = this.baseStyle.fontSizeMd as string
     /**
      * label字体颜色
      * @since 1.19.0
      */
-    @Provide({allowOverride: "labelColor"}) labelColor: ResourceColor = GRAY_COLOR.GRAY_8
+    @Provide({allowOverride: "labelColor"}) labelColor: ResourceColor = IBestFieldColor.labelColor
     /**
      * 左侧图标大小
      * @since 1.19.0
@@ -230,14 +240,13 @@ export struct IBestField{
 
     @Styles fieldStyles(){
         .width(CONTAINER_SIZE.FULL)
-        .backgroundColor(this.baseStyle.default)
         .padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
         .stateStyles({
             normal: {
-                .backgroundColor(this.baseStyle.default)
+                .backgroundColor(IBestFieldColor.bg2)
             },
             pressed: {
-                .backgroundColor((this.clickable || this.isLink) ? GRAY_COLOR.GRAY_2 : this.baseStyle.default)
+                .backgroundColor((this.clickable || this.isLink) ? IBestFieldColor.activeColor : IBestFieldColor.bg2)
             }
         })
         .enabled(!this.disabled)
@@ -250,7 +259,7 @@ export struct IBestField{
         .padding({ top: convertDimensionsWidthUnit(10), bottom: convertDimensionsWidthUnit(10) })
         .border({
             width: { bottom: this.hasBorder ? 1 : 0 },
-            color: GRAY_COLOR.GRAY_3
+            color: IBestFieldColor.borderColor
         })
     }
 
@@ -604,6 +613,7 @@ struct Content{
                         TextArea({ text: $$this.value, placeholder: this.placeholder })
                             .inputStyle()
                             .fontSize(this.baseStyle.fontSizeMd)
+                            .fontColor(IBestFieldColor.labelColor)
                             .placeholderFont({
                                 size: this.baseStyle.fontSizeMd
                             })
@@ -635,6 +645,7 @@ struct Content{
                         TextInput({ text: $$this.value, placeholder: this.placeholder })
                             .inputStyle()
                             .fontSize(this.baseStyle.fontSizeMd)
+                            .fontColor(IBestFieldColor.labelColor)
                             .placeholderFont({
                                 size: this.baseStyle.fontSizeMd
                             })

@@ -1,8 +1,8 @@
 import { convertDimensionsWidthUnit } from '../../utils/utils'
 import { BORDER_RADIUS } from './border'
-import { COLOR, COLOR_OPACITY } from './color'
+import { COLOR_OPACITY, THEME_COLOR } from './color'
 import { FONT_SIZE } from './font'
-import { IBestUIBaseStyleType, IBestUIBaseStyleObjType } from './index.type'
+import { IBestUIBaseStyleObjType, IBestUIBaseStyleType } from './index.type'
 import { LINE_HEIGHT } from './line-height'
 import { SPACE } from './space'
 /**
@@ -10,11 +10,11 @@ import { SPACE } from './space'
  */
 export function getDefaultBaseStyle(): IBestUIBaseStyleObjType {
   const data: IBestUIBaseStyleType = {
-    primary: COLOR.PRIMARY,
-    success: COLOR.SUCCESS,
-    warning: COLOR.WARNING,
-    danger: COLOR.DANGER,
-    default: COLOR.DEFAULT,
+    default: THEME_COLOR.DEFAULT,
+    primary: THEME_COLOR.PRIMARY,
+    success: THEME_COLOR.SUCCESS,
+    warning: THEME_COLOR.WARNING,
+    danger: THEME_COLOR.DANGER,
     primaryOpacity: COLOR_OPACITY.PRIMARY,
     successOpacity: COLOR_OPACITY.SUCCESS,
     warningOpacity: COLOR_OPACITY.WARNING,

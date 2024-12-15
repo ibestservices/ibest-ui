@@ -10,6 +10,7 @@ import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '..
 import { UIContext } from '@kit.ArkUI'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { getNextDay, getPrevDay, set16ToRgb } from './utils'
+import { IBestCalendarColor } from './color'
 
 class DayItemObj{
     date: Dayjs = dayjs()
@@ -53,7 +54,7 @@ interface HeaderItemType{
     .height(CONTAINER_SIZE.FULL)
     .textAlign(TextAlign.Center)
     .fontSize(getDefaultBaseStyle().fontSizeSm)
-    .fontColor("#999")
+    .fontColor(IBestCalendarColor.textColor)
 }
 @Component
 struct CalendarItem {
@@ -61,7 +62,7 @@ struct CalendarItem {
      * 全局公共样式
      */
     @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
-    @State fontColor: ResourceColor = "#333"
+    @State fontColor: ResourceColor = IBestCalendarColor.textColor
     @State bgColor: ResourceColor = "transparent"
     @ObjectLink @Watch("itemChange") dayItem: DayItemType
     @Consume daysList: Array<DayItemType>
@@ -81,23 +82,21 @@ struct CalendarItem {
         let item = this.dayItem
         let dateStr = item.dateStr
         if(item.isDisabled){
-            this.fontColor = "#ccc"
+            this.fontColor = GRAY_COLOR.GRAY_7
             this.bgColor = GRAY_COLOR.GRAY_2
         }else if(this.selectType == "range"){ // 范围选择
             if(this.selectedList.length){
                 let first = this.selectedList[0]
                 let last = this.selectedList[this.selectedList.length - 1]
-                this.fontColor = item.isSelected ? dateStr == first.dateStr || dateStr == last.dateStr ? this
-                    .baseStyle.default : this.selectedColor || this.baseStyle[this.type] : item.isCurMonthDay ? "#333" : "#999"
+                this.fontColor = item.isSelected ? dateStr == first.dateStr || dateStr == last.dateStr ? IBestCalendarColor.textWhite : this.selectedColor || this.baseStyle[this.type] : item.isCurMonthDay ? IBestCalendarColor.textColor : GRAY_COLOR.GRAY_7
                 this.bgColor = item.isSelected ? dateStr == first.dateStr || dateStr == last.dateStr ? this.selectedColor || this.baseStyle[this.type]
-                    : this.selectedColor ? set16ToRgb(this.selectedColor) : this.baseStyle[this.type + "Opacity"] :
-                    "transparent"
+                    : this.selectedColor ? set16ToRgb(this.selectedColor) : this.baseStyle[this.type + "Opacity"] : "transparent"
             }else{
-                this.fontColor = item.isSelected ? this.selectedColor || this.baseStyle[this.type] : item.isCurMonthDay ? "#333" : "#999"
+                this.fontColor = item.isSelected ? this.selectedColor || IBestCalendarColor.textColor : item.isCurMonthDay ? IBestCalendarColor.textColor : GRAY_COLOR.GRAY_7
                 this.bgColor = item.isSelected ? this.selectedColor ? set16ToRgb(this.selectedColor) : this.baseStyle[this.type + "Opacity"] : "transparent"
             }
         }else{
-            this.fontColor = this.dayItem.isCurMonthDay ? this.dayItem.isSelected ? this.baseStyle.default : "#333" : "#999"
+            this.fontColor = this.dayItem.isCurMonthDay ? this.dayItem.isSelected ? IBestCalendarColor.textWhite : IBestCalendarColor.textColor : GRAY_COLOR.GRAY_7
             this.bgColor = this.dayItem.isSelected ? this.selectedColor || this.baseStyle[this.type] : "transparent"
         }
     }
@@ -166,7 +165,7 @@ struct CalendarItem {
 
     build() {
         Row() {
-            Column({ space: this.baseStyle.spaceMini }) {
+            Column({ space: this.baseStyle.spaceMini as string }) {
                 Text(this.dayItem.day)
                     .fontSize(this.baseStyle.fontSizeMd)
                     .fontColor(this.fontColor)
@@ -314,7 +313,7 @@ export struct IBestCalendar{
     /**
      * 确认按钮颜色
      */
-    @Prop confirmBtnColor: ResourceColor = this.baseStyle[this.type]
+    @Prop confirmBtnColor: ResourceColor = ""
     /**
      * 确认按钮文案
      */
@@ -643,25 +642,30 @@ export struct IBestCalendar{
                 Row(){
                     Image($r("app.media.arrow_left_double"))
                         .width(convertDimensionsWidthUnit(14))
+                        .fillColor(IBestCalendarColor.textColor)
                         .onClick(() => {
                             this.changeYearMonth("preYear")
                         })
                     Image($r("app.media.arrow_left"))
                         .width(convertDimensionsWidthUnit(14))
+                        .fillColor(IBestCalendarColor.textColor)
                         .onClick(() => {
                             this.changeYearMonth("preMonth")
                         })
                 }
                 Text(this.curYearMonth)
                     .fontSize(this.baseStyle.fontSizeMd)
+                    .fontColor(IBestCalendarColor.textColor)
                 Row(){
                     Image($r("app.media.arrow_right"))
                         .width(convertDimensionsWidthUnit(14))
+                        .fillColor(IBestCalendarColor.textColor)
                         .onClick(() => {
                             this.changeYearMonth("nextMonth")
                         })
                     Image($r("app.media.arrow_right_double"))
                         .width(convertDimensionsWidthUnit(14))
+                        .fillColor(IBestCalendarColor.textColor)
                         .onClick(() => {
                             this.changeYearMonth("nextYear")
                         })
@@ -687,7 +691,7 @@ export struct IBestCalendar{
                     Text(this.curMonth)
                         .fontSize(convertDimensionsWidthUnit(150, true))
                         .height(convertDimensionsWidthUnit(this.contentHeight))
-                        .fontColor(GRAY_COLOR.GRAY_2)
+                        .fontColor(IBestCalendarColor.markTextColor)
                         .visibility(this.isShowMark ? Visibility.Visible : Visibility.Hidden)
                     GridRow({ columns: 7, gutter: { x: 0, y: convertDimensionsWidthUnit(5) }}) {
                         ForEach(this.daysList, (item: DayItemType, index: number) => {
@@ -718,7 +722,7 @@ export struct IBestCalendar{
                 })
         }
         .width('100%')
-        .backgroundColor("#fff")
+        .backgroundColor(IBestCalendarColor.bgColor)
         .borderRadius({
             topLeft: this.cornerRadius,
             topRight: this.cornerRadius

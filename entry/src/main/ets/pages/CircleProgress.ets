@@ -1,6 +1,6 @@
 import router from '@ohos.router';
 import { IBestButton, IBestCircleProgress } from '@ibestservices/ibest-ui';
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 import TitleBar from '../components/TitleBar';
@@ -121,6 +121,6 @@ struct CircleProgressPage {
             .layoutWeight(1)
         }
         .height(CONTAINER_SIZE.FULL)
-        .backgroundColor(BACKGROUND_COLOR.BASE)
+        .backgroundColor(modeColor.bg)
     }
 }

@@ -1,15 +1,16 @@
 import { clamp, convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { GRAY_COLOR } from '../../theme-chalk/src/color';
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { ColumnType, IBestPickerOption } from './index.type';
+import { IBestPickerColor } from './color';
 
 @Extend(Text) function pickerItemStyle(itemHeight: number | string, fontSize: number | string){
 	.width(CONTAINER_SIZE.FULL)
 	.height(getSizeByUnit(itemHeight))
 	.padding({ left: getDefaultBaseStyle().spaceBase, right: getDefaultBaseStyle().spaceBase })
 	.fontSize(getSizeByUnit(fontSize, true))
+	.fontColor(IBestPickerColor.textColor)
 	.align(Alignment.Center)
 	.textAlign(TextAlign.Center)
 	.maxLines(1)
@@ -40,6 +41,7 @@ export struct IBestPicker{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp("IBestColorMode") colorMode: ColorMode = ColorMode.LIGHT
 	/**
 	 * 分组id
 	 */
@@ -95,7 +97,7 @@ export struct IBestPicker{
 	 * 选项字体大小
 	 * @since 2.0.0
      */
-	@Prop optionFontSize: number | string = this.baseStyle.fontSizeLg
+	@Prop optionFontSize: number | string = this.baseStyle.fontSizeLg as string
 	/**
 	 * 确认按钮点击事件
 	 */
@@ -165,13 +167,19 @@ export struct IBestPicker{
 				Row()
 					.width(CONTAINER_SIZE.FULL)
 					.height(`calc(50% - ${this.itemCalcHeight/2}vp)`)
-					.linearGradient({ angle: 180, colors: [["rgba(255,255,255,0.9)", 0.1], [ "rgba(255,255,255,0.5)", 1]] })
-					.border({ width: { bottom: 1 }, color: "#ededed" })
+					.linearGradient({
+						angle: 180,
+						colors: this.colorMode == 0 ? [["rgba(0,0,0,0.9)", 0.1], [ "rgba(0,0,0,0.5)", 1]] : [["rgba(255,255,255,0.9)", 0.1], [ "rgba(255,255,255,0.5)", 1]]
+					})
+					.border({ width: { bottom: 1 }, color: IBestPickerColor.borderColor })
 				Row()
 					.width(CONTAINER_SIZE.FULL)
 					.height(`calc(50% - ${this.itemCalcHeight/2}vp)`)
-					.linearGradient({ angle: 0, colors: [["rgba(255,255,255,0.9)", 0.1], [ "rgba(255,255,255,0.5)", 1]] })
-					.border({ width: { top: 1 }, color: "#ededed" })
+					.linearGradient({
+						angle: 0,
+						colors: this.colorMode == 0 ? [["rgba(0,0,0,0.9)", 0.1], [ "rgba(0,0,0,0.5)", 1]] : [["rgba(255,255,255,0.9)", 0.1], [ "rgba(255,255,255,0.5)", 1]]
+					})
+					.border({ width: { top: 1 }, color: IBestPickerColor.borderColor })
 			}
 			.height(CONTAINER_SIZE.FULL)
 			.justifyContent(FlexAlign.SpaceBetween)
@@ -232,14 +240,20 @@ export struct IBestPicker{
 				Row()
 					.width(`calc(50% - ${this.itemCalcWidth/2}vp)`)
 					.height(CONTAINER_SIZE.FULL)
-					.linearGradient({ angle: 90, colors: [["rgba(255,255,255,0.9)", 0.1], [ "rgba(255,255,255,0.5)", 1]] })
-					.border({ width: { right: 1 }, color: "#ededed" })
+					.linearGradient({
+						angle: 90,
+						colors: this.colorMode == 0 ? [["rgba(0,0,0,0.9)", 0.1], [ "rgba(0,0,0,0.5)", 1]] : [["rgba(255,255,255,0.9)", 0.1], [ "rgba(255,255,255,0.5)", 1]]
+					})
+					.border({ width: { right: 1 }, color: IBestPickerColor.borderColor })
 					.id(`ibest_picker_left_${this.uniId}`)
 				Row()
 					.width(`calc(50% - ${this.itemCalcWidth/2}vp)`)
 					.height(CONTAINER_SIZE.FULL)
-					.linearGradient({ angle: -90, colors: [["rgba(255,255,255,0.9)", 0.1], [ "rgba(255,255,255,0.5)", 1]] })
-					.border({ width: { left: 1 }, color: "#ededed" })
+					.linearGradient({
+						angle: -90,
+						colors: this.colorMode == 0 ? [["rgba(0,0,0,0.9)", 0.1], [ "rgba(0,0,0,0.5)", 1]] : [["rgba(255,255,255,0.9)", 0.1], [ "rgba(255,255,255,0.5)", 1]]
+					})
+					.border({ width: { left: 1 }, color: IBestPickerColor.borderColor })
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.justifyContent(FlexAlign.SpaceBetween)
@@ -507,7 +521,7 @@ export struct IBestPicker{
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.alignItems(HorizontalAlign.Start)
-		.backgroundColor(this.baseStyle.default)
+		.backgroundColor(IBestPickerColor.bg2)
 		.onVisibleAreaChange([0, 1], (isExpanding: boolean) => {
 			if(isExpanding && !this.itemCalcHeight){
 				this.initSize()
@@ -535,7 +549,7 @@ struct PickerHeader{
 					Text(this.cancelText)
 						.height(CONTAINER_SIZE.FULL)
 						.fontSize(this.baseStyle.fontSizeMd)
-						.fontColor(GRAY_COLOR.GRAY_6)
+						.fontColor(IBestPickerColor.textColor2)
 						.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
 						.onClick(() => {
 							this.onCancel()
@@ -556,6 +570,7 @@ struct PickerHeader{
 					.constraintSize({ maxWidth: "50%" })
 					.fontWeight(600)
 					.fontSize(this.baseStyle.fontSizeLg)
+					.fontColor(IBestPickerColor.textColor)
 					.maxLines(1)
 					.textOverflow({ overflow: TextOverflow.Ellipsis })
 			}

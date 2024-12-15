@@ -58,7 +58,7 @@ Non-Bundled Plugins:
 本项目基于 Apache License 2.0，请自由地享受和参与开源。
 
 ## 贡献者
-感谢以下同学对iBest-UI做的贡献:
+感谢以下同学对IBest-UI做的贡献:
 
 <a href="https://github.com/ibestservices/ibest-ui/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=ibestservices/ibest-ui" />

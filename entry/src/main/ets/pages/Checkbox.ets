@@ -1,21 +1,20 @@
 import router from '@ohos.router';
-import { IBestButton, IBestCheckbox, IBestCheckboxGroup, CheckboxGroupContext, IBestCell } from '@ibestservices/ibest-ui'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, DISABLE_COLOR, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar'
-import ComponentShowContainer from '../components/ComponentShowContainer'
+import {
+    CheckboxGroupContext,
+    IBestButton,
+    IBestCell,
+    IBestCheckbox,
+    IBestCheckboxGroup,
+    IBestNavBar
+} from '@ibestservices/ibest-ui';
+import { CONTAINER_SIZE, DISABLE_COLOR, modeColor, SPACE } from '../assets/styles/BaseStyle';
+import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
-
-@Styles
-function btnMargin() {
-  .margin({ right: SPACE.SM, bottom: SPACE.SM })
-}
-
 
 @Entry
 @Component
 struct CheckboxPage {
   @State title: string = (router.getParams() as ComponentRouterParams).title || ''
-
   /**
    * 全选反选的checkboxGroup的this指向
    */
@@ -62,219 +61,157 @@ struct CheckboxPage {
 
   build() {
     Column() {
-      TitleBar({
-        title: this.title
-      }).backgroundColor('#FFF')
-
-
+      IBestNavBar({
+        title: this.title,
+        isShowStatusBar: true,
+        onLeftClick: () => {
+          router.back()
+        }
+      })
       List() {
-
         ListItem() {
           ComponentShowContainer({ title: '基础用法' }) {
-            Column() {
-              IBestCheckbox({
-                value: true,
-                label: '复选框',
-                name: 'checkbox1'
-              })
-            }.btnMargin()
+            IBestCheckbox({
+              value: true,
+              label: '复选框',
+              name: 'checkbox1'
+            })
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '禁用状态' }) {
-            Column() {
-              Column() {
-                IBestCheckbox({
-                  value: true,
-                  disabled: true,
-                  label: '复选框',
-                  name: 'checkbox2'
-                })
-              }.btnMargin()
-
-              Column() {
-                IBestCheckbox({
-                  value: false,
-                  disabled: true,
-                  label: '复选框',
-                  name: 'checkbox3'
-                })
-              }.btnMargin()
+            Column({space: SPACE.SM}) {
+              IBestCheckbox({
+                value: false,
+                disabled: true,
+                label: '复选框',
+                name: 'checkbox3'
+              })
+              IBestCheckbox({
+                value: true,
+                disabled: true,
+                label: '复选框',
+                name: 'checkbox2'
+              })
             }
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '自定义形状' }) {
-            Column() {
-              Column() {
-                IBestCheckbox({
-                  value: true,
-                  shape: 'square',
-                  label: '自定义形状a',
-                  name: 'checkbox4'
-                })
-              }.btnMargin()
-
-              Column() {
-                IBestCheckbox({
-                  value: false,
-                  shape: 'square',
-                  label: '自定义形状b',
-                  name: 'checkbox5'
-                })
-              }.btnMargin()
-            }
+            IBestCheckbox({
+              value: true,
+              shape: 'square',
+              label: '自定义形状',
+              name: 'checkbox4'
+            })
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '自定义颜色' }) {
-              Column() {
-                IBestCheckbox({
-                  value: true,
-                  checkedColor: '#ee0a24',
-                  shape: 'square',
-                  label: '自定义颜色a',
-                  name: 'checkbox5'
-                })
-              }.btnMargin()
-            Column() {
-                IBestCheckbox({
-                  value: true,
-                  checkedColor: '#ee0a24',
-                  label: '自定义颜色b',
-                  name: 'checkbox6'
-                })
-              }.btnMargin()
+            IBestCheckbox({
+              value: true,
+              checkedColor: '#ee0a24',
+              label: '自定义颜色b',
+              name: 'checkbox6'
+            })
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '自定义大小' }) {
-            Column() {
-              IBestCheckbox({
-                value: true,
-                iconSize: 30,
-                label: '自定义大小',
-                name: 'checkbox7'
-              })
-            }.btnMargin()
+            IBestCheckbox({
+              value: true,
+              iconSize: 30,
+              label: '自定义大小',
+              name: 'checkbox7'
+            })
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '左侧文本' }) {
-            Column() {
-              IBestCheckbox({
-                value: true,
-                labelPosition: 'left',
-                label: '左侧文本',
-                name: 'checkbox8'
-              })
-            }.btnMargin()
+            IBestCheckbox({
+              value: true,
+              labelPosition: 'left',
+              label: '左侧文本',
+              name: 'checkbox8'
+            })
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '禁用文本点击' }) {
-            Column() {
-              IBestCheckbox({
-                value: true,
-                label: '复选框',
-                labelDisabled: true,
-                name: 'checkbox9'
-              })
-            }.btnMargin()
+            IBestCheckbox({
+              value: true,
+              label: '复选框',
+              labelDisabled: true,
+              name: 'checkbox9'
+            })
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '复选框组', }) {
             IBestCheckboxGroup({ group: 'group1', onChange: (names)=>{
                 console.log(JSON.stringify(names))
               }
             })
-            Column() {
+            Column({space: SPACE.SM}) {
               IBestCheckbox({
                 value: true,
                 group: 'group1',
                 label: '复选框a',
                 name: 'checkbox10'
               })
-            }.btnMargin()
-
-            Column() {
               IBestCheckbox({
                 value: true,
                 group: 'group1',
                 label: '复选框b',
                 name: 'checkbox11',
               })
-            }.btnMargin()
+            }
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '水平排列', }) {
             IBestCheckboxGroup({ group: 'group3' })
-            Row(){
-              Column() {
-                IBestCheckbox({
-                  value: true,
-                  group: 'group3',
-                  label: '复选框a',
-                  name: 'checkbox10'
-                })
-              }.btnMargin()
-
-              Column() {
-                IBestCheckbox({
-                  value: true,
-                  group: 'group3',
-                  label: '复选框b',
-                  name: 'checkbox11',
-                })
-              }.btnMargin()
+            Row({space: SPACE.SM}){
+              IBestCheckbox({
+                value: true,
+                group: 'group3',
+                label: '复选框a',
+                name: 'checkbox10'
+              })
+              IBestCheckbox({
+                value: true,
+                group: 'group3',
+                label: '复选框b',
+                name: 'checkbox11',
+              })
             }
-
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '限制最大可选数', }) {
             IBestCheckboxGroup({ group: 'group2', max: 2 })
-            Column() {
+            Column({space: SPACE.SM}) {
               IBestCheckbox({
                 value: false,
                 group: 'group2',
                 label: '复选框a',
                 name: 'checkbox1'
               })
-            }.btnMargin()
-
-            Column() {
               IBestCheckbox({
                 value: false,
                 group: 'group2',
                 label: '复选框b',
                 name: 'checkbox2',
               })
-            }.btnMargin()
-
-            Column() {
               IBestCheckbox({
                 value: false,
                 group: 'group2',
                 label: '复选框c',
                 name: 'checkbox3',
               })
-            }.btnMargin()
-
+            }
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '全选与反选' }) {
             IBestCheckboxGroup({
@@ -283,67 +220,52 @@ struct CheckboxPage {
                this.checkboxGroupContext = checkboxGroupContext
               }
             })
-            Column() {
+            Column({space: SPACE.SM}) {
               IBestCheckbox({
                 value: true,
                 group: 'group4',
                 label: '复选框a',
                 name: 'checkbox1'
               })
-            }.btnMargin()
-
-            Column() {
               IBestCheckbox({
                 value: false,
                 group: 'group4',
                 label: '复选框b',
                 name: 'checkbox2',
               })
-            }.btnMargin()
-
-            Column() {
               IBestCheckbox({
                 value: false,
                 group: 'group4',
                 label: '复选框c',
                 name: 'checkbox3',
               })
-            }.btnMargin()
 
-            Row(){
-              Column(){
-                IBestButton({
-                  text: '全选',
-                  type: 'primary',
-                  onClickBtn: ()=>{
-                    this.checkboxGroupContext?.toggleAll(true)
-                  }
-                })
-              }.btnMargin()
-
-              Column(){
-                IBestButton({
-                  text: '反选',
-                  type: 'warning',
-                  onClickBtn: ()=>{
-                    this.checkboxGroupContext?.toggleAll()
-                  }
-                })
-              }.btnMargin()
-
-              Column(){
-                IBestButton({
-                  text: '取消选中',
-                  onClickBtn: ()=>{
-                    this.checkboxGroupContext?.toggleAll(false)
-                  }
-                })
-              }.btnMargin()
             }
-
+            Row({space: SPACE.SM}){
+              IBestButton({
+                text: '全选',
+                type: 'primary',
+                onClickBtn: ()=>{
+                  this.checkboxGroupContext?.toggleAll(true)
+                }
+              })
+              IBestButton({
+                text: '反选',
+                type: 'warning',
+                onClickBtn: ()=>{
+                  this.checkboxGroupContext?.toggleAll()
+                }
+              })
+              IBestButton({
+                text: '取消选中',
+                onClickBtn: ()=>{
+                  this.checkboxGroupContext?.toggleAll(false)
+                }
+              })
+            }
+            .margin({top: SPACE.XS})
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '不确定状态' }) {
             Column() {
@@ -366,7 +288,6 @@ struct CheckboxPage {
             .margin({
               bottom: SPACE.SM
             })
-
             IBestCheckboxGroup({
               group: 'group5',
               onChange: (checkedNames)=>{
@@ -378,26 +299,22 @@ struct CheckboxPage {
                 this.checkboxGroupIndeterminateContext = checkboxGroupContext
               }
             })
-            Column() {
+            Column({space: SPACE.SM}) {
               IBestCheckbox({
                 value: false,
                 group: 'group5',
                 label: '复选框a',
                 name: 'checkbox10'
               })
-            }.btnMargin()
-
-            Column() {
               IBestCheckbox({
                 value: true,
                 group: 'group5',
                 label: '复选框b',
                 name: 'checkbox11',
               })
-            }.btnMargin()
+            }
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '搭配单元格组件使用', }) {
             IBestCheckboxGroup({ group: 'group17', max: this.cellCheckedMaxNum})
@@ -412,7 +329,6 @@ struct CheckboxPage {
               title: '复选框2',
               rightIconBuilder: (): void=>this.CellCheckbox('checkbox2-cell', 'group17'),
               onClickCell: (): void=>this.handleClickCell('checkbox2-cell')
-
             })
             IBestCell({
               clickable: true,
@@ -425,17 +341,15 @@ struct CheckboxPage {
         }.margin({
           bottom: SPACE.MD
         })
-
       }
       .layoutWeight(1)
       .padding({
         left: SPACE.SM,
         right: SPACE.SM
       })
-
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)
-    .backgroundColor(BACKGROUND_COLOR.BASE)
+    .backgroundColor(modeColor.bg)
   }
 }

@@ -1,8 +1,7 @@
 import router from '@ohos.router';
-import { IBestCell, IBestRadio, IBestRadioGroup } from '@ibestservices/ibest-ui';
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar'
-import ComponentShowContainer from '../components/ComponentShowContainer'
+import { IBestCell, IBestNavBar, IBestRadio, IBestRadioGroup } from '@ibestservices/ibest-ui';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
+import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 
 @Styles
@@ -29,13 +28,14 @@ struct CheckboxPage {
 
   build() {
     Column() {
-      TitleBar({
-        title: this.title
-      }).backgroundColor('#FFF')
-
-
+      IBestNavBar({
+        title: this.title,
+        isShowStatusBar: true,
+        onLeftClick: () => {
+          router.back()
+        }
+      })
       List() {
-
         ListItem() {
           ComponentShowContainer({ title: '基础用法' }) {
             Column() {
@@ -51,7 +51,6 @@ struct CheckboxPage {
                   group: 'group1'
                 })
               }.btnMargin()
-
               Column() {
                 IBestRadio({
                   // 如果你多个都设置true了 那么onchange返回的将会是最后一个的name
@@ -61,11 +60,9 @@ struct CheckboxPage {
                   group: 'group1'
                 })
               }.btnMargin()
-
             }
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '水平排列' }) {
             Row() {
@@ -78,7 +75,6 @@ struct CheckboxPage {
                   group: 'group3'
                 })
               }.btnMargin()
-
               Column() {
                 IBestRadio({
                   value: false,
@@ -90,7 +86,6 @@ struct CheckboxPage {
             }
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '禁用状态' }) {
             Column() {
@@ -104,7 +99,6 @@ struct CheckboxPage {
                   group: 'radio2'
                 })
               }.btnMargin()
-
               Column() {
                 IBestRadio({
                   value: false,
@@ -117,7 +111,6 @@ struct CheckboxPage {
             }
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '自定义形状' }) {
             Column() {
@@ -131,7 +124,6 @@ struct CheckboxPage {
                   name: 'radio4'
                 })
               }.btnMargin()
-
               Column() {
                 IBestRadio({
                   value: false,
@@ -143,8 +135,6 @@ struct CheckboxPage {
               }.btnMargin().padding({
                 bottom: SPACE.SM
               })
-
-
               IBestRadioGroup({ group: 'group5' })
               Column() {
                 IBestRadio({
@@ -155,7 +145,6 @@ struct CheckboxPage {
                   name: 'radio6'
                 })
               }.btnMargin()
-
               Column() {
                 IBestRadio({
                   value: false,
@@ -168,11 +157,9 @@ struct CheckboxPage {
             }
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '自定义颜色' }) {
             IBestRadioGroup({ group: 'group7' })
-
             Column() {
               IBestRadio({
                 group: 'group7',
@@ -182,7 +169,6 @@ struct CheckboxPage {
                 name: 'radio5'
               })
             }.btnMargin()
-
             Column() {
               IBestRadio({
                 value: true,
@@ -192,7 +178,6 @@ struct CheckboxPage {
                 name: 'radio6'
               })
             }.btnMargin()
-
             Column() {
               IBestRadio({
                 group: 'group7',
@@ -204,11 +189,9 @@ struct CheckboxPage {
             }.btnMargin()
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '自定义大小' }) {
             IBestRadioGroup({ group: 'group8' })
-
             Column() {
               IBestRadio({
                 value: true,
@@ -218,7 +201,6 @@ struct CheckboxPage {
                 name: 'radio'
               })
             }.btnMargin()
-
             Column() {
               IBestRadio({
                 iconSize: 30,
@@ -229,11 +211,9 @@ struct CheckboxPage {
             }.btnMargin()
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '左侧文本' }) {
             IBestRadioGroup({ group: 'group9' })
-
             Column() {
               IBestRadio({
                 value: true,
@@ -243,7 +223,6 @@ struct CheckboxPage {
                 name: 'radio'
               })
             }.btnMargin()
-
             Column() {
               IBestRadio({
                 group: 'group9',
@@ -254,11 +233,9 @@ struct CheckboxPage {
             }.btnMargin()
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '禁用文本点击' }) {
             IBestRadioGroup({ group: 'group10' })
-
             Column() {
               IBestRadio({
                 value: true,
@@ -268,7 +245,6 @@ struct CheckboxPage {
                 name: 'radio'
               })
             }.btnMargin()
-
             Column() {
               IBestRadio({
                 group: 'group10',
@@ -279,11 +255,9 @@ struct CheckboxPage {
             }.btnMargin()
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '搭配单元格组件使用' }) {
             IBestRadioGroup({ group: 'group12' })
-
             IBestCell({
               title: '单选框1',
               rightIconBuilder: () => this.CellRadio('radio1', 'group12'),
@@ -292,7 +266,6 @@ struct CheckboxPage {
                 this.slectedRadioName = 'radio1'
               }
             })
-
             IBestCell({
               title: '单选框2',
               rightIconBuilder: () => this.CellRadio('radio2', 'group12'),
@@ -306,17 +279,15 @@ struct CheckboxPage {
         }.margin({
           bottom: SPACE.MD
         })
-
       }
       .layoutWeight(1)
       .padding({
         left: SPACE.SM,
         right: SPACE.SM
       })
-
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)
-    .backgroundColor(BACKGROUND_COLOR.BASE)
+    .backgroundColor(modeColor.bg)
   }
 }

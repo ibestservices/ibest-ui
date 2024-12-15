@@ -1,5 +1,6 @@
-import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
+import { IBestStepperColor } from './color';
+
 @Component
 export struct IBestStepperBtn {
   @BuilderParam defaultSlot?: CustomBuilder;
@@ -21,7 +22,7 @@ export struct IBestStepperBtn {
     .type(
       ButtonType.Normal
     )
-    .backgroundColor(GRAY_COLOR.GRAY_2)
+    .backgroundColor(this.disabled ? IBestStepperColor.disabledBg : IBestStepperColor.bg)
     .width(getSizeByUnit(this.buttonSize))
     .height(getSizeByUnit(this.buttonSize))
     .borderRadius({
@@ -30,7 +31,6 @@ export struct IBestStepperBtn {
       bottomLeft: getSizeByUnit(this.radiusLeftBottom),
       bottomRight: getSizeByUnit(this.radiusRightBottom)
     })
-    .opacity(this.disabled ? 0.4 : 1)
     .enabled(!this.disabled)
     .onClick(() => {
       this.onClickBtn()

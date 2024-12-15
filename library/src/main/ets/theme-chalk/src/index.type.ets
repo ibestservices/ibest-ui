@@ -16,6 +16,6 @@ LineHeightData {
   animationDuration: number
 }
 
-export type IbestUIBaseStyleValue = string | number | EdgeEffect;
+export type IbestUIBaseStyleValue = ResourceColor | EdgeEffect
 
 export type IBestUIBaseStyleObjType = Record<keyof IBestUIBaseStyleType, IbestUIBaseStyleValue>

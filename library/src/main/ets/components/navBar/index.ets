@@ -15,7 +15,7 @@ export struct IBestNavBar{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp("iBestTopAvoidHeight") topAvoidHeight: number = 0
+	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
 	/**
 	 * 导航栏高度
 	 */
@@ -23,7 +23,7 @@ export struct IBestNavBar{
 	/**
 	 * 导航栏背景色
      */
-	@Prop @Watch("navBarBgColorChange") navBarBgColor: ResourceColor = this.baseStyle.default
+	@Prop @Watch("navBarBgColorChange") navBarBgColor: ResourceColor = $r("app.color.ibest_background_2")
 	/**
 	 * 导航栏渐变色
      */
@@ -43,7 +43,7 @@ export struct IBestNavBar{
 	/**
 	 * 标题文字颜色
      */
-	@Prop titleColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop titleColor: ResourceColor = $r("app.color.ibest_text_color")
 	/**
 	 * 标题文字大小
      */
@@ -99,7 +99,7 @@ export struct IBestNavBar{
 	/**
 	 * 左侧图标颜色
      */
-	@Prop leftIconColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop leftIconColor: ResourceColor = $r("app.color.ibest_text_color")
 	/**
 	 * 左侧图标大小
      */
@@ -229,7 +229,7 @@ export struct IBestNavBar{
 			}
 			Row(){
 				if(this.isShowLeft){
-					Row({space: this.baseStyle.spaceBase}){
+					Row({space: this.baseStyle.spaceBase as string}){
 						if(this.leftBuilder){
 							this.leftBuilder()
 						}else {
@@ -265,11 +265,11 @@ export struct IBestNavBar{
 						this.onLeftClick()
 					})
 				}
-				Column({space: this.baseStyle.spaceMini}){
+				Column({space: this.baseStyle.spaceMini as string}){
 					if(this.titleBuilder){
 						this.titleBuilder()
 					}else{
-						Row({space: this.baseStyle.spaceXs}){
+						Row({space: this.baseStyle.spaceXs as string}){
 							if(this.titleIcon){
 								Image(this.titleIcon)
 									.width(getSizeByUnit(this.titleIconSize))
@@ -316,7 +316,7 @@ export struct IBestNavBar{
 				.alignItems(this.titleBuilder ? HorizontalAlign.Start : HorizontalAlign.Center)
 				.padding(this.titleBuilder ? {left: this.leftWidth, right: this.rightWidth} : 0)
 				if(this.isShowRight){
-					Row({space: this.baseStyle.spaceBase}){
+					Row({space: this.baseStyle.spaceBase as string}){
 						if(this.rightBuilder){
 							this.rightBuilder()
 						}else{
@@ -356,7 +356,7 @@ export struct IBestNavBar{
 			.justifyContent(FlexAlign.Center)
 			.backgroundColor(this.navBarBgColor)
 			.linearGradient(this.bgLinearGradient)
-			.border({width:{bottom: this.isShowBorder ? 1 : 0}, color: GRAY_COLOR.GRAY_3})
+			.border({width:{bottom: this.isShowBorder ? 1 : 0}, color: $r("app.color.ibest_border_color")})
 		}
 	}
 }

@@ -1,27 +1,29 @@
+import { ThemeColor } from './color.type';
+
 /**
  * 主题色
  */
-export enum COLOR {
+export const THEME_COLOR: ThemeColor = {
   /**
    * 主要的
    */
-  PRIMARY = '#3D8AF2',
+  PRIMARY: '#1989fa',
   /**
    * 成功
    */
-  SUCCESS = '#58DB6B',
+  SUCCESS: '#07c160',
   /**
    * 危险
    */
-  DANGER = '#DB3131',
+  DANGER: '#ee0a24',
   /**
    * 警告
    */
-  WARNING = '#F29C73',
+  WARNING: '#ff976a',
   /**
    * 默认的
    */
-  DEFAULT = '#FFF'
+  DEFAULT: $r("app.color.ibest_background_2")
 }
 
 /**

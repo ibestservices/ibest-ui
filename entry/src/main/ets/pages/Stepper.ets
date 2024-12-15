@@ -1,9 +1,8 @@
-import TitleBar from '../components/TitleBar';
 import router from '@ohos.router';
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
-import { IBestStepper } from '@ibestservices/ibest-ui';
+import { IBestNavBar, IBestStepper } from '@ibestservices/ibest-ui';
 
 @Entry
 @Component
@@ -12,10 +11,13 @@ struct StepperPage {
 
   build() {
     Column() {
-      TitleBar({
-        title: this.title
-      }).backgroundColor('#FFF')
-
+      IBestNavBar({
+        title: this.title,
+        isShowStatusBar: true,
+        onLeftClick: () => {
+          router.back()
+        }
+      })
       List() {
         ListItem() {
           ComponentShowContainer({ title: '基础用法' }) {
@@ -25,20 +27,14 @@ struct StepperPage {
               }
             })
           }
-        }.margin({
-          bottom: SPACE.SM
-        })
-
+        }
         ListItem() {
           ComponentShowContainer({ title: '步长设置' }) {
             IBestStepper({
               step: 2
             })
           }
-        }.margin({
-          bottom: SPACE.SM
-        })
-
+        }
         ListItem() {
           ComponentShowContainer({ title: '限制输入范围' }) {
             IBestStepper({
@@ -47,30 +43,21 @@ struct StepperPage {
               max: 8
             })
           }
-        }.margin({
-          bottom: SPACE.SM
-        })
-
+        }
         ListItem() {
           ComponentShowContainer({ title: '限制输入整数' }) {
             IBestStepper({
               integer: true
             })
           }
-        }.margin({
-          bottom: SPACE.SM
-        })
-
+        }
         ListItem() {
           ComponentShowContainer({ title: '禁用状态' }) {
             IBestStepper({
               disabled: true
             })
           }
-        }.margin({
-          bottom: SPACE.SM
-        })
-
+        }
         ListItem() {
           ComponentShowContainer({ title: '禁用输入框' }) {
             IBestStepper({
@@ -78,10 +65,7 @@ struct StepperPage {
               defaultValue: 10
             })
           }
-        }.margin({
-          bottom: SPACE.SM
-        })
-
+        }
         ListItem() {
           ComponentShowContainer({ title: '固定小数位数' }) {
             IBestStepper({
@@ -90,10 +74,7 @@ struct StepperPage {
               decimalLength: 1
             })
           }
-        }.margin({
-          bottom: SPACE.SM
-        })
-
+        }
         ListItem() {
           ComponentShowContainer({ title: '自定义大小' }) {
             IBestStepper({
@@ -101,10 +82,7 @@ struct StepperPage {
               buttonSize: 32
             })
           }
-        }.margin({
-          bottom: SPACE.SM
-        })
-
+        }
       }
       .layoutWeight(1)
       .padding({
@@ -114,6 +92,6 @@ struct StepperPage {
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)
-    .backgroundColor(BACKGROUND_COLOR.BASE)
+    .backgroundColor(modeColor.bg2)
   }
 }

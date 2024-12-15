@@ -1,8 +1,9 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { GRAY_COLOR } from "../../theme-chalk/src/color"
-import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
-import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { convertDimensionsWidthUnit, getSizeByUnit } from "../../utils/utils"
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { GRAY_COLOR } from '../../theme-chalk/src/color'
+import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 @Component
 export struct IBestProgress{
 	/**
@@ -20,7 +21,7 @@ export struct IBestProgress{
 	/**
 	 * 进度条颜色
      */
-	@Prop color: ResourceColor = this.baseStyle.primary
+	@Prop color: ResourceColor = ""
 	/**
 	 * 进度条渐变色
      */
@@ -44,7 +45,7 @@ export struct IBestProgress{
 	/**
 	 * 文字大小
      */
-	@Prop textFontSize: number | string = this.baseStyle.fontSizeMd
+	@Prop textFontSize: number | string = this.baseStyle.fontSizeMd as string
 	/**
 	 * 是否置灰
      */
@@ -58,6 +59,11 @@ export struct IBestProgress{
      */
 	@Prop duration: number = 3
 	/**
+	 * 类型，可选值为 primary success warning danger 默认值为primary
+	 * @since 2.0.1
+	 */
+	@Prop type: ColorType = COLOR_TYPE.PRIMARY
+	/**
 	 * 格式化文本函数
      */
 	format?: (value: number) => string
@@ -68,7 +74,7 @@ export struct IBestProgress{
 		this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value
 	}
 	getColor(){
-		return this.inactive ? GRAY_COLOR.GRAY_5 : this.color
+		return this.inactive ? GRAY_COLOR.GRAY_5 : (this.color || this.baseStyle[this.type])
 	}
 	getTextColor(){
 		return this.inactive ? GRAY_COLOR.GRAY_5 : this.textColor

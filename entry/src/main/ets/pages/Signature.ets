@@ -1,8 +1,7 @@
 import router from '@ohos.router';
-import { IBestButton, IBestSignature, IBestSignatureController } from '@ibestservices/ibest-ui'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar'
-import ComponentShowContainer from '../components/ComponentShowContainer'
+import { IBestButton, IBestNavBar, IBestSignature, IBestSignatureController } from '@ibestservices/ibest-ui';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
+import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 
 class params {
@@ -25,9 +24,13 @@ struct SignaturePage {
 	}
 	build() {
 		Column() {
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -108,6 +111,6 @@ struct SignaturePage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(BACKGROUND_COLOR.BASE)
+		.backgroundColor(modeColor.bg)
 	}
 }

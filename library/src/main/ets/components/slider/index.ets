@@ -1,13 +1,20 @@
-import { clamp, addNumber, getComponentsInfo, convertDimensionsWidthUnit, getSizeByUnit,
-	getLengthUnit,
-	convertDimensions} from "../../utils/utils"
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { GRAY_COLOR } from "../../theme-chalk/src/color"
-import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
-import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { LengthUnit } from "@kit.ArkUI"
-import { IBestSliderValue } from "./index.type"
-import { IBestGlobalConfig } from "../../model/Global.type"
+import {
+    addNumber,
+    clamp,
+    convertDimensions,
+    convertDimensionsWidthUnit,
+    getComponentsInfo,
+    getLengthUnit,
+    getSizeByUnit
+} from '../../utils/utils'
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { LengthUnit } from '@kit.ArkUI'
+import { IBestSliderValue } from './index.type'
+import { IBestGlobalConfig } from '../../model/Global.type'
+import { IBestSliderColor } from './color'
+
 @Component
 export struct IBestSlider{
 	/**
@@ -52,7 +59,7 @@ export struct IBestSlider{
 	/**
 	 * 进度条背景颜色
 	 */
-	@Prop barBgColor: ResourceColor = GRAY_COLOR.GRAY_3
+	@Prop barBgColor: ResourceColor = IBestSliderColor.inactiveBg
 	/**
 	 * 是否禁用
 	 */
@@ -271,7 +278,7 @@ struct DragBar{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp("iBestGlobalConfig") config: IBestGlobalConfig = new IBestGlobalConfig()
+	@StorageProp("IBestGlobalConfig") config: IBestGlobalConfig = new IBestGlobalConfig()
 	@Prop value: IBestSliderValue
 	@Prop uniId: number
 	@Consume buttonWidth: number
@@ -326,7 +333,7 @@ struct DragBar{
 				Row()
 					.width(getSizeByUnit(this.buttonSize))
 					.aspectRatio(1)
-					.backgroundColor(this.baseStyle.default)
+					.backgroundColor(IBestSliderColor.white)
 					.borderRadius(this.baseStyle.borderRadiusMax)
 					.shadow({ radius: 2, color: "rgba(0,0,0,0.5)", offsetY: 1 })
 			}

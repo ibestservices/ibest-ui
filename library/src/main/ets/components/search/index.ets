@@ -3,6 +3,8 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
+import { IBestSearchColor } from './color'
+
 @Component
 export struct IBestSearch {
 	/**
@@ -25,7 +27,7 @@ export struct IBestSearch {
 	 * 输入框文字颜色
 	 * @since 1.18.0
      */
-	@Prop textColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop textColor: ResourceColor = IBestSearchColor.textColor
 	/**
 	 * 输入框 placeholder 提示文字
 	 */
@@ -41,11 +43,11 @@ export struct IBestSearch {
 	/**
 	 * 外侧背景色
 	 */
-	@Prop outBgColor: ResourceColor = this.baseStyle.default as string
+	@Prop outBgColor: ResourceColor = IBestSearchColor.outerBg
 	/**
 	 * 内侧背景色
 	 */
-	@Prop innerBgColor: ResourceColor = GRAY_COLOR.GRAY_1
+	@Prop innerBgColor: ResourceColor = IBestSearchColor.innerBg
 	/**
 	 * 是否为圆形搜索框
 	 */
@@ -102,12 +104,12 @@ export struct IBestSearch {
 	 * 右侧按钮背景色
 	 * @since 2.0.1
      */
-	@Prop rightBtnBgColor: ResourceColor = this.baseStyle.default
+	@Prop rightBtnBgColor: ResourceColor = IBestSearchColor.outerBg
 	/**
 	 * 右侧按钮按压背景色
 	 * @since 2.0.1
      */
-	@Prop rightBtnPressBgColor: ResourceColor = GRAY_COLOR.GRAY_2
+	@Prop rightBtnPressBgColor: ResourceColor = IBestSearchColor.activeBg
 	/**
 	 * 自定义右侧按钮
 	 */
@@ -144,7 +146,7 @@ export struct IBestSearch {
 					if(this.label){
 						Text(this.label)
 							.fontSize(this.baseStyle.fontSizeMd)
-							.fontColor(GRAY_COLOR.GRAY_8)
+							.fontColor(IBestSearchColor.textColor)
 							.margin({ right: this.baseStyle.spaceBase })
 					}
 					Image(this.leftIcon)

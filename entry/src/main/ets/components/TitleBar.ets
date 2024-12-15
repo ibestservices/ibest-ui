@@ -1,5 +1,12 @@
 import router from '@ohos.router'
-import { COLOR_BLUE, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, LINE_HEIGHT, SPACE } from '../assets/styles/BaseStyle'
+import {
+    COLOR_GRAY,
+    CONTAINER_SIZE,
+    FONT_SIZE,
+    FONT_WEIGHT,
+    LINE_HEIGHT,
+    SPACE
+} from '../assets/styles/BaseStyle'
 
 @Styles
 function btnPressedStyles() {
@@ -58,44 +65,49 @@ export default struct TitleBar {
   onClickRightBtn: () => void = () => {}
 
   build() {
-    Row() {
-      // 返回按钮
-      Button({
-        type: ButtonType.Normal,
-        stateEffect: false
-      }) {
-        Image($r('app.media.title_back')).width(CONTAINER_SIZE.TWENTY_TWO)
-      }
-      .onClick(() => {
-        router.back()
-      })
-      .btnStyles()
-
-      // 内容区域
+    Column(){
+      Row()
+        .width(CONTAINER_SIZE.FULL)
+        .height(44)
       Row() {
-        if (this.contentBuilder) {
-          this.contentBuilder()
-        } else {
-          Text(this.title)
-            .layoutWeight(1)
-            .textOverflow({ overflow: TextOverflow.Ellipsis })
-            .maxLines(1)
-            .lineHeight(LINE_HEIGHT.LG)
-            .fontSize(FONT_SIZE.LG)
-            .fontWeight(FONT_WEIGHT.MEDIUM)
-            .fontColor(COLOR_BLUE.MEDIUM)
+        // 返回按钮
+        Button({
+          type: ButtonType.Normal,
+          stateEffect: false
+        }) {
+          Image($r('app.media.title_back')).width(CONTAINER_SIZE.TWENTY_TWO).fillColor(COLOR_GRAY.GRAY_6)
         }
-      }.layoutWeight(1)
-
-      // 右侧按钮区域
-      if (this.rightIconBuilder) {
-        Button({ type: ButtonType.Normal, stateEffect: false }) {
-          this.rightIconBuilder()
-        }.btnStyles(false)
         .onClick(() => {
-          typeof this.onClickRightBtn === 'function' && this.onClickRightBtn()
+          router.back()
         })
-      }
-    }.backgroundColor(COLOR_BLUE.DEFAULT)
+        .btnStyles()
+
+        // 内容区域
+        Row() {
+          if (this.contentBuilder) {
+            this.contentBuilder()
+          } else {
+            Text(this.title)
+              .layoutWeight(1)
+              .textOverflow({ overflow: TextOverflow.Ellipsis })
+              .maxLines(1)
+              .lineHeight(LINE_HEIGHT.LG)
+              .fontSize(FONT_SIZE.LG)
+              .fontWeight(FONT_WEIGHT.MEDIUM)
+              .fontColor($r("app.color.doc_text_color_2"))
+          }
+        }.layoutWeight(1)
+
+        // 右侧按钮区域
+        if (this.rightIconBuilder) {
+          Button({ type: ButtonType.Normal, stateEffect: false }) {
+            this.rightIconBuilder()
+          }.btnStyles(false)
+          .onClick(() => {
+            typeof this.onClickRightBtn === 'function' && this.onClickRightBtn()
+          })
+        }
+      }.backgroundColor($r("app.color.doc_background_3"))
+    }
   }
 }

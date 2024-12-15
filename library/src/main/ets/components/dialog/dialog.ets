@@ -13,7 +13,7 @@ function defaultBtnStyles(theme: 'default' | 'round-button') {
 
 @CustomDialog
 export struct IBestDialogView {
-  @StorageLink("iBestGlobalConfig") iBestGlobalConfig: IBestGlobalConfig = new IBestGlobalConfig()
+  @StorageLink("IBestGlobalConfig") IBestGlobalConfig: IBestGlobalConfig = new IBestGlobalConfig()
   /**
    * 控制器
    */
@@ -41,7 +41,7 @@ export struct IBestDialogView {
   /**
    * 弹窗圆角
    */
-  @Prop dialogBorderRadius: string | number = this.baseStyle.spaceMd
+  @Prop dialogBorderRadius: string | number = this.baseStyle.spaceMd as string
   /**
    * 标题
    */
@@ -65,7 +65,7 @@ export struct IBestDialogView {
   /**
    * 标题的fontSize
    */
-  @Prop titleFontSize: string | number = this.baseStyle.fontSizeLg
+  @Prop titleFontSize: string | number = this.baseStyle.fontSizeLg as string
   /**
    * 标题的对齐方式
    */
@@ -93,11 +93,11 @@ export struct IBestDialogView {
   /**
    * 内容区域的fontSize
    */
-  @Prop messageFontSize: string | number = this.baseStyle.fontSizeMd
+  @Prop messageFontSize: string | number = this.baseStyle.fontSizeMd as string
   /**
    * 内容区域的行高 lineHeight
    */
-  @Prop messageLineHeight: string | number = this.baseStyle.lineHeightMd
+  @Prop messageLineHeight: string | number = this.baseStyle.lineHeightMd as string
   /**
    * 内容区域的文字对齐方式
    */
@@ -161,7 +161,7 @@ export struct IBestDialogView {
   /**
    * 按钮的文字大小
    */
-  @Prop buttonFontSize: string | number = this.baseStyle.fontSizeLg
+  @Prop buttonFontSize: string | number = this.baseStyle.fontSizeLg as string
   /**
    * 确认按钮的loading
    */
@@ -265,7 +265,7 @@ export struct IBestDialogView {
             .fontSize(getSizeByUnit(this.messageFontSize, true))
             .fontColor(this.getMsgColor())
         }
-        .scrollBarColor(this.baseStyle.scrollBarColor)
+        .scrollBarColor(this.baseStyle.scrollBarColor as string)
         .constraintSize({
           maxHeight: getSizeByUnit(this.messageMaxHeight)
         })

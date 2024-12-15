@@ -1,28 +1,27 @@
-import { IBestCell, IBestCellGroup, IBestPopup, IBestToast } from '@ibestservices/ibest-ui'
+import { IBestCell, IBestCellGroup, IBestNavBar, IBestPopup, IBestToast } from '@ibestservices/ibest-ui'
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../assets/global.type'
-import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle'
 
 @Extend(Column) function positionColStyle(bd: boolean = false){
 	.layoutWeight(1)
 	.height(75)
 	.justifyContent(FlexAlign.Center)
-	.border({width:{left: bd ? 1 : 0}, color: "#ebedf0"})
+	.border({width:{left: bd ? 1 : 0}, color: modeColor.borderColor})
 	.stateStyles({
 		normal:{
-			.backgroundColor("#fff")
+			.backgroundColor(modeColor.bg2)
 		},
 		pressed:{
-			.backgroundColor("#f5f7fa")
+			.backgroundColor(modeColor.active)
 		}
 	})
 }
 @Extend(Image) function positionImageStyle(){
 	.width(25)
 	.aspectRatio(1)
-	.fillColor("#333")
+	.fillColor(modeColor.textColor)
 }
 
 @Entry
@@ -45,6 +44,7 @@ struct PopupPage {
 		Row() {
 			Text("内容")
 				.fontSize(14)
+				.fontColor(modeColor.textColor)
 		}
 		.width("100%")
 		.aspectRatio(1)
@@ -63,9 +63,13 @@ struct PopupPage {
 
 	build() {
 		Column(){
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
@@ -286,6 +290,6 @@ struct PopupPage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(BACKGROUND_COLOR.BASE)
+		.backgroundColor(modeColor.bg)
 	}
 }

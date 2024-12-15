@@ -1,8 +1,7 @@
 import router from '@ohos.router';
-import { IBestToast, IBestUploader, IBestUploaderFile } from '@ibestservices/ibest-ui'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar'
-import ComponentShowContainer from '../components/ComponentShowContainer'
+import { IBestNavBar, IBestToast, IBestUploader, IBestUploaderFile } from '@ibestservices/ibest-ui';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
+import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 
 @Entry
@@ -73,9 +72,13 @@ struct UploaderPage {
 
 	build() {
 		Column() {
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -178,6 +181,6 @@ struct UploaderPage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(BACKGROUND_COLOR.DEFAULT)
+		.backgroundColor(modeColor.bg2)
 	}
 }

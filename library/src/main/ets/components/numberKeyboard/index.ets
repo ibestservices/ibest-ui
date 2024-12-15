@@ -1,42 +1,45 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { LengthMetrics } from '@kit.ArkUI';
 import { KeyboardType } from './index.type';
 import { IBestPopup } from '../popup';
-import { convertDimensionsWidthUnit } from '../../utils/utils'
+import { convertDimensionsWidthUnit } from '../../utils/utils';
 import GlobalStore from '../../utils/GlobalStore';
+import { IBestNumberKeyboardColor } from './color';
+
 @Extend(Row) function keyBoxStyle(fullWidth?: boolean){
 	.width(fullWidth ? `calc((100% - ${convertDimensionsWidthUnit(12)})/3*2 + ${convertDimensionsWidthUnit(6)})` : `calc((100% - ${convertDimensionsWidthUnit(12)})/3)`)
 	.height(convertDimensionsWidthUnit(48))
-	.backgroundColor(getDefaultBaseStyle().default)
 	.borderRadius(getDefaultBaseStyle().borderRadiusMd)
 	.justifyContent(FlexAlign.Center)
 	.alignItems(VerticalAlign.Center)
 	.stateStyles({
+		normal: {
+			.backgroundColor(IBestNumberKeyboardColor.keyBg)
+		},
 		pressed: {
-			.backgroundColor(GRAY_COLOR.GRAY_2)
+			.backgroundColor(IBestNumberKeyboardColor.activeBg)
 		}
 	})
 }
 @Extend(Text) function keyTextStyle(){
 	.fontSize(convertDimensionsWidthUnit(28, true))
+	.fontColor(IBestNumberKeyboardColor.textColor)
 }
 @Extend(Row) function keyCustomBoxStyle(bg?: boolean){
 	.width(CONTAINER_SIZE.FULL)
 	.height(convertDimensionsWidthUnit(102))
 	.borderRadius(getDefaultBaseStyle().borderRadiusMd)
 	.justifyContent(FlexAlign.Center)
-	.backgroundColor(bg ? getDefaultBaseStyle().primary : getDefaultBaseStyle().default)
 	.stateStyles({
 		normal: {
-			.backgroundColor(bg ? getDefaultBaseStyle().primary : getDefaultBaseStyle().default)
+			.backgroundColor(bg ? getDefaultBaseStyle().primary : IBestNumberKeyboardColor.keyBg)
 			.opacity(1)
 		},
 		pressed: {
 			.opacity(bg ? 0.5 : 1)
-			.backgroundColor(bg ? getDefaultBaseStyle().primary : GRAY_COLOR.GRAY_2)
+			.backgroundColor(bg ? getDefaultBaseStyle().primary : IBestNumberKeyboardColor.activeBg)
 		}
 	})
 }
@@ -187,7 +190,7 @@ export struct NumberKeyboard{
 					Row(){
 						Text(this.title)
 							.fontSize(this.baseStyle.fontSizeLg)
-							.fontColor(GRAY_COLOR.GRAY_7)
+							.fontColor(IBestNumberKeyboardColor.textColor)
 					}
 					.width(CONTAINER_SIZE.FULL)
 					.justifyContent(FlexAlign.Center)
@@ -227,7 +230,7 @@ export struct NumberKeyboard{
 						})
 						Row() {
 							Text(this.closeBtnText)
-								.fontColor(this.baseStyle.default)
+								.fontColor(IBestNumberKeyboardColor.textColor)
 								.fontSize(this.baseStyle.fontSizeLg)
 						}
 						.keyCustomBoxStyle(true)
@@ -242,7 +245,7 @@ export struct NumberKeyboard{
 			.padding(6)
 		}
 		.width(CONTAINER_SIZE.FULL)
-		.backgroundColor(GRAY_COLOR.GRAY_2)
+		.backgroundColor(IBestNumberKeyboardColor.bg)
 		.padding({ bottom: convertDimensionsWidthUnit(GlobalStore.bottomBarHeight) })
 	}
 }
@@ -258,9 +261,11 @@ struct ExtraButton{
 		}else if(this.item.type == "delete"){
 			Image($r("app.media.delete"))
 				.width(convertDimensionsWidthUnit(32))
+				.fillColor(IBestNumberKeyboardColor.textColor)
 		}else{
 			Image($r("app.media.key_board"))
 				.width(convertDimensionsWidthUnit(30))
+				.fillColor(IBestNumberKeyboardColor.textColor)
 		}
 	}
 }

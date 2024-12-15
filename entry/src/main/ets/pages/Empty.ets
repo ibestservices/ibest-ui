@@ -1,6 +1,6 @@
 import TitleBar from '../components/TitleBar';
 import router from '@ohos.router';
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { IBestButton, IBestEmpty } from '@ibestservices/ibest-ui';
 import { ComponentRouterParams } from '../assets/global.type';
@@ -92,6 +92,6 @@ struct EmptyPage {
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)
-    .backgroundColor(BACKGROUND_COLOR.BASE)
+    .backgroundColor(modeColor.bg)
   }
 }

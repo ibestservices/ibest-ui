@@ -1,14 +1,14 @@
 import {
     IBestButton,
     IBestDatePicker,
+    IBestNavBar,
     IBestPicker,
     IBestPickerGroup,
     IBestPickerOption,
     IBestToast
 } from '@ibestservices/ibest-ui'
-import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle'
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../assets/global.type'
 
@@ -51,9 +51,13 @@ struct PickerGroupPage {
 
 	build() {
 		Column() {
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SM, card: true }) {
@@ -155,7 +159,7 @@ struct PickerGroupPage {
 										message: `${this.selectValue1[0]} ${this.selectValue2[0]}`
 									})
 								}
-							}){
+							}) {
 								IBestPicker({
 									groupId: this.groupId3,
 									options: this.options1,
@@ -169,6 +173,7 @@ struct PickerGroupPage {
 							}
 						}
 						.alignItems(HorizontalAlign.Start)
+						.padding({top: SPACE.SM})
 					}
 				}
 			}
@@ -177,6 +182,6 @@ struct PickerGroupPage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(BACKGROUND_COLOR.BASE)
+		.backgroundColor(modeColor.bg)
 	}
 }

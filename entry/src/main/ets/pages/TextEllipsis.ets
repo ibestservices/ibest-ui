@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar';
 import { ComponentRouterParams } from '../assets/global.type';
 import ComponentShowContainer from '../components/ComponentShowContainer';
@@ -97,6 +97,6 @@ struct TextEllipsisPage {
         }
         .width(CONTAINER_SIZE.FULL)
         .height(CONTAINER_SIZE.FULL)
-        .backgroundColor(BACKGROUND_COLOR.DEFAULT)
+        .backgroundColor(modeColor.bg2)
     }
 }

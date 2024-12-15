@@ -1,10 +1,11 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
-import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { GRAY_COLOR } from '../../theme-chalk/src/color';
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { IBestTabs } from '../tab';
 import { IBestTabItemType } from '../tab/index.type';
 import { convertDimensionsWidthUnit } from '../../utils/utils';
+import { IBestPickerGroupColor } from './color';
+
 @Component
 export struct IBestPickerGroup{
 	/**
@@ -69,7 +70,7 @@ export struct IBestPickerGroup{
 	aboutToAppear(): void {
 		this.init()
 	}
-	// 初始化tablist
+	// 初始化tabList
 	init(){
 		this.tabsList = this.tabs.map((item, index) => {
 			let obj: IBestTabItemType = {
@@ -106,7 +107,7 @@ export struct IBestPickerGroup{
 						Text(this.cancelText)
 							.height(CONTAINER_SIZE.FULL)
 							.fontSize(this.baseStyle.fontSizeMd)
-							.fontColor(GRAY_COLOR.GRAY_6)
+							.fontColor(IBestPickerGroupColor.textColor2)
 							.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
 							.onClick(() => {
 								this.onCancel()
@@ -128,6 +129,7 @@ export struct IBestPickerGroup{
 						.constraintSize({ maxWidth: "50%" })
 						.fontWeight(600)
 						.fontSize(this.baseStyle.fontSizeLg)
+						.fontColor(IBestPickerGroupColor.textColor)
 						.maxLines(1)
 						.textOverflow({ overflow: TextOverflow.Ellipsis })
 				}
@@ -144,7 +146,6 @@ export struct IBestPickerGroup{
 				})
 			}
 			.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs, bottom: this.baseStyle.spaceXs })
-
 			Swiper(this.swiperController) {
 				if(this.defaultBuilder){
 					this.defaultBuilder()
@@ -159,6 +160,6 @@ export struct IBestPickerGroup{
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.alignItems(HorizontalAlign.Start)
-		.backgroundColor(this.baseStyle.default)
+		.backgroundColor(IBestPickerGroupColor.bg2)
 	}
 }

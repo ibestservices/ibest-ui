@@ -266,7 +266,7 @@ struct TextTip{
 		Row({space: convertDimensionsWidthUnit(5)}){
 			if(this.refreshStatus == "loading") {
 				IBestLoading({
-					loadingSize: this.baseStyle.fontSizeMd
+					loadingSize: this.baseStyle.fontSizeMd as string
 				})
 			}
 			Text(this.getStatusText())

@@ -1,8 +1,8 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { GRAY_COLOR } from "../../theme-chalk/src/color"
-import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
-import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { convertDimensionsWidthUnit, getSizeByUnit } from "../../utils/utils"
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { GRAY_COLOR } from '../../theme-chalk/src/color'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 @Component
 export struct IBestDivider{
 	/**
@@ -48,7 +48,7 @@ export struct IBestDivider{
 	/**
 	 * 文本与线段间距, 仅水平时生效
      */
-	@Prop textLineSpace: number | string = this.baseStyle.spaceMd
+	@Prop textLineSpace: number | string = this.baseStyle.spaceMd as string
 	/**
 	 * 左侧线段宽度, 仅水平时生效
      */
@@ -64,7 +64,7 @@ export struct IBestDivider{
 	/**
 	 * 左右外边距, 仅垂直时生效
      */
-	@Prop leftRightMargin: number | string = this.baseStyle.spaceXs
+	@Prop leftRightMargin: number | string = this.baseStyle.spaceXs as string
 	/**
 	 * 自定义文本内容
      */

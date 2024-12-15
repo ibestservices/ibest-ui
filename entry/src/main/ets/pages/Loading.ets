@@ -1,9 +1,9 @@
-import TitleBar from '../components/TitleBar'
+import TitleBar from '../components/TitleBar';
 import router from '@ohos.router';
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import ComponentShowContainer from '../components/ComponentShowContainer'
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
+import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
-import { IBestLoading, IBestEmpty } from '@ibestservices/ibest-ui';
+import { IBestEmpty, IBestLoading } from '@ibestservices/ibest-ui';
 
 
 @Entry
@@ -144,6 +144,6 @@ struct LoadingPage {
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)
-    .backgroundColor(BACKGROUND_COLOR.BASE)
+    .backgroundColor(modeColor.bg)
   }
 }

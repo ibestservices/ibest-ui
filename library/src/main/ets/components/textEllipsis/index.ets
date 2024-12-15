@@ -17,7 +17,7 @@ export struct IBestTextEllipsis{
     /**
      * 文字大小
      */
-    @Prop textFontSize: number | string = this.baseStyle.fontSizeMd
+    @Prop textFontSize: number | string = this.baseStyle.fontSizeMd as string
     /**
      * 文字颜色
      */
