@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { IBestNoticeBar, IBestToast } from '@ibestservices/ibest-ui';
+import { IBestNavBar, IBestNoticeBar, IBestToast } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar';
 import ComponentShowContainer from '../components/ComponentShowContainer';
@@ -11,9 +11,13 @@ struct NoticeBarPage {
 
 	build() {
 		Column() {
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
@@ -91,6 +95,6 @@ struct NoticeBarPage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(modeColor.bg2)
+		.backgroundColor(modeColor.bg)
 	}
 }

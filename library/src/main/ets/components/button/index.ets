@@ -154,7 +154,7 @@ export struct IBestButton {
    * @returns
    */
   getBackgroundColor() {
-    return this.plain ? "transparent" : this.color ? this.color : this.baseStyle[this.type]
+    return this.plain ? "transparent" : this.color ? this.color : this.type == "default" ? IBestButtonColor.defaultBg : this.baseStyle[this.type]
   }
 
   /**

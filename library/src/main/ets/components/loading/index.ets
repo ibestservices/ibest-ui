@@ -5,6 +5,7 @@ import { LoadingIconType } from '../../model/Global.type';
 import { IBestLoadingCircular } from './circular';
 import { IBestLoadingSpinner } from './spinner';
 import { getSizeByUnit } from '../../utils/utils';
+import { IBestLoadingColor } from './color';
 @Component
 export struct IBestLoading {
   /**
@@ -62,7 +63,7 @@ export struct IBestLoading {
   /**
    * loading的文字颜色
    */
-  @Prop loadingTextColor: ResourceColor = GRAY_COLOR.GRAY_5;
+  @Prop loadingTextColor: ResourceColor = IBestLoadingColor.textColor
   /**
    * loading的文字大小
    */
@@ -102,7 +103,6 @@ export struct IBestLoading {
           top: this.vertical ? getSizeByUnit(this.loadingIconMarginTop) : 0
         })
       }
-
     }
     // 加载的文案
     if(this.loadingTextBuilder){
@@ -125,7 +125,6 @@ export struct IBestLoading {
       if(this.defaultBuilder){
         this.defaultBuilder()
       }
-
       // 如果是竖直排列的loading
       if(this.vertical){
         Column(){
@@ -147,7 +146,5 @@ export struct IBestLoading {
     }.onSizeChange((oldValue: SizeOptions, newValue: SizeOptions) => {
       this.sizeValue = newValue
     })
-
-
   }
 }

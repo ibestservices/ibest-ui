@@ -12,6 +12,7 @@ interface CountData {
 
 @Component
 export struct WatermarkCanvas {
+  @StorageProp("IBestColorMode") @Watch("drawWaterMark") colorMode: ColorMode = ColorMode.LIGHT
   settings: RenderingContextSettings = new RenderingContextSettings(true)
   context: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
   /**
@@ -23,17 +24,21 @@ export struct WatermarkCanvas {
    */
   @Prop @Watch('drawWaterMark') waterMarkHeight: number = 100;
   /**
+   * 水印透明度
+   */
+  @Prop waterMarkOpacity: number = 0.3
+  /**
    * 旋转角度
    */
   @Prop @Watch('drawWaterMark') rotateDeg: number = -22;
   /**
    * 水印区域的总高度
    */
-  @Prop waterMarkContainHeight: number = 0;
+  @Prop @Watch('drawWaterMark') waterMarkContainHeight: number = 0;
   /**
    * 水印区域的总宽度
    */
-  @Prop waterMarkContainWidth: number = 0;
+  @Prop @Watch('drawWaterMark') waterMarkContainWidth: number = 0;
   /**
    * 水印之间的水平间隔 默认0
    */
@@ -61,17 +66,19 @@ export struct WatermarkCanvas {
   /**
    * 文字颜色
    */
-  @Prop @Watch('drawWaterMark') fontColor: string | number | CanvasGradient | CanvasPattern = '#000'
+  @Prop @Watch('drawWaterMark') fontColor: string | number | CanvasGradient | CanvasPattern = ''
   /**
    * 绘制完成回调
    */
   onComplete: (url: string) => void = () => {}
 
+  getFontColor(){
+    return this.fontColor || (this.colorMode == 0 ? "#f5f5f5" : "#323232")
+  }
+  // 清除画布
   clearCanvas() {
-    // 清除画布
     this.context?.clearRect(0, 0, this.waterMarkWidth, this.waterMarkHeight)
   }
-
   /**
    * 获取x轴与y轴的绘制数量
    * @param width
@@ -157,7 +164,7 @@ export struct WatermarkCanvas {
    * 绘制文字
    */
   handleLayoutText(rotateDeg: number) {
-    this.context.fillStyle = this.fontColor;
+    this.context.fillStyle = this.getFontColor()
     this.context.font = `${vp2px(this.fontSize)}px ${this.fontFamily}`;
     const data = this.context.measureText(this.text);
     this.drawCanvasItem({
@@ -174,8 +181,8 @@ export struct WatermarkCanvas {
    * 绘制水印
    */
   drawWaterMark() {
+    this.clearCanvas()
     this.context.textBaseline = 'top'
-    this.clearCanvas();
     const rotateDeg = this.rotateDeg * Math.PI / 180;
     this.text?.length ? this.handleLayoutText(rotateDeg) : this.handleLayoutImg(rotateDeg);
   }
@@ -185,11 +192,10 @@ export struct WatermarkCanvas {
       .width(this.waterMarkContainWidth)
       .height(this.waterMarkContainHeight)
       .onReady(() => {
-        this.drawWaterMark();
+        this.drawWaterMark()
       })
       .opacity(0)
       .enabled(false)
-      .position({})
   }
 }
 

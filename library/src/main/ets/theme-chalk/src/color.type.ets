@@ -1,5 +1,4 @@
 export interface ThemeColor {
-  DEFAULT: ResourceColor
   PRIMARY: ResourceColor
   SUCCESS: ResourceColor
   WARNING: ResourceColor
@@ -43,7 +42,6 @@ export interface ColorData {
   success: ResourceColor;
   warning: ResourceColor;
   danger: ResourceColor;
-  default: ResourceColor;
   primaryOpacity: ResourceColor;
   successOpacity: ResourceColor;
   warningOpacity: ResourceColor;

@@ -4,7 +4,7 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
 import { IBestIcon } from '../icon'
-
+import { IBestNavbarColor } from './color'
 @Component
 export struct IBestNavBar{
 	@State uniId: number = 0
@@ -23,7 +23,7 @@ export struct IBestNavBar{
 	/**
 	 * 导航栏背景色
      */
-	@Prop @Watch("navBarBgColorChange") navBarBgColor: ResourceColor = $r("app.color.ibest_background_2")
+	@Prop @Watch("navBarBgColorChange") navBarBgColor: ResourceColor = IBestNavbarColor.bgColor
 	/**
 	 * 导航栏渐变色
      */
@@ -43,7 +43,7 @@ export struct IBestNavBar{
 	/**
 	 * 标题文字颜色
      */
-	@Prop titleColor: ResourceColor = $r("app.color.ibest_text_color")
+	@Prop titleColor: ResourceColor = IBestNavbarColor.textColor
 	/**
 	 * 标题文字大小
      */
@@ -59,7 +59,7 @@ export struct IBestNavBar{
 	/**
 	 * 标题图标颜色
      */
-	@Prop titleIconColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop titleIconColor: ResourceColor = IBestNavbarColor.textColor
 	/**
 	 * 标题图标大小
      */
@@ -79,7 +79,7 @@ export struct IBestNavBar{
 	/**
 	 * 二级标题颜色
      */
-	@Prop subTitleColor: ResourceColor = GRAY_COLOR.GRAY_6
+	@Prop subTitleColor: ResourceColor = IBestNavbarColor.subTitleColor
 	/**
 	 * 二级标题字体大小
      */
@@ -99,7 +99,7 @@ export struct IBestNavBar{
 	/**
 	 * 左侧图标颜色
      */
-	@Prop leftIconColor: ResourceColor = $r("app.color.ibest_text_color")
+	@Prop leftIconColor: ResourceColor = IBestNavbarColor.textColor
 	/**
 	 * 左侧图标大小
      */
@@ -115,7 +115,7 @@ export struct IBestNavBar{
 	/**
 	 * 左侧文本颜色
      */
-	@Prop leftLabelColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop leftLabelColor: ResourceColor = IBestNavbarColor.textColor
 	/**
 	 * 左侧文本大小
      */
@@ -135,7 +135,7 @@ export struct IBestNavBar{
 	/**
 	 * 右侧图标颜色
      */
-	@Prop rightIconColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop rightIconColor: ResourceColor = IBestNavbarColor.textColor
 	/**
 	 * 右侧图标大小
      */
@@ -151,7 +151,7 @@ export struct IBestNavBar{
 	/**
 	 * 右侧文本颜色
      */
-	@Prop rightLabelColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop rightLabelColor: ResourceColor = IBestNavbarColor.textColor
 	/**
 	 * 右侧文本大小
      */
@@ -356,7 +356,7 @@ export struct IBestNavBar{
 			.justifyContent(FlexAlign.Center)
 			.backgroundColor(this.navBarBgColor)
 			.linearGradient(this.bgLinearGradient)
-			.border({width:{bottom: this.isShowBorder ? 1 : 0}, color: $r("app.color.ibest_border_color")})
+			.border({width:{bottom: this.isShowBorder ? 1 : 0}, color: IBestNavbarColor.borderColor})
 		}
 	}
 }

@@ -1,5 +1,6 @@
 import router from '@ohos.router';
-import { IBestButton, IBestCollapse, IBestCollapseController, IBestCollapseItem } from '@ibestservices/ibest-ui';
+import { IBestButton, IBestCollapse, IBestCollapseController, IBestCollapseItem,
+    IBestNavBar } from '@ibestservices/ibest-ui';
 import { COLOR_GRAY, CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar';
 import ComponentShowContainer from '../components/ComponentShowContainer';
@@ -23,9 +24,13 @@ struct CollapsePage {
     private controller: IBestCollapseController = new IBestCollapseController()
     build() {
         Column() {
-            TitleBar({
-                title: this.title
-            }).backgroundColor('#FFF')
+            IBestNavBar({
+                title: this.title,
+                isShowStatusBar: true,
+                onLeftClick: () => {
+                    router.back()
+                }
+            })
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
@@ -39,7 +44,7 @@ struct CollapsePage {
                                 index: 0,
                                 title: '标题1'
                             }){
-                                Text('代码是写出来给人看的，附带能在机器上运行。').fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
+                                Text('代码是写出来给人看的，附带能在机器上运行。').fontSize(14).fontColor(modeColor.textColor4)
                             }
                             IBestCollapseItem({
                                 groupId: this.groupId,
@@ -47,7 +52,7 @@ struct CollapsePage {
                                 index: 1,
                                 title: '标题2'
                             }){
-                                Text('技术无非就是那些开发它的人的共同灵魂。').fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
+                                Text('技术无非就是那些开发它的人的共同灵魂。').fontSize(14).fontColor(modeColor.textColor4)
                             }
                             IBestCollapseItem({
                                 groupId: this.groupId,
@@ -55,7 +60,7 @@ struct CollapsePage {
                                 index: 2,
                                 title: '标题3'
                             }){
-                                Text('在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。').fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
+                                Text('在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。').fontSize(14).fontColor(modeColor.textColor4)
                             }
                         }
                     }
@@ -73,7 +78,7 @@ struct CollapsePage {
                                 index: 0,
                                 title: '标题1'
                             }){
-                                Text('代码是写出来给人看的，附带能在机器上运行。').fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
+                                Text('代码是写出来给人看的，附带能在机器上运行。').fontSize(14).fontColor(modeColor.textColor4)
                             }
                             IBestCollapseItem({
                                 groupId: this.groupId1,
@@ -81,7 +86,7 @@ struct CollapsePage {
                                 index: 1,
                                 title: '标题2'
                             }){
-                                Text('技术无非就是那些开发它的人的共同灵魂。').fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
+                                Text('技术无非就是那些开发它的人的共同灵魂。').fontSize(14).fontColor(modeColor.textColor4)
                             }
                             IBestCollapseItem({
                                 groupId: this.groupId1,
@@ -89,7 +94,7 @@ struct CollapsePage {
                                 index: 2,
                                 title: '标题3'
                             }){
-                                Text('在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。').fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
+                                Text('在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。').fontSize(14).fontColor(modeColor.textColor4)
                             }
                         }
                     }
@@ -106,7 +111,7 @@ struct CollapsePage {
                                 index: 0,
                                 title: '标题1'
                             }){
-                                Text('代码是写出来给人看的，附带能在机器上运行。').fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
+                                Text('代码是写出来给人看的，附带能在机器上运行。').fontSize(14).fontColor(modeColor.textColor4)
                             }
                             IBestCollapseItem({
                                 groupId: this.groupId,
@@ -115,7 +120,7 @@ struct CollapsePage {
                                 title: '标题2',
                                 disabled: true
                             }){
-                                Text('技术无非就是那些开发它的人的共同灵魂。').fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
+                                Text('技术无非就是那些开发它的人的共同灵魂。').fontSize(14).fontColor(modeColor.textColor4)
                             }
                             IBestCollapseItem({
                                 groupId: this.groupId,
@@ -124,7 +129,7 @@ struct CollapsePage {
                                 title: '标题3',
                                 disabled: true
                             }){
-                                Text('在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。').fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
+                                Text('在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。').fontSize(14).fontColor(modeColor.textColor4)
                             }
                         }
                     }
@@ -143,7 +148,7 @@ struct CollapsePage {
                                 title: '标题1',
                                 value: "右侧内容"
                             }){
-                                Text('代码是写出来给人看的，附带能在机器上运行。').fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
+                                Text('代码是写出来给人看的，附带能在机器上运行。').fontSize(14).fontColor(modeColor.textColor4)
                             }
                         }
                     }
@@ -163,7 +168,7 @@ struct CollapsePage {
                                     index: 0,
                                     title: '标题1'
                                 }){
-                                    Text('代码是写出来给人看的，附带能在机器上运行。').fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
+                                    Text('代码是写出来给人看的，附带能在机器上运行。').fontSize(14).fontColor(modeColor.textColor4)
                                 }
                                 IBestCollapseItem({
                                     groupId: this.groupId3,
@@ -172,7 +177,7 @@ struct CollapsePage {
                                     title: '标题2',
                                     disabled: true
                                 }){
-                                    Text('技术无非就是那些开发它的人的共同灵魂。').fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
+                                    Text('技术无非就是那些开发它的人的共同灵魂。').fontSize(14).fontColor(modeColor.textColor4)
                                 }
                                 IBestCollapseItem({
                                     groupId: this.groupId3,
@@ -180,7 +185,7 @@ struct CollapsePage {
                                     index: 2,
                                     title: '标题3'
                                 }){
-                                    Text('在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。').fontSize(14).fontColor(COLOR_GRAY.GRAY_6)
+                                    Text('在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。').fontSize(14).fontColor(modeColor.textColor4)
                                 }
                             }
                             Column(){
@@ -252,6 +257,7 @@ struct CollapsePage {
                 }
             }
             .layoutWeight(1)
+            .padding({bottom: SPACE.SM})
         }
         .width(CONTAINER_SIZE.FULL)
         .height(CONTAINER_SIZE.FULL)

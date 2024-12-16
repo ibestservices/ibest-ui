@@ -1,4 +1,4 @@
-import { IBestGlobalConfig } from '../../model/Global.type';
+import { IBestDialogColor } from './color';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
@@ -7,13 +7,21 @@ import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 @Extend(Button)
 function defaultBtnStyles(theme: 'default' | 'round-button') {
   .layoutWeight(1)
-  .backgroundColor('transparent')
   .height(convertDimensionsWidthUnit(theme == 'default' ? 48 : 36))
 }
 
 @CustomDialog
 export struct IBestDialogView {
-  @StorageLink("IBestGlobalConfig") IBestGlobalConfig: IBestGlobalConfig = new IBestGlobalConfig()
+  /**
+   * 全局公共样式
+   */
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+  @StorageProp("IBestColorMode") @Watch("colorModeChange") colorMode: ColorMode = ColorMode.LIGHT
+  @State whiteColor: ResourceColor = IBestDialogColor.white
+  @State contentBg: ResourceColor = IBestDialogColor.contentBg
+  @State textColor: ResourceColor = IBestDialogColor.textColor
+  @State bdColor: ResourceColor = IBestDialogColor.borderColor
+  @State activeBg: ResourceColor = IBestDialogColor.activeBg
   /**
    * 控制器
    */
@@ -31,10 +39,6 @@ export struct IBestDialogView {
    */
   @BuilderParam footerBuilder?: CustomBuilder;
   /**
-   * 全局公共样式
-   */
-  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-  /**
    * 弹窗宽度
    */
   @Prop dialogWidth: string | number = convertDimensionsWidthUnit(320)
@@ -49,7 +53,7 @@ export struct IBestDialogView {
   /**
    * 标题颜色
    */
-  @Prop titleColor: ResourceColor = GRAY_COLOR.GRAY_8
+  @Prop titleColor: ResourceColor = ''
   /**
    * 标题的padding-top值
    */
@@ -89,7 +93,7 @@ export struct IBestDialogView {
   /**
    * 内容区域的fontColor 默认#323233
    */
-  @Prop messageFontColor: ResourceColor = GRAY_COLOR.GRAY_8
+  @Prop messageFontColor: ResourceColor = ''
   /**
    * 内容区域的fontSize
    */
@@ -135,21 +139,21 @@ export struct IBestDialogView {
   /**
    * 确认按钮的字体颜色
    */
-  @Prop confirmButtonColor: ResourceColor = this.theme == 'round-button' ? '#fff' : this.baseStyle.primary
+  @Prop confirmButtonColor: ResourceColor = ''
   /**
    * 确认按钮的背景颜色
    * @since 1.16.0
    */
-  @Prop confirmButtonBgColor: ResourceColor = this.theme == 'round-button' ? this.baseStyle.primary : '#fff'
+  @Prop confirmButtonBgColor: ResourceColor = ''
   /**
    * 取消按钮的字体颜色
    */
-  @Prop cancelButtonColor: ResourceColor = GRAY_COLOR.GRAY_7
+  @Prop cancelButtonColor: ResourceColor = ''
   /**
    * 取消按钮的背景颜色
    * @since 1.16.0
    */
-  @Prop cancelButtonBgColor: ResourceColor = this.baseStyle.default
+  @Prop cancelButtonBgColor: ResourceColor = ""
   /**
    * 是否禁用确认按钮
    */
@@ -178,6 +182,14 @@ export struct IBestDialogView {
    * 点击确认的的回调
    */
   onConfirm: (event?: ClickEvent) => void = () => {}
+
+  colorModeChange(){
+    this.whiteColor = IBestDialogColor.white
+    this.contentBg = IBestDialogColor.contentBg
+    this.textColor = IBestDialogColor.textColor
+    this.bdColor = IBestDialogColor.borderColor
+    this.activeBg = IBestDialogColor.activeBg
+  }
 
   /**
    * 对齐置换TextAlign
@@ -208,7 +220,7 @@ export struct IBestDialogView {
    * @returns
    */
   getMsgColor() {
-    return this.messageFontColor ? this.messageFontColor : this.isHasTitle() ? GRAY_COLOR.GRAY_7 : GRAY_COLOR.GRAY_8;
+    return this.messageFontColor || (this.isHasTitle() ? GRAY_COLOR.GRAY_7 : this.textColor)
   }
 
   /**
@@ -216,15 +228,27 @@ export struct IBestDialogView {
    * @returns
    */
   getConfirmBtnFontColor() {
-    return this.confirmButtonColor ? this.confirmButtonColor : this.baseStyle.primary
+    return this.confirmButtonColor || (this.theme == 'round-button' ? this.whiteColor : this.baseStyle.primary)
+  }
+  /**
+   * 确认按钮背景色
+   */
+  getConfirmBtnBgColor() {
+    return this.confirmButtonBgColor || (this.theme == 'round-button' ? this.baseStyle.primary : this.contentBg)
   }
 
   /**
-   * 确认按钮的文字颜色
+   * 取消按钮的文字颜色
    * @returns
    */
   getCancelBtnFontColor() {
-    return this.cancelButtonColor ? this.cancelButtonColor : GRAY_COLOR.GRAY_7
+    return this.cancelButtonColor || this.textColor
+  }
+  /**
+   * 取消按钮背景色
+   */
+  getCancelBtnBgColor() {
+    return this.cancelButtonBgColor || this.contentBg
   }
 
   build() {
@@ -244,7 +268,7 @@ export struct IBestDialogView {
               right: getSizeByUnit(this.titlePaddingX)
             })
             .textAlign(this.getFormatAlign(this.titleTextAlign))
-            .fontColor(this.titleColor)
+            .fontColor(this.titleColor || this.textColor)
         }
       }
       // content
@@ -298,18 +322,15 @@ export struct IBestDialogView {
                 }
               }
             }
-            .border({
-              width: this.theme == 'default' ? { right: this.showConfirmButton ? 1 : 0 } : 1, color: '#ecedf0'
-            })
+            .border({ width: this.theme == 'default' ? { right: this.showConfirmButton ? 1 : 0 } : 1, color: this.bdColor })
             .enabled(!this.cancelButtonDisabled || !this.cancelButtonLoading)
             .defaultBtnStyles(this.theme)
-            .backgroundColor(this.cancelButtonBgColor)
+            .backgroundColor(this.getCancelBtnBgColor())
             .borderRadius(this.theme == "round-button" ? { topLeft: 999, bottomLeft: 999, topRight: this.showConfirmButton && this.buttonSpace == 0 ? 0 : 999, bottomRight: this.showConfirmButton && this.buttonSpace == 0 ? 0 : 999 } : 0)
             .onClick(event => {
               this.onCancel(event)
             })
           }
-
           // 确认按钮
           if (this.showConfirmButton) {
             Button({ type: ButtonType.Normal }) {
@@ -334,23 +355,17 @@ export struct IBestDialogView {
             }
             .enabled(!this.confirmButtonDisabled || !this.confirmButtonLoading)
             .defaultBtnStyles(this.theme)
-            .backgroundColor(this.confirmButtonBgColor)
+            .backgroundColor(this.getConfirmBtnBgColor())
             .borderRadius(this.theme == "round-button" ? { topLeft: this.showCancelButton && this.buttonSpace == 0 ? 0 : 999, bottomLeft: this.showCancelButton && this.buttonSpace == 0 ? 0 : 999, topRight: 999, bottomRight: 999 } : 0)
             .onClick(event => {
               this.onConfirm(event)
             })
           }
-
-        }.border({
-          width: {
-            top: this.theme == 'default' ? 1 : 0
-          },
-          color: '#ecedf0'
-        })
+        }.border({ width: { top: this.theme == 'default' ? 1 : 0 }, color: this.bdColor })
         .padding(this.theme == "round-button" ? { top: this.baseStyle.spaceXs, left: this.baseStyle.spaceLg, right: this.baseStyle.spaceLg, bottom: this.baseStyle.spaceMd } : "")
       }
     }
-    .backgroundColor('#fff')
+    .backgroundColor(this.contentBg)
     .width(getSizeByUnit(this.dialogWidth))
     .borderRadius(getSizeByUnit(this.dialogBorderRadius))
     .clip(true)

@@ -3,7 +3,7 @@ import router from '@ohos.router';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
-import { IBestEmpty, IBestLoading } from '@ibestservices/ibest-ui';
+import { IBestEmpty, IBestLoading, IBestNavBar } from '@ibestservices/ibest-ui';
 
 
 @Entry
@@ -23,10 +23,13 @@ struct LoadingPage {
 
   build() {
     Column() {
-      TitleBar({
-        title: this.title
-      }).backgroundColor('#FFF')
-
+      IBestNavBar({
+        title: this.title,
+        isShowStatusBar: true,
+        onLeftClick: () => {
+          router.back()
+        }
+      })
       List() {
         ListItem() {
           ComponentShowContainer({ title: '加载类型' }) {
@@ -41,7 +44,6 @@ struct LoadingPage {
         }.margin({
           bottom: SPACE.SM
         })
-
         ListItem() {
           ComponentShowContainer({ title: '自定义颜色' }) {
             Row() {
@@ -58,8 +60,6 @@ struct LoadingPage {
         }.margin({
           bottom: SPACE.SM
         })
-
-
         ListItem() {
           ComponentShowContainer({ title: '自定义大小' }) {
             Row({ space: 20 }) {
@@ -76,21 +76,17 @@ struct LoadingPage {
         }.margin({
           bottom: SPACE.SM
         })
-
-
         ListItem() {
           ComponentShowContainer({ title: '加载文案' }) {
             Row() {
               IBestLoading({
                 loadingText: '加载中...'
               })
-
             }
           }
         }.margin({
           bottom: SPACE.SM
         })
-
         ListItem() {
           ComponentShowContainer({ title: '水平排列' }) {
             Row() {
@@ -98,13 +94,11 @@ struct LoadingPage {
                 loadingText: '加载中...',
                 vertical: false
               })
-
             }
           }
         }.margin({
           bottom: SPACE.SM
         })
-
         ListItem() {
           ComponentShowContainer({ title: '自定义文本颜色' }) {
             Row() {
@@ -122,7 +116,6 @@ struct LoadingPage {
         }.margin({
           bottom: SPACE.SM
         })
-
         ListItem() {
           ComponentShowContainer({ title: '包含内容' }) {
             IBestLoading({
@@ -134,7 +127,6 @@ struct LoadingPage {
         }.margin({
           bottom: SPACE.SM
         })
-
       }
       .layoutWeight(1)
       .padding({

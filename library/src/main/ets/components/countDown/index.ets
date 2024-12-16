@@ -2,6 +2,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { getSizeByUnit, padZero } from '../../utils/utils'
+import { IBestCountDownColor } from './color'
 import { CurrentTime, IBestCountDownController } from './index.type'
 
 const SECOND = 1000
@@ -39,7 +40,7 @@ export struct IBestCountDown{
 	/**
 	 * 文字颜色
      */
-	@Prop color: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop color: ResourceColor = IBestCountDownColor.textColor
 	/**
 	 * 文字大小
      */

@@ -137,9 +137,9 @@ export const getComponentsInfo = (context: UIContext, key: string): ComInfoType 
 /**
  * 获取窗口域尺寸信息
  * */
-export const getWindowAvoidSize = async (context: common.BaseContext): Promise<ComAvoidAreaSize> => {
+export const getWindowAvoidSize = (): ComAvoidAreaSize => {
   let windowStage = GlobalStore.windowStage
-  let mainWindow: window.Window = windowStage ? windowStage.getMainWindowSync() : await window.getLastWindow(context)
+  let mainWindow: window.Window = windowStage.getMainWindowSync()
   let avoidArea = mainWindow.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
   let systemDht = mainWindow.getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR)
   // console.log("avoidArea", JSON.stringify(avoidArea))

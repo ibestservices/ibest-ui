@@ -2,7 +2,7 @@ import router from '@ohos.router';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar';
 import ComponentShowContainer from '../components/ComponentShowContainer';
-import { IBestCell, IBestCellGroup, IBestDialog, IBestDialogUtil } from '@ibestservices/ibest-ui';
+import { IBestCell, IBestCellGroup, IBestDialog, IBestDialogUtil, IBestNavBar } from '@ibestservices/ibest-ui';
 import { ComponentRouterParams } from '../assets/global.type';
 
 export interface TextData {
@@ -61,10 +61,13 @@ struct DialogPage {
 
   build() {
     Column() {
-      TitleBar({
-        title: this.title
-      }).backgroundColor('#FFF')
-
+      IBestNavBar({
+        title: this.title,
+        isShowStatusBar: true,
+        onLeftClick: () => {
+          router.back()
+        }
+      })
       // 使用组件
       IBestDialog({
         visible: $dialogVisible,
@@ -160,7 +163,7 @@ struct DialogPage {
                     message: textData.life,
                     showCancelButton: true,
                     theme: "round-button",
-                    buttonSpace: 40
+                    buttonSpace: 20
                   })
                 }
               })

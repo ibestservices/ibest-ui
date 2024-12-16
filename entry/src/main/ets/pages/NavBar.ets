@@ -33,7 +33,8 @@ struct NavBarPage {
 	build() {
 		Column() {
 			IBestNavBar({
-				leftLabel: this.title,
+				title: this.title,
+				isShowStatusBar: true,
 				onLeftClick: () => {
 					router.back()
 				}

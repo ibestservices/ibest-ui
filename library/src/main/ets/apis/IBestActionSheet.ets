@@ -238,7 +238,7 @@ struct defaultContent{
 					.padding(this.baseStyle.spaceMd)
 					.fontSize(this.baseStyle.fontSizeMd)
 					.fontColor(this.descriptionColor)
-					.backgroundColor(this.baseStyle.default)
+					.backgroundColor(IBestActionSheetColor.buttonBg)
 					.border({ width: { bottom: 1 }, color: this.bdColor })
 			}
 			if(this.option.customContent){

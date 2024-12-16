@@ -83,7 +83,7 @@ struct CalendarItem {
         let dateStr = item.dateStr
         if(item.isDisabled){
             this.fontColor = GRAY_COLOR.GRAY_7
-            this.bgColor = GRAY_COLOR.GRAY_2
+            this.bgColor = IBestCalendarColor.disabledBg
         }else if(this.selectType == "range"){ // 范围选择
             if(this.selectedList.length){
                 let first = this.selectedList[0]
@@ -198,7 +198,7 @@ export struct IBestCalendar{
     // 唯一id
     @State uniId: number = 0
     // 是否横屏
-    @StorageProp("isLandscape") isLandscape: boolean = false
+    @StorageProp("IBestIsLandscape") IBestIsLandscape: boolean = false
     /**
      * 默认选中日期
      */
@@ -328,6 +328,29 @@ export struct IBestCalendar{
     onConfirm: (value: Array<CalendarConfirmResultType>) => void = () => {}
     controller?: CustomDialogController
     private context: UIContext = this.getUIContext()
+
+    @Builder contentBuilder(){
+        Stack({alignContent: Alignment.Top}) {
+            Text(this.curMonth)
+                .fontSize(convertDimensionsWidthUnit(150, true))
+                .height(convertDimensionsWidthUnit(this.contentHeight))
+                .fontColor(IBestCalendarColor.markTextColor)
+                .visibility(this.isShowMark ? Visibility.Visible : Visibility.Hidden)
+            GridRow({ columns: 7, gutter: { x: 0, y: convertDimensionsWidthUnit(5) }}) {
+                ForEach(this.daysList, (item: DayItemType, index: number) => {
+                    GridCol() {
+                        CalendarItem({ dayItem: item, index: index })
+                            .onClick(() => {
+                                this.selectDate(item)
+                            })
+                    }
+                })
+            }
+            .width("100%")
+            .id(`ibest_calender_${this.uniId}`)
+        }
+        .padding(this.IBestIsLandscape ? undefined : {left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
+    }
 
     selectDateChange(){
         this.curYearMonth = dayjs(this.curSelectedDate).format('YYYY-MM')
@@ -461,7 +484,7 @@ export struct IBestCalendar{
      */
     getDateAreaHeight(){
         setTimeout(()=>{
-            this.contentHeight = getComponentsInfo(this.context, `calender_${this.uniId}`).height
+            this.contentHeight = getComponentsInfo(this.context, `ibest_calender_${this.uniId}`).height
         }, 0)
     }
     /**
@@ -671,7 +694,7 @@ export struct IBestCalendar{
                         })
                 }
             }
-            .width('100%')
+            .width(CONTAINER_SIZE.FULL)
             .height(convertDimensionsWidthUnit(40))
             .padding({left: this.baseStyle.spaceLg, right: this.baseStyle.spaceLg})
             .justifyContent(FlexAlign.SpaceBetween)
@@ -683,32 +706,18 @@ export struct IBestCalendar{
                     }
                 }, (item: HeaderItemType) => item.text)
             }
-            .width('100%')
+            .width(CONTAINER_SIZE.FULL)
             .height(convertDimensionsWidthUnit(30))
             .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
-            Scroll() {
-                Stack({alignContent: Alignment.Top}) {
-                    Text(this.curMonth)
-                        .fontSize(convertDimensionsWidthUnit(150, true))
-                        .height(convertDimensionsWidthUnit(this.contentHeight))
-                        .fontColor(IBestCalendarColor.markTextColor)
-                        .visibility(this.isShowMark ? Visibility.Visible : Visibility.Hidden)
-                    GridRow({ columns: 7, gutter: { x: 0, y: convertDimensionsWidthUnit(5) }}) {
-                        ForEach(this.daysList, (item: DayItemType, index: number) => {
-                            GridCol() {
-                                CalendarItem({ dayItem: item, index: index })
-                                    .onClick(() => {
-                                        this.selectDate(item)
-                                    })
-                            }
-                        })
-                    }
-                    .width("100%")
-                    .id(`calender_${this.uniId}`)
+            if(this.IBestIsLandscape){
+                Scroll() {
+                    this.contentBuilder()
                 }
+                .height('60%')
+                .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
+            }else{
+                this.contentBuilder()
             }
-            .height(this.isLandscape ? '60%' : "")
-            .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
             Button(this.confirmBtnText)
                 .type(ButtonType.Capsule)
                 .width('90%')
@@ -721,7 +730,7 @@ export struct IBestCalendar{
                     this.confirm()
                 })
         }
-        .width('100%')
+        .width(CONTAINER_SIZE.FULL)
         .backgroundColor(IBestCalendarColor.bgColor)
         .borderRadius({
             topLeft: this.cornerRadius,

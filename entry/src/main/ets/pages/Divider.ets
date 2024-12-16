@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { IBestDivider } from '@ibestservices/ibest-ui';
+import { IBestDivider, IBestNavBar } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar';
 import ComponentShowContainer from '../components/ComponentShowContainer';
@@ -19,9 +19,13 @@ struct DividerPage {
 
 	build() {
 		Column() {
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {

@@ -1,6 +1,7 @@
 import router from '@ohos.router';
 import {
     IBestButton,
+    IBestNavBar,
     IBestPopover,
     IBestPopoverAction,
     IBestPopoverController,
@@ -104,9 +105,13 @@ struct PopoverPage {
 
     build() {
         Column() {
-            TitleBar({
-                title: this.title
-            }).backgroundColor('#FFF')
+            IBestNavBar({
+                title: this.title,
+                isShowStatusBar: true,
+                onLeftClick: () => {
+                    router.back()
+                }
+            })
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '基础用法' }) {

@@ -252,54 +252,35 @@ struct ButtonPage {
 
         ListItem() {
           ComponentShowContainer({ title: '自定义颜色' }) {
-            Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap, alignItems: ItemAlign.Center }) {
-
-              Column() {
-                IBestButton({
-                  text: '自定义颜色按钮',
-                  color: "#7232dd"
-                })
-              }.btnMargin()
-
-              Column() {
-                IBestButton({
-                  text: '自定义颜色按钮',
-                  plain: true,
-                  color: "#7232dd"
-                })
-              }.btnMargin()
-
-              Column() {
-                IBestButton({
-                  text: '自定义颜色按钮',
-                  plain: true,
-                  disabled: true,
-                  color: "#7232dd"
-                })
-              }.btnMargin()
+            Row({space: SPACE.XS}) {
+              IBestButton({
+                text: '单色按钮',
+                color: "#7232dd"
+              })
+              IBestButton({
+                text: '单色按钮',
+                plain: true,
+                color: "#7232dd"
+              })
             }
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '自定义大小' }) {
-            Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap, alignItems: ItemAlign.Center }) {
-              Column() {
-                IBestButton({
-                  text: '自定义大小按钮',
-                  btnWidth: 150,
-                  btnHeight: 40,
-                  btnFontSize: 16
-                })
-              }.btnMargin()
-            }
+            IBestButton({
+              text: '自定义大小按钮',
+              btnWidth: 150,
+              btnHeight: 40,
+              btnFontSize: 16
+            })
           }
         }
       }
       .layoutWeight(1)
       .padding({
         left: SPACE.SM,
-        right: SPACE.SM
+        right: SPACE.SM,
+        bottom: SPACE.SM
       })
     }
     .width(CONTAINER_SIZE.FULL)

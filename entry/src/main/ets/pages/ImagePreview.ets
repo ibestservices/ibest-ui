@@ -1,6 +1,6 @@
 import router from '@ohos.router';
 import ComponentShowContainer from '../components/ComponentShowContainer';
-import { IBestCell, IBestCellGroup, IBestImagePreview, IBestToast } from '@ibestservices/ibest-ui';
+import { IBestCell, IBestCellGroup, IBestImagePreview, IBestNavBar, IBestToast } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar';
 import { ComponentRouterParams } from '../assets/global.type';
@@ -20,9 +20,13 @@ struct ImagePreviewPage {
 
 	build() {
 		Column() {
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {

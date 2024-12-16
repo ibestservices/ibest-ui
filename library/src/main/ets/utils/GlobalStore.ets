@@ -5,7 +5,6 @@ import { common } from '@kit.AbilityKit';
 import { IBestGlobalConfig, IBestGlobalConfigType } from '../model/Global.type';
 import { setIBestUIBaseStyle } from '../theme-chalk/src';
 import { display } from '@kit.ArkUI';
-import mediaquery from '@ohos.mediaquery';
 // 全局存储中心
 export default class GlobalStore {
 	// windowStage
@@ -43,13 +42,11 @@ export default class GlobalStore {
 	 * 获取规避尺寸
      */
 	private static getAvoidSize(){
-		getWindowAvoidSize(GlobalStore.context).then(res => {
-			// console.log('getWindowAvoidSize', res.topSize, res.navigationSize)
-			GlobalStore.topAvoidHeight = res.topSize
-			GlobalStore.bottomBarHeight = res.navigationSize
-			AppStorage.setOrCreate("IBestTopAvoidHeight", GlobalStore.topAvoidHeight)
-			AppStorage.setOrCreate("IBestBottomBarHeight", GlobalStore.bottomBarHeight)
-		})
+		let res = getWindowAvoidSize()
+		GlobalStore.topAvoidHeight = res.topSize
+		GlobalStore.bottomBarHeight = res.navigationSize
+		AppStorage.setOrCreate("IBestTopAvoidHeight", GlobalStore.topAvoidHeight)
+		AppStorage.setOrCreate("IBestBottomBarHeight", GlobalStore.bottomBarHeight)
 	}
 	/**
 	 * 获取屏幕尺寸
@@ -60,16 +57,17 @@ export default class GlobalStore {
 		let o = display.getDefaultDisplaySync().orientation
 		GlobalStore.screenWidth = o == 1 || o == 3 ? screenInfo.windowRect.height : screenInfo.windowRect.width
 		GlobalStore.screenHeight = o == 1 || o == 3 ? screenInfo.windowRect.width : screenInfo.windowRect.height
-		AppStorage.setOrCreate("isLandscape", o == 1 || o == 3)
+		AppStorage.setOrCreate("IBestIsLandscape", o == 1 || o == 3)
 	}
 	/**
 	 * 监听屏幕旋转
 	 */
 	private static screenRotateListener() {
-		let listener = mediaquery.matchMediaSync('(orientation: landscape)')
-		listener.on('change', () => {
-			GlobalStore.getAvoidSize()
-			GlobalStore.getScreenSize()
+		display.on("change", () => {
+			setTimeout(() => {
+				GlobalStore.getScreenSize()
+				GlobalStore.getAvoidSize()
+			}, 300)
 		})
 	}
 	/**

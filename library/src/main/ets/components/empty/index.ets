@@ -3,6 +3,7 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
+import { IBestEmptyColor } from './color';
 @Component
 export struct IBestEmpty {
   /**
@@ -28,7 +29,7 @@ export struct IBestEmpty {
   /**
    * 描述文字颜色 默认 "#969799"
    */
-  @Prop descriptionColor: ResourceColor = GRAY_COLOR.GRAY_6;
+  @Prop descriptionColor: ResourceColor = IBestEmptyColor.textColor
   /**
    * 描述文字大小
    */
@@ -53,7 +54,7 @@ export struct IBestEmpty {
 
   @Builder EmptyImg() {
     if(this.emptyImgUrl){
-      Image(this.emptyImage).imgStyle()
+      Image(this.emptyImgUrl).imgStyle()
     }else if (this.emptyImage === 'default') {
       Image($r('app.media.empty')).imgStyle()
     } else if (this.emptyImage === 'network') {

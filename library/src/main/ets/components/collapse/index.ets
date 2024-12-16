@@ -1,6 +1,7 @@
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { emitter } from '../../utils/EventEmitter'
 import { getEventName } from '../../utils/utils'
+import { IBestCollapseColor } from './color'
 import { CollapseItem, COLLAPSE_EVENT_NAME, COMPONENT_NAME, IBestCollapseController, ToggleOption } from './index.type'
 @Component
 export struct IBestCollapse {
@@ -107,6 +108,6 @@ export struct IBestCollapse {
                 this.defaultBuilder()
             }
         }
-        .border(this.isShowBorder ? { width:{top: 1, bottom: 1}, color: GRAY_COLOR.GRAY_3 } : {})
+        .border(this.isShowBorder ? { width:{top: 1, bottom: 1}, color: IBestCollapseColor.borderColor } : {})
     }
 }

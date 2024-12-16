@@ -3,7 +3,7 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit, measureTextSize } from '../../utils/utils'
-
+import { IBestTextEllipsisColor } from './color'
 @Component
 export struct IBestTextEllipsis{
     /**
@@ -21,7 +21,7 @@ export struct IBestTextEllipsis{
     /**
      * 文字颜色
      */
-    @Prop textColor: ResourceColor = GRAY_COLOR.GRAY_8
+    @Prop textColor: ResourceColor = IBestTextEllipsisColor.textColor
     /**
      * 行高
      */

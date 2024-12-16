@@ -122,6 +122,6 @@ struct SideBarPage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(modeColor.bg)
+		.backgroundColor(modeColor.bg2)
 	}
 }

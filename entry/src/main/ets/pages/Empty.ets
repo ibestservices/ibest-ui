@@ -2,7 +2,7 @@ import TitleBar from '../components/TitleBar';
 import router from '@ohos.router';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
-import { IBestButton, IBestEmpty } from '@ibestservices/ibest-ui';
+import { IBestButton, IBestEmpty, IBestNavBar } from '@ibestservices/ibest-ui';
 import { ComponentRouterParams } from '../assets/global.type';
 
 
@@ -24,10 +24,13 @@ struct EmptyPage {
 
   build() {
     Column() {
-      TitleBar({
-        title: this.title
-      }).backgroundColor('#FFF')
-
+      IBestNavBar({
+        title: this.title,
+        isShowStatusBar: true,
+        onLeftClick: () => {
+          router.back()
+        }
+      })
       List() {
         ListItem() {
           ComponentShowContainer({ title: '基础用法' }) {

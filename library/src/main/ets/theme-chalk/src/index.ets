@@ -10,7 +10,6 @@ import { SPACE } from './space'
  */
 export function getDefaultBaseStyle(): IBestUIBaseStyleObjType {
   const data: IBestUIBaseStyleType = {
-    default: THEME_COLOR.DEFAULT,
     primary: THEME_COLOR.PRIMARY,
     success: THEME_COLOR.SUCCESS,
     warning: THEME_COLOR.WARNING,

@@ -5,6 +5,7 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestLoading } from '../loading'
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
+import { IBestPullRefreshColor } from './color'
 @Component
 export struct IBestPullRefresh {
 	/**
@@ -270,7 +271,7 @@ struct TextTip{
 				})
 			}
 			Text(this.getStatusText())
-				.fontColor(GRAY_COLOR.GRAY_6)
+				.fontColor(IBestPullRefreshColor.textColor)
 				.fontSize(this.baseStyle.fontSizeMd)
 		}
 	}

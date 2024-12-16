@@ -5,7 +5,7 @@ import { convertDimensions, getSizeByUnit } from '../../utils/utils'
 import { matrix4 } from '@kit.ArkUI'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
-
+import { IBestCircleProgressColor } from './color'
 class Point {
     x: number
     y: number
@@ -57,7 +57,7 @@ export struct IBestCircleProgress{
     /**
      * 文字颜色
      */
-    @Prop textColor: ResourceColor = GRAY_COLOR.GRAY_8
+    @Prop textColor: ResourceColor = IBestCircleProgressColor.textColor
     /**
      * 文字大小
      */
@@ -69,11 +69,11 @@ export struct IBestCircleProgress{
     /**
      * 进度条颜色
      */
-    @Prop color: ResourceColor = ""
+    @Prop color: ResourceColor = this.baseStyle.primary
     /**
      * 进度条背景颜色
      */
-    @Prop bgColor: ResourceColor = '#fff'
+    @Prop bgColor: ResourceColor = IBestCircleProgressColor.bgColor
     /**
      * 进度条宽度
      */
@@ -94,11 +94,6 @@ export struct IBestCircleProgress{
      * 起始位置
      */
     @Prop startPosition: "left" | "right" | "bottom" | "top" = "top"
-    /**
-     * 类型，可选值为 primary success warning danger 默认值为primary
-     * @since 2.0.1
-     */
-    @Prop type: ColorType = COLOR_TYPE.PRIMARY
 
     @State maxPerimeter: number = 0
     @State strokeDashArray: Point = new Point(0,0)
@@ -128,10 +123,6 @@ export struct IBestCircleProgress{
         }
     }
 
-    getColor(){
-        return this.color || this.baseStyle[this.type]
-    }
-
     build() {
         Row(){
             Circle({width: this.getSize(), height: this.getSize()})
@@ -143,7 +134,7 @@ export struct IBestCircleProgress{
             Circle({width: this.getSize(), height: this.getSize()})
                 .fill("transparent")
                 .strokeWidth(this.strokeWidth)
-                .stroke(this.getColor())
+                .stroke(this.color)
                 .strokeLineCap(LineCapStyle.Round)
                 .position({left: this.strokeWidth/2, top: this.strokeWidth/2})
                 .animatableDashArray(this.strokeDashArray)

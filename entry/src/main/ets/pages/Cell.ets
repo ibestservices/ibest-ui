@@ -47,8 +47,6 @@ struct CellPage {
           router.back()
         }
       })
-
-
       List() {
         ListItem() {
           ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
@@ -78,7 +76,6 @@ struct CellPage {
             }
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '卡片风格', titlePaddingLeft: SPACE.XS }) {
             IBestCellGroup({ inset: true }) {
@@ -92,7 +89,6 @@ struct CellPage {
             }
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '分组标题', titlePaddingLeft: SPACE.XS }) {
             IBestCellGroup({ title: '分组1' }) {
@@ -103,7 +99,6 @@ struct CellPage {
                 hasBorder: false
               })
             }
-
             IBestCellGroup({ title: '分组2' }) {
               IBestCell({
                 title: '标题',
@@ -114,8 +109,6 @@ struct CellPage {
             }
           }
         }
-
-
         ListItem() {
           ComponentShowContainer({ title: '单元格大小', titlePaddingLeft: SPACE.XS }) {
             IBestCell({ title: '标题', value: '内容', cellSize: 'large' })
@@ -128,7 +121,6 @@ struct CellPage {
             })
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '展示图标', titlePaddingLeft: SPACE.XS }) {
             IBestCell({
@@ -152,7 +144,6 @@ struct CellPage {
             })
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '展示箭头', titlePaddingLeft: SPACE.XS }) {
             IBestCell({ title: '标题', value: '箭头朝右', isLink: true })
@@ -175,10 +166,8 @@ struct CellPage {
               arrowDirection: 'top',
               hasBorder: false
             })
-
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '必填项', titlePaddingLeft: SPACE.XS }) {
             IBestCell({
@@ -213,7 +202,6 @@ struct CellPage {
             })
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '使用插槽', titlePaddingLeft: SPACE.XS }) {
             IBestCell({
@@ -237,13 +225,10 @@ struct CellPage {
               clickable: true
             })
           }
-        }.margin({
-          bottom: SPACE.MD
-        })
-
+        }
       }
       .layoutWeight(1)
-
+      .padding({bottom: SPACE.MD})
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)

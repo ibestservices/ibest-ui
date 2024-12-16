@@ -5,6 +5,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE } from '../../theme-chalk/src/size.type';
 import { TagSizeData } from './index.type';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
+import { IBestTagColor } from './color';
 @Extend(Row) function tagSizeStyle(data: TagSizeData) {
   .padding({ top: 0, right: data.padding, bottom: 0, left: data.padding })
   .height(data.height)
@@ -67,35 +68,33 @@ export struct IBestTag {
    */
   onClickTag: (event: ClickEvent) => void = () => {}
 
-
+  /**
+   * 获取按钮边框的颜色
+   * @returns
+   */
+  getBorderColor() {
+    return this.color ? this.color : this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_4 : this.baseStyle[this.type]
+  }
+  /**
+   * 获取按钮文字的颜色
+   * @returns
+   */
+  getTextColor() {
+    if(this.textColor){
+      return this.textColor
+    }
+    if(this.plain){
+      return this.color ? this.color : this.type === COLOR_TYPE.DEFAULT ? IBestTagColor.textColor : this.baseStyle[this.type]
+    }
+    return this.type === COLOR_TYPE.DEFAULT ? IBestTagColor.textColor : IBestTagColor.whiteColor
+  }
   /**
    * 根据颜色type获取背景色
    * @returns
    */
   getBackgroundColor() {
-    return this.color ? this.color : this.baseStyle[this.type]
+    return this.plain ? "transparent" : this.color ? this.color : this.type == "default" ? IBestTagColor.defaultBg : this.baseStyle[this.type]
   }
-
-  /**
-   * 获取按钮的颜色
-   * @param {boolean} isHasColor 是否需要展示颜色
-   * @returns
-   */
-  getTagColor(isHasColor: boolean) {
-    return isHasColor ? this.getBackgroundColor() : '#fff'
-  }
-
-  /**
-   * 获取按钮文字的颜色
-   * @returns
-   */
-  getTagTextColor() {
-    if (this.textColor) {
-      return this.textColor
-    }
-    return this.type === COLOR_TYPE.DEFAULT && !this.color ? GRAY_COLOR.GRAY_8 : this.getTagColor(this.plain)
-  }
-
 
   /**
    * 根据size获取tag的尺寸
@@ -138,7 +137,7 @@ export struct IBestTag {
       Row() {
         Text(this.text)
           .fontSize(this.getTagSize()?.fontSize)
-          .fontColor(this.getTagTextColor())
+          .fontColor(this.getTextColor())
         if (this.closeable) {
           Column() {
             Image($r('app.media.close'))
@@ -153,14 +152,13 @@ export struct IBestTag {
             })
           })
         }
-
       }
       .tagSizeStyle(this.getTagSize())
       .alignItems(VerticalAlign.Center)
       .justifyContent(FlexAlign.Center)
       .borderWidth(1)
-      .backgroundColor(this.getTagColor(!this.plain))
-      .borderColor(this.type === COLOR_TYPE.DEFAULT && !this.textColor && !this.color ? GRAY_COLOR.GRAY_4 : this.getTagColor(this.plain))
+      .backgroundColor(this.getBackgroundColor())
+      .borderColor(this.getBorderColor())
       .transition({ type: TransitionType.Insert, opacity: 1 })
       .transition({ type: TransitionType.Delete, opacity: 0 })
       .onClick((event)=>{

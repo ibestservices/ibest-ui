@@ -5,7 +5,7 @@ type SwipeCellSide = 'left' | 'right' | 'center'
 
 @Component
 export struct IBestSwipeCell{
-	uniId: number = 0
+	@State uniId: number = 0
 	/**
 	 * 自定义左侧滑动区域的内容
   	 */

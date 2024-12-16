@@ -6,6 +6,7 @@ interface IBestActionSheetColorType{
     disabledTextColor: ResourceColor
     borderColor: ResourceColor
     activeBg: ResourceColor
+    whiteColor: ResourceColor
 }
 
 export const IBestActionSheetColor: IBestActionSheetColorType = {
@@ -15,5 +16,6 @@ export const IBestActionSheetColor: IBestActionSheetColorType = {
     descriptionColor: $r("app.color.ibest_text_color_2"),
     disabledTextColor: $r("app.color.ibest_text_color_3"),
     borderColor: $r("app.color.ibest_border_color"),
-    activeBg: $r("app.color.ibest_active_color")
+    activeBg: $r("app.color.ibest_active_color"),
+    whiteColor: $r("app.color.ibest_white")
 }

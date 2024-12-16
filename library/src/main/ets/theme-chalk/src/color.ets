@@ -19,11 +19,7 @@ export const THEME_COLOR: ThemeColor = {
   /**
    * 警告
    */
-  WARNING: '#ff976a',
-  /**
-   * 默认的
-   */
-  DEFAULT: $r("app.color.ibest_background_2")
+  WARNING: '#ff976a'
 }
 
 /**

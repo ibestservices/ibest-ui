@@ -3,7 +3,7 @@ import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import TitleBar from '../components/TitleBar';
 import { ComponentRouterParams } from '../assets/global.type';
 import ComponentShowContainer from '../components/ComponentShowContainer';
-import { IBestTextEllipsis } from '@ibestservices/ibest-ui';
+import { IBestNavBar, IBestTextEllipsis } from '@ibestservices/ibest-ui';
 @Entry
 @Component
 struct TextEllipsisPage {
@@ -13,9 +13,13 @@ struct TextEllipsisPage {
 
     build() {
         Column() {
-            TitleBar({
-                title: this.title
-            }).backgroundColor('#FFF')
+            IBestNavBar({
+                title: this.title,
+                isShowStatusBar: true,
+                onLeftClick: () => {
+                    router.back()
+                }
+            })
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '基础用法' }) {

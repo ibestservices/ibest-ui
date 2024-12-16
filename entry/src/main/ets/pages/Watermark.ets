@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { IBestButton, IBestToast, IBestWatermark } from '@ibestservices/ibest-ui';
+import { IBestButton, IBestNavBar, IBestToast, IBestWatermark } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import TitleBar from '../components/TitleBar';
@@ -29,13 +29,14 @@ struct WatermarkPage {
 
   build() {
     Column() {
-      TitleBar({
-        title: this.title
-      }).backgroundColor('#FFF')
-
-
+      IBestNavBar({
+        title: this.title,
+        isShowStatusBar: true,
+        onLeftClick: () => {
+          router.back()
+        }
+      })
       List() {
-
         ListItem() {
           ComponentShowContainer({ title: '文字水印', titlePaddingLeft: SPACE.XS }) {
             IBestWatermark({
@@ -47,7 +48,6 @@ struct WatermarkPage {
             }
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '图片水印', titlePaddingLeft: SPACE.XS }) {
             IBestWatermark({
@@ -73,7 +73,6 @@ struct WatermarkPage {
             }
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '自定义倾斜角度', titlePaddingLeft: SPACE.XS }) {
             IBestWatermark({
@@ -82,15 +81,26 @@ struct WatermarkPage {
               gapX: 20,
               gapY: 20,
               rotateDeg: 0
-            }){
+            }) {
               this.content()
             }
           }
-        }.margin({
-          bottom: SPACE.MD
-        })
+        }
+        ListItem() {
+          ComponentShowContainer({ title: '自定义层级', titlePaddingLeft: SPACE.XS }) {
+            IBestWatermark({
+              text: 'IBest-UI',
+              gapX: 40,
+              gapY: 40,
+              waterMarkZIndex: 1
+            }) {
+              this.content()
+            }
+          }
+        }
       }
       .layoutWeight(1)
+      .padding({bottom: SPACE.SM})
     }
     .width(CONTAINER_SIZE.FULL)
     .height(CONTAINER_SIZE.FULL)

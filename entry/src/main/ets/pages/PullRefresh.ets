@@ -1,7 +1,9 @@
 import router from '@ohos.router';
 import TitleBar from '../components/TitleBar'
 import { CONTAINER_SIZE } from '../assets/styles/BaseStyle';
-import { IBestPullRefresh, IBestRefreshContentParams, IBestTabItemType, IBestTabs } from '@ibestservices/ibest-ui';
+import {
+	IBestNavBar,
+	IBestPullRefresh, IBestRefreshContentParams, IBestTabItemType, IBestTabs } from '@ibestservices/ibest-ui';
 import { ComponentRouterParams } from '../assets/global.type';
 @Entry
 @Component
@@ -86,9 +88,13 @@ struct PullRefreshPage {
 
 	build() {
 		Column(){
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			IBestTabs({
 				tabsList: this.tabsList,
 				currentName: $currentTab

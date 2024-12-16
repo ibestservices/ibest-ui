@@ -17,7 +17,7 @@ interface PopupSize{
 @Component
 struct IBestPopupBaseContent {
 	// 是否横屏
-	@StorageProp("isLandscape") @Watch("initSize") isLandscape: boolean = false
+	@StorageProp("IBestIsLandscape") @Watch("initSize") IBestIsLandscape: boolean = false
 	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
 	@StorageProp("IBestBottomBarHeight") bottomBarHeight: number = 0
 	@State transX: string | number = ""
@@ -74,14 +74,14 @@ struct IBestPopupBaseContent {
 			case "left":
 			case "right":
 				return {
-					width: getSizeByUnit(this.popupWidth || (this.isLandscape ? "70%" : "60%")),
+					width: getSizeByUnit(this.popupWidth || (this.IBestIsLandscape ? "70%" : "60%")),
 					height: getSizeByUnit(this.popupHeight || "100%")
 				}
 			case "top":
 			case "bottom":
 				return {
 					width: getSizeByUnit(this.popupWidth || "100%"),
-					height: getSizeByUnit(this.popupHeight || (this.isLandscape ? "70%" : "40%"))
+					height: getSizeByUnit(this.popupHeight || (this.IBestIsLandscape ? "70%" : "40%"))
 				}
 			case "center":
 				return {

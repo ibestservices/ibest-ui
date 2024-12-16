@@ -15,7 +15,7 @@ export struct IBestCascaderContent{
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	// 是否横屏
-	@StorageProp("isLandscape") @Watch("getListHeight") isLandscape: boolean = false
+	@StorageProp("IBestIsLandscape") @Watch("getListHeight") IBestIsLandscape: boolean = false
 	/**
 	 * 顶部tab栏数据
 	 */
@@ -86,7 +86,7 @@ export struct IBestCascaderContent{
 		}
 	}
 	getListHeight(){
-		return this.listHeight ? getSizeByUnit(this.listHeight) : (this.isLandscape ? "60%" : convertDimensionsWidthUnit(350))
+		return this.listHeight ? getSizeByUnit(this.listHeight) : (this.IBestIsLandscape ? "60%" : convertDimensionsWidthUnit(350))
 	}
 	// 创建当前tab下的选项实例
 	createOptionsInstance(children: IBestCascaderOption[] = []): IBestCascaderOptionInstance[]{
