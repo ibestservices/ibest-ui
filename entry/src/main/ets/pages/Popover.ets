@@ -1,14 +1,6 @@
 import router from '@ohos.router';
-import {
-    IBestButton,
-    IBestNavBar,
-    IBestPopover,
-    IBestPopoverAction,
-    IBestPopoverController,
-    IBestToast
-} from '@ibestservices/ibest-ui';
+import { IBestButton, IBestNavBar, IBestPopover, IBestPopoverAction, IBestPopoverController, IBestToast } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 import { LengthMetrics } from '@kit.ArkUI';

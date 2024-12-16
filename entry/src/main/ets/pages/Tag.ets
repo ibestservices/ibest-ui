@@ -1,7 +1,6 @@
 import router from '@ohos.router';
 import { IBestNavBar, IBestTag } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, FONT_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 @Extend(Row)

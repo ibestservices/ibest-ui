@@ -1,4 +1,3 @@
-import TitleBar from '../components/TitleBar';
 import router from '@ohos.router';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';

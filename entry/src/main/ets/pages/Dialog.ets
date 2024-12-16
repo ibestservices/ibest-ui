@@ -1,6 +1,5 @@
 import router from '@ohos.router';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { IBestCell, IBestCellGroup, IBestDialog, IBestDialogUtil, IBestNavBar } from '@ibestservices/ibest-ui';
 import { ComponentRouterParams } from '../assets/global.type';

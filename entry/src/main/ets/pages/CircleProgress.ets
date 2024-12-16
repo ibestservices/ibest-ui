@@ -3,7 +3,6 @@ import { IBestButton, IBestCircleProgress, IBestNavBar } from '@ibestservices/ib
 import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
-import TitleBar from '../components/TitleBar';
 import { LengthMetrics } from '@kit.ArkUI';
 
 @Entry

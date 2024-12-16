@@ -2,7 +2,6 @@ import router from '@ohos.router';
 import { IBestButton, IBestNavBar, IBestToast, IBestWatermark } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
-import TitleBar from '../components/TitleBar';
 import { ComponentRouterParams } from '../assets/global.type';
 
 @Entry

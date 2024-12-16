@@ -1,7 +1,6 @@
 import router from '@ohos.router';
 import { IBestBadge, IBestNavBar } from '@ibestservices/ibest-ui';
 import { COLOR_GRAY, CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 @Entry
