@@ -14,7 +14,7 @@ struct NavBarPage {
 
 	@Builder leftBuilder(){
 		Row({space: SPACE.BASE}){
-			Image($r("app.media.icon_star_o"))
+			Image($r("app.media.ibest_icon_star_o"))
 				.width(16)
 			Text("自定义左侧")
 		}

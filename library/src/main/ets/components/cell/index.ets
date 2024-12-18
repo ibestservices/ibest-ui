@@ -4,6 +4,7 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE } from '../../theme-chalk/src/size.type';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
+import { IBestIcon } from '../icon';
 import { IBestCellColor } from './color';
 import { ARROW_DIRECTION, BorderSizeType, CellSizeData } from './index.type';
 
@@ -90,7 +91,7 @@ export struct IBestCell {
   /**
    * 点击单元格的回调
    */
-  onClickCell: (event: ClickEvent) => void = () => {}
+  onClickCell: (event?: ClickEvent) => void = () => {}
   /**
    * 左侧图标
    * @since 1.17.0
@@ -155,7 +156,7 @@ export struct IBestCell {
    * 底部分割线颜色
    * @since 1.18.0
    */
-  @Provide bdColor: ResourceColor = $r("app.color.ibest_border_color")
+  @Provide bdColor: ResourceColor = IBestCellColor.borderColor
 
   /**
    * 根据arrow direction获取图标旋转角度
@@ -287,15 +288,21 @@ export struct IBestCell {
                 .margin({left: getSizeByUnit(this.rightIconMarginLeft)})
             } else if (this.isLink) { // 如果是link箭头
               Row() {
-                Image($r("app.media.arrow_right"))
-                  .width(getSizeByUnit(this.rightIconSize))
-                  .margin({
-                    left: getSizeByUnit(this.rightIconMarginLeft)
-                  })
-                  .rotate({ angle: this.getArrowRotateAngle() })
-                  .animation({
-                    duration: this.baseStyle.animationDuration as number
-                  })
+                IBestIcon({
+                  name: "arrow",
+                  iconSize: this.rightIconSize,
+                  color: this.rightIconColor,
+                  onIconClick: () => {
+                    this.onClickCell()
+                  }
+                })
+                .margin({
+                  left: getSizeByUnit(this.rightIconMarginLeft)
+                })
+                .rotate({ angle: this.getArrowRotateAngle() })
+                .animation({
+                  duration: this.baseStyle.animationDuration as number
+                })
               }.height(convertDimensionsWidthUnit(16))
             }
           }
@@ -323,10 +330,10 @@ export struct IBestCell {
     }
     .stateStyles({
       normal: {
-        .backgroundColor($r("app.color.ibest_background_2"))
+        .backgroundColor(IBestCellColor.bgColor)
       },
       pressed: {
-        .backgroundColor(this.isLink || this.clickable ? $r("app.color.ibest_active_color") : $r("app.color.ibest_background_2"))
+        .backgroundColor(this.isLink || this.clickable ? IBestCellColor.activeBgColor : IBestCellColor.bgColor)
       }
     })
     .animation({

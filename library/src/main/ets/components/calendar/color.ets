@@ -7,8 +7,8 @@ interface IBestCalendarColorType {
 }
 
 export const IBestCalendarColor: IBestCalendarColorType = {
-    bgColor: $r("app.color.ibest_background_2"),
-    disabledBg: $r("app.color.ibest_background"),
+    bgColor: $r("app.color.ibest_calendar_background"),
+    disabledBg: $r("app.color.ibest_calendar_disabled_background"),
     textColor: $r("app.color.ibest_text_color"),
     textWhite: $r("app.color.ibest_white"),
     markTextColor: $r("app.color.ibest_calendar_month_mark_color")

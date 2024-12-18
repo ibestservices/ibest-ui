@@ -1,14 +1,6 @@
 {
 	"color": [
 		{
-			"name": "ibest_black",
-			"value": "#000"
-		},
-		{
-			"name": "ibest_white",
-			"value": "#fff"
-		},
-		{
 			"name": "ibest_text_color",
 			"value": "#f5f5f5"
 		},
@@ -30,7 +22,7 @@
 		},
 		{
 			"name": "ibest_background",
-			"value": "#000"
+			"value": "$color:ibest_black"
 		},
 		{
 			"name": "ibest_background_2",
@@ -45,16 +37,8 @@
 			"value": "#2a2a2c"
 		},
 		{
-			"name": "ibest_number_keyboard_background",
-			"value": "#323233"
-		},
-		{
-			"name": "ibest_number_keyboard_key_background",
-			"value": "#646566"
-		},
-		{
-			"name": "ibest_number_keyboard_key_active_color",
-			"value": "#969799"
+			"name": "ibest_slider_inactive_background",
+			"value": "$color:ibest_background_3"
 		},
 		{
 			"name": "ibest_switch_background",

@@ -10,12 +10,12 @@ interface IBestActionSheetColorType{
 }
 
 export const IBestActionSheetColor: IBestActionSheetColorType = {
-    contentBg: $r("app.color.ibest_background"),
-    buttonBg: $r("app.color.ibest_background_2"),
+    contentBg: $r("app.color.ibest_action_sheet_background"),
+    buttonBg: $r("app.color.ibest_action_sheet_item_background"),
     textColor: $r("app.color.ibest_text_color"),
-    descriptionColor: $r("app.color.ibest_text_color_2"),
-    disabledTextColor: $r("app.color.ibest_text_color_3"),
-    borderColor: $r("app.color.ibest_border_color"),
+    descriptionColor: $r("app.color.ibest_action_sheet_item_description_color"),
+    disabledTextColor: $r("app.color.ibest_action_sheet_item_disabled_text_color"),
+    borderColor: $r("app.color.ibest_action_sheet_border_color"),
     activeBg: $r("app.color.ibest_active_color"),
     whiteColor: $r("app.color.ibest_white")
 }

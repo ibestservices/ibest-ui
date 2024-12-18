@@ -1,6 +1,5 @@
 import { componentUtils, ComponentUtils, LengthUnit, MeasureOptions, window } from '@kit.ArkUI'
 import { ComAvoidAreaSize, ComInfoType, IBestGlobalConfig } from '../model/Global.type'
-import { common } from '@kit.AbilityKit'
 import { AnyType } from '../model/AnyType'
 import GlobalStore from './GlobalStore'
 /**
@@ -133,6 +132,15 @@ export const getComponentsInfo = (context: UIContext, key: string): ComInfoType 
     windowLeft: px2vp(info.windowOffset.x),
     windowTop: px2vp(info.windowOffset.y)
   }
+}
+/**
+ * 组件截图
+ * @param {context} UIContext
+ * @param {key} 组件id
+ */
+export const getComponentSnapshot = (context: UIContext, key: string): PixelMap => {
+  let componentSnapshot = context.getComponentSnapshot()
+  return componentSnapshot.getSync(key)
 }
 /**
  * 获取窗口域尺寸信息

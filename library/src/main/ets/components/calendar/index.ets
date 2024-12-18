@@ -11,7 +11,7 @@ import { UIContext } from '@kit.ArkUI'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { getNextDay, getPrevDay, set16ToRgb } from './utils'
 import { IBestCalendarColor } from './color'
-
+import { IBestIcon } from '../icon'
 class DayItemObj{
     date: Dayjs = dayjs()
     dateStr: string = ""
@@ -663,35 +663,43 @@ export struct IBestCalendar{
         Column(){
             Row(){
                 Row(){
-                    Image($r("app.media.arrow_left_double"))
-                        .width(convertDimensionsWidthUnit(14))
-                        .fillColor(IBestCalendarColor.textColor)
-                        .onClick(() => {
+                    IBestIcon({
+                        name: "arrow-double-left",
+                        iconSize: convertDimensionsWidthUnit(14),
+                        color: IBestCalendarColor.textColor,
+                        onIconClick: () => {
                             this.changeYearMonth("preYear")
-                        })
-                    Image($r("app.media.arrow_left"))
-                        .width(convertDimensionsWidthUnit(14))
-                        .fillColor(IBestCalendarColor.textColor)
-                        .onClick(() => {
+                        }
+                    })
+                    IBestIcon({
+                        name: "arrow-left",
+                        iconSize: convertDimensionsWidthUnit(14),
+                        color: IBestCalendarColor.textColor,
+                        onIconClick: () => {
                             this.changeYearMonth("preMonth")
-                        })
+                        }
+                    })
                 }
                 Text(this.curYearMonth)
                     .fontSize(this.baseStyle.fontSizeMd)
                     .fontColor(IBestCalendarColor.textColor)
                 Row(){
-                    Image($r("app.media.arrow_right"))
-                        .width(convertDimensionsWidthUnit(14))
-                        .fillColor(IBestCalendarColor.textColor)
-                        .onClick(() => {
+                    IBestIcon({
+                        name: "arrow",
+                        iconSize: convertDimensionsWidthUnit(14),
+                        color: IBestCalendarColor.textColor,
+                        onIconClick: () => {
                             this.changeYearMonth("nextMonth")
-                        })
-                    Image($r("app.media.arrow_right_double"))
-                        .width(convertDimensionsWidthUnit(14))
-                        .fillColor(IBestCalendarColor.textColor)
-                        .onClick(() => {
+                        }
+                    })
+                    IBestIcon({
+                        name: "arrow-double-right",
+                        iconSize: convertDimensionsWidthUnit(14),
+                        color: IBestCalendarColor.textColor,
+                        onIconClick: () => {
                             this.changeYearMonth("nextYear")
-                        })
+                        }
+                    })
                 }
             }
             .width(CONTAINER_SIZE.FULL)

@@ -7,7 +7,7 @@ import { CHECKBOX_GROUP_EVENT_NAME, COMPONENT_NAME } from '../checkboxGroup/inde
 import { BuilderArgs, MaxChangeArgs } from './index.type';
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils';
 import { IBestCheckboxColor } from './color';
-
+import { IBestIcon } from '../icon';
 @Component
 export struct IBestCheckbox {
   /**
@@ -112,7 +112,7 @@ export struct IBestCheckbox {
     if (this.mergeDisabled) {
       return IBestCheckboxColor.borderColor
     } else {
-      return this.isShowBackground() ? this.checkedColor || this.baseStyle.primary : ""
+      return this.isShowBackground() ? this.checkedColor || IBestCheckboxColor.checkedColor : ""
     }
   }
 
@@ -124,7 +124,7 @@ export struct IBestCheckbox {
     if (this.mergeDisabled) {
       return GRAY_COLOR.GRAY_5
     } else {
-      return this.isShowBackground() ? this.checkedColor || this.baseStyle.primary : GRAY_COLOR.GRAY_5
+      return this.isShowBackground() ? this.checkedColor || IBestCheckboxColor.checkedColor : IBestCheckboxColor.borderColor
     }
   }
 
@@ -141,7 +141,7 @@ export struct IBestCheckbox {
    * @returns
    */
   getIconColor() {
-    return this.mergeDisabled ? GRAY_COLOR.GRAY_5 : IBestCheckboxColor.whiteColor
+    return this.mergeDisabled ? IBestCheckboxColor.disabledIconColor : IBestCheckboxColor.whiteColor
   }
 
   /**
@@ -284,9 +284,14 @@ export struct IBestCheckbox {
         if (typeof this.iconBuilder === 'function') {
           this.iconBuilder({ checked: this.value, disabled: this.mergeDisabled })
         } else {
-          Image(this.isShowIndeterminateImg ? $r('app.media.indeterminate') : $r('app.media.success'))
-            .fillColor(this.getIconColor())
-            .width(getSizeByUnit(this.iconSize))
+          IBestIcon({
+            name: this.isShowIndeterminateImg ? "minus" : "success",
+            iconSize: this.iconSize,
+            color: this.getIconColor(),
+            onIconClick: () => {
+              this.handleCheckedChange()
+            }
+          })
             .opacity(this.isShowBackground() ? 1 : 0)
             .animation({
               duration: this.baseStyle.animationDuration as number,
@@ -310,8 +315,6 @@ export struct IBestCheckbox {
       if (this.labelPosition === 'right') {
         this.LabelContain()
       }
-
     }.enabled(!this.mergeDisabled)
-
   }
 }

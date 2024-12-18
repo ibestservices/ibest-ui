@@ -1,5 +1,4 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { getSizeByUnit, padZero } from '../../utils/utils'
 import { IBestCountDownColor } from './color'

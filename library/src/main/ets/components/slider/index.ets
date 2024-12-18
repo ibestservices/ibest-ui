@@ -53,6 +53,11 @@ export struct IBestSlider{
 	 */
 	@Provide({allowOverride: "buttonSize"}) buttonSize: number = convertDimensions(24)
 	/**
+	 * 滑块背景色
+	 * @since 2.0.1
+     */
+	@Provide({allowOverride: "buttonBgColor"}) buttonBgColor: ResourceColor = IBestSliderColor.buttonBg
+	/**
 	 * 进度条激活态颜色
 	 */
 	@Prop activeColor: ResourceColor = this.baseStyle.primary
@@ -284,6 +289,7 @@ struct DragBar{
 	@Consume buttonWidth: number
 	@Consume buttonHeight: number
 	@Consume buttonSize: number | string
+	@Consume buttonBgColor: ResourceColor
 	@Consume vertical: boolean
 	@Consume reverse: boolean
 	@Prop buttonIndex: 0 | 1 = 0
@@ -333,7 +339,7 @@ struct DragBar{
 				Row()
 					.width(getSizeByUnit(this.buttonSize))
 					.aspectRatio(1)
-					.backgroundColor(IBestSliderColor.white)
+					.backgroundColor(this.buttonBgColor)
 					.borderRadius(this.baseStyle.borderRadiusMax)
 					.shadow({ radius: 2, color: "rgba(0,0,0,0.5)", offsetY: 1 })
 			}

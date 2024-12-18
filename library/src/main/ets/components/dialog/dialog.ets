@@ -19,7 +19,9 @@ export struct IBestDialogView {
   @StorageProp("IBestColorMode") @Watch("colorModeChange") colorMode: ColorMode = ColorMode.LIGHT
   @State whiteColor: ResourceColor = IBestDialogColor.white
   @State contentBg: ResourceColor = IBestDialogColor.contentBg
-  @State textColor: ResourceColor = IBestDialogColor.textColor
+  @State titleDefaultColor: ResourceColor = IBestDialogColor.titleColor
+  @State messageColor: ResourceColor = IBestDialogColor.messageColor
+  @State cancelTextColor: ResourceColor = IBestDialogColor.cancelTextColor
   @State bdColor: ResourceColor = IBestDialogColor.borderColor
   @State activeBg: ResourceColor = IBestDialogColor.activeBg
   /**
@@ -186,7 +188,6 @@ export struct IBestDialogView {
   colorModeChange(){
     this.whiteColor = IBestDialogColor.white
     this.contentBg = IBestDialogColor.contentBg
-    this.textColor = IBestDialogColor.textColor
     this.bdColor = IBestDialogColor.borderColor
     this.activeBg = IBestDialogColor.activeBg
   }
@@ -215,12 +216,16 @@ export struct IBestDialogView {
     return typeof this.title === 'string' && !!this.title.length
   }
 
+  getTitleColor(){
+    return this.titleColor || this.titleDefaultColor
+  }
+
   /**
    * 获取内容区域文字颜色
    * @returns
    */
   getMsgColor() {
-    return this.messageFontColor || (this.isHasTitle() ? GRAY_COLOR.GRAY_7 : this.textColor)
+    return this.messageFontColor || (this.isHasTitle() ? GRAY_COLOR.GRAY_7 : this.messageColor)
   }
 
   /**
@@ -242,7 +247,7 @@ export struct IBestDialogView {
    * @returns
    */
   getCancelBtnFontColor() {
-    return this.cancelButtonColor || this.textColor
+    return this.cancelButtonColor || this.cancelTextColor
   }
   /**
    * 取消按钮背景色
@@ -268,7 +273,7 @@ export struct IBestDialogView {
               right: getSizeByUnit(this.titlePaddingX)
             })
             .textAlign(this.getFormatAlign(this.titleTextAlign))
-            .fontColor(this.titleColor || this.textColor)
+            .fontColor(this.getTitleColor())
         }
       }
       // content

@@ -2,7 +2,6 @@ import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit, sleep } f
 import { IBestTabController, IBestTabItem, IBestTabItemType, TabWidthType } from './index.type';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { debounce } from '../../utils/DebounceThrottle';
 import { IBestTabColor } from './color';
@@ -80,7 +79,7 @@ export struct IBestTabs{
     /**
      * 未激活的tab文字颜色
      */
-    @Provide({allowOverride: "inactiveTextColor"}) inactiveTextColor: ResourceColor = GRAY_COLOR.GRAY_7
+    @Provide({allowOverride: "inactiveTextColor"}) inactiveTextColor: ResourceColor = IBestTabColor.inactiveTextColor
     /**
      * 激活的tab文字颜色
      */
@@ -335,7 +334,7 @@ struct IBestTabBox{
     initSize: () => void = () => () => {}
     onTabClick: (name: string) => void = () => {}
     getLineColor(){
-        return this.tabLineColor || this.baseStyle.primary
+        return this.tabLineColor || IBestTabColor.tabLineColor
     }
     build() {
         Stack({alignContent: Alignment.BottomStart}){
@@ -407,7 +406,7 @@ struct IBestTab{
         this.initSize()
     }
     getLineColor(){
-        return this.tabLineColor || this.baseStyle.primary
+        return this.tabLineColor || IBestTabColor.tabLineColor
     }
     getFontColor(){
         return this.currentName == this.item.name ? this.type == "card" ? "#fff" : this.activeTextColor : this.type == "card" ? this.getLineColor() : this.inactiveTextColor

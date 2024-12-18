@@ -1,4 +1,3 @@
-import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { FileSelectOptions, IBestUploaderFile, IBestUploaderSelectType } from './index.type'
 import { isImageFile, isImageUrl } from './utils'
 import { LengthMetrics } from '@kit.ArkUI'
@@ -10,7 +9,7 @@ import { common } from '@kit.AbilityKit'
 import { photoAccessHelper } from '@kit.MediaLibraryKit'
 import { IBestLoading } from '../loading'
 import fs from '@ohos.file.fs'
-import { IBestImagePreview } from '../../../../../Index'
+import { IBestIcon, IBestImagePreview } from '../../../../../Index'
 import { convertDimensions, convertDimensionsWidthUnit, getLengthUnit, getSizeByUnit } from '../../utils/utils'
 import { IBestUploaderColor } from './color'
 
@@ -25,9 +24,14 @@ export struct IBestUploader {
 	 */
 	@Prop selectType: IBestUploaderSelectType = "image"
 	/**
+	 * 触发器背景色
+	 * @since 2.0.1
+     */
+	@Prop uploaderBgColor: ResourceColor = IBestUploaderColor.uploaderBgColor
+	/**
 	 * 自定义触发器图标
 	 */
-	@Prop uploaderIcon: ResourceStr = $r("app.media.icon_photo")
+	@Prop uploaderIcon: ResourceStr = "photograph"
 	/**
 	 * 触发器图标大小
 	 */
@@ -35,7 +39,7 @@ export struct IBestUploader {
 	/**
 	 * 触发器图标颜色
 	 */
-	@Prop uploaderIconColor: ResourceColor = GRAY_COLOR.GRAY_4
+	@Prop uploaderIconColor: ResourceColor = IBestUploaderColor.uploaderIconColor
 	/**
 	 * 最大上传数量
 	 */
@@ -198,11 +202,11 @@ export struct IBestUploader {
 				})
 			}else{
 				Row(){
-					Image(this.uploaderIcon)
-						.width(getSizeByUnit(this.uploaderIconSize))
-						.aspectRatio(1)
-						.fillColor(this.uploaderIconColor)
-						.draggable(false)
+					IBestIcon({
+						name: this.uploaderIcon,
+						iconSize: this.uploaderIconSize,
+						color: this.uploaderIconColor
+					})
 				}
 				.width(getSizeByUnit(this.previewSize))
 				.aspectRatio(1)
@@ -213,7 +217,7 @@ export struct IBestUploader {
 				.opacity(this.disabled ? 0.5 : 1)
 				.stateStyles({
 					normal: {
-						.backgroundColor(GRAY_COLOR.GRAY_1)
+						.backgroundColor(this.uploaderBgColor)
 					},
 					pressed: {
 						.backgroundColor(IBestUploaderColor.activeBg)
@@ -256,25 +260,32 @@ struct UploadItem{
 				this.customPreview(this.file)
 			} else {
 				if (isImageFile(this.file)) {
-					Image(this.isError ? $r("app.media.icon_photo_fail") : (this.file.url || this.file.previewUri))
-						.width(this.isError ? convertDimensionsWidthUnit(32) : CONTAINER_SIZE.FULL)
-						.aspectRatio(1)
-						.fillColor(IBestUploaderColor.textColor)
-						.objectFit(this.imageFit)
-						.draggable(false)
-						.onError(() => {
-							this.isError = true
+					if(this.isError){
+						IBestIcon({
+							name: "photo-fail",
+							iconSize: convertDimensionsWidthUnit(32),
+							color: IBestUploaderColor.textColor
 						})
-						.onClick(() => {
-							this.preview(this.file)
-						})
+					}else{
+						Image(this.file.url || this.file.previewUri)
+							.width(CONTAINER_SIZE.FULL)
+							.aspectRatio(1)
+							.fillColor(IBestUploaderColor.textColor)
+							.objectFit(this.imageFit)
+							.draggable(false)
+							.onError(() => {
+								this.isError = true
+							})
+							.onClick(() => {
+								this.preview(this.file)
+							})
+					}
 				} else {
-					Image($r("app.media.icon_file"))
-						.width(convertDimensionsWidthUnit(20))
-						.fillColor(IBestUploaderColor.textColor)
-						.aspectRatio(1)
-						.draggable(false)
-						.fillColor(GRAY_COLOR.GRAY_7)
+					IBestIcon({
+						name: "description",
+						iconSize: convertDimensionsWidthUnit(20),
+						color: IBestUploaderColor.textColor
+					})
 					if (this.file.name) {
 						Text(this.file.name)
 							.fontColor(IBestUploaderColor.textColor)
@@ -298,10 +309,11 @@ struct UploadItem{
 							loadingColor: IBestUploaderColor.textColor
 						})
 					} else {
-						Image($r("app.media.icon_close_circle"))
-							.width(convertDimensionsWidthUnit(20))
-							.aspectRatio(1)
-							.fillColor(IBestUploaderColor.textColor)
+						IBestIcon({
+							name: "close",
+							iconSize: convertDimensionsWidthUnit(20),
+							color: IBestUploaderColor.textColor
+						})
 					}
 					Text(this.file.status == 'failed' ? "上传失败" : "上传中...")
 						.fontSize(this.baseStyle.fontSizeSm)
@@ -317,10 +329,14 @@ struct UploadItem{
 			// 删除按钮
 			if (this.showDelete && !this.disabled) {
 				Row() {
-					Image($r("app.media.icon_cuo"))
-						.width(CONTAINER_SIZE.FULL)
-						.aspectRatio(1)
-						.fillColor(IBestUploaderColor.textColor)
+					IBestIcon({
+						name: "cross",
+						iconSize: convertDimensionsWidthUnit(14),
+						color: IBestUploaderColor.textColor,
+						onIconClick: () => {
+							this.remove(this.index)
+						}
+					})
 						.scale({ x: 0.7, y: 0.7 })
 						.translate({ x: "10%", y: "-10%" })
 				}
@@ -340,6 +356,7 @@ struct UploadItem{
 		.justifyContent(FlexAlign.Center)
 		.alignItems(HorizontalAlign.Center)
 		.borderRadius(getSizeByUnit(this.cornerRadius))
+		.backgroundColor(isImageFile(this.file) ? '' : IBestUploaderColor.fileBgColor)
 		.clip(true)
 	}
 }

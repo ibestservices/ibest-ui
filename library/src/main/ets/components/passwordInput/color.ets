@@ -5,7 +5,7 @@ interface IBestPasInputColorType {
 }
 
 export const IBestPasInputColor: IBestPasInputColorType = {
-    textColor: $r("app.color.ibest_text_color"),
-    borderColor: $r("app.color.ibest_border_color"),
-    bg: $r("app.color.ibest_background_2")
+    textColor: $r("app.color.ibest_password_input_text_color"),
+    borderColor: $r("app.color.ibest_password_input_border_color"),
+    bg: $r("app.color.ibest_password_input_background")
 }

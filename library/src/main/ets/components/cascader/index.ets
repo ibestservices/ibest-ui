@@ -6,7 +6,7 @@ import { IBestTabController, IBestTabItem } from '../tab/index.type'
 import { IBestCascaderOption, IBestCascaderOptionInstance, IBestCascaderOptionInstanceType } from './index.type'
 import { IBestPopup } from '../popup/index'
 import { IBestCascaderColor } from './color'
-
+import { IBestIcon } from '../icon'
 @CustomDialog
 @Component
 export struct IBestCascaderContent{
@@ -289,10 +289,14 @@ struct CascaderOptionItem{
 			Text(this.option.text)
 				.fontColor(this.option.actived ? this.activeColor : IBestCascaderColor.textColor)
 				.fontSize(this.baseStyle.fontSizeMd)
-			Image($r("app.media.success"))
-				.width(convertDimensionsWidthUnit(18))
-				.aspectRatio(1)
-				.fillColor(this.activeColor)
+			IBestIcon({
+				name: "success",
+				iconSize: convertDimensionsWidthUnit(18),
+				color: this.activeColor,
+				onIconClick: () => {
+					this.onSelect(this.index, this.index1, this.option)
+				}
+			})
 				.visibility(this.option.actived ? Visibility.Visible : Visibility.Hidden)
 		}
 		.width("100%")

@@ -4,22 +4,21 @@ import { IbestUIBaseStyleValue } from '../../theme-chalk/src/index.type';
  * 按钮尺寸样式的类型
  */
 export interface BtnSizeStyle {
-  height: IbestUIBaseStyleValue;
-  padding: IbestUIBaseStyleValue;
-  width?: IbestUIBaseStyleValue;
+  height: string | number;
+  padding: string | number;
+  width?: string | number;
 }
 
 /**
  * 按钮尺寸对象数据
  */
 export class ButtonSizeData {
-  padding: IbestUIBaseStyleValue
-  height: IbestUIBaseStyleValue
-  fontSize: IbestUIBaseStyleValue
-  width?: IbestUIBaseStyleValue
+  padding: string | number
+  height: string | number
+  fontSize: string | number
+  width?: string | number
 
-  constructor(padding: IbestUIBaseStyleValue, height: IbestUIBaseStyleValue, fontSize: IbestUIBaseStyleValue,
-    width?: IbestUIBaseStyleValue) {
+  constructor(padding: string | number, height: string | number, fontSize: string | number, width?: string | number) {
     this.padding = padding;
     this.height = height;
     this.fontSize = fontSize

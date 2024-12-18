@@ -4,7 +4,6 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { RateOption } from './index.type'
-
 @Component
 export struct IBestRate {
 	/**
@@ -42,11 +41,11 @@ export struct IBestRate {
 	/**
 	 * 选中图标
 	 */
-	@Provide({allowOverride: "activeIcon"}) activeIcon: Resource = $r("app.media.icon_star_o")
+	@Provide({allowOverride: "activeIcon"}) activeIcon: ResourceStr = $r("app.media.ibest_icon_star_o")
 	/**
 	 * 未选中图标
 	 */
-	@Provide({allowOverride: "inactiveIcon"}) inactiveIcon: Resource = $r("app.media.icon_star")
+	@Provide({allowOverride: "inactiveIcon"}) inactiveIcon: ResourceStr = $r("app.media.ibest_icon_star")
 	/**
 	 * 选中颜色
 	 */

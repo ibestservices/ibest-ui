@@ -52,7 +52,7 @@ struct RatePage {
 							iconSize: 40,
 							space: 10,
 							activeColor: '#ffd21e',
-							inactiveIcon: $r("app.media.icon_star_o"),
+							inactiveIcon: $r("app.media.ibest_icon_star_o"),
 							inactiveColor: '#eee'
 						})
 					}

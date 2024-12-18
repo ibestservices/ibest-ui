@@ -22,7 +22,7 @@ import { emitter } from '../../utils/EventEmitter'
 import { runRuleValidator, runSyncRule } from './utils'
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
 import { IBestFieldColor } from './color'
-
+import { IBestIcon } from '../icon'
 @Component
 export struct IBestField{
     /**
@@ -69,6 +69,11 @@ export struct IBestField{
      * 输入框占位提示文字
      */
     @Provide({allowOverride: "placeholder"}) placeholder: string = ""
+    /**
+     * 占位文字颜色
+     * @since 2.0.1
+     */
+    @Provide({allowOverride: "placeholderColor"}) placeholderColor: ResourceColor = IBestFieldColor.placeholderColor
     /**
      * 输入框类型
      */
@@ -132,7 +137,7 @@ export struct IBestField{
     /**
      * 左侧图标颜色
      */
-    @Provide({allowOverride: "leftIconColor"}) leftIconColor: ResourceColor = ""
+    @Provide({allowOverride: "leftIconColor"}) leftIconColor: ResourceColor = IBestFieldColor.labelColor
     /**
      * 右侧图标
      */
@@ -140,7 +145,7 @@ export struct IBestField{
     /**
      * 右侧图标颜色
      */
-    @Provide({allowOverride: "rightIconColor"}) rightIconColor: ResourceColor = GRAY_COLOR.GRAY_6
+    @Provide({allowOverride: "rightIconColor"}) rightIconColor: ResourceColor = IBestFieldColor.rightIconColor
     /**
      * 底部线条
      */
@@ -195,12 +200,12 @@ export struct IBestField{
      * 左侧图标大小
      * @since 1.19.0
      */
-    @Provide({allowOverride: "leftIconSize"}) leftIconSize: number | string = convertDimensionsWidthUnit(14)
+    @Provide({allowOverride: "leftIconSize"}) leftIconSize: number | string = convertDimensionsWidthUnit(18)
     /**
      * 右侧图标大小
      * @since 1.19.0
      */
-    @Provide({allowOverride: "rightIconSize"}) rightIconSize: number | string = convertDimensionsWidthUnit(14)
+    @Provide({allowOverride: "rightIconSize"}) rightIconSize: number | string = convertDimensionsWidthUnit(18)
     /**
      * 是否显示label
      */
@@ -443,24 +448,14 @@ struct Label{
     build() {
         Row(){
             if(this.leftIcon){
-                if(this.leftIconColor){
-                    Image(this.leftIcon)
-                        .width(getSizeByUnit(this.leftIconSize))
-                        .fillColor(this.leftIconColor)
-                        .aspectRatio(1)
-                        .margin({right: this.baseStyle.spaceBase})
-                        .onClick(() => {
-                            this.onLeftIconClick()
-                        })
-                }else{
-                    Image(this.leftIcon)
-                        .width(getSizeByUnit(this.leftIconSize))
-                        .aspectRatio(1)
-                        .margin({right: this.baseStyle.spaceBase})
-                        .onClick(() => {
-                            this.onLeftIconClick()
-                        })
-                }
+                Image(this.leftIcon)
+                    .width(getSizeByUnit(this.leftIconSize))
+                    .fillColor(this.leftIconColor)
+                    .aspectRatio(1)
+                    .margin({right: this.baseStyle.spaceBase})
+                    .onClick(() => {
+                        this.onLeftIconClick()
+                    })
             }
             if(this.requireAsteriskPosition == "left"){
                 Asterisk()
@@ -523,6 +518,7 @@ struct Content{
     @Consume rightIconColor: ResourceColor
     @Consume rightIconSize: number | string
     @Consume placeholder: string
+    @Consume placeholderColor: ResourceColor
     @Consume disabled: boolean
     @Consume readOnly: boolean
     @Consume clearable: boolean
@@ -613,10 +609,11 @@ struct Content{
                         TextArea({ text: $$this.value, placeholder: this.placeholder })
                             .inputStyle()
                             .fontSize(this.baseStyle.fontSizeMd)
-                            .fontColor(IBestFieldColor.labelColor)
+                            .fontColor(IBestFieldColor.inputColor)
                             .placeholderFont({
                                 size: this.baseStyle.fontSizeMd
                             })
+                            .placeholderColor(this.placeholderColor)
                             .constraintSize({ minHeight: convertDimensionsWidthUnit(this.rows * 20) })
                             .lineHeight(this.baseStyle.lineHeightMd)
                             .maxLength(this.maxlength)
@@ -645,10 +642,11 @@ struct Content{
                         TextInput({ text: $$this.value, placeholder: this.placeholder })
                             .inputStyle()
                             .fontSize(this.baseStyle.fontSizeMd)
-                            .fontColor(IBestFieldColor.labelColor)
+                            .fontColor(IBestFieldColor.inputColor)
                             .placeholderFont({
                                 size: this.baseStyle.fontSizeMd
                             })
+                            .placeholderColor(this.placeholderColor)
                             .showPasswordIcon(this.showPasswordIcon)
                             .height(this.baseStyle.lineHeightMd)
                             .lineHeight(this.baseStyle.lineHeightMd)
@@ -679,14 +677,14 @@ struct Content{
                     }
                     // 清除图标
                     if (this.clearable && this.value && (this.clearTrigger == 'always' || this.isFocus)) {
-                        Image($r("app.media.icon_clear"))
-                            .width(getSizeByUnit(this.rightIconSize))
-                            .aspectRatio(1)
-                            .margin({ left: this.baseStyle.spaceBase })
-                            .onClick(() => {
+                        IBestIcon({
+                            name: 'clear',
+                            iconSize: this.rightIconSize,
+                            onIconClick: () => {
                                 this.value = ''
                                 this.onClear()
-                            })
+                            }
+                        }).margin({ left: this.baseStyle.spaceBase })
                     }
                 }
                 // 按钮
@@ -706,11 +704,14 @@ struct Content{
                 }
                 // link箭头
                 if(this.isLink){
-                    Image($r("app.media.arrow_right"))
-                        .width(getSizeByUnit(this.rightIconSize))
-                        .aspectRatio(1)
-                        .fillColor(this.rightIconColor)
-                        .margin({left: this.baseStyle.spaceBase})
+                    IBestIcon({
+                        name: "arrow",
+                        iconSize: this.rightIconSize,
+                        color: this.rightIconColor,
+                        onIconClick: () => {
+                            this.onFieldClick()
+                        }
+                    }).margin({left: this.baseStyle.spaceBase})
                 }
             }
             .width(CONTAINER_SIZE.FULL)

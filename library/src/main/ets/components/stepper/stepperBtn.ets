@@ -1,10 +1,12 @@
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
+import { IBestIcon } from '../icon';
 import { IBestStepperColor } from './color';
 
 @Component
 export struct IBestStepperBtn {
-  @BuilderParam defaultSlot?: CustomBuilder;
+  @Prop type: 'plus' | 'minus'
   @Prop buttonSize: string | number = convertDimensionsWidthUnit(20)
+  @Prop iconSize: number | string = convertDimensionsWidthUnit(20)
   @Prop radiusLeftTop: string | number = 0
   @Prop radiusLeftBottom: string | number = 0
   @Prop radiusRightTop: string | number = 0
@@ -15,13 +17,16 @@ export struct IBestStepperBtn {
 
   build() {
     Button() {
-      if (this.defaultSlot) {
-        this.defaultSlot()
-      }
+      IBestIcon({
+        name: this.type,
+        iconSize: this.iconSize,
+        color: IBestStepperColor.textColor,
+        onIconClick: () => {
+          this.onClickBtn()
+        }
+      })
     }
-    .type(
-      ButtonType.Normal
-    )
+    .type(ButtonType.Normal)
     .backgroundColor(this.disabled ? IBestStepperColor.disabledBg : IBestStepperColor.bg)
     .width(getSizeByUnit(this.buttonSize))
     .height(getSizeByUnit(this.buttonSize))

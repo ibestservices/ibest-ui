@@ -138,7 +138,7 @@ struct CellPage {
             IBestCell({
               title: '标题',
               value: '内容',
-              rightIcon: $r("app.media.icon_star"),
+              rightIcon: $r("app.media.ibest_icon_star"),
               rightIconColor: '#FF0000',
               hasBorder: false
             })

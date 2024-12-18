@@ -3,5 +3,5 @@ interface IBestWatermarkColorType {
 }
 
 export const IBestWatermarkColor: IBestWatermarkColorType = {
-    bgColor: $r("app.color.ibest_background_2")
+    bgColor: $r("app.color.ibest_water_mark_background")
 }

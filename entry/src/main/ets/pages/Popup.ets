@@ -1,4 +1,4 @@
-import { IBestCell, IBestCellGroup, IBestNavBar, IBestPopup, IBestToast } from '@ibestservices/ibest-ui'
+import { IBestCell, IBestCellGroup, IBestIcon, IBestNavBar, IBestPopup, IBestToast } from '@ibestservices/ibest-ui'
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../assets/global.type'
 import ComponentShowContainer from '../components/ComponentShowContainer'
@@ -17,11 +17,6 @@ import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle'
 			.backgroundColor(modeColor.active)
 		}
 	})
-}
-@Extend(Image) function positionImageStyle(){
-	.width(25)
-	.aspectRatio(1)
-	.fillColor(modeColor.textColor)
 }
 
 @Entry
@@ -92,8 +87,10 @@ struct PopupPage {
 						IBestCellGroup({ inset: true }) {
 							Row(){
 								Column({space: 8}){
-									Image($r("app.media.arrow_up"))
-										.positionImageStyle()
+									IBestIcon({
+										name: "arrow-up",
+										iconSize: 25
+									})
 									Text("顶部弹出")
 										.fontSize(12)
 								}
@@ -102,8 +99,10 @@ struct PopupPage {
 									this.upVisible = true
 								})
 								Column({space: 8}){
-									Image($r("app.media.arrow_down"))
-										.positionImageStyle()
+									IBestIcon({
+										name: "arrow-down",
+										iconSize: 25
+									})
 									Text("底部弹出")
 										.fontSize(12)
 								}
@@ -112,8 +111,10 @@ struct PopupPage {
 									this.downVisible = true
 								})
 								Column({space: 8}){
-									Image($r("app.media.arrow_left"))
-										.positionImageStyle()
+									IBestIcon({
+										name: "arrow-left",
+										iconSize: 25
+									})
 									Text("左侧弹出")
 										.fontSize(12)
 								}
@@ -122,8 +123,10 @@ struct PopupPage {
 									this.leftVisible = true
 								})
 								Column({space: 8}){
-									Image($r("app.media.arrow_right"))
-										.positionImageStyle()
+									IBestIcon({
+										name: "arrow",
+										iconSize: 25
+									})
 									Text("右侧弹出")
 										.fontSize(12)
 								}
@@ -133,7 +136,6 @@ struct PopupPage {
 								})
 							}
 							.width(CONTAINER_SIZE.FULL)
-							.backgroundColor("#fff")
 						}
 					}
 				}

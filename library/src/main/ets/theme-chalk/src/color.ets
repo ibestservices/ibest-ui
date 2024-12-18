@@ -1,4 +1,4 @@
-import { ThemeColor } from './color.type';
+import { GrayColor, ThemeColor } from './color.type';
 
 /**
  * 主题色
@@ -7,33 +7,33 @@ export const THEME_COLOR: ThemeColor = {
   /**
    * 主要的
    */
-  PRIMARY: '#1989fa',
+  PRIMARY: $r("app.color.ibest_primary_color"),
   /**
    * 成功
    */
-  SUCCESS: '#07c160',
+  SUCCESS: $r("app.color.ibest_success_color"),
   /**
    * 危险
    */
-  DANGER: '#ee0a24',
+  DANGER: $r("app.color.ibest_danger_color"),
   /**
    * 警告
    */
-  WARNING: '#ff976a'
+  WARNING: $r("app.color.ibest_warning_color")
 }
 
 /**
  * 灰色
  */
-export enum GRAY_COLOR{
-  GRAY_1 =  '#f7f8fa',
-  GRAY_2 =  '#f2f3f5',
-  GRAY_3 =  '#ebedf0',
-  GRAY_4 =  '#dcdee0',
-  GRAY_5 =  '#c8c9cc',
-  GRAY_6 =  '#969799',
-  GRAY_7 =  '#646566',
-  GRAY_8 =  '#323233',
+export const GRAY_COLOR: GrayColor = {
+  GRAY_1:  $r("app.color.ibest_gray_1"),
+  GRAY_2:  $r("app.color.ibest_gray_2"),
+  GRAY_3:  $r("app.color.ibest_gray_3"),
+  GRAY_4:  $r("app.color.ibest_gray_4"),
+  GRAY_5:  $r("app.color.ibest_gray_5"),
+  GRAY_6:  $r("app.color.ibest_gray_6"),
+  GRAY_7:  $r("app.color.ibest_gray_7"),
+  GRAY_8:  $r("app.color.ibest_gray_8")
 }
 
 /**

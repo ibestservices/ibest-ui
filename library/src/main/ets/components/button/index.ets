@@ -8,7 +8,7 @@ import { ButtonSizeData } from './index.type';
 import { IBestLoading } from '../loading/index';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { IBestButtonColor } from './color';
-
+import { IBestIcon } from '../icon';
 @Extend(Button)
 function btnSizeStyle(data: ButtonSizeData) {
   .padding({
@@ -89,9 +89,23 @@ export struct IBestButton {
    * 加载图标的大小, 如果为-1就是默认值 默认值跟随字体大小
    */
   @Prop loadingSize: number | string = -1;
+  /**
+   * 按钮宽度
+   */
   @Prop btnWidth?: number | string = undefined;
+  /**
+   * 按钮高度
+   */
   @Prop btnHeight?: number | string = undefined;
+  /**
+   * 按钮文字大小
+   */
   @Prop btnFontSize?: number | string = undefined;
+  /**
+   * 按钮图标
+   * @since 2.0.1
+   */
+  @Prop icon: ResourceStr = ""
   /**
    * 点击按钮，且按钮状态不为加载或禁用时触发
    */
@@ -106,18 +120,18 @@ export struct IBestButton {
   getBtnSize() {
     if (this.btnWidth || this.btnHeight) {
       return new ButtonSizeData(this.btnWidth ? 0 : convertDimensionsWidthUnit(15), this.btnHeight != undefined ? getSizeByUnit(this.btnHeight) : convertDimensionsWidthUnit(44),
-        this.getBtnFontSize() || this.baseStyle.fontSizeMd, this.btnWidth != undefined ? getSizeByUnit(this.btnWidth) : '')
+        this.getBtnFontSize() || this.baseStyle.fontSizeMd as string, this.btnWidth != undefined ? getSizeByUnit(this.btnWidth) : '')
     }
     const buttonSize = this.buttonSize;
     switch (buttonSize) {
       case SIZE.SMALL:
-        return new ButtonSizeData(this.baseStyle.spaceXs, convertDimensionsWidthUnit(32), this.getBtnFontSize() || this.baseStyle.fontSizeSm);
+        return new ButtonSizeData(this.baseStyle.spaceXs as string, convertDimensionsWidthUnit(32), this.getBtnFontSize() || this.baseStyle.fontSizeSm as string);
       case SIZE.MINI:
-        return new ButtonSizeData(this.baseStyle.spaceBase, convertDimensionsWidthUnit(32), this.getBtnFontSize() || this.baseStyle.fontSizeXs);
+        return new ButtonSizeData(this.baseStyle.spaceBase as string, convertDimensionsWidthUnit(32), this.getBtnFontSize() || this.baseStyle.fontSizeXs as string);
       case SIZE.LARGE:
-        return new ButtonSizeData(this.baseStyle.spaceXs, convertDimensionsWidthUnit(50), this.getBtnFontSize() || this.baseStyle.fontSizeLg, CONTAINER_SIZE.FULL);
+        return new ButtonSizeData(this.baseStyle.spaceXs as string, convertDimensionsWidthUnit(50), this.getBtnFontSize() || this.baseStyle.fontSizeLg as string, CONTAINER_SIZE.FULL);
       default:
-        return new ButtonSizeData(convertDimensionsWidthUnit(15), convertDimensionsWidthUnit(44), this.getBtnFontSize() || this.baseStyle.fontSizeMd);
+        return new ButtonSizeData(convertDimensionsWidthUnit(15), convertDimensionsWidthUnit(44), this.getBtnFontSize() || this.baseStyle.fontSizeMd as string);
     }
   }
   getBtnFontSize(){
@@ -199,6 +213,15 @@ export struct IBestButton {
             // 加载loading显示的时候不显示图标
           } else if (this.iconBuilder) {
             this.iconBuilder()
+          }else if(this.icon){
+            IBestIcon({
+              name: this.icon,
+              iconSize: this.getBtnSize()?.fontSize,
+              color: this.getBtnTextColor(),
+              onIconClick: () => {
+                this.onClickBtn()
+              }
+            }).margin({right: this.icon && this.text ? this.baseStyle.spaceBase : 0})
           }
           Text(this.loading ? this.loadingText ?? this.text : this.text)
             .fontSize(this.getBtnSize()?.fontSize)

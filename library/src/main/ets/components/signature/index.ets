@@ -1,7 +1,7 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { convertDimensions, convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
+import { convertDimensions, convertDimensionsWidthUnit, getComponentSnapshot, getSizeByUnit } from '../../utils/utils'
 import { IBestButton } from '../button'
 import { IBestSignatureColor } from './color'
 import { IBestSignatureController } from './index.type'
@@ -11,6 +11,7 @@ export struct IBestSignature{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp("IBestColorMode") @Watch("setCanvasStyle") colorMode: ColorMode = ColorMode.LIGHT
 	/**
 	 * 宽度
 	 */
@@ -34,7 +35,7 @@ export struct IBestSignature{
 	/**
 	 * 背景色
 	 */
-	@Prop bgColor: string | number | CanvasGradient | CanvasPattern = IBestSignatureColor.bg as string
+	@Prop bgColor: ResourceColor = IBestSignatureColor.bg
 	/**
 	 * 清除按钮文案
 	 */
@@ -54,7 +55,7 @@ export struct IBestSignature{
 	/**
 	 * 点击确定按钮的回调
 	 */
-	onConfirm: (url: string) => void = () => {}
+	onConfirm: (pixelMap: PixelMap) => void = () => {}
 	/**
 	 * 点击清空按钮的回调
 	 */
@@ -63,10 +64,13 @@ export struct IBestSignature{
 	 * 控制器
 	 */
 	controller?: IBestSignatureController
+	@State uniId: number = 0
+	private uiContext = this.getUIContext()
 	private settings: RenderingContextSettings = new RenderingContextSettings(true)
 	private context: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
 
 	aboutToAppear(): void {
+		this.uniId = this.getUniqueId()
 		this.init()
 	}
 	// 初始化
@@ -82,8 +86,6 @@ export struct IBestSignature{
 		this.context.lineJoin = "round"
 		this.context.lineWidth = this.lineWidth
 		this.context.strokeStyle = this.penColor
-		this.context.fillStyle = this.bgColor
-		this.context.fillRect(0, 0, this.context.width, this.context.height)
 	}
 	// 触摸事件
 	onFingerTouch(event: TouchEvent){
@@ -111,7 +113,7 @@ export struct IBestSignature{
 	}
 	// 确认
 	confirm(){
-		this.onConfirm(this.context.toDataURL(`image/${this.exportImgType}`))
+		this.onConfirm(getComponentSnapshot(this.uiContext, `ibest_signature_${this.uniId}`))
 	}
 
 	build() {
@@ -129,9 +131,10 @@ export struct IBestSignature{
 					})
 			}
 			.border({width: 1, color: IBestSignatureColor.borderColor, style: BorderStyle.Dashed})
-			.backgroundColor(IBestSignatureColor.bg)
 			.borderRadius(this.baseStyle.borderRadiusLg)
+			.backgroundColor(this.bgColor)
 			.clip(true)
+			.id(`ibest_signature_${this.uniId}`)
 			if(this.isShowFooter){
 				Row({ space: this.baseStyle.spaceXs as string }){
 					IBestButton({

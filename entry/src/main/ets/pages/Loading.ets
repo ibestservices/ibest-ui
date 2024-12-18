@@ -14,11 +14,6 @@ struct LoadingPage {
     IBestEmpty()
   }
 
-  @Builder
-  ImageContain() {
-    Image($r('app.media.icon')).width(20)
-  }
-
   build() {
     Column() {
       IBestNavBar({

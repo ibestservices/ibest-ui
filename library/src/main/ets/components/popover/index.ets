@@ -1,5 +1,4 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { IBestIcon } from '../icon'
@@ -188,14 +187,9 @@ struct PopoverContent{
         Column(){
             ForEach(this.actions, (item: IBestPopoverAction, index: number) => {
                 Row(){
-                    if(item.icon){
-                        Image(item.icon)
-                            .width(getSizeByUnit(this.iconSize))
-                            .fillColor(this.iconColor)
-                            .margin({right: this.baseStyle.spaceXs})
-                    }else if(item.iconName){
+                    if(item.icon || item.iconName){
                         IBestIcon({
-                            name: item.iconName,
+                            name: item.icon || item.iconName,
                             iconSize: this.iconSize,
                             color: this.iconColor
                         }).margin({right: this.baseStyle.spaceXs})

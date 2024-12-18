@@ -27,6 +27,7 @@ export struct IBestNoticeBar{
 	@Prop leftRightPadding: number | string = convertDimensionsWidthUnit(16)
 	/**
 	 * 左侧图标名称
+	 * @deprecated 请使用leftIcon
      */
 	@Prop leftIconName: string = ''
 	/**
@@ -55,6 +56,7 @@ export struct IBestNoticeBar{
 	@Prop textFontSize: number | string = this.baseStyle.fontSizeMd as string
 	/**
 	 * 右侧图标名称
+	 * @deprecated 请使用rightIcon
      */
 	@Prop rightIconName: string = ''
 	/**
@@ -157,20 +159,14 @@ export struct IBestNoticeBar{
 		Row(){
 			if(this.leftIcon || this.leftIconName){
 				Row(){
-					if(this.leftIcon){
-						Image(this.leftIcon)
-							.width(getSizeByUnit(this.leftIconSize))
-							.fillColor(this.leftIconColor)
-					}else if(this.leftIconName){
-						IBestIcon({
-							name: this.leftIconName,
-							iconSize: this.leftIconSize,
-							color: this.leftIconColor,
-							onIconClick: () => {
-								this.onBarClick()
-							}
-						})
-					}
+					IBestIcon({
+						name: this.leftIcon || this.leftIconName,
+						iconSize: this.leftIconSize,
+						color: this.leftIconColor,
+						onIconClick: () => {
+							this.onBarClick()
+						}
+					})
 				}
 				.constraintSize({minWidth: convertDimensionsWidthUnit(24)})
 			}
@@ -221,34 +217,19 @@ export struct IBestNoticeBar{
 			}
 			if(this.rightIcon || this.rightIconName || this.mode){
 				Row(){
-					if(this.rightIcon){
-						Image(this.rightIcon)
-							.width(getSizeByUnit(this.rightIconSize))
-							.fillColor(this.rightIconColor)
-					}else if(this.rightIconName){
-						IBestIcon({
-							name: this.rightIconName,
-							iconSize: this.rightIconSize,
-							color: this.rightIconColor,
-							onIconClick: () => {
+					IBestIcon({
+						name: this.rightIcon || this.rightIconName || (this.mode == "closeable" ? "cross" : "arrow"),
+						iconSize: this.rightIconSize,
+						color: this.rightIconColor,
+						onIconClick: () => {
+							if(this.mode == "closeable"){
+								this.isShow = false
+								this.onClose()
+							}else{
 								this.onBarClick()
 							}
-						})
-					}else if(this.mode) {
-						IBestIcon({
-							name: this.mode == "closeable" ? "cross" : "arrow",
-							iconSize: this.rightIconSize,
-							color: this.rightIconColor,
-							onIconClick: () => {
-								if(this.mode == "closeable"){
-									this.isShow = false
-									this.onClose()
-								}else{
-									this.onBarClick()
-								}
-							}
-						})
-					}
+						}
+					})
 				}
 				.constraintSize({minWidth: convertDimensionsWidthUnit(24)})
 				.justifyContent(FlexAlign.End)

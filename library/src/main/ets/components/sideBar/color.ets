@@ -5,7 +5,7 @@ interface IBestSidebarColorType {
 }
 
 export const IBestSidebarColor: IBestSidebarColorType = {
-    bgColor: $r("app.color.ibest_background"),
+    bgColor: $r("app.color.ibest_sidebar_background"),
     activeBg: $r("app.color.ibest_background_2"),
     textColor: $r("app.color.ibest_text_color"),
 }

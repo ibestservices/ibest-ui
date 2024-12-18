@@ -43,7 +43,7 @@ struct PullRefreshPage {
 							.backgroundColor(0x89CFF0)
 					}.width("100%")
 				}, (item: string) => item)
-			}.width("100%").edgeEffect(EdgeEffect.None)
+			}.width("100%").edgeEffect(EdgeEffect.None).height("100%")
 		}else if(type == "2"){
 			Scroll(this.scroller){
 				Column(){

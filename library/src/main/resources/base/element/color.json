@@ -9,48 +9,184 @@
 			"value": "#fff"
 		},
 		{
-			"name": "ibest_text_color",
-			"value": "#323232"
+			"name": "ibest_primary_color",
+			"value": "#1989fa"
 		},
 		{
-			"name": "ibest_text_color_2",
-			"value": "#969799"
+			"name": "ibest_success_color",
+			"value": "#07c160"
 		},
 		{
-			"name": "ibest_text_color_3",
-			"value": "#c8c9cc"
+			"name": "ibest_danger_color",
+			"value": "#ee0a24"
 		},
 		{
-			"name": "ibest_border_color",
-			"value": "#ebedf0"
+			"name": "ibest_warning_color",
+			"value": "#ff976a"
 		},
 		{
-			"name": "ibest_active_color",
-			"value": "#f2f3f5"
-		},
-		{
-			"name": "ibest_background",
+			"name": "ibest_gray_1",
 			"value": "#f7f8fa"
 		},
 		{
+			"name": "ibest_gray_2",
+			"value": "#f2f3f5"
+		},
+		{
+			"name": "ibest_gray_3",
+			"value": "#ebedf0"
+		},
+		{
+			"name": "ibest_gray_4",
+			"value": "#dcdee0"
+		},
+		{
+			"name": "ibest_gray_5",
+			"value": "#c8c9cc"
+		},
+		{
+			"name": "ibest_gray_6",
+			"value": "#969799"
+		},
+		{
+			"name": "ibest_gray_7",
+			"value": "#646566"
+		},
+		{
+			"name": "ibest_gray_8",
+			"value": "#323233"
+		},
+		{
+			"name": "ibest_text_color",
+			"value": "$color:ibest_gray_8"
+		},
+		{
+			"name": "ibest_text_color_2",
+			"value": "$color:ibest_gray_6"
+		},
+		{
+			"name": "ibest_text_color_3",
+			"value": "$color:ibest_gray_5"
+		},
+		{
+			"name": "ibest_border_color",
+			"value": "$color:ibest_gray_3"
+		},
+		{
+			"name": "ibest_active_color",
+			"value": "$color:ibest_gray_2"
+		},
+		{
+			"name": "ibest_background",
+			"value": "$color:ibest_gray_1"
+		},
+		{
 			"name": "ibest_background_2",
-			"value": "#fff"
+			"value": "$color:ibest_white"
 		},
 		{
 			"name": "ibest_background_3",
-			"value": "#fff"
+			"value": "$color:ibest_white"
+		},
+		{
+			"name": "ibest_cell_title_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_cell_label_color",
+			"value": "$color:ibest_text_color_2"
+		},
+		{
+			"name": "ibest_cell_value_color",
+			"value": "$color:ibest_text_color_2"
+		},
+		{
+			"name": "ibest_cell_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_cell_active_color",
+			"value": "$color:ibest_active_color"
+		},
+		{
+			"name": "ibest_cell_border_color",
+			"value": "$color:ibest_border_color"
+		},
+		{
+			"name": "ibest_popup_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_popup_title_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_popup_close_icon_color",
+			"value": "$color:ibest_gray_5"
+		},
+		{
+			"name": "ibest_calendar_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_calendar_disabled_background",
+			"value": "$color:ibest_background"
 		},
 		{
 			"name": "ibest_calendar_month_mark_color",
 			"value": "#f5f5f7"
 		},
 		{
-			"name": "ibest_picker_mask_color",
-			"value": "#f5f5f7"
+			"name": "ibest_checkbox_label_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_checkbox_checked_color",
+			"value": "$color:ibest_primary_color"
+		},
+		{
+			"name": "ibest_checkbox_disabled_label_color",
+			"value": "$color:ibest_text_color_3"
+		},
+		{
+			"name": "ibest_checkbox_disabled_icon_color",
+			"value": "$color:ibest_gray_5"
+		},
+		{
+			"name": "ibest_checkbox_border_color",
+			"value": "$color:ibest_border_color"
+		},
+		{
+			"name": "ibest_field_label_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_field_input_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_field_placeholder_color",
+			"value": "$color:ibest_text_color_3"
+		},
+		{
+			"name": "ibest_field_right_icon_color",
+			"value": "$color:ibest_gray_6"
+		},
+		{
+			"name": "ibest_field_border_color",
+			"value": "$color:ibest_border_color"
+		},
+		{
+			"name": "ibest_field_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_field_active_color",
+			"value": "$color:ibest_active_color"
 		},
 		{
 			"name": "ibest_number_keyboard_background",
-			"value": "$color:ibest_active_color"
+			"value": "$color:ibest_gray_2"
 		},
 		{
 			"name": "ibest_number_keyboard_key_background",
@@ -58,11 +194,215 @@
 		},
 		{
 			"name": "ibest_number_keyboard_key_active_color",
-			"value": "#ebedf0"
+			"value": "$color:ibest_gray_3"
+		},
+		{
+			"name": "ibest_password_input_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_password_input_text_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_password_input_border_color",
+			"value": "$color:ibest_border_color"
+		},
+		{
+			"name": "ibest_radio_label_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_radio_checked_color",
+			"value": "$color:ibest_primary_color"
+		},
+		{
+			"name": "ibest_radio_disabled_label_color",
+			"value": "$color:ibest_text_color_3"
+		},
+		{
+			"name": "ibest_radio_disabled_icon_color",
+			"value": "$color:ibest_gray_5"
+		},
+		{
+			"name": "ibest_radio_border_color",
+			"value": "$color:ibest_border_color"
+		},
+		{
+			"name": "ibest_search_outer_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_search_inner_background",
+			"value": "$color:ibest_background"
+		},
+		{
+			"name": "ibest_search_label_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_search_left_icon_color",
+			"value": "$color:ibest_gray_6"
+		},
+		{
+			"name": "ibest_slider_inactive_background",
+			"value": "$color:ibest_gray_3"
+		},
+		{
+			"name": "ibest_stepper_background",
+			"value": "$color:ibest_active_color"
+		},
+		{
+			"name": "ibest_stepper_disabled_background",
+			"value": "$color:ibest_background"
+		},
+		{
+			"name": "ibest_stepper_disabled_text_color",
+			"value": "$color:ibest_text_color_3"
 		},
 		{
 			"name": "ibest_switch_background",
 			"value": "#e2e3e7"
+		},
+		{
+			"name": "ibest_uploader_background",
+			"value": "$color:ibest_gray_1"
+		},
+		{
+			"name": "ibest_uploader_icon_color",
+			"value": "$color:ibest_gray_4"
+		},
+		{
+			"name": "ibest_file_background",
+			"value": "$color:ibest_background"
+		},
+		{
+			"name": "ibest_action_sheet_background",
+			"value": "$color:ibest_background"
+		},
+		{
+			"name": "ibest_action_sheet_item_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_action_sheet_item_description_color",
+			"value": "$color:ibest_text_color_2"
+		},
+		{
+			"name": "ibest_action_sheet_item_disabled_text_color",
+			"value": "$color:ibest_text_color_3"
+		},
+		{
+			"name": "ibest_action_sheet_border_color",
+			"value": "$color:ibest_border_color"
+		},
+		{
+			"name": "ibest_dialog_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_dialog_title_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_dialog_message_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_dialog_cancel_text_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_dialog_border_color",
+			"value": "$color:ibest_border_color"
+		},
+		{
+			"name": "ibest_badge_background",
+			"value": "$color:ibest_danger_color"
+		},
+		{
+			"name": "ibest_badge_text_color",
+			"value": "$color:ibest_white"
+		},
+		{
+			"name": "ibest_circle_progress_background",
+			"value": "$color:ibest_white"
+		},
+		{
+			"name": "ibest_circle_progress_text_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_collapse_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_collapse_title_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_collapse_icon_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_collapse_value_color",
+			"value": "$color:ibest_text_color_2"
+		},
+		{
+			"name": "ibest_collapse_border_color",
+			"value": "$color:ibest_border_color"
+		},
+		{
+			"name": "ibest_divider_border_color",
+			"value": "$color:ibest_border_color"
+		},
+		{
+			"name": "ibest_popover_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_popover_border_color",
+			"value": "$color:ibest_border_color"
+		},
+		{
+			"name": "ibest_progress_background",
+			"value": "$color:ibest_gray_3"
+		},
+		{
+			"name": "ibest_water_mark_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_navbar_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_sub_title_text_color",
+			"value": "$color:ibest_text_color_2"
+		},
+		{
+			"name": "ibest_navbar_border_color",
+			"value": "$color:ibest_border_color"
+		},
+		{
+			"name": "ibest_sidebar_background",
+			"value": "$color:ibest_background"
+		},
+		{
+			"name": "ibest_tab_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_tab_inactive_text_color",
+			"value": "$color:ibest_gray_7"
+		},
+		{
+			"name": "ibest_tab_active_text_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_tab_line_color",
+			"value": "$color:ibest_primary_color"
 		}
 	]
 }

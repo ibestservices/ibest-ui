@@ -259,11 +259,11 @@ struct ExtraButton{
 			Text(this.item.text)
 				.keyTextStyle()
 		}else if(this.item.type == "delete"){
-			Image($r("app.media.delete"))
+			Image($r("app.media.ibest_delete"))
 				.width(convertDimensionsWidthUnit(32))
 				.fillColor(IBestNumberKeyboardColor.textColor)
 		}else{
-			Image($r("app.media.key_board"))
+			Image($r("app.media.ibest_key_board"))
 				.width(convertDimensionsWidthUnit(30))
 				.fillColor(IBestNumberKeyboardColor.textColor)
 		}

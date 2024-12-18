@@ -11,7 +11,7 @@ struct DividerPage {
 
 	@Builder textBuilder(){
 		Row({space: 10}){
-			Image($r("app.media.icon_star")).width(16)
+			Image($r("app.media.ibest_icon_star")).width(16)
 			Text("自定义内容")
 		}
 	}

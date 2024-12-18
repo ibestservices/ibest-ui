@@ -6,6 +6,7 @@ import { SIZE } from '../../theme-chalk/src/size.type';
 import { TagSizeData } from './index.type';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { IBestTagColor } from './color';
+import { IBestIcon } from '../icon';
 @Extend(Row) function tagSizeStyle(data: TagSizeData) {
   .padding({ top: 0, right: data.padding, bottom: 0, left: data.padding })
   .height(data.height)
@@ -62,11 +63,11 @@ export struct IBestTag {
   /**
    * 点击关闭按钮触发的回调
    */
-  onClose: (event: ClickEvent) => void = () => {}
+  onClose: () => void = () => {}
   /**
    * 点击标签触发的回调
    */
-  onClickTag: (event: ClickEvent) => void = () => {}
+  onClickTag: () => void = () => {}
 
   /**
    * 获取按钮边框的颜色
@@ -139,18 +140,16 @@ export struct IBestTag {
           .fontSize(this.getTagSize()?.fontSize)
           .fontColor(this.getTextColor())
         if (this.closeable) {
-          Column() {
-            Image($r('app.media.close'))
-              .height('50%')
-              .margin({ left: this.baseStyle.spaceMini })
-          }.height(this.getTagSize().height)
-          .alignItems(HorizontalAlign.Center)
-          .justifyContent(FlexAlign.Center)
-          .onClick((event) => {
-            animateTo({ duration: this.baseStyle.animationDuration as number}, () => {
-              this.onClose(event)
-            })
-          })
+          IBestIcon({
+            name: "cross",
+            iconSize: convertDimensionsWidthUnit(12),
+            color: this.getTextColor(),
+            onIconClick: () => {
+              animateTo({ duration: this.baseStyle.animationDuration as number}, () => {
+                this.onClose()
+              })
+            }
+          }).margin({ left: this.baseStyle.spaceMini })
         }
       }
       .tagSizeStyle(this.getTagSize())
@@ -161,8 +160,8 @@ export struct IBestTag {
       .borderColor(this.getBorderColor())
       .transition({ type: TransitionType.Insert, opacity: 1 })
       .transition({ type: TransitionType.Delete, opacity: 0 })
-      .onClick((event)=>{
-        this.onClickTag(event)
+      .onClick(() => {
+        this.onClickTag()
       })
     }
   }

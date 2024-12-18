@@ -5,17 +5,17 @@ import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 
 class params {
-	url: string = ''
+	url: PixelMap | null = null
 }
 
 @Entry
 @Component
 struct SignaturePage {
 	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
-	@State imgUrl: string = ""
-	@State imgUrl1: string = ""
-	@State imgUrl2: string = ""
-	@State imgUrl3: string = ""
+	@State imgUrl: PixelMap | null = null
+	@State imgUrl1: PixelMap | null = null
+	@State imgUrl2: PixelMap | null = null
+	@State imgUrl3: PixelMap | null = null
 	private controller: IBestSignatureController = new IBestSignatureController()
 
 	@Builder imgUrlView($$: params) {
@@ -35,8 +35,8 @@ struct SignaturePage {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
 						IBestSignature({
-							onConfirm: (url: string) => {
-								this.imgUrl = url
+							onConfirm: (pixelMap: PixelMap) => {
+								this.imgUrl = pixelMap
 							}
 						})
 						if(this.imgUrl){
@@ -50,8 +50,8 @@ struct SignaturePage {
 							penColor: "#ff0000",
 							lineWidth: 5,
 							bgColor: "#eee",
-							onConfirm: (url: string) => {
-								this.imgUrl1 = url
+							onConfirm: (pixelMap: PixelMap) => {
+								this.imgUrl = pixelMap
 							}
 						})
 						if(this.imgUrl1){
@@ -64,8 +64,8 @@ struct SignaturePage {
 						IBestSignature({
 							boardWidth: 260,
 							boardHeight: 150,
-							onConfirm: (url: string) => {
-								this.imgUrl2 = url
+							onConfirm: (pixelMap: PixelMap) => {
+								this.imgUrl = pixelMap
 							}
 						})
 						if(this.imgUrl2){
@@ -78,8 +78,8 @@ struct SignaturePage {
 						IBestSignature({
 							controller: this.controller,
 							isShowFooter: false,
-							onConfirm: (url: string) => {
-								this.imgUrl3 = url
+							onConfirm: (pixelMap: PixelMap) => {
+								this.imgUrl = pixelMap
 							}
 						})
 						if(this.imgUrl3){

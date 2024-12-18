@@ -4,7 +4,19 @@ export interface ThemeColor {
   WARNING: ResourceColor
   DANGER: ResourceColor
 }
-
+/**
+ * 灰色
+ */
+export interface GrayColor {
+  GRAY_1: ResourceColor
+  GRAY_2: ResourceColor
+  GRAY_3: ResourceColor
+  GRAY_4: ResourceColor
+  GRAY_5: ResourceColor
+  GRAY_6: ResourceColor
+  GRAY_7: ResourceColor
+  GRAY_8: ResourceColor
+}
 /**
  * 颜色类型枚举
  */

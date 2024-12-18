@@ -1,6 +1,5 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
-import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
@@ -30,7 +29,7 @@ export struct IBestProgress{
 	/**
 	 * 进度条背景色
      */
-	@Prop bgColor: ResourceColor = GRAY_COLOR.GRAY_3
+	@Prop bgColor: ResourceColor = IBestProgressColor.bgColor
 	/**
 	 * 是否显示进度条文字
      */

@@ -1,10 +1,8 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensions, getSizeByUnit } from '../../utils/utils'
 import { matrix4 } from '@kit.ArkUI'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
-import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
 import { IBestCircleProgressColor } from './color'
 class Point {
     x: number

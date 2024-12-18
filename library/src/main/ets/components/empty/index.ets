@@ -1,5 +1,4 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
@@ -56,13 +55,13 @@ export struct IBestEmpty {
     if(this.emptyImgUrl){
       Image(this.emptyImgUrl).imgStyle()
     }else if (this.emptyImage === 'default') {
-      Image($r('app.media.empty')).imgStyle()
+      Image($r("app.media.ibest_empty")).imgStyle()
     } else if (this.emptyImage === 'network') {
-      Image($r('app.media.empty_network_error')).imgStyle()
+      Image($r("app.media.ibest_empty_network_error")).imgStyle()
     } else if (this.emptyImage === 'search') {
-      Image($r('app.media.empty_search_error')).imgStyle()
+      Image($r("app.media.ibest_empty_search_error")).imgStyle()
     } else if (this.emptyImage === 'error') {
-      Image($r('app.media.empty_error')).imgStyle()
+      Image($r("app.media.ibest_empty_error")).imgStyle()
     }
   }
 

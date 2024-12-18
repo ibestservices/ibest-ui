@@ -1,4 +1,5 @@
 import { ComponentContent, PromptAction, UIObserver, window } from '@kit.ArkUI'
+import { IBestIcon } from '../components/icon'
 import { IBestLoading } from '../components/loading'
 import { LoadingIconType, WordBreakType } from '../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src/index'
@@ -63,19 +64,13 @@ class ToastParams extends ToastOption{
         this.duration = typeof value?.duration != "undefined" ? value.duration : 1500
         this.wordBreak = value?.wordBreak || "normal"
         this.icon = value?.icon
-        this.iconWidth = value?.iconWidth
+        this.iconWidth = value?.iconWidth || convertDimensionsWidthUnit(36)
         this.isShowMask = value?.isShowMask || false
         this.loadingType = value?.loadingType || "circular"
         this.position = value?.position || "center"
         this.offsetY = value?.offsetY || 0
         this.onOpened = value?.onOpened
     }
-}
-
-@Extend(Image) function imageStyle(width: number | string | undefined){
-    .width(width ? getSizeByUnit(width) : convertDimensionsWidthUnit(36))
-    .aspectRatio(1)
-    .margin({bottom: convertDimensionsWidthUnit(10)})
 }
 
 @Component
@@ -88,19 +83,23 @@ struct defaultContent{
     build() {
         Column(){
             if(this.option.icon){
-                Image(this.option.icon).imageStyle(this.option.iconWidth)
+                Image(this.option.icon)
+                    .width(getSizeByUnit(this.option.iconWidth || ""))
+                    .aspectRatio(1)
+                    .margin({bottom: this.baseStyle.spaceXs})
             }else if(this.option.type){
                 if(this.option.type == "loading"){
                     IBestLoading({
                         loadingIconType: this.option.loadingType,
                         loadingSize: convertDimensionsWidthUnit(20),
                         loadingStrokeWidth: 2
-                    }).margin({bottom: convertDimensionsWidthUnit(10)})
+                    }).margin({bottom: this.baseStyle.spaceXs})
                 }else{
-                    Image(this.option.type == "success" ? $r("app.media.success") : this.option.type ==
-                        "warning" ? $r("app.media.icon_warn") :$r("app.media.icon_cuo"))
-                        .imageStyle(this.option.iconWidth)
-                        .fillColor("#fff")
+                    IBestIcon({
+                        name: this.option.type == "success" ? "success" : this.option.type == "warning" ? "fail" : "cross",
+                        iconSize: this.option.iconWidth,
+                        color: $r("app.color.ibest_white")
+                    }).margin({bottom: this.baseStyle.spaceXs})
                 }
             }
             Text(this.option.message)

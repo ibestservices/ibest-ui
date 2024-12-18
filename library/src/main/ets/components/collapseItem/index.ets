@@ -1,5 +1,4 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { emitter } from '../../utils/EventEmitter'
@@ -33,7 +32,7 @@ export struct IBestCollapseItem {
     /**
      * 标题栏左侧图标颜色
      */
-    @Prop iconColor: ResourceColor = IBestCollapseColor.textColor
+    @Prop iconColor: ResourceColor = IBestCollapseColor.iconColor
     /**
      * 标题栏左侧图标大小
      */
@@ -45,7 +44,7 @@ export struct IBestCollapseItem {
     /**
      * 标题文字颜色
      */
-    @Prop titleColor: ResourceColor = IBestCollapseColor.textColor
+    @Prop titleColor: ResourceColor = IBestCollapseColor.titleColor
     /**
      * 标题文字大小
      */
@@ -146,7 +145,7 @@ export struct IBestCollapseItem {
                 IBestIcon({
                     name: "arrow-down",
                     iconSize: this.baseStyle.fontSizeMd as string,
-                    color: IBestCollapseColor.textColor,
+                    color: IBestCollapseColor.iconColor,
                     onIconClick: () => {
                         this.toggle()
                     }

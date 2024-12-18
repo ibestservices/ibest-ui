@@ -521,7 +521,7 @@ export struct IBestPicker{
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.alignItems(HorizontalAlign.Start)
-		.backgroundColor(IBestPickerColor.bg2)
+		.backgroundColor(IBestPickerColor.bgColor)
 		.onVisibleAreaChange([0, 1], (isExpanding: boolean) => {
 			if(isExpanding && !this.itemCalcHeight){
 				this.initSize()
@@ -549,7 +549,7 @@ struct PickerHeader{
 					Text(this.cancelText)
 						.height(CONTAINER_SIZE.FULL)
 						.fontSize(this.baseStyle.fontSizeMd)
-						.fontColor(IBestPickerColor.textColor2)
+						.fontColor(IBestPickerColor.cancelTextColor)
 						.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
 						.onClick(() => {
 							this.onCancel()

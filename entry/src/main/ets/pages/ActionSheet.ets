@@ -76,7 +76,7 @@ struct ActionSheetPage {
 							actions: [
 								{ name: '选项一', icon: $r("app.media.icon_like") },
 								{ name: '选项二', icon: "https://ibestui.ibestservices.com/favicon.ico" },
-								{ name: '选项三', icon: $r("app.media.icon_star_o") }
+								{ name: '选项三', icon: $r("app.media.ibest_icon_star_o") }
 							],
 							onSelect: (index: number) => {
 								IBestToast.show(`点击了第${index}个选项`)

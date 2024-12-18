@@ -3,8 +3,8 @@ import { PopupAlign, PopupBaseController } from './index.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestPopupColor } from './color'
-import { GRAY_COLOR } from '../../theme-chalk/src/color'
-
+import { IBestIcon } from '../icon'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 const popupDuration = 200
 const hideDuration = 220
 
@@ -192,6 +192,11 @@ export struct IBestPopup{
 	 */
 	@Provide({allowOverride: "title"}) title: string = ""
 	/**
+	 * 标题字体颜色
+	 * @since 2.0.1
+     */
+	@Provide({allowOverride: "titleColor"}) titleColor: ResourceColor = IBestPopupColor.titleColor
+	/**
 	 * 底部偏移
 	 */
 	@Prop offsetY: number = 0
@@ -223,7 +228,12 @@ export struct IBestPopup{
 	/**
 	 * 自定义关闭图标
 	 */
-	@Provide({allowOverride: "closeIcon"}) closeIcon: ResourceStr = $r("app.media.close")
+	@Provide({allowOverride: "closeIcon"}) closeIcon: ResourceStr = "cross"
+	/**
+	 * 关闭图标颜色
+	 * @since 2.0.1
+     */
+	@Provide({allowOverride: "closeIconColor"}) closeIconColor: ResourceColor = IBestPopupColor.closeIconColor
 	/**
 	 * 是否开启顶部安全区适配
 	 */
@@ -305,23 +315,27 @@ struct PopupTitle {
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@Consume title: string
+	@Consume titleColor: ResourceColor
 	@Consume isShowClose: boolean
 	@Consume closeIcon: ResourceStr
+	@Consume closeIconColor: ResourceColor
 	close: () => void = () => {}
 	build() {
 		Row(){
 			Text(this.title)
 				.fontSize(this.baseStyle.fontSizeLg)
-			Image(this.closeIcon)
-				.width(this.baseStyle.spaceMd)
-				.aspectRatio(1)
-				.fillColor(GRAY_COLOR.GRAY_5)
-				.visibility(this.isShowClose ? Visibility.Visible : Visibility.None)
-				.onClick(() => {
+				.fontColor(this.titleColor)
+			IBestIcon({
+				name: this.closeIcon,
+				iconSize: convertDimensionsWidthUnit(20),
+				color: this.closeIconColor,
+				onIconClick: () => {
 					this.close()
-				})
+				}
+			})
+				.visibility(this.isShowClose ? Visibility.Visible : Visibility.None)
 		}
-		.width("100%")
+		.width(CONTAINER_SIZE.FULL)
 		.height(convertDimensionsWidthUnit(40))
 		.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
 		.justifyContent(FlexAlign.SpaceBetween)

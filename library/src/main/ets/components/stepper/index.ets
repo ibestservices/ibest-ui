@@ -252,19 +252,18 @@ export struct IBestStepper {
 
   build() {
     Row() {
-
       if (this.showMinus) {
         // 减少按钮
         IBestStepperBtn({
+          type: 'minus',
           buttonSize: this.buttonSize,
+          iconSize: this.iconSize,
           radiusLeftTop: this.buttonRadius,
           radiusLeftBottom: this.buttonRadius,
           disabled: this.reduceBtnDisabled || this.disabled || this.disableMinus || this.loading,
           onClickBtn: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.REDUCE),
           onLongPress: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.REDUCE)
-        }) {
-          Image($r("app.media.minus")).width(getSizeByUnit(this.iconSize)).fillColor(IBestStepperColor.textColor)
-        }
+        })
       }
       // 输入框
       if (this.showInput) {
@@ -290,15 +289,14 @@ export struct IBestStepper {
       if (this.showPlus) {
         // 增加按钮
         IBestStepperBtn({
+          type: 'plus',
           buttonSize: this.buttonSize,
           radiusRightTop: this.buttonRadius,
           radiusRightBottom: this.buttonRadius,
           disabled: this.plusBtnDisabled || this.disabled || this.disablePlus || this.loading,
           onClickBtn: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.PLUS),
           onLongPress: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.PLUS)
-        }) {
-          Image($r("app.media.icon_plus")).width(getSizeByUnit(this.iconSize)).fillColor(IBestStepperColor.textColor)
-        }
+        })
       }
     }
   }

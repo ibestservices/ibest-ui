@@ -7,7 +7,7 @@ import { CONTAINER_SIZE } from '../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type';
 import GlobalStore from '../utils/GlobalStore';
 import { IBestActionSheetColor } from './color';
-
+import { IBestIcon } from '../components/icon';
 // 选项类型
 class IBestActionType {
 	name: string = ""
@@ -160,7 +160,7 @@ class IBestActionSheetParams extends IBestActionSheetOption {
 		this.titleBgColor = option.titleBgColor || IBestActionSheetColor.buttonBg
 		this.description = option.description || ""
 		this.closeable = option.closeable != undefined ? option.closeable : true
-		this.closeIcon = option.closeIcon || $r("app.media.close")
+		this.closeIcon = option.closeIcon || "cross"
 		this.cancelText = option.cancelText || ""
 		this.safeAreaInsetBottom = option.safeAreaInsetBottom != undefined ? option.safeAreaInsetBottom : true
 		this.closeOnBackPress = option.closeOnBackPress != undefined ? option.closeOnBackPress : true
@@ -215,10 +215,14 @@ struct defaultContent{
 						.fontColor(this.textColor)
 					if(this.option.closeable){
 						Row(){
-							Image(this.option.closeIcon)
-								.width(convertDimensionsWidthUnit(14))
-								.aspectRatio(1)
-								.fillColor(this.textColor)
+							IBestIcon({
+								name: this.option.closeIcon,
+								iconSize: convertDimensionsWidthUnit(18),
+								color: this.textColor,
+								onIconClick: () => {
+									this.option.close(this.option.id)
+								}
+							})
 						}
 						.height(CONTAINER_SIZE.FULL)
 						.padding({left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd})

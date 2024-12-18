@@ -7,7 +7,7 @@ import { COMPONENT_NAME, RADIO_GROUP_EVENT_NAME } from '../radioGroup/index.type
 import { BuilderArgs } from './index.type';
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils';
 import { IBestRadioColor } from './color';
-
+import { IBestIcon } from '../icon';
 @Component
 export struct IBestRadio {
   /**
@@ -39,7 +39,7 @@ export struct IBestRadio {
   /**
    * 图标大小
    */
-  @Prop iconSize: number | string = convertDimensionsWidthUnit(18)
+  @Prop iconSize: number | string = convertDimensionsWidthUnit(20)
   /**
    * 默认是否选中 非双向绑定
    * 如果要更改数据请从onChange回调中获取最新的值
@@ -83,7 +83,7 @@ export struct IBestRadio {
     if (this.disabled) {
       return IBestRadioColor.borderColor
     } else {
-      return this.value && this.shape != 'dot' ? this.checkedColor || this.baseStyle.primary : ''
+      return this.value && this.shape != 'dot' ? this.checkedColor || IBestRadioColor.checkedColor : ''
     }
   }
 
@@ -95,7 +95,7 @@ export struct IBestRadio {
     if (this.disabled) {
       return GRAY_COLOR.GRAY_5
     } else {
-      return this.value ? this.checkedColor || this.baseStyle.primary : GRAY_COLOR.GRAY_5
+      return this.value ? this.checkedColor || IBestRadioColor.checkedColor : IBestRadioColor.borderColor
     }
   }
 
@@ -113,9 +113,9 @@ export struct IBestRadio {
    */
   getIconColor() {
     if (this.disabled) {
-      return GRAY_COLOR.GRAY_5
+      return IBestRadioColor.disabledIconColor
     } else {
-      return this.shape === 'dot' ? this.checkedColor || this.baseStyle.primary : IBestRadioColor.whiteColor
+      return this.shape === 'dot' ? this.checkedColor || IBestRadioColor.checkedColor : IBestRadioColor.whiteColor
     }
 
   }
@@ -216,9 +216,14 @@ export struct IBestRadio {
                 duration: this.baseStyle.animationDuration as number
               })
           } else {
-            Image($r('app.media.success'))
-              .fillColor(this.getIconColor())
-              .width(getSizeByUnit(this.iconSize))
+            IBestIcon({
+              name: "success",
+              iconSize: this.iconSize,
+              color: this.getIconColor(),
+              onIconClick: () => {
+                this.handleCheckedChange()
+              }
+            })
               .opacity(this.value ? 1 : 0)
               .animation({
                 duration: this.baseStyle.animationDuration as number,

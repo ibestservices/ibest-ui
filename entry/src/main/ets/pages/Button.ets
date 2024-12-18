@@ -1,9 +1,9 @@
 import router from '@ohos.router';
-import { IBestButton, IBestNavBar } from '@ibestservices/ibest-ui';
+import { IBestButton, IBestNavBar, IBestToast } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
-
+import { LengthMetrics } from '@ohos.arkui.node';
 @Styles
 function btnMargin() {
   .margin({ right: SPACE.SM, bottom: SPACE.SM })
@@ -28,231 +28,157 @@ struct ButtonPage {
           router.back()
         }
       })
-
       List() {
         ListItem() {
           ComponentShowContainer({ title: '按钮类型' }) {
-            Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
-              Column() {
-                IBestButton({
-                  text: '主要按钮',
-                  type: 'primary',
-                  onClickBtn: () => {
-                    console.log('点击按钮了')
-                  }
-                })
-              }.btnMargin()
-
-              Column() {
-                IBestButton({
-                  text: '成功按钮',
-                  type: 'success'
-                })
-              }.btnMargin()
-
-              Column() {
-                IBestButton({
-                  text: '默认按钮',
-                  type: 'default'
-                })
-              }.btnMargin()
-
-              Column() {
-                IBestButton({
-                  text: '危险按钮',
-                  type: 'danger'
-                })
-              }.btnMargin()
-
-              Column() {
-                IBestButton({
-                  text: '警告按钮',
-                  type: 'warning'
-                })
-              }.btnMargin()
+            Flex({ wrap: FlexWrap.Wrap, space: {main: LengthMetrics.vp(SPACE.SM), cross: LengthMetrics.vp(SPACE.SM)} }) {
+              IBestButton({
+                text: '主要按钮',
+                type: 'primary'
+              })
+              IBestButton({
+                text: '成功按钮',
+                type: 'success'
+              })
+              IBestButton({
+                text: '默认按钮',
+                type: 'default'
+              })
+              IBestButton({
+                text: '危险按钮',
+                type: 'danger'
+              })
+              IBestButton({
+                text: '警告按钮',
+                type: 'warning'
+              })
             }
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '朴素按钮' }) {
-            Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
-              Column() {
-                IBestButton({
-                  text: '朴素按钮',
-                  type: 'primary',
-                  plain: true
-                })
-              }.btnMargin()
-
-              Column() {
-                IBestButton({
-                  text: '朴素按钮',
-                  plain: true,
-                  type: 'success'
-                })
-              }.btnMargin()
-
+            Row({ space: SPACE.SM }) {
+              IBestButton({
+                text: '朴素按钮',
+                type: 'primary',
+                plain: true
+              })
+              IBestButton({
+                text: '朴素按钮',
+                plain: true,
+                type: 'success'
+              })
             }
           }
         }
         ListItem() {
           ComponentShowContainer({ title: '细边框' }) {
-            Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
-              Column() {
-                IBestButton({
-                  text: '朴素按钮',
-                  type: 'primary',
-                  plain: true,
-                  hairline: true
-                })
-              }.btnMargin()
-
-            }
+            IBestButton({
+              text: '朴素按钮',
+              type: 'primary',
+              plain: true,
+              hairline: true
+            })
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '禁用状态' }) {
-            Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
-              Column() {
-                IBestButton({
-                  text: '禁用状态',
-                  type: 'primary',
-                  disabled: true
-                })
-              }.btnMargin()
-
-              Column() {
-                IBestButton({
-                  text: '禁用状态',
-                  type: 'success',
-                  disabled: true
-                })
-              }.btnMargin()
-
+            Row({ space: SPACE.SM }) {
+              IBestButton({
+                text: '禁用状态',
+                type: 'primary',
+                disabled: true
+              })
+              IBestButton({
+                text: '禁用状态',
+                type: 'success',
+                disabled: true
+              })
             }
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '加载状态' }) {
-            Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
-              Column() {
-                IBestButton({
-                  loading: true,
-                  type: 'primary',
-                })
-              }.btnMargin()
-
-              Column() {
-                IBestButton({
-                  text: '加载状态',
-                  loadingText: '加载中...',
-                  type: 'success',
-                  loading: true
-                })
-              }.btnMargin()
-
+            Row({ space: SPACE.SM }) {
+              IBestButton({
+                loading: true,
+                type: 'primary',
+              })
+              IBestButton({
+                text: '加载状态',
+                loadingText: '加载中...',
+                type: 'success',
+                loading: true
+              })
             }
           }
         }
-
-
         ListItem() {
           ComponentShowContainer({ title: '按钮形状' }) {
-            Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
-              Column() {
-                IBestButton({
-                  text: '方形按钮',
-                  type: 'primary',
-                  square: true
-                })
-              }.btnMargin()
-
-              Column() {
-                IBestButton({
-                  text: '圆形按钮',
-                  type: 'success',
-                  round: true
-                })
-              }.btnMargin()
+            Row({ space: SPACE.SM }) {
+              IBestButton({
+                text: '方形按钮',
+                type: 'primary',
+                square: true
+              })
+              IBestButton({
+                text: '圆形按钮',
+                type: 'success',
+                round: true
+              })
             }
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '图标按钮' }) {
-            Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap }) {
-              Column() {
-                IBestButton({
-                  text: '',
-                  type: 'primary',
-                  iconBuilder: this.Arrow
-                })
-              }.btnMargin()
-
-              Column() {
-                IBestButton({
-                  text: '按钮',
-                  type: 'primary',
-                  iconBuilder: this.Arrow
-                })
-              }.btnMargin()
-
-              Column() {
-                IBestButton({
-                  plain: true,
-                  text: '按钮',
-                  type: 'default',
-                  iconBuilder: this.Arrow
-                })
-              }.btnMargin()
+            Row({ space: SPACE.SM }) {
+              IBestButton({
+                text: '',
+                type: 'primary',
+                icon: 'plus'
+              })
+              IBestButton({
+                text: '按钮',
+                type: 'primary',
+                icon: $r('app.media.title_back')
+              })
+              IBestButton({
+                plain: true,
+                text: '按钮',
+                type: 'default',
+                iconBuilder: this.Arrow
+              })
             }
           }
         }
-
-
         ListItem() {
           ComponentShowContainer({ title: '按钮尺寸' }) {
-            Flex({ direction: FlexDirection.Row, wrap: FlexWrap.Wrap, alignItems: ItemAlign.Center }) {
-                IBestButton({
-                  text: '大号按钮',
-                  type: 'primary',
-                  buttonSize: 'large'
-                }).margin({
-                  bottom: SPACE.SM
-                })
-
-              Column() {
-                IBestButton({
-                  type: 'primary',
-                  text: '普通按钮',
-                })
-              }.btnMargin()
-
-              Column() {
-                IBestButton({
-                  text: '小型按钮',
-                  type: 'primary',
-                  buttonSize: 'small'
-                })
-              }.btnMargin()
-
-              Column() {
-                IBestButton({
-                  text: '迷你按钮',
-                  type: 'primary',
-                  buttonSize: 'mini'
-                })
-              }.btnMargin()
+            Flex({ wrap: FlexWrap.Wrap, alignItems: ItemAlign.Center, space: {main: LengthMetrics.vp(SPACE.SM), cross: LengthMetrics.vp(SPACE.SM)} }) {
+              IBestButton({
+                text: '大号按钮',
+                type: 'primary',
+                buttonSize: 'large'
+              })
+              IBestButton({
+                type: 'primary',
+                text: '普通按钮',
+              })
+              IBestButton({
+                text: '小型按钮',
+                type: 'primary',
+                buttonSize: 'small'
+              })
+              IBestButton({
+                text: '迷你按钮',
+                type: 'primary',
+                buttonSize: 'mini'
+              })
             }
           }
         }
-
         ListItem() {
           ComponentShowContainer({ title: '自定义颜色' }) {
-            Row({space: SPACE.XS}) {
+            Row({space: SPACE.SM}) {
               IBestButton({
                 text: '单色按钮',
                 color: "#7232dd"

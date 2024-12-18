@@ -1,4 +1,3 @@
-import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { emitter } from '../../utils/EventEmitter'
 import { getEventName } from '../../utils/utils'
 import { IBestCollapseColor } from './color'

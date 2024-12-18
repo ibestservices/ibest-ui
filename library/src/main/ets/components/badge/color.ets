@@ -1,9 +1,9 @@
 interface IBestBadgeColorType {
+    badgeBgColor: ResourceColor
     textColor: ResourceColor
-    borderColor: ResourceColor
 }
 
 export const IBestBadgeColor: IBestBadgeColorType = {
-    textColor: $r("app.color.ibest_white"),
-    borderColor: $r("app.color.ibest_background_2")
+    badgeBgColor: $r("app.color.ibest_badge_background"),
+    textColor: $r("app.color.ibest_badge_text_color")
 }

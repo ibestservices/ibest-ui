@@ -16,7 +16,7 @@ export struct IBestBadge {
 	/**
 	 * 徽标背景色
 	 */
-	@Prop color: ResourceColor = this.baseStyle.danger
+	@Prop color: ResourceColor = IBestBadgeColor.badgeBgColor
 	/**
 	 * 是否展示为小红点
 	 */
