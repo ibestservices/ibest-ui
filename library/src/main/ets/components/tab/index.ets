@@ -334,7 +334,7 @@ struct IBestTabBox{
     initSize: () => void = () => () => {}
     onTabClick: (name: string) => void = () => {}
     getLineColor(){
-        return this.tabLineColor || IBestTabColor.tabLineColor
+        return this.tabLineColor || this.baseStyle.primary
     }
     build() {
         Stack({alignContent: Alignment.BottomStart}){
@@ -406,7 +406,7 @@ struct IBestTab{
         this.initSize()
     }
     getLineColor(){
-        return this.tabLineColor || IBestTabColor.tabLineColor
+        return this.tabLineColor || this.baseStyle.primary
     }
     getFontColor(){
         return this.currentName == this.item.name ? this.type == "card" ? "#fff" : this.activeTextColor : this.type == "card" ? this.getLineColor() : this.inactiveTextColor

@@ -5,7 +5,8 @@ import {
     IBestCircleProgress,
     IBestNavBar,
     IBestProgress,
-    IBestSwitch,
+  IBestRadio,
+  IBestSwitch,
     IBestTabs,
     IBestTag,
     setIBestUIBaseStyle
@@ -73,6 +74,15 @@ struct ThemePage {
               value: true,
               name: '1',
               label: '复选框'
+            })
+          }
+        }
+        ListItem() {
+          ComponentShowContainer({ title: 'Checkbox组件' }) {
+            IBestRadio({
+              value: true,
+              label: '单选框',
+              name: 'radio'
             })
           }
         }

@@ -112,7 +112,7 @@ export struct IBestCheckbox {
     if (this.mergeDisabled) {
       return IBestCheckboxColor.borderColor
     } else {
-      return this.isShowBackground() ? this.checkedColor || IBestCheckboxColor.checkedColor : ""
+      return this.isShowBackground() ? this.checkedColor || this.baseStyle.primary : ""
     }
   }
 
@@ -124,7 +124,7 @@ export struct IBestCheckbox {
     if (this.mergeDisabled) {
       return GRAY_COLOR.GRAY_5
     } else {
-      return this.isShowBackground() ? this.checkedColor || IBestCheckboxColor.checkedColor : IBestCheckboxColor.borderColor
+      return this.isShowBackground() ? this.checkedColor || this.baseStyle.primary : IBestCheckboxColor.borderColor
     }
   }
 

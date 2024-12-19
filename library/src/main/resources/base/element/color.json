@@ -141,10 +141,6 @@
 			"value": "$color:ibest_text_color"
 		},
 		{
-			"name": "ibest_checkbox_checked_color",
-			"value": "$color:ibest_primary_color"
-		},
-		{
 			"name": "ibest_checkbox_disabled_label_color",
 			"value": "$color:ibest_text_color_3"
 		},
@@ -211,10 +207,6 @@
 		{
 			"name": "ibest_radio_label_color",
 			"value": "$color:ibest_text_color"
-		},
-		{
-			"name": "ibest_radio_checked_color",
-			"value": "$color:ibest_primary_color"
 		},
 		{
 			"name": "ibest_radio_disabled_label_color",
@@ -399,10 +391,6 @@
 		{
 			"name": "ibest_tab_active_text_color",
 			"value": "$color:ibest_text_color"
-		},
-		{
-			"name": "ibest_tab_line_color",
-			"value": "$color:ibest_primary_color"
 		}
 	]
 }

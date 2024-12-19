@@ -83,7 +83,7 @@ export struct IBestRadio {
     if (this.disabled) {
       return IBestRadioColor.borderColor
     } else {
-      return this.value && this.shape != 'dot' ? this.checkedColor || IBestRadioColor.checkedColor : ''
+      return this.value && this.shape != 'dot' ? this.checkedColor || this.baseStyle.primary : ''
     }
   }
 
@@ -95,7 +95,7 @@ export struct IBestRadio {
     if (this.disabled) {
       return GRAY_COLOR.GRAY_5
     } else {
-      return this.value ? this.checkedColor || IBestRadioColor.checkedColor : IBestRadioColor.borderColor
+      return this.value ? this.checkedColor || this.baseStyle.primary : IBestRadioColor.borderColor
     }
   }
 
@@ -115,9 +115,8 @@ export struct IBestRadio {
     if (this.disabled) {
       return IBestRadioColor.disabledIconColor
     } else {
-      return this.shape === 'dot' ? this.checkedColor || IBestRadioColor.checkedColor : IBestRadioColor.whiteColor
+      return this.shape === 'dot' ? this.checkedColor || this.baseStyle.primary : IBestRadioColor.whiteColor
     }
-
   }
 
   /**

@@ -21,7 +21,7 @@ export struct IBestProgress{
 	/**
 	 * 进度条颜色
      */
-	@Prop color: ResourceColor = this.baseStyle.primary
+	@Prop color: ResourceColor = ""
 	/**
 	 * 进度条渐变色
      */
@@ -69,7 +69,7 @@ export struct IBestProgress{
 		this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value
 	}
 	getColor(){
-		return this.inactive ? GRAY_COLOR.GRAY_5 : this.color
+		return this.inactive ? GRAY_COLOR.GRAY_5 : (this.color || this.baseStyle.primary)
 	}
 	getTextColor(){
 		return this.inactive ? GRAY_COLOR.GRAY_5 : this.textColor

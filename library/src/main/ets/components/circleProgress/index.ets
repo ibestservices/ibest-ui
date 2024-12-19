@@ -67,7 +67,7 @@ export struct IBestCircleProgress{
     /**
      * 进度条颜色
      */
-    @Prop color: ResourceColor = this.baseStyle.primary
+    @Prop color: ResourceColor = ""
     /**
      * 进度条背景颜色
      */
@@ -121,6 +121,10 @@ export struct IBestCircleProgress{
         }
     }
 
+    getColor(){
+        return this.color || this.baseStyle.primary
+    }
+
     build() {
         Row(){
             Circle({width: this.getSize(), height: this.getSize()})
@@ -132,7 +136,7 @@ export struct IBestCircleProgress{
             Circle({width: this.getSize(), height: this.getSize()})
                 .fill("transparent")
                 .strokeWidth(this.strokeWidth)
-                .stroke(this.color)
+                .stroke(this.getColor())
                 .strokeLineCap(LineCapStyle.Round)
                 .position({left: this.strokeWidth/2, top: this.strokeWidth/2})
                 .animatableDashArray(this.strokeDashArray)
