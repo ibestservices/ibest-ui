@@ -4,6 +4,7 @@ interface IBestUploaderColorType {
     fileBgColor: ResourceColor
     textColor: ResourceColor
     activeBg: ResourceColor
+    maskTextColor: ResourceColor
 }
 
 export const IBestUploaderColor: IBestUploaderColorType = {
@@ -11,5 +12,6 @@ export const IBestUploaderColor: IBestUploaderColorType = {
     uploaderIconColor: $r("app.color.ibest_uploader_icon_color"),
     fileBgColor: $r("app.color.ibest_file_background"),
     textColor: $r("app.color.ibest_text_color"),
-    activeBg: $r("app.color.ibest_active_color")
+    activeBg: $r("app.color.ibest_active_color"),
+    maskTextColor: $r("app.color.ibest_white")
 }

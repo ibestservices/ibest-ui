@@ -306,18 +306,18 @@ struct UploadItem{
 						IBestLoading({
 							loadingSize: convertDimensionsWidthUnit(18),
 							loadingStrokeWidth: 2,
-							loadingColor: IBestUploaderColor.textColor
+							loadingColor: IBestUploaderColor.maskTextColor
 						})
 					} else {
 						IBestIcon({
 							name: "close",
 							iconSize: convertDimensionsWidthUnit(20),
-							color: IBestUploaderColor.textColor
+							color: IBestUploaderColor.maskTextColor
 						})
 					}
 					Text(this.file.status == 'failed' ? "上传失败" : "上传中...")
 						.fontSize(this.baseStyle.fontSizeSm)
-						.fontColor(IBestUploaderColor.textColor)
+						.fontColor(IBestUploaderColor.maskTextColor)
 				}
 				.width(CONTAINER_SIZE.FULL)
 				.height(CONTAINER_SIZE.FULL)
@@ -332,7 +332,7 @@ struct UploadItem{
 					IBestIcon({
 						name: "cross",
 						iconSize: convertDimensionsWidthUnit(14),
-						color: IBestUploaderColor.textColor,
+						color: IBestUploaderColor.maskTextColor,
 						onIconClick: () => {
 							this.remove(this.index)
 						}
