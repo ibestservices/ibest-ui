@@ -292,10 +292,7 @@ struct CascaderOptionItem{
 			IBestIcon({
 				name: "success",
 				iconSize: convertDimensionsWidthUnit(18),
-				color: this.activeColor,
-				onIconClick: () => {
-					this.onSelect(this.index, this.index1, this.option)
-				}
+				color: this.activeColor
 			})
 				.visibility(this.option.actived ? Visibility.Visible : Visibility.Hidden)
 		}
@@ -303,6 +300,7 @@ struct CascaderOptionItem{
 		.height(getSizeByUnit(this.itemHeight))
 		.justifyContent(FlexAlign.SpaceBetween)
 		.alignItems(VerticalAlign.Center)
+		.hitTestBehavior(HitTestMode.Block)
 		.onClick(() => {
 			this.onSelect(this.index, this.index1, this.option)
 		})

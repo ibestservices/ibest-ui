@@ -287,10 +287,7 @@ export struct IBestCheckbox {
           IBestIcon({
             name: this.isShowIndeterminateImg ? "minus" : "success",
             iconSize: this.iconSize,
-            color: this.getIconColor(),
-            onIconClick: () => {
-              this.handleCheckedChange()
-            }
+            color: this.getIconColor()
           })
             .opacity(this.isShowBackground() ? 1 : 0)
             .animation({
@@ -305,6 +302,7 @@ export struct IBestCheckbox {
       .borderRadius(this.shape === 'round' ? this.baseStyle.borderRadiusMax : 0)
       .backgroundColor(this.getBackgroundColor())
       .clip(true)
+      .hitTestBehavior(HitTestMode.Block)
       .animation({
         duration: this.baseStyle.animationDuration as number
       })

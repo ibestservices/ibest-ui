@@ -218,13 +218,11 @@ struct defaultContent{
 							IBestIcon({
 								name: this.option.closeIcon,
 								iconSize: convertDimensionsWidthUnit(18),
-								color: this.textColor,
-								onIconClick: () => {
-									this.option.close(this.option.id)
-								}
+								color: this.textColor
 							})
 						}
 						.height(CONTAINER_SIZE.FULL)
+						.hitTestBehavior(HitTestMode.Block)
 						.padding({left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd})
 						.onClick(() => {
 							this.option.close(this.option.id)

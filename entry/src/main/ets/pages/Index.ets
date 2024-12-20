@@ -253,7 +253,7 @@ struct Index {
 						Image($r("app.media.app_icon")).width(32).borderRadius(BORDER_RADIUS.BASE)
 						Text(`IBest-UI(v${BuildProfile.HAR_VERSION})`).fontSize(32).fontColor($r("app.color.doc_text_color_2"))
 					}
-					Text(`一个轻量、可定制化主题的鸿蒙UI组件库, 目前共有组件${this.getCount()}个。`)
+					Text(`一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库, 目前共有组件${this.getCount()}个。`)
 						.fontSize(FONT_SIZE.MD)
 						.fontColor($r("app.color.doc_text_color_4"))
 				}.width("100%").alignItems(HorizontalAlign.Start).padding({ left: 10 })

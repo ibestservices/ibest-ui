@@ -218,10 +218,7 @@ export struct IBestRadio {
             IBestIcon({
               name: "success",
               iconSize: this.iconSize,
-              color: this.getIconColor(),
-              onIconClick: () => {
-                this.handleCheckedChange()
-              }
+              color: this.getIconColor()
             })
               .opacity(this.value ? 1 : 0)
               .animation({
@@ -236,6 +233,7 @@ export struct IBestRadio {
       .border({ color: this.getBorderColor(), width: 1 })
       .borderRadius(['round', 'dot'].includes(this.shape) ? this.baseStyle.borderRadiusMax : 0)
       .backgroundColor(this.getBackgroundColor())
+      .hitTestBehavior(HitTestMode.Block)
       .animation({
         duration: this.baseStyle.animationDuration as number,
       })

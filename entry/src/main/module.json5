@@ -2,7 +2,7 @@
   "module": {
     "name": "entry",
     "type": "entry",
-    "description": "$string:module_desc",
+    "description": "$string:app_desc",
     "mainElement": "EntryAbility",
     "deviceTypes": [
       "phone",
@@ -15,7 +15,7 @@
       {
         "name": "EntryAbility",
         "srcEntry": "./ets/entryability/EntryAbility.ets",
-        "description": "$string:EntryAbility_desc",
+        "description": "$string:app_desc",
         "icon": "$media:app_icon",
         "label": "$string:app_name",
         "startWindowIcon": "$media:app_icon",
@@ -37,15 +37,7 @@
     "requestPermissions": [
       {
         "name": "ohos.permission.INTERNET"
-      },
-//      {
-//        "name": "ohos.permission.READ_PASTEBOARD",
-//        "reason": "$string:access_read_pasteboard_reason",
-//        "usedScene": {
-//          "abilities": ["EntryAbility"],
-//          "when": "inuse"
-//        }
-//      }
+      }
     ]
   }
 }

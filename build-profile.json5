@@ -18,13 +18,13 @@
 				"name": "default",
 				"type": "HarmonyOS",
 				"material": {
-					"certpath": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.cer",
-					"storePassword": "0000001ADD07EB1D995BB679F00D6F5423A44AC64F74579E0B64B7DFC9D4E4DE9915F8A4D046CB306E12",
-					"keyAlias": "debugKey",
-					"keyPassword": "0000001AE3D06B16B0E313ECE120A3C5C9B792678C382570A194E37CA6E086A255C6CDA925F24E7D3403",
-					"profile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p7b",
+					"storePassword": "0000001DA1DDFADC7FCD4003DD09F84F49A1AC838DEECB3A787AB9D759D24CC841F0A92BA5ED6777CEBAE2EAE6",
+					"certpath": "/Users/damengbuxing/Desktop/IBest-UI应用文件/ibest_ui_release.cer",
+					"keyAlias": "ibest_ui_p12",
+					"keyPassword": "0000001D0AC1868A4F028144400BB55194A7B0887F04949FFF9B52AC83A798463AC8C0B8E4FDDC752A8F4A7BED",
+					"profile": "/Users/damengbuxing/Desktop/IBest-UI应用文件/ibest_ui_profileRelease.p7b",
 					"signAlg": "SHA256withECDSA",
-					"storeFile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p12"
+					"storeFile": "/Users/damengbuxing/Desktop/IBest-UI应用文件/ibest_ui_p12.p12"
 				}
 			}
 		],

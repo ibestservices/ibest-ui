@@ -1,7 +1,7 @@
 {
   "name": "@ibestservices/ibest-ui",
-  "version": "2.0.0",
-  "description": "一套简单易用让前端开发快速上手的鸿蒙UI组件库，支持定制主题，参考vant实现，更贴近Web端开发习惯。",
+  "version": "2.0.1",
+  "description": "一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库。",
   "main": "Index.ets",
   "keywords": [
     "组件库",

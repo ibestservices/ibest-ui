@@ -380,7 +380,9 @@ export struct IBestField{
             Row(){
                 Row(){
                     if(this.showLabel){
-                        Label()
+                        Label({
+                            onLeftIconClick: (): void => this.onLeftIconClick()
+                        })
                     }
                     Content({
                         value: $value,
@@ -403,7 +405,9 @@ export struct IBestField{
             Column(){
                 Column(){
                     if(this.showLabel){
-                        Label()
+                        Label({
+                            onLeftIconClick: (): void => this.onLeftIconClick()
+                        })
                     }
                     Content({
                         value: $value,

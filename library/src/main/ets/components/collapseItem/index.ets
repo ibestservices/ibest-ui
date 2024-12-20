@@ -145,10 +145,7 @@ export struct IBestCollapseItem {
                 IBestIcon({
                     name: "arrow-down",
                     iconSize: this.baseStyle.fontSizeMd as string,
-                    color: IBestCollapseColor.iconColor,
-                    onIconClick: () => {
-                        this.toggle()
-                    }
+                    color: IBestCollapseColor.rightIconColor
                 })
                     .margin({left: this.baseStyle.spaceBase})
                     .rotate({ z:1, angle: this.isExpand ? -180 : 0 })
@@ -165,6 +162,7 @@ export struct IBestCollapseItem {
             })
             .enabled(!this.getIsDisabled())
             .opacity(this.disabled ? 0.4 : 1)
+            .hitTestBehavior(HitTestMode.Block)
             .onClick(() => {
                 this.toggle()
             })

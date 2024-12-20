@@ -4,10 +4,6 @@ import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 import { LengthMetrics } from '@ohos.arkui.node';
-@Styles
-function btnMargin() {
-  .margin({ right: SPACE.SM, bottom: SPACE.SM })
-}
 
 @Entry
 @Component

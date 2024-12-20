@@ -240,10 +240,7 @@ export struct IBestNavBar{
 									name: this.leftIcon || this.leftIconName,
 									color: this.leftIconColor,
 									iconSize: this.leftIconSize,
-									iconRadius: this.leftIconRadius,
-									onIconClick: () => {
-										this.onLeftClick()
-									}
+									iconRadius: this.leftIconRadius
 								})
 							}
 							if(this.leftLabel){
@@ -255,6 +252,7 @@ export struct IBestNavBar{
 						}
 					}
 					.height(CONTAINER_SIZE.FULL)
+					.hitTestBehavior(HitTestMode.Block)
 					.position({left: 0})
 					.padding({left: getSizeByUnit(this.leftRightPadding), right: this.baseStyle.spaceXs})
 					.id(`ibest_navbar_left_${this.uniId}`)
@@ -271,10 +269,7 @@ export struct IBestNavBar{
 								name: this.titleIcon || this.titleIconName,
 								color: this.titleIconColor,
 								iconSize: this.titleIconSize,
-								iconRadius: this.titleIconRadius,
-								onIconClick: () => {
-									this.onTitleClick()
-								}
+								iconRadius: this.titleIconRadius
 							})
 							if(this.title){
 								Text(this.title)
@@ -284,11 +279,12 @@ export struct IBestNavBar{
 									.maxLines(1)
 									.textOverflow({overflow: TextOverflow.Ellipsis})
 									.fontWeight(this.titleFontWeight)
-									.onClick(() => {
-										this.onTitleClick()
-									})
 							}
 						}
+						.hitTestBehavior(HitTestMode.Block)
+						.onClick(() => {
+							this.onTitleClick()
+						})
 						if(this.subTitle){
 							Text(this.subTitle)
 								.fontSize(getSizeByUnit(this.subTitleFontSize, true))

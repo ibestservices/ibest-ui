@@ -208,7 +208,6 @@ export struct IBestButton {
                 loadingSize: this.getLoadingSize(),
                 loadingColor: this.getBtnTextColor()
               }).margin({ right: this.text?.length ? this.getBtnSize().padding : 0 })
-
             }
             // 加载loading显示的时候不显示图标
           } else if (this.iconBuilder) {
@@ -217,10 +216,7 @@ export struct IBestButton {
             IBestIcon({
               name: this.icon,
               iconSize: this.getBtnSize()?.fontSize,
-              color: this.getBtnTextColor(),
-              onIconClick: () => {
-                this.onClickBtn()
-              }
+              color: this.getBtnTextColor()
             }).margin({right: this.icon && this.text ? this.baseStyle.spaceBase : 0})
           }
           Text(this.loading ? this.loadingText ?? this.text : this.text)
@@ -228,7 +224,6 @@ export struct IBestButton {
             .fontColor(this.getBtnTextColor())
         }
       }
-
     }
     .btnSizeStyle(this.getBtnSize())
     .borderWidth(convertDimensionsWidthUnit(this.hairline ? 0.5 : 1))
@@ -236,7 +231,7 @@ export struct IBestButton {
     .fontColor(this.getBtnTextColor())
     .backgroundColor(this.getBackgroundColor())
     .borderColor(this.getBorderColor())
-    .hitTestBehavior(this.loading ? HitTestMode.None : HitTestMode.Default)
+    .hitTestBehavior(this.loading ? HitTestMode.None : HitTestMode.Block)
     .enabled(!this.disabled)
     .opacity(this.disabled && this.plain ? 0.5 : 1)
     .onClick((event) => {

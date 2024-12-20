@@ -146,7 +146,7 @@ export struct IBestUploader {
 			}
 			// 元服务暂不支持
 			// let fileName = file.name
-			let fileName = decodeURI(e.slice(index + 1))
+			let fileName = decodeURI(e.slice(index + 1).split(".")[0])
 			let cacheUri = this.context.cacheDir + "/" + fileName
 			fs.copyFileSync(file.fd, cacheUri)
 			let obj = new IBestUploaderFile({
@@ -208,10 +208,7 @@ export struct IBestUploader {
 					IBestIcon({
 						name: this.uploaderIcon,
 						iconSize: this.uploaderIconSize,
-						color: this.uploaderIconColor,
-						onIconClick: () => {
-							this.select()
-						}
+						color: this.uploaderIconColor
 					})
 				}
 				.width(getSizeByUnit(this.previewSize))
@@ -230,6 +227,7 @@ export struct IBestUploader {
 					}
 				})
 				.visibility(this.max > 0 && this.fileList.length >= this.max ? Visibility.None : Visibility.Visible)
+				.hitTestBehavior(HitTestMode.Block)
 				.onClick(() => {
 					this.select()
 				})
@@ -338,10 +336,7 @@ struct UploadItem{
 					IBestIcon({
 						name: "cross",
 						iconSize: convertDimensionsWidthUnit(14),
-						color: IBestUploaderColor.maskTextColor,
-						onIconClick: () => {
-							this.remove(this.index)
-						}
+						color: IBestUploaderColor.maskTextColor
 					})
 						.scale({ x: 0.7, y: 0.7 })
 						.translate({ x: "10%", y: "-10%" })
@@ -352,6 +347,7 @@ struct UploadItem{
 				.backgroundColor("rgba(0,0,0,0.7)")
 				.borderRadius({ bottomLeft: this.baseStyle.borderRadiusMax })
 				.visibility(this.file.status == 'uploading' ? Visibility.None : Visibility.Visible)
+				.hitTestBehavior(HitTestMode.Block)
 				.onClick(() => {
 					this.remove(this.index)
 				})

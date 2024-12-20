@@ -20,10 +20,7 @@ export struct IBestStepperBtn {
       IBestIcon({
         name: this.type,
         iconSize: this.iconSize,
-        color: IBestStepperColor.textColor,
-        onIconClick: () => {
-          this.onClickBtn()
-        }
+        color: IBestStepperColor.textColor
       })
     }
     .type(ButtonType.Normal)
@@ -37,6 +34,7 @@ export struct IBestStepperBtn {
       bottomRight: getSizeByUnit(this.radiusRightBottom)
     })
     .enabled(!this.disabled)
+    .hitTestBehavior(HitTestMode.Block)
     .onClick(() => {
       this.onClickBtn()
     })
