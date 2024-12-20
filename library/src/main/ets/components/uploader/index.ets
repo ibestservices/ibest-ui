@@ -138,12 +138,15 @@ export struct IBestUploader {
 		}
 		let arr: Array<IBestUploaderFile> = []
 		for (let e of uris) {
+			let index = e.lastIndexOf("/")
 			let file = fs.openSync(e, fs.OpenMode.READ_ONLY)
 			let stat = fs.statSync(file.fd)
 			if(this.maxSize > 0 && stat.size > this.maxSize){
 				continue
 			}
-			let fileName = file.name
+			// 元服务暂不支持
+			// let fileName = file.name
+			let fileName = decodeURI(e.slice(index + 1))
 			let cacheUri = this.context.cacheDir + "/" + fileName
 			fs.copyFileSync(file.fd, cacheUri)
 			let obj = new IBestUploaderFile({
@@ -205,7 +208,10 @@ export struct IBestUploader {
 					IBestIcon({
 						name: this.uploaderIcon,
 						iconSize: this.uploaderIconSize,
-						color: this.uploaderIconColor
+						color: this.uploaderIconColor,
+						onIconClick: () => {
+							this.select()
+						}
 					})
 				}
 				.width(getSizeByUnit(this.previewSize))
