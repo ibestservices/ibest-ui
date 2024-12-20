@@ -227,7 +227,6 @@ export struct IBestUploader {
 					}
 				})
 				.visibility(this.max > 0 && this.fileList.length >= this.max ? Visibility.None : Visibility.Visible)
-				.hitTestBehavior(HitTestMode.Block)
 				.onClick(() => {
 					this.select()
 				})
@@ -347,7 +346,6 @@ struct UploadItem{
 				.backgroundColor("rgba(0,0,0,0.7)")
 				.borderRadius({ bottomLeft: this.baseStyle.borderRadiusMax })
 				.visibility(this.file.status == 'uploading' ? Visibility.None : Visibility.Visible)
-				.hitTestBehavior(HitTestMode.Block)
 				.onClick(() => {
 					this.remove(this.index)
 				})

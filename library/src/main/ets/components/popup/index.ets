@@ -328,11 +328,11 @@ struct PopupTitle {
 			IBestIcon({
 				name: this.closeIcon,
 				iconSize: convertDimensionsWidthUnit(20),
-				color: this.closeIconColor,
-				onIconClick: () => {
-					this.close()
-				}
+				color: this.closeIconColor
 			})
+				.onClick(() => {
+					this.close()
+				})
 				.visibility(this.isShowClose ? Visibility.Visible : Visibility.None)
 		}
 		.width(CONTAINER_SIZE.FULL)

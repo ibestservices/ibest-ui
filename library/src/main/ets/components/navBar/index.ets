@@ -252,7 +252,6 @@ export struct IBestNavBar{
 						}
 					}
 					.height(CONTAINER_SIZE.FULL)
-					.hitTestBehavior(HitTestMode.Block)
 					.position({left: 0})
 					.padding({left: getSizeByUnit(this.leftRightPadding), right: this.baseStyle.spaceXs})
 					.id(`ibest_navbar_left_${this.uniId}`)
@@ -281,7 +280,6 @@ export struct IBestNavBar{
 									.fontWeight(this.titleFontWeight)
 							}
 						}
-						.hitTestBehavior(HitTestMode.Block)
 						.onClick(() => {
 							this.onTitleClick()
 						})
@@ -316,10 +314,7 @@ export struct IBestNavBar{
 								IBestIcon({
 									name: this.rightIcon || this.rightIconName,
 									color: this.rightIconColor,
-									iconSize: this.rightIconSize,
-									onIconClick: () => {
-										this.onRightClick()
-									}
+									iconSize: this.rightIconSize
 								})
 							}
 						}

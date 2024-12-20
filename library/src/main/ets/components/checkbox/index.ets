@@ -278,7 +278,6 @@ export struct IBestCheckbox {
       if (this.labelPosition === 'left') {
         this.LabelContain()
       }
-
       // checkbox
       Column() {
         if (typeof this.iconBuilder === 'function') {
@@ -302,14 +301,12 @@ export struct IBestCheckbox {
       .borderRadius(this.shape === 'round' ? this.baseStyle.borderRadiusMax : 0)
       .backgroundColor(this.getBackgroundColor())
       .clip(true)
-      .hitTestBehavior(HitTestMode.Block)
       .animation({
         duration: this.baseStyle.animationDuration as number
       })
       .onClick(() => {
         this.handleCheckedChange()
       })
-
       if (this.labelPosition === 'right') {
         this.LabelContain()
       }

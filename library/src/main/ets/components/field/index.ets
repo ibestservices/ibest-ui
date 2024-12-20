@@ -683,12 +683,13 @@ struct Content{
                     if (this.clearable && this.value && (this.clearTrigger == 'always' || this.isFocus)) {
                         IBestIcon({
                             name: 'clear',
-                            iconSize: this.rightIconSize,
-                            onIconClick: () => {
+                            iconSize: this.rightIconSize
+                        })
+                            .onClick(() => {
                                 this.value = ''
                                 this.onClear()
-                            }
-                        }).margin({ left: this.baseStyle.spaceBase })
+                            })
+                            .margin({ left: this.baseStyle.spaceBase })
                     }
                 }
                 // 按钮
@@ -711,11 +712,12 @@ struct Content{
                     IBestIcon({
                         name: "arrow",
                         iconSize: this.rightIconSize,
-                        color: this.rightIconColor,
-                        onIconClick: () => {
+                        color: this.rightIconColor
+                    })
+                        .onClick(() => {
                             this.onFieldClick()
-                        }
-                    }).margin({left: this.baseStyle.spaceBase})
+                        })
+                        .margin({left: this.baseStyle.spaceBase})
                 }
             }
             .width(CONTAINER_SIZE.FULL)

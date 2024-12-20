@@ -291,10 +291,7 @@ export struct IBestCell {
                 IBestIcon({
                   name: "arrow",
                   iconSize: this.rightIconSize,
-                  color: this.rightIconColor,
-                  onIconClick: () => {
-                    this.onClickCell()
-                  }
+                  color: this.rightIconColor
                 })
                 .margin({
                   left: getSizeByUnit(this.rightIconMarginLeft)

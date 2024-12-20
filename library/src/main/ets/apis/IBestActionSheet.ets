@@ -222,7 +222,6 @@ struct defaultContent{
 							})
 						}
 						.height(CONTAINER_SIZE.FULL)
-						.hitTestBehavior(HitTestMode.Block)
 						.padding({left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd})
 						.onClick(() => {
 							this.option.close(this.option.id)

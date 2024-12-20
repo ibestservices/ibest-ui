@@ -231,7 +231,7 @@ export struct IBestButton {
     .fontColor(this.getBtnTextColor())
     .backgroundColor(this.getBackgroundColor())
     .borderColor(this.getBorderColor())
-    .hitTestBehavior(this.loading ? HitTestMode.None : HitTestMode.Block)
+    .hitTestBehavior(this.loading ? HitTestMode.None : HitTestMode.Default)
     .enabled(!this.disabled)
     .opacity(this.disabled && this.plain ? 0.5 : 1)
     .onClick((event) => {

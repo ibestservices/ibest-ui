@@ -143,13 +143,14 @@ export struct IBestTag {
           IBestIcon({
             name: "cross",
             iconSize: convertDimensionsWidthUnit(12),
-            color: this.getTextColor(),
-            onIconClick: () => {
+            color: this.getTextColor()
+          })
+            .onClick(() => {
               animateTo({ duration: this.baseStyle.animationDuration as number}, () => {
                 this.onClose()
               })
-            }
-          }).margin({ left: this.baseStyle.spaceMini })
+            })
+            .margin({ left: this.baseStyle.spaceMini })
         }
       }
       .tagSizeStyle(this.getTagSize())

@@ -162,7 +162,6 @@ export struct IBestCollapseItem {
             })
             .enabled(!this.getIsDisabled())
             .opacity(this.disabled ? 0.4 : 1)
-            .hitTestBehavior(HitTestMode.Block)
             .onClick(() => {
                 this.toggle()
             })

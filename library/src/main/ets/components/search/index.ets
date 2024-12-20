@@ -210,10 +210,9 @@ export struct IBestSearch {
 							IBestIcon({
 								name: this.clearIcon,
 								iconSize: convertDimensionsWidthUnit(18),
-								color: GRAY_COLOR.GRAY_5,
-								onIconClick: () => {
-									this.clear()
-								}
+								color: GRAY_COLOR.GRAY_5
+							}).onClick(() => {
+								this.clear()
 							})
 						}
 						.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs })

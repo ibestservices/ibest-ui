@@ -233,7 +233,6 @@ export struct IBestRadio {
       .border({ color: this.getBorderColor(), width: 1 })
       .borderRadius(['round', 'dot'].includes(this.shape) ? this.baseStyle.borderRadiusMax : 0)
       .backgroundColor(this.getBackgroundColor())
-      .hitTestBehavior(HitTestMode.Block)
       .animation({
         duration: this.baseStyle.animationDuration as number,
       })

@@ -34,7 +34,6 @@ export struct IBestStepperBtn {
       bottomRight: getSizeByUnit(this.radiusRightBottom)
     })
     .enabled(!this.disabled)
-    .hitTestBehavior(HitTestMode.Block)
     .onClick(() => {
       this.onClickBtn()
     })

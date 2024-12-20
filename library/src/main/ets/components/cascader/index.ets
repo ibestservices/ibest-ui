@@ -300,7 +300,6 @@ struct CascaderOptionItem{
 		.height(getSizeByUnit(this.itemHeight))
 		.justifyContent(FlexAlign.SpaceBetween)
 		.alignItems(VerticalAlign.Center)
-		.hitTestBehavior(HitTestMode.Block)
 		.onClick(() => {
 			this.onSelect(this.index, this.index1, this.option)
 		})

@@ -129,7 +129,6 @@ struct ButtonPage {
           ComponentShowContainer({ title: '图标按钮' }) {
             Row({ space: SPACE.SM }) {
               IBestButton({
-                text: '',
                 type: 'primary',
                 icon: 'plus'
               })

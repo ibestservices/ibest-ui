@@ -9,7 +9,6 @@ import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle'
 	.height(75)
 	.justifyContent(FlexAlign.Center)
 	.border({width:{left: bd ? 1 : 0}, color: modeColor.borderColor})
-	.hitTestBehavior(HitTestMode.Block)
 	.stateStyles({
 		normal:{
 			.backgroundColor(modeColor.bg2)

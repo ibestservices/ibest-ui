@@ -86,7 +86,7 @@ export struct IBestProgress{
 					if(this.showText && this.textInside && this.value){
 						Text(this.format ? this.format(this.value) : this.value + "%")
 							.fontSize(getSizeByUnit(this.textFontSize, true))
-							.fontColor(this.getTextColor())
+							.fontColor(IBestProgressColor.whiteColor)
 							.margin({right: this.baseStyle.spaceXs})
 					}
 				}

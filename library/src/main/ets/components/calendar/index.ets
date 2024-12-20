@@ -666,18 +666,16 @@ export struct IBestCalendar{
                     IBestIcon({
                         name: "arrow-double-left",
                         iconSize: convertDimensionsWidthUnit(14),
-                        color: IBestCalendarColor.textColor,
-                        onIconClick: () => {
-                            this.changeYearMonth("preYear")
-                        }
+                        color: IBestCalendarColor.textColor
+                    }).onClick(() => {
+                        this.changeYearMonth("preYear")
                     })
                     IBestIcon({
                         name: "arrow-left",
                         iconSize: convertDimensionsWidthUnit(14),
-                        color: IBestCalendarColor.textColor,
-                        onIconClick: () => {
-                            this.changeYearMonth("preMonth")
-                        }
+                        color: IBestCalendarColor.textColor
+                    }).onClick(() => {
+                        this.changeYearMonth("preMonth")
                     })
                 }
                 Text(this.curYearMonth)
@@ -687,18 +685,16 @@ export struct IBestCalendar{
                     IBestIcon({
                         name: "arrow",
                         iconSize: convertDimensionsWidthUnit(14),
-                        color: IBestCalendarColor.textColor,
-                        onIconClick: () => {
-                            this.changeYearMonth("nextMonth")
-                        }
+                        color: IBestCalendarColor.textColor
+                    }).onClick(() => {
+                        this.changeYearMonth("nextMonth")
                     })
                     IBestIcon({
                         name: "arrow-double-right",
                         iconSize: convertDimensionsWidthUnit(14),
-                        color: IBestCalendarColor.textColor,
-                        onIconClick: () => {
-                            this.changeYearMonth("nextYear")
-                        }
+                        color: IBestCalendarColor.textColor
+                    }).onClick(() => {
+                        this.changeYearMonth("nextYear")
                     })
                 }
             }

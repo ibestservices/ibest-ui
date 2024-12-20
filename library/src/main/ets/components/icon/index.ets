@@ -24,6 +24,7 @@ export struct IBestIcon {
 	@Prop iconRadius: number | string = 0
 	/**
 	 * 点击回调
+	 * @deprecated since 2.0.1
 	 */
 	onIconClick: (event: ClickEvent) => void = () => {}
 	isOnlineImage(): boolean {
@@ -36,18 +37,12 @@ export struct IBestIcon {
 				.fontColor(this.color)
 				.fontSize(getSizeByUnit(this.iconSize))
 				.borderRadius(getSizeByUnit(this.iconRadius))
-				.onClick(event => {
-					this.onIconClick(event)
-				})
 		} else {
 			Image(this.name)
 				.width(getSizeByUnit(this.iconSize))
 				.aspectRatio(1)
 				.fillColor(this.color)
 				.borderRadius(getSizeByUnit(this.iconRadius))
-				.onClick(event => {
-					this.onIconClick(event)
-				})
 		}
 	}
 }

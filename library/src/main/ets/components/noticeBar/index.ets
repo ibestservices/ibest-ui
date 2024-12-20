@@ -162,10 +162,7 @@ export struct IBestNoticeBar{
 					IBestIcon({
 						name: this.leftIcon || this.leftIconName,
 						iconSize: this.leftIconSize,
-						color: this.leftIconColor,
-						onIconClick: () => {
-							this.onBarClick()
-						}
+						color: this.leftIconColor
 					})
 				}
 				.constraintSize({minWidth: convertDimensionsWidthUnit(24)})
@@ -220,19 +217,17 @@ export struct IBestNoticeBar{
 					IBestIcon({
 						name: this.rightIcon || this.rightIconName || (this.mode == "closeable" ? "cross" : "arrow"),
 						iconSize: this.rightIconSize,
-						color: this.rightIconColor,
-						onIconClick: () => {
-							if(this.mode == "closeable"){
-								this.isShow = false
-								this.onClose()
-							}else{
-								this.onBarClick()
-							}
-						}
+						color: this.rightIconColor
 					})
 				}
 				.constraintSize({minWidth: convertDimensionsWidthUnit(24)})
 				.justifyContent(FlexAlign.End)
+				.onClick(() => {
+					if(this.mode == "closeable"){
+						this.isShow = false
+						this.onClose()
+					}
+				})
 			}
 		}
 		.height(this.wrapable ? "auto" : getSizeByUnit(this.barHeight))

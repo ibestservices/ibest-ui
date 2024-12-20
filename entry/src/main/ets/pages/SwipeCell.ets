@@ -1,5 +1,6 @@
 import router from '@ohos.router';
-import { IBestButton, IBestCell, IBestDialogUtil, IBestNavBar, IBestSwipeCell } from '@ibestservices/ibest-ui';
+import { IBestButton, IBestCell, IBestDialogUtil, IBestNavBar, IBestSwipeCell,
+	IBestToast } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
@@ -20,19 +21,28 @@ struct SwipeCellPage {
 		IBestButton({
 			type: 'primary',
 			text: '选择',
-			square: true
+			square: true,
+			onClickBtn: () => {
+				IBestToast.show("选择")
+			}
 		})
 	}
 	@Builder rightContent(){
 		IBestButton({
 			type: 'primary',
 			text: '编辑',
-			square: true
+			square: true,
+			onClickBtn: () => {
+				IBestToast.show("编辑")
+			}
 		})
 		IBestButton({
 			type: 'danger',
 			text: '删除',
-			square: true
+			square: true,
+			onClickBtn: () => {
+				IBestToast.show("删除")
+			}
 		})
 	}
 
