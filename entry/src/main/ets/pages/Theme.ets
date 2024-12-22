@@ -5,8 +5,8 @@ import {
     IBestCircleProgress,
     IBestNavBar,
     IBestProgress,
-  IBestRadio,
-  IBestSwitch,
+    IBestRadio,
+    IBestSwitch,
     IBestTabs,
     IBestTag,
     setIBestUIBaseStyle
@@ -14,13 +14,14 @@ import {
 import { CONTAINER_SIZE, FONT_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
+import { getRandomColor } from '../utils/utils';
 
 @Entry
 @Component
 struct ThemePage {
   @State title: string = (router.getParams() as ComponentRouterParams).title || ''
   @State curTabName: string = "1"
-  colorText: string = '#07c160';
+  @State colorText: string = '#07c160';
 
   aboutToDisappear(){
     setIBestUIBaseStyle({primary: '#3D8AF2'})
@@ -39,14 +40,11 @@ struct ThemePage {
         ListItem() {
           ComponentShowContainer({ title: '更改primary颜色' }) {
             Row(){
-              TextInput({placeholder: '请输入合法颜色值，如red、#07c16', text: this.colorText})
+              TextInput({placeholder: '请输入合法颜色值，如red、#07c16', text: $$this.colorText})
                 .fontSize(FONT_SIZE.SM)
                 .layoutWeight(1)
                 .margin({
                   right: SPACE.SM
-                })
-                .onChange(value=>{
-                  this.colorText = value
                 })
               IBestButton({
                 type: 'primary',
@@ -54,7 +52,8 @@ struct ThemePage {
                 round: true,
                 buttonSize: 'small',
                 onClickBtn: ()=>{
-                 setIBestUIBaseStyle({primary: this.colorText || '#3D8AF2'})
+                  setIBestUIBaseStyle({primary: this.colorText || '#3D8AF2'})
+                  this.colorText = getRandomColor()
                 }
               })
             }

@@ -1,7 +1,14 @@
 import router from '@ohos.router';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
-import { IBestCell, IBestCellGroup, IBestDialog, IBestDialogUtil, IBestNavBar } from '@ibestservices/ibest-ui';
+import {
+  IBestButton,
+  IBestCell,
+  IBestCellGroup,
+  IBestDialog,
+  IBestDialogUtil,
+  IBestNavBar
+} from '@ibestservices/ibest-ui';
 import { ComponentRouterParams } from '../assets/global.type';
 
 export interface TextData {
@@ -25,9 +32,17 @@ struct DialogPage {
   @State inputValue: string = ''
   @State formInputError: boolean = false
   @State dialogVisible: boolean = false
+  @State dialogWidth: number = 320
 
   @Builder formInputContain() {
-    Column() {
+    Column({space: SPACE.MD}) {
+      IBestButton({
+        type: 'primary',
+        text: "切换宽度",
+        onClickBtn: () => {
+          this.dialogWidth = this.dialogWidth === 320 ? 360 : 320
+        }
+      })
       TextInput({ 'placeholder': '请输入' })
         .fontSize(14)
         .placeholderFont({ size: 14 })
@@ -71,6 +86,7 @@ struct DialogPage {
       IBestDialog({
         visible: $dialogVisible,
         title: textData.title,
+        dialogWidth: this.dialogWidth,
         showCancelButton: true,
         defaultBuilder: (): void => this.formInputContain(),
         beforeClose: (action) => {
@@ -93,10 +109,7 @@ struct DialogPage {
                 onClickCell: () => {
                   IBestDialogUtil.open({
                     title: textData.title,
-                    message: textData.code,
-                    onConfirm: () => {
-                      console.log("点击确定")
-                    }
+                    message: textData.code
                   })
                 }
               })
@@ -105,10 +118,7 @@ struct DialogPage {
                 isLink: true,
                 onClickCell: () => {
                   IBestDialogUtil.open({
-                    message: textData.life,
-                    onConfirm: () => {
-                      console.log("点击确定")
-                    }
+                    message: textData.life
                   })
                 }
               })

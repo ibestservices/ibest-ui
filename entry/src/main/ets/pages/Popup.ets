@@ -1,4 +1,12 @@
-import { IBestCell, IBestCellGroup, IBestIcon, IBestNavBar, IBestPopup, IBestToast } from '@ibestservices/ibest-ui'
+import {
+    IBestButton,
+    IBestCell,
+    IBestCellGroup,
+    IBestIcon,
+    IBestNavBar,
+    IBestPopup,
+    IBestToast
+} from '@ibestservices/ibest-ui'
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../assets/global.type'
 import ComponentShowContainer from '../components/ComponentShowContainer'
@@ -34,15 +42,23 @@ struct PopupPage {
 	@State bottomCornerVisible: boolean = false
 	@State eventVisible: boolean = false
 	@State safeAreaVisible: boolean = false
+	@State popupHeight: number = 150
 
 	@Builder centerBuilder() {
-		Row() {
+		Column({space: 20}) {
 			Text("内容")
 				.fontSize(14)
 				.fontColor(modeColor.textColor)
+			IBestButton({
+				text: "切换高度",
+				type: "primary",
+				onClickBtn: () => {
+					this.popupHeight = this.popupHeight == 150 ? 300 : 150
+				}
+			})
 		}
 		.width("100%")
-		.aspectRatio(1)
+		.padding(20)
 		.justifyContent(FlexAlign.Center)
 	}
 	@Builder safeBuilder() {
@@ -223,6 +239,7 @@ struct PopupPage {
 			IBestPopup({
 				visible: $baseVisible,
 				popupWidth: 300,
+				popupHeight: this.popupHeight,
 				contentBuilder: (): void => this.centerBuilder()
 			})
 			// 弹框位置

@@ -25,15 +25,15 @@ struct IBestPopupBaseContent {
 	/**
 	 * 弹框显示位置
 	 */
-	@Prop popupAlign: PopupAlign = 'center'
+	@Prop popupAlign: PopupAlign
 	/**
 	 * 弹框宽度
 	 */
-	@Prop popupWidth: string | number = ""
+	@Link popupWidth: string | number
 	/**
 	 * 弹框高度
 	 */
-	@Prop popupHeight: string | number = ""
+	@Link popupHeight: string | number
 	/**
 	 * 是否显示头部
 	 */
@@ -41,7 +41,7 @@ struct IBestPopupBaseContent {
 	/**
 	 * 背板的圆角半径
 	 */
-	@Prop cornerRadius: number | string = 0
+	@Link cornerRadius: number | string
 	/**
 	 * 是否开启顶部安全区适配
 	 */
@@ -74,19 +74,19 @@ struct IBestPopupBaseContent {
 			case "left":
 			case "right":
 				return {
-					width: getSizeByUnit(this.popupWidth || (this.IBestIsLandscape ? "70%" : "60%")),
-					height: getSizeByUnit(this.popupHeight || "100%")
+					width: this.popupWidth || (this.IBestIsLandscape ? "70%" : "60%"),
+					height: this.popupHeight || "100%"
 				}
 			case "top":
 			case "bottom":
 				return {
-					width: getSizeByUnit(this.popupWidth || "100%"),
-					height: getSizeByUnit(this.popupHeight || (this.IBestIsLandscape ? "70%" : "40%"))
+					width: this.popupWidth || "100%",
+					height: this.popupHeight || (this.IBestIsLandscape ? "70%" : "40%")
 				}
 			case "center":
 				return {
-					width: getSizeByUnit(this.popupWidth || ""),
-					height: getSizeByUnit(this.popupHeight || "")
+					width: this.popupWidth || "",
+					height: this.popupHeight || ""
 				}
 		}
 	}
@@ -137,8 +137,8 @@ struct IBestPopupBaseContent {
 					this.contentBuilder()
 				}
 			}
-			.width(this.initSize().width)
-			.height(this.initSize().height)
+			.width(getSizeByUnit(this.initSize().width))
+			.height(getSizeByUnit(this.initSize().height))
 			.backgroundColor(IBestPopupColor.bgColor)
 			.padding({
 				top: this.safeAreaInsetTop && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
@@ -267,9 +267,9 @@ export struct IBestPopup{
 			headerBuilder: this.headerBuilder,
 			contentBuilder: this.contentBuilder,
 			popupAlign: this.popupAlign,
-			popupWidth: this.popupWidth,
-			popupHeight: this.popupHeight,
-			cornerRadius: this.cornerRadius,
+			popupWidth: $popupWidth,
+			popupHeight: $popupHeight,
+			cornerRadius: $cornerRadius,
 			close: (): void => this.close()
 		}),
 		alignment: this.popupAlign == "left" ? DialogAlignment.TopStart : this.popupAlign == "right" ?

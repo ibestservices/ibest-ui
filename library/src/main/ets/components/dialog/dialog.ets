@@ -43,7 +43,7 @@ export struct IBestDialogView {
   /**
    * 弹窗宽度
    */
-  @Prop dialogWidth: string | number = convertDimensionsWidthUnit(320)
+  @Link dialogWidth: string | number
   /**
    * 弹窗圆角
    */
@@ -373,6 +373,10 @@ export struct IBestDialogView {
     .backgroundColor(this.contentBg)
     .width(getSizeByUnit(this.dialogWidth))
     .borderRadius(getSizeByUnit(this.dialogBorderRadius))
+    .animation({
+      duration: 200,
+      curve: Curve.EaseInOut
+    })
     .clip(true)
   }
 }

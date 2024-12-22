@@ -1,7 +1,7 @@
 import { IBestDialogView } from './dialog';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { sleep } from '../../utils/utils';
+import { convertDimensionsWidthUnit, sleep } from '../../utils/utils';
 
 @CustomDialog
 export struct IBestDialog {
@@ -29,7 +29,7 @@ export struct IBestDialog {
   /**
    * 弹窗宽度
    */
-  @Prop dialogWidth: string | number
+  @Prop dialogWidth: string | number = convertDimensionsWidthUnit(320)
   /**
    * 弹窗border-radius
    */
@@ -334,7 +334,7 @@ export struct IBestDialog {
       titleFontSize: this.titleFontSize,
       titleTextAlign: this.titleTextAlign,
       message: this.message,
-      dialogWidth: this.dialogWidth,
+      dialogWidth: $dialogWidth,
       messagePaddingX: this.messagePaddingX,
       messagePaddingTop: this.messagePaddingTop,
       messagePaddingBottom: this.messagePaddingBottom,
