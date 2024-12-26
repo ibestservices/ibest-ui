@@ -1,6 +1,6 @@
 export interface BorderRadiusData {
-  borderRadiusSm: string;
-  borderRadiusMd: string;
-  borderRadiusLg: string;
-  borderRadiusMax: string;
+	borderRadiusSm: string;
+	borderRadiusMd: string;
+	borderRadiusLg: string;
+	borderRadiusMax: string;
 }

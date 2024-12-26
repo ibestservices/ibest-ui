@@ -190,7 +190,7 @@ export struct IBestPopup{
 	/**
 	 * 标题
 	 */
-	@Provide({allowOverride: "title"}) title: string = ""
+	@Provide({allowOverride: "title"}) title: ResourceStr = ""
 	/**
 	 * 标题字体颜色
 	 * @since 2.0.1
@@ -314,7 +314,7 @@ struct PopupTitle {
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@Consume title: string
+	@Consume title: ResourceStr
 	@Consume titleColor: ResourceColor
 	@Consume isShowClose: boolean
 	@Consume closeIcon: ResourceStr

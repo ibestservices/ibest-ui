@@ -21,7 +21,7 @@ import {
 } from '@ibestservices/ibest-ui'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle'
-import { LengthMetrics, router } from '@kit.ArkUI'
+import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../assets/global.type'
 
 @Entry
@@ -195,56 +195,47 @@ struct FieldPage {
 	@Builder checkboxGroupContent() {
 		IBestCheckboxGroup({
 			group: "group1",
-			onChange: checkboxNames => {
-				if(checkboxNames.length){
-					this.value7 = checkboxNames
-				}
-			}
-		})
-		Flex({space: { main: new LengthMetrics(20)}}) {
+			activeList: $value7,
+			placeDirection: Axis.Horizontal
+		}){
 			IBestCheckbox({
 				group: "group1",
 				shape: "square",
 				label: "复选框1",
-				name: "checkbox1"
+				name: "1"
 			})
 			IBestCheckbox({
 				group: "group1",
 				shape: "square",
 				label: "复选框2",
-				name: "checkbox2"
+				name: "2"
 			})
 		}
 	}
 	@Builder radioContent() {
 		IBestRadioGroup({
+			active: $value8,
 			group: "group1",
-			onChange: radioName => {
-				this.value8 = radioName
-			}
-		})
-		Flex({space: { main: new LengthMetrics(20)}}){
+			placeDirection: Axis.Horizontal
+		}){
 			IBestRadio({
 				group: "group1",
 				label: "单选框1",
-				name: "radio1"
+				name: "1"
 			})
 			IBestRadio({
 				group: "group1",
 				label: "单选框2",
-				name: "radio2"
+				name: "2"
 			})
 		}
 	}
 	@Builder stepperContent(){
 		IBestStepper({
-			defaultValue: 1,
+			value: $value9,
 			min: 1,
 			max: 99,
-			step: 1,
-			onChange: value => {
-				this.value9 = Number(value)
-			}
+			step: 1
 		})
 	}
 	@Builder uploadImg(){
@@ -358,7 +349,7 @@ struct FieldPage {
 									type: 'primary',
 									buttonSize: 'large',
 									onClickBtn: () => {
-										this.controller2.validate((valid, fields) => {
+										this.controller2.validate((valid) => {
 											if (valid) {
 												IBestToast.show("验证成功")
 											}
@@ -449,7 +440,7 @@ struct FieldPage {
 									type: 'primary',
 									buttonSize: 'large',
 									onClickBtn: () => {
-										this.controller3.validate((valid, fields) => {
+										this.controller3.validate((valid) => {
 											if (valid) {
 												IBestToast.show("验证成功")
 											}

@@ -36,7 +36,7 @@ export struct IBestDivider{
 	/**
 	 * 文本内容, 仅水平时生效
      */
-	@Prop text: string = ""
+	@Prop text: ResourceStr = ""
 	/**
 	 * 文字颜色, 仅水平时生效
      */

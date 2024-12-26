@@ -40,7 +40,7 @@ export struct IBestCollapseItem {
     /**
      * 标题
      */
-    @Prop title: string = ""
+    @Prop title: ResourceStr = ""
     /**
      * 标题文字颜色
      */
@@ -52,7 +52,7 @@ export struct IBestCollapseItem {
     /**
      * 标题栏右侧内容
      */
-    @Prop value: string = ""
+    @Prop value: ResourceStr = ""
     /**
      * 标题右侧文字颜色
      */

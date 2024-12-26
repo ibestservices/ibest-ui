@@ -9,7 +9,7 @@ class LoadingOption{
     /**
      * 展示文本
      */
-    message?: string
+    message?: ResourceStr
     /**
      * 显示时长
      */
@@ -210,11 +210,11 @@ class Toast{
         }
         this.open(opt)
     }
-    private autoHide(){
+    private async autoHide(){
         if(Toast._instance === null || Toast._instance.loadingDialog === null){
             return
         }
-        Toast._instance.promptAction?.closeCustomDialog(Toast._instance.loadingDialog)
+        await Toast._instance.promptAction?.closeCustomDialog(Toast._instance.loadingDialog)
         Toast._instance.loadingDialog?.dispose()
         Toast._instance.uiObserver?.off("routerPageUpdate")
         clearTimeout(Toast._instance.timer)

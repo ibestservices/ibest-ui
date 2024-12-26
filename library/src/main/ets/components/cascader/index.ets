@@ -260,6 +260,7 @@ export struct IBestCascaderContent{
 		}
 		.width("100%")
 		.alignItems(HorizontalAlign.Start)
+		.backgroundColor(IBestCascaderColor.bgColor)
 	}
 }
 

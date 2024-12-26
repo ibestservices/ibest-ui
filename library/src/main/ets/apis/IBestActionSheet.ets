@@ -10,9 +10,9 @@ import { IBestActionSheetColor } from './color';
 import { IBestIcon } from '../components/icon';
 // 选项类型
 class IBestActionType {
-	name: string = ""
+	name: ResourceStr = ""
 	value?: string
-	subName?: string
+	subName?: ResourceStr
 	color?: ResourceColor
 	icon?: ResourceStr
 	isDisabled?: boolean
@@ -70,7 +70,7 @@ class IBestActionSheetOption {
 	/**
 	 * 自定义标题
 	 */
-	customTitle?: string
+	customTitle?: ResourceStr
 	/**
 	 * 自定义标题背景色
 	 */
@@ -78,7 +78,7 @@ class IBestActionSheetOption {
 	/**
 	 * 描述
 	 */
-	description?: string
+	description?: ResourceStr
 	/**
 	 * 是否显示关闭图标
 	 */
@@ -90,7 +90,7 @@ class IBestActionSheetOption {
 	/**
 	 * 底部按钮文字
 	 */
-	cancelText?: string
+	cancelText?: ResourceStr
 	/**
 	 * 是否开启底部安全距离适配
 	 */
@@ -144,7 +144,6 @@ class IBestActionSheetParams extends IBestActionSheetOption {
 	id: string = ""
 	close: (id: string) => void = () => {}
 	constructor(option: IBestActionSheetOption) {
-		// console.log("options", JSON.stringify(option))
 		super()
 		this.width = option.width || CONTAINER_SIZE.FULL
 		this.height = option.height || SheetSize.FIT_CONTENT

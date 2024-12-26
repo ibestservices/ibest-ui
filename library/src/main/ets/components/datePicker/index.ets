@@ -207,7 +207,7 @@ export struct IBestDatePicker {
 	}
 	// 列变化
 	changeColumn(columnIndex: number){
-		if(columnIndex < this.options.length - 1 && this.isShowDay){
+		if(columnIndex < this.options.length - 1){
 			this.init()
 		}
 		this.onChange(this.getResult())

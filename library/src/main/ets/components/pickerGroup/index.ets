@@ -32,7 +32,7 @@ export struct IBestPickerGroup{
 	// 渲染的tab列表
 	@State tabsList: IBestTabItemType[] = []
 	/**
-	 * 当前激活tabname
+	 * 当前激活tabName
 	 */
 	@Prop @Watch("tabNameChange") currentName: string = '0'
 	// swiper索引

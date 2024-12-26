@@ -137,6 +137,10 @@
 			"value": "#f5f5f7"
 		},
 		{
+			"name": "ibest_cascader_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
 			"name": "ibest_checkbox_label_color",
 			"value": "$color:ibest_text_color"
 		},
@@ -186,7 +190,7 @@
 		},
 		{
 			"name": "ibest_number_keyboard_key_background",
-			"value": "#1c1c1e"
+			"value": "$color:ibest_background_2"
 		},
 		{
 			"name": "ibest_number_keyboard_key_active_color",

@@ -37,6 +37,18 @@
 			"value": "#2a2a2c"
 		},
 		{
+			"name": "ibest_number_keyboard_background",
+			"value": "$color:ibest_gray_8"
+		},
+		{
+			"name": "ibest_number_keyboard_key_background",
+			"value": "$color:ibest_gray_7"
+		},
+		{
+			"name": "ibest_number_keyboard_key_active_color",
+			"value": "$color:ibest_gray_6"
+		},
+		{
 			"name": "ibest_slider_inactive_background",
 			"value": "$color:ibest_background_3"
 		},

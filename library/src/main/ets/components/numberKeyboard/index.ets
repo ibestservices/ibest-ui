@@ -230,7 +230,7 @@ export struct NumberKeyboard{
 						})
 						Row() {
 							Text(this.closeBtnText)
-								.fontColor(IBestNumberKeyboardColor.textColor)
+								.fontColor(IBestNumberKeyboardColor.white)
 								.fontSize(this.baseStyle.fontSizeLg)
 						}
 						.keyCustomBoxStyle(true)

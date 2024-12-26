@@ -46,9 +46,9 @@ export struct IBestField{
      */
     @Link @Watch("valueChange") value: IBestFieldValueType
     /**
-     * 文本内容
+     * 左侧文本内容
      */
-    @Provide({allowOverride: "label"}) label: string = ""
+    @Provide({allowOverride: "label"}) label: ResourceStr = ""
     /**
      * 是否在label后加冒号
      */
@@ -68,7 +68,7 @@ export struct IBestField{
     /**
      * 输入框占位提示文字
      */
-    @Provide({allowOverride: "placeholder"}) placeholder: string = ""
+    @Provide({allowOverride: "placeholder"}) placeholder: ResourceStr = ""
     /**
      * 占位文字颜色
      * @since 2.0.1
@@ -208,8 +208,14 @@ export struct IBestField{
     @Provide({allowOverride: "rightIconSize"}) rightIconSize: number | string = convertDimensionsWidthUnit(18)
     /**
      * 是否显示label
+     * @since 2.0.0
      */
     @Prop showLabel: boolean = true
+    /**
+     * 背景色
+     * @since 2.0.1
+     */
+    @Prop bgColor: ResourceColor = IBestFieldColor.bg2
     /**
      * 格式化函数
      */
@@ -243,12 +249,14 @@ export struct IBestField{
      */
     onRightIconClick: () => void = () => {}
 
+    private context = getContext(this)
+
     @Styles fieldStyles(){
         .width(CONTAINER_SIZE.FULL)
         .padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
         .stateStyles({
             normal: {
-                .backgroundColor(IBestFieldColor.bg2)
+                .backgroundColor(this.bgColor)
             },
             pressed: {
                 .backgroundColor((this.clickable || this.isLink) ? IBestFieldColor.activeColor : IBestFieldColor.bg2)
@@ -256,8 +264,10 @@ export struct IBestField{
         })
         .enabled(!this.disabled)
         .opacity(this.disabled ? 0.6 : 1)
-        .onClick(() => {
-            this.onFieldClick()
+        .onTouch(event => {
+            if(event.type == TouchType.Up){
+                this.onFieldClick()
+            }
         })
     }
     @Styles fieldContentStyles(){
@@ -312,7 +322,7 @@ export struct IBestField{
                 this.runRules(value, rules).then(() => {
                     if (this.status === 'failed') {
                         resolve({
-                            label: this.label,
+                            label: typeof this.label == 'string' ? this.label : this.context.resourceManager.getStringSync(this.label),
                             name: this.prop,
                             message: this.validateMessage
                         })
@@ -437,7 +447,7 @@ struct Label{
      * 全局公共样式
      */
     @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
-    @Consume label: string
+    @Consume label: ResourceStr
     @Consume labelFontSize: number | string
     @Consume labelColor: ResourceColor
     @Consume colon: string
@@ -464,7 +474,12 @@ struct Label{
             if(this.requireAsteriskPosition == "left"){
                 Asterisk()
             }
-            Text(this.label + (this.colon ? ":" : ""))
+            Text(){
+                Span(this.label)
+                if(this.colon){
+                    Span(":")
+                }
+            }
                 .fontSize(getSizeByUnit(this.labelFontSize, true))
                 .fontColor(this.labelColor)
                 .layoutWeight(1)

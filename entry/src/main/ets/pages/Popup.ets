@@ -40,15 +40,21 @@ struct PopupPage {
 	@State cusCloseIconVisible: boolean = false
 	@State centerCornerVisible: boolean = false
 	@State bottomCornerVisible: boolean = false
+	@State cusHeightVisible: boolean = false
 	@State eventVisible: boolean = false
 	@State safeAreaVisible: boolean = false
 	@State popupHeight: number = 150
 
 	@Builder centerBuilder() {
-		Column({space: 20}) {
-			Text("内容")
-				.fontSize(14)
-				.fontColor(modeColor.textColor)
+		Column() {
+			Text("内容").fontColor(modeColor.textColor)
+		}
+		.width("100%")
+		.aspectRatio(1)
+		.justifyContent(FlexAlign.Center)
+	}
+	@Builder cusHeightBuilder() {
+		Column() {
 			IBestButton({
 				text: "切换高度",
 				type: "primary",
@@ -85,16 +91,14 @@ struct PopupPage {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
-							Column() {
-								IBestCell({
-									title: '展示弹出层',
-									isLink: true,
-									hasBorder: false,
-									onClickCell: () => {
-										this.baseVisible = true
-									}
-								})
-							}
+							IBestCell({
+								title: '展示弹出层',
+								isLink: true,
+								hasBorder: false,
+								onClickCell: () => {
+									this.baseVisible = true
+								}
+							})
 						}
 					}
 				}
@@ -158,78 +162,84 @@ struct PopupPage {
 				ListItem() {
 					ComponentShowContainer({ title: '显示标题', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
-							Column() {
-								IBestCell({
-									title: '显示标题',
-									isLink: true,
-									onClickCell: () => {
-										this.showHeaderVisible = true
-									}
-								})
-								IBestCell({
-									title: '自定义关闭图标',
-									isLink: true,
-									hasBorder: false,
-									onClickCell: () => {
-										this.cusCloseIconVisible = true
-									}
-								})
-							}
+							IBestCell({
+								title: '显示标题',
+								isLink: true,
+								onClickCell: () => {
+									this.showHeaderVisible = true
+								}
+							})
+							IBestCell({
+								title: '自定义关闭图标',
+								isLink: true,
+								hasBorder: false,
+								onClickCell: () => {
+									this.cusCloseIconVisible = true
+								}
+							})
 						}
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '圆角弹窗', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
-							Column() {
-								IBestCell({
-									title: '圆角弹窗(居中)',
-									isLink: true,
-									onClickCell: () => {
-										this.centerCornerVisible = true
-									}
-								})
-								IBestCell({
-									title: '圆角弹窗(底部)',
-									isLink: true,
-									hasBorder: false,
-									onClickCell: () => {
-										this.bottomCornerVisible = true
-									}
-								})
-							}
+							IBestCell({
+								title: '圆角弹窗(居中)',
+								isLink: true,
+								onClickCell: () => {
+									this.centerCornerVisible = true
+								}
+							})
+							IBestCell({
+								title: '圆角弹窗(底部)',
+								isLink: true,
+								hasBorder: false,
+								onClickCell: () => {
+									this.bottomCornerVisible = true
+								}
+							})
+						}
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '动态高度', titlePaddingLeft: SPACE.MD }) {
+						IBestCellGroup({ inset: true }) {
+							IBestCell({
+								title: '动态高度',
+								isLink: true,
+								hasBorder: false,
+								onClickCell: () => {
+									this.cusHeightVisible = true
+								}
+							})
 						}
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '事件监听', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
-							Column() {
-								IBestCell({
-									title: '监听显示事件',
-									isLink: true,
-									hasBorder: false,
-									onClickCell: () => {
-										this.eventVisible = true
-									}
-								})
-							}
+							IBestCell({
+								title: '监听显示事件',
+								isLink: true,
+								hasBorder: false,
+								onClickCell: () => {
+									this.eventVisible = true
+								}
+							})
 						}
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '安全区域适配', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
-							Column() {
-								IBestCell({
-									title: '安全区域适配',
-									isLink: true,
-									hasBorder: false,
-									onClickCell: () => {
-										this.safeAreaVisible = true
-									}
-								})
-							}
+							IBestCell({
+								title: '安全区域适配',
+								isLink: true,
+								hasBorder: false,
+								onClickCell: () => {
+									this.safeAreaVisible = true
+								}
+							})
 						}
 					}
 				}
@@ -239,7 +249,6 @@ struct PopupPage {
 			IBestPopup({
 				visible: $baseVisible,
 				popupWidth: 300,
-				popupHeight: this.popupHeight,
 				contentBuilder: (): void => this.centerBuilder()
 			})
 			// 弹框位置
@@ -263,7 +272,6 @@ struct PopupPage {
 			IBestPopup({
 				visible: $showHeaderVisible,
 				popupWidth: 300,
-				cornerRadius: 20,
 				isShowHeader: true,
 				title: "标题",
 				contentBuilder: (): void => this.centerBuilder()
@@ -286,6 +294,13 @@ struct PopupPage {
 				visible: $bottomCornerVisible,
 				popupAlign: "bottom",
 				cornerRadius: 30
+			})
+			// 动态高度
+			IBestPopup({
+				visible: $cusHeightVisible,
+				popupWidth: 300,
+				popupHeight: this.popupHeight,
+				contentBuilder: (): void => this.cusHeightBuilder()
 			})
 			// 事件监听
 			IBestPopup({

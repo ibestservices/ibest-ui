@@ -1,55 +1,71 @@
-import { emitter } from '../../utils/EventEmitter';
-import { CheckedItem, initRadioGroupStore, removeRadioGroupStore } from './store';
-import { COMPONENT_NAME, RADIO_GROUP_EVENT_NAME } from './index.type';
-import { getEventName } from '../../utils/utils';
+import { emitter } from '../../utils/EventEmitter'
+import { COMPONENT_NAME, RADIO_GROUP_EVENT_NAME } from './index.type'
+import { getSizeByUnit, convertDimensionsWidthUnit, getEventName, sleep } from '../../utils/utils'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 @Component
 export struct IBestRadioGroup {
-  /**
-   * 多个相同群组名称的CheckboxGroup，仅第一个CheckboxGroup生效。
-   */
-  @Prop group: string;
-  // /**
-  //  * 默认选中的
-  //  */
-  // @Prop value: string | number = undefined
-  /**
-   * 选中的数据
-   */
-  checkedItem: CheckedItem | null = null;
-  /**
-   * 选中变化的回调
-   * 参数是radio子组件的的name值
-   */
-  onChange: (radioName: string) => void = () => {}
+	/**
+	 * 分组标识
+	 */
+	@Prop group: string
+	/**
+	 * 激活的标识列表
+	 * @since 2.0.1
+	 */
+	@Link @Watch("initRadio") active: string
+	/**
+	 * 排列方向
+	 * @since 2.0.1
+	 */
+	@Prop placeDirection: Axis = Axis.Vertical
+	/**
+	 * 排列间距
+	 * @since 2.0.1
+	 */
+	@Prop space: number | string = convertDimensionsWidthUnit(12)
+	/**
+	 * 默认内容
+	 * @since 2.0.1
+	 */
+	@BuilderParam defaultBuilder?: CustomBuilder
+	/**
+	 * 选中变化的回调
+	 * @param name radio子组件的的name值
+	 */
+	onChange: (name: string) => void = () => {}
 
-  handleInitRadio(radioName: string | number){
-    emitter.emit(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.ON_INIT), radioName)
-  }
-
-
-  aboutToAppear() {
-    this.initStorage();
-    // 这时候子组件还没有初始化 需要等待子组件初始化
-    // sleep().then(() => {
-    //   // 设置默认选中项
-    //   // this.handleInitRadio(this.value)
-    // })
-  }
-
-  aboutToDisappear() {
-    removeRadioGroupStore(this.group)
-  }
-
-  initStorage() {
-    initRadioGroupStore(this.group, (checkedItem) => {
-      this.checkedItem = checkedItem;
-      this.handleInitRadio(checkedItem?.name)
-      this.onChange(checkedItem?.name)
-    })
-  }
-
-
-  build() {
-
-  }
+	aboutToAppear() {
+		emitter.on(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE), (name: string): void => this.onItemChange(name))
+		sleep(50).then(() => {
+			this.initRadio()
+		})
+	}
+	aboutToDisappear() {
+		emitter.off(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE), (name: string): void => this.onItemChange(name))
+	}
+	initRadio() {
+		emitter.emit(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN), this.active)
+	}
+	onItemChange(name: string) {
+		this.active = name
+		this.onChange(name)
+	}
+	build() {
+		if (this.placeDirection == Axis.Horizontal) {
+			Row({ space: getSizeByUnit(this.space) }) {
+				if (this.defaultBuilder) {
+					this.defaultBuilder()
+				}
+			}
+			.width(CONTAINER_SIZE.FULL)
+		} else {
+			Column({ space: getSizeByUnit(this.space) }) {
+				if (this.defaultBuilder) {
+					this.defaultBuilder()
+				}
+			}
+			.width(CONTAINER_SIZE.FULL)
+			.alignItems(HorizontalAlign.Start)
+		}
+	}
 }

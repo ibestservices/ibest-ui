@@ -38,7 +38,7 @@ export struct IBestNavBar{
 	/**
 	 * 标题内容
 	 */
-	@Prop title: string = ''
+	@Prop title: ResourceStr = ''
 	/**
 	 * 标题文字颜色
      */
@@ -75,7 +75,7 @@ export struct IBestNavBar{
 	/**
 	 * 二级标题
      */
-	@Prop subTitle: string = ''
+	@Prop subTitle: ResourceStr = ''
 	/**
 	 * 二级标题颜色
      */
@@ -112,7 +112,7 @@ export struct IBestNavBar{
 	/**
 	 * 左侧文本内容
      */
-	@Prop leftLabel: string = ''
+	@Prop leftLabel: ResourceStr = ''
 	/**
 	 * 左侧文本颜色
      */
@@ -149,7 +149,7 @@ export struct IBestNavBar{
 	/**
 	 * 右侧文本内容
      */
-	@Prop rightLabel: string = ''
+	@Prop rightLabel: ResourceStr = ''
 	/**
 	 * 右侧文本颜色
      */

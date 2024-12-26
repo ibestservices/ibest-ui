@@ -19,7 +19,7 @@ export struct IBestSearch {
 	/**
 	 * 左侧文本
 	 */
-	@Prop label: string = ''
+	@Prop label: ResourceStr = ''
 	/**
 	 * 左侧文本颜色
 	 * @since 2.0.1
@@ -42,7 +42,7 @@ export struct IBestSearch {
 	/**
 	 * 输入框 placeholder 提示文字
 	 */
-	@Prop placeholder: string = '请输入搜索关键词'
+	@Prop placeholder: ResourceStr = '请输入搜索关键词'
 	/**
 	 * placeholder 提示文字颜色
 	 */

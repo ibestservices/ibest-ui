@@ -54,12 +54,10 @@ struct FieldPage {
     }
     @Builder radioContent() {
         IBestRadioGroup({
+            active: $value22,
             group: 'group1',
-            onChange: val => {
-                console.log('group1', val)
-            }
-        })
-        Flex({wrap: FlexWrap.Wrap, space: {main: LengthMetrics.vp(20), cross: LengthMetrics.vp(20)}}){
+            placeDirection: Axis.Horizontal
+        }){
             IBestRadio({
                 label: '单选框1',
                 name: '1',
@@ -71,7 +69,6 @@ struct FieldPage {
                 group: 'group1'
             })
         }
-        .width("100%")
     }
 
     sendCode() {

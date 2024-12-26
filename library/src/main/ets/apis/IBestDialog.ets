@@ -26,7 +26,7 @@ class IBestDialogOption {
 	/**
 	 * 标题
 	 */
-	title?: string
+	title?: ResourceStr
 	/**
 	 * 标题颜色
 	 */
@@ -54,7 +54,7 @@ class IBestDialogOption {
 	/**
 	 * 文本内容，支持通过 \n 换行
 	 */
-	message?: string
+	message?: ResourceStr
 	/**
 	 * 内容区域的padding-left与padding-right值
 	 */
@@ -106,11 +106,11 @@ class IBestDialogOption {
 	/**
 	 * 确认按钮文案
 	 */
-	confirmButtonText?: string
+	confirmButtonText?: ResourceStr
 	/**
 	 * 取消按钮的文案
 	 */
-	cancelButtonText?: string
+	cancelButtonText?: ResourceStr
 	/**
 	 * 确认按钮的颜色
 	 */

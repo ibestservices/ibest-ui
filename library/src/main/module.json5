@@ -1,10 +1,10 @@
 {
-  "module": {
-    "name": "library",
-    "type": "har",
-    "deviceTypes": [
-      "default",
-      "tablet"
-    ]
-  }
+	"module": {
+		"name": "library",
+		"type": "har",
+		"deviceTypes": [
+			"default",
+			"tablet"
+		]
+	}
 }
