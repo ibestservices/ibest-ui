@@ -95,7 +95,7 @@ struct CalendarItem {
             this.bgColor = IBestCalendarColor.disabledBg
         }else if(this.selectType == "range"){ // 范围选择
             if(this.clock){
-                this.fontColor = item.isClock ? IBestCalendarColor.textWhite : item.isCurMonthDay ? IBestCalendarColor.textColor : GRAY_COLOR.GRAY_7
+                this.fontColor = item.isClock ? IBestCalendarColor.textWhite : item.isCurMonthDay ? this.isToday() ? this.baseStyle[this.type] : IBestCalendarColor.textColor : GRAY_COLOR.GRAY_7
                 this.bgColor = item.isClock ? this.baseStyle[this.type] : "transparent"
             }else if(this.selectedList.length){
                 let dateStr = item.dateStr

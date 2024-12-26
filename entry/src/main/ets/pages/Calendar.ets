@@ -167,23 +167,6 @@ struct CalendarPage {
                     }
                 }
                 ListItem(){
-                    ComponentShowContainer({ title: '打卡模式', titlePaddingLeft: SPACE.XS }) {
-                        Column({space: SPACE.MD}){
-                            IBestButton({
-                                type: "primary",
-                                text: "打卡",
-                                onClickBtn: () => {
-                                    this.clockDate.push(dayjs(this.clockDate[this.clockDate.length-1]).add(1, 'day').format("YYYY-MM-DD"))
-                                }
-                            })
-                            IBestCalendar({
-                                clock: true,
-                                defaultSelectedDate: this.clockDate
-                            })
-                        }
-                    }
-                }
-                ListItem(){
                     ComponentShowContainer({ title: '平铺展示', titlePaddingLeft: SPACE.XS }) {
                         IBestCalendar({
                             isShowLunar: true,
@@ -201,6 +184,23 @@ struct CalendarPage {
                                 })
                             }
                         })
+                    }
+                }
+                ListItem(){
+                    ComponentShowContainer({ title: '打卡模式', titlePaddingLeft: SPACE.XS }) {
+                        Column({space: SPACE.MD}){
+                            IBestButton({
+                                type: "primary",
+                                text: "打卡",
+                                onClickBtn: () => {
+                                    this.clockDate.push(dayjs(this.clockDate[this.clockDate.length-1]).add(1, 'day').format("YYYY-MM-DD"))
+                                }
+                            })
+                            IBestCalendar({
+                                clock: true,
+                                defaultSelectedDate: this.clockDate
+                            })
+                        }
                     }
                 }
             }
