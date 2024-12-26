@@ -8,7 +8,8 @@
 	"license": "",
 	"dependencies": {
 		"@ibestservices/ibest-ui": "file:library",
-		"@ibestservices/area-data": "^0.0.4"
+		"@ibestservices/area-data": "^0.0.4",
+		"@hview/dayjs": "^1.11.11"
 	},
 	"devDependencies": {
 		"@ohos/hypium": "1.0.11"

@@ -1,11 +1,5 @@
 import dayjs from '@hview/dayjs'
 
-export function getPrevDay(dateStr: string): string{
-    return dayjs(dateStr).subtract(1, 'day').format('YYYY-MM-DD')
-}
-export function getNextDay(dateStr: string){
-    return dayjs(dateStr).add(1, 'day').format('YYYY-MM-DD')
-}
 // 16进制转rgb
 export function set16ToRgb(str:string): string{
     let reg = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/
@@ -25,4 +19,11 @@ export function set16ToRgb(str:string): string{
         arr.push(parseInt("0x" + s))
     }
     return 'rgba(' + arr.join(",")  + ', 0.2)'
+}
+
+/**
+ * 是否是今天之前的日期
+ */
+export function isBeforeToday(date: Date | string | dayjs.Dayjs): boolean{
+    return dayjs(date).isBefore(dayjs())
 }
