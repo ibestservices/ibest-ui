@@ -1,6 +1,7 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
 import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
 import { convertDimensionsWidthUnit } from "../../utils/utils"
+import { IBestBadgeColor } from "./color"
 import { IBestBadgePosition } from "./index.type"
 @Component
 export struct IBestBadge {
@@ -15,7 +16,7 @@ export struct IBestBadge {
 	/**
 	 * 徽标背景色
 	 */
-	@Prop color: ResourceColor = this.baseStyle.danger
+	@Prop color: ResourceColor = IBestBadgeColor.badgeBgColor
 	/**
 	 * 是否展示为小红点
 	 */
@@ -110,7 +111,7 @@ export struct IBestBadge {
 			} else if(this.isShow()) {
 				Text(this.getContent())
 					.constraintSize({ minWidth: convertDimensionsWidthUnit(16) })
-					.fontColor(this.baseStyle.default)
+					.fontColor(IBestBadgeColor.textColor)
 					.fontSize(convertDimensionsWidthUnit(12, true))
 					.padding({ left: convertDimensionsWidthUnit(3), right: convertDimensionsWidthUnit(3) })
 					.backgroundColor(this.color)

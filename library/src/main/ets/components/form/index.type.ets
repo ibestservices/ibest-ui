@@ -1,4 +1,3 @@
-import { emitter } from '../../utils/EventEmitter'
 import { FieldTextAlign, IBestFieldValueType,
 	LabelPositionType,
 	RequireAsteriskPositionType } from '../field/index.type'
@@ -16,6 +15,10 @@ export interface IBestFormRuleItem {
 }
 export type IBestFormRule = Record<string, IBestFormRuleItem[]>
 
+/**
+ * 组件名称
+ */
+export const COMPONENT_NAME = 'FORM'
 
 export enum FORM_EVENT_NAME {
 	/**

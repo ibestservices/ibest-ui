@@ -1,6 +1,6 @@
 import router from '@ohos.router';
 import { IBestNavBar } from '@ibestservices/ibest-ui';
-import { BACKGROUND_COLOR, COLOR_BLUE, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import { COLOR_BLUE, CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 import { getRandomColor } from '../utils/utils';
@@ -14,7 +14,7 @@ struct NavBarPage {
 
 	@Builder leftBuilder(){
 		Row({space: SPACE.BASE}){
-			Image($r("app.media.icon_star_o"))
+			Image($r("app.media.ibest_icon_star_o"))
 				.width(16)
 			Text("自定义左侧")
 		}
@@ -33,7 +33,8 @@ struct NavBarPage {
 	build() {
 		Column() {
 			IBestNavBar({
-				leftLabel: this.title,
+				title: this.title,
+				isShowStatusBar: true,
 				onLeftClick: () => {
 					router.back()
 				}
@@ -146,6 +147,6 @@ struct NavBarPage {
 			.layoutWeight(1)
 		}
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(BACKGROUND_COLOR.BASE)
+		.backgroundColor(modeColor.bg)
 	}
 }

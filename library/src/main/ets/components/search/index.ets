@@ -3,6 +3,9 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
+import { IBestIcon } from '../icon'
+import { IBestSearchColor } from './color'
+
 @Component
 export struct IBestSearch {
 	/**
@@ -16,7 +19,12 @@ export struct IBestSearch {
 	/**
 	 * 左侧文本
 	 */
-	@Prop label: string = ''
+	@Prop label: ResourceStr = ''
+	/**
+	 * 左侧文本颜色
+	 * @since 2.0.1
+     */
+	@Prop labelColor: ResourceColor = IBestSearchColor.labelColor
 	/**
 	 * 输入框绑定值
 	 */
@@ -25,11 +33,16 @@ export struct IBestSearch {
 	 * 输入框文字颜色
 	 * @since 1.18.0
      */
-	@Prop textColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop textColor: ResourceColor = IBestSearchColor.textColor
+	/**
+	 * 输入框文字大小
+	 * @since 2.0.1
+     */
+	@Prop textFontSize: number | string = this.baseStyle.fontSizeMd as string
 	/**
 	 * 输入框 placeholder 提示文字
 	 */
-	@Prop placeholder: string = '请输入搜索关键词'
+	@Prop placeholder: ResourceStr = '请输入搜索关键词'
 	/**
 	 * placeholder 提示文字颜色
 	 */
@@ -41,11 +54,11 @@ export struct IBestSearch {
 	/**
 	 * 外侧背景色
 	 */
-	@Prop outBgColor: ResourceColor = this.baseStyle.default as string
+	@Prop outBgColor: ResourceColor = IBestSearchColor.outerBg
 	/**
 	 * 内侧背景色
 	 */
-	@Prop innerBgColor: ResourceColor = GRAY_COLOR.GRAY_1
+	@Prop innerBgColor: ResourceColor = IBestSearchColor.innerBg
 	/**
 	 * 是否为圆形搜索框
 	 */
@@ -57,11 +70,11 @@ export struct IBestSearch {
 	/**
 	 * 左侧图标
 	 */
-	@Prop leftIcon: ResourceStr = $r("app.media.icon_search")
+	@Prop leftIcon: ResourceStr = "search"
 	/**
 	 * 左侧图标颜色
 	 */
-	@Prop leftIconColor: ResourceColor = GRAY_COLOR.GRAY_6
+	@Prop leftIconColor: ResourceColor = IBestSearchColor.leftIconColor
 	/**
 	 * 是否可清除
 	 */
@@ -69,7 +82,7 @@ export struct IBestSearch {
 	/**
 	 * 清除图片地址
 	 */
-	@Prop clearIcon: ResourceStr = $r("app.media.icon_clear")
+	@Prop clearIcon: ResourceStr = "clear"
 	/**
 	 * 清除图标显示时机
 	 */
@@ -99,6 +112,16 @@ export struct IBestSearch {
 	 */
 	@Prop enterKeyType: EnterKeyType = EnterKeyType.Search
 	/**
+	 * 右侧按钮背景色
+	 * @since 2.0.1
+     */
+	@Prop rightBtnBgColor: ResourceColor = IBestSearchColor.outerBg
+	/**
+	 * 右侧按钮按压背景色
+	 * @since 2.0.1
+     */
+	@Prop rightBtnPressBgColor: ResourceColor = IBestSearchColor.activeBg
+	/**
 	 * 自定义右侧按钮
 	 */
 	@BuilderParam customRightButton?: CustomBuilder
@@ -127,6 +150,15 @@ export struct IBestSearch {
 	 */
 	onRightButtonClick: () => void = () => {}
 
+	clear(){
+		this.clearLock = true
+		this.value = ""
+		this.onClear()
+		setTimeout(() => {
+			this.clearLock = false
+		}, 10)
+	}
+
 	build() {
 		Row(){
 			Row(){
@@ -134,18 +166,23 @@ export struct IBestSearch {
 					if(this.label){
 						Text(this.label)
 							.fontSize(this.baseStyle.fontSizeMd)
-							.fontColor(GRAY_COLOR.GRAY_8)
+							.fontColor(this.labelColor)
 							.margin({ right: this.baseStyle.spaceBase })
 					}
-					Image(this.leftIcon)
-						.width(convertDimensionsWidthUnit(18))
-						.margin({ right: this.baseStyle.spaceBase })
-						.fillColor(this.leftIconColor)
+					IBestIcon({
+						name: this.leftIcon,
+						iconSize: convertDimensionsWidthUnit(18),
+						color: this.leftIconColor
+					}).margin({ right: this.baseStyle.spaceBase })
 					TextInput({ text: $$this.value, placeholder: this.placeholder })
 						.layoutWeight(1)
 						.padding(0)
 						.borderRadius(0)
 						.fontColor(this.textColor)
+						.fontSize(this.textFontSize)
+						.placeholderFont({
+							size: this.textFontSize
+						})
 						.placeholderColor(this.placeholderColor)
 						.backgroundColor("transparent")
 						.enableAutoFill(false)
@@ -170,19 +207,18 @@ export struct IBestSearch {
 						})
 					if(this.clearable){
 						Row(){
-							Image(this.clearIcon)
-								.width(convertDimensionsWidthUnit(18))
-								.fillColor(GRAY_COLOR.GRAY_5)
+							IBestIcon({
+								name: this.clearIcon,
+								iconSize: convertDimensionsWidthUnit(18),
+								color: GRAY_COLOR.GRAY_5
+							}).onClick(() => {
+								this.clear()
+							})
 						}
 						.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs })
 						.visibility(this.value && (this.clearTrigger == "always" || this.isFocus) ? Visibility.Visible : Visibility.None)
 						.onClick(() => {
-							this.clearLock = true
-							this.value = ""
-							this.onClear()
-							setTimeout(() => {
-								this.clearLock = false
-							}, 10)
+							this.clear()
 						})
 					}
 				}
@@ -196,16 +232,16 @@ export struct IBestSearch {
 					this.customRightButton()
 				}else if(this.showRightButton){
 					Text(this.rightButtonText)
-						.width(convertDimensionsWidthUnit(44))
+						.constraintSize({minWidth: convertDimensionsWidthUnit(44)})
 						.height(CONTAINER_SIZE.FULL)
 						.fontSize(this.baseStyle.fontSizeMd)
 						.padding({ left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs })
 						.stateStyles({
 							normal: {
-								.backgroundColor(this.baseStyle.default)
+								.backgroundColor(this.rightBtnBgColor)
 							},
 							pressed: {
-								.backgroundColor(GRAY_COLOR.GRAY_2)
+								.backgroundColor(this.rightBtnPressBgColor)
 							}
 						})
 						.onClick(() => {

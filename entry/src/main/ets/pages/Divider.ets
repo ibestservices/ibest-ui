@@ -1,7 +1,6 @@
 import router from '@ohos.router';
-import { IBestDivider } from '@ibestservices/ibest-ui';
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar';
+import { IBestDivider, IBestNavBar } from '@ibestservices/ibest-ui';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 
@@ -12,16 +11,20 @@ struct DividerPage {
 
 	@Builder textBuilder(){
 		Row({space: 10}){
-			Image($r("app.media.icon_star")).width(16)
+			Image($r("app.media.ibest_icon_star")).width(16)
 			Text("自定义内容")
 		}
 	}
 
 	build() {
 		Column() {
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
@@ -95,6 +98,6 @@ struct DividerPage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(BACKGROUND_COLOR.DEFAULT)
+		.backgroundColor(modeColor.bg2)
 	}
 }

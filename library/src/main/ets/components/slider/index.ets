@@ -1,13 +1,20 @@
-import { clamp, addNumber, getComponentsInfo, convertDimensionsWidthUnit, getSizeByUnit,
-	getLengthUnit,
-	convertDimensions} from "../../utils/utils"
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { GRAY_COLOR } from "../../theme-chalk/src/color"
-import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
-import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { LengthUnit } from "@kit.ArkUI"
-import { IBestSliderValue } from "./index.type"
-import { IBestGlobalConfig } from "../../model/Global.type"
+import {
+    addNumber,
+    clamp,
+    convertDimensions,
+    convertDimensionsWidthUnit,
+    getComponentsInfo,
+    getLengthUnit,
+    getSizeByUnit
+} from '../../utils/utils'
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { LengthUnit } from '@kit.ArkUI'
+import { IBestSliderValue } from './index.type'
+import { IBestGlobalConfig } from '../../model/Global.type'
+import { IBestSliderColor } from './color'
+
 @Component
 export struct IBestSlider{
 	/**
@@ -46,13 +53,18 @@ export struct IBestSlider{
 	 */
 	@Provide({allowOverride: "buttonSize"}) buttonSize: number = convertDimensions(24)
 	/**
+	 * 滑块背景色
+	 * @since 2.0.1
+     */
+	@Provide({allowOverride: "buttonBgColor"}) buttonBgColor: ResourceColor = IBestSliderColor.buttonBg
+	/**
 	 * 进度条激活态颜色
 	 */
 	@Prop activeColor: ResourceColor = this.baseStyle.primary
 	/**
 	 * 进度条背景颜色
 	 */
-	@Prop barBgColor: ResourceColor = GRAY_COLOR.GRAY_3
+	@Prop barBgColor: ResourceColor = IBestSliderColor.inactiveBg
 	/**
 	 * 是否禁用
 	 */
@@ -271,12 +283,13 @@ struct DragBar{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp("iBestGlobalConfig") config: IBestGlobalConfig = new IBestGlobalConfig()
+	@StorageProp("IBestGlobalConfig") config: IBestGlobalConfig = new IBestGlobalConfig()
 	@Prop value: IBestSliderValue
 	@Prop uniId: number
 	@Consume buttonWidth: number
 	@Consume buttonHeight: number
 	@Consume buttonSize: number | string
+	@Consume buttonBgColor: ResourceColor
 	@Consume vertical: boolean
 	@Consume reverse: boolean
 	@Prop buttonIndex: 0 | 1 = 0
@@ -326,7 +339,7 @@ struct DragBar{
 				Row()
 					.width(getSizeByUnit(this.buttonSize))
 					.aspectRatio(1)
-					.backgroundColor(this.baseStyle.default)
+					.backgroundColor(this.buttonBgColor)
 					.borderRadius(this.baseStyle.borderRadiusMax)
 					.shadow({ radius: 2, color: "rgba(0,0,0,0.5)", offsetY: 1 })
 			}

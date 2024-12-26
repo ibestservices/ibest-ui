@@ -1,11 +1,19 @@
-import { CalendarConfirmResultType, IBestCalendar, IBestCalendarDialog, IBestCell, IBestCellGroup, SelectType} from
-    "@ibestservices/ibest-ui"
+import {
+    CalendarConfirmResultType,
+    IBestButton,
+    IBestCalendar,
+    IBestCalendarDialog,
+    IBestCell,
+    IBestCellGroup,
+    IBestNavBar,
+    SelectType
+} from '@ibestservices/ibest-ui'
 import { router } from '@kit.ArkUI'
 import promptAction from '@ohos.promptAction'
 import { ComponentRouterParams } from '../assets/global.type'
-import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle'
+import dayjs from "@hview/dayjs"
 @Entry
 @Component
 struct CalendarPage {
@@ -29,6 +37,10 @@ struct CalendarPage {
     @State waterBgVisible: boolean = false
     @State waterBgDate: string = "请选择日期"
     @State tileSelectType: SelectType = "multiple"
+
+    @State clockDate: Array<string> = [dayjs().startOf("month").format('YYYY-MM-DD')]
+
+    @State defaultSelectedDate: Array<string> = [dayjs().format('YYYY-MM-DD')]
 
     onDialogConfirm(type: string, value: Array<CalendarConfirmResultType>): void {
         console.log("onConfirm", type, JSON.stringify(value))
@@ -62,11 +74,16 @@ struct CalendarPage {
                 break
         }
     }
+
     build() {
         Column(){
-            TitleBar({
-                title: this.title
-            }).backgroundColor('#FFF')
+            IBestNavBar({
+                title: this.title,
+                isShowStatusBar: true,
+                onLeftClick: () => {
+                    router.back()
+                }
+            })
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
@@ -154,10 +171,10 @@ struct CalendarPage {
                         IBestCalendar({
                             isShowLunar: true,
                             weekFirstDay: "日",
-                            selectedStyleType: "normal",
                             selectType: this.tileSelectType,
                             selectedColor: "#ed4040",
                             isShowMark: true,
+                            defaultSelectedDate: this.defaultSelectedDate,
                             onConfirm: (value: Array<CalendarConfirmResultType>) => {
                                 let text = value.length > 1 && this.tileSelectType === "range" ? `${value[0].dateStr}
                                 ~ ${value[value.length-1].dateStr}` : value.map(item => item.dateStr).join(",")
@@ -167,6 +184,23 @@ struct CalendarPage {
                                 })
                             }
                         })
+                    }
+                }
+                ListItem(){
+                    ComponentShowContainer({ title: '打卡模式', titlePaddingLeft: SPACE.XS }) {
+                        Column({space: SPACE.MD}){
+                            IBestButton({
+                                type: "primary",
+                                text: "打卡",
+                                onClickBtn: () => {
+                                    this.clockDate.push(dayjs(this.clockDate[this.clockDate.length-1]).add(1, 'day').format("YYYY-MM-DD"))
+                                }
+                            })
+                            IBestCalendar({
+                                clock: true,
+                                defaultSelectedDate: this.clockDate
+                            })
+                        }
                     }
                 }
             }
@@ -210,7 +244,7 @@ struct CalendarPage {
                 selectType: "multiple",
                 selectedStyleType: "circle",
                 minDate: new Date(),
-                maxDate: new Date("2024-12-13"),
+                maxDate: new Date("2099-12-13"),
                 confirmBtnColor: "#ed4040",
                 confirmBtnText: "完成",
                 onConfirm: (value: Array<CalendarConfirmResultType>): void => this.onDialogConfirm("customRangeDate", value)
@@ -238,6 +272,6 @@ struct CalendarPage {
         }
         .width(CONTAINER_SIZE.FULL)
         .height(CONTAINER_SIZE.FULL)
-        .backgroundColor(BACKGROUND_COLOR.BASE)
+        .backgroundColor(modeColor.bg)
     }
 }

@@ -8,6 +8,7 @@ export interface IBestPopoverAction{
     text: string
     /**
      * 文字左侧图标名称
+     * @deprecated 请使用 icon
      */
     iconName?: string
     /**

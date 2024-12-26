@@ -1,10 +1,10 @@
 import dayjs from '@hview/dayjs'
 import { IBestPicker } from '../picker'
 import { IBestPickerOption } from '../picker/index.type'
-import { DatePickerColumnType, getPickerEventName, IBestDatePickerResultType, DATE_PICKER_EVENT_NAME } from './index.type'
+import { DatePickerColumnType, IBestDatePickerResultType, DATE_PICKER_EVENT_NAME,
+	COMPONENT_NAME } from './index.type'
 import { emitter } from '../../utils/EventEmitter'
-import { clamp, convertDimensionsWidthUnit } from '../../utils/utils'
-
+import { clamp, convertDimensionsWidthUnit, getEventName } from '../../utils/utils'
 @Component
 export struct IBestDatePicker {
 	/**
@@ -107,12 +107,12 @@ export struct IBestDatePicker {
 		this.init()
 		if(this.groupId){
 			// 监听日期picker变化
-			emitter.on(getPickerEventName(this.groupId, DATE_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>): void => this.handleGroupChange(uniId, selectedValues))
+			emitter.on(getEventName(COMPONENT_NAME, this.groupId, DATE_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>): void => this.handleGroupChange(uniId, selectedValues))
 		}
 	}
 	aboutToDisappear(): void {
 		if(this.groupId) {
-			emitter.off(getPickerEventName(this.groupId, DATE_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>): void => this.handleGroupChange(uniId, selectedValues))
+			emitter.off(getEventName(COMPONENT_NAME, this.groupId, DATE_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>): void => this.handleGroupChange(uniId, selectedValues))
 		}
 	}
 	// 初始化
@@ -207,12 +207,12 @@ export struct IBestDatePicker {
 	}
 	// 列变化
 	changeColumn(columnIndex: number){
-		if(columnIndex < this.options.length - 1 && this.isShowDay){
+		if(columnIndex < this.options.length - 1){
 			this.init()
 		}
 		this.onChange(this.getResult())
 		if(this.groupId) {
-			emitter.emit(getPickerEventName(this.groupId, DATE_PICKER_EVENT_NAME.COLUMN_CHANGE), this.uniId, this.value)
+			emitter.emit(getEventName(COMPONENT_NAME, this.groupId, DATE_PICKER_EVENT_NAME.COLUMN_CHANGE), this.uniId, this.value)
 		}
 	}
 	// 获取组件结果

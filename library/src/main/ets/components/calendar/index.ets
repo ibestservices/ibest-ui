@@ -9,8 +9,9 @@ import promptAction from '@ohos.promptAction'
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
 import { UIContext } from '@kit.ArkUI'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
-import { getNextDay, getPrevDay, set16ToRgb } from './utils'
-
+import { isBeforeToday, set16ToRgb } from './utils'
+import { IBestCalendarColor } from './color'
+import { IBestIcon } from '../icon'
 class DayItemObj{
     date: Dayjs = dayjs()
     dateStr: string = ""
@@ -23,6 +24,7 @@ class DayItemObj{
     isCurMonthDay: boolean = false
     isSelected: boolean = false
     isDisabled?: boolean = false
+    isClock?: boolean = false
 }
 @Observed
 class DayItemType extends DayItemObj{
@@ -40,6 +42,7 @@ class DayItemType extends DayItemObj{
             this.isCurMonthDay = value.isCurMonthDay
             this.isSelected = value.isSelected
             this.isDisabled = value.isDisabled
+            this.isClock = value.isClock
         }
     }
 }
@@ -53,15 +56,16 @@ interface HeaderItemType{
     .height(CONTAINER_SIZE.FULL)
     .textAlign(TextAlign.Center)
     .fontSize(getDefaultBaseStyle().fontSizeSm)
-    .fontColor("#999")
+    .fontColor(IBestCalendarColor.textColor)
+}
+@Extend(Text) function clockStyle(fontColor: ResourceColor){
+    .fontSize(getDefaultBaseStyle().fontSizeSm)
+    .fontColor(fontColor)
 }
 @Component
 struct CalendarItem {
-    /**
-     * 全局公共样式
-     */
     @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
-    @State fontColor: ResourceColor = "#333"
+    @State fontColor: ResourceColor = IBestCalendarColor.textColor
     @State bgColor: ResourceColor = "transparent"
     @ObjectLink @Watch("itemChange") dayItem: DayItemType
     @Consume daysList: Array<DayItemType>
@@ -73,44 +77,49 @@ struct CalendarItem {
     @Consume selectedStyleType: SelectedStyleType
     @Consume selectedColor: string
     @Consume @Watch("itemChange") selectedList: Array<DayItemType>
+    @Consume clock: boolean
+    @Consume clockSuccessText: ResourceStr
+    @Consume isShowUnClock: boolean
+    @Consume unClockText: ResourceStr
 
     aboutToAppear(): void {
         this.itemChange()
     }
+    isToday(){
+        return this.dayItem.dateStr == dayjs().format('YYYY-MM-DD')
+    }
     itemChange(){
         let item = this.dayItem
-        let dateStr = item.dateStr
         if(item.isDisabled){
-            this.fontColor = "#ccc"
-            this.bgColor = GRAY_COLOR.GRAY_2
+            this.fontColor = GRAY_COLOR.GRAY_7
+            this.bgColor = IBestCalendarColor.disabledBg
         }else if(this.selectType == "range"){ // 范围选择
-            if(this.selectedList.length){
+            if(this.clock){
+                this.fontColor = item.isClock ? IBestCalendarColor.textWhite : item.isCurMonthDay ? this.isToday() ? this.baseStyle[this.type] : IBestCalendarColor.textColor : GRAY_COLOR.GRAY_7
+                this.bgColor = item.isClock ? this.baseStyle[this.type] : "transparent"
+            }else if(this.selectedList.length){
+                let dateStr = item.dateStr
                 let first = this.selectedList[0]
                 let last = this.selectedList[this.selectedList.length - 1]
-                this.fontColor = item.isSelected ? dateStr == first.dateStr || dateStr == last.dateStr ? this
-                    .baseStyle.default : this.selectedColor || this.baseStyle[this.type] : item.isCurMonthDay ? "#333" : "#999"
+                this.fontColor = item.isSelected ? dateStr == first.dateStr || dateStr == last.dateStr ? IBestCalendarColor.textWhite : this.selectedColor || this.baseStyle[this.type] : item.isCurMonthDay ? IBestCalendarColor.textColor : GRAY_COLOR.GRAY_7
                 this.bgColor = item.isSelected ? dateStr == first.dateStr || dateStr == last.dateStr ? this.selectedColor || this.baseStyle[this.type]
-                    : this.selectedColor ? set16ToRgb(this.selectedColor) : this.baseStyle[this.type + "Opacity"] :
-                    "transparent"
+                    : this.selectedColor ? set16ToRgb(this.selectedColor) : this.baseStyle[this.type + "Opacity"] : "transparent"
             }else{
-                this.fontColor = item.isSelected ? this.selectedColor || this.baseStyle[this.type] : item.isCurMonthDay ? "#333" : "#999"
+                this.fontColor = item.isSelected ? this.selectedColor || IBestCalendarColor.textColor : item.isCurMonthDay ? IBestCalendarColor.textColor : GRAY_COLOR.GRAY_7
                 this.bgColor = item.isSelected ? this.selectedColor ? set16ToRgb(this.selectedColor) : this.baseStyle[this.type + "Opacity"] : "transparent"
             }
         }else{
-            this.fontColor = this.dayItem.isCurMonthDay ? this.dayItem.isSelected ? this.baseStyle.default : "#333" : "#999"
-            this.bgColor = this.dayItem.isSelected ? this.selectedColor || this.baseStyle[this.type] : "transparent"
+            this.fontColor = item.isCurMonthDay ? this.dayItem.isSelected ? IBestCalendarColor.textWhite : IBestCalendarColor.textColor : GRAY_COLOR.GRAY_7
+            this.bgColor = item.isSelected ? this.selectedColor || this.baseStyle[this.type] : "transparent"
         }
     }
     getMultipleBorderRadius (): Length | BorderRadiuses{
         let borderRadius = this.baseStyle.borderRadiusMd
-        let dateStr = this.dayItem.dateStr
-        const isSelected = (dateStr: string) => this.selectedList.some(item => item.dateStr == dateStr)
-        if (isSelected(dateStr)) {
-            const prevDay = getPrevDay(dateStr)
-            const nextDay = getNextDay(dateStr)
-            const prevSelected = isSelected(prevDay)
-            const nextSelected = isSelected(nextDay)
-
+        if (this.dayItem.isSelected) {
+            const prevDay = this.daysList[this.index - 1]
+            const nextDay = this.daysList[this.index + 1]
+            const prevSelected = prevDay?.isSelected
+            const nextSelected = nextDay?.isSelected
             if (prevSelected && nextSelected) {
                 return ""
             }
@@ -166,14 +175,21 @@ struct CalendarItem {
 
     build() {
         Row() {
-            Column({ space: this.baseStyle.spaceMini }) {
+            Column({ space: this.baseStyle.spaceMini as string }) {
                 Text(this.dayItem.day)
                     .fontSize(this.baseStyle.fontSizeMd)
                     .fontColor(this.fontColor)
                 if (this.isShowLunar) {
                     Text(this.dayItem.lunarDay)
-                        .fontSize(this.baseStyle.fontSizeSm)
-                        .fontColor(this.fontColor)
+                        .clockStyle(this.fontColor)
+                }else if(this.clock && this.dayItem.isCurMonthDay && isBeforeToday(this.dayItem.date)){
+                    if(this.dayItem.isClock){
+                        Text(this.clockSuccessText)
+                            .clockStyle(this.fontColor)
+                    }else if(this.isShowUnClock){
+                        Text(this.unClockText)
+                            .clockStyle(this.fontColor)
+                    }
                 }
             }
             .width(getSizeByUnit(this.itemWidth))
@@ -199,11 +215,11 @@ export struct IBestCalendar{
     // 唯一id
     @State uniId: number = 0
     // 是否横屏
-    @StorageProp("isLandscape") isLandscape: boolean = false
+    @StorageProp("IBestIsLandscape") IBestIsLandscape: boolean = false
     /**
      * 默认选中日期
      */
-    @Prop defaultSelectedDate: Array<string> = []
+    @Prop @Watch("defaultSelectedDateChange") defaultSelectedDate: Array<string> = []
     /**
      * 单项宽度
      */
@@ -216,6 +232,87 @@ export struct IBestCalendar{
      * 是否显示农历
      */
     @Provide({allowOverride: "isShowLunar"}) isShowLunar: boolean = false
+    /**
+     * 选择类型
+     */
+    @Provide({allowOverride: "selectType"}) selectType: SelectType = "single"
+    /**
+     * 已选的日期列表
+     */
+    @Provide({allowOverride: "selectedList"}) selectedList: Array<DayItemType> = []
+    /**
+     * 选中样式
+     */
+    @Provide({allowOverride: "selectedStyleType"}) selectedStyleType: SelectedStyleType = "normal"
+    /**
+     * 选中主题颜色
+     */
+    @Provide({allowOverride: "type"}) type: ColorType = COLOR_TYPE.PRIMARY
+    /**
+     * 自定义选中颜色
+     */
+    @Provide({allowOverride: "selectedColor"}) selectedColor: string = ""
+    /**
+     * 日期区间最多可选天数 默认无限制
+     */
+    @Prop maxRange: number = -1
+    /**
+     * 最小日期
+     */
+    @Prop minDate: Date
+    /**
+     * 最大日期
+     */
+    @Prop maxDate: Date
+    /**
+     * 是否显示月份背景水印
+     */
+    @Prop isShowMark: boolean = false
+    /**
+     * 是否显示头部
+     */
+    @Prop isShowHeader: boolean = true
+    /**
+     * 是否显示底部确定按钮
+     */
+    @Prop isShowConfirmBtn: boolean = false
+    /**
+     * 确认按钮颜色
+     */
+    @Prop confirmBtnColor: ResourceColor = ""
+    /**
+     * 确认按钮文案
+     */
+    @Prop confirmBtnText: string = "确认"
+    /**
+     * 圆角
+     */
+    @Prop cornerRadius: number | string = convertDimensionsWidthUnit(10)
+    /**
+     * 打卡模式
+     * @since 2.0.1
+     */
+    @Provide({allowOverride: "clock"}) clock: boolean = false
+    /**
+     * 打卡成功提示
+     * @since 2.0.1
+     */
+    @Provide({allowOverride: "clockSuccessText"}) clockSuccessText: ResourceStr = "已打卡"
+    /**
+     * 是否显示未打卡
+     * @since 2.0.1
+     */
+    @Provide({allowOverride: "isShowUnClock"}) isShowUnClock: boolean = true
+    /**
+     * 未打卡提示
+     * @since 2.0.1
+     */
+    @Provide({allowOverride: "unClockText"}) unClockText: ResourceStr = "未打卡"
+    /**
+     * 选择回调
+     */
+    onConfirm: (value: Array<CalendarConfirmResultType>) => void = () => {}
+    controller?: CustomDialogController
     /**
      * 当前点击选择的年月日
      */
@@ -267,68 +364,31 @@ export struct IBestCalendar{
     @Provide daysList: Array<DayItemType> = []
     // 日期区域高度
     @State contentHeight: number = 0
-    /**
-     * 选择类型
-     */
-    @Provide({allowOverride: "selectType"}) selectType: SelectType = "single"
-    /**
-     * 已选的日期列表
-     */
-    @Provide({allowOverride: "selectedList"}) selectedList: Array<DayItemType> = []
-    /**
-     * 选中样式
-     */
-    @Provide({allowOverride: "selectedStyleType"}) selectedStyleType: SelectedStyleType = "normal"
-    /**
-     * 选中主题颜色
-     */
-    @Provide({allowOverride: "type"}) type: ColorType = COLOR_TYPE.PRIMARY
-    /**
-     * 自定义选中颜色
-     */
-    @Provide({allowOverride: "selectedColor"}) selectedColor: string = ""
-    /**
-     * 日期区间最多可选天数 默认无限制
-     */
-    @Prop maxRange: number = -1
-    /**
-     * 最小日期
-     */
-    @Prop minDate: Date
-    /**
-     * 最大日期
-     */
-    @Prop maxDate: Date
-    /**
-     * 是否显示月份背景水印
-     */
-    @Prop isShowMark: boolean = false
-    /**
-     * 是否显示头部
-     */
-    @Prop isShowHeader: boolean = true
-    /**
-     * 是否显示底部确定按钮
-     */
-    @Prop isShowConfirmBtn: boolean = false
-    /**
-     * 确认按钮颜色
-     */
-    @Prop confirmBtnColor: ResourceColor = this.baseStyle[this.type]
-    /**
-     * 确认按钮文案
-     */
-    @Prop confirmBtnText: string = "确认"
-    /**
-     * 圆角
-     */
-    @Prop cornerRadius: number | string = convertDimensionsWidthUnit(10)
-    /**
-     * 选择回调
-     */
-    onConfirm: (value: Array<CalendarConfirmResultType>) => void = () => {}
-    controller?: CustomDialogController
     private context: UIContext = this.getUIContext()
+
+    @Builder contentBuilder(){
+        Stack({alignContent: Alignment.Top}) {
+            Text(this.curMonth)
+                .fontSize(convertDimensionsWidthUnit(150, true))
+                .height(convertDimensionsWidthUnit(this.contentHeight))
+                .fontColor(IBestCalendarColor.markTextColor)
+                .visibility(this.isShowMark ? Visibility.Visible : Visibility.Hidden)
+            GridRow({ columns: 7, gutter: { x: 0, y: convertDimensionsWidthUnit(5) }}) {
+                ForEach(this.daysList, (item: DayItemType, index: number) => {
+                    GridCol() {
+                        CalendarItem({ dayItem: item, index: index })
+                            .enabled(!(this.clock || item.isDisabled))
+                            .onClick(() => {
+                                this.selectDate(item)
+                            })
+                    }
+                })
+            }
+            .width("100%")
+            .id(`ibest_calender_${this.uniId}`)
+        }
+        .padding(this.IBestIsLandscape ? undefined : {left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
+    }
 
     selectDateChange(){
         this.curYearMonth = dayjs(this.curSelectedDate).format('YYYY-MM')
@@ -346,12 +406,18 @@ export struct IBestCalendar{
      * 初始化本地数据
      */
     init(){
-        let list: Array<DayItemType> = []
+        if(this.clock){
+            this.selectType = "range"
+        }
         let index = this.headerList.findIndex(e => e.text == this.weekFirstDay)
         this.monthChange()
         // index 变更 headerList顺序
         this.headerList = this.headerList.slice(index).concat(this.headerList.slice(0, index))
-        // 初始化selectedList
+        this.initSelectedList()
+    }
+    // 初始化selectedList
+    initSelectedList(){
+        let list: Array<DayItemType> = []
         if(this.defaultSelectedDate.length){
             if(this.defaultSelectedDate.some(e => !dayjs(e).isValid())){
                 return
@@ -375,6 +441,18 @@ export struct IBestCalendar{
             })
         }
         this.selectedList = list
+    }
+    isSelect(dateStr: string){
+        return this.selectedList.some(e => e.dateStr == dateStr)
+    }
+    defaultSelectedDateChange(){
+        this.initSelectedList()
+        this.daysList.forEach(e => {
+            e.isSelected = this.clock ? isBeforeToday(e.date) && this.isSelect(e.dateStr) : this.isSelect(e.dateStr)
+            if(this.clock && e.isCurMonthDay){
+                e.isClock = isBeforeToday(e.date) ? this.isSelect(e.dateStr) : false
+            }
+        })
     }
     /**
      * 初始化日历列表
@@ -431,7 +509,8 @@ export struct IBestCalendar{
                 day: val.format('D'),
                 isCurMonthDay: true,
                 isSelected: this.selectedList.some((item) => item.dateStr === dateStr),
-                isDisabled: this.getIsDisabled(val)
+                isDisabled: this.getIsDisabled(val),
+                isClock: this.clock && isBeforeToday(val) ? this.selectedList.some((item) => item.dateStr === dateStr) : false
             })
             list.push(dayItem)
         }
@@ -462,7 +541,7 @@ export struct IBestCalendar{
      */
     getDateAreaHeight(){
         setTimeout(()=>{
-            this.contentHeight = getComponentsInfo(this.context, `calender_${this.uniId}`).height
+            this.contentHeight = getComponentsInfo(this.context, `ibest_calender_${this.uniId}`).height
         }, 0)
     }
     /**
@@ -511,88 +590,85 @@ export struct IBestCalendar{
      * 点击选择日期
      */
     selectDate(item: DayItemType){
-        // console.log(JSON.stringify(item))
-        if(!item.isDisabled){
-            switch(this.selectType){
-                case "single":
-                    if(item.isCurMonthDay){
-                        this.daysList.forEach(e => {
-                            e.isSelected = false
-                        })
-                        item.isSelected = true
-                        this.curSelectedDate = item.dateStr
-                    }else{
-                        this.curSelectedDate = item.dateStr
-                        this.initDaysList()
-                    }
-                    this.selectedList = [item]
-                    !this.isShowConfirmBtn && this.confirm()
-                    break
-                case "multiple":
-                    if(item.isCurMonthDay){
-                        item.isSelected = !item.isSelected
-                        if(item.isSelected){
-                            this.curSelectedDate = item.dateStr
-                        }
-                        let index = this.selectedList.findIndex(e => e.dateStr == item.dateStr)
-                        if(index == -1){
-                            this.selectedList.push(item)
-                        }else{
-                            this.selectedList.splice(index, 1)
-                        }
-                    }else{
-                        this.curSelectedDate = item.dateStr
-                        let index = this.selectedList.findIndex(e => e.dateStr == item.dateStr)
-                        if(index == -1){
-                            this.selectedList.push(item)
-                        }else{
-                            this.selectedList.splice(index, 1)
-                        }
-                        this.initDaysList()
-                    }
-                    // 排序
-                    this.selectedList.sort((a, b) => {
-                        return dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1
+        switch(this.selectType){
+            case "single":
+                if(item.isCurMonthDay){
+                    this.daysList.forEach(e => {
+                        e.isSelected = false
                     })
-                    !this.isShowConfirmBtn && this.confirm()
-                    break
-                case "range":
+                    item.isSelected = true
                     this.curSelectedDate = item.dateStr
-                    if(this.selectedList.length == 1){  // 已选起始日期 选择结束日期
-                        let days: DayItemType[] = []
-                        let isOutRange = false
-                        if(item.date.isBefore(this.selectedList[0].date)){
-                            days = this.getDateListBetween(item.date, this.selectedList[0].date)
-                            isOutRange = this.maxRange > 2 && days.length > this.maxRange
-                            if(isOutRange){
-                                days = days.slice(-this.maxRange)
-                            }
-                        }else if(item.date.isAfter(this.selectedList[0].date)){
-                            days = this.getDateListBetween(this.selectedList[0].date, item.date)
-                            isOutRange = this.maxRange > 2 && days.length > this.maxRange
-                            if(isOutRange){
-                                days = days.slice(0, this.maxRange)
-                            }
-                        }
+                }else{
+                    this.curSelectedDate = item.dateStr
+                    this.initDaysList()
+                }
+                this.selectedList = [item]
+                !this.isShowConfirmBtn && this.confirm()
+                break
+            case "multiple":
+                if(item.isCurMonthDay){
+                    item.isSelected = !item.isSelected
+                    if(item.isSelected){
+                        this.curSelectedDate = item.dateStr
+                    }
+                    let index = this.selectedList.findIndex(e => e.dateStr == item.dateStr)
+                    if(index == -1){
+                        this.selectedList.push(item)
+                    }else{
+                        this.selectedList.splice(index, 1)
+                    }
+                }else{
+                    this.curSelectedDate = item.dateStr
+                    let index = this.selectedList.findIndex(e => e.dateStr == item.dateStr)
+                    if(index == -1){
+                        this.selectedList.push(item)
+                    }else{
+                        this.selectedList.splice(index, 1)
+                    }
+                    this.initDaysList()
+                }
+                // 排序
+                this.selectedList.sort((a, b) => {
+                    return dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1
+                })
+                !this.isShowConfirmBtn && this.confirm()
+                break
+            case "range":
+                this.curSelectedDate = item.dateStr
+                if(this.selectedList.length == 1){  // 已选起始日期 选择结束日期
+                    let days: DayItemType[] = []
+                    let isOutRange = false
+                    if(item.date.isBefore(this.selectedList[0].date)){
+                        days = this.getDateListBetween(item.date, this.selectedList[0].date)
+                        isOutRange = this.maxRange > 2 && days.length > this.maxRange
                         if(isOutRange){
-                            promptAction.showToast({
-                                message: `最多选择${this.maxRange}天`,
-                                duration: 2000
-                            })
+                            days = days.slice(-this.maxRange)
                         }
-                        this.selectedList = days
-                        !this.isShowConfirmBtn && this.confirm()
-                    }else{  // 已选结束日期  重选
-                        item.isSelected = true
-                        this.selectedList = [item]
+                    }else if(item.date.isAfter(this.selectedList[0].date)){
+                        days = this.getDateListBetween(this.selectedList[0].date, item.date)
+                        isOutRange = this.maxRange > 2 && days.length > this.maxRange
+                        if(isOutRange){
+                            days = days.slice(0, this.maxRange)
+                        }
                     }
-                    this.daysList.forEach(e => e.isSelected = this.selectedList.some(f => f.dateStr == e.dateStr))
-                    if(!item.isCurMonthDay){
-                        this.initDaysList()
+                    if(isOutRange){
+                        promptAction.showToast({
+                            message: `最多选择${this.maxRange}天`,
+                            duration: 2000
+                        })
                     }
-                    break
+                    this.selectedList = days
+                    !this.isShowConfirmBtn && this.confirm()
+                }else{  // 已选结束日期  重选
+                    item.isSelected = true
+                    this.selectedList = [item]
+                }
+                this.daysList.forEach(e => e.isSelected = this.selectedList.some(f => f.dateStr == e.dateStr))
+                if(!item.isCurMonthDay){
+                    this.initDaysList()
+                }
+                break
             }
-        }
     }
     /**
      * 获取两个日期之间的所有日期
@@ -641,33 +717,42 @@ export struct IBestCalendar{
         Column(){
             Row(){
                 Row(){
-                    Image($r("app.media.arrow_left_double"))
-                        .width(convertDimensionsWidthUnit(14))
-                        .onClick(() => {
-                            this.changeYearMonth("preYear")
-                        })
-                    Image($r("app.media.arrow_left"))
-                        .width(convertDimensionsWidthUnit(14))
-                        .onClick(() => {
-                            this.changeYearMonth("preMonth")
-                        })
+                    IBestIcon({
+                        name: "arrow-double-left",
+                        iconSize: convertDimensionsWidthUnit(14),
+                        color: IBestCalendarColor.textColor
+                    }).onClick(() => {
+                        this.changeYearMonth("preYear")
+                    })
+                    IBestIcon({
+                        name: "arrow-left",
+                        iconSize: convertDimensionsWidthUnit(14),
+                        color: IBestCalendarColor.textColor
+                    }).onClick(() => {
+                        this.changeYearMonth("preMonth")
+                    })
                 }
                 Text(this.curYearMonth)
                     .fontSize(this.baseStyle.fontSizeMd)
+                    .fontColor(IBestCalendarColor.textColor)
                 Row(){
-                    Image($r("app.media.arrow_right"))
-                        .width(convertDimensionsWidthUnit(14))
-                        .onClick(() => {
-                            this.changeYearMonth("nextMonth")
-                        })
-                    Image($r("app.media.arrow_right_double"))
-                        .width(convertDimensionsWidthUnit(14))
-                        .onClick(() => {
-                            this.changeYearMonth("nextYear")
-                        })
+                    IBestIcon({
+                        name: "arrow",
+                        iconSize: convertDimensionsWidthUnit(14),
+                        color: IBestCalendarColor.textColor
+                    }).onClick(() => {
+                        this.changeYearMonth("nextMonth")
+                    })
+                    IBestIcon({
+                        name: "arrow-double-right",
+                        iconSize: convertDimensionsWidthUnit(14),
+                        color: IBestCalendarColor.textColor
+                    }).onClick(() => {
+                        this.changeYearMonth("nextYear")
+                    })
                 }
             }
-            .width('100%')
+            .width(CONTAINER_SIZE.FULL)
             .height(convertDimensionsWidthUnit(40))
             .padding({left: this.baseStyle.spaceLg, right: this.baseStyle.spaceLg})
             .justifyContent(FlexAlign.SpaceBetween)
@@ -679,46 +764,33 @@ export struct IBestCalendar{
                     }
                 }, (item: HeaderItemType) => item.text)
             }
-            .width('100%')
+            .width(CONTAINER_SIZE.FULL)
             .height(convertDimensionsWidthUnit(30))
             .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
-            Scroll() {
-                Stack({alignContent: Alignment.Top}) {
-                    Text(this.curMonth)
-                        .fontSize(convertDimensionsWidthUnit(150, true))
-                        .height(convertDimensionsWidthUnit(this.contentHeight))
-                        .fontColor(GRAY_COLOR.GRAY_2)
-                        .visibility(this.isShowMark ? Visibility.Visible : Visibility.Hidden)
-                    GridRow({ columns: 7, gutter: { x: 0, y: convertDimensionsWidthUnit(5) }}) {
-                        ForEach(this.daysList, (item: DayItemType, index: number) => {
-                            GridCol() {
-                                CalendarItem({ dayItem: item, index: index })
-                                    .onClick(() => {
-                                        this.selectDate(item)
-                                    })
-                            }
-                        })
-                    }
-                    .width("100%")
-                    .id(`calender_${this.uniId}`)
+            if(this.IBestIsLandscape){
+                Scroll() {
+                    this.contentBuilder()
                 }
+                .height('60%')
+                .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
+            }else{
+                this.contentBuilder()
             }
-            .height(this.isLandscape ? '60%' : "")
-            .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
-            Button(this.confirmBtnText)
-                .type(ButtonType.Capsule)
-                .width('90%')
-                .height(convertDimensionsWidthUnit(30))
-                .fontSize(this.baseStyle.fontSizeSm)
-                .margin({top: this.baseStyle.spaceXs})
-                .backgroundColor(this.confirmBtnColor || this.baseStyle[this.type])
-                .visibility(this.isShowConfirmBtn ? Visibility.Visible : Visibility.None)
-                .onClick(() => {
-                    this.confirm()
-                })
+            if(this.isShowConfirmBtn && !this.clock){
+                Button(this.confirmBtnText)
+                    .type(ButtonType.Capsule)
+                    .width('90%')
+                    .height(convertDimensionsWidthUnit(30))
+                    .fontSize(this.baseStyle.fontSizeSm)
+                    .margin({top: this.baseStyle.spaceXs})
+                    .backgroundColor(this.confirmBtnColor || this.baseStyle[this.type])
+                    .onClick(() => {
+                        this.confirm()
+                    })
+            }
         }
-        .width('100%')
-        .backgroundColor("#fff")
+        .width(CONTAINER_SIZE.FULL)
+        .backgroundColor(IBestCalendarColor.bgColor)
         .borderRadius({
             topLeft: this.cornerRadius,
             topRight: this.cornerRadius

@@ -5,7 +5,8 @@ import { IBestTabs } from '../tab'
 import { IBestTabController, IBestTabItem } from '../tab/index.type'
 import { IBestCascaderOption, IBestCascaderOptionInstance, IBestCascaderOptionInstanceType } from './index.type'
 import { IBestPopup } from '../popup/index'
-
+import { IBestCascaderColor } from './color'
+import { IBestIcon } from '../icon'
 @CustomDialog
 @Component
 export struct IBestCascaderContent{
@@ -14,7 +15,7 @@ export struct IBestCascaderContent{
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	// 是否横屏
-	@StorageProp("isLandscape") @Watch("getListHeight") isLandscape: boolean = false
+	@StorageProp("IBestIsLandscape") @Watch("getListHeight") IBestIsLandscape: boolean = false
 	/**
 	 * 顶部tab栏数据
 	 */
@@ -85,7 +86,7 @@ export struct IBestCascaderContent{
 		}
 	}
 	getListHeight(){
-		return this.listHeight ? getSizeByUnit(this.listHeight) : (this.isLandscape ? "60%" : convertDimensionsWidthUnit(350))
+		return this.listHeight ? getSizeByUnit(this.listHeight) : (this.IBestIsLandscape ? "60%" : convertDimensionsWidthUnit(350))
 	}
 	// 创建当前tab下的选项实例
 	createOptionsInstance(children: IBestCascaderOption[] = []): IBestCascaderOptionInstance[]{
@@ -259,6 +260,7 @@ export struct IBestCascaderContent{
 		}
 		.width("100%")
 		.alignItems(HorizontalAlign.Start)
+		.backgroundColor(IBestCascaderColor.bgColor)
 	}
 }
 
@@ -286,12 +288,13 @@ struct CascaderOptionItem{
 	build() {
 		Row(){
 			Text(this.option.text)
-				.fontColor(this.option.actived ? this.activeColor : "#333")
+				.fontColor(this.option.actived ? this.activeColor : IBestCascaderColor.textColor)
 				.fontSize(this.baseStyle.fontSizeMd)
-			Image($r("app.media.success"))
-				.width(convertDimensionsWidthUnit(18))
-				.aspectRatio(1)
-				.fillColor(this.activeColor)
+			IBestIcon({
+				name: "success",
+				iconSize: convertDimensionsWidthUnit(18),
+				color: this.activeColor
+			})
 				.visibility(this.option.actived ? Visibility.Visible : Visibility.Hidden)
 		}
 		.width("100%")

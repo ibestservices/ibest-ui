@@ -1,21 +1,24 @@
 import router from '@ohos.router';
-import { IBestButton, IBestCircleProgress } from '@ibestservices/ibest-ui';
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import { IBestButton, IBestCircleProgress, IBestNavBar } from '@ibestservices/ibest-ui';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
-import TitleBar from '../components/TitleBar';
 import { LengthMetrics } from '@kit.ArkUI';
 
 @Entry
 @Component
 struct CircleProgressPage {
     @State title: string = (router.getParams() as ComponentRouterParams).title || ''
-    @State value: number = 30
+    @State value: number = 20
 
     build() {
         Column() {
-            TitleBar({
-                title: this.title
+            IBestNavBar({
+                title: this.title,
+                isShowStatusBar: true,
+                onLeftClick: () => {
+                    router.back()
+                }
             })
             List() {
                 ListItem() {
@@ -121,6 +124,6 @@ struct CircleProgressPage {
             .layoutWeight(1)
         }
         .height(CONTAINER_SIZE.FULL)
-        .backgroundColor(BACKGROUND_COLOR.BASE)
+        .backgroundColor(modeColor.bg)
     }
 }

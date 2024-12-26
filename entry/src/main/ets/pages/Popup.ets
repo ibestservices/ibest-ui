@@ -1,28 +1,30 @@
-import { IBestCell, IBestCellGroup, IBestPopup, IBestToast } from '@ibestservices/ibest-ui'
+import {
+    IBestButton,
+    IBestCell,
+    IBestCellGroup,
+    IBestIcon,
+    IBestNavBar,
+    IBestPopup,
+    IBestToast
+} from '@ibestservices/ibest-ui'
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../assets/global.type'
-import TitleBar from '../components/TitleBar'
 import ComponentShowContainer from '../components/ComponentShowContainer'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle'
 
 @Extend(Column) function positionColStyle(bd: boolean = false){
 	.layoutWeight(1)
 	.height(75)
 	.justifyContent(FlexAlign.Center)
-	.border({width:{left: bd ? 1 : 0}, color: "#ebedf0"})
+	.border({width:{left: bd ? 1 : 0}, color: modeColor.borderColor})
 	.stateStyles({
 		normal:{
-			.backgroundColor("#fff")
+			.backgroundColor(modeColor.bg2)
 		},
 		pressed:{
-			.backgroundColor("#f5f7fa")
+			.backgroundColor(modeColor.active)
 		}
 	})
-}
-@Extend(Image) function positionImageStyle(){
-	.width(25)
-	.aspectRatio(1)
-	.fillColor("#333")
 }
 
 @Entry
@@ -38,16 +40,31 @@ struct PopupPage {
 	@State cusCloseIconVisible: boolean = false
 	@State centerCornerVisible: boolean = false
 	@State bottomCornerVisible: boolean = false
+	@State cusHeightVisible: boolean = false
 	@State eventVisible: boolean = false
 	@State safeAreaVisible: boolean = false
+	@State popupHeight: number = 150
 
 	@Builder centerBuilder() {
-		Row() {
-			Text("内容")
-				.fontSize(14)
+		Column() {
+			Text("内容").fontColor(modeColor.textColor)
 		}
 		.width("100%")
 		.aspectRatio(1)
+		.justifyContent(FlexAlign.Center)
+	}
+	@Builder cusHeightBuilder() {
+		Column() {
+			IBestButton({
+				text: "切换高度",
+				type: "primary",
+				onClickBtn: () => {
+					this.popupHeight = this.popupHeight == 150 ? 300 : 150
+				}
+			})
+		}
+		.width("100%")
+		.padding(20)
 		.justifyContent(FlexAlign.Center)
 	}
 	@Builder safeBuilder() {
@@ -63,23 +80,25 @@ struct PopupPage {
 
 	build() {
 		Column(){
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
-							Column() {
-								IBestCell({
-									title: '展示弹出层',
-									isLink: true,
-									hasBorder: false,
-									onClickCell: () => {
-										this.baseVisible = true
-									}
-								})
-							}
+							IBestCell({
+								title: '展示弹出层',
+								isLink: true,
+								hasBorder: false,
+								onClickCell: () => {
+									this.baseVisible = true
+								}
+							})
 						}
 					}
 				}
@@ -88,8 +107,10 @@ struct PopupPage {
 						IBestCellGroup({ inset: true }) {
 							Row(){
 								Column({space: 8}){
-									Image($r("app.media.arrow_up"))
-										.positionImageStyle()
+									IBestIcon({
+										name: "arrow-up",
+										iconSize: 25
+									})
 									Text("顶部弹出")
 										.fontSize(12)
 								}
@@ -98,8 +119,10 @@ struct PopupPage {
 									this.upVisible = true
 								})
 								Column({space: 8}){
-									Image($r("app.media.arrow_down"))
-										.positionImageStyle()
+									IBestIcon({
+										name: "arrow-down",
+										iconSize: 25
+									})
 									Text("底部弹出")
 										.fontSize(12)
 								}
@@ -108,8 +131,10 @@ struct PopupPage {
 									this.downVisible = true
 								})
 								Column({space: 8}){
-									Image($r("app.media.arrow_left"))
-										.positionImageStyle()
+									IBestIcon({
+										name: "arrow-left",
+										iconSize: 25
+									})
 									Text("左侧弹出")
 										.fontSize(12)
 								}
@@ -118,8 +143,10 @@ struct PopupPage {
 									this.leftVisible = true
 								})
 								Column({space: 8}){
-									Image($r("app.media.arrow_right"))
-										.positionImageStyle()
+									IBestIcon({
+										name: "arrow",
+										iconSize: 25
+									})
 									Text("右侧弹出")
 										.fontSize(12)
 								}
@@ -129,85 +156,90 @@ struct PopupPage {
 								})
 							}
 							.width(CONTAINER_SIZE.FULL)
-							.backgroundColor("#fff")
 						}
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '显示标题', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
-							Column() {
-								IBestCell({
-									title: '显示标题',
-									isLink: true,
-									onClickCell: () => {
-										this.showHeaderVisible = true
-									}
-								})
-								IBestCell({
-									title: '自定义关闭图标',
-									isLink: true,
-									hasBorder: false,
-									onClickCell: () => {
-										this.cusCloseIconVisible = true
-									}
-								})
-							}
+							IBestCell({
+								title: '显示标题',
+								isLink: true,
+								onClickCell: () => {
+									this.showHeaderVisible = true
+								}
+							})
+							IBestCell({
+								title: '自定义关闭图标',
+								isLink: true,
+								hasBorder: false,
+								onClickCell: () => {
+									this.cusCloseIconVisible = true
+								}
+							})
 						}
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '圆角弹窗', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
-							Column() {
-								IBestCell({
-									title: '圆角弹窗(居中)',
-									isLink: true,
-									onClickCell: () => {
-										this.centerCornerVisible = true
-									}
-								})
-								IBestCell({
-									title: '圆角弹窗(底部)',
-									isLink: true,
-									hasBorder: false,
-									onClickCell: () => {
-										this.bottomCornerVisible = true
-									}
-								})
-							}
+							IBestCell({
+								title: '圆角弹窗(居中)',
+								isLink: true,
+								onClickCell: () => {
+									this.centerCornerVisible = true
+								}
+							})
+							IBestCell({
+								title: '圆角弹窗(底部)',
+								isLink: true,
+								hasBorder: false,
+								onClickCell: () => {
+									this.bottomCornerVisible = true
+								}
+							})
+						}
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '动态高度', titlePaddingLeft: SPACE.MD }) {
+						IBestCellGroup({ inset: true }) {
+							IBestCell({
+								title: '动态高度',
+								isLink: true,
+								hasBorder: false,
+								onClickCell: () => {
+									this.cusHeightVisible = true
+								}
+							})
 						}
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '事件监听', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
-							Column() {
-								IBestCell({
-									title: '监听显示事件',
-									isLink: true,
-									hasBorder: false,
-									onClickCell: () => {
-										this.eventVisible = true
-									}
-								})
-							}
+							IBestCell({
+								title: '监听显示事件',
+								isLink: true,
+								hasBorder: false,
+								onClickCell: () => {
+									this.eventVisible = true
+								}
+							})
 						}
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '安全区域适配', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
-							Column() {
-								IBestCell({
-									title: '安全区域适配',
-									isLink: true,
-									hasBorder: false,
-									onClickCell: () => {
-										this.safeAreaVisible = true
-									}
-								})
-							}
+							IBestCell({
+								title: '安全区域适配',
+								isLink: true,
+								hasBorder: false,
+								onClickCell: () => {
+									this.safeAreaVisible = true
+								}
+							})
 						}
 					}
 				}
@@ -240,7 +272,6 @@ struct PopupPage {
 			IBestPopup({
 				visible: $showHeaderVisible,
 				popupWidth: 300,
-				cornerRadius: 20,
 				isShowHeader: true,
 				title: "标题",
 				contentBuilder: (): void => this.centerBuilder()
@@ -264,6 +295,13 @@ struct PopupPage {
 				popupAlign: "bottom",
 				cornerRadius: 30
 			})
+			// 动态高度
+			IBestPopup({
+				visible: $cusHeightVisible,
+				popupWidth: 300,
+				popupHeight: this.popupHeight,
+				contentBuilder: (): void => this.cusHeightBuilder()
+			})
 			// 事件监听
 			IBestPopup({
 				visible: $eventVisible,
@@ -286,6 +324,6 @@ struct PopupPage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(BACKGROUND_COLOR.BASE)
+		.backgroundColor(modeColor.bg)
 	}
 }

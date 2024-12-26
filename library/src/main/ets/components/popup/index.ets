@@ -2,7 +2,9 @@ import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { PopupAlign, PopupBaseController } from './index.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-
+import { IBestPopupColor } from './color'
+import { IBestIcon } from '../icon'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 const popupDuration = 200
 const hideDuration = 220
 
@@ -15,23 +17,23 @@ interface PopupSize{
 @Component
 struct IBestPopupBaseContent {
 	// 是否横屏
-	@StorageProp("isLandscape") @Watch("initSize") isLandscape: boolean = false
-	@StorageProp("iBestTopAvoidHeight") topAvoidHeight: number = 0
-	@StorageProp("iBestBottomBarHeight") bottomBarHeight: number = 0
+	@StorageProp("IBestIsLandscape") @Watch("initSize") IBestIsLandscape: boolean = false
+	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
+	@StorageProp("IBestBottomBarHeight") bottomBarHeight: number = 0
 	@State transX: string | number = ""
 	@State transY: string | number = ""
 	/**
 	 * 弹框显示位置
 	 */
-	@Prop popupAlign: PopupAlign = 'center'
+	@Prop popupAlign: PopupAlign
 	/**
 	 * 弹框宽度
 	 */
-	@Prop popupWidth: string | number = ""
+	@Link popupWidth: string | number
 	/**
 	 * 弹框高度
 	 */
-	@Prop popupHeight: string | number = ""
+	@Link popupHeight: string | number
 	/**
 	 * 是否显示头部
 	 */
@@ -39,7 +41,7 @@ struct IBestPopupBaseContent {
 	/**
 	 * 背板的圆角半径
 	 */
-	@Prop cornerRadius: number | string = 0
+	@Link cornerRadius: number | string
 	/**
 	 * 是否开启顶部安全区适配
 	 */
@@ -72,19 +74,19 @@ struct IBestPopupBaseContent {
 			case "left":
 			case "right":
 				return {
-					width: getSizeByUnit(this.popupWidth || (this.isLandscape ? "70%" : "60%")),
-					height: getSizeByUnit(this.popupHeight || "100%")
+					width: this.popupWidth || (this.IBestIsLandscape ? "70%" : "60%"),
+					height: this.popupHeight || "100%"
 				}
 			case "top":
 			case "bottom":
 				return {
-					width: getSizeByUnit(this.popupWidth || "100%"),
-					height: getSizeByUnit(this.popupHeight || (this.isLandscape ? "70%" : "40%"))
+					width: this.popupWidth || "100%",
+					height: this.popupHeight || (this.IBestIsLandscape ? "70%" : "40%")
 				}
 			case "center":
 				return {
-					width: getSizeByUnit(this.popupWidth || ""),
-					height: getSizeByUnit(this.popupHeight || "")
+					width: this.popupWidth || "",
+					height: this.popupHeight || ""
 				}
 		}
 	}
@@ -135,9 +137,9 @@ struct IBestPopupBaseContent {
 					this.contentBuilder()
 				}
 			}
-			.width(this.initSize().width)
-			.height(this.initSize().height)
-			.backgroundColor("#fff")
+			.width(getSizeByUnit(this.initSize().width))
+			.height(getSizeByUnit(this.initSize().height))
+			.backgroundColor(IBestPopupColor.bgColor)
 			.padding({
 				top: this.safeAreaInsetTop && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
 					== "top") ? convertDimensionsWidthUnit(this.topAvoidHeight) : 0,
@@ -188,7 +190,12 @@ export struct IBestPopup{
 	/**
 	 * 标题
 	 */
-	@Provide({allowOverride: "title"}) title: string = ""
+	@Provide({allowOverride: "title"}) title: ResourceStr = ""
+	/**
+	 * 标题字体颜色
+	 * @since 2.0.1
+     */
+	@Provide({allowOverride: "titleColor"}) titleColor: ResourceColor = IBestPopupColor.titleColor
 	/**
 	 * 底部偏移
 	 */
@@ -221,7 +228,12 @@ export struct IBestPopup{
 	/**
 	 * 自定义关闭图标
 	 */
-	@Provide({allowOverride: "closeIcon"}) closeIcon: ResourceStr = ""
+	@Provide({allowOverride: "closeIcon"}) closeIcon: ResourceStr = "cross"
+	/**
+	 * 关闭图标颜色
+	 * @since 2.0.1
+     */
+	@Provide({allowOverride: "closeIconColor"}) closeIconColor: ResourceColor = IBestPopupColor.closeIconColor
 	/**
 	 * 是否开启顶部安全区适配
 	 */
@@ -255,9 +267,9 @@ export struct IBestPopup{
 			headerBuilder: this.headerBuilder,
 			contentBuilder: this.contentBuilder,
 			popupAlign: this.popupAlign,
-			popupWidth: this.popupWidth,
-			popupHeight: this.popupHeight,
-			cornerRadius: this.cornerRadius,
+			popupWidth: $popupWidth,
+			popupHeight: $popupHeight,
+			cornerRadius: $cornerRadius,
 			close: (): void => this.close()
 		}),
 		alignment: this.popupAlign == "left" ? DialogAlignment.TopStart : this.popupAlign == "right" ?
@@ -302,24 +314,28 @@ struct PopupTitle {
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@Consume title: string
+	@Consume title: ResourceStr
+	@Consume titleColor: ResourceColor
 	@Consume isShowClose: boolean
 	@Consume closeIcon: ResourceStr
+	@Consume closeIconColor: ResourceColor
 	close: () => void = () => {}
 	build() {
 		Row(){
 			Text(this.title)
 				.fontSize(this.baseStyle.fontSizeLg)
-			Image(this.closeIcon || $r("app.media.close"))
-				.width(this.baseStyle.spaceMd)
-				.aspectRatio(1)
-				.fillColor("#ccc")
-				.visibility(this.isShowClose ? Visibility.Visible : Visibility.None)
+				.fontColor(this.titleColor)
+			IBestIcon({
+				name: this.closeIcon,
+				iconSize: convertDimensionsWidthUnit(20),
+				color: this.closeIconColor
+			})
 				.onClick(() => {
 					this.close()
 				})
+				.visibility(this.isShowClose ? Visibility.Visible : Visibility.None)
 		}
-		.width("100%")
+		.width(CONTAINER_SIZE.FULL)
 		.height(convertDimensionsWidthUnit(40))
 		.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
 		.justifyContent(FlexAlign.SpaceBetween)

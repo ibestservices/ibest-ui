@@ -1,9 +1,9 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { GRAY_COLOR } from "../../theme-chalk/src/color"
-import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { emitter } from "../../utils/EventEmitter"
-import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from "../../utils/utils"
-import { LeftBarSize, SIDEBAR_EVENT_NAME } from "./index.type"
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { emitter } from '../../utils/EventEmitter'
+import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
+import { IBestSidebarColor } from './color'
+import { COMPONENT_NAME, LeftBarSize, SIDEBAR_EVENT_NAME } from './index.type'
 @Component
 export struct IBestSideBar{
 	/**
@@ -29,19 +29,19 @@ export struct IBestSideBar{
 	/**
 	 * 背景色
      */
-	@Prop bgColor: ResourceColor = GRAY_COLOR.GRAY_1
+	@Prop bgColor: ResourceColor = IBestSidebarColor.bgColor
 	/**
 	 * 文字颜色
 	 */
-	@Prop titleColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop titleColor: ResourceColor = IBestSidebarColor.textColor
 	/**
 	 * 文字大小
 	 */
-	@Prop titleFontSize: number | string = this.baseStyle.fontSizeMd
+	@Prop titleFontSize: number | string = this.baseStyle.fontSizeMd as string
 	/**
 	 * 激活背景色
      */
-	@Prop activeBgColor: ResourceColor = this.baseStyle.default
+	@Prop activeBgColor: ResourceColor = IBestSidebarColor.activeBg
 	/**
 	 * 是否显示左侧颜色条
      */
@@ -57,7 +57,7 @@ export struct IBestSideBar{
 	/**
 	 * 激活态文字颜色
      */
-	@Prop activeFontColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop activeFontColor: ResourceColor = IBestSidebarColor.textColor
 	/**
 	 * 激活态字重
 	 */
@@ -72,7 +72,7 @@ export struct IBestSideBar{
 	onChange: (index: number) => void = () => {}
 
 	aboutToAppear(): void {
-		emitter.on(getEventName(this.groupId, SIDEBAR_EVENT_NAME.CHANGE_ACTIVE), (active: number): void => this.changeActive(active))
+		emitter.on(getEventName(COMPONENT_NAME, this.groupId, SIDEBAR_EVENT_NAME.CHANGE_ACTIVE), (active: number): void => this.changeActive(active))
 	}
 	onDidBuild(): void {
 		setTimeout(() => {
@@ -80,11 +80,11 @@ export struct IBestSideBar{
 		})
 	}
 	aboutToDisappear(): void {
-		emitter.off(getEventName(this.groupId, SIDEBAR_EVENT_NAME.CHANGE_ACTIVE), (active: number): void => this.changeActive(active))
+		emitter.off(getEventName(COMPONENT_NAME, this.groupId, SIDEBAR_EVENT_NAME.CHANGE_ACTIVE), (active: number): void => this.changeActive(active))
 	}
 
 	initItems(){
-		emitter.emit(getEventName(this.groupId, SIDEBAR_EVENT_NAME.INIT_ITEM), this.active, {
+		emitter.emit(getEventName(COMPONENT_NAME, this.groupId, SIDEBAR_EVENT_NAME.INIT_ITEM), this.active, {
 			titleColor: this.titleColor,
 			titleFontSize: this.titleFontSize,
 			activeBgColor: this.activeBgColor,

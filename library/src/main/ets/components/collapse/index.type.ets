@@ -1,4 +1,8 @@
 /**
+ * 组件名称
+ */
+export const COMPONENT_NAME = "COLLAPSE"
+/**
  * Collapse事件名称
  */
 

@@ -1,11 +1,13 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { NumberKeyboard } from '../numberKeyboard';
 import { IBestPasswordInputModel, NumberKeyboardConfig } from './index.type';
 import { FocusController } from '@ohos.arkui.UIContext';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
+import { IBestPasInputColor } from './color';
+
 @Extend(TextInput) function passwordInputStyle(id: number, inputLength: number){
 	.width(CONTAINER_SIZE.FULL)
 	.height(CONTAINER_SIZE.FULL)
@@ -96,17 +98,17 @@ export struct IBestPasswordInput {
 	 * 边框线颜色
 	 * @since 1.19.0
      */
-	@Provide({allowOverride: "bdColor"}) bdColor: string = GRAY_COLOR.GRAY_3
+	@Provide({allowOverride: "bdColor"}) bdColor: ResourceColor = IBestPasInputColor.borderColor
 	/**
 	 * 格子背景色
 	 * @since 1.19.0
      */
-	@Provide({allowOverride: "cellBgColor"}) cellBgColor: ResourceColor = "#fff"
+	@Provide({allowOverride: "cellBgColor"}) cellBgColor: ResourceColor = IBestPasInputColor.bg
 	/**
 	 * 格子内文字颜色
 	 * @since 1.19.0
      */
-	@Provide({allowOverride: "cellTextColor"}) cellTextColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Provide({allowOverride: "cellTextColor"}) cellTextColor: ResourceColor = IBestPasInputColor.textColor
 	/**
 	 * 黑点大小
 	 * @since 1.19.0
@@ -116,12 +118,12 @@ export struct IBestPasswordInput {
 	 * 明文展示时文字大小
 	 * @since 1.19.0
      */
-	@Provide({allowOverride: "textFontSize"}) textFontSize: number | string = this.baseStyle.fontSizeXl
+	@Provide({allowOverride: "textFontSize"}) textFontSize: number | string = this.baseStyle.fontSizeXl as string
 	/**
 	 * 提示文字大小
 	 * @since 1.19.0
 	 */
-	@Prop tipFontSize: number | string = this.baseStyle.fontSizeLg
+	@Prop tipFontSize: number | string = this.baseStyle.fontSizeLg as string
 	/**
 	 * 区域点击
 	 */
@@ -174,7 +176,7 @@ export struct IBestPasswordInput {
 		this.textInputController.stopEditing()
 	}
 	build() {
-		Column({ space: this.baseStyle.spaceMd }){
+		Column({ space: this.baseStyle.spaceMd as string }){
 			Stack(){
 				if(this.useSystemKeyboard){
 					TextInput({ text: $$this.value, controller: this.textInputController })

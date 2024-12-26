@@ -1,7 +1,6 @@
 import router from '@ohos.router';
-import { IBestNoticeBar, IBestToast } from '@ibestservices/ibest-ui';
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar';
+import { IBestNavBar, IBestNoticeBar, IBestToast } from '@ibestservices/ibest-ui';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 @Entry
@@ -11,14 +10,18 @@ struct NoticeBarPage {
 
 	build() {
 		Column() {
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
 						IBestNoticeBar({
-							leftIconName: "volume-o",
+							leftIcon: "volume-o",
 							text:"无论我们能活多久，我们能够享受的只有无法分割的此刻，此外别无其他。"
 						})
 					}
@@ -65,7 +68,7 @@ struct NoticeBarPage {
 				ListItem() {
 					ComponentShowContainer({ title: '自定义样式', titlePaddingLeft: SPACE.MD }) {
 						IBestNoticeBar({
-							leftIconName: "info-o",
+							leftIcon: "info-o",
 							leftIconColor: "#1989fa",
 							bgColor: "#ecf9ff",
 							text: "今人不见古时月, 今月曾经照古人。",
@@ -76,7 +79,7 @@ struct NoticeBarPage {
 				ListItem() {
 					ComponentShowContainer({ title: '垂直滚动', titlePaddingLeft: SPACE.MD }) {
 						IBestNoticeBar({
-							leftIconName: "volume-o",
+							leftIcon: "volume-o",
 							vertical: true,
 							verticalTextList: [
 							  	"今人不见古时月, 今月曾经照古人。",
@@ -91,6 +94,6 @@ struct NoticeBarPage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(BACKGROUND_COLOR.DEFAULT)
+		.backgroundColor(modeColor.bg)
 	}
 }

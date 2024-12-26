@@ -5,6 +5,7 @@ import IBestImagePreview from './src/main/ets/apis/IBestImagePreview'
 import IBestDialogUtil from './src/main/ets/apis/IBestDialog'
 import IBestNotify from './src/main/ets/apis/IBestNotify'
 import GlobalStore from './src/main/ets/utils/GlobalStore'
+import { IBestGlobalConfigType, IBestGlobalVoid } from './src/main/ets/model/Global.type'
 const init = GlobalStore.init
 const setGlobalConfig = GlobalStore.setGlobalConfig
 
@@ -21,6 +22,17 @@ export {
 	IBestDialogUtil,
 	IBestNotify
 }
+
+export type {
+	IBestGlobalConfigType
+}
+
+export const IBest: IBestGlobalVoid = {
+	init: GlobalStore.init,
+	setGlobalConfig: GlobalStore.setGlobalConfig,
+	setUIBaseStyle: setIBestUIBaseStyle
+}
+
 export { debounce, throttle } from './src/main/ets/utils/DebounceThrottle'
 
 export { IBestUIBaseStyleType } from './src/main/ets/theme-chalk/src/index.type'
@@ -30,6 +42,7 @@ export { IBestButton } from './src/main/ets/components/button/index'
 export { IBestCheckbox } from './src/main/ets/components/checkbox/index'
 
 export { IBestCheckboxGroup, CheckboxGroupContext } from './src/main/ets/components/checkboxGroup/index'
+export { IBestCheckboxGroupController } from './src/main/ets/components/checkboxGroup/index.type'
 
 export { IBestSwitch } from './src/main/ets/components/switch/index'
 
@@ -130,3 +143,5 @@ export { IBestTextEllipsis } from './src/main/ets/components/textEllipsis/index'
 
 export { IBestSideBar } from './src/main/ets/components/sideBar/index'
 export { IBestSideBarItem } from './src/main/ets/components/sideBarItem/index'
+
+export { IBestSwipeCell } from './src/main/ets/components/swipeCell/index'

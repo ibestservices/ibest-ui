@@ -1,27 +1,27 @@
 {
 	"app": {
 		"signingConfigs": [
-			//			{
-			//				"name": "default",
-			//				"type": "HarmonyOS",
-			//				"material": {
-			//					"certpath": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.cer",
-			//					"storePassword": "0000001A5CBCFE7C9A5C3044B1407F2D2A38B7EB5EA750B8E7C57F82EB3574FF64934064BF651FA8C798",
-			//					"keyAlias": "debugKey",
-			//					"keyPassword": "0000001A4923DC9F8F4D443112C743975573D6673353D1B8C8B39460F3A48D1ACDBF2965BB353239C7D9",
-			//					"profile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p7b",
-			//					"signAlg": "SHA256withECDSA",
-			//					"storeFile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p12"
-			//				}
-			//			}
+//			{
+//				"name": "default",
+//				"type": "HarmonyOS",
+//				"material": {
+//					"storePassword": "0000001DA1DDFADC7FCD4003DD09F84F49A1AC838DEECB3A787AB9D759D24CC841F0A92BA5ED6777CEBAE2EAE6",
+//					"certpath": "/Users/damengbuxing/Desktop/IBest-UI应用文件/ibest_ui_release.cer",
+//					"keyAlias": "ibest_ui_p12",
+//					"keyPassword": "0000001D0AC1868A4F028144400BB55194A7B0887F04949FFF9B52AC83A798463AC8C0B8E4FDDC752A8F4A7BED",
+//					"profile": "/Users/damengbuxing/Desktop/IBest-UI应用文件/ibest_ui_profileRelease.p7b",
+//					"signAlg": "SHA256withECDSA",
+//					"storeFile": "/Users/damengbuxing/Desktop/IBest-UI应用文件/ibest_ui_p12.p12"
+//				}
+//			}
 			{
 				"name": "default",
 				"type": "HarmonyOS",
 				"material": {
 					"certpath": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.cer",
-					"storePassword": "0000001ADD07EB1D995BB679F00D6F5423A44AC64F74579E0B64B7DFC9D4E4DE9915F8A4D046CB306E12",
+					"storePassword": "0000001BBC0BC4FA393E00A811C5A2EB1307DB9811C0B8A35C7D16B4ECA08884E8AFB971687B3E256B37CC",
 					"keyAlias": "debugKey",
-					"keyPassword": "0000001AE3D06B16B0E313ECE120A3C5C9B792678C382570A194E37CA6E086A255C6CDA925F24E7D3403",
+					"keyPassword": "0000001B09EFB63CAE99ECC53194AE4DED8CF1666BED5177FB6F83142B124B4897A86AF0230301FF0D4A1B",
 					"profile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p7b",
 					"signAlg": "SHA256withECDSA",
 					"storeFile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p12"

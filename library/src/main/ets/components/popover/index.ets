@@ -1,8 +1,8 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { IBestIcon } from '../icon'
+import { IBestPopoverColor } from './color'
 import { IBestPopoverAction, IBestPopoverController, PopoverMask } from './index.type'
 
 
@@ -19,11 +19,11 @@ export struct IBestPopover{
     /**
      * 选项文字大小
      */
-    @Provide({allowOverride: "textFontSize"}) textFontSize: string | number = this.baseStyle.fontSizeMd
+    @Provide({allowOverride: "textFontSize"}) textFontSize: string | number = this.baseStyle.fontSizeMd as string
     /**
      * 文字颜色
      */
-    @Provide({allowOverride: "textColor"}) textColor: ResourceColor = GRAY_COLOR.GRAY_8
+    @Provide({allowOverride: "textColor"}) textColor: ResourceColor = IBestPopoverColor.textColor
     /**
      * 选项高度
      */
@@ -31,7 +31,7 @@ export struct IBestPopover{
     /**
      * 选项内边距
      */
-    @Provide({allowOverride: "itemPadding"}) itemPadding: string | number = this.baseStyle.spaceMd
+    @Provide({allowOverride: "itemPadding"}) itemPadding: string | number = this.baseStyle.spaceMd as string
     /**
      * 文字对齐方式
      */
@@ -43,11 +43,11 @@ export struct IBestPopover{
     /**
      * 图标颜色
      */
-    @Provide({allowOverride: "iconColor"}) iconColor: ResourceColor = GRAY_COLOR.GRAY_8
+    @Provide({allowOverride: "iconColor"}) iconColor: ResourceColor = IBestPopoverColor.textColor
     /**
      * 分割线颜色
      */
-    @Provide({allowOverride: "dividerColor"}) dividerColor: ResourceColor = GRAY_COLOR.GRAY_3
+    @Provide({allowOverride: "dividerColor"}) dividerColor: ResourceColor = IBestPopoverColor.borderColor
     /**
      * 弹出位置
      */
@@ -59,7 +59,7 @@ export struct IBestPopover{
     /**
      * 背景色
      */
-    @Provide({allowOverride: "bgColor"}) bgColor: ResourceColor = this.baseStyle.default
+    @Provide({allowOverride: "bgColor"}) bgColor: ResourceColor = IBestPopoverColor.bgColor
     /**
      * 是否显示箭头
      */
@@ -187,14 +187,9 @@ struct PopoverContent{
         Column(){
             ForEach(this.actions, (item: IBestPopoverAction, index: number) => {
                 Row(){
-                    if(item.icon){
-                        Image(item.icon)
-                            .width(getSizeByUnit(this.iconSize))
-                            .fillColor(this.iconColor)
-                            .margin({right: this.baseStyle.spaceXs})
-                    }else if(item.iconName){
+                    if(item.icon || item.iconName){
                         IBestIcon({
-                            name: item.iconName,
+                            name: item.icon || item.iconName,
                             iconSize: this.iconSize,
                             color: this.iconColor
                         }).margin({right: this.baseStyle.spaceXs})
@@ -212,7 +207,7 @@ struct PopoverContent{
                 .padding({left: getSizeByUnit(this.itemPadding), right: getSizeByUnit(this.itemPadding)})
                 .stateStyles({
                     pressed: {
-                        .backgroundColor(GRAY_COLOR.GRAY_2)
+                        .backgroundColor(IBestPopoverColor.activeBg)
                     },
                     normal: {
                         .backgroundColor(this.bgColor)

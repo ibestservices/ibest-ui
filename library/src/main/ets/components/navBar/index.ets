@@ -1,10 +1,9 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
 import { IBestIcon } from '../icon'
-
+import { IBestNavbarColor } from './color'
 @Component
 export struct IBestNavBar{
 	@State uniId: number = 0
@@ -15,7 +14,7 @@ export struct IBestNavBar{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp("iBestTopAvoidHeight") topAvoidHeight: number = 0
+	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
 	/**
 	 * 导航栏高度
 	 */
@@ -23,7 +22,7 @@ export struct IBestNavBar{
 	/**
 	 * 导航栏背景色
      */
-	@Prop @Watch("navBarBgColorChange") navBarBgColor: ResourceColor = this.baseStyle.default
+	@Prop @Watch("navBarBgColorChange") navBarBgColor: ResourceColor = IBestNavbarColor.bgColor
 	/**
 	 * 导航栏渐变色
      */
@@ -39,17 +38,18 @@ export struct IBestNavBar{
 	/**
 	 * 标题内容
 	 */
-	@Prop title: string = ''
+	@Prop title: ResourceStr = ''
 	/**
 	 * 标题文字颜色
      */
-	@Prop titleColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop titleColor: ResourceColor = IBestNavbarColor.textColor
 	/**
 	 * 标题文字大小
      */
 	@Prop titleFontSize: number | string = convertDimensionsWidthUnit(16, true)
 	/**
 	 * 标题图标
+	 * @deprecated 请使用titleIcon
 	 */
 	@Prop titleIconName: string = ""
 	/**
@@ -59,7 +59,7 @@ export struct IBestNavBar{
 	/**
 	 * 标题图标颜色
      */
-	@Prop titleIconColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop titleIconColor: ResourceColor = IBestNavbarColor.textColor
 	/**
 	 * 标题图标大小
      */
@@ -75,11 +75,11 @@ export struct IBestNavBar{
 	/**
 	 * 二级标题
      */
-	@Prop subTitle: string = ''
+	@Prop subTitle: ResourceStr = ''
 	/**
 	 * 二级标题颜色
      */
-	@Prop subTitleColor: ResourceColor = GRAY_COLOR.GRAY_6
+	@Prop subTitleColor: ResourceColor = IBestNavbarColor.subTitleColor
 	/**
 	 * 二级标题字体大小
      */
@@ -90,16 +90,17 @@ export struct IBestNavBar{
 	@Prop isShowLeft: boolean = true
 	/**
 	 * 左侧图标名称
+	 * @deprecated 请使用leftIcon
      */
 	@Prop leftIconName: string = 'arrow-left'
 	/**
-	 * 自定义左侧图标 优先级大于leftIconName
+	 * 左侧图标
      */
-	@Prop leftIcon: ResourceStr = ""
+	@Prop leftIcon: ResourceStr = "arrow-left"
 	/**
 	 * 左侧图标颜色
      */
-	@Prop leftIconColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop leftIconColor: ResourceColor = IBestNavbarColor.textColor
 	/**
 	 * 左侧图标大小
      */
@@ -111,11 +112,11 @@ export struct IBestNavBar{
 	/**
 	 * 左侧文本内容
      */
-	@Prop leftLabel: string = ''
+	@Prop leftLabel: ResourceStr = ''
 	/**
 	 * 左侧文本颜色
      */
-	@Prop leftLabelColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop leftLabelColor: ResourceColor = IBestNavbarColor.textColor
 	/**
 	 * 左侧文本大小
      */
@@ -126,16 +127,17 @@ export struct IBestNavBar{
 	@Prop isShowRight: boolean = false
 	/**
 	 * 右侧图标名称
+	 * @deprecated 请使用rightIcon
      */
 	@Prop rightIconName: string = ''
 	/**
-	 * 自定义右侧图标 优先级大于rightIconName
+	 * 右侧图标
      */
 	@Prop rightIcon: ResourceStr = ""
 	/**
 	 * 右侧图标颜色
      */
-	@Prop rightIconColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop rightIconColor: ResourceColor = IBestNavbarColor.textColor
 	/**
 	 * 右侧图标大小
      */
@@ -147,11 +149,11 @@ export struct IBestNavBar{
 	/**
 	 * 右侧文本内容
      */
-	@Prop rightLabel: string = ''
+	@Prop rightLabel: ResourceStr = ''
 	/**
 	 * 右侧文本颜色
      */
-	@Prop rightLabelColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop rightLabelColor: ResourceColor = IBestNavbarColor.textColor
 	/**
 	 * 右侧文本大小
      */
@@ -229,24 +231,16 @@ export struct IBestNavBar{
 			}
 			Row(){
 				if(this.isShowLeft){
-					Row({space: this.baseStyle.spaceBase}){
+					Row({space: this.baseStyle.spaceBase as string}){
 						if(this.leftBuilder){
 							this.leftBuilder()
 						}else {
-							if(this.leftIcon){
-								Image(this.leftIcon)
-									.width(getSizeByUnit(this.leftIconSize))
-									.fillColor(this.leftIconColor)
-									.borderRadius(getSizeByUnit(this.leftIconRadius))
-							}else{
+							if(this.leftIcon || this.leftIconName){
 								IBestIcon({
-									name: this.leftIconName,
+									name: this.leftIcon || this.leftIconName,
 									color: this.leftIconColor,
 									iconSize: this.leftIconSize,
-									iconRadius: this.leftIconRadius,
-									onIconClick: () => {
-										this.onLeftClick()
-									}
+									iconRadius: this.leftIconRadius
 								})
 							}
 							if(this.leftLabel){
@@ -265,27 +259,17 @@ export struct IBestNavBar{
 						this.onLeftClick()
 					})
 				}
-				Column({space: this.baseStyle.spaceMini}){
+				Column({space: this.baseStyle.spaceMini as string}){
 					if(this.titleBuilder){
 						this.titleBuilder()
 					}else{
-						Row({space: this.baseStyle.spaceXs}){
-							if(this.titleIcon){
-								Image(this.titleIcon)
-									.width(getSizeByUnit(this.titleIconSize))
-									.fillColor(this.titleIconColor)
-									.borderRadius(getSizeByUnit(this.titleIconRadius))
-							}else if(this.titleIconName){
-								IBestIcon({
-									name: this.titleIconName,
-									color: this.titleIconColor,
-									iconSize: this.titleIconSize,
-									iconRadius: this.titleIconRadius,
-									onIconClick: () => {
-										this.onTitleClick()
-									}
-								})
-							}
+						Row({space: this.baseStyle.spaceXs as string}){
+							IBestIcon({
+								name: this.titleIcon || this.titleIconName,
+								color: this.titleIconColor,
+								iconSize: this.titleIconSize,
+								iconRadius: this.titleIconRadius
+							})
 							if(this.title){
 								Text(this.title)
 									.fontColor(this.titleColor)
@@ -294,11 +278,11 @@ export struct IBestNavBar{
 									.maxLines(1)
 									.textOverflow({overflow: TextOverflow.Ellipsis})
 									.fontWeight(this.titleFontWeight)
-									.onClick(() => {
-										this.onTitleClick()
-									})
 							}
 						}
+						.onClick(() => {
+							this.onTitleClick()
+						})
 						if(this.subTitle){
 							Text(this.subTitle)
 								.fontSize(getSizeByUnit(this.subTitleFontSize, true))
@@ -316,7 +300,7 @@ export struct IBestNavBar{
 				.alignItems(this.titleBuilder ? HorizontalAlign.Start : HorizontalAlign.Center)
 				.padding(this.titleBuilder ? {left: this.leftWidth, right: this.rightWidth} : 0)
 				if(this.isShowRight){
-					Row({space: this.baseStyle.spaceBase}){
+					Row({space: this.baseStyle.spaceBase as string}){
 						if(this.rightBuilder){
 							this.rightBuilder()
 						}else{
@@ -326,18 +310,11 @@ export struct IBestNavBar{
 									.fontColor(this.rightLabelColor)
 									.lineHeight(this.baseStyle.lineHeightMd)
 							}
-							if(this.rightIcon){
-								Image(this.rightIcon)
-									.width(getSizeByUnit(this.rightIconSize))
-									.fillColor(this.rightIconColor)
-							}else if(this.rightIconName){
+							if(this.rightIcon || this.rightIconName){
 								IBestIcon({
-									name: this.rightIconName,
+									name: this.rightIcon || this.rightIconName,
 									color: this.rightIconColor,
-									iconSize: this.rightIconSize,
-									onIconClick: () => {
-										this.onRightClick()
-									}
+									iconSize: this.rightIconSize
 								})
 							}
 						}
@@ -356,7 +333,7 @@ export struct IBestNavBar{
 			.justifyContent(FlexAlign.Center)
 			.backgroundColor(this.navBarBgColor)
 			.linearGradient(this.bgLinearGradient)
-			.border({width:{bottom: this.isShowBorder ? 1 : 0}, color: GRAY_COLOR.GRAY_3})
+			.border({width:{bottom: this.isShowBorder ? 1 : 0}, color: IBestNavbarColor.borderColor})
 		}
 	}
 }

@@ -1,10 +1,13 @@
-# IBest-ui
+# IBest-UI
 
 ## 简介
 
-IBest-UI是一个轻量、简单易用、可定制的鸿蒙开源UI组件库。
+IBest-UI是一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库。
 
-![IBest-UI](screenshot/IBest-UI.png)
+<div style="display: flex;justify-content: space-between;">
+    <img src="screenshot/IBest-UI-Light.png" alt="IBest-UI" width="48%">
+    <img src="screenshot/IBest-UI-Dark.png" alt="IBest-UI" width="48%">
+</div>
 
 ## 下载安装
 
@@ -38,11 +41,11 @@ https://github.com/ibestservices/ibest-ui
 在下述版本验证通过：
 ```text
 DevEco Studio 5.0.1 Release
-Build #DS-233.14475.28.36.505300
-构建版本：5.0.5.300, built on November 28, 2024
+Build #DS-233.14475.28.36.505310
+构建版本：5.0.5.310, built on December 11, 2024
 Runtime version: 17.0.12+1-b1087.25 x86_64
 VM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.
-macOS 15.1.1
+macOS 15.2
 GC: G1 Young Generation, G1 Old Generation
 Memory: 2048M
 Cores: 12
@@ -50,15 +53,15 @@ Metal Rendering is ON
 Registry:
   idea.plugins.compatible.build=IC-233.14475.28
 Non-Bundled Plugins:
-  com.alibabacloud.intellij.cosy (1.4.13)
-  com.huawei.deveco.intelligent-assistant (0.408.3)
+  com.alibabacloud.intellij.cosy (1.4.14)
+  com.huawei.deveco.intelligent-assistant (2.1.0.1)
 ```
 
 ## 开源协议
 本项目基于 Apache License 2.0，请自由地享受和参与开源。
 
 ## 贡献者
-感谢以下同学对iBest-UI做的贡献:
+感谢以下同学对IBest-UI做的贡献:
 
 <a href="https://github.com/ibestservices/ibest-ui/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=ibestservices/ibest-ui" />

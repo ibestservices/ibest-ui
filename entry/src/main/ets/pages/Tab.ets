@@ -1,15 +1,7 @@
-import {
-    IBestButton,
-    IBestTabController,
-    IBestTabItem,
-    IBestTabItemType,
-    IBestTabs,
-    IBestToast
-} from '@ibestservices/ibest-ui'
+import { IBestButton, IBestNavBar, IBestTabController, IBestTabItem, IBestTabItemType, IBestTabs, IBestToast } from '@ibestservices/ibest-ui'
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../assets/global.type'
-import TitleBar from '../components/TitleBar'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 
 @Entry
@@ -154,12 +146,16 @@ struct TabPage {
 
     build() {
         Column(){
-            TitleBar({
-                title: this.title
-            }).backgroundColor('#FFF')
+            IBestNavBar({
+                title: this.title,
+                isShowStatusBar: true,
+                onLeftClick: () => {
+                    router.back()
+                }
+            })
             List() {
                 ListItem() {
-                    ComponentShowContainer({ title: '基础用法' }) {
+                    ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
                         IBestTabs({
                             tabsList: this.tabsList,
                             currentName: $curTabName
@@ -167,7 +163,7 @@ struct TabPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '样式风格' }) {
+                    ComponentShowContainer({ title: '样式风格', titlePaddingLeft: SPACE.MD }) {
                         IBestTabs({
                             type: "card",
                             tabsList: this.tabsList,
@@ -176,7 +172,7 @@ struct TabPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '收缩布局' }) {
+                    ComponentShowContainer({ title: '收缩布局', titlePaddingLeft: SPACE.MD }) {
                         Column({space: 20}){
                             IBestTabs({
                                 tabWidthType: "auto",
@@ -205,7 +201,7 @@ struct TabPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '固定线宽' }) {
+                    ComponentShowContainer({ title: '固定线宽', titlePaddingLeft: SPACE.MD }) {
                         IBestTabs({
                             tabsList: this.tabsList,
                             isTabLineWidthFixed: true,
@@ -216,7 +212,7 @@ struct TabPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '禁用标签' }) {
+                    ComponentShowContainer({ title: '禁用标签', titlePaddingLeft: SPACE.MD }) {
                         Column({space: 20}){
                             IBestTabs({
                                 tabsList: this.tabsList2,
@@ -233,7 +229,7 @@ struct TabPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: 'change事件' }) {
+                    ComponentShowContainer({ title: 'change事件', titlePaddingLeft: SPACE.MD }) {
                         IBestTabs({
                             tabsList: this.tabsList,
                             currentName: $curTabName4,
@@ -244,7 +240,7 @@ struct TabPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '自定义标签' }) {
+                    ComponentShowContainer({ title: '自定义标签', titlePaddingLeft: SPACE.MD }) {
                         Column({space: 20}){
                             IBestTabs({
                                 tabsList: this.tabsList3,
@@ -263,7 +259,7 @@ struct TabPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: 'controller 切换' }) {
+                    ComponentShowContainer({ title: 'controller 切换', titlePaddingLeft: SPACE.MD }) {
                         Column({space: 20}){
                             IBestTabs({
                                 tabsList: this.tabsList,
@@ -283,14 +279,10 @@ struct TabPage {
             }
             .width(CONTAINER_SIZE.FULL)
             .layoutWeight(1)
-            .padding({
-                left: SPACE.SM,
-                right: SPACE.SM,
-                bottom: SPACE.SM
-            })
+            .padding({ bottom: SPACE.SM })
         }
         .width(CONTAINER_SIZE.FULL)
         .height(CONTAINER_SIZE.FULL)
-        .backgroundColor(BACKGROUND_COLOR.BASE)
+        .backgroundColor(modeColor.bg)
     }
 }

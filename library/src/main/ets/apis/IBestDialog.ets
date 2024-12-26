@@ -1,5 +1,5 @@
 import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
-import { generateId } from '../utils/utils'
+import { convertDimensionsWidthUnit, generateId } from '../utils/utils'
 import { IBestDialogView } from '../components/dialog/dialog'
 
 class IBestDialogOption {
@@ -26,7 +26,7 @@ class IBestDialogOption {
 	/**
 	 * 标题
 	 */
-	title?: string
+	title?: ResourceStr
 	/**
 	 * 标题颜色
 	 */
@@ -54,7 +54,7 @@ class IBestDialogOption {
 	/**
 	 * 文本内容，支持通过 \n 换行
 	 */
-	message?: string
+	message?: ResourceStr
 	/**
 	 * 内容区域的padding-left与padding-right值
 	 */
@@ -106,11 +106,11 @@ class IBestDialogOption {
 	/**
 	 * 确认按钮文案
 	 */
-	confirmButtonText?: string
+	confirmButtonText?: ResourceStr
 	/**
 	 * 取消按钮的文案
 	 */
-	cancelButtonText?: string
+	cancelButtonText?: ResourceStr
 	/**
 	 * 确认按钮的颜色
 	 */
@@ -239,76 +239,85 @@ class IBestDialogParams extends IBestDialogOption {
 		this.onClose = option.onClose
 	}
 }
-/**
- * 处理按钮点击
- */
-async function handleBtnClick(option: IBestDialogParams, action: 'cancel' | 'confirm') {
-	if (option.beforeClose) {
-		action == 'cancel' ? option.cancelButtonLoading = true : option.confirmButtonLoading = true
-		option.contentNode?.update(option)
-		const status = await option.beforeClose(action)
-		// console.log('status', status)
-		action == 'cancel' ? option.cancelButtonLoading = false : option.confirmButtonLoading = false
-		option.contentNode?.update(option)
-		if (!status) {
-			return
+
+@Component
+struct DialogContent{
+	@Prop option: IBestDialogParams
+	@State dialogWidth?: number | string = 0
+	aboutToAppear(): void {
+		this.dialogWidth = this.option.dialogWidth || convertDimensionsWidthUnit(320)
+	}
+	async handleBtnClick(action: 'cancel' | 'confirm') {
+		if (this.option.beforeClose) {
+			action == 'cancel' ? this.option.cancelButtonLoading = true : this.option.confirmButtonLoading = true
+			this.option.contentNode?.update(this.option)
+			const status = await this.option.beforeClose(action)
+			// console.log('status', status)
+			action == 'cancel' ? this.option.cancelButtonLoading = false : this.option.confirmButtonLoading = false
+			this.option.contentNode?.update(this.option)
+			if (!status) {
+				return
+			}
+		}
+		this.option.close(this.option.id)
+		if(action == 'confirm' && this.option.onConfirm){
+			this.option.onConfirm()
+		}
+		if(action == 'cancel' && this.option.onCancel){
+			this.option.onCancel()
 		}
 	}
-	option.close(option.id)
-	if(action == 'confirm' && option.onConfirm){
-		option.onConfirm()
-	}
-	if(action == 'cancel' && option.onCancel){
-		option.onCancel()
+
+	build() {
+		IBestDialogView({
+			titleBuilder: this.option.titleBuilder,
+			defaultBuilder: this.option.defaultBuilder,
+			footerBuilder: this.option.footerBuilder,
+			dialogWidth: $dialogWidth,
+			dialogBorderRadius: this.option.dialogBorderRadius,
+			title: this.option.title,
+			titleColor: this.option.titleColor,
+			titlePaddingTop: this.option.titlePaddingTop,
+			titlePaddingX: this.option.titlePaddingX,
+			titleLineHeight: this.option.titleLineHeight,
+			titleFontSize: this.option.titleFontSize,
+			titleTextAlign: this.option.titleTextAlign,
+			message: this.option.message,
+			messagePaddingX: this.option.messagePaddingX,
+			messagePaddingTop: this.option.messagePaddingTop,
+			messagePaddingBottom: this.option.messagePaddingBottom,
+			messageFontColor: this.option.messageFontColor,
+			messageFontSize: this.option.messageFontSize,
+			messageLineHeight: this.option.messageLineHeight,
+			messageTextAlign: this.option.messageTextAlign,
+			messageMaxHeight: this.option.messageMaxHeight,
+			theme: this.option.theme,
+			buttonSpace: this.option.buttonSpace,
+			showConfirmButton: this.option.showConfirmButton,
+			showCancelButton: this.option.showCancelButton,
+			confirmButtonText: this.option.confirmButtonText,
+			cancelButtonText: this.option.cancelButtonText,
+			confirmButtonColor: this.option.confirmButtonColor,
+			confirmButtonBgColor: this.option.confirmButtonBgColor,
+			cancelButtonColor: this.option.cancelButtonColor,
+			cancelButtonBgColor: this.option.cancelButtonBgColor,
+			buttonFontSize: this.option.buttonFontSize,
+			confirmButtonLoading: this.option.confirmButtonLoading,
+			cancelButtonLoading: this.option.cancelButtonLoading,
+			onCancel: () => {
+				this.handleBtnClick('cancel')
+			},
+			onConfirm: () => {
+				this.handleBtnClick('confirm')
+			}
+		})
 	}
 }
-
 /**
  * 默认内容 Builder
  */
 @Builder function defaultContentBuilder(option: IBestDialogParams) {
-	IBestDialogView({
-		titleBuilder: option.titleBuilder,
-		defaultBuilder: option.defaultBuilder,
-		footerBuilder: option.footerBuilder,
-		dialogWidth: option.dialogWidth,
-		dialogBorderRadius: option.dialogBorderRadius,
-		title: option.title,
-		titleColor: option.titleColor,
-		titlePaddingTop: option.titlePaddingTop,
-		titlePaddingX: option.titlePaddingX,
-		titleLineHeight: option.titleLineHeight,
-		titleFontSize: option.titleFontSize,
-		titleTextAlign: option.titleTextAlign,
-		message: option.message,
-		messagePaddingX: option.messagePaddingX,
-		messagePaddingTop: option.messagePaddingTop,
-		messagePaddingBottom: option.messagePaddingBottom,
-		messageFontColor: option.messageFontColor,
-		messageFontSize: option.messageFontSize,
-		messageLineHeight: option.messageLineHeight,
-		messageTextAlign: option.messageTextAlign,
-		messageMaxHeight: option.messageMaxHeight,
-		theme: option.theme,
-		buttonSpace: option.buttonSpace,
-		showConfirmButton: option.showConfirmButton,
-		showCancelButton: option.showCancelButton,
-		confirmButtonText: option.confirmButtonText,
-		cancelButtonText: option.cancelButtonText,
-		confirmButtonColor: option.confirmButtonColor,
-		confirmButtonBgColor: option.confirmButtonBgColor,
-		cancelButtonColor: option.cancelButtonColor,
-		cancelButtonBgColor: option.cancelButtonBgColor,
-		buttonFontSize: option.buttonFontSize,
-		confirmButtonLoading: option.confirmButtonLoading,
-		cancelButtonLoading: option.cancelButtonLoading,
-		onCancel: () => {
-			handleBtnClick(option, 'cancel')
-		},
-		onConfirm: () => {
-			handleBtnClick(option, 'confirm')
-		}
-	})
+	DialogContent({option})
 }
 
 interface DialogMapValue{
@@ -330,9 +339,9 @@ class Dialog{
 		let uiContext = windowClass.getUIContext()
 		let promptAction = uiContext.getPromptAction()
 		let params = new IBestDialogParams(option)
-		let contentNode = new ComponentContent(uiContext, wrapBuilder(defaultContentBuilder), params)
 		params.id = key
 		params.close = (id: string): void => this.close(id)
+		let contentNode = new ComponentContent(uiContext, wrapBuilder(defaultContentBuilder), params)
 		params.contentNode = contentNode
 		this.contentNodeMap.set(key, {
 			contentNode: contentNode,

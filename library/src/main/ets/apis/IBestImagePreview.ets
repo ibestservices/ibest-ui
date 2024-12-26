@@ -2,7 +2,7 @@ import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
 import { CONTAINER_SIZE } from '../theme-chalk/src/container'
 import { clamp, convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../utils/utils'
 import { getDefaultBaseStyle } from '../theme-chalk/src'
-
+import { IBestActionSheetColor } from './color'
 type IBestPreviewImgType = PixelMap | ResourceStr | DrawableDescriptor
 
 interface CenterLocation {
@@ -97,8 +97,8 @@ class IBestImagePreviewParams extends IBestImagePreviewOption {
 		this.showIndex = params?.showIndex != undefined ? params.showIndex : list.length > 1
 		this.indexPosition = params?.indexPosition || 'bottom'
 		this.indexOffset = params?.indexOffset || convertDimensionsWidthUnit(52)
-		this.indexFontColor = params?.indexFontColor != undefined ? params.indexFontColor : baseStyle.default as string
-		this.indexFontSize = params?.indexFontSize != undefined ? params.indexFontSize : convertDimensionsWidthUnit(14, true)
+		this.indexFontColor = params?.indexFontColor || IBestActionSheetColor.whiteColor
+		this.indexFontSize = params?.indexFontSize || convertDimensionsWidthUnit(14, true)
 		this.loop = params?.loop != undefined ? params.loop : true
 		this.doubleScale = params?.doubleScale != undefined ? params.doubleScale : true
 		this.closeOnClickOverlay = params?.closeOnClickOverlay != undefined ? params.closeOnClickOverlay : true

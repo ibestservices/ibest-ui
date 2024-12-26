@@ -1,10 +1,9 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensions, getSizeByUnit } from '../../utils/utils'
 import { matrix4 } from '@kit.ArkUI'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
-
+import { IBestCircleProgressColor } from './color'
 class Point {
     x: number
     y: number
@@ -56,11 +55,11 @@ export struct IBestCircleProgress{
     /**
      * 文字颜色
      */
-    @Prop textColor: ResourceColor = GRAY_COLOR.GRAY_8
+    @Prop textColor: ResourceColor = IBestCircleProgressColor.textColor
     /**
      * 文字大小
      */
-    @Prop textFontSize: number | string = this.baseStyle.fontSizeMd
+    @Prop textFontSize: number | string = this.baseStyle.fontSizeMd as string
     /**
      * 字重
      */
@@ -68,11 +67,11 @@ export struct IBestCircleProgress{
     /**
      * 进度条颜色
      */
-    @Prop color: ResourceColor = this.baseStyle.primary
+    @Prop color: ResourceColor = ""
     /**
      * 进度条背景颜色
      */
-    @Prop bgColor: ResourceColor = '#fff'
+    @Prop bgColor: ResourceColor = IBestCircleProgressColor.bgColor
     /**
      * 进度条宽度
      */
@@ -122,6 +121,10 @@ export struct IBestCircleProgress{
         }
     }
 
+    getColor(){
+        return this.color || this.baseStyle.primary
+    }
+
     build() {
         Row(){
             Circle({width: this.getSize(), height: this.getSize()})
@@ -133,7 +136,7 @@ export struct IBestCircleProgress{
             Circle({width: this.getSize(), height: this.getSize()})
                 .fill("transparent")
                 .strokeWidth(this.strokeWidth)
-                .stroke(this.color)
+                .stroke(this.getColor())
                 .strokeLineCap(LineCapStyle.Round)
                 .position({left: this.strokeWidth/2, top: this.strokeWidth/2})
                 .animatableDashArray(this.strokeDashArray)

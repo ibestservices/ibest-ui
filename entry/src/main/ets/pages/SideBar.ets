@@ -1,8 +1,7 @@
 import router from '@ohos.router';
-import { IBestSideBar, IBestSideBarItem, IBestToast } from '@ibestservices/ibest-ui'
-import { CONTAINER_SIZE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar'
-import ComponentShowContainer from '../components/ComponentShowContainer'
+import { IBestNavBar, IBestSideBar, IBestSideBarItem, IBestToast } from '@ibestservices/ibest-ui';
+import { CONTAINER_SIZE, modeColor } from '../assets/styles/BaseStyle';
+import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 @Entry
 @Component
@@ -24,9 +23,13 @@ struct SideBarPage {
 
 	build() {
 		Column(){
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			Grid() {
 				GridItem() {
 					Column(){
@@ -119,5 +122,6 @@ struct SideBarPage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
+		.backgroundColor(modeColor.bg2)
 	}
 }

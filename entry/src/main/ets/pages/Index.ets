@@ -1,10 +1,8 @@
-import { IBestToast } from '@ibestservices/ibest-ui'
 import BuildProfile from '@ibestservices/ibest-ui/BuildProfile'
 import router from '@ohos.router'
-import { BACKGROUND_COLOR,
-	BORDER_RADIUS,
-	COLOR_GRAY, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, SPACE } from '../assets/styles/BaseStyle'
+import { BORDER_RADIUS, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, modeColor, SPACE } from '../assets/styles/BaseStyle'
 import ComponentShowContainer from '../components/ComponentShowContainer'
+import GlobalStore from '../utils/global'
 
 interface ComponentPart {
 	title: string
@@ -151,10 +149,10 @@ struct Index {
 					name: 'PullRefresh 下拉刷新',
 					path: 'pages/PullRefresh'
 				},
-				// {
-				//   name: 'SwipeCell 滑动单元格',
-				//   path: 'pages/SwipeCell'
-				// }
+				{
+				  name: 'SwipeCell 滑动单元格',
+				  path: 'pages/SwipeCell'
+				}
 			]
 		},
 		{
@@ -236,9 +234,9 @@ struct Index {
 	aboutToAppear(): void {
 		// setTimeout(() => {
 		// 	router.pushUrl({
-		// 		url: 'pages/SideBar',
+		// 		url: 'pages/SwipeCell',
 		// 		params: {
-		// 			title: "SideBar 侧边导航"
+		// 			title: "SwipeCell 滑动单元格"
 		// 		}
 		// 	})
 		// }, 100)
@@ -253,9 +251,11 @@ struct Index {
 				Column({ space: SPACE.MD }) {
 					Row({ space: SPACE.MD }) {
 						Image($r("app.media.app_icon")).width(32).borderRadius(BORDER_RADIUS.BASE)
-						Text(`IBest-UI(v${BuildProfile.HAR_VERSION})`).fontSize(32)
+						Text(`IBest-UI(v${BuildProfile.HAR_VERSION})`).fontSize(32).fontColor($r("app.color.doc_text_color_2"))
 					}
-					Text(`一个轻量、可定制化主题的鸿蒙UI组件库, 目前共有组件${this.getCount()}个。`).fontSize(FONT_SIZE.MD).fontColor(COLOR_GRAY.GRAY_6)
+					Text(`一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库, 目前共有组件${this.getCount()}个。`)
+						.fontSize(FONT_SIZE.MD)
+						.fontColor($r("app.color.doc_text_color_4"))
 				}.width("100%").alignItems(HorizontalAlign.Start).padding({ left: 10 })
 			}.margin({ bottom: SPACE.MD })
 			ForEach(this.componentList, (part: ComponentPart) => {
@@ -267,10 +267,11 @@ struct Index {
 									.fontSize(FONT_SIZE.MD)
 									.fontWeight(FONT_WEIGHT.MEDIUM)
 									.textAlign(TextAlign.Start)
-									.fontColor('#34495e')
+									.fontColor($r("app.color.doc_text_color_3"))
 									.layoutWeight(1)
 								Image($r('app.media.title_back'))
 									.width(CONTAINER_SIZE.FOURTEEN)
+									.fillColor($r("app.color.doc_text_color_3"))
 									.margin({
 										right: SPACE.SM
 									})
@@ -285,7 +286,7 @@ struct Index {
 							.margin({
 								bottom: SPACE.SM
 							})
-							.backgroundColor(0xFFFFFF)
+							.backgroundColor(modeColor.bg3)
 							.stateStyles({
 								normal: {
 									.scale({
@@ -318,8 +319,7 @@ struct Index {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.padding({ top: SPACE.MD, left: SPACE.MD, right: SPACE.MD })
-		.backgroundColor(BACKGROUND_COLOR.BASE)
-		.expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM])
+		.padding({ left: SPACE.MD, right: SPACE.MD, top: GlobalStore.topAvoidHeight })
+		.backgroundColor(modeColor.bg)
 	}
 }

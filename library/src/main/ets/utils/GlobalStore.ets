@@ -5,13 +5,12 @@ import { common } from '@kit.AbilityKit';
 import { IBestGlobalConfig, IBestGlobalConfigType } from '../model/Global.type';
 import { setIBestUIBaseStyle } from '../theme-chalk/src';
 import { display } from '@kit.ArkUI';
-import mediaquery from '@ohos.mediaquery';
 // 全局存储中心
 export default class GlobalStore {
 	// windowStage
 	public static windowStage: window.WindowStage
 	// context
-	public static context: common.BaseContext
+	public static context: common.UIAbilityContext
 	// 顶部规避尺寸
 	public static topAvoidHeight: number = 0
 	// 底部导航条高度
@@ -22,7 +21,7 @@ export default class GlobalStore {
 	/**
 	 * 初始化
 	 */
-	public static init(windowStage: window.WindowStage, context: common.BaseContext){
+	public static init(windowStage: window.WindowStage, context: common.UIAbilityContext){
 		GlobalStore.windowStage = windowStage
 		GlobalStore.context = context
 		// 获取顶部和底部规避尺寸
@@ -31,6 +30,8 @@ export default class GlobalStore {
 		GlobalStore.getScreenSize()
 		// 设置旋转监听
 		GlobalStore.screenRotateListener()
+		// 监听颜色模式变化
+		GlobalStore.setColorModeListener()
 		// 注册字体
 		font.registerFont({
 			familyName: 'ibestFont',
@@ -41,13 +42,11 @@ export default class GlobalStore {
 	 * 获取规避尺寸
      */
 	private static getAvoidSize(){
-		getWindowAvoidSize(GlobalStore.context).then(res => {
-			// console.log('getWindowAvoidSize', res.topSize, res.navigationSize)
-			GlobalStore.topAvoidHeight = res.topSize
-			GlobalStore.bottomBarHeight = res.navigationSize
-			AppStorage.setOrCreate("iBestTopAvoidHeight", GlobalStore.topAvoidHeight)
-			AppStorage.setOrCreate("iBestBottomBarHeight", GlobalStore.bottomBarHeight)
-		})
+		let res = getWindowAvoidSize()
+		GlobalStore.topAvoidHeight = res.topSize
+		GlobalStore.bottomBarHeight = res.navigationSize
+		AppStorage.setOrCreate("IBestTopAvoidHeight", GlobalStore.topAvoidHeight)
+		AppStorage.setOrCreate("IBestBottomBarHeight", GlobalStore.bottomBarHeight)
 	}
 	/**
 	 * 获取屏幕尺寸
@@ -58,23 +57,38 @@ export default class GlobalStore {
 		let o = display.getDefaultDisplaySync().orientation
 		GlobalStore.screenWidth = o == 1 || o == 3 ? screenInfo.windowRect.height : screenInfo.windowRect.width
 		GlobalStore.screenHeight = o == 1 || o == 3 ? screenInfo.windowRect.width : screenInfo.windowRect.height
-		AppStorage.setOrCreate("isLandscape", o == 1 || o == 3)
+		AppStorage.setOrCreate("IBestIsLandscape", o == 1 || o == 3)
 	}
 	/**
 	 * 监听屏幕旋转
 	 */
 	private static screenRotateListener() {
-		let listener = mediaquery.matchMediaSync('(orientation: landscape)')
-		listener.on('change', () => {
-			GlobalStore.getAvoidSize()
-			GlobalStore.getScreenSize()
+		display.on("change", () => {
+			setTimeout(() => {
+				GlobalStore.getScreenSize()
+				GlobalStore.getAvoidSize()
+			}, 300)
+		})
+	}
+	/**
+	 * 监听颜色模式变化
+     */
+	private static setColorModeListener(){
+		let appContext = GlobalStore.context.getApplicationContext()
+		AppStorage.setOrCreate("IBestColorMode", GlobalStore.context.config.colorMode)
+		appContext.on('environment', {
+			onConfigurationUpdated(config) {
+				// 0 深色  1 浅色
+				AppStorage.setOrCreate("IBestColorMode", config.colorMode)
+			},
+			onMemoryLevel() {}
 		})
 	}
 	/**
 	 * 设置全局配置
 	 */
 	public static setGlobalConfig(option?: IBestGlobalConfigType){
-		AppStorage.setOrCreate("iBestGlobalConfig", new IBestGlobalConfig(option))
+		AppStorage.setOrCreate("IBestGlobalConfig", new IBestGlobalConfig(option))
 		setIBestUIBaseStyle()
 	}
 }

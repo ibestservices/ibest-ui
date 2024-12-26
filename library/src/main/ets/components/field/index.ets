@@ -2,15 +2,27 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { FieldValidateResult, FORM_EVENT_NAME, IBestFormRuleItem,
-    IBestFormSendFieldCallResult } from '../form/index.type'
-import type { IBestFieldType, ClearTriggerType, FieldTextAlign, IBestFieldValueType,
-    RequireAsteriskPositionType,
+import {
+    COMPONENT_NAME,
+    FieldValidateResult,
+    FORM_EVENT_NAME,
+    IBestFormRuleItem,
+    IBestFormSendFieldCallResult
+} from '../form/index.type'
+import type {
+    ClearTriggerType,
+    FieldTextAlign,
+    FormatTriggerType,
+    IBestFieldType,
+    IBestFieldValueType,
     LabelPositionType,
-    FormatTriggerType} from './index.type'
+    RequireAsteriskPositionType
+} from './index.type'
 import { emitter } from '../../utils/EventEmitter'
 import { runRuleValidator, runSyncRule } from './utils'
-import { convertDimensionsWidthUnit, getSizeByUnit, getEventName } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
+import { IBestFieldColor } from './color'
+import { IBestIcon } from '../icon'
 @Component
 export struct IBestField{
     /**
@@ -34,9 +46,9 @@ export struct IBestField{
      */
     @Link @Watch("valueChange") value: IBestFieldValueType
     /**
-     * 文本内容
+     * 左侧文本内容
      */
-    @Provide({allowOverride: "label"}) label: string = ""
+    @Provide({allowOverride: "label"}) label: ResourceStr = ""
     /**
      * 是否在label后加冒号
      */
@@ -56,7 +68,12 @@ export struct IBestField{
     /**
      * 输入框占位提示文字
      */
-    @Provide({allowOverride: "placeholder"}) placeholder: string = ""
+    @Provide({allowOverride: "placeholder"}) placeholder: ResourceStr = ""
+    /**
+     * 占位文字颜色
+     * @since 2.0.1
+     */
+    @Provide({allowOverride: "placeholderColor"}) placeholderColor: ResourceColor = IBestFieldColor.placeholderColor
     /**
      * 输入框类型
      */
@@ -120,7 +137,7 @@ export struct IBestField{
     /**
      * 左侧图标颜色
      */
-    @Provide({allowOverride: "leftIconColor"}) leftIconColor: ResourceColor = ""
+    @Provide({allowOverride: "leftIconColor"}) leftIconColor: ResourceColor = IBestFieldColor.labelColor
     /**
      * 右侧图标
      */
@@ -128,7 +145,7 @@ export struct IBestField{
     /**
      * 右侧图标颜色
      */
-    @Provide({allowOverride: "rightIconColor"}) rightIconColor: ResourceColor = GRAY_COLOR.GRAY_6
+    @Provide({allowOverride: "rightIconColor"}) rightIconColor: ResourceColor = IBestFieldColor.rightIconColor
     /**
      * 底部线条
      */
@@ -173,26 +190,32 @@ export struct IBestField{
      * label字体大小
      * @since 1.19.0
      */
-    @Provide({allowOverride: "labelFontSize"}) labelFontSize: string | number = this.baseStyle.fontSizeMd
+    @Provide({allowOverride: "labelFontSize"}) labelFontSize: string | number = this.baseStyle.fontSizeMd as string
     /**
      * label字体颜色
      * @since 1.19.0
      */
-    @Provide({allowOverride: "labelColor"}) labelColor: ResourceColor = GRAY_COLOR.GRAY_8
+    @Provide({allowOverride: "labelColor"}) labelColor: ResourceColor = IBestFieldColor.labelColor
     /**
      * 左侧图标大小
      * @since 1.19.0
      */
-    @Provide({allowOverride: "leftIconSize"}) leftIconSize: number | string = convertDimensionsWidthUnit(14)
+    @Provide({allowOverride: "leftIconSize"}) leftIconSize: number | string = convertDimensionsWidthUnit(18)
     /**
      * 右侧图标大小
      * @since 1.19.0
      */
-    @Provide({allowOverride: "rightIconSize"}) rightIconSize: number | string = convertDimensionsWidthUnit(14)
+    @Provide({allowOverride: "rightIconSize"}) rightIconSize: number | string = convertDimensionsWidthUnit(18)
     /**
      * 是否显示label
+     * @since 2.0.0
      */
     @Prop showLabel: boolean = true
+    /**
+     * 背景色
+     * @since 2.0.1
+     */
+    @Prop bgColor: ResourceColor = IBestFieldColor.bg2
     /**
      * 格式化函数
      */
@@ -226,35 +249,38 @@ export struct IBestField{
      */
     onRightIconClick: () => void = () => {}
 
+    private context = getContext(this)
+
     @Styles fieldStyles(){
         .width(CONTAINER_SIZE.FULL)
-        .backgroundColor(this.baseStyle.default)
         .padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
         .stateStyles({
             normal: {
-                .backgroundColor(this.baseStyle.default)
+                .backgroundColor(this.bgColor)
             },
             pressed: {
-                .backgroundColor((this.clickable || this.isLink) ? GRAY_COLOR.GRAY_2 : this.baseStyle.default)
+                .backgroundColor((this.clickable || this.isLink) ? IBestFieldColor.activeColor : IBestFieldColor.bg2)
             }
         })
         .enabled(!this.disabled)
         .opacity(this.disabled ? 0.6 : 1)
-        .onClick(() => {
-            this.onFieldClick()
+        .onTouch(event => {
+            if(event.type == TouchType.Up){
+                this.onFieldClick()
+            }
         })
     }
     @Styles fieldContentStyles(){
         .padding({ top: convertDimensionsWidthUnit(10), bottom: convertDimensionsWidthUnit(10) })
         .border({
             width: { bottom: this.hasBorder ? 1 : 0 },
-            color: GRAY_COLOR.GRAY_3
+            color: IBestFieldColor.borderColor
         })
     }
 
     aboutToAppear(): void {
         if(this.formId && this.prop){
-            emitter.emit(getEventName(this.formId, FORM_EVENT_NAME.SEND_FIELD), {
+            emitter.emit(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.SEND_FIELD), {
                 prop: this.prop,
                 validate: (rules: IBestFormRuleItem[]):Promise<void | FieldValidateResult> => this.validate(rules),
                 getValue: (): IBestFieldValueType => this.value,
@@ -266,7 +292,7 @@ export struct IBestField{
     }
     aboutToDisappear(): void {
         if(this.formId && this.prop) {
-            emitter.off(getEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (result: IBestFormSendFieldCallResult): void => this.init(result))
+            emitter.off(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (result: IBestFormSendFieldCallResult): void => this.init(result))
         }
     }
     // 初始化参数
@@ -296,7 +322,7 @@ export struct IBestField{
                 this.runRules(value, rules).then(() => {
                     if (this.status === 'failed') {
                         resolve({
-                            label: this.label,
+                            label: typeof this.label == 'string' ? this.label : this.context.resourceManager.getStringSync(this.label),
                             name: this.prop,
                             message: this.validateMessage
                         })
@@ -354,7 +380,7 @@ export struct IBestField{
         if(this.formId && this.prop){
             let rules: IBestFormRuleItem[] = this.getFilteredRule(trigger)
             if(rules.length) {
-                emitter.emit(getEventName(this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), this.prop)
+                emitter.emit(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), this.prop)
             }
         }
     }
@@ -364,7 +390,9 @@ export struct IBestField{
             Row(){
                 Row(){
                     if(this.showLabel){
-                        Label()
+                        Label({
+                            onLeftIconClick: (): void => this.onLeftIconClick()
+                        })
                     }
                     Content({
                         value: $value,
@@ -387,7 +415,9 @@ export struct IBestField{
             Column(){
                 Column(){
                     if(this.showLabel){
-                        Label()
+                        Label({
+                            onLeftIconClick: (): void => this.onLeftIconClick()
+                        })
                     }
                     Content({
                         value: $value,
@@ -417,7 +447,7 @@ struct Label{
      * 全局公共样式
      */
     @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
-    @Consume label: string
+    @Consume label: ResourceStr
     @Consume labelFontSize: number | string
     @Consume labelColor: ResourceColor
     @Consume colon: string
@@ -432,29 +462,24 @@ struct Label{
     build() {
         Row(){
             if(this.leftIcon){
-                if(this.leftIconColor){
-                    Image(this.leftIcon)
-                        .width(getSizeByUnit(this.leftIconSize))
-                        .fillColor(this.leftIconColor)
-                        .aspectRatio(1)
-                        .margin({right: this.baseStyle.spaceBase})
-                        .onClick(() => {
-                            this.onLeftIconClick()
-                        })
-                }else{
-                    Image(this.leftIcon)
-                        .width(getSizeByUnit(this.leftIconSize))
-                        .aspectRatio(1)
-                        .margin({right: this.baseStyle.spaceBase})
-                        .onClick(() => {
-                            this.onLeftIconClick()
-                        })
-                }
+                Image(this.leftIcon)
+                    .width(getSizeByUnit(this.leftIconSize))
+                    .fillColor(this.leftIconColor)
+                    .aspectRatio(1)
+                    .margin({right: this.baseStyle.spaceBase})
+                    .onClick(() => {
+                        this.onLeftIconClick()
+                    })
             }
             if(this.requireAsteriskPosition == "left"){
                 Asterisk()
             }
-            Text(this.label + (this.colon ? ":" : ""))
+            Text(){
+                Span(this.label)
+                if(this.colon){
+                    Span(":")
+                }
+            }
                 .fontSize(getSizeByUnit(this.labelFontSize, true))
                 .fontColor(this.labelColor)
                 .layoutWeight(1)
@@ -512,6 +537,7 @@ struct Content{
     @Consume rightIconColor: ResourceColor
     @Consume rightIconSize: number | string
     @Consume placeholder: string
+    @Consume placeholderColor: ResourceColor
     @Consume disabled: boolean
     @Consume readOnly: boolean
     @Consume clearable: boolean
@@ -602,9 +628,11 @@ struct Content{
                         TextArea({ text: $$this.value, placeholder: this.placeholder })
                             .inputStyle()
                             .fontSize(this.baseStyle.fontSizeMd)
+                            .fontColor(IBestFieldColor.inputColor)
                             .placeholderFont({
                                 size: this.baseStyle.fontSizeMd
                             })
+                            .placeholderColor(this.placeholderColor)
                             .constraintSize({ minHeight: convertDimensionsWidthUnit(this.rows * 20) })
                             .lineHeight(this.baseStyle.lineHeightMd)
                             .maxLength(this.maxlength)
@@ -633,9 +661,11 @@ struct Content{
                         TextInput({ text: $$this.value, placeholder: this.placeholder })
                             .inputStyle()
                             .fontSize(this.baseStyle.fontSizeMd)
+                            .fontColor(IBestFieldColor.inputColor)
                             .placeholderFont({
                                 size: this.baseStyle.fontSizeMd
                             })
+                            .placeholderColor(this.placeholderColor)
                             .showPasswordIcon(this.showPasswordIcon)
                             .height(this.baseStyle.lineHeightMd)
                             .lineHeight(this.baseStyle.lineHeightMd)
@@ -666,14 +696,15 @@ struct Content{
                     }
                     // 清除图标
                     if (this.clearable && this.value && (this.clearTrigger == 'always' || this.isFocus)) {
-                        Image($r("app.media.icon_clear"))
-                            .width(getSizeByUnit(this.rightIconSize))
-                            .aspectRatio(1)
-                            .margin({ left: this.baseStyle.spaceBase })
+                        IBestIcon({
+                            name: 'clear',
+                            iconSize: this.rightIconSize
+                        })
                             .onClick(() => {
                                 this.value = ''
                                 this.onClear()
                             })
+                            .margin({ left: this.baseStyle.spaceBase })
                     }
                 }
                 // 按钮
@@ -693,10 +724,14 @@ struct Content{
                 }
                 // link箭头
                 if(this.isLink){
-                    Image($r("app.media.arrow_right"))
-                        .width(getSizeByUnit(this.rightIconSize))
-                        .aspectRatio(1)
-                        .fillColor(this.rightIconColor)
+                    IBestIcon({
+                        name: "arrow",
+                        iconSize: this.rightIconSize,
+                        color: this.rightIconColor
+                    })
+                        .onClick(() => {
+                            this.onFieldClick()
+                        })
                         .margin({left: this.baseStyle.spaceBase})
                 }
             }

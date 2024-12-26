@@ -1,7 +1,6 @@
 import router from '@ohos.router';
-import { IBestCell, IBestCellGroup, IBestNumberKeyboard } from '@ibestservices/ibest-ui';
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar'
+import { IBestCell, IBestCellGroup, IBestNavBar, IBestNumberKeyboard } from '@ibestservices/ibest-ui';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import { ComponentRouterParams } from '../assets/global.type';
 
 @Entry
@@ -24,9 +23,13 @@ struct NumberKeyboardPage {
 	@State value6: string = ''
 	build() {
 		Column() {
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					IBestCellGroup({ inset: true }) {
@@ -143,6 +146,6 @@ struct NumberKeyboardPage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(BACKGROUND_COLOR.BASE)
+		.backgroundColor(modeColor.bg)
 	}
 }

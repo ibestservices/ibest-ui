@@ -1,8 +1,8 @@
 import router from '@ohos.router';
-import { IBestCell, IBestButton } from '@ibestservices/ibest-ui';
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar'
-import ComponentShowContainer from '../components/ComponentShowContainer'
+import { IBestButton, IBestCell, IBestDialogUtil, IBestNavBar, IBestSwipeCell,
+	IBestToast } from '@ibestservices/ibest-ui';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
+import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 
 
@@ -21,38 +21,73 @@ struct SwipeCellPage {
 		IBestButton({
 			type: 'primary',
 			text: '选择',
-			square: true
+			square: true,
+			onClickBtn: () => {
+				IBestToast.show("选择")
+			}
 		})
 	}
 	@Builder rightContent(){
 		IBestButton({
 			type: 'primary',
 			text: '编辑',
-			square: true
+			square: true,
+			onClickBtn: () => {
+				IBestToast.show("编辑")
+			}
 		})
 		IBestButton({
 			type: 'danger',
 			text: '删除',
-			square: true
+			square: true,
+			onClickBtn: () => {
+				IBestToast.show("删除")
+			}
 		})
 	}
 
 	build() {
 		Column() {
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
-						// IBestSwipeCell({
-						// 	defaultContent: this.cellContent,
-						// 	leftContent: this.leftContent,
-						// 	rightContent: this.rightContent,
-						// 	onContentClick: () => {
-						//
-						// 	}
-						// })
+						IBestSwipeCell({
+							defaultContent: this.cellContent,
+							leftContent: this.leftContent,
+							rightContent: this.rightContent
+						})
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '异步关闭', titlePaddingLeft: SPACE.XS }) {
+						IBestSwipeCell({
+							defaultContent: this.cellContent,
+							rightContent: this.rightContent,
+							beforeClose: (position) => {
+								if(position == 'center'){
+									return true
+								}
+								return new Promise((resolve) => {
+									IBestDialogUtil.open({
+										message: '确定删除吗?',
+										showCancelButton: true,
+										onConfirm: () => {
+											resolve(true)
+										},
+										onCancel: () => {
+											resolve(false)
+										}
+									})
+								})
+							}
+						})
 					}
 				}
 			}
@@ -60,6 +95,6 @@ struct SwipeCellPage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(BACKGROUND_COLOR.BASE)
+		.backgroundColor(modeColor.bg)
 	}
 }

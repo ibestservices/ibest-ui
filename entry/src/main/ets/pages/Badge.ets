@@ -1,8 +1,7 @@
 import router from '@ohos.router';
-import { IBestBadge } from '@ibestservices/ibest-ui'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar'
-import ComponentShowContainer from '../components/ComponentShowContainer'
+import { IBestBadge, IBestNavBar } from '@ibestservices/ibest-ui';
+import { COLOR_GRAY, CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
+import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
 @Entry
 @Component
@@ -13,13 +12,17 @@ struct BadgePage {
 			.width(40)
 			.height(40)
 			.borderRadius(5)
-			.backgroundColor("#f2f3f5")
+			.backgroundColor(COLOR_GRAY.GRAY_2)
 	}
 	build() {
 		Column() {
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }){
@@ -50,6 +53,7 @@ struct BadgePage {
 								Text("查看信息")
 							}
 						}
+						.padding({ right: SPACE.SM, top: SPACE.SM, bottom: SPACE.SM })
 					}
 				}
 				ListItem() {
@@ -74,6 +78,7 @@ struct BadgePage {
 								this.badgeContent()
 							}
 						}
+						.padding({ right: SPACE.SM, top: SPACE.SM, bottom: SPACE.SM })
 					}
 				}
 				ListItem() {
@@ -98,6 +103,7 @@ struct BadgePage {
 								this.badgeContent()
 							}
 						}
+						.padding({ right: SPACE.SM, top: SPACE.SM, bottom: SPACE.SM })
 					}
 				}
 				ListItem() {
@@ -122,6 +128,7 @@ struct BadgePage {
 								this.badgeContent()
 							}
 						}
+						.padding(SPACE.SM)
 					}
 				}
 			}
@@ -134,6 +141,6 @@ struct BadgePage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(BACKGROUND_COLOR.DEFAULT)
+		.backgroundColor(modeColor.bg2)
 	}
 }

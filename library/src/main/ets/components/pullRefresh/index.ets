@@ -1,10 +1,10 @@
 import { IBestRefreshContentParams, PullRefreshStatus } from './index.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestLoading } from '../loading'
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
+import { IBestPullRefreshColor } from './color'
 @Component
 export struct IBestPullRefresh {
 	/**
@@ -266,11 +266,11 @@ struct TextTip{
 		Row({space: convertDimensionsWidthUnit(5)}){
 			if(this.refreshStatus == "loading") {
 				IBestLoading({
-					loadingSize: this.baseStyle.fontSizeMd
+					loadingSize: this.baseStyle.fontSizeMd as string
 				})
 			}
 			Text(this.getStatusText())
-				.fontColor(GRAY_COLOR.GRAY_6)
+				.fontColor(IBestPullRefreshColor.textColor)
 				.fontSize(this.baseStyle.fontSizeMd)
 		}
 	}

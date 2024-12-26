@@ -1,0 +1,60 @@
+{
+	"color": [
+		{
+			"name": "ibest_text_color",
+			"value": "#f5f5f5"
+		},
+		{
+			"name": "ibest_text_color_2",
+			"value": "#707070"
+		},
+		{
+			"name": "ibest_text_color_3",
+			"value": "#4d4d4d"
+		},
+		{
+			"name": "ibest_border_color",
+			"value": "#3a3a3c"
+		},
+		{
+			"name": "ibest_active_color",
+			"value": "#3a3a3c"
+		},
+		{
+			"name": "ibest_background",
+			"value": "$color:ibest_black"
+		},
+		{
+			"name": "ibest_background_2",
+			"value": "#1c1c1e"
+		},
+		{
+			"name": "ibest_background_3",
+			"value": "#37363b"
+		},
+		{
+			"name": "ibest_calendar_month_mark_color",
+			"value": "#2a2a2c"
+		},
+		{
+			"name": "ibest_number_keyboard_background",
+			"value": "$color:ibest_gray_8"
+		},
+		{
+			"name": "ibest_number_keyboard_key_background",
+			"value": "$color:ibest_gray_7"
+		},
+		{
+			"name": "ibest_number_keyboard_key_active_color",
+			"value": "$color:ibest_gray_6"
+		},
+		{
+			"name": "ibest_slider_inactive_background",
+			"value": "$color:ibest_background_3"
+		},
+		{
+			"name": "ibest_switch_background",
+			"value": "#272729"
+		}
+	]
+}

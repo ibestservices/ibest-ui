@@ -1,3 +1,6 @@
+import { IBestUIBaseStyleType } from "../theme-chalk/src/index.type"
+import { window } from "@kit.ArkUI"
+import { common } from "@kit.AbilityKit"
 /**
  * 加载图标类型
  */
@@ -56,4 +59,21 @@ export class IBestGlobalConfig extends IBestGlobalConfigType {
         this.unit = option?.unit || "vp"
         this.fontUnit = option?.fontUnit || "fp"
     }
+}
+
+export interface IBestGlobalVoid{
+    /**
+     * 初始化组件库
+     */
+    init: (windowStage: window.WindowStage, context: common.UIAbilityContext) => void
+    /**
+     * 设置全局配置
+     * @param option
+     */
+    setGlobalConfig: (option?: IBestGlobalConfigType) => void
+    /**
+     * 设置全局主题样式
+     * @param styleData
+     */
+    setUIBaseStyle: (styleData?: Partial<IBestUIBaseStyleType>) => void
 }

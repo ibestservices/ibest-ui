@@ -1,8 +1,9 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { GRAY_COLOR } from "../../theme-chalk/src/color"
-import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
-import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { convertDimensionsWidthUnit, getSizeByUnit } from "../../utils/utils"
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { GRAY_COLOR } from '../../theme-chalk/src/color'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
+import { IBestProgressColor } from './color'
 @Component
 export struct IBestProgress{
 	/**
@@ -20,7 +21,7 @@ export struct IBestProgress{
 	/**
 	 * 进度条颜色
      */
-	@Prop color: ResourceColor = this.baseStyle.primary
+	@Prop color: ResourceColor = ""
 	/**
 	 * 进度条渐变色
      */
@@ -28,7 +29,7 @@ export struct IBestProgress{
 	/**
 	 * 进度条背景色
      */
-	@Prop bgColor: ResourceColor = GRAY_COLOR.GRAY_3
+	@Prop bgColor: ResourceColor = IBestProgressColor.bgColor
 	/**
 	 * 是否显示进度条文字
      */
@@ -40,11 +41,11 @@ export struct IBestProgress{
 	/**
 	 * 文字颜色
      */
-	@Prop textColor: ResourceColor = GRAY_COLOR.GRAY_8
+	@Prop textColor: ResourceColor = IBestProgressColor.textColor
 	/**
 	 * 文字大小
      */
-	@Prop textFontSize: number | string = this.baseStyle.fontSizeMd
+	@Prop textFontSize: number | string = this.baseStyle.fontSizeMd as string
 	/**
 	 * 是否置灰
      */
@@ -68,7 +69,7 @@ export struct IBestProgress{
 		this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value
 	}
 	getColor(){
-		return this.inactive ? GRAY_COLOR.GRAY_5 : this.color
+		return this.inactive ? GRAY_COLOR.GRAY_5 : (this.color || this.baseStyle.primary)
 	}
 	getTextColor(){
 		return this.inactive ? GRAY_COLOR.GRAY_5 : this.textColor
@@ -85,7 +86,7 @@ export struct IBestProgress{
 					if(this.showText && this.textInside && this.value){
 						Text(this.format ? this.format(this.value) : this.value + "%")
 							.fontSize(getSizeByUnit(this.textFontSize, true))
-							.fontColor(this.baseStyle.default)
+							.fontColor(IBestProgressColor.whiteColor)
 							.margin({right: this.baseStyle.spaceXs})
 					}
 				}

@@ -1,7 +1,12 @@
-import { IBestDatePicker, IBestDatePickerResultType, IBestPickerOption, IBestToast } from '@ibestservices/ibest-ui'
-import TitleBar from '../components/TitleBar'
+import {
+    IBestDatePicker,
+    IBestDatePickerResultType,
+    IBestNavBar,
+    IBestPickerOption,
+    IBestToast
+} from '@ibestservices/ibest-ui'
 import ComponentShowContainer from '../components/ComponentShowContainer'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle'
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle'
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../assets/global.type'
 
@@ -21,9 +26,13 @@ struct DatePickerPage {
 	}
 	build() {
 		Column() {
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SM, card: true }) {
@@ -99,6 +108,6 @@ struct DatePickerPage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(BACKGROUND_COLOR.BASE)
+		.backgroundColor(modeColor.bg)
 	}
 }

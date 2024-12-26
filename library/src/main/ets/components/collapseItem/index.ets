@@ -1,10 +1,10 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
-import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { emitter } from '../../utils/EventEmitter'
 import { convertDimensionsWidthUnit, getComponentsInfo, getEventName, getSizeByUnit } from '../../utils/utils'
-import { COLLAPSE_EVENT_NAME } from '../collapse/index.type'
+import { IBestCollapseColor } from '../collapse/color'
+import { COLLAPSE_EVENT_NAME, COMPONENT_NAME } from '../collapse/index.type'
 import { IBestIcon } from '../icon'
 
 @Component
@@ -32,7 +32,7 @@ export struct IBestCollapseItem {
     /**
      * 标题栏左侧图标颜色
      */
-    @Prop iconColor: ResourceStr = GRAY_COLOR.GRAY_8
+    @Prop iconColor: ResourceColor = IBestCollapseColor.iconColor
     /**
      * 标题栏左侧图标大小
      */
@@ -40,27 +40,27 @@ export struct IBestCollapseItem {
     /**
      * 标题
      */
-    @Prop title: string = ""
+    @Prop title: ResourceStr = ""
     /**
      * 标题文字颜色
      */
-    @Prop titleColor: ResourceStr = GRAY_COLOR.GRAY_8
+    @Prop titleColor: ResourceColor = IBestCollapseColor.titleColor
     /**
      * 标题文字大小
      */
-    @Prop titleFontSize: number | string = this.baseStyle.fontSizeMd
+    @Prop titleFontSize: number | string = this.baseStyle.fontSizeMd as string
     /**
      * 标题栏右侧内容
      */
-    @Prop value: string = ""
+    @Prop value: ResourceStr = ""
     /**
      * 标题右侧文字颜色
      */
-    @Prop valueColor: ResourceStr = GRAY_COLOR.GRAY_6
+    @Prop valueColor: ResourceColor = IBestCollapseColor.valueColor
     /**
      * 标题右侧文字大小
      */
-    @Prop valueFontSize: number | string = this.baseStyle.fontSizeMd
+    @Prop valueFontSize: number | string = this.baseStyle.fontSizeMd as string
     /**
      * 是否显示内边框
      */
@@ -89,13 +89,13 @@ export struct IBestCollapseItem {
         this.uniId = this.getUniqueId()
         this.getContentHeight()
         if(this.groupId){
-            emitter.emit(getEventName(this.groupId, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME), this.name, this.disabled || this.readOnly)
-            emitter.on(getEventName(this.groupId, COLLAPSE_EVENT_NAME.INIT_ITEM), (activeNames: string | string[]): void => this.changeState(activeNames))
+            emitter.emit(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME), this.name, this.disabled || this.readOnly)
+            emitter.on(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.INIT_ITEM), (activeNames: string | string[]): void => this.changeState(activeNames))
         }
     }
     aboutToDisappear(): void {
         if(this.groupId){
-            emitter.off(getEventName(this.groupId, COLLAPSE_EVENT_NAME.INIT_ITEM), (activeNames: string | string[]): void => this.changeState(activeNames))
+            emitter.off(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.INIT_ITEM), (activeNames: string | string[]): void => this.changeState(activeNames))
         }
     }
     getIsDisabled(){
@@ -119,7 +119,7 @@ export struct IBestCollapseItem {
 
     toggle(){
         this.isExpand = !this.isExpand
-        emitter.emit(getEventName(this.groupId, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE), this.name, this.isExpand)
+        emitter.emit(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE), this.name, this.isExpand)
     }
 
     build() {
@@ -144,11 +144,8 @@ export struct IBestCollapseItem {
                 }
                 IBestIcon({
                     name: "arrow-down",
-                    iconSize: this.baseStyle.fontSizeMd,
-                    color: GRAY_COLOR.GRAY_6,
-                    onIconClick: () => {
-                        this.toggle()
-                    }
+                    iconSize: this.baseStyle.fontSizeMd as string,
+                    color: IBestCollapseColor.rightIconColor
                 })
                     .margin({left: this.baseStyle.spaceBase})
                     .rotate({ z:1, angle: this.isExpand ? -180 : 0 })
@@ -157,10 +154,10 @@ export struct IBestCollapseItem {
             .padding({left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd, top: this.baseStyle.spaceSm, bottom: this.baseStyle.spaceSm})
             .stateStyles({
                 pressed:{
-                    .backgroundColor(GRAY_COLOR.GRAY_2)
+                    .backgroundColor(IBestCollapseColor.activeBg)
                 },
                 normal:{
-                    .backgroundColor(this.baseStyle.default)
+                    .backgroundColor(IBestCollapseColor.bgColor)
                 }
             })
             .enabled(!this.getIsDisabled())
@@ -172,7 +169,7 @@ export struct IBestCollapseItem {
                 Row(){
                     Divider()
                         .height(1)
-                        .color(GRAY_COLOR.GRAY_3)
+                        .color(IBestCollapseColor.borderColor)
                         .position({left: 0, top: "-" + this.baseStyle.spaceSm as Dimension})
                     if(this.defaultBuilder){
                         this.defaultBuilder()
@@ -192,10 +189,10 @@ export struct IBestCollapseItem {
                 Divider()
                     .width(`calc(100% - ${this.baseStyle.spaceMd} - ${this.baseStyle.spaceMd})`)
                     .height(1)
-                    .color(GRAY_COLOR.GRAY_3)
+                    .color(IBestCollapseColor.borderColor)
                     .position({left: this.baseStyle.spaceMd as Dimension, top: 0})
             }
         }
-        .backgroundColor(this.baseStyle.default)
+        .backgroundColor(IBestCollapseColor.bgColor)
     }
 }

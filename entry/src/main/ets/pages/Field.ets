@@ -1,7 +1,14 @@
-import { IBestButton, IBestCellGroup, IBestField, IBestRadio, IBestRadioGroup, IBestToast} from '@ibestservices/ibest-ui'
-import TitleBar from '../components/TitleBar';
+import {
+    IBestButton,
+    IBestCellGroup,
+    IBestField,
+    IBestNavBar,
+    IBestRadio,
+    IBestRadioGroup,
+    IBestToast
+} from '@ibestservices/ibest-ui';
 import ComponentShowContainer from '../components/ComponentShowContainer';
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import { LengthMetrics, router } from '@kit.ArkUI';
 import { ComponentRouterParams } from '../assets/global.type';
 
@@ -47,12 +54,10 @@ struct FieldPage {
     }
     @Builder radioContent() {
         IBestRadioGroup({
+            active: $value22,
             group: 'group1',
-            onChange: val => {
-                console.log('group1', val)
-            }
-        })
-        Flex({wrap: FlexWrap.Wrap, space: {main: LengthMetrics.vp(20), cross: LengthMetrics.vp(20)}}){
+            placeDirection: Axis.Horizontal
+        }){
             IBestRadio({
                 label: '单选框1',
                 name: '1',
@@ -64,7 +69,6 @@ struct FieldPage {
                 group: 'group1'
             })
         }
-        .width("100%")
     }
 
     sendCode() {
@@ -87,9 +91,13 @@ struct FieldPage {
     }
     build() {
         Column() {
-            TitleBar({
-                title: this.title
-            }).backgroundColor('#FFF')
+            IBestNavBar({
+                title: this.title,
+                isShowStatusBar: true,
+                onLeftClick: () => {
+                    router.back()
+                }
+            })
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
@@ -339,6 +347,6 @@ struct FieldPage {
         }
         .width(CONTAINER_SIZE.FULL)
         .height(CONTAINER_SIZE.FULL)
-        .backgroundColor(BACKGROUND_COLOR.BASE)
+        .backgroundColor(modeColor.bg)
     }
 }

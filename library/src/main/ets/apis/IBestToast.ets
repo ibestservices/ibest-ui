@@ -1,15 +1,15 @@
 import { ComponentContent, PromptAction, UIObserver, window } from '@kit.ArkUI'
+import { IBestIcon } from '../components/icon'
 import { IBestLoading } from '../components/loading'
 import { LoadingIconType, WordBreakType } from '../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src/index'
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type'
-import { debounce } from '../utils/DebounceThrottle'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../utils/utils'
 class LoadingOption{
     /**
      * 展示文本
      */
-    message?: string
+    message?: ResourceStr
     /**
      * 显示时长
      */
@@ -64,19 +64,13 @@ class ToastParams extends ToastOption{
         this.duration = typeof value?.duration != "undefined" ? value.duration : 1500
         this.wordBreak = value?.wordBreak || "normal"
         this.icon = value?.icon
-        this.iconWidth = value?.iconWidth
+        this.iconWidth = value?.iconWidth || convertDimensionsWidthUnit(36)
         this.isShowMask = value?.isShowMask || false
         this.loadingType = value?.loadingType || "circular"
         this.position = value?.position || "center"
         this.offsetY = value?.offsetY || 0
         this.onOpened = value?.onOpened
     }
-}
-
-@Extend(Image) function imageStyle(width: number | string | undefined){
-    .width(width ? getSizeByUnit(width) : convertDimensionsWidthUnit(36))
-    .aspectRatio(1)
-    .margin({bottom: convertDimensionsWidthUnit(10)})
 }
 
 @Component
@@ -89,23 +83,27 @@ struct defaultContent{
     build() {
         Column(){
             if(this.option.icon){
-                Image(this.option.icon).imageStyle(this.option.iconWidth)
+                Image(this.option.icon)
+                    .width(getSizeByUnit(this.option.iconWidth || ""))
+                    .aspectRatio(1)
+                    .margin({bottom: this.baseStyle.spaceXs})
             }else if(this.option.type){
                 if(this.option.type == "loading"){
                     IBestLoading({
                         loadingIconType: this.option.loadingType,
                         loadingSize: convertDimensionsWidthUnit(20),
                         loadingStrokeWidth: 2
-                    }).margin({bottom: convertDimensionsWidthUnit(10)})
+                    }).margin({bottom: this.baseStyle.spaceXs})
                 }else{
-                    Image(this.option.type == "success" ? $r("app.media.success") : this.option.type ==
-                        "warning" ? $r("app.media.icon_warn") :$r("app.media.icon_cuo"))
-                        .imageStyle(this.option.iconWidth)
-                        .fillColor("#fff")
+                    IBestIcon({
+                        name: this.option.type == "success" ? "success" : this.option.type == "warning" ? "fail" : "cross",
+                        iconSize: this.option.iconWidth,
+                        color: $r("app.color.ibest_white")
+                    }).margin({bottom: this.baseStyle.spaceXs})
                 }
             }
             Text(this.option.message)
-                .fontColor('#fff')
+                .fontColor($r("app.color.ibest_white"))
                 .fontSize(this.baseStyle.fontSizeMd)
                 .wordBreak(this.option.wordBreak == "normal" ? WordBreak.NORMAL : this.option.wordBreak == "break-all" ? WordBreak.BREAK_ALL : WordBreak.BREAK_WORD)
         }
@@ -212,11 +210,11 @@ class Toast{
         }
         this.open(opt)
     }
-    private autoHide(){
+    private async autoHide(){
         if(Toast._instance === null || Toast._instance.loadingDialog === null){
             return
         }
-        Toast._instance.promptAction?.closeCustomDialog(Toast._instance.loadingDialog)
+        await Toast._instance.promptAction?.closeCustomDialog(Toast._instance.loadingDialog)
         Toast._instance.loadingDialog?.dispose()
         Toast._instance.uiObserver?.off("routerPageUpdate")
         clearTimeout(Toast._instance.timer)

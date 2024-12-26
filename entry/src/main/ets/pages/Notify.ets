@@ -1,8 +1,7 @@
 import router from '@ohos.router';
-import { IBestNotify, IBestCell, IBestCellGroup } from '@ibestservices/ibest-ui'
-import ComponentShowContainer from '../components/ComponentShowContainer'
-import { BACKGROUND_COLOR, CONTAINER_SIZE, SPACE } from '../assets/styles/BaseStyle';
-import TitleBar from '../components/TitleBar'
+import { IBestCell, IBestCellGroup, IBestNavBar, IBestNotify } from '@ibestservices/ibest-ui';
+import ComponentShowContainer from '../components/ComponentShowContainer';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import { ComponentRouterParams } from '../assets/global.type';
 
 @Entry
@@ -22,9 +21,13 @@ struct NotifyPage {
 
 	build() {
 		Column() {
-			TitleBar({
-				title: this.title
-			}).backgroundColor('#FFF')
+			IBestNavBar({
+				title: this.title,
+				isShowStatusBar: true,
+				onLeftClick: () => {
+					router.back()
+				}
+			})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
@@ -109,7 +112,7 @@ struct NotifyPage {
 								onClickCell: () => {
 									IBestNotify.show({
 										message: '如果你爱上了某个星球的一朵花。那么，只要在夜晚仰望星空，就会觉得漫天的繁星就像一朵朵盛开的花。',
-										fontSize: 34
+										fontSize: 18
 									})
 								}
 							})
@@ -148,6 +151,6 @@ struct NotifyPage {
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
-		.backgroundColor(BACKGROUND_COLOR.BASE)
+		.backgroundColor(modeColor.bg)
 	}
 }
