@@ -1,5 +1,26 @@
 # 版本记录
 
+## 2.0.1
+1. 已适配深色模式, 可自定义浅色与深色主题颜色;
+2. 新增 SwipeCell 滑动单元格组件;
+3. IBestButton 增加 icon fontColor btnBorderColor btnBorderRadius 属性;
+4. IBestCalendar 增加 clock 打卡模式, clockSuccessText isShowUnClock unClockText 属性;
+5. IBestCheckbox 增加 activeList placeDirection space controller 属性;
+6. IBestPopup 增加 titleColor closeIconColor 属性;
+7. IBestField 增加 bgColor placeholderColor 属性;
+8. IBestRadio 增加 active placeDirection space 属性;
+9. IBestSearch 增加 labelColor textFontSize rightBtnBgColor rightBtnPressBgColor 属性;
+10. IBestSlider 增加 buttonBgColor 属性;
+11. IBestStepper 增加 value 属性;
+12. IBestUploader 增加 uploaderBgColor 属性;
+13. IBestWatermark 增加 bgColor 属性.
+#### 重要变更:
+1. IBestCheckbox IBestRadio IBestStepper 组件优化了使用方法, 支持双向绑定, 请对照文档修改.
+#### Bug修复:
+1. 修复 IBestField 的 onLeftIconClick 函数不执行问题;
+2. 修复 IBestDatePicker 组件 不显示日的情况下月份范围异常问题;
+3. 修复 IBestUploader 组件在元服务无法使用问题.
+
 ## 2.0.0
 1. 增加 IBestNoticeBar 通知栏组件;
 2. 增加 IBestProgress 进度条组件;
