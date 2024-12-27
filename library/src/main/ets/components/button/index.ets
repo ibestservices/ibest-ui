@@ -21,10 +21,6 @@ function btnSizeStyle(data: ButtonSizeData) {
 	.width(data.width || 'auto')
 }
 
-interface Config {
-	width?: number
-	height?: number
-}
 @Component
 export struct IBestButton {
 	/**
@@ -113,6 +109,11 @@ export struct IBestButton {
 	 */
 	@Prop btnBorderRadius: number | string = ""
 	/**
+	 * 图标位置
+	 * @since 2.0.3
+     */
+	@Prop iconPosition: 'left' | 'right' = 'left'
+	/**
 	 * defaultSlot 默认插槽
 	 */
 	@BuilderParam defaultBuilder?: CustomBuilder
@@ -128,6 +129,37 @@ export struct IBestButton {
 	 * 点击按钮，且按钮状态不为加载或禁用时触发
 	 */
 	onClickBtn: (event: TouchEvent) => void = () => {}
+
+	@Builder iconContent() {
+		if (this.loading) {
+			// 如果有自定义loading
+			if (this.loadingIconBuilder) {
+				this.loadingIconBuilder()
+			} else {
+				// 默认的loading
+				IBestLoading({
+					loadingSize: this.getLoadingSize(),
+					loadingColor: this.getBtnTextColor()
+				}).margin({
+					left: this.iconPosition == "right" && this.text ? this.baseStyle.spaceBase : 0,
+					right: this.iconPosition == "left" && this.text ? this.baseStyle.spaceBase : 0
+				})
+			}
+			// 加载loading显示的时候不显示图标
+		} else if (this.iconBuilder) {
+			this.iconBuilder()
+		} else if (this.icon) {
+			IBestIcon({
+				name: this.icon,
+				iconSize: this.getBtnSize()?.fontSize,
+				color: this.getBtnTextColor()
+			}).margin({
+				left: this.iconPosition == "right" && this.text ? this.baseStyle.spaceBase : 0,
+				right: this.iconPosition == "left" && this.text ? this.baseStyle.spaceBase : 0
+			})
+		}
+	}
+
 	/**
 	 * 根据buttonSize换对应的按钮尺寸
 	 * 根据size获取按钮的尺寸
@@ -222,30 +254,15 @@ export struct IBestButton {
 				this.defaultBuilder()
 			} else {
 				Row() {
-					if (this.loading) {
-						// 如果有自定义loading
-						if (this.loadingIconBuilder) {
-							this.loadingIconBuilder()
-						} else {
-							// 默认的loading
-							IBestLoading({
-								loadingSize: this.getLoadingSize(),
-								loadingColor: this.getBtnTextColor()
-							}).margin({ right: this.text ? this.getBtnSize().padding : 0 })
-						}
-						// 加载loading显示的时候不显示图标
-					} else if (this.iconBuilder) {
-						this.iconBuilder()
-					} else if (this.icon) {
-						IBestIcon({
-							name: this.icon,
-							iconSize: this.getBtnSize()?.fontSize,
-							color: this.getBtnTextColor()
-						}).margin({ right: this.icon && this.text ? this.baseStyle.spaceBase : 0 })
+					if(this.iconPosition == "left"){
+						this.iconContent()
 					}
 					Text(this.loading ? this.loadingText ?? this.text : this.text)
 						.fontSize(this.getBtnSize()?.fontSize)
 						.fontColor(this.getBtnTextColor())
+					if(this.iconPosition == "right"){
+						this.iconContent()
+					}
 				}
 			}
 		}

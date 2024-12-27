@@ -136,7 +136,8 @@ struct ButtonPage {
 							IBestButton({
 								text: '按钮',
 								type: 'primary',
-								icon: $r('app.media.title_back')
+								iconPosition: 'right',
+								icon: $r('app.media.ibest_icon_star')
 							})
 							IBestButton({
 								plain: true,

@@ -1,5 +1,9 @@
 # 版本记录
 
+## 2.0.3
+1. README 添加组件介绍;
+2. IBestButton 增加 iconPosition 属性.
+
 ## 2.0.2
 1. 已适配深色模式, 可自定义浅色与深色主题颜色;
 2. 新增 SwipeCell 滑动单元格组件;
