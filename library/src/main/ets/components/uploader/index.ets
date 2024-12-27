@@ -193,7 +193,7 @@ export struct IBestUploader {
 						remove: (index: number): void => this.remove(index),
 						preview: (file: IBestUploaderFile): void => this.preview(file)
 					})
-				}, (item: IBestUploaderFile, index) => index + "")
+				})
 			}
 			if(this.customUploader){
 				Row(){

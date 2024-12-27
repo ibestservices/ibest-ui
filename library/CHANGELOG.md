@@ -1,6 +1,6 @@
 # 版本记录
 
-## 2.0.1
+## 2.0.2
 1. 已适配深色模式, 可自定义浅色与深色主题颜色;
 2. 新增 SwipeCell 滑动单元格组件;
 3. IBestButton 增加 icon fontColor btnBorderColor btnBorderRadius 属性;
