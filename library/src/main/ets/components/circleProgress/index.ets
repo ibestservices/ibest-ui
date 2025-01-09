@@ -39,7 +39,7 @@ export struct IBestCircleProgress{
     /**
      * 进度值
      */
-    @Prop @Watch("valueChange") value: number = 0
+    @Link @Watch("valueChange") value: number
     /**
      * 进度条直径
      */
@@ -51,7 +51,7 @@ export struct IBestCircleProgress{
     /**
      * 中间文字
      */
-    @Prop text: string = ''
+    @Prop text: ResourceStr = ''
     /**
      * 文字颜色
      */
@@ -94,14 +94,20 @@ export struct IBestCircleProgress{
     @Prop startPosition: "left" | "right" | "bottom" | "top" = "top"
 
     @State maxPerimeter: number = 0
+    @State isShow: boolean = false
     @State strokeDashArray: Point = new Point(0,0)
 
     aboutToAppear() {
         this.maxPerimeter = Math.floor(Math.PI * this.diameter)
+        this.isShow = this.value > 0
         this.valueChange()
     }
     valueChange(){
-        this.strokeDashArray = new Point((this.maxPerimeter * this.value) / this.target, this.maxPerimeter)
+        if(this.value > 0){
+            this.isShow = true
+        }
+        this.value = Math.min(this.target, Math.max(this.value, 0))
+        this.strokeDashArray = new Point(this.value ? (this.maxPerimeter * this.value) / this.target : 0.01, this.maxPerimeter)
     }
     getSize(){
         return getSizeByUnit(this.diameter - this.strokeWidth)
@@ -141,18 +147,24 @@ export struct IBestCircleProgress{
                 .position({left: this.strokeWidth/2, top: this.strokeWidth/2})
                 .animatableDashArray(this.strokeDashArray)
                 .animation({
-                    duration: this.duration
+                    duration: this.duration,
+                    onFinish: () => {
+                        this.isShow = this.value > 0
+                    }
                 })
                 .transform(this.getPosition())
-            Text(this.text)
-                .width(CONTAINER_SIZE.FULL)
-                .textAlign(TextAlign.Center)
-                .fontSize(getSizeByUnit(this.textFontSize, true))
-                .fontColor(this.textColor)
-                .fontWeight(this.textFontWeight)
-                .padding({left: this.strokeWidth/2, right: this.strokeWidth/2})
-                .position({left: this.strokeWidth/2, top: "50%"})
-                .translate({ y: "-50%" })
+                .visibility(this.isShow ? Visibility.Visible : Visibility.Hidden)
+            if(this.text){
+                Text(this.text)
+                    .width(CONTAINER_SIZE.FULL)
+                    .textAlign(TextAlign.Center)
+                    .fontSize(getSizeByUnit(this.textFontSize, true))
+                    .fontColor(this.textColor)
+                    .fontWeight(this.textFontWeight)
+                    .padding({left: this.strokeWidth/2, right: this.strokeWidth/2})
+                    .position({left: this.strokeWidth/2, top: "50%"})
+                    .translate({ y: "-50%" })
+            }
         }
         .width(getSizeByUnit(this.diameter))
         .aspectRatio(1)

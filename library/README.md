@@ -82,6 +82,11 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | SideBar 侧边导航 | 垂直展示的导航栏，用于在不同的内容区域之间进行切换。 | <a href="https://ibestui.ibestservices.com/components/sideBar/" target="__blank">文档</a> |
 | Tab 标签页      | 选项卡组件，用于在不同的内容区域之间进行切换。    | <a href="https://ibestui.ibestservices.com/components/tab/" target="__blank">文档</a>     |
 
+### 业务组件
+| 组件                | 介绍              |                                                                                              |
+|:------------------|:----------------|:---------------------------------------------------------------------------------------------|
+| CanvasDrawer 画布绘制 | 用于绘制海报、图片加水印等场景 | <a href="https://ibestui.ibestservices.com/components/canvasDrawer/" target="__blank">文档</a> |
+
 ## 需要权限
 无
 
@@ -92,7 +97,6 @@ https://ibestui.ibestservices.com/
 
 
 ## 仓库地址
-https://gitee.com/ibestservices/ibest-ui
 
 https://github.com/ibestservices/ibest-ui
 

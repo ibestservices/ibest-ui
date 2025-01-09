@@ -1,5 +1,14 @@
 # 版本记录
 
+## 2.0.4
+1. 增加 IBestCanvasDrawer 画布绘制组件;
+2. IBestNavBar 增加 titleTextAlign 属性, 适配元服务右上角胶囊位置;
+3. IBestPullRefresh 增加 上滑加载 配置;
+4. IBestPopover 增加 onOpen 事件, IBestPopoverAction 增加 value 属性;
+5. IBestField 增加 inputFontSize 属性.
+#### Bug修复:
+1. IBestPullRefresh 下拉时卡主问题.
+
 ## 2.0.3
 1. README 添加组件介绍;
 2. IBestButton 增加 iconPosition 属性.

@@ -9,7 +9,7 @@ import { LengthMetrics } from '@kit.ArkUI';
 @Component
 struct CircleProgressPage {
     @State title: string = (router.getParams() as ComponentRouterParams).title || ''
-    @State value: number = 20
+    @State value: number = 10
 
     build() {
         Column() {
@@ -24,7 +24,7 @@ struct CircleProgressPage {
                 ListItem() {
                     ComponentShowContainer({ title: '基础用法' }) {
                         IBestCircleProgress({
-                            value: this.value,
+                            value: $value,
                             text: `${this.value}%`
                         })
                     }
@@ -34,24 +34,24 @@ struct CircleProgressPage {
                         Column(){
                             Flex({wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(20), cross: LengthMetrics.vp(20) }}){
                                 IBestCircleProgress({
-                                    value: this.value,
+                                    value: $value,
                                     strokeWidth: 6,
                                     text: "宽度定制"
                                 })
                                 IBestCircleProgress({
-                                    value: this.value,
+                                    value: $value,
                                     color: "#ee0a24",
                                     bgColor: "#ebedf0",
                                     text: "颜色定制"
                                 })
                                 IBestCircleProgress({
-                                    value: this.value,
+                                    value: $value,
                                     clockwise: false,
                                     text: "逆时针",
                                     color: "#07c160"
                                 })
                                 IBestCircleProgress({
-                                    value: this.value,
+                                    value: $value,
                                     diameter: 120,
                                     clockwise: false,
                                     text: "大小定制",
@@ -64,7 +64,7 @@ struct CircleProgressPage {
                                     type: "primary",
                                     buttonSize: "small",
                                     onClickBtn: () => {
-                                        this.value = this.value < 100 ? this.value + 10 : 100
+                                        this.value += 10
                                     }
                                 })
                                 IBestButton({
@@ -72,7 +72,7 @@ struct CircleProgressPage {
                                     type: "danger",
                                     buttonSize: "small",
                                     onClickBtn: () => {
-                                        this.value = this.value > 0 ? this.value - 10 : 0
+                                        this.value -= 10
                                     }
                                 })
                             }
@@ -83,34 +83,34 @@ struct CircleProgressPage {
                     ComponentShowContainer({ title: '起始位置' }) {
                         Flex({wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(20), cross: LengthMetrics.vp(20) }}){
                             IBestCircleProgress({
-                                value: this.value,
+                                value: $value,
                                 startPosition: "left",
                                 text: "左侧"
                             })
                             IBestCircleProgress({
-                                value: this.value,
+                                value: $value,
                                 startPosition: "right",
                                 text: "右侧"
                             })
                             IBestCircleProgress({
-                                value: this.value,
+                                value: $value,
                                 startPosition: "bottom",
                                 text: "底部"
                             })
                             IBestCircleProgress({
-                                value: this.value,
+                                value: $value,
                                 startPosition: "left",
                                 clockwise: false,
                                 text: "左侧逆时针"
                             })
                             IBestCircleProgress({
-                                value: this.value,
+                                value: $value,
                                 startPosition: "right",
                                 clockwise: false,
                                 text: "右侧逆时针"
                             })
                             IBestCircleProgress({
-                                value: this.value,
+                                value: $value,
                                 startPosition: "bottom",
                                 clockwise: false,
                                 text: "底部逆时针"

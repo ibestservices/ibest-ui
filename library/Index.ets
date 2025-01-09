@@ -145,3 +145,6 @@ export { IBestSideBar } from './src/main/ets/components/sideBar/index'
 export { IBestSideBarItem } from './src/main/ets/components/sideBarItem/index'
 
 export { IBestSwipeCell } from './src/main/ets/components/swipeCell/index'
+
+export { IBestCanvasDrawer } from './src/main/ets/components/canvasDrawer/index'
+export { IBestCanvasContent } from './src/main/ets/components/canvasDrawer/index.type'

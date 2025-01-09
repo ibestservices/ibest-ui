@@ -25,6 +25,7 @@ struct ThemePage {
 	@State group: string = "themeGroup"
 	@State active: string = "1"
 	@State switchValue: boolean = true
+	@State progressValue: number = 50
 	aboutToDisappear() {
 		setIBestUIBaseStyle({ primary: '#3D8AF2' })
 	}
@@ -89,7 +90,7 @@ struct ThemePage {
 					ComponentShowContainer({ title: 'Switch组件' }) {
 						Row() {
 							IBestSwitch({
-								value: this.switchValue
+								value: $switchValue
 							})
 						}
 					}
@@ -97,7 +98,7 @@ struct ThemePage {
 				ListItem() {
 					ComponentShowContainer({ title: 'CircleProgress组件' }) {
 						IBestCircleProgress({
-							value: 50,
+							value: $progressValue,
 							text: `50%`
 						})
 					}

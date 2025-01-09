@@ -16,19 +16,19 @@ export struct IBestPullRefresh {
 	 */
 	@Provide({allowOverride: 'pullingText'}) pullingText: ResourceStr = "下拉即可刷新..."
 	/**
-	 * 释放过程提示文案
+	 * 下拉释放过程提示文案
      */
 	@Provide({allowOverride: 'loosingText'}) loosingText: ResourceStr = "释放即可刷新..."
 	/**
-	 * 加载过程提示文案
+	 * 下拉加载过程提示文案
 	 */
 	@Provide({allowOverride: 'loadingText'}) loadingText: ResourceStr = "加载中..."
 	/**
-	 * 刷新成功提示文案
+	 * 下拉刷新成功提示文案
 	 */
 	@Provide({allowOverride: 'successText'}) successText: ResourceStr = ""
 	/**
-	 * 刷新成功提示展示时长(ms)
+	 * 下拉刷新成功提示展示时长(ms)
 	 */
 	@Prop successDuration: number = 500
 	/**
@@ -48,19 +48,79 @@ export struct IBestPullRefresh {
   	 */
 	@BuilderParam pullingContent?: ($$: IBestRefreshContentParams) => void
 	/**
-	 * 自定义释放过程顶部内容
+	 * 自定义下拉释放过程顶部内容
   	 */
 	@BuilderParam loosingContent?: ($$: IBestRefreshContentParams) => void
 	/**
-	 * 自定义加载过程顶部内容
+	 * 自定义下拉加载过程顶部内容
   	 */
 	@BuilderParam loadingContent?: CustomBuilder
 	/**
-	 * 自定义刷新成功提示内容
+	 * 自定义下拉刷新成功提示内容
 	 */
 	@BuilderParam successContent?: CustomBuilder
 	/**
-	 * 触发下拉刷新时的回调
+	 * 是否启用上滑加载
+	 * @since 2.0.4
+     */
+	@Prop isEnableSlideUp: boolean = true
+	/**
+	 * 上滑过程提示文案
+	 * @since 2.0.4
+	 */
+	@Provide({allowOverride: 'slidingUpText'}) slidingUpText: ResourceStr = "上滑即可加载..."
+	/**
+	 * 上滑释放过程提示文案
+	 * @since 2.0.4
+	 */
+	@Provide({allowOverride: 'slideUpLoosingText'}) slideUpLoosingText: ResourceStr = "释放即可加载..."
+	/**
+	 * 上滑加载过程提示文案
+	 * @since 2.0.4
+	 */
+	@Provide({allowOverride: 'slideUpLoadingText'}) slideUpLoadingText: ResourceStr = "加载中..."
+	/**
+	 * 上滑加载成功提示文案
+	 * @since 2.0.4
+	 */
+	@Provide({allowOverride: 'slideUpSuccessText'}) slideUpSuccessText: ResourceStr = ""
+	/**
+	 * 刷新成功提示展示时长(ms)
+	 * @since 2.0.4
+	 */
+	@Prop slideUpSuccessDuration: number = 500
+	/**
+	 * 上滑加载动画时长
+	 * @since 2.0.4
+	 */
+	@Prop slideUpDuration: number = 300
+	/**
+	 * 顶部内容高度
+	 * @since 2.0.4
+	 */
+	@Prop bottomHeight: number | string = convertDimensionsWidthUnit(50)
+	/**
+	 * 自定义上滑过程内容
+	 * @since 2.0.4
+	 */
+	@BuilderParam slidingUpContent?: ($$: IBestRefreshContentParams) => void
+	/**
+	 * 自定义上滑释放过程内容
+	 * @since 2.0.4
+	 */
+	@BuilderParam slideUpLoosingContent?: ($$: IBestRefreshContentParams) => void
+	/**
+	 * 自定义上滑加载过程内容
+	 * @since 2.0.4
+	 */
+	@BuilderParam slideUpLoadingContent?: CustomBuilder
+	/**
+	 * 自定义上滑加载成功提示内容
+	 * @since 2.0.4
+	 */
+	@BuilderParam slideUpSuccessContent?: CustomBuilder
+	/**
+	 * 触发下拉刷新/上滑加载时的回调
 	 */
 	onRefresh: () => void = () => {}
 	/**
@@ -69,63 +129,70 @@ export struct IBestPullRefresh {
 	scroller: Scroller = new Scroller()
 
 	@State uniId: number = 0
-	@State transY: number = 0
-	@State startY: number = 0
-	@Provide refreshStatus: PullRefreshStatus = "normal"
 	@State scrollTop: number = 0
+	@State isAtEnd: boolean = false
+	@Provide transY: number = 0
+	@Provide actionType: 'pull' | 'slideUp' = 'pull'
+	@Provide refreshStatus: PullRefreshStatus = "normal"
 	@State headSize: number = 0
+	@State bottomSize: number = 0
 	private uiContext = this.getUIContext()
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
 		setTimeout(() => {
-			this.headSize = getComponentsInfo(this.uiContext, `ibest_pull_${this.uniId}`).height
-		}, 10)
+			this.headSize = getComponentsInfo(this.uiContext, `ibest_pull_up_${this.uniId}`).height
+			this.bottomSize = getComponentsInfo(this.uiContext, `ibest_pull_down_${this.uniId}`).height
+		}, 50)
 	}
-
 	isTouchable(){
 		return this.refreshStatus != "loading" && this.refreshStatus != "success"
 	}
 	ease(distance: number) {
-		const pullDistance = this.headSize
-		if (distance > pullDistance) {
-			if (distance < pullDistance * 2) {
-				distance = pullDistance + (distance - pullDistance) / 2;
+		let absValue = Math.abs(distance)
+		const pullDistance = distance > 0 ? this.headSize : this.bottomSize
+		if (absValue > pullDistance) {
+			if (absValue < pullDistance * 2) {
+				absValue = pullDistance + (absValue - pullDistance) / 2;
 			} else {
-				distance = pullDistance * 1.5 + (distance - pullDistance * 2) / 4;
+				absValue = pullDistance * 1.5 + (absValue - pullDistance * 2) / 4;
 			}
 		}
-		return Math.round(distance)
+		return distance > 0 ? Math.round(absValue) : -Math.round(absValue)
 	}
 	// 设置刷新状态
 	setRefreshStatus(distance: number, isLoading?: boolean){
+		let absValue = Math.abs(distance)
 		this.transY = distance
+		if(absValue > 0){
+			this.actionType = distance > 0 ? 'pull' : 'slideUp'
+		}
 		if(isLoading){
 			this.refreshStatus = "loading"
-		}else if(distance == 0){
+		}else if(absValue == 0){
 			this.refreshStatus = "normal"
-		}else if(distance < this.headSize){
+		}else if(distance > 0 && absValue < this.headSize || distance < 0 && absValue < this.bottomSize){
 			this.refreshStatus = "pulling"
 		} else {
 			this.refreshStatus = 'loosing'
 		}
 	}
-	onFingerMove(event: TouchEvent){
-		this.scrollTop = this.scroller.currentOffset()?.yOffset || 0
-		if(this.isTouchable() && this.scrollTop == 0){
-			switch (event.type){
-				case TouchType.Down:
-					this.startY = event.touches[0].y
+	onPanGestureChange(type: string, event: GestureEvent){
+		if(this.isTouchable()) {
+			switch (type) {
+				case "start":
+					this.scrollTop = this.scroller.currentOffset()?.yOffset
+					this.isAtEnd = this.scroller.isAtEnd()
 					break
-				case TouchType.Move:
-					let newOffset = event.touches[0].y - this.startY
-					if(newOffset >= 0){
+				case "move":
+					let newOffset = event.offsetY
+					if(newOffset > 0 && this.scrollTop < 1 || newOffset < 0 && this.isAtEnd && this.isEnableSlideUp){
 						this.setRefreshStatus(this.ease(newOffset))
 					}
 					break
-				case TouchType.Up:
+				case "end":
 					if(this.refreshStatus == "loosing"){
-						this.setRefreshStatus(this.headSize, true)
+						this.setRefreshStatus(this.transY > 0 ? this.headSize : -this.bottomSize, true)
 						this.loading = true
 						this.onRefresh()
 					}else{
@@ -135,42 +202,17 @@ export struct IBestPullRefresh {
 			}
 		}
 	}
-	onPanGestureChange(type: string, event: GestureEvent){
-		let scrollTop = this.scroller.currentOffset()?.yOffset
-		this.scrollTop = scrollTop == undefined || scrollTop < 0 ? 0 : scrollTop
-		// console.log("scrollTop", scrollTop)
-		if(this.isTouchable() && this.scrollTop < 1) {
-			switch (type) {
-				case "move":
-					let newOffset = event.offsetY
-					if(newOffset >= 0){
-						this.setRefreshStatus(this.ease(newOffset))
-					}
-					break
-				case "end":
-					if(this.transY > 0){
-						if(this.refreshStatus == "loosing"){
-							this.setRefreshStatus(this.headSize, true)
-							this.loading = true
-							this.onRefresh()
-						}else{
-							this.setRefreshStatus(0)
-						}
-					}
-					break
-			}
-		}
-	}
 	loadingChange(){
-		if(this.loading){
-			this.setRefreshStatus(this.headSize, true)
-		}else if(this.successContent || this.successText){
-			this.refreshStatus = "success"
-			setTimeout(() => {
+		if(!this.loading){
+			if(this.actionType == "pull" && (this.successContent || this.successText) || this.actionType == "slideUp" && (this.slideUpSuccessContent || this.slideUpSuccessText)){
+				this.refreshStatus = "success"
+				let duration = this.actionType == "pull" ? this.successDuration : this.slideUpSuccessDuration
+				setTimeout(() => {
+					this.setRefreshStatus(0)
+				}, duration)
+			} else {
 				this.setRefreshStatus(0)
-			}, this.successDuration)
-		} else {
-			this.setRefreshStatus(0)
+			}
 		}
 	}
 
@@ -212,21 +254,57 @@ export struct IBestPullRefresh {
 				.justifyContent(FlexAlign.Center)
 				.position({ x: 0, y: 0 })
 				.translate({ y: "-100%" })
-				.id(`ibest_pull_${this.uniId}`)
+				.id(`ibest_pull_up_${this.uniId}`)
 				if(this.defaultContent){
 					this.defaultContent()
 				}
+				Row({ space: 10 }){
+					Row(){
+						if(this.slidingUpContent){
+							this.slidingUpContent({ distance: Math.abs(this.transY) })
+						}else{
+							TextTip()
+						}
+					}.visibility(this.refreshStatus == "pulling" ? Visibility.Visible : Visibility.None)
+					Row(){
+						if(this.slideUpLoosingContent){
+							this.slideUpLoosingContent({ distance: Math.abs(this.transY) })
+						}else{
+							TextTip()
+						}
+					}.visibility(this.refreshStatus == "loosing" ? Visibility.Visible : Visibility.None)
+					Row(){
+						if(this.slideUpLoadingContent){
+							this.slideUpLoadingContent()
+						}else{
+							TextTip()
+						}
+					}.visibility(this.refreshStatus == "loading" ? Visibility.Visible : Visibility.None)
+					Row(){
+						if(this.slideUpSuccessContent){
+							this.slideUpSuccessContent()
+						}else{
+							TextTip()
+						}
+					}.visibility(this.refreshStatus == "success" ? Visibility.Visible : Visibility.None)
+				}
+				.width(CONTAINER_SIZE.FULL)
+				.height(getSizeByUnit(this.bottomHeight))
+				.justifyContent(FlexAlign.Center)
+				.position({ left: 0, bottom: 0 })
+				.translate({ y: "100%" })
+				.id(`ibest_pull_down_${this.uniId}`)
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.translate({ y: this.transY })
 			.animation({
-				duration: this.duration
+				duration: this.transY > 0 ? this.duration : this.slideUpDuration
 			})
-			// .onTouch((event) => {
-			// 	this.onFingerMove(event)
-			// })
 			.parallelGesture(
 			  	PanGesture({ fingers: 1, direction: PanDirection.Vertical })
+					.onActionStart((event: GestureEvent) => {
+						this.onPanGestureChange("start", event)
+					})
 					.onActionUpdate((event: GestureEvent) => {
 						this.onPanGestureChange("move", event)
 					})
@@ -236,6 +314,7 @@ export struct IBestPullRefresh {
 			)
 		}
 		.width(CONTAINER_SIZE.FULL)
+		.height(CONTAINER_SIZE.FULL)
 		.clip(true)
 	}
 }
@@ -244,22 +323,27 @@ export struct IBestPullRefresh {
 struct TextTip{
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@Consume refreshStatus: PullRefreshStatus
-	@Consume pullingText: string
-	@Consume loosingText: string
-	@Consume loadingText: string
-	@Consume successText: string
-	getStatusText(): string{
+	@Consume actionType: string
+	@Consume pullingText: ResourceStr
+	@Consume loosingText: ResourceStr
+	@Consume loadingText: ResourceStr
+	@Consume successText: ResourceStr
+	@Consume slidingUpText: ResourceStr
+	@Consume slideUpLoosingText: ResourceStr
+	@Consume slideUpLoadingText: ResourceStr
+	@Consume slideUpSuccessText: ResourceStr
+	getStatusText(): ResourceStr{
 		switch(this.refreshStatus){
 			case "normal":
 				return ""
 			case "pulling":
-				return this.pullingText
+				return this.actionType == 'pull' ? this.pullingText : this.slidingUpText
 			case "loosing":
-				return this.loosingText
+				return this.actionType == 'pull' ? this.loosingText : this.slideUpLoosingText
 			case "loading":
-				return this.loadingText
+				return this.actionType == 'pull' ? this.loadingText : this.slideUpLoadingText
 			case "success":
-				return this.successText
+				return this.actionType == 'pull' ? this.successText : this.slideUpSuccessText
 		}
 	}
 	build() {

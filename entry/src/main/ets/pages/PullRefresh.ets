@@ -58,7 +58,7 @@ struct PullRefreshPage {
 							.backgroundColor(0x89CFF0)
 					}, (item: string) => item)
 				}.width("100%")
-			}
+			}.height("100%")
 		}
 	}
 
@@ -96,33 +96,36 @@ struct PullRefreshPage {
 				tabsList: this.tabsList,
 				currentName: $currentTab
 			})
-			if(this.currentTab == "1"){
-				IBestPullRefresh({
-					loading: $isLoading,
-					scroller: this.listScroller,
-					defaultContent: (): void => this.customContent("1"),
-					onRefresh: (): void => this.onRefresh()
-				})
+			Column(){
+				if(this.currentTab == "1"){
+					IBestPullRefresh({
+						loading: $isLoading,
+						scroller: this.listScroller,
+						defaultContent: (): void => this.customContent("1"),
+						onRefresh: (): void => this.onRefresh()
+					})
+				}
+				if(this.currentTab == "2"){
+					IBestPullRefresh({
+						loading: $isLoading,
+						successText: "加载成功",
+						scroller: this.scroller,
+						defaultContent: (): void => this.customContent("2"),
+						onRefresh: (): void => this.onRefresh()
+					})
+				}
+				if(this.currentTab == "3"){
+					IBestPullRefresh({
+						loading: $isLoading,
+						defaultContent: (): void => this.customContent("2"),
+						pullingContent: this.customPullingContent,
+						loosingContent: this.customLoosingContent,
+						loadingContent: (): void => this.customLoadingContent(),
+						onRefresh: (): void => this.onRefresh()
+					})
+				}
 			}
-			if(this.currentTab == "2"){
-				IBestPullRefresh({
-					loading: $isLoading,
-					successText: "加载成功",
-					scroller: this.scroller,
-					defaultContent: (): void => this.customContent("2"),
-					onRefresh: (): void => this.onRefresh()
-				})
-			}
-			if(this.currentTab == "3"){
-				IBestPullRefresh({
-					loading: $isLoading,
-					defaultContent: (): void => this.customContent("2"),
-					pullingContent: this.customPullingContent,
-					loosingContent: this.customLoosingContent,
-					loadingContent: (): void => this.customLoadingContent(),
-					onRefresh: (): void => this.onRefresh()
-				})
-			}
+			.layoutWeight(1)
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)

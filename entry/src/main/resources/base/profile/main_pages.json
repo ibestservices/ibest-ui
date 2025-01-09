@@ -47,6 +47,7 @@
 		"pages/CountDown",
 		"pages/Popover",
 		"pages/TextEllipsis",
-		"pages/SideBar"
+		"pages/SideBar",
+		"pages/CanvasDrawer"
 	]
 }
