@@ -217,6 +217,11 @@ export struct IBestField{
      */
     @Prop bgColor: ResourceColor = IBestFieldColor.bg2
     /**
+     * 输入框文字大小
+     * @since 2.0.4
+     */
+    @Provide({allowOverride: "inputFontSize"}) inputFontSize: number | string = this.baseStyle.fontSizeMd as string
+    /**
      * 格式化函数
      */
     formatter?: ((value: string) => string) | undefined
@@ -532,6 +537,7 @@ struct Content{
     @Consume rows: number
     @Consume maxlength: number
     @Consume showWordLimit: boolean
+    @Consume inputFontSize: number | string
     @Consume inputAlign: FieldTextAlign
     @Consume rightIcon: ResourceStr
     @Consume rightIconColor: ResourceColor
@@ -627,10 +633,10 @@ struct Content{
                     if (this.autosize) {
                         TextArea({ text: $$this.value, placeholder: this.placeholder })
                             .inputStyle()
-                            .fontSize(this.baseStyle.fontSizeMd)
+                            .fontSize(getSizeByUnit(this.inputFontSize, true))
                             .fontColor(IBestFieldColor.inputColor)
                             .placeholderFont({
-                                size: this.baseStyle.fontSizeMd
+                                size: getSizeByUnit(this.inputFontSize, true)
                             })
                             .placeholderColor(this.placeholderColor)
                             .constraintSize({ minHeight: convertDimensionsWidthUnit(this.rows * 20) })
@@ -660,10 +666,10 @@ struct Content{
                     } else {
                         TextInput({ text: $$this.value, placeholder: this.placeholder })
                             .inputStyle()
-                            .fontSize(this.baseStyle.fontSizeMd)
+                            .fontSize(getSizeByUnit(this.inputFontSize, true))
                             .fontColor(IBestFieldColor.inputColor)
                             .placeholderFont({
-                                size: this.baseStyle.fontSizeMd
+                                size: getSizeByUnit(this.inputFontSize, true)
                             })
                             .placeholderColor(this.placeholderColor)
                             .showPasswordIcon(this.showPasswordIcon)

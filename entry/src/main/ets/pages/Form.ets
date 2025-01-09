@@ -176,10 +176,7 @@ struct FieldPage {
 
 	@Builder switchContent() {
 		IBestSwitch({
-			value: this.value5,
-			onChange: value => {
-				this.value5 = value
-			}
+			value: $value5
 		})
 	}
 	@Builder checkboxContent() {

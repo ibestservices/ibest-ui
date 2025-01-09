@@ -15,7 +15,7 @@ export struct IBestPopover{
     /**
      * 选项列表
      */
-    @Provide({allowOverride: "actions"}) actions: IBestPopoverAction[] = []
+    @Prop actions: IBestPopoverAction[] = []
     /**
      * 选项文字大小
      */
@@ -101,6 +101,11 @@ export struct IBestPopover{
      */
     onSelect: (action: IBestPopoverAction, index: number) => void = () => {}
     /**
+     * 打开时触发
+     * @since 2.0.4
+     */
+    onOpen: () => void = () => {}
+    /**
      * 气泡框实例
      */
     controller: IBestPopoverController = new IBestPopoverController()
@@ -113,6 +118,8 @@ export struct IBestPopover{
         }else {
             PopoverContent({
                 isShow: $isShow,
+                actions: this.actions,
+                onOpen: (): void => this.onOpen(),
                 onSelect: (action: IBestPopoverAction, index: number): void => this.onSelect(action, index)
             })
         }
@@ -165,7 +172,7 @@ struct PopoverContent{
      * 全局公共样式
      */
     @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-    @Consume actions: IBestPopoverAction[]
+    @Prop actions: IBestPopoverAction[]
     @Consume popoverWidth: string | number
     @Consume itemHeight: string | number
     @Consume textFontSize: string | number
@@ -177,10 +184,14 @@ struct PopoverContent{
     @Consume bgColor: ResourceColor
     @Consume dividerColor: ResourceColor
     @Link isShow: boolean
+    onOpen: () => void = () => {}
     onSelect: (action: IBestPopoverAction, index: number) => void = () => {}
 
     getTextAlign(item: IBestPopoverAction){
         return this.textAlign || (item.icon || item.iconName ? TextAlign.Start : TextAlign.Center)
+    }
+    aboutToAppear(): void {
+        this.onOpen()
     }
 
     build() {

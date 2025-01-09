@@ -78,6 +78,7 @@ struct BadgePage {
 								this.badgeContent()
 							}
 						}
+						.width(CONTAINER_SIZE.FULL)
 						.padding({ right: SPACE.SM, top: SPACE.SM, bottom: SPACE.SM })
 					}
 				}

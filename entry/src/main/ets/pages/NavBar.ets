@@ -27,7 +27,7 @@ struct NavBarPage {
 		}
 	}
 	@Builder titleBuilder(){
-		TextInput({text: this.searchVal, placeholder: "请输入搜索内容"}).width("70%").height("70%")
+		TextInput({text: this.searchVal, placeholder: "请输入搜索内容"}).width("100%").height("70%")
 	}
 
 	build() {
@@ -68,6 +68,14 @@ struct NavBarPage {
 								}
 							})
 						}
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '标题居左', titlePaddingLeft: SPACE.MD }){
+						IBestNavBar({
+							title: "IBest-UI",
+							titleTextAlign: "left"
+						})
 					}
 				}
 				ListItem() {

@@ -1,10 +1,11 @@
 import window from '@ohos.window';
 import font from '@ohos.font';
 import { getWindowAvoidSize } from './utils';
-import { common } from '@kit.AbilityKit';
+import { bundleManager, common } from '@kit.AbilityKit';
 import { IBestGlobalConfig, IBestGlobalConfigType } from '../model/Global.type';
 import { setIBestUIBaseStyle } from '../theme-chalk/src';
 import { display } from '@kit.ArkUI';
+
 // 全局存储中心
 export default class GlobalStore {
 	// windowStage
@@ -28,6 +29,8 @@ export default class GlobalStore {
 		GlobalStore.getAvoidSize()
 		// 获取屏幕尺寸
 		GlobalStore.getScreenSize()
+		// 获取是否是应用
+		GlobalStore.getBundleType()
 		// 设置旋转监听
 		GlobalStore.screenRotateListener()
 		// 监听颜色模式变化
@@ -83,6 +86,12 @@ export default class GlobalStore {
 			},
 			onMemoryLevel() {}
 		})
+	}
+	/**
+	 * 获取是否是元服务
+	 */
+	private static getBundleType(){
+		AppStorage.setOrCreate("IBestIsApp", bundleManager.getBundleInfoForSelfSync(bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_APPLICATION).appInfo.bundleType == bundleManager.BundleType.APP)
 	}
 	/**
 	 * 设置全局配置

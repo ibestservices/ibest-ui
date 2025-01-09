@@ -15,10 +15,11 @@ export struct IBestNavBar{
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
+	@StorageProp("IBestIsApp") isApp: boolean = false
 	/**
 	 * 导航栏高度
 	 */
-	@Prop navBarHeight: number | string = convertDimensionsWidthUnit(46)
+	@Prop navBarHeight: number | string = convertDimensionsWidthUnit(this.isApp ? 46 : 56)
 	/**
 	 * 导航栏背景色
      */
@@ -171,6 +172,11 @@ export struct IBestNavBar{
 	 */
 	@Prop isKeepBgColorSame: boolean = true
 	/**
+	 * 标题对齐方式
+	 * @since 2.0.4
+	 */
+	@Prop titleTextAlign: "left" | "center" = "center"
+	/**
 	 * 自定义左侧内容
      */
 	@BuilderParam leftBuilder?: CustomBuilder
@@ -199,14 +205,14 @@ export struct IBestNavBar{
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
-		this.getMaxWidth()
+		this.getLeftRightWidth()
 	}
 	navBarBgColorChange(){
 		if(this.isKeepBgColorSame){
 			this.statusBarBgColor = this.navBarBgColor
 		}
 	}
-	getMaxWidth(){
+	getLeftRightWidth(){
 		setTimeout(() => {
 			let leftWidth = 0
 			let rightWidth = 0
@@ -216,8 +222,15 @@ export struct IBestNavBar{
 			if(this.isShowRight){
 				rightWidth = getComponentsInfo(this.uiContext, `ibest_navbar_right_${this.uniId}`).width
 			}
-			this.leftWidth = leftWidth
-			this.rightWidth = rightWidth
+			let maxWidth = Math.max(leftWidth, rightWidth)
+			if(this.isApp){
+				this.leftWidth = this.titleBuilder ? leftWidth : maxWidth
+				this.rightWidth = this.titleBuilder ? rightWidth : maxWidth
+			}else{
+				let maxPadding = Math.max(maxWidth, 100)
+				this.leftWidth = this.titleBuilder || this.titleTextAlign == "left" ? leftWidth : maxPadding
+				this.rightWidth = maxPadding
+			}
 		}, 0)
 	}
 
@@ -253,52 +266,60 @@ export struct IBestNavBar{
 					}
 					.height(CONTAINER_SIZE.FULL)
 					.position({left: 0})
+					.zIndex(10)
 					.padding({left: getSizeByUnit(this.leftRightPadding), right: this.baseStyle.spaceXs})
 					.id(`ibest_navbar_left_${this.uniId}`)
 					.onClick(() => {
 						this.onLeftClick()
 					})
 				}
-				Column({space: this.baseStyle.spaceMini as string}){
+				Column(){
 					if(this.titleBuilder){
 						this.titleBuilder()
 					}else{
-						Row({space: this.baseStyle.spaceXs as string}){
-							IBestIcon({
-								name: this.titleIcon || this.titleIconName,
-								color: this.titleIconColor,
-								iconSize: this.titleIconSize,
-								iconRadius: this.titleIconRadius
+						Column({space: this.baseStyle.spaceMini as string}){
+							Row({space: this.baseStyle.spaceXs as string}){
+								if(this.titleIcon || this.titleIconName){
+									IBestIcon({
+										name: this.titleIcon || this.titleIconName,
+										color: this.titleIconColor,
+										iconSize: this.titleIconSize,
+										iconRadius: this.titleIconRadius
+									})
+								}
+								if(this.title){
+									Text(this.title)
+										.fontColor(this.titleColor)
+										.fontSize(getSizeByUnit(this.titleFontSize, true))
+										.textAlign(TextAlign.Center)
+										.maxLines(1)
+										.textOverflow({overflow: TextOverflow.Ellipsis})
+										.fontWeight(this.titleFontWeight)
+								}
+							}
+							.onClick(() => {
+								this.onTitleClick()
 							})
-							if(this.title){
-								Text(this.title)
-									.fontColor(this.titleColor)
-									.fontSize(getSizeByUnit(this.titleFontSize, true))
+							if(this.subTitle){
+								Text(this.subTitle)
+									.fontSize(getSizeByUnit(this.subTitleFontSize, true))
+									.fontColor(this.subTitleColor)
 									.textAlign(TextAlign.Center)
 									.maxLines(1)
 									.textOverflow({overflow: TextOverflow.Ellipsis})
-									.fontWeight(this.titleFontWeight)
 							}
 						}
-						.onClick(() => {
-							this.onTitleClick()
-						})
-						if(this.subTitle){
-							Text(this.subTitle)
-								.fontSize(getSizeByUnit(this.subTitleFontSize, true))
-								.fontColor(this.subTitleColor)
-								.textAlign(TextAlign.Center)
-								.maxLines(1)
-								.textOverflow({overflow: TextOverflow.Ellipsis})
-						}
+						.width(CONTAINER_SIZE.FULL)
+						.height(CONTAINER_SIZE.FULL)
+						.justifyContent(FlexAlign.Center)
+						.alignItems(this.titleTextAlign == "center" ? HorizontalAlign.Center : HorizontalAlign.Start)
 					}
 				}
 				.width(CONTAINER_SIZE.FULL)
 				.height(CONTAINER_SIZE.FULL)
-				.constraintSize({maxWidth: this.titleBuilder ? "100%" : "60%"})
 				.justifyContent(FlexAlign.Center)
 				.alignItems(this.titleBuilder ? HorizontalAlign.Start : HorizontalAlign.Center)
-				.padding(this.titleBuilder ? {left: this.leftWidth, right: this.rightWidth} : 0)
+				.padding({left: this.leftWidth, right: this.rightWidth})
 				if(this.isShowRight){
 					Row({space: this.baseStyle.spaceBase as string}){
 						if(this.rightBuilder){
@@ -321,6 +342,7 @@ export struct IBestNavBar{
 					}
 					.height(CONTAINER_SIZE.FULL)
 					.position({right: 0})
+					.zIndex(10)
 					.padding({left: this.baseStyle.spaceXs, right: getSizeByUnit(this.leftRightPadding)})
 					.id(`ibest_navbar_right_${this.uniId}`)
 					.onClick(() => {

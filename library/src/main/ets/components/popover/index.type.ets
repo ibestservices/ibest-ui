@@ -7,6 +7,11 @@ export interface IBestPopoverAction{
      */
     text: string
     /**
+     * 选项标识
+     * since 2.0.4
+     */
+    value?: string
+    /**
      * 文字左侧图标名称
      * @deprecated 请使用 icon
      */

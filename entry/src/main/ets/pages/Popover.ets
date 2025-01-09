@@ -71,7 +71,28 @@ struct PopoverPage {
         }else if(type == "input"){
             TextInput({text: this.textValue, placeholder: text})
                 .width(CONTAINER_SIZE.FULL)
-                .focusable(false)
+                .onChange((text: string) => {
+                    if(text){
+                        this.actions = text.split("").map(e => {
+                            let obj: IBestPopoverAction = {
+                                text: "选项" + e
+                            }
+                            return obj
+                        })
+                    }else{
+                        this.actions = [
+                            {
+                                text: '选项一'
+                            },
+                            {
+                                text: '选项二'
+                            },
+                            {
+                                text: '选项三'
+                            }
+                        ]
+                    }
+                })
         }
     }
 

@@ -1,8 +1,10 @@
 import BuildProfile from '@ibestservices/ibest-ui/BuildProfile'
+import { IBestNavBar } from '@ibestservices/ibest-ui'
 import router from '@ohos.router'
 import { BORDER_RADIUS, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, modeColor, SPACE } from '../assets/styles/BaseStyle'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import GlobalStore from '../utils/global'
+import { common, Want } from '@kit.AbilityKit'
 
 interface ComponentPart {
 	title: string
@@ -228,98 +230,138 @@ struct Index {
 					path: 'pages/Tab'
 				}
 			]
+		},
+		{
+			title: '业务组件',
+			list: [
+				{
+					name: 'CanvasDrawer 画布绘制',
+					path: 'pages/CanvasDrawer'
+				}
+			]
 		}
 	]
+	@State titleOpacity: number = 0
+	private scrollerForList: Scroller = new Scroller()
+	private context = getContext(this) as common.UIAbilityContext
 
 	aboutToAppear(): void {
 		// setTimeout(() => {
 		// 	router.pushUrl({
-		// 		url: 'pages/SwipeCell',
+		// 		url: 'pages/CanvasDrawer',
 		// 		params: {
-		// 			title: "SwipeCell 滑动单元格"
+		// 			title: "CanvasDrawer 画布绘制"
 		// 		}
 		// 	})
 		// }, 100)
 	}
-	getCount(){
-		return this.componentList.map(item => item.list.length).reduce((acc, cur) => acc + cur, 0)
+	viewDoc(){
+		let want: Want = {
+			action: 'ohos.want.action.viewData',
+			entities: ['entity.system.browsable'],
+			uri: 'https://ibestui.ibestservices.com/guide/home/'
+		}
+		this.context.startAbility(want)
 	}
-
 	build() {
-		List() {
-			ListItem() {
-				Column({ space: SPACE.MD }) {
-					Row({ space: SPACE.MD }) {
-						Image($r("app.media.app_icon")).width(32).borderRadius(BORDER_RADIUS.BASE)
-						Text(`IBest-UI(v${BuildProfile.HAR_VERSION})`).fontSize(32).fontColor($r("app.color.doc_text_color_2"))
-					}
-					Text(`一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库, 目前共有组件${this.getCount()}个。`)
-						.fontSize(FONT_SIZE.MD)
-						.fontColor($r("app.color.doc_text_color_4"))
-				}.width("100%").alignItems(HorizontalAlign.Start).padding({ left: 10 })
-			}.margin({ bottom: SPACE.MD })
-			ForEach(this.componentList, (part: ComponentPart) => {
+		Column(){
+			IBestNavBar({
+				title: "IBest-UI",
+				isShowLeft: false,
+				isShowStatusBar: true,
+				onTitleClick: () => {
+					this.scrollerForList.scrollTo({xOffset: 0, yOffset: 0, animation: true})
+				}
+			}).position({left: 0, top: 0}).zIndex(1).opacity(this.titleOpacity)
+			List({scroller: this.scrollerForList}) {
 				ListItem() {
-					ComponentShowContainer({ title: `${part.title}(${part.list.length})`, titlePaddingLeft: SPACE.XS }) {
-						ForEach(part.list, (item: ComponentItem) => {
-							Row() {
-								Text(item.name)
-									.fontSize(FONT_SIZE.MD)
-									.fontWeight(FONT_WEIGHT.MEDIUM)
-									.textAlign(TextAlign.Start)
-									.fontColor($r("app.color.doc_text_color_3"))
-									.layoutWeight(1)
-								Image($r('app.media.title_back'))
-									.width(CONTAINER_SIZE.FOURTEEN)
-									.fillColor($r("app.color.doc_text_color_3"))
-									.margin({
-										right: SPACE.SM
-									})
-									.rotate({
-										angle: 180
-									})
-							}
-							.width(CONTAINER_SIZE.FULL)
-							.height(CONTAINER_SIZE.FORTY)
-							.borderRadius(99)
-							.padding({ left: SPACE.LG })
-							.margin({
-								bottom: SPACE.SM
+					Column({ space: SPACE.MD }) {
+						Row({ space: SPACE.XS }) {
+							Image($r("app.media.app_icon")).width(32).borderRadius(BORDER_RADIUS.BASE)
+							Text(`IBest-UI(v${BuildProfile.HAR_VERSION})`).fontSize(32).fontColor($r("app.color.doc_text_color_2"))
+						}
+						Text(){
+							Span("一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库，")
+							Span("点此可查看文档。").onClick(() => {
+								this.viewDoc()
 							})
-							.backgroundColor(modeColor.bg3)
-							.stateStyles({
-								normal: {
-									.scale({
-										x: 1,
-										y: 1
-									})
-								},
-								pressed: {
-									.scale({
-										x: .98,
-										y: .98
-									})
+						}
+							.fontSize(FONT_SIZE.MD)
+							.fontColor($r("app.color.doc_text_color_4"))
+					}
+					.width("100%")
+					.alignItems(HorizontalAlign.Start)
+					.padding({ left: 10, top: GlobalStore.topAvoidHeight })
+				}.margin({ bottom: SPACE.SM })
+				ForEach(this.componentList, (part: ComponentPart) => {
+					ListItem() {
+						ComponentShowContainer({ title: `${part.title}(${part.list.length})`, titlePaddingLeft: SPACE.XS }) {
+							ForEach(part.list, (item: ComponentItem) => {
+								Row() {
+									Text(item.name)
+										.fontSize(FONT_SIZE.MD)
+										.fontWeight(FONT_WEIGHT.MEDIUM)
+										.textAlign(TextAlign.Start)
+										.fontColor($r("app.color.doc_text_color_3"))
+										.layoutWeight(1)
+									Image($r('app.media.title_back'))
+										.width(CONTAINER_SIZE.FOURTEEN)
+										.fillColor($r("app.color.doc_text_color_3"))
+										.margin({
+											right: SPACE.SM
+										})
+										.rotate({
+											angle: 180
+										})
 								}
-							})
-							.animation({
-								duration: 200
-							})
-							.onClick(() => {
-								router.pushUrl({
-									url: item.path,
-									params: {
-										title: item.name
+								.width(CONTAINER_SIZE.FULL)
+								.height(CONTAINER_SIZE.FORTY)
+								.borderRadius(99)
+								.padding({ left: SPACE.LG })
+								.margin({
+									bottom: SPACE.SM
+								})
+								.backgroundColor(modeColor.bg3)
+								.stateStyles({
+									normal: {
+										.scale({
+											x: 1,
+											y: 1
+										})
+									},
+									pressed: {
+										.scale({
+											x: .98,
+											y: .98
+										})
 									}
 								})
+								.animation({
+									duration: 200
+								})
+								.onClick(() => {
+									router.pushUrl({
+										url: item.path,
+										params: {
+											title: item.name
+										}
+									})
+								})
 							})
-						})
+						}
 					}
-				}
+				})
+			}
+			.width(CONTAINER_SIZE.FULL)
+			.layoutWeight(1)
+			.edgeEffect(EdgeEffect.None)
+			.padding({ left: SPACE.MD, right: SPACE.MD })
+			.backgroundColor(modeColor.bg)
+			.onDidScroll(() => {
+				let scrollY = this.scrollerForList.currentOffset().yOffset
+				scrollY = scrollY < 50 ? scrollY : 50
+				this.titleOpacity = scrollY / 50
 			})
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
-		.padding({ left: SPACE.MD, right: SPACE.MD, top: GlobalStore.topAvoidHeight })
-		.backgroundColor(modeColor.bg)
 	}
 }

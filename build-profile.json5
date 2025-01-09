@@ -13,7 +13,7 @@
 //					"signAlg": "SHA256withECDSA",
 //					"storeFile": "/Users/damengbuxing/Desktop/IBest-UI应用文件/ibest_ui_p12.p12"
 //				}
-//			}
+//			},
 			{
 				"name": "default",
 				"type": "HarmonyOS",
