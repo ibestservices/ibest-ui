@@ -48,6 +48,8 @@
 		"pages/Popover",
 		"pages/TextEllipsis",
 		"pages/SideBar",
-		"pages/CanvasDrawer"
+		"pages/CanvasDrawer",
+		"pages/Splash",
+		"pages/PrivacyPolicy"
 	]
 }

@@ -292,7 +292,7 @@ struct Index {
 					.width("100%")
 					.alignItems(HorizontalAlign.Start)
 					.padding({ left: 10, top: GlobalStore.topAvoidHeight })
-				}.margin({ bottom: SPACE.SM })
+				}
 				ForEach(this.componentList, (part: ComponentPart) => {
 					ListItem() {
 						ComponentShowContainer({ title: `${part.title}(${part.list.length})`, titlePaddingLeft: SPACE.XS }) {
@@ -319,7 +319,7 @@ struct Index {
 								.borderRadius(99)
 								.padding({ left: SPACE.LG })
 								.margin({
-									bottom: SPACE.SM
+									top: SPACE.SM
 								})
 								.backgroundColor(modeColor.bg3)
 								.stateStyles({
@@ -351,6 +351,19 @@ struct Index {
 						}
 					}
 				})
+				ListItem() {
+					Text("隐私政策")
+						.width(CONTAINER_SIZE.FULL)
+						.textAlign(TextAlign.Center)
+						.fontSize(14)
+						.fontColor(modeColor.textColor4)
+						.margin({top: SPACE.MD, bottom: SPACE.XL})
+						.onClick(() => {
+							router.pushUrl({
+								url: 'pages/PrivacyPolicy'
+							})
+						})
+				}
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.layoutWeight(1)

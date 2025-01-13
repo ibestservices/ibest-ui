@@ -17,7 +17,7 @@ export default class EntryAbility extends UIAbility {
 	onWindowStageCreate(windowStage: window.WindowStage): void {
 		// Main window is created, set main page for this ability
 		windowStage.getMainWindowSync().setWindowLayoutFullScreen(true)
-		windowStage.loadContent('pages/Index', (err, data) => {
+		windowStage.loadContent('pages/Splash', (err, data) => {
 			GlobalStore.init(windowStage, this.context)
 			// 组件库初始化
 			IBestInit(windowStage, this.context)
