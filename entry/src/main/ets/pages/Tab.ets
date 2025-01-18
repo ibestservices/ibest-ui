@@ -177,7 +177,14 @@ struct TabPage {
                             IBestTabs({
                                 tabWidthType: "auto",
                                 tabsList: this.tabsList,
-                                currentName: $curTabName
+                                currentName: $curTabName,
+                                isShowActiveBg: true,
+                                tabBgColor: "transparent",
+                                tabLineColor: "#904742",
+                                activeBgColor: "#fff",
+                                inactiveBgColor: "#904742",
+                                inactiveTextColor: '#fff',
+                                radius: 4
                             })
                             IBestTabs({
                                 tabWidthType: "auto",

@@ -16,7 +16,7 @@ struct PrivacyPolicy {
 				}
 			})
 			Web({
-				src: "https://ibestservices.github.io/ibest-ui/PrivacyPolicy.html",
+				src: $rawfile('privacyPolicy.html'),
 				controller: this.webController
 			})
 				.cacheMode(CacheMode.Online)

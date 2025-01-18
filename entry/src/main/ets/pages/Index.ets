@@ -14,10 +14,15 @@ interface ComponentItem {
 	name: string,
 	path: string
 }
+interface Tab {
+	name: string
+	icon: Resource
+}
+
 @Entry
 @Component
 struct Index {
-	@State componentList: ComponentPart[] = [
+	@State baseComponentList: ComponentPart[] = [
 		{
 			title: '基础组件',
 			list: [
@@ -230,72 +235,75 @@ struct Index {
 					path: 'pages/Tab'
 				}
 			]
+		}
+	]
+	@State yewuComponentList: ComponentItem[] = [
+		{
+			name: 'CanvasDrawer 画布绘制',
+			path: 'pages/CanvasDrawer'
+		}
+	]
+	private tabsList: Tab[] = [
+		{
+			name: '基础组件',
+			icon: $r("app.media.icon_base")
 		},
 		{
-			title: '业务组件',
-			list: [
-				{
-					name: 'CanvasDrawer 画布绘制',
-					path: 'pages/CanvasDrawer'
-				}
-			]
+			name: '扩展组件',
+			icon: $r("app.media.icon_yewu")
+		},
+		{
+			name: '关于',
+			icon: $r("app.media.icon_about")
 		}
 	]
 	@State titleOpacity: number = 0
+	@State currentTab: number = 0
 	private scrollerForList: Scroller = new Scroller()
 	private context = getContext(this) as common.UIAbilityContext
 
-	aboutToAppear(): void {
-		// setTimeout(() => {
-		// 	router.pushUrl({
-		// 		url: 'pages/CanvasDrawer',
-		// 		params: {
-		// 			title: "CanvasDrawer 画布绘制"
-		// 		}
-		// 	})
-		// }, 100)
+	@Builder TabBuilder(index: number){
+		Column() {
+			Image(this.tabsList[index].icon)
+				.width(20)
+				.height(20)
+				.fillColor(this.currentTab == index ? "#1989fa" : "#999")
+			Text(this.tabsList[index].name)
+				.fontColor(this.currentTab == index ? "#1989fa" : "#999")
+				.fontSize(14)
+				.margin({ top: 5 })
+		}.width('100%')
 	}
-	viewDoc(){
-		let want: Want = {
-			action: 'ohos.want.action.viewData',
-			entities: ['entity.system.browsable'],
-			uri: 'https://ibestui.ibestservices.com/guide/home/'
-		}
-		this.context.startAbility(want)
-	}
-	build() {
-		Column(){
-			IBestNavBar({
-				title: "IBest-UI",
-				isShowLeft: false,
-				isShowStatusBar: true,
-				onTitleClick: () => {
-					this.scrollerForList.scrollTo({xOffset: 0, yOffset: 0, animation: true})
-				}
-			}).position({left: 0, top: 0}).zIndex(1).opacity(this.titleOpacity)
-			List({scroller: this.scrollerForList}) {
+	@Builder tabContentBuilder(index: number){
+		List({scroller: this.scrollerForList}) {
+			if (index == 0) {
 				ListItem() {
-					Column({ space: SPACE.MD }) {
-						Row({ space: SPACE.XS }) {
-							Image($r("app.media.app_icon")).width(32).borderRadius(BORDER_RADIUS.BASE)
-							Text(`IBest-UI(v${BuildProfile.HAR_VERSION})`).fontSize(32).fontColor($r("app.color.doc_text_color_2"))
-						}
-						Text(){
-							Span("一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库，")
-							Span("点此可查看文档。").onClick(() => {
-								this.viewDoc()
-							})
-						}
-							.fontSize(FONT_SIZE.MD)
-							.fontColor($r("app.color.doc_text_color_4"))
+				Column({ space: SPACE.MD }) {
+					Row({ space: SPACE.XS }) {
+						Image($r("app.media.app_icon")).width(32).borderRadius(BORDER_RADIUS.BASE)
+						Text(`IBest-UI(v${BuildProfile.HAR_VERSION})`)
+							.fontSize(32)
+							.fontColor($r("app.color.doc_text_color_2"))
 					}
-					.width("100%")
-					.alignItems(HorizontalAlign.Start)
-					.padding({ left: 10, top: GlobalStore.topAvoidHeight })
+					Text() {
+						Span("一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库，")
+						Span("点此可查看文档。").onClick(() => {
+							this.viewDoc()
+						})
+					}
+					.fontSize(FONT_SIZE.MD)
+					.fontColor($r("app.color.doc_text_color_4"))
 				}
-				ForEach(this.componentList, (part: ComponentPart) => {
+				.width("100%")
+				.alignItems(HorizontalAlign.Start)
+				.padding({ left: 10, top: GlobalStore.topAvoidHeight })
+			}
+				ForEach(this.baseComponentList, (part: ComponentPart) => {
 					ListItem() {
-						ComponentShowContainer({ title: `${part.title}(${part.list.length})`, titlePaddingLeft: SPACE.XS }) {
+						ComponentShowContainer({
+							title: `${part.title}(${part.list.length})`,
+							titlePaddingLeft: SPACE.XS
+						}) {
 							ForEach(part.list, (item: ComponentItem) => {
 								Row() {
 									Text(item.name)
@@ -351,30 +359,133 @@ struct Index {
 						}
 					}
 				})
-				ListItem() {
-					Text("隐私政策")
+			}else{
+				ForEach(this.yewuComponentList, (item: ComponentItem) => {
+					ListItem() {
+						Row() {
+							Text(item.name)
+								.fontSize(FONT_SIZE.MD)
+								.fontWeight(FONT_WEIGHT.MEDIUM)
+								.textAlign(TextAlign.Start)
+								.fontColor($r("app.color.doc_text_color_3"))
+								.layoutWeight(1)
+							Image($r('app.media.title_back'))
+								.width(CONTAINER_SIZE.FOURTEEN)
+								.fillColor($r("app.color.doc_text_color_3"))
+								.margin({
+									right: SPACE.SM
+								})
+								.rotate({
+									angle: 180
+								})
+						}
 						.width(CONTAINER_SIZE.FULL)
-						.textAlign(TextAlign.Center)
-						.fontSize(14)
-						.fontColor(modeColor.textColor4)
-						.margin({top: SPACE.MD, bottom: SPACE.XL})
+						.height(CONTAINER_SIZE.FORTY)
+						.borderRadius(99)
+						.padding({ left: SPACE.LG })
+						.margin({
+							top: SPACE.SM
+						})
+						.backgroundColor(modeColor.bg3)
+						.stateStyles({
+							normal: {
+								.scale({
+									x: 1,
+									y: 1
+								})
+							},
+							pressed: {
+								.scale({
+									x: .98,
+									y: .98
+								})
+							}
+						})
+						.animation({
+							duration: 200
+						})
 						.onClick(() => {
 							router.pushUrl({
-								url: 'pages/PrivacyPolicy'
+								url: item.path,
+								params: {
+									title: item.name
+								}
 							})
 						})
+					}
+				})
+			}
+			// ListItem() {
+			// 	Text("隐私政策")
+			// 		.width(CONTAINER_SIZE.FULL)
+			// 		.textAlign(TextAlign.Center)
+			// 		.fontSize(14)
+			// 		.fontColor(modeColor.textColor4)
+			// 		.margin({top: SPACE.MD, bottom: SPACE.XL})
+			// 		.onClick(() => {
+			// 			router.pushUrl({
+			// 				url: 'pages/PrivacyPolicy'
+			// 			})
+			// 		})
+			// }
+		}
+		.width(CONTAINER_SIZE.FULL)
+		.height(CONTAINER_SIZE.FULL)
+		.edgeEffect(EdgeEffect.None)
+		.padding({ left: SPACE.MD, right: SPACE.MD })
+		.onDidScroll(() => {
+			let scrollY = this.scrollerForList.currentOffset().yOffset
+			scrollY = scrollY < 50 ? scrollY : 50
+			this.titleOpacity = scrollY / 50
+		})
+	}
+
+	aboutToAppear(): void {
+		// setTimeout(() => {
+		// 	router.pushUrl({
+		// 		url: 'pages/CanvasDrawer',
+		// 		params: {
+		// 			title: "CanvasDrawer 画布绘制"
+		// 		}
+		// 	})
+		// }, 100)
+	}
+	viewDoc(){
+		let want: Want = {
+			action: 'ohos.want.action.viewData',
+			entities: ['entity.system.browsable'],
+			uri: 'https://ibestui.ibestservices.com/guide/home/'
+		}
+		this.context.startAbility(want)
+	}
+	build() {
+		Column(){
+			IBestNavBar({
+				title: "IBest-UI",
+				isShowLeft: false,
+				isShowStatusBar: true,
+				onTitleClick: () => {
+					this.scrollerForList.scrollTo({xOffset: 0, yOffset: 0, animation: true})
 				}
+			})
+				.position({left: 0, top: 0}).zIndex(1).opacity(this.titleOpacity)
+			Tabs({barPosition: BarPosition.End, index: $$this.currentTab}){
+				TabContent(){
+					this.tabContentBuilder(0)
+				}
+				.tabBar(this.TabBuilder(0))
+				TabContent(){
+					this.tabContentBuilder(1)
+				}.tabBar(this.TabBuilder(1))
+				TabContent(){
+					this.tabContentBuilder(2)
+				}.tabBar(this.TabBuilder(2))
 			}
 			.width(CONTAINER_SIZE.FULL)
+			.barHeight(60)
 			.layoutWeight(1)
-			.edgeEffect(EdgeEffect.None)
-			.padding({ left: SPACE.MD, right: SPACE.MD })
-			.backgroundColor(modeColor.bg)
-			.onDidScroll(() => {
-				let scrollY = this.scrollerForList.currentOffset().yOffset
-				scrollY = scrollY < 50 ? scrollY : 50
-				this.titleOpacity = scrollY / 50
-			})
 		}
+		.backgroundColor(modeColor.bg)
+		.expandSafeArea()
 	}
 }

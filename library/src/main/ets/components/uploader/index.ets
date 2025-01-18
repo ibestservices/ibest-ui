@@ -146,12 +146,13 @@ export struct IBestUploader {
 			}
 			// 元服务暂不支持
 			// let fileName = file.name
-			let fileName = decodeURI(e.slice(index + 1).split(".")[0])
-			let cacheUri = this.context.cacheDir + "/" + fileName
+			let fullName = e.slice(index + 1)
+			let fileName = decodeURI(fullName.split(".")[0])
+			let cacheUri = this.context.cacheDir + "/" + fullName
 			fs.copyFileSync(file.fd, cacheUri)
 			let obj = new IBestUploaderFile({
 				previewUri: e,
-				internalUri: `internal://cache/${fileName}`,
+				internalUri: `internal://cache/${fullName}`,
 				cacheUri,
 				name: fileName,
 				size: stat.size,
