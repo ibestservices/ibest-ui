@@ -1,7 +1,12 @@
 import router from '@ohos.router';
-import { IBestCanvasDrawer, IBestNavBar, IBestCanvasContent, IBestUploader,
-	IBestUploaderFile,
-	IBestButton} from '@ibestservices/ibest-ui';
+import {
+    IBestButton,
+    IBestCanvasContent,
+    IBestCanvasDrawer,
+    IBestNavBar,
+    IBestUploader,
+    IBestUploaderFile
+} from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle';
 import ComponentShowContainer from '../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../assets/global.type';
@@ -150,7 +155,7 @@ struct CanvasDrawerPage {
 				IBestCanvasDrawer({
 					canvasWidth: this.canvasWidth,
 					canvasHeight: 100,
-					canvasBgColor: "#1989fa",
+					canvasBgColor: modeColor.primaryColor,
 					onDrawFinish: pixelMap => {
 						this.pixelMap1 = pixelMap
 						this.canvasShow1 = false

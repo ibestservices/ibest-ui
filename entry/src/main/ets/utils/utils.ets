@@ -1,6 +1,6 @@
 import GlobalStore from './global'
 import { window } from '@kit.ArkUI'
-import { common } from '@kit.AbilityKit'
+import { bundleManager, common } from '@kit.AbilityKit'
 import { ComAvoidAreaSize } from '../assets/global.type'
 
 /**
@@ -26,4 +26,10 @@ export const getWindowAvoidSize = async (context: common.BaseContext): Promise<C
         rightSize: px2vp(avoidArea.rightRect.width),
         navigationSize: px2vp(systemDht.bottomRect.height)
     }
+}
+/**
+ * 获取应用版本
+ */
+export function getAppVersion(){
+    return bundleManager.getBundleInfoForSelfSync(bundleManager.BundleFlag.GET_BUNDLE_INFO_DEFAULT).versionName
 }

@@ -1,10 +1,11 @@
 import BuildProfile from '@ibestservices/ibest-ui/BuildProfile'
-import { IBestNavBar } from '@ibestservices/ibest-ui'
+import { IBestCell, IBestCellGroup, IBestNavBar } from '@ibestservices/ibest-ui'
 import router from '@ohos.router'
 import { BORDER_RADIUS, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, modeColor, SPACE } from '../assets/styles/BaseStyle'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import GlobalStore from '../utils/global'
 import { common, Want } from '@kit.AbilityKit'
+import { getAppVersion } from '../utils/utils'
 
 interface ComponentPart {
 	title: string
@@ -17,6 +18,13 @@ interface ComponentItem {
 interface Tab {
 	name: string
 	icon: Resource
+}
+
+@Extend(List) function listStyle(){
+	.width(CONTAINER_SIZE.FULL)
+	.height(CONTAINER_SIZE.FULL)
+	.edgeEffect(EdgeEffect.None)
+	.padding({ left: SPACE.MD, right: SPACE.MD })
 }
 
 @Entry
@@ -257,47 +265,58 @@ struct Index {
 			icon: $r("app.media.icon_about")
 		}
 	]
-	@State titleOpacity: number = 0
 	@State currentTab: number = 0
-	private scrollerForList: Scroller = new Scroller()
+	@State scrollTop: number = 0
+	@State docUrl: string = "https://ibestui.ibestservices.com/guide/home"
+	@State companyUrl: string = "https://www.ibestservices.com"
+	private scrollerForList1: Scroller = new Scroller()
+	private scrollerForList2: Scroller = new Scroller()
 	private context = getContext(this) as common.UIAbilityContext
 
-	@Builder TabBuilder(index: number){
-		Column() {
+	@Builder tabBuilder(index: number){
+		Column({space: 5}) {
 			Image(this.tabsList[index].icon)
-				.width(20)
-				.height(20)
-				.fillColor(this.currentTab == index ? "#1989fa" : "#999")
+				.width(16)
+				.aspectRatio(1)
+				.fillColor(this.currentTab == index ? modeColor.primaryColor : modeColor.textColor4)
 			Text(this.tabsList[index].name)
-				.fontColor(this.currentTab == index ? "#1989fa" : "#999")
-				.fontSize(14)
-				.margin({ top: 5 })
-		}.width('100%')
+				.fontColor(this.currentTab == index ? modeColor.primaryColor : modeColor.textColor4)
+				.fontSize(FONT_SIZE.SM)
+		}.width(CONTAINER_SIZE.FULL).padding({top: 10, bottom: GlobalStore.bottomBarHeight})
 	}
-	@Builder tabContentBuilder(index: number){
-		List({scroller: this.scrollerForList}) {
-			if (index == 0) {
-				ListItem() {
-				Column({ space: SPACE.MD }) {
-					Row({ space: SPACE.XS }) {
-						Image($r("app.media.app_icon")).width(32).borderRadius(BORDER_RADIUS.BASE)
-						Text(`IBest-UI(v${BuildProfile.HAR_VERSION})`)
-							.fontSize(32)
-							.fontColor($r("app.color.doc_text_color_2"))
-					}
-					Text() {
-						Span("一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库，")
-						Span("点此可查看文档。").onClick(() => {
-							this.viewDoc()
-						})
-					}
-					.fontSize(FONT_SIZE.MD)
-					.fontColor($r("app.color.doc_text_color_4"))
+	@Builder listTop(index: number){
+		Column({ space: SPACE.MD }) {
+			Row({ space: SPACE.XS }) {
+				Image($r("app.media.app_icon")).width(32).borderRadius(BORDER_RADIUS.BASE)
+				Text("IBest-UI")
+					.fontSize(32)
+					.fontColor(modeColor.textColor2)
+			}.justifyContent(FlexAlign.Center)
+			Text() {
+				if(index == 0){
+					Span("以下为IBest-UI基础组件，文档详见：")
+				}else if(index == 1){
+					Span("以下为IBest-UI扩展业务组件，持续更新中...，文档详见：")
 				}
-				.width("100%")
-				.alignItems(HorizontalAlign.Start)
-				.padding({ left: 10, top: GlobalStore.topAvoidHeight })
+				Span(this.docUrl)
+					.decoration({ type: TextDecorationType.Underline, color: modeColor.textColor4 })
+					.onClick(() => {
+						this.viewUrl(this.docUrl)
+					})
 			}
+			.fontSize(FONT_SIZE.MD)
+			.fontColor(modeColor.textColor4)
+		}
+		.width(CONTAINER_SIZE.FULL)
+		.alignItems(HorizontalAlign.Start)
+		.padding({ left: 10, top: GlobalStore.topAvoidHeight })
+	}
+	@Builder tabContentBuilder(index: number) {
+		if (index == 0) {
+			List({ scroller: this.scrollerForList1 }) {
+				ListItem() {
+					this.listTop(index)
+				}
 				ForEach(this.baseComponentList, (part: ComponentPart) => {
 					ListItem() {
 						ComponentShowContainer({
@@ -305,138 +324,144 @@ struct Index {
 							titlePaddingLeft: SPACE.XS
 						}) {
 							ForEach(part.list, (item: ComponentItem) => {
-								Row() {
-									Text(item.name)
-										.fontSize(FONT_SIZE.MD)
-										.fontWeight(FONT_WEIGHT.MEDIUM)
-										.textAlign(TextAlign.Start)
-										.fontColor($r("app.color.doc_text_color_3"))
-										.layoutWeight(1)
-									Image($r('app.media.title_back'))
-										.width(CONTAINER_SIZE.FOURTEEN)
-										.fillColor($r("app.color.doc_text_color_3"))
-										.margin({
-											right: SPACE.SM
-										})
-										.rotate({
-											angle: 180
-										})
-								}
-								.width(CONTAINER_SIZE.FULL)
-								.height(CONTAINER_SIZE.FORTY)
-								.borderRadius(99)
-								.padding({ left: SPACE.LG })
-								.margin({
-									top: SPACE.SM
-								})
-								.backgroundColor(modeColor.bg3)
-								.stateStyles({
-									normal: {
-										.scale({
-											x: 1,
-											y: 1
-										})
-									},
-									pressed: {
-										.scale({
-											x: .98,
-											y: .98
-										})
-									}
-								})
-								.animation({
-									duration: 200
-								})
-								.onClick(() => {
-									router.pushUrl({
-										url: item.path,
-										params: {
-											title: item.name
-										}
-									})
-								})
+								this.componentItem(item)
 							})
 						}
-					}
-				})
-			}else{
-				ForEach(this.yewuComponentList, (item: ComponentItem) => {
-					ListItem() {
-						Row() {
-							Text(item.name)
-								.fontSize(FONT_SIZE.MD)
-								.fontWeight(FONT_WEIGHT.MEDIUM)
-								.textAlign(TextAlign.Start)
-								.fontColor($r("app.color.doc_text_color_3"))
-								.layoutWeight(1)
-							Image($r('app.media.title_back'))
-								.width(CONTAINER_SIZE.FOURTEEN)
-								.fillColor($r("app.color.doc_text_color_3"))
-								.margin({
-									right: SPACE.SM
-								})
-								.rotate({
-									angle: 180
-								})
-						}
-						.width(CONTAINER_SIZE.FULL)
-						.height(CONTAINER_SIZE.FORTY)
-						.borderRadius(99)
-						.padding({ left: SPACE.LG })
-						.margin({
-							top: SPACE.SM
-						})
-						.backgroundColor(modeColor.bg3)
-						.stateStyles({
-							normal: {
-								.scale({
-									x: 1,
-									y: 1
-								})
-							},
-							pressed: {
-								.scale({
-									x: .98,
-									y: .98
-								})
-							}
-						})
-						.animation({
-							duration: 200
-						})
-						.onClick(() => {
-							router.pushUrl({
-								url: item.path,
-								params: {
-									title: item.name
-								}
-							})
-						})
 					}
 				})
 			}
-			// ListItem() {
-			// 	Text("隐私政策")
-			// 		.width(CONTAINER_SIZE.FULL)
-			// 		.textAlign(TextAlign.Center)
-			// 		.fontSize(14)
-			// 		.fontColor(modeColor.textColor4)
-			// 		.margin({top: SPACE.MD, bottom: SPACE.XL})
-			// 		.onClick(() => {
-			// 			router.pushUrl({
-			// 				url: 'pages/PrivacyPolicy'
-			// 			})
-			// 		})
-			// }
+			.listStyle()
+			.onDidScroll(() => {
+				this.getScrollTop()
+			})
+		}else if (index == 1) {
+			List({ scroller: this.scrollerForList2 }) {
+				ListItem() {
+					this.listTop(index)
+				}
+				ForEach(this.yewuComponentList, (item: ComponentItem) => {
+					ListItem() {
+						this.componentItem(item)
+					}
+				})
+			}
+			.listStyle()
+			.onDidScroll(() => {
+				this.getScrollTop()
+			})
+		}else{
+			Column() {
+				Column({ space: SPACE.MD }) {
+					Image($r("app.media.app_icon")).width(100).borderRadius(BORDER_RADIUS.BASE)
+					Text("IBest-UI")
+						.fontSize(32)
+						.fontColor(modeColor.textColor2)
+					Text("一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库")
+						.width("80%")
+						.textAlign(TextAlign.Center)
+						.fontSize(FONT_SIZE.MD)
+						.fontColor(modeColor.textColor4)
+					IBestCellGroup({inset: true}){
+						IBestCell({
+							title: "应用版本",
+							value: `v${getAppVersion()}`
+						})
+						IBestCell({
+							title: "组件库版本",
+							value: `v${BuildProfile.HAR_VERSION}`
+						})
+						IBestCell({
+							title: "文档",
+							leftContentWidth: 60,
+							value: this.docUrl,
+							isLink: true,
+
+							onClickCell: () => {
+								this.viewUrl(this.docUrl)
+							}
+						})
+						IBestCell({
+							title: "官网",
+							leftContentWidth: 100,
+							value: this.companyUrl,
+							isLink: true,
+							onClickCell: () => {
+								this.viewUrl(this.companyUrl)
+							}
+						})
+						IBestCell({
+							title: "隐私政策",
+							isLink: true,
+							hasBorder: false,
+							onClickCell: () => {
+								router.pushUrl({
+									url: 'pages/PrivacyPolicy'
+								})
+							}
+						})
+					}
+				}
+				Column({ space: SPACE.BASE }){
+					// Text("备案号").fontColor(modeColor.primaryColor).fontSize(FONT_SIZE.XS)
+					Text("版权所有 © 2024-2025 安徽百得思维信息科技有限公司保留一切权利").fontSize(FONT_SIZE.XS)
+				}
+			}
+			.width(CONTAINER_SIZE.FULL)
+			.height(CONTAINER_SIZE.FULL)
+			.justifyContent(FlexAlign.SpaceBetween)
+			.padding({ top: 80, bottom: SPACE.MD })
+		}
+	}
+	@Builder componentItem(item: ComponentItem) {
+		Row() {
+			Text(item.name)
+				.fontSize(FONT_SIZE.MD)
+				.fontWeight(FONT_WEIGHT.MEDIUM)
+				.textAlign(TextAlign.Start)
+				.fontColor($r("app.color.doc_text_color_3"))
+				.layoutWeight(1)
+			Image($r('app.media.title_back'))
+				.width(CONTAINER_SIZE.FOURTEEN)
+				.fillColor($r("app.color.doc_text_color_3"))
+				.margin({
+					right: SPACE.SM
+				})
+				.rotate({
+					angle: 180
+				})
 		}
 		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
-		.edgeEffect(EdgeEffect.None)
-		.padding({ left: SPACE.MD, right: SPACE.MD })
-		.onDidScroll(() => {
-			let scrollY = this.scrollerForList.currentOffset().yOffset
-			scrollY = scrollY < 50 ? scrollY : 50
-			this.titleOpacity = scrollY / 50
+		.height(CONTAINER_SIZE.FORTY)
+		.borderRadius(99)
+		.padding({ left: SPACE.LG })
+		.margin({
+			top: SPACE.SM
+		})
+		.backgroundColor(modeColor.bg3)
+		.stateStyles({
+			normal: {
+				.scale({
+					x: 1,
+					y: 1
+				})
+			},
+			pressed: {
+				.scale({
+					x: .98,
+					y: .98
+				})
+			}
+		})
+		.animation({
+			duration: 200
+		})
+		.onClick(() => {
+			router.pushUrl({
+				url: item.path,
+				params: {
+					title: item.name
+				}
+			})
 		})
 	}
 
@@ -450,11 +475,35 @@ struct Index {
 		// 	})
 		// }, 100)
 	}
-	viewDoc(){
+	getTitleOpacity(){
+		let scrollY = this.scrollTop < 50 ? this.scrollTop : 50
+		return scrollY / 50
+	}
+	goTop(){
+		switch (this.currentTab){
+			case 0:
+				this.scrollerForList1.scrollTo({xOffset: 0, yOffset: 0, animation: true})
+				break
+			case 1:
+				this.scrollerForList2.scrollTo({xOffset: 0, yOffset: 0, animation: true})
+				break
+		}
+	}
+	getScrollTop(){
+		switch (this.currentTab){
+			case 0:
+				this.scrollTop = this.scrollerForList1.currentOffset().yOffset
+				break
+			case 1:
+				this.scrollTop = this.scrollerForList2.currentOffset().yOffset
+				break
+		}
+	}
+	viewUrl(url: string){
 		let want: Want = {
 			action: 'ohos.want.action.viewData',
 			entities: ['entity.system.browsable'],
-			uri: 'https://ibestui.ibestservices.com/guide/home/'
+			uri: url
 		}
 		this.context.startAbility(want)
 	}
@@ -465,27 +514,30 @@ struct Index {
 				isShowLeft: false,
 				isShowStatusBar: true,
 				onTitleClick: () => {
-					this.scrollerForList.scrollTo({xOffset: 0, yOffset: 0, animation: true})
+					this.goTop()
 				}
-			})
-				.position({left: 0, top: 0}).zIndex(1).opacity(this.titleOpacity)
+			}).position({left: 0, top: 0}).zIndex(1).opacity(this.getTitleOpacity())
 			Tabs({barPosition: BarPosition.End, index: $$this.currentTab}){
 				TabContent(){
 					this.tabContentBuilder(0)
 				}
-				.tabBar(this.TabBuilder(0))
+				.tabBar(this.tabBuilder(0))
 				TabContent(){
 					this.tabContentBuilder(1)
-				}.tabBar(this.TabBuilder(1))
+				}.tabBar(this.tabBuilder(1))
 				TabContent(){
 					this.tabContentBuilder(2)
-				}.tabBar(this.TabBuilder(2))
+				}.tabBar(this.tabBuilder(2))
 			}
 			.width(CONTAINER_SIZE.FULL)
-			.barHeight(60)
+			.barHeight(70)
+			.barBackgroundColor(modeColor.bg2)
+			.divider({strokeWidth: 1, color: modeColor.borderColor})
 			.layoutWeight(1)
+			.onChange(() => {
+				this.getScrollTop()
+			})
 		}
 		.backgroundColor(modeColor.bg)
-		.expandSafeArea()
 	}
 }

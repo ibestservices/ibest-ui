@@ -69,10 +69,10 @@ struct NoticeBarPage {
 					ComponentShowContainer({ title: '自定义样式', titlePaddingLeft: SPACE.MD }) {
 						IBestNoticeBar({
 							leftIcon: "info-o",
-							leftIconColor: "#1989fa",
+							leftIconColor: modeColor.primaryColor,
 							bgColor: "#ecf9ff",
 							text: "今人不见古时月, 今月曾经照古人。",
-							textColor: "#1989fa"
+							textColor: modeColor.primaryColor
 						})
 					}
 				}
