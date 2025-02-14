@@ -1,5 +1,6 @@
 import image from '@ohos.multimedia.image'
-import { rcp } from '@kit.RemoteCommunicationKit';
+// import { rcp } from '@kit.RemoteCommunicationKit';
+import { http } from '@kit.NetworkKit'
 import { IBestCanvasContent } from './index.type'
 import { base64ToPixelMap, getComponentsInfo, getComponentSnapshot, getSizeByUnit, sleep } from '../../utils/utils';
 import GlobalStore from '../../utils/GlobalStore';
@@ -85,21 +86,24 @@ export struct IBestCanvasDrawer{
 		let imgModel: PixelMap | ImageBitmap
 		if (typeof url == 'string') {
 			if (url.startsWith("http")) { // 网络图片
-				let request = rcp.createSession()
-				let res: rcp.Response = await request.get(url, "array-buffer")
-				request.close()
-				if(res.statusCode != 200){
-					return
-				}
-				let imageSource = image.createImageSource(res.body)
+				// let request = rcp.createSession()
+				// let res: rcp.Response = await request.get(url, "array-buffer")
+				// request.close()
+				// if(res.statusCode != 200){
+				// 	return
+				// }
+				// let imageSource = image.createImageSource(res.body)
+				let httpRequest = http.createHttp()
+				let res: http.HttpResponse = await httpRequest.request(url, { expectDataType: http.HttpDataType.ARRAY_BUFFER })
+				let imageSource = image.createImageSource(res.result as ArrayBuffer)
 				imgModel = await imageSource.createPixelMap()
 			}else if(url.startsWith("data:image")){ // base64
-				imgModel = base64ToPixelMap(url)
+				imgModel = await base64ToPixelMap(url)
 			} else { // 本地选择的图片
 				imgModel = new ImageBitmap(url)
 			}
 		} else {	// Resource
-			imgModel = base64ToPixelMap(this.resourceManager.getMediaContentBase64Sync(url))
+			imgModel = await base64ToPixelMap(this.resourceManager.getMediaContentBase64Sync(url))
 		}
 		if (deg) {
 			this.ctx.translate(left + width / 2, top + height / 2)
@@ -258,6 +262,7 @@ export struct IBestCanvasDrawer{
 			.linearGradient(this.linerGradient)
 			.backgroundImage(this.canvasBgImg)
 			.backgroundImageSize({width: "100%", height: "100%"})
+			.clip(true)
 			.position({ x: -2000, y: -2000})
 			.id(`ibest_poster_${this.uniId}`)
 			.onReady(() => {

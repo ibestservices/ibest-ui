@@ -1,9 +1,11 @@
+import { CONTAINER_SIZE } from '@ibestservices/ibest-ui/src/main/ets/theme-chalk/src/container'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { IBestIcon } from '../icon'
+import { IBestDivider } from '../divider'
 import { IBestPopoverColor } from './color'
-import { IBestPopoverAction, IBestPopoverController, PopoverMask } from './index.type'
+import { BorderSizeType, IBestPopoverAction, IBestPopoverController, PopoverMask } from './index.type'
 
 
 @Component
@@ -88,6 +90,11 @@ export struct IBestPopover{
      * 气泡阴影
      */
     @Prop popoverShadow: ShadowOptions | ShadowStyle = ShadowStyle.OUTER_DEFAULT_MD
+    /**
+     * 底部分割线尺寸类型
+     * @since 2.0.5
+     */
+    @Provide borderSizeType: BorderSizeType = "center"
     /**
      * 默认内容
      */
@@ -182,6 +189,7 @@ struct PopoverContent{
     @Consume iconSize: string | number
     @Consume iconColor: ResourceColor
     @Consume bgColor: ResourceColor
+    @Consume borderSizeType: BorderSizeType
     @Consume dividerColor: ResourceColor
     @Link isShow: boolean
     onOpen: () => void = () => {}
@@ -198,23 +206,27 @@ struct PopoverContent{
         Column(){
             ForEach(this.actions, (item: IBestPopoverAction, index: number) => {
                 Row(){
-                    if(item.icon || item.iconName){
-                        IBestIcon({
-                            name: item.icon || item.iconName,
-                            iconSize: this.iconSize,
-                            color: this.iconColor
-                        }).margin({right: this.baseStyle.spaceXs})
+                    Row(){
+                        if(item.icon || item.iconName){
+                            IBestIcon({
+                                name: item.icon || item.iconName,
+                                iconSize: this.iconSize,
+                                color: this.iconColor
+                            }).margin({right: this.baseStyle.spaceXs})
+                        }
+                        Text(item.text)
+                            .layoutWeight(this.popoverWidth ? 1 : 0)
+                            .height(getSizeByUnit(this.itemHeight))
+                            .fontSize(getSizeByUnit(this.textFontSize, true))
+                            .fontColor(item.color || this.textColor)
+                            .border({width:{top: this.borderSizeType == 'right' && index > 0 ? 1 : 0}, color: this.dividerColor})
+                            .textAlign(this.getTextAlign(item))
+                            .maxLines(1)
+                            .textOverflow({overflow: TextOverflow.Ellipsis})
                     }
-                    Text(item.text)
-                        .layoutWeight(this.popoverWidth ? 1 : 0)
-                        .height(getSizeByUnit(this.itemHeight))
-                        .fontSize(getSizeByUnit(this.textFontSize, true))
-                        .fontColor(item.color || this.textColor)
-                        .border({width:{top: index > 0 ? 1 : 0}, color: this.dividerColor})
-                        .textAlign(this.getTextAlign(item))
-                        .maxLines(1)
-                        .textOverflow({overflow: TextOverflow.Ellipsis})
+                    .border({width:{top: this.borderSizeType == 'center' && index > 0 ? 1 : 0}, color: this.dividerColor})
                 }
+                .border({width: {top: this.borderSizeType == 'full' && index > 0 ? 1 : 0}, color: this.dividerColor})
                 .padding({left: getSizeByUnit(this.itemPadding), right: getSizeByUnit(this.itemPadding)})
                 .stateStyles({
                     pressed: {

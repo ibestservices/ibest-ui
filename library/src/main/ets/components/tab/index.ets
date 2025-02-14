@@ -85,7 +85,7 @@ export struct IBestTabs{
      */
     @Provide({allowOverride: "activeTextColor"}) activeTextColor: ResourceColor = IBestTabColor.activeTextColor
     /**
-     * 标记线颜色
+     * type 为 `line` 时, 为标记线颜色, type 为 `card` 时, 为标记块背景色
      */
     @Provide({allowOverride: "tabLineColor"}) tabLineColor: ResourceColor = ""
     /**
@@ -101,6 +101,26 @@ export struct IBestTabs{
      * @since 1.15.0
      */
     @Provide({allowOverride: "fontSize"}) fontSize: number | string = this.baseStyle.fontSizeMd as string
+    /**
+     * 是否显示激活背景, 仅type为`line`时有效
+     * @since 2.0.5
+     */
+    @Provide({allowOverride: "isShowActiveBg"}) isShowActiveBg: boolean = false
+    /**
+     * 激活背景色, 仅type为`line`时有效
+     * @since 2.0.5
+     */
+    @Provide({allowOverride: "activeBgColor"}) activeBgColor: ResourceColor = ""
+    /**
+     * 非激活背景色, 仅type为`line`时有效
+     * @since 2.0.5
+     */
+    @Provide({allowOverride: "inactiveBgColor"}) inactiveBgColor: ResourceColor = ""
+    /**
+     * 选项圆角, 仅type为`line`时有效
+     * @since 2.0.5
+     */
+    @Provide({allowOverride: "radius"}) radius: number | string = 0
     /**
      * onChange事件回调
      */
@@ -205,7 +225,8 @@ export struct IBestTabs{
                     this.tabLineWidth = tabInfo.textWidth
                 }
                 this.startTransX = this.translateX = this.translateXList[index]
-            } else {
+            }
+            if(this.isShowActiveBg || this.type == "card"){
                 this.tabBoxWidth = tabInfo.boxWidth
                 this.startTransX = this.tabBoxTranslateX = tabInfo.boxLocalLeft
             }
@@ -328,6 +349,8 @@ struct IBestTabBox{
     @Consume tabLineHeight: number | string
     @Consume tabLineColor: ResourceColor
     @Consume lineOffsetY: number | string
+    @Consume isShowActiveBg: boolean
+    @Consume radius: number | string
     @Prop translateX: number
     @Prop tabBoxTranslateX: number
     @Prop tabBoxWidth: number
@@ -338,25 +361,13 @@ struct IBestTabBox{
     }
     build() {
         Stack({alignContent: Alignment.BottomStart}){
-            // 标记线
-            if(this.type == "line"){
-                Row()
-                    .width(this.tabLineWidth)
-                    .height(getSizeByUnit(this.tabLineHeight))
-                    .backgroundColor(this.getLineColor())
-                    .translate({ x: this.translateX })
-                    .animation({
-                        duration: this.isReady ? 100 : 0,
-                        curve: Curve.FastOutSlowIn
-                    })
-                    .offset({ y: `-${getSizeByUnit(this.lineOffsetY)}` })
-            }
             // 标记块
-            if(this.type == "card"){
+            if(this.isShowActiveBg || this.type == "card"){
                 Row()
                     .width(this.tabBoxWidth)
                     .height(getSizeByUnit(this.tabHeight))
                     .backgroundColor(this.getLineColor())
+                    .borderRadius(this.type == "line" ? { topLeft: getSizeByUnit(this.radius), topRight: getSizeByUnit(this.radius) } : 0)
                     .translate({ x: this.tabBoxTranslateX })
                     .animation({
                         duration: this.isReady ? 100 : 0,
@@ -378,6 +389,19 @@ struct IBestTabBox{
             .height(getSizeByUnit(this.tabHeight))
             .borderRadius(this.baseStyle.borderRadiusSm)
             .border({ width: this.type == "card" ? 1 : 0, color: this.getLineColor() })
+            // 标记线
+            if(this.type == "line"){
+                Row()
+                    .width(this.tabLineWidth)
+                    .height(getSizeByUnit(this.tabLineHeight))
+                    .backgroundColor(this.getLineColor())
+                    .translate({ x: this.translateX })
+                    .animation({
+                        duration: this.isReady ? 100 : 0,
+                        curve: Curve.FastOutSlowIn
+                    })
+                    .offset({ y: `-${getSizeByUnit(this.lineOffsetY)}` })
+            }
         }
         .backgroundColor(this.tabBgColor)
     }
@@ -400,6 +424,10 @@ struct IBestTab{
     @Consume activeTextColor: ResourceColor
     @Consume tabLineColor: ResourceColor
     @Consume fontSize: number
+    @Consume isShowActiveBg: boolean
+    @Consume activeBgColor: ResourceColor
+    @Consume inactiveBgColor: ResourceColor
+    @Consume radius: number | string
     initSize: () => void = () => {}
     onTabClick: (name: string) => void = () => {}
     itemChange(){
@@ -435,10 +463,13 @@ struct IBestTab{
             }
             .id(`ibestTab_${this.uniId}_text_${this.item.name}`)
         }
+        .backgroundColor(this.type == "line" && this.isShowActiveBg ? this.currentName == this.item.name ? this.activeBgColor : this.inactiveBgColor : "")
         .justifyContent(FlexAlign.Center)
         .padding({left: getSizeByUnit(this.tabPadding), right: getSizeByUnit(this.tabPadding)})
         .layoutWeight(this.tabWidthType == "flex" ? 1 : 0)
+        .borderRadius(this.type == "line" ? { topLeft: getSizeByUnit(this.radius), topRight: getSizeByUnit(this.radius) } : 0)
         .border({ width: { left: this.type == "card" && this.index > 0 ? 1 : 0 }, color: this.getLineColor() })
+        .clip(true)
         .enabled(!this.item.isDisable)
         .opacity(this.item.isDisable ? 0.3 : 1)
         .id(`ibestTab_${this.uniId}_box_${this.item.name}`)

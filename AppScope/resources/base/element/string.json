@@ -7,6 +7,14 @@
 		{
 			"name": "app_desc",
 			"value": "一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库。"
+		},
+		{
+			"name": "app_doc_url",
+			"value": "https://ibestui.ibestservices.com/guide/home"
+		},
+		{
+			"name": "company_url",
+			"value": "https://www.ibestservices.com"
 		}
 	]
 }

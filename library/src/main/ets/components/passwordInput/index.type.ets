@@ -1,10 +1,13 @@
+import { generateId } from "../../utils/utils"
 /**
  * 输入框model
  */
 export class IBestPasswordInputModel {
+	public id: string
 	public value: string
 	constructor(value: string) {
 		this.value = value
+		this.id = generateId()
 	}
 }
 /**

@@ -246,11 +246,11 @@ export function convertDimensions(val: number, isFont?: boolean): number {
 /**
  * base64 转 pixelMap
  */
-export function base64ToPixelMap(base64: string): PixelMap {
+export async function base64ToPixelMap(base64: string): Promise<PixelMap> {
 	const reg = new RegExp('data:image/\\w+;base64,')
 	const base64Str = base64.replace(reg, '')
 	let base64Helper = new util.Base64Helper()
 	let arrayBuffer = base64Helper.decodeSync(base64Str).buffer as ArrayBuffer
 	let imageSource = image.createImageSource(arrayBuffer)
-	return imageSource.createPixelMapSync()
+	return await imageSource.createPixelMap()
 }

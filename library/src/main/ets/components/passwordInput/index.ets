@@ -158,17 +158,8 @@ export struct IBestPasswordInput {
 		}else if(value.length > this.inputLength){
 			this.value = value.slice(0, this.inputLength)
 		}else{
-			if(this.inputList.length){
-				if(this.currentFocusIndex > value.length){
-					this.currentFocusIndex = value.length
-				}else if(this.currentFocusIndex == value.length){
-					this.currentFocusIndex = value.length - 1
-				}
-				this.inputList[this.currentFocusIndex].value = value[this.currentFocusIndex] || ""
-			}else{
-				this.inputList = Array(this.inputLength).fill("").map((_: string, index: number) => new IBestPasswordInputModel(value[index] || ""))
-			}
-			this.currentFocusIndex = value.length || 0
+			this.inputList = Array(this.inputLength).fill("").map((_: string, index: number) => new IBestPasswordInputModel(value[index] || ""))
+			this.currentFocusIndex = value.length
 		}
 	}
 	// 输入框结束编辑
@@ -207,7 +198,7 @@ export struct IBestPasswordInput {
 							focused: this.focused,
 							currentFocusIndex: this.currentFocusIndex
 						})
-					}, (_: IBestPasswordInputModel, index: number) => index + "")
+					}, (item: IBestPasswordInputModel) => item.id)
 				}
 				.width(CONTAINER_SIZE.FULL)
 				.height(CONTAINER_SIZE.FULL)

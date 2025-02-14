@@ -1,8 +1,9 @@
-export interface IBestCanvasContent {
+@Observed
+export class IBestCanvasContent {
 	/**
 	 * 内容类型
      */
-	type: "image" | "text"
+	type?: "image" | "text"
 	/**
 	 * 图片地址
      */

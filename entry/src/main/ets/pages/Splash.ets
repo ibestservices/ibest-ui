@@ -47,7 +47,7 @@ struct Splash {
 					Text("《隐私政策》")
 						.width(CONTAINER_SIZE.FULL)
 						.fontSize(14)
-						.fontColor("#1989fa")
+						.fontColor(modeColor.primaryColor)
 						.textAlign(TextAlign.Start)
 						.margin({top: 20})
 						.onClick(() => {
@@ -57,13 +57,13 @@ struct Splash {
 						.width(CONTAINER_SIZE.FULL)
 						.height(40)
 						.margin({top: 20})
-						.backgroundColor("#1989fa")
+						.backgroundColor(modeColor.primaryColor)
 						.onClick(() => {
 							this.agree()
 						})
 					Text("不同意")
 						.fontSize(12)
-						.fontColor("#1989fa")
+						.fontColor(modeColor.primaryColor)
 						.margin({top: 20})
 						.onClick(() => {
 							this.exitApp()

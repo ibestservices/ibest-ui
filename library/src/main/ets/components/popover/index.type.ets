@@ -36,6 +36,10 @@ export interface PopoverMask{
     color: ResourceColor
 }
 /**
+ * 分割线尺寸
+ */
+export type BorderSizeType = 'full' | 'center' | 'right'
+/**
  * 气泡框 controller
  */
 export class IBestPopoverController{
