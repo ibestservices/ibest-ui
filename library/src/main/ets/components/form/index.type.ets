@@ -26,6 +26,10 @@ export enum FORM_EVENT_NAME {
 	 */
 	SEND_FIELD = 'SEND_FIELD',
 	/**
+	 * 重置表单项
+    */
+	RESEND_FORM_ITEM = 'RESEND_FORM_ITEM',
+	/**
 	 * 验证整个表单
 	 */
 	VALIDATE = 'VALIDATE',
@@ -34,13 +38,17 @@ export enum FORM_EVENT_NAME {
 	 */
 	VALIDATE_FIELD = 'VALIDATE_FIELD',
 	/**
-	 * 重置
+	 * 重置验证
 	 */
 	RESET_VALIDATE = 'RESET_VALIDATE',
 	/**
 	 * 获取所有值
 	 */
-	GET_VALUES = 'GET_VALUES'
+	GET_VALUES = 'GET_VALUES',
+	/**
+	 * 删除表单项
+     */
+	DELETE_FORM_ITEM = 'DELETE_FORM_ITEM'
 }
 /**
  * SEND_FIELD 回调参数
@@ -67,6 +75,7 @@ export interface FieldValidateResult{
  * 表单项信息
  */
 export interface IBestFieldItem{
+	uniId: number
 	prop: string
 	validate: (rules: IBestFormRuleItem[]) => Promise<FieldValidateResult>
 	resetValidation: () => void

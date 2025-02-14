@@ -1,5 +1,17 @@
 # 版本记录
 
+## 2.0.5
+#### 新增:
+1. IBestTabs 增加 isShowActiveBg activeBgColor inactiveBgColor radius 属性;
+2. IBestPopover 增加 borderSizeType 属性;
+3. IBestForm 支持动态表单验证;
+4. IBestField 增加 caretColor min max 属性.
+#### Bug修复:
+1. 修复 IBestUploader 文件缓存路径不完整问题;
+2. 修复 IBestPasswordInput 密码输入框 在重新赋值时显示异常的问题;
+3. 修复 IBestField 必填*位置异常问题;
+4. 修复元服务报错问题.
+
 ## 2.0.4
 1. 增加 IBestCanvasDrawer 画布绘制组件;
 2. IBestNavBar 增加 titleTextAlign 属性, 适配元服务右上角胶囊位置;

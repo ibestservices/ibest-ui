@@ -20,7 +20,7 @@ import type {
 } from './index.type'
 import { emitter } from '../../utils/EventEmitter'
 import { runRuleValidator, runSyncRule } from './utils'
-import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
+import { clamp, convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
 import { IBestFieldColor } from './color'
 import { IBestIcon } from '../icon'
 @Component
@@ -29,6 +29,7 @@ export struct IBestField{
      * 全局公共样式
      */
     @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+    @State uniId: number = 0
     /**
      * form id 用于验证
      */
@@ -149,7 +150,7 @@ export struct IBestField{
     /**
      * 底部线条
      */
-    @Provide({allowOverride: "hasBorder"}) hasBorder: boolean = true
+    @Prop hasBorder: boolean = true
     /**
      * 是否启用清除图标，点击清除图标后会清空输入框
      */
@@ -222,9 +223,24 @@ export struct IBestField{
      */
     @Provide({allowOverride: "inputFontSize"}) inputFontSize: number | string = this.baseStyle.fontSizeMd as string
     /**
+     * 光标颜色
+     * @since 2.0.5
+     */
+    @Provide({allowOverride: "caretColor"}) caretColor: ResourceColor = ""
+    /**
+     * 最小值, type 为 number、decimal 有效
+     * @since 2.0.5
+     */
+    @Provide({allowOverride: "min"}) min: number = -1
+    /**
+     * 最大值, type 为 number、decimal 有效
+     * @since 2.0.5
+     */
+    @Provide({allowOverride: "max"}) max: number = -1
+    /**
      * 格式化函数
      */
-    formatter?: ((value: string) => string) | undefined
+    formatter?: ((value: string) => string)
     /**
      * value变化回调函数
      */
@@ -284,13 +300,11 @@ export struct IBestField{
     }
 
     aboutToAppear(): void {
+        this.uniId = this.getUniqueId()
+        this.formatValue()
         if(this.formId && this.prop){
-            emitter.emit(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.SEND_FIELD), {
-                prop: this.prop,
-                validate: (rules: IBestFormRuleItem[]):Promise<void | FieldValidateResult> => this.validate(rules),
-                getValue: (): IBestFieldValueType => this.value,
-                resetValidation: (): void => this.resetValidation()
-            }, (result: IBestFormSendFieldCallResult): void => this.init(result))
+            emitter.on(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.RESEND_FORM_ITEM), (): void => this.sendFormItemData())
+            this.sendFormItemData()
         }else{
             this.init()
         }
@@ -298,7 +312,28 @@ export struct IBestField{
     aboutToDisappear(): void {
         if(this.formId && this.prop) {
             emitter.off(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (result: IBestFormSendFieldCallResult): void => this.init(result))
+            emitter.off(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.RESEND_FORM_ITEM), (): void => this.sendFormItemData())
+            emitter.emit(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.DELETE_FORM_ITEM), this.uniId)
+            emitter.emit(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.RESEND_FORM_ITEM))
         }
+    }
+    formatValue(){
+        if(typeof this.value == "number"){
+            this.value = this.value.toString()
+        }
+        if(this.value === undefined || this.value === null){
+            this.value = ""
+        }
+    }
+    // 发送表单子项信息
+    sendFormItemData(){
+        emitter.emit(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.SEND_FIELD), {
+            uniId: this.uniId,
+            prop: this.prop,
+            validate: (rules: IBestFormRuleItem[]):Promise<void | FieldValidateResult> => this.validate(rules),
+            getValue: (): IBestFieldValueType => this.value,
+            resetValidation: (): void => this.resetValidation()
+        }, (result: IBestFormSendFieldCallResult): void => this.init(result))
     }
     // 初始化参数
     init(results?: IBestFormSendFieldCallResult){
@@ -487,10 +522,8 @@ struct Label{
             }
                 .fontSize(getSizeByUnit(this.labelFontSize, true))
                 .fontColor(this.labelColor)
-                .layoutWeight(1)
                 .constraintSize({ minHeight: convertDimensionsWidthUnit(20) })
                 .lineHeight(this.baseStyle.lineHeightMd)
-                .textAlign(this.labelAlign == "left" ? TextAlign.Start : this.labelAlign == "center" ? TextAlign.Center : TextAlign.End)
             if(this.requireAsteriskPosition == "right"){
                 Asterisk()
             }
@@ -498,6 +531,7 @@ struct Label{
         .width(this.labelPosition == "left" ? getSizeByUnit(this.labelWidth) : CONTAINER_SIZE.FULL)
         .margin({right: this.baseStyle.spaceSm})
         .alignItems(VerticalAlign.Center)
+        .justifyContent(this.labelAlign == "left" ? FlexAlign.Start : this.labelAlign == "center" ? FlexAlign.Center : FlexAlign.End)
     }
 }
 
@@ -552,6 +586,9 @@ struct Content{
     @Consume clearTrigger: ClearTriggerType
     @Consume showMessage: boolean
     @Consume validateMessage: string
+    @Consume caretColor: ResourceColor
+    @Consume min: number
+    @Consume max: number
     @BuilderParam buttonBuilder?: CustomBuilder
     @BuilderParam customRightContent?: CustomBuilder
     @Consume formatTrigger: FormatTriggerType
@@ -614,12 +651,18 @@ struct Content{
         if (this.formatter && this.formatTrigger == trigger) {
             this.value = this.formatter(value)
         }
-        if(this.type == "decimal" && this.decimalLength > 0){
-            let index = value.indexOf(".")
-            if(index > -1){
-                let decimal = value.substring(index + 1)
-                if(decimal.length > this.decimalLength){
-                    this.value = Number(value).toFixed(this.decimalLength)
+        if(this.type == "number" || this.type == "decimal"){
+            if(trigger == 'onblur' && value !== '' && (this.min > -1 || this.max > -1)){
+                const validValue = clamp(Number(value), this.min > -1 ? this.min : -Infinity, this.max > -1 ? this.max : Infinity)
+                this.value = value = validValue.toString()
+            }
+            if(this.type == "decimal" && this.decimalLength > 0){
+                let index = value.indexOf(".")
+                if(index > -1){
+                    let decimal = value.substring(index + 1)
+                    if(decimal.length > this.decimalLength){
+                        this.value = Number(value).toFixed(this.decimalLength)
+                    }
                 }
             }
         }
@@ -633,6 +676,7 @@ struct Content{
                     if (this.autosize) {
                         TextArea({ text: $$this.value, placeholder: this.placeholder })
                             .inputStyle()
+                            .caretColor(this.caretColor)
                             .fontSize(getSizeByUnit(this.inputFontSize, true))
                             .fontColor(IBestFieldColor.inputColor)
                             .placeholderFont({
@@ -666,6 +710,7 @@ struct Content{
                     } else {
                         TextInput({ text: $$this.value, placeholder: this.placeholder })
                             .inputStyle()
+                            .caretColor(this.caretColor)
                             .fontSize(getSizeByUnit(this.inputFontSize, true))
                             .fontColor(IBestFieldColor.inputColor)
                             .placeholderFont({

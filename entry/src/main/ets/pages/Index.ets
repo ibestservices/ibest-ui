@@ -1,4 +1,3 @@
-import BuildProfile from '@ibestservices/ibest-ui/BuildProfile'
 import { IBestCell, IBestCellGroup, IBestNavBar } from '@ibestservices/ibest-ui'
 import router from '@ohos.router'
 import { BORDER_RADIUS, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, modeColor, SPACE } from '../assets/styles/BaseStyle'
@@ -6,6 +5,8 @@ import ComponentShowContainer from '../components/ComponentShowContainer'
 import GlobalStore from '../utils/global'
 import { common, Want } from '@kit.AbilityKit'
 import { getAppVersion } from '../utils/utils'
+import { rcp } from '@kit.RemoteCommunicationKit'
+import fs from '@ohos.file.fs'
 
 interface ComponentPart {
 	title: string
@@ -36,27 +37,27 @@ struct Index {
 			list: [
 				{
 					name: 'Button 按钮',
-					path: 'pages/Button'
+					path: 'pages/base/Button'
 				},
 				{
 					name: 'Cell 单元格',
-					path: 'pages/Cell'
+					path: 'pages/base/Cell'
 				},
 				{
 					name: 'Icon 图标',
-					path: 'pages/Icon'
+					path: 'pages/base/Icon'
 				},
 				{
 					name: 'Popup 弹出层',
-					path: 'pages/Popup'
+					path: 'pages/base/Popup'
 				},
 				{
 					name: 'Theme 主题',
-					path: 'pages/Theme'
+					path: 'pages/base/Theme'
 				},
 				{
 					name: 'Toast 轻提示',
-					path: 'pages/Toast'
+					path: 'pages/base/Toast'
 				}
 			]
 		},
@@ -65,79 +66,79 @@ struct Index {
 			list: [
 				{
 					name: 'Calendar 日历',
-					path: 'pages/Calendar'
+					path: 'pages/base/Calendar'
 				},
 				{
 					name: 'Cascader 级联选择',
-					path: 'pages/Cascader'
+					path: 'pages/base/Cascader'
 				},
 				{
 					name: 'Checkbox 复选框',
-					path: 'pages/Checkbox'
+					path: 'pages/base/Checkbox'
 				},
 				{
 					name: 'DatePicker 日期选择',
-					path: 'pages/DatePicker'
+					path: 'pages/base/DatePicker'
 				},
 				{
 					name: 'Field 输入框',
-					path: 'pages/Field'
+					path: 'pages/base/Field'
 				},
 				{
 					name: 'Form 表单',
-					path: 'pages/Form'
+					path: 'pages/base/Form'
 				},
 				{
 					name: 'NumberKeyboard 数字键盘',
-					path: 'pages/NumberKeyboard'
+					path: 'pages/base/NumberKeyboard'
 				},
 				{
 					name: 'PasswordInput 密码输入框',
-					path: 'pages/PasswordInput'
+					path: 'pages/base/PasswordInput'
 				},
 				{
 					name: 'Picker 选择器',
-					path: 'pages/Picker'
+					path: 'pages/base/Picker'
 				},
 				{
 					name: 'PickerGroup 选择器组',
-					path: 'pages/PickerGroup'
+					path: 'pages/base/PickerGroup'
 				},
 				{
 					name: 'Radio 单选框',
-					path: 'pages/Radio'
+					path: 'pages/base/Radio'
 				},
 				{
 					name: 'Rate 评分',
-					path: 'pages/Rate'
+					path: 'pages/base/Rate'
 				},
 				{
 					name: 'Search 搜索',
-					path: 'pages/Search'
+					path: 'pages/base/Search'
 				},
 				{
 					name: 'Slider 滑块',
-					path: 'pages/Slider'
+					path: 'pages/base/Slider'
 				},
 				{
 					name: 'Signature 签名',
-					path: 'pages/Signature'
+					path: 'pages/base/Signature'
 				},
 				{
 					name: 'Stepper 步进器',
-					path: 'pages/Stepper'
+					path: 'pages/base/Stepper'
 				},
 				{
 					name: 'Switch 开关',
-					path: 'pages/Switch'
+					path: 'pages/base/Switch'
 				},
 				{
 					name: 'TimePicker 时间选择',
-					path: 'pages/TimePicker'
+					path: 'pages/base/TimePicker'
 				},
 				{
 					name: 'Uploader 文件上传',
-					path: 'pages/Uploader'
+					path: 'pages/base/Uploader'
 				}
 			]
 		},
@@ -146,27 +147,27 @@ struct Index {
 			list: [
 				{
 					name: "ActionSheet 动作面板",
-					path: "pages/ActionSheet"
+					path: "pages/base/ActionSheet"
 				},
 				{
 					name: 'Dialog 弹出框',
-					path: 'pages/Dialog'
+					path: 'pages/base/Dialog'
 				},
 				{
 					name: 'Loading 加载',
-					path: 'pages/Loading'
+					path: 'pages/base/Loading'
 				},
 				{
 					name: 'Notify 消息通知',
-					path: 'pages/Notify'
+					path: 'pages/base/Notify'
 				},
 				{
 					name: 'PullRefresh 下拉刷新',
-					path: 'pages/PullRefresh'
+					path: 'pages/base/PullRefresh'
 				},
 				{
 				  name: 'SwipeCell 滑动单元格',
-				  path: 'pages/SwipeCell'
+				  path: 'pages/base/SwipeCell'
 				}
 			]
 		},
@@ -175,55 +176,55 @@ struct Index {
 			list: [
 				{
 					name: 'Badge 徽标',
-					path: 'pages/Badge'
+					path: 'pages/base/Badge'
 				},
 				{
 					name: 'CircleProgress 环形进度条',
-					path: 'pages/CircleProgress'
+					path: 'pages/base/CircleProgress'
 				},
 				{
 					name: 'Collapse 折叠面板',
-					path: 'pages/Collapse'
+					path: 'pages/base/Collapse'
 				},
 				{
 					name: 'CountDown 倒计时',
-					path: 'pages/CountDown'
+					path: 'pages/base/CountDown'
 				},
 				{
 					name: 'Divider 分割线',
-					path: 'pages/Divider'
+					path: 'pages/base/Divider'
 				},
 				{
 					name: 'Empty 空状态',
-					path: 'pages/Empty'
+					path: 'pages/base/Empty'
 				},
 				{
 					name: 'ImagePreview 图片预览',
-					path: 'pages/ImagePreview'
+					path: 'pages/base/ImagePreview'
 				},
 				{
 					name: 'NoticeBar 通知栏',
-					path: 'pages/NoticeBar'
+					path: 'pages/base/NoticeBar'
 				},
 				{
 					name: 'Popover 气泡弹出框',
-					path: 'pages/Popover'
+					path: 'pages/base/Popover'
 				},
 				{
 					name: 'Progress 进度条',
-					path: 'pages/Progress'
+					path: 'pages/base/Progress'
 				},
 				{
 					name: 'Tag 标签',
-					path: 'pages/Tag'
+					path: 'pages/base/Tag'
 				},
 				{
 					name: 'TextEllipsis 文本省略',
-					path: 'pages/TextEllipsis'
+					path: 'pages/base/TextEllipsis'
 				},
 				{
 					name: 'Watermark 水印',
-					path: 'pages/Watermark'
+					path: 'pages/base/Watermark'
 				},
 			]
 		},
@@ -232,23 +233,23 @@ struct Index {
 			list: [
 				{
 					name: 'NavBar 导航栏',
-					path: 'pages/NavBar'
+					path: 'pages/base/NavBar'
 				},
 				{
 					name: 'SideBar 侧边导航',
-					path: 'pages/SideBar'
+					path: 'pages/base/SideBar'
 				},
 				{
 					name: 'Tab 标签页',
-					path: 'pages/Tab'
+					path: 'pages/base/Tab'
 				}
 			]
 		}
 	]
-	@State yewuComponentList: ComponentItem[] = [
+	@State extendComponentList: ComponentItem[] = [
 		{
 			name: 'CanvasDrawer 画布绘制',
-			path: 'pages/CanvasDrawer'
+			path: 'pages/extend/CanvasDrawer'
 		}
 	]
 	private tabsList: Tab[] = [
@@ -267,8 +268,7 @@ struct Index {
 	]
 	@State currentTab: number = 0
 	@State scrollTop: number = 0
-	@State docUrl: string = "https://ibestui.ibestservices.com/guide/home"
-	@State companyUrl: string = "https://www.ibestservices.com"
+	@State uiVersion: string = ""
 	private scrollerForList1: Scroller = new Scroller()
 	private scrollerForList2: Scroller = new Scroller()
 	private context = getContext(this) as common.UIAbilityContext
@@ -298,10 +298,10 @@ struct Index {
 				}else if(index == 1){
 					Span("以下为IBest-UI扩展业务组件，持续更新中...，文档详见：")
 				}
-				Span(this.docUrl)
+				Span($r("app.string.app_doc_url"))
 					.decoration({ type: TextDecorationType.Underline, color: modeColor.textColor4 })
 					.onClick(() => {
-						this.viewUrl(this.docUrl)
+						this.viewUrl("doc")
 					})
 			}
 			.fontSize(FONT_SIZE.MD)
@@ -339,7 +339,7 @@ struct Index {
 				ListItem() {
 					this.listTop(index)
 				}
-				ForEach(this.yewuComponentList, (item: ComponentItem) => {
+				ForEach(this.extendComponentList, (item: ComponentItem) => {
 					ListItem() {
 						this.componentItem(item)
 					}
@@ -368,25 +368,20 @@ struct Index {
 						})
 						IBestCell({
 							title: "组件库版本",
-							value: `v${BuildProfile.HAR_VERSION}`
+							value: this.uiVersion ? `v${this.uiVersion}` : ""
 						})
 						IBestCell({
-							title: "文档",
-							leftContentWidth: 60,
-							value: this.docUrl,
+							title: "组件库文档",
 							isLink: true,
-
 							onClickCell: () => {
-								this.viewUrl(this.docUrl)
+								this.viewUrl("doc")
 							}
 						})
 						IBestCell({
-							title: "官网",
-							leftContentWidth: 100,
-							value: this.companyUrl,
+							title: "公司官网",
 							isLink: true,
 							onClickCell: () => {
-								this.viewUrl(this.companyUrl)
+								this.viewUrl("company")
 							}
 						})
 						IBestCell({
@@ -402,8 +397,8 @@ struct Index {
 					}
 				}
 				Column({ space: SPACE.BASE }){
-					// Text("备案号").fontColor(modeColor.primaryColor).fontSize(FONT_SIZE.XS)
-					Text("版权所有 © 2024-2025 安徽百得思维信息科技有限公司保留一切权利").fontSize(FONT_SIZE.XS)
+					Text("皖ICP备16012151号-7A").fontColor(modeColor.primaryColor).fontSize(FONT_SIZE.XS)
+					Text("版权所有 © 2025-2026 安徽百得思维信息科技有限公司保留一切权利").fontSize(FONT_SIZE.XS)
 				}
 			}
 			.width(CONTAINER_SIZE.FULL)
@@ -466,9 +461,10 @@ struct Index {
 	}
 
 	aboutToAppear(): void {
+		this.getUiVersion()
 		// setTimeout(() => {
 		// 	router.pushUrl({
-		// 		url: 'pages/CanvasDrawer',
+		// 		url: 'pages/base/CanvasDrawer',
 		// 		params: {
 		// 			title: "CanvasDrawer 画布绘制"
 		// 		}
@@ -497,15 +493,39 @@ struct Index {
 			case 1:
 				this.scrollTop = this.scrollerForList2.currentOffset().yOffset
 				break
+			case 2:
+				this.scrollTop = 0
+				break
 		}
 	}
-	viewUrl(url: string){
-		let want: Want = {
-			action: 'ohos.want.action.viewData',
-			entities: ['entity.system.browsable'],
-			uri: url
+	viewUrl(type: string){
+		if(type == "doc"){
+			router.pushUrl({
+				url: "pages/Doc"
+			})
+		}else{
+			let url = this.context.resourceManager.getStringSync($r("app.string.company_url"))
+			let want: Want = {
+				action: 'ohos.want.action.viewData',
+				entities: ['entity.system.browsable'],
+				uri: url
+			}
+			this.context.startAbility(want)
 		}
-		this.context.startAbility(want)
+	}
+	async getUiVersion(){
+		let filePath = getContext(this).cacheDir + '/BuildProfile.ets'
+		try {
+			fs.unlinkSync(filePath)
+		} catch(err) {}
+		const rcpSession = rcp.createSession()
+		await rcpSession.downloadToFile("https://gitee.com/ibestservices/ibest-ui/blob/master/library/BuildProfile.ets", { kind: "file", file: filePath })
+		rcpSession.close()
+		let str = fs.readTextSync(filePath)
+		let res = str.match(/'\b\d+\.\d+\.\d+\b'/)
+		if(res){
+			this.uiVersion = res[0].slice(1, -1)
+		}
 	}
 	build() {
 		Column(){

@@ -1,5 +1,3 @@
-import { emitter } from '../../utils/EventEmitter'
-
 /**
  * tab宽度类型
  */
@@ -12,21 +10,17 @@ export interface TabWidthType{
 /**
  * tabItem类型
  */
-export interface IBestTabItemType{
-    label: string
-    name: string
+export class IBestTabItemType{
+    label: string = ""
+    name: string = ""
     number?: number
     icon?: ResourceStr
     isDisable?: boolean
 }
 @Observed
-export class IBestTabItem implements IBestTabItemType{
-    label: string
-    name: string
-    number?: number
-    icon?: ResourceStr
-    isDisable?: boolean
+export class IBestTabItem extends IBestTabItemType{
     constructor(value: IBestTabItemType) {
+        super()
         this.label = value.label
         this.name = value.name
         this.number = value.number ?? undefined

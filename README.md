@@ -4,9 +4,9 @@
 
 IBest-UI是一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库。
 
-![QQ群](library/screenshot/IBest-UI-Light.png)
+![IBest-UI-Light](https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI-Light.png)
 
-![QQ群](library/screenshot/IBest-UI-Dark.png)
+![IBest-UI-Dark](https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI-Dark.png)
 
 ## 下载安装
 
@@ -99,11 +99,12 @@ https://ibestui.ibestservices.com/
 ## 仓库地址
 
 https://github.com/ibestservices/ibest-ui
+https://gitee.com/ibestservices/ibest-ui
 
 ## IBest-UI 交流QQ群
 953492584
 
-![QQ群](library/screenshot/QQ群.jpg)
+![QQ群](https://ibestservices.github.io/ibest-ui/screenshot/QQ%E7%BE%A4.jpg)
 
 ## 微信群
 先进QQ群，拉你进微信群

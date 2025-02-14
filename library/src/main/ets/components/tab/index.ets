@@ -85,7 +85,7 @@ export struct IBestTabs{
      */
     @Provide({allowOverride: "activeTextColor"}) activeTextColor: ResourceColor = IBestTabColor.activeTextColor
     /**
-     * 标记线颜色
+     * type 为 `line` 时, 为标记线颜色, type 为 `card` 时, 为标记块背景色
      */
     @Provide({allowOverride: "tabLineColor"}) tabLineColor: ResourceColor = ""
     /**
@@ -350,7 +350,6 @@ struct IBestTabBox{
     @Consume tabLineColor: ResourceColor
     @Consume lineOffsetY: number | string
     @Consume isShowActiveBg: boolean
-    @Consume activeBgColor: ResourceColor
     @Consume radius: number | string
     @Prop translateX: number
     @Prop tabBoxTranslateX: number
@@ -360,9 +359,6 @@ struct IBestTabBox{
     getLineColor(){
         return this.tabLineColor || this.baseStyle.primary
     }
-    getMarkBoxBgColor(){
-        return this.activeBgColor || this.baseStyle.primary
-    }
     build() {
         Stack({alignContent: Alignment.BottomStart}){
             // 标记块
@@ -370,7 +366,7 @@ struct IBestTabBox{
                 Row()
                     .width(this.tabBoxWidth)
                     .height(getSizeByUnit(this.tabHeight))
-                    .backgroundColor(this.getMarkBoxBgColor())
+                    .backgroundColor(this.getLineColor())
                     .borderRadius(this.type == "line" ? { topLeft: getSizeByUnit(this.radius), topRight: getSizeByUnit(this.radius) } : 0)
                     .translate({ x: this.tabBoxTranslateX })
                     .animation({

@@ -12,6 +12,7 @@ import {
 	IBestFormSendFieldCallResult,
 	COMPONENT_NAME
 } from './index.type'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 
 @Component
 export struct IBestForm {
@@ -80,6 +81,8 @@ export struct IBestForm {
 			emitter.on(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.SEND_FIELD), (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void): void => this.init(data, callBack))
 			// 验证单个表单
 			emitter.on(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (name: string): void => this.validateField(name))
+			// 删除表单项
+			emitter.on(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.DELETE_FORM_ITEM), (uniId: number): void => this.deleteField(uniId))
 		}
 	}
 	aboutToDisappear(): void {
@@ -90,11 +93,15 @@ export struct IBestForm {
 	}
 	// 初始化
 	init(data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void){
-		if(this.formItems.findIndex((item: IBestFieldItem) => item.prop === data.prop) == -1){
+		let standardProp = data.prop.split(".")[0]
+		let index = this.formItems.findIndex((item: IBestFieldItem) => item.prop === data.prop)
+		if(index == -1){
 			this.formItems.push(data)
+		}else{
+			this.formItems[index] = data
 		}
 		callBack({
-			rules: this.rules[data.prop],
+			rules: this.rules[standardProp],
 			labelWidth: this.labelWidth,
 			labelPosition: this.labelPosition,
 			labelAlign: this.labelAlign,
@@ -104,9 +111,13 @@ export struct IBestForm {
 			disabled: this.disabled
 		})
 	}
+	// 删除表单项
+	deleteField(uniId: number){
+		this.formItems = this.formItems.filter((item: IBestFieldItem) => item.uniId !== uniId)
+	}
 	// 验证表单
 	validateForm(callBack?: (valid: boolean, field: FieldValidateResult[]) => void) {
-		Promise.all(this.formItems.map((item: IBestFieldItem) => item.validate(this.rules[item.prop]))).then((errors) => {
+		Promise.all(this.formItems.map((item: IBestFieldItem) => item.validate(this.rules[item.prop.split(".")[0]]))).then((errors) => {
 			errors = errors.filter(Boolean)
 			if (errors.length) {
 				callBack!(false, errors)
@@ -156,7 +167,7 @@ export struct IBestForm {
 				this.defaultBuilder()
 			}
 		}
-		.width('100%')
+		.width(CONTAINER_SIZE.FULL)
 		.alignItems(HorizontalAlign.Start)
 	}
 }
