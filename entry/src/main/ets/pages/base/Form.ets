@@ -200,10 +200,10 @@ struct FieldPage {
 		"sex": [
 			{ required: true, message: "请选择是否" }
 		],
-		"value21": [
+		"info1": [
 			{ required: true, message: "请输入男生信息" }
 		],
-		"value22": [
+		"info2": [
 			{ required: true, message: "请输入女生信息" }
 		],
 		"type": [
