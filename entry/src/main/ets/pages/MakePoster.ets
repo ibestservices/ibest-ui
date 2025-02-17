@@ -173,7 +173,8 @@ struct MakePoster {
 								label: "海报宽度",
 								value: $canvasWidth,
 								type: "number",
-								placeholder: "请输入海报宽度"
+								placeholder: "请输入海报宽度, 最小为100",
+								min: 100
 							})
 							IBestField({
 								formId: this.formId,
@@ -181,7 +182,8 @@ struct MakePoster {
 								label: "海报高度",
 								value: $canvasHeight,
 								type: "number",
-								placeholder: "请输入海报高度"
+								placeholder: "请输入海报高度, 最小为100",
+								min: 100
 							})
 							IBestField({
 								formId: this.formId,
