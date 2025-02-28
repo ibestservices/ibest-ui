@@ -41,7 +41,7 @@ export struct IBestField{
     /**
      * 验证规则
      */
-    rules: IBestFormRuleItem[] = []
+    @Prop @Watch("rulesChange") rules: IBestFormRuleItem[]
     /**
      * 组件绑定的值
      */
@@ -238,9 +238,19 @@ export struct IBestField{
      */
     @Provide({allowOverride: "max"}) max: number = -1
     /**
+     * 垂直方向对齐方式, 仅labelPosition为left时有效
+     * @since 2.0.6
+     */
+    @Prop verticalAlign: "top" | "center"
+    /**
+     * 外部圆角
+     * @since 2.0.6
+     */
+    @Provide({allowOverride: "radius"}) radius: string | number = 0
+    /**
      * 格式化函数
      */
-    formatter?: ((value: string) => string)
+    formatter?: (value: string) => string
     /**
      * value变化回调函数
      */
@@ -269,9 +279,15 @@ export struct IBestField{
      * 右侧图标点击时触发
      */
     onRightIconClick: () => void = () => {}
-
+    private uiContext = this.getUIContext()
     private context = getContext(this)
-
+    @Builder focusText(){
+        Text()
+            .focusable(true)
+            .position({left: 0, top: 0})
+            .zIndex(-10)
+            .id(`ibest_field_${this.uniId}`)
+    }
     @Styles fieldStyles(){
         .width(CONTAINER_SIZE.FULL)
         .padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
@@ -283,11 +299,16 @@ export struct IBestField{
                 .backgroundColor((this.clickable || this.isLink) ? IBestFieldColor.activeColor : IBestFieldColor.bg2)
             }
         })
+        .borderRadius(getSizeByUnit(this.radius))
         .enabled(!this.disabled)
         .opacity(this.disabled ? 0.6 : 1)
+        .clip(true)
         .onTouch(event => {
             if(event.type == TouchType.Up){
                 this.onFieldClick()
+                if((this.disabled || this.readOnly || this.isLink) && !this.customRightContent){
+                    this.uiContext.getFocusController().requestFocus(`ibest_field_${this.uniId}`)
+                }
             }
         })
     }
@@ -311,10 +332,15 @@ export struct IBestField{
     }
     aboutToDisappear(): void {
         if(this.formId && this.prop) {
-            emitter.off(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (result: IBestFormSendFieldCallResult): void => this.init(result))
             emitter.off(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.RESEND_FORM_ITEM), (): void => this.sendFormItemData())
             emitter.emit(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.DELETE_FORM_ITEM), this.uniId)
             emitter.emit(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.RESEND_FORM_ITEM))
+        }
+    }
+    rulesChange(){
+        this.required = this.rules?.length > 0 && this.rules.some((item: IBestFormRuleItem) => item.required)
+        if(!this.required){
+            this.resetValidation()
         }
     }
     formatValue(){
@@ -337,8 +363,10 @@ export struct IBestField{
     }
     // 初始化参数
     init(results?: IBestFormSendFieldCallResult){
-        this.rules = this.rules.length ? this.rules : (results?.rules || [])
-        this.required = typeof this.required != "undefined" ? this.required : this.rules.length > 0 && this.rules.some((item: IBestFormRuleItem) => item.required)
+        if(results){
+            this.rules = this.rules || (results?.rules || [])
+        }
+        this.required = typeof this.required != "undefined" ? this.required : this.rules?.length > 0 && this.rules.some((item: IBestFormRuleItem) => item.required)
         this.labelWidth = this.labelWidth || results?.labelWidth || convertDimensionsWidthUnit(80)
         this.labelPosition = this.labelPosition || results?.labelPosition || 'left'
         this.labelAlign = this.labelAlign || results?.labelAlign || 'left'
@@ -352,6 +380,10 @@ export struct IBestField{
         this.status = 'unvalidated'
         this.validateMessage = ""
     }
+    // 获取label
+    getLabel(){
+        return typeof this.label == 'string' ? this.label : this.context.resourceManager.getStringSync(this.label)
+    }
     // 验证
     validate(rules: IBestFormRuleItem[]): Promise<FieldValidateResult | void> {
         return new Promise<FieldValidateResult | void>((resolve) => {
@@ -362,7 +394,7 @@ export struct IBestField{
                 this.runRules(value, rules).then(() => {
                     if (this.status === 'failed') {
                         resolve({
-                            label: typeof this.label == 'string' ? this.label : this.context.resourceManager.getStringSync(this.label),
+                            label: this.getLabel(),
                             name: this.prop,
                             message: this.validateMessage
                         })
@@ -401,10 +433,10 @@ export struct IBestField{
     }
     // 通过trigger 判断rules中是否有可触发项
     getFilteredRule(trigger: 'blur' | 'change') {
-        return this.rules.filter((rule) => {
+        return this.rules ? this.rules.filter((rule) => {
             if (!rule.trigger) return true
             return rule.trigger === trigger
-        })
+        }) : []
     }
     // value  change变化 执行验证
     valueChange(){
@@ -422,6 +454,13 @@ export struct IBestField{
             if(rules.length) {
                 emitter.emit(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), this.prop)
             }
+        }
+    }
+    getVerticalAlign(){
+        if(this.verticalAlign){
+            return this.verticalAlign == 'top' ? VerticalAlign.Top : VerticalAlign.Center
+        }else{
+            return (this.showWordLimit || this.autosize || this.validateMessage) ? VerticalAlign.Top : VerticalAlign.Center
         }
     }
 
@@ -447,8 +486,9 @@ export struct IBestField{
                         onRightIconClick: (): void => this.onRightIconClick()
                     })
                 }
-                .alignItems((this.showWordLimit || this.autosize || this.validateMessage) ? VerticalAlign.Top : VerticalAlign.Center)
+                .alignItems(this.getVerticalAlign())
                 .fieldContentStyles()
+                this.focusText()
             }
             .fieldStyles()
         }else{
@@ -474,6 +514,7 @@ export struct IBestField{
                 }
                 .alignItems(HorizontalAlign.Start)
                 .fieldContentStyles()
+                this.focusText()
             }
             .alignItems(HorizontalAlign.Start)
             .fieldStyles()

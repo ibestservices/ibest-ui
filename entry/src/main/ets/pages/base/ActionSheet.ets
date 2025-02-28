@@ -107,12 +107,12 @@ struct ActionSheetPage {
 					text: '展示标题、描述信息',
 					onClickBtn: () => {
 						IBestActionSheet.show({
-							customTitle: '标题文字',
-							description: '这是一段描述信息',
+							customTitle: $r("app.string.app_name"),
+							description: $r("app.string.app_desc"),
 							actions: [
-								{ name: '选项一' },
-								{ name: '选项二', subName: '描述信息' },
-								{ name: '选项三' }
+								{ name: $r("app.string.app_name") },
+								{ name: '选项二', subName: $r("app.string.app_doc_url") },
+								{ name: '选项三', icon: $r("app.media.app_icon") }
 							],
 							cancelText: '取消'
 						})

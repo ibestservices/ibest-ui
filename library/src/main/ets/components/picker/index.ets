@@ -45,7 +45,7 @@ export struct IBestPicker{
 	/**
 	 * 分组id
 	 */
-	@Provide({allowOverride: "groupId"}) groupId: string = ""
+	@Prop groupId: string = ""
 	/**
 	 * 当前选中的值
 	 */
@@ -73,7 +73,7 @@ export struct IBestPicker{
 	/**
 	 * 是否显示顶部栏
 	 */
-	@Provide({allowOverride: "showToolBar"}) showToolBar: boolean = true
+	@Prop showToolBar: boolean = true
 	/**
 	 * 可见选项数量
   	 */
@@ -507,12 +507,14 @@ export struct IBestPicker{
 
 	build() {
 		Column() {
-			PickerHeader({
-				value: this.value,
-				onConfirm: this.onConfirm,
-				onCancel: this.onCancel,
-				getTextByIndex: (): string[] => this.getTextByIndex()
-			})
+			if(!this.groupId && this.showToolBar) {
+				PickerHeader({
+					value: this.value,
+					onConfirm: this.onConfirm,
+					onCancel: this.onCancel,
+					getTextByIndex: (): string[] => this.getTextByIndex()
+				})
+			}
 			if(this.horizontal){
 				this.horizontalBuilder()
 			}else{
@@ -533,47 +535,43 @@ export struct IBestPicker{
 @Component
 struct PickerHeader{
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@Consume showToolBar: boolean
 	@Consume cancelText: string
 	@Consume confirmText: string
 	@Consume title: string
 	@Prop value: string[]
-	@Consume groupId: string
 	onConfirm: (value: string[], text: string[]) => void = () => {}
 	onCancel: () => void = () => {}
 	getTextByIndex: () => string[] = () => []
 	build() {
-		if(!this.groupId && this.showToolBar){
-			Stack({alignContent: Alignment.Center}) {
-				Row(){
-					Text(this.cancelText)
-						.height(CONTAINER_SIZE.FULL)
-						.fontSize(this.baseStyle.fontSizeMd)
-						.fontColor(IBestPickerColor.cancelTextColor)
-						.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
-						.onClick(() => {
-							this.onCancel()
-						})
-					Text(this.confirmText)
-						.height(CONTAINER_SIZE.FULL)
-						.fontSize(this.baseStyle.fontSizeMd)
-						.fontColor(this.baseStyle.primary)
-						.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
-						.onClick(() => {
-							this.onConfirm(this.value, this.getTextByIndex())
-						})
-				}
-				.width(CONTAINER_SIZE.FULL)
-				.height(convertDimensionsWidthUnit(44))
-				.justifyContent(FlexAlign.SpaceBetween)
-				Text(this.title)
-					.constraintSize({ maxWidth: "50%" })
-					.fontWeight(600)
-					.fontSize(this.baseStyle.fontSizeLg)
-					.fontColor(IBestPickerColor.textColor)
-					.maxLines(1)
-					.textOverflow({ overflow: TextOverflow.Ellipsis })
+		Stack({alignContent: Alignment.Center}) {
+			Row(){
+				Text(this.cancelText)
+					.height(CONTAINER_SIZE.FULL)
+					.fontSize(this.baseStyle.fontSizeMd)
+					.fontColor(IBestPickerColor.cancelTextColor)
+					.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
+					.onClick(() => {
+						this.onCancel()
+					})
+				Text(this.confirmText)
+					.height(CONTAINER_SIZE.FULL)
+					.fontSize(this.baseStyle.fontSizeMd)
+					.fontColor(this.baseStyle.primary)
+					.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
+					.onClick(() => {
+						this.onConfirm(this.value, this.getTextByIndex())
+					})
 			}
+			.width(CONTAINER_SIZE.FULL)
+			.height(convertDimensionsWidthUnit(44))
+			.justifyContent(FlexAlign.SpaceBetween)
+			Text(this.title)
+				.constraintSize({ maxWidth: "50%" })
+				.fontWeight(600)
+				.fontSize(this.baseStyle.fontSizeLg)
+				.fontColor(IBestPickerColor.textColor)
+				.maxLines(1)
+				.textOverflow({ overflow: TextOverflow.Ellipsis })
 		}
 	}
 }

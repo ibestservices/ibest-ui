@@ -7,6 +7,7 @@ import { common, Want } from '@kit.AbilityKit'
 import { getAppVersion } from '../utils/utils'
 import { rcp } from '@kit.RemoteCommunicationKit'
 import fs from '@ohos.file.fs'
+import { updateManager } from '@kit.StoreKit'
 
 interface ComponentPart {
 	title: string
@@ -250,6 +251,10 @@ struct Index {
 		{
 			name: 'CanvasDrawer 画布绘制',
 			path: 'pages/extend/CanvasDrawer'
+		},
+		{
+			name: 'ImageCropper 图片裁剪',
+			path: 'pages/extend/ImageCropper'
 		}
 	]
 	private tabsList: Tab[] = [
@@ -461,12 +466,13 @@ struct Index {
 	}
 
 	aboutToAppear(): void {
+		this.checkUpdate()
 		this.getUiVersion()
 		// setTimeout(() => {
 		// 	router.pushUrl({
-		// 		url: 'pages/base/CanvasDrawer',
+		// 		url: 'pages/extend/ImageCrop',
 		// 		params: {
-		// 			title: "CanvasDrawer 画布绘制"
+		// 			title: "ImageCrop 图片裁剪"
 		// 		}
 		// 	})
 		// }, 100)
@@ -526,6 +532,14 @@ struct Index {
 		if(res){
 			this.uiVersion = res[0].slice(1, -1)
 		}
+	}
+	// 检查新版本
+	checkUpdate(){
+		updateManager.checkAppUpdate(this.context).then((checkResult: updateManager.CheckUpdateResult) => {
+			if(checkResult.updateAvailable == 1){
+				updateManager.showUpdateDialog(this.context)
+			}
+		})
 	}
 	build() {
 		Column(){

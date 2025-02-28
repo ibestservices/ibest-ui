@@ -2,7 +2,7 @@
 
 ## 简介
 
-IBest-UI是一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库。
+IBest-UI是一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库, 完美兼容元服务。
 
 ![IBest-UI-Light](https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI-Light.png)
 
@@ -83,12 +83,13 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | Tab 标签页      | 选项卡组件，用于在不同的内容区域之间进行切换。    | <a href="https://ibestui.ibestservices.com/components/tab/" target="__blank">文档</a>     |
 
 ### 业务组件
-| 组件                | 介绍              |                                                                                              |
-|:------------------|:----------------|:---------------------------------------------------------------------------------------------|
-| CanvasDrawer 画布绘制 | 用于绘制海报、图片加水印等场景 | <a href="https://ibestui.ibestservices.com/components/canvasDrawer/" target="__blank">文档</a> |
+| 组件                | 介绍               |                                                                                              |
+|:------------------|:-----------------|:---------------------------------------------------------------------------------------------|
+| CanvasDrawer 画布绘制 | 用于绘制海报、图片加水印等场景。 | <a href="https://ibestui.ibestservices.com/components/canvasDrawer/" target="__blank">文档</a> |
+| ImageCropper 图片裁剪 | 用于裁剪图片。          | <a href="https://ibestui.ibestservices.com/components/imageCropper/" target="__blank">文档</a> |
 
 ## 需要权限
-无
+ohos.permission.INTERNET
 
 
 ## 文档地址
@@ -112,12 +113,12 @@ https://gitee.com/ibestservices/ibest-ui
 ## 约束与限制
 在下述版本验证通过：
 ```text
-DevEco Studio 5.0.1 Release
-Build #DS-233.14475.28.36.505310
-构建版本：5.0.5.310, built on December 11, 2024
+DevEco Studio 5.0.2 Release
+Build #DS-233.14475.28.36.507210
+构建版本：5.0.7.210, built on February 11, 2025
 Runtime version: 17.0.12+1-b1087.25 x86_64
 VM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.
-macOS 15.2
+macOS 15.3.1
 GC: G1 Young Generation, G1 Old Generation
 Memory: 2048M
 Cores: 12
@@ -125,8 +126,7 @@ Metal Rendering is ON
 Registry:
   idea.plugins.compatible.build=IC-233.14475.28
 Non-Bundled Plugins:
-  com.alibabacloud.intellij.cosy (1.4.14)
-  com.huawei.deveco.intelligent-assistant (2.1.0.1)
+  com.alibabacloud.intellij.cosy (2.1.2)
 ```
 
 ## 开源协议

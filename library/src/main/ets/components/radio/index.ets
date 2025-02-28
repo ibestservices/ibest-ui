@@ -20,7 +20,7 @@ export struct IBestRadio {
 	/**
 	 * 标识符，通常为一个唯一的字符串
 	 */
-	@Prop name: string = ''
+	@Prop name: string | number | boolean
 	/**
 	 * 形状
 	 */
@@ -139,17 +139,17 @@ export struct IBestRadio {
 	 * 初始化
 	 * @param name
 	 */
-	handleRadioGroupInit(name: string) {
+	handleRadioGroupInit(name: string | number | boolean) {
 		this.isChecked = name === this.name
 	}
 	aboutToAppear() {
 		if (this.isHasGroup()) {
-			emitter.on(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN), (name: string): void => this.handleRadioGroupInit(name))
+			emitter.on(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN), (name: string | number | boolean): void => this.handleRadioGroupInit(name))
 		}
 	}
 	aboutToDisappear() {
 		if (this.isHasGroup()) {
-			emitter.off(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN), (name: string): void => this.handleRadioGroupInit(name))
+			emitter.off(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN), (name: string | number | boolean): void => this.handleRadioGroupInit(name))
 		}
 	}
 	@Builder
@@ -176,7 +176,6 @@ export struct IBestRadio {
 			if (this.labelPosition === 'left') {
 				this.LabelContain()
 			}
-			// radio
 			Column() {
 				if (this.iconBuilder) {
 					this.iconBuilder({ checked: this.isChecked, disabled: this.disabled })
