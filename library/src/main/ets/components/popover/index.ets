@@ -96,6 +96,21 @@ export struct IBestPopover{
      */
     @Provide borderSizeType: BorderSizeType = "center"
     /**
+     * 固定高度
+     * @since 2.0.6
+     */
+    @Provide({allowOverride: "fixHeight"}) fixHeight: string | number = "auto"
+    /**
+     * 最大高度
+     * @since 2.0.6
+     */
+    @Provide({allowOverride: "maxHeight"}) maxHeight: string | number = "auto"
+    /**
+     * 滚动条状态
+     * @since 2.0.6
+     */
+    @Provide({allowOverride: "scrollBarState"}) scrollBarState: BarState = BarState.Auto
+    /**
      * 默认内容
      */
     @BuilderParam triggerBuilder?: CustomBuilder
@@ -181,6 +196,8 @@ struct PopoverContent{
     @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     @Prop actions: IBestPopoverAction[]
     @Consume popoverWidth: string | number
+    @Consume fixHeight: string | number
+    @Consume maxHeight: string | number
     @Consume itemHeight: string | number
     @Consume textFontSize: string | number
     @Consume textColor: ResourceColor
@@ -191,6 +208,7 @@ struct PopoverContent{
     @Consume bgColor: ResourceColor
     @Consume borderSizeType: BorderSizeType
     @Consume dividerColor: ResourceColor
+    @Consume scrollBarState: BarState
     @Link isShow: boolean
     onOpen: () => void = () => {}
     onSelect: (action: IBestPopoverAction, index: number) => void = () => {}
@@ -203,46 +221,51 @@ struct PopoverContent{
     }
 
     build() {
-        Column(){
-            ForEach(this.actions, (item: IBestPopoverAction, index: number) => {
-                Row(){
+        Scroll(){
+            Column(){
+                ForEach(this.actions, (item: IBestPopoverAction, index: number) => {
                     Row(){
-                        if(item.icon || item.iconName){
-                            IBestIcon({
-                                name: item.icon || item.iconName,
-                                iconSize: this.iconSize,
-                                color: this.iconColor
-                            }).margin({right: this.baseStyle.spaceXs})
+                        Row(){
+                            if(item.icon || item.iconName){
+                                IBestIcon({
+                                    name: item.icon || item.iconName,
+                                    iconSize: this.iconSize,
+                                    color: this.iconColor
+                                }).margin({right: this.baseStyle.spaceXs})
+                            }
+                            Text(item.text)
+                                .layoutWeight(this.popoverWidth ? 1 : 0)
+                                .height(getSizeByUnit(this.itemHeight))
+                                .fontSize(getSizeByUnit(this.textFontSize, true))
+                                .fontColor(item.color || this.textColor)
+                                .border({width:{top: this.borderSizeType == 'right' && index > 0 ? 1 : 0}, color: this.dividerColor})
+                                .textAlign(this.getTextAlign(item))
+                                .maxLines(1)
+                                .textOverflow({overflow: TextOverflow.Ellipsis})
                         }
-                        Text(item.text)
-                            .layoutWeight(this.popoverWidth ? 1 : 0)
-                            .height(getSizeByUnit(this.itemHeight))
-                            .fontSize(getSizeByUnit(this.textFontSize, true))
-                            .fontColor(item.color || this.textColor)
-                            .border({width:{top: this.borderSizeType == 'right' && index > 0 ? 1 : 0}, color: this.dividerColor})
-                            .textAlign(this.getTextAlign(item))
-                            .maxLines(1)
-                            .textOverflow({overflow: TextOverflow.Ellipsis})
+                        .border({width:{top: this.borderSizeType == 'center' && index > 0 ? 1 : 0}, color: this.dividerColor})
                     }
-                    .border({width:{top: this.borderSizeType == 'center' && index > 0 ? 1 : 0}, color: this.dividerColor})
-                }
-                .border({width: {top: this.borderSizeType == 'full' && index > 0 ? 1 : 0}, color: this.dividerColor})
-                .padding({left: getSizeByUnit(this.itemPadding), right: getSizeByUnit(this.itemPadding)})
-                .stateStyles({
-                    pressed: {
-                        .backgroundColor(IBestPopoverColor.activeBg)
-                    },
-                    normal: {
-                        .backgroundColor(this.bgColor)
-                    }
+                    .border({width: {top: this.borderSizeType == 'full' && index > 0 ? 1 : 0}, color: this.dividerColor})
+                    .padding({left: getSizeByUnit(this.itemPadding), right: getSizeByUnit(this.itemPadding)})
+                    .stateStyles({
+                        pressed: {
+                            .backgroundColor(IBestPopoverColor.activeBg)
+                        },
+                        normal: {
+                            .backgroundColor(this.bgColor)
+                        }
+                    })
+                    .enabled(!item.disabled)
+                    .opacity(item.disabled ? 0.5 : 1)
+                    .onClick(() => {
+                        this.onSelect(item, index)
+                        this.isShow = false
+                    })
                 })
-                .enabled(!item.disabled)
-                .opacity(item.disabled ? 0.5 : 1)
-                .onClick(() => {
-                    this.onSelect(item, index)
-                    this.isShow = false
-                })
-            })
+            }
         }
+        .scrollBar(this.scrollBarState)
+        .height(getSizeByUnit(this.fixHeight))
+        .constraintSize({maxHeight: getSizeByUnit(this.maxHeight)})
     }
 }

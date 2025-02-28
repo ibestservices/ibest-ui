@@ -232,6 +232,7 @@ export struct IBestTimePicker {
 		IBestPicker({
 			groupId: this.groupId,
 			value: $value,
+			title: this.title,
 			options: this.options,
 			showToolBar: !this.groupId && this.showToolBar,
 			visibleItemCount: this.visibleItemCount,

@@ -81,6 +81,14 @@ export interface IBestFieldItem{
 	resetValidation: () => void
 	getValue: () => IBestFieldValueType
 }
+export interface IBestFormValidateResult{
+	valid: boolean
+	fields: FieldValidateResult[]
+}
+export interface IBestFieldValidateResult{
+	valid: boolean
+	field: FieldValidateResult
+}
 /**
  * 表单控制器
  */
@@ -89,13 +97,29 @@ export class IBestFormController {
 	 * 验证整个/某个表单
 	 * @param callBack 回调函数
 	 */
-	public validate: (callBack?: (valid: boolean, field: FieldValidateResult[]) => void) => void = () => {}
+	public validate: (callBack?: (valid: boolean, field: FieldValidateResult[]) => void) => Promise<IBestFormValidateResult> = () => {
+		let res: IBestFormValidateResult = {
+			valid: true,
+			fields: []
+		}
+		return Promise.resolve(res)
+	}
 	/**
 	 * 验证某个字段
 	 * @param name 表单属性名
 	 * @param callBack 回调函数
 	 */
-	public validateField: (name: string, callBack?: (valid: boolean, field?: FieldValidateResult) => void) => void = () => {}
+	public validateField: (name: string, callBack?: (valid: boolean, field?: FieldValidateResult) => void) => Promise<IBestFieldValidateResult> = () => {
+		let res: IBestFieldValidateResult = {
+			valid: true,
+			field: {
+				label: '',
+				name: '',
+				message: ''
+			}
+		}
+		return Promise.resolve(res)
+	}
 	/**
 	 * 重置校验结果
 	 * @param name 表单属性名

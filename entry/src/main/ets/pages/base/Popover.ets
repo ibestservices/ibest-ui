@@ -57,6 +57,18 @@ struct PopoverPage {
             text: '选项三',
         }
     ]
+    @State actions4: IBestPopoverAction[] = [
+        { text: '选项一' },
+        { text: '选项二' },
+        { text: '选项三' },
+        { text: '选项四' },
+        { text: '选项五' },
+        { text: '选项六' },
+        { text: '选项七' },
+        { text: '选项八' },
+        { text: '选项九' },
+        { text: '选项十' }
+    ]
 
     @Builder triggerBuilder(type: string, text?: string){
         if(type == "button"){
@@ -227,6 +239,11 @@ struct PopoverPage {
                                 popoverWidth: 200,
                                 triggerBuilder: (): void => this.triggerBuilder("button", "宽度")
                             })
+                            IBestPopover({
+                                actions: this.actions4,
+                                popoverWidth: 200,
+                                triggerBuilder: (): void => this.triggerBuilder("button", "最大高度")
+                            })
                         }
                     }
                 }
@@ -245,6 +262,23 @@ struct PopoverPage {
                                 actions: this.actions,
                                 triggerBuilder: (): void => this.triggerBuilder("button", "自定义内容"),
                                 popoverContentBuilder: (): void => this.popoverContent()
+                            })
+                        }
+                    }
+                }
+                ListItem() {
+                    ComponentShowContainer({ title: '自定义高度' }) {
+                        Flex({wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(20), cross: LengthMetrics.vp(20)}}){
+                            IBestPopover({
+                                actions: this.actions4,
+                                fixHeight: 200,
+                                triggerBuilder: (): void => this.triggerBuilder("button", "固定高度")
+                            })
+                            IBestPopover({
+                                actions: this.actions4,
+                                maxHeight: 300,
+                                scrollBarState: BarState.Off,
+                                triggerBuilder: (): void => this.triggerBuilder("button", "最大高度")
                             })
                         }
                     }

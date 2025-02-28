@@ -1,5 +1,4 @@
 import {
-    CalendarConfirmResultType,
     IBestButton,
     IBestCalendarDialog,
     IBestCascader,
@@ -345,18 +344,33 @@ struct FieldPage {
 								})
 							}
 							IBestButton({
+								text: "验证姓名",
+								type: 'primary',
+								buttonSize: 'large',
+								onClickBtn: () => {
+									this.controller1.validateField("name").then(res => {
+										if(res.valid){
+											IBestToast.show("验证成功")
+										} else {
+											IBestToast.show({
+												message: `${res.field.label}验证失败`
+											})
+										}
+									})
+								}
+							})
+							IBestButton({
 								text: "提交",
 								type: 'primary',
 								buttonSize: 'large',
 								onClickBtn: () => {
-									this.controller1.validate((valid, fields) => {
-										if (valid) {
+									this.controller1.validate().then(res => {
+										if(res.valid){
 											IBestToast.show("验证成功")
 										} else {
-											let labels: string[] = fields.map(item => item.label)
+											let labels: string[] = res.fields.map(item => item.label)
 											IBestToast.show({
-												message: `${labels.join(',')}验证失败`,
-												wordBreak: "break-all"
+												message: `${labels.join(',')}验证失败`
 											})
 										}
 									})
@@ -438,6 +452,7 @@ struct FieldPage {
 									prop: 'value6',
 									value: $value6,
 									label: "复选框",
+									rules: this.value5 ? [{required: true, message: '请选择'}] : [],
 									customRightContent: (): void => this.checkboxContent()
 								})
 								IBestField({
@@ -469,7 +484,6 @@ struct FieldPage {
 									placeholder: "请选择城市",
 									isLink: true,
 									onFieldClick: () => {
-										console.log("点击选择城市")
 										this.visible = true
 									}
 								})
@@ -583,14 +597,14 @@ struct FieldPage {
 				visible: this.visible,
 				options: this.options,
 				value: $selectValue,
-				onConfirm: (value: IBestCascaderOption[]) => {
+				onConfirm: value => {
 					this.value10 = value.map(item => item.text).join(',')
 				}
 			})
 			// 日历
 			IBestCalendarDialog({
 				visible: $visible1,
-				onConfirm: (value: Array<CalendarConfirmResultType>): void => {
+				onConfirm: value => {
 					this.value11 = value[0].dateStr
 				}
 			})

@@ -12,7 +12,7 @@ export struct IBestRadioGroup {
 	 * 激活的标识列表
 	 * @since 2.0.1
 	 */
-	@Link @Watch("initRadio") active: string
+	@Link @Watch("initRadio") active: string | number | boolean
 	/**
 	 * 排列方向
 	 * @since 2.0.1
@@ -32,21 +32,21 @@ export struct IBestRadioGroup {
 	 * 选中变化的回调
 	 * @param name radio子组件的的name值
 	 */
-	onChange: (name: string) => void = () => {}
+	onChange: (name: string | number | boolean) => void = () => {}
 
 	aboutToAppear() {
-		emitter.on(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE), (name: string): void => this.onItemChange(name))
+		emitter.on(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE), (name: string | number | boolean): void => this.onItemChange(name))
 		sleep(50).then(() => {
 			this.initRadio()
 		})
 	}
 	aboutToDisappear() {
-		emitter.off(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE), (name: string): void => this.onItemChange(name))
+		emitter.off(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE), (name: string | number | boolean): void => this.onItemChange(name))
 	}
 	initRadio() {
 		emitter.emit(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN), this.active)
 	}
-	onItemChange(name: string) {
+	onItemChange(name: string | number | boolean) {
 		this.active = name
 		this.onChange(name)
 	}

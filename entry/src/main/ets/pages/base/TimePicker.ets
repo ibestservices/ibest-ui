@@ -92,7 +92,7 @@ struct TimerPickerPage {
                 ListItem() {
                     ComponentShowContainer({ title: "过滤选项", titlePaddingLeft: SPACE.SM, card: true }) {
                         IBestTimePicker({
-                            title: "选择日期",
+                            title: "选择时间",
                             filter: this.filter,
                             value: $selectValue4,
                             onConfirm: (value: string[]) => {

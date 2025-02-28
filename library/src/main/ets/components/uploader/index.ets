@@ -77,6 +77,11 @@ export struct IBestUploader {
 	 */
 	@Provide({allowOverride: "disabled"}) disabled: boolean = false
 	/**
+	 * 是否展示预览列表
+	 * @since 2.0.6
+     */
+	@Prop showPreviewList: boolean = true
+	/**
 	 * 自定义上传触发器
 	 */
 	@BuilderParam customUploader?: CustomBuilder
@@ -185,7 +190,7 @@ export struct IBestUploader {
 			main: new LengthMetrics(convertDimensions(8), getLengthUnit()),
 			cross: new LengthMetrics(convertDimensions(8), getLengthUnit())
 		}}){
-			if(this.fileList.length){
+			if(this.showPreviewList && this.fileList.length){
 				ForEach(this.fileList, (item: IBestUploaderFile, index: number) => {
 					UploadItem({
 						file: item,

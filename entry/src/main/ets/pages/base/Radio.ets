@@ -14,9 +14,15 @@ struct CheckboxPage {
 
 	@State group1: string = "group1"
 	@State active1: string = "1"
-	
+
+	@State group2: string = "group2"
+	@State active2: number = 1
+
+	@State group3: string = "group3"
+	@State active3: boolean = false
+
 	@Builder
-	CellRadio(name: string, group: string) {
+	CellRadio(name: boolean, group: string) {
 		IBestRadio({ name, group })
 	}
 	build() {
@@ -161,40 +167,42 @@ struct CheckboxPage {
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '禁用文本点击' }) {
-						IBestRadioGroup({ group: this.group, active: $active }){
+						IBestRadioGroup({ group: this.group2, active: $active2 }){
 							IBestRadio({
-								group: this.group,
+								group: this.group2,
 								label: '单选框',
 								labelDisabled: true,
-								name: '1'
+								name: 1
 							})
 							IBestRadio({
-								group: this.group,
+								group: this.group2,
 								label: '单选框',
 								labelDisabled: true,
-								name: '2'
+								name: 2
 							})
 						}
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '搭配单元格组件使用' }) {
-						IBestRadioGroup({ group: this.group, active: $active }){
+						IBestRadioGroup({ group: this.group3, active: $active3 }){
 							IBestCell({
-								title: '单选框1',
-								rightIconBuilder: () => this.CellRadio('1', this.group),
+								title: '是',
+								center: true,
+								rightIconBuilder: () => this.CellRadio(true, this.group3),
 								clickable: true,
 								onClickCell: () => {
-									this.active = '1'
+									this.active3 = true
 								}
 							})
 							IBestCell({
-								title: '单选框2',
-								rightIconBuilder: () => this.CellRadio('2', this.group),
+								title: '否',
+								center: true,
+								rightIconBuilder: () => this.CellRadio(false, this.group3),
 								hasBorder: false,
 								clickable: true,
 								onClickCell: () => {
-									this.active = '2'
+									this.active3 = false
 								}
 							})
 						}

@@ -1,10 +1,14 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { convertDimensionsWidthUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { IBestCellGroupColor } from './color';
 @Component
 export struct IBestCellGroup {
+	/**
+	 * 全局公共样式
+	 */
+	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 默认插槽
 	 */
@@ -23,9 +27,10 @@ export struct IBestCellGroup {
 	 */
 	@Prop hasBorder: boolean = true;
 	/**
-	 * 全局公共样式
-	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+	 * 圆角大小, 仅inset为true时有效
+	 * @since 2.0.6
+     */
+	@Prop radius: number | string = this.baseStyle.borderRadiusLg as string
 	/**
 	 * 获取边框宽度
 	 * @returns
@@ -72,7 +77,7 @@ export struct IBestCellGroup {
 			color: IBestCellGroupColor.borderColor
 		})
 		.margin(this.getMargin())
-		.borderRadius(this.inset ? this.baseStyle.borderRadiusLg : 0)
+		.borderRadius(this.inset ? getSizeByUnit(this.radius) : 0)
 		.clip(true)
 	}
 }

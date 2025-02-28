@@ -1,11 +1,25 @@
 # 版本记录
 
+## 2.0.6
+#### 新增:
+1. 新增 IBestImageCropper 图片裁剪组件;
+2. IBestRadio name、IBestRadioGroup active 支持number boolean类型;
+3. IBestField verticalAlign radius 属性, rules属性支持动态编辑;
+4. IBestForm validate validateField 方法支持返回Promise;
+5. IBestUploader 增加 showPreviewList 属性;
+6. IBestPopover 增加 fixHeight maxHeight scrollBarState;
+7. IBestCellGroup 增加 radius 属性;
+
+#### Bug修复:
+1. 修复 IBestDatePicker IBestTimePicker title属性不生效问题.
+
 ## 2.0.5
 #### 新增:
 1. IBestTabs 增加 isShowActiveBg activeBgColor inactiveBgColor radius 属性;
 2. IBestPopover 增加 borderSizeType 属性;
 3. IBestForm 支持动态表单验证;
 4. IBestField 增加 caretColor min max 属性.
+
 #### Bug修复:
 1. 修复 IBestUploader 文件缓存路径不完整问题;
 2. 修复 IBestPasswordInput 密码输入框 在重新赋值时显示异常的问题;
@@ -18,6 +32,7 @@
 3. IBestPullRefresh 增加 上滑加载 配置;
 4. IBestPopover 增加 onOpen 事件, IBestPopoverAction 增加 value 属性;
 5. IBestField 增加 inputFontSize 属性.
+
 #### Bug修复:
 1. IBestPullRefresh 下拉时卡主问题.
 
@@ -39,8 +54,10 @@
 11. IBestStepper 增加 value 属性;
 12. IBestUploader 增加 uploaderBgColor 属性;
 13. IBestWatermark 增加 bgColor 属性.
+
 #### 重要变更:
 1. IBestCheckbox IBestRadio IBestStepper 组件优化了使用方法, 支持双向绑定, 请对照文档修改.
+
 #### Bug修复:
 1. 修复 IBestField 的 onLeftIconClick 函数不执行问题;
 2. 修复 IBestDatePicker 组件 不显示日的情况下月份范围异常问题;
@@ -66,7 +83,7 @@
 6. IBestField 增加 leftIconSize rightIconSize labelFontSize labelColor 属性;
 7. IBestPasswordInput 增加 isShowBorder bdColor cellBgColor cellTextColor dotFontSize textFontSize tipFontSize 属性.
 
-#### bug修复:
+#### Bug修复:
 1. 修复 IBestCalendar 在设定的跨月时间范围时, 如果翻到下月, 上月日期会被禁用.
 
 ## 1.18.0

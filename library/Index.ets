@@ -148,3 +148,6 @@ export { IBestSwipeCell } from './src/main/ets/components/swipeCell/index'
 
 export { IBestCanvasDrawer } from './src/main/ets/components/canvasDrawer/index'
 export { IBestCanvasContent } from './src/main/ets/components/canvasDrawer/index.type'
+
+export { IBestImageCropper } from './src/main/ets/components/imageCropper/index'
+export { IBestImageCropperController } from './src/main/ets/components/imageCropper/index.type'
