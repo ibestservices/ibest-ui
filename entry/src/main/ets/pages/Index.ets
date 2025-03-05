@@ -478,8 +478,8 @@ struct Index {
 		// }, 100)
 	}
 	getTitleOpacity(){
-		let scrollY = this.scrollTop < 50 ? this.scrollTop : 50
-		return scrollY / 50
+		// let scrollY = this.scrollTop < 50 ? this.scrollTop : 50
+		return this.scrollTop < 50 ? 0 : 1
 	}
 	goTop(){
 		switch (this.currentTab){

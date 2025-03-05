@@ -117,9 +117,11 @@ export struct IBestCalendarDialog {
      * 获取日历选择结果 触发onConfirm回调函数 并关闭弹框
      */
     onGetCalendarResult(value: Array<CalendarConfirmResultType>) {
-        this.selectedDate = value
-        this.onConfirm(this.selectedDate)
-        this.visible = false
+        if(value.length){
+            this.selectedDate = value
+            this.onConfirm(this.selectedDate)
+            this.visible = false
+        }
     }
     build() {
         IBestPopup({

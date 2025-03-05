@@ -43,7 +43,6 @@ struct CalendarPage {
     @State defaultSelectedDate: Array<string> = [dayjs().format('YYYY-MM-DD')]
 
     onDialogConfirm(type: string, value: Array<CalendarConfirmResultType>): void {
-        console.log("onConfirm", type, JSON.stringify(value))
         switch (type){
             case "selectDate":
                 this.selectDate = value[0].dateStr
