@@ -47,7 +47,7 @@ struct PopupPage {
 
 	@Builder centerBuilder() {
 		Column() {
-			Text("内容").fontColor(modeColor.textColor)
+			Text($r("app.string.content")).fontColor(modeColor.textColor)
 		}
 		.width("100%")
 		.aspectRatio(1)
@@ -56,7 +56,7 @@ struct PopupPage {
 	@Builder cusHeightBuilder() {
 		Column() {
 			IBestButton({
-				text: "切换高度",
+				text: $r("app.string.custom_switch", $r("app.string.height")),
 				type: "primary",
 				onClickBtn: () => {
 					this.popupHeight = this.popupHeight == 150 ? 300 : 150
@@ -69,8 +69,8 @@ struct PopupPage {
 	}
 	@Builder safeBuilder() {
 		Column(){
-			Text("内容").fontSize(14)
-			Text("内容").fontSize(14)
+			Text($r("app.string.content")).fontSize(14)
+			Text($r("app.string.content")).fontSize(14)
 		}
 		.width("100%")
 		.height("100%")
@@ -89,10 +89,10 @@ struct PopupPage {
 			})
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
+					ComponentShowContainer({ title: $r("app.string.basic_usage"), titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							IBestCell({
-								title: '展示弹出层',
+								title: $r("app.string.show_popup"),
 								isLink: true,
 								hasBorder: false,
 								onClickCell: () => {
@@ -103,7 +103,7 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '弹出位置', titlePaddingLeft: SPACE.MD }) {
+					ComponentShowContainer({ title: $r("app.string.position"), titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							Row(){
 								Column({space: 8}){
@@ -111,7 +111,7 @@ struct PopupPage {
 										name: "arrow-up",
 										iconSize: 25
 									})
-									Text("顶部弹出")
+									Text($r("app.string.custom_popup_direction", $r("app.string.top")))
 										.fontSize(12)
 								}
 								.positionColStyle()
@@ -123,7 +123,7 @@ struct PopupPage {
 										name: "arrow-down",
 										iconSize: 25
 									})
-									Text("底部弹出")
+									Text($r("app.string.custom_popup_direction", $r("app.string.bottom")))
 										.fontSize(12)
 								}
 								.positionColStyle(true)
@@ -135,7 +135,7 @@ struct PopupPage {
 										name: "arrow-left",
 										iconSize: 25
 									})
-									Text("左侧弹出")
+									Text($r("app.string.custom_popup_direction", $r("app.string.left")))
 										.fontSize(12)
 								}
 								.positionColStyle(true)
@@ -147,7 +147,7 @@ struct PopupPage {
 										name: "arrow",
 										iconSize: 25
 									})
-									Text("右侧弹出")
+									Text($r("app.string.custom_popup_direction", $r("app.string.right")))
 										.fontSize(12)
 								}
 								.positionColStyle(true)
@@ -160,17 +160,17 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '显示标题', titlePaddingLeft: SPACE.MD }) {
+					ComponentShowContainer({ title: $r("app.string.title"), titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							IBestCell({
-								title: '显示标题',
+								title: $r("app.string.title"),
 								isLink: true,
 								onClickCell: () => {
 									this.showHeaderVisible = true
 								}
 							})
 							IBestCell({
-								title: '自定义关闭图标',
+								title: $r("app.string.custom_custom", $r("app.string.icon")),
 								isLink: true,
 								hasBorder: false,
 								onClickCell: () => {
@@ -181,17 +181,17 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '圆角弹窗', titlePaddingLeft: SPACE.MD }) {
+					ComponentShowContainer({ title: $r("app.string.radius"), titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							IBestCell({
-								title: '圆角弹窗(居中)',
+								title: $r("app.string.center"),
 								isLink: true,
 								onClickCell: () => {
 									this.centerCornerVisible = true
 								}
 							})
 							IBestCell({
-								title: '圆角弹窗(底部)',
+								title: $r("app.string.bottom"),
 								isLink: true,
 								hasBorder: false,
 								onClickCell: () => {
@@ -202,10 +202,10 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '动态高度', titlePaddingLeft: SPACE.MD }) {
+					ComponentShowContainer({ title: $r("app.string.custom_dynamics", $r("app.string.height")), titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							IBestCell({
-								title: '动态高度',
+								title: $r("app.string.custom_dynamics", $r("app.string.height")),
 								isLink: true,
 								hasBorder: false,
 								onClickCell: () => {
@@ -216,10 +216,10 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '事件监听', titlePaddingLeft: SPACE.MD }) {
+					ComponentShowContainer({ title: $r("app.string.event"), titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							IBestCell({
-								title: '监听显示事件',
+								title: $r("app.string.event"),
 								isLink: true,
 								hasBorder: false,
 								onClickCell: () => {
@@ -230,10 +230,10 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '安全区域适配', titlePaddingLeft: SPACE.MD }) {
+					ComponentShowContainer({ title: $r("app.string.safe_area"), titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							IBestCell({
-								title: '安全区域适配',
+								title: $r("app.string.safe_area"),
 								isLink: true,
 								hasBorder: false,
 								onClickCell: () => {
@@ -273,14 +273,14 @@ struct PopupPage {
 				visible: $showHeaderVisible,
 				popupWidth: 300,
 				isShowHeader: true,
-				title: "标题",
+				title: $r("app.string.title"),
 				contentBuilder: (): void => this.centerBuilder()
 			})
 			IBestPopup({
 				visible: $cusCloseIconVisible,
 				popupAlign: "bottom",
 				isShowHeader: true,
-				title: "标题",
+				title: $r("app.string.title"),
 				closeIcon: "https://ibestui.ibestservices.com/favicon.ico"
 			})
 			// 圆角弹窗

@@ -175,6 +175,11 @@ export struct IBestDialogView {
 	 */
 	@Prop buttonFontSize: string | number = this.baseStyle.fontSizeLg as string
 	/**
+	 * 背景图片
+	 * @since 2.0.7
+     */
+	@Prop bgImage: ResourceStr = ''
+	/**
 	 * 点击取消的回调
 	 */
 	onCancel: (event?: ClickEvent) => void = () => {}
@@ -231,7 +236,7 @@ export struct IBestDialogView {
 	 * 确认按钮背景色
 	 */
 	getConfirmBtnBgColor() {
-		return this.confirmButtonBgColor || (this.theme == 'round-button' ? this.baseStyle.primary : this.contentBg)
+		return this.confirmButtonBgColor || (this.theme == 'round-button' ? this.baseStyle.primary : "transparent")
 	}
 	/**
 	 * 取消按钮的文字颜色
@@ -244,7 +249,7 @@ export struct IBestDialogView {
 	 * 取消按钮背景色
 	 */
 	getCancelBtnBgColor() {
-		return this.cancelButtonBgColor || this.contentBg
+		return this.cancelButtonBgColor || "transparent"
 	}
 	build() {
 		Column() {
@@ -369,7 +374,8 @@ export struct IBestDialogView {
 							this.onConfirm(event)
 						})
 					}
-				}.border({ width: { top: this.theme == 'default' ? 1 : 0 }, color: this.bdColor })
+				}
+				.border({ width: { top: this.theme == 'default' ? 1 : 0 }, color: this.bdColor })
 				.padding(this.theme == "round-button" ? {
 					top: this.baseStyle.spaceXs,
 					left: this.baseStyle.spaceLg,
@@ -378,8 +384,10 @@ export struct IBestDialogView {
 				} : "")
 			}
 		}
-		.backgroundColor(this.contentBg)
 		.width(getSizeByUnit(this.dialogWidth))
+		.backgroundColor(this.contentBg)
+		.backgroundImage(this.bgImage)
+		.backgroundImageSize(ImageSize.FILL)
 		.borderRadius(getSizeByUnit(this.dialogBorderRadius))
 		.animation({
 			duration: 200,

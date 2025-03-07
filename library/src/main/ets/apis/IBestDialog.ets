@@ -165,6 +165,11 @@ class IBestDialogOption {
 	 */
 	closeOnBackPress?: boolean = false
 	/**
+	 * 背景图片
+	 * @since 2.0.7
+	 */
+	bgImage?: ResourceStr = ''
+	/**
 	 * 关闭前的回调函数，返回 false 可阻止关闭，支持返回 Promise
 	 */
 	beforeClose?: (action: 'cancel' | 'confirm') => Promise<boolean> | boolean
@@ -194,6 +199,7 @@ class IBestDialogParams extends IBestDialogOption {
 	close: (id: string) => void = () => {}
 	constructor(option: IBestDialogOption) {
 		super()
+		this.bgImage = option.bgImage
 		this.titleBuilder = option.titleBuilder
 		this.defaultBuilder = option.defaultBuilder
 		this.footerBuilder = option.footerBuilder
@@ -270,6 +276,7 @@ struct DialogContent{
 
 	build() {
 		IBestDialogView({
+			bgImage: this.option.bgImage,
 			titleBuilder: this.option.titleBuilder,
 			defaultBuilder: this.option.defaultBuilder,
 			footerBuilder: this.option.footerBuilder,

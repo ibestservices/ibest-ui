@@ -185,6 +185,14 @@
 			"value": "$color:ibest_active_color"
 		},
 		{
+			"name": "ibest_field_prefix_font_color",
+			"value": "$color:ibest_gray_6"
+		},
+		{
+			"name": "ibest_field_suffix_font_color",
+			"value": "$color:ibest_gray_6"
+		},
+		{
 			"name": "ibest_number_keyboard_background",
 			"value": "$color:ibest_gray_2"
 		},

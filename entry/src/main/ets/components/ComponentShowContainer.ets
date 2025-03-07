@@ -2,7 +2,7 @@ import { BORDER_RADIUS, CONTAINER_SIZE, FONT_SIZE, SPACE } from '../assets/style
 
 @Component
 export default struct ComponentShowContainer {
-    @Prop title: string
+    @Prop title: ResourceStr
     @Prop titlePaddingLeft: number
     @Prop card: boolean = false
     @BuilderParam defaultBuilder?: CustomBuilder

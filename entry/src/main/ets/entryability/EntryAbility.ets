@@ -5,6 +5,7 @@ import window from '@ohos.window';
 import { IBestInit } from '@ibestservices/ibest-ui';
 import { ConfigurationConstant } from '@kit.AbilityKit';
 import GlobalStore from '../utils/global';
+import { i18n } from '@kit.LocalizationKit'
 
 export default class EntryAbility extends UIAbility {
 	onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
@@ -16,6 +17,9 @@ export default class EntryAbility extends UIAbility {
 	// }
 	onWindowStageCreate(windowStage: window.WindowStage): void {
 		// Main window is created, set main page for this ability
+		// let systemLanguages: Array<string> = i18n.System.getSystemLanguages()
+		// console.log('systemLanguages', systemLanguages)
+		// i18n.System.setAppPreferredLanguage('zh')
 		windowStage.getMainWindowSync().setWindowLayoutFullScreen(true)
 		windowStage.loadContent('pages/Splash', (err, data) => {
 		// windowStage.loadContent('pages/MakePoster', (err, data) => {

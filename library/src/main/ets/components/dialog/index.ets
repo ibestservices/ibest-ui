@@ -198,12 +198,18 @@ export struct IBestDialog {
 	 */
 	@Prop overlayColor: ResourceColor = '0x33000000'
 	/**
+	 * 背景图片
+	 * @since 2.0.7
+	 */
+	@Prop bgImage: ResourceStr = ''
+	/**
 	 * 关闭前的回调函数，返回 false 可阻止关闭，支持返回 Promise
 	 */
 	beforeClose?: (action: 'cancel' | 'confirm') => Promise<boolean> | boolean
 	// 按照文档类型允许null 组件校验会报错
 	dialogController?: CustomDialogController = new CustomDialogController({
 		builder: IBestDialogView({
+			bgImage: this.bgImage,
 			titleBuilder: this.titleBuilder,
 			defaultBuilder: this.defaultBuilder,
 			footerBuilder: this.footerBuilder,

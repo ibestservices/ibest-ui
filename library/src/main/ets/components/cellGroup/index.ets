@@ -15,9 +15,8 @@ export struct IBestCellGroup {
 	@BuilderParam defaultBuilder?: CustomBuilder;
 	/**
 	 * 分组标题
-	 * title没有设计成builder是因为如果设计成了builder就没法用尾随闭包方式初始化Cell或别的组件了
 	 */
-	@Prop title: string | number = '';
+	@Prop title: ResourceStr = '';
 	/**
 	 * 是否展示为圆角卡片风格
 	 */
@@ -45,18 +44,10 @@ export struct IBestCellGroup {
 	getMargin() {
 		return this.inset ? { left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd } as Padding : 0
 	}
-	/**
-	 * 是否传入了title
-	 * @returns
-	 */
-	isHasTitle() {
-		const titleText = String(this.title);
-		return titleText.length
-	}
 	build() {
 		Column() {
-			if (this.isHasTitle()) {
-				Text(String(this.title))
+			if (this.title) {
+				Text(this.title)
 					.textAlign(TextAlign.Start)
 					.width(CONTAINER_SIZE.FULL)
 					.border({
@@ -73,7 +64,7 @@ export struct IBestCellGroup {
 			}
 		}
 		.border({
-			width: { bottom: this.getBorderWidth(), top: this.isHasTitle() ? 0 : this.getBorderWidth() },
+			width: { bottom: this.getBorderWidth(), top: this.title ? 0 : this.getBorderWidth() },
 			color: IBestCellGroupColor.borderColor
 		})
 		.margin(this.getMargin())

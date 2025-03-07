@@ -2,11 +2,11 @@
 	"string": [
 		{
 			"name": "ibest_confirm",
-			"value": "确定"
+			"value": "OK"
 		},
 		{
 			"name": "ibest_cancel",
-			"value": "取消"
+			"value": "Cancel"
 		}
 	]
 }

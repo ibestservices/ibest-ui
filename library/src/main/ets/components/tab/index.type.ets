@@ -11,7 +11,7 @@ export interface TabWidthType{
  * tabItem类型
  */
 export class IBestTabItemType{
-    label: string = ""
+    label: ResourceStr = ""
     name: string = ""
     number?: number
     icon?: ResourceStr

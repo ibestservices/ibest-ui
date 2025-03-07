@@ -31,8 +31,7 @@ struct DialogPage {
 	@State formInputError: boolean = false
 	@State dialogVisible: boolean = false
 	@State dialogWidth: number = 320
-	@Builder
-	formInputContain() {
+	@Builder formInputContain() {
 		Column({ space: SPACE.MD }) {
 			IBestButton({
 				type: 'primary',
@@ -63,12 +62,20 @@ struct DialogPage {
 			}
 		}.width('90%').margin({ top: SPACE.LG, bottom: SPACE.LG })
 	}
-	@Builder
-	customComponentContent() {
+	@Builder customComponentContent() {
 		Column() {
 			Text(textData.program)
 		}
 		.padding(20)
+	}
+	@Builder imageBgBuilder() {
+		Column() {
+			Text(textData.life)
+				.fontColor(modeColor.white)
+		}
+		.height(200)
+		.padding(20)
+		.justifyContent(FlexAlign.Center)
 	}
 	build() {
 		Column() {
@@ -168,6 +175,26 @@ struct DialogPage {
 										showCancelButton: true,
 										theme: "round-button",
 										buttonSpace: 20
+									})
+								}
+							})
+						}
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '背景图片', titlePaddingLeft: SPACE.MD }) {
+						IBestCellGroup({ inset: true }) {
+							IBestCell({
+								title: '背景图片',
+								isLink: true,
+								hasBorder: false,
+								onClickCell: () => {
+									IBestDialogUtil.open({
+										bgImage: "https://img0.baidu.com/it/u=3217812679,2585737758&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500",
+										showConfirmButton: false,
+										defaultBuilder: () => this.imageBgBuilder(),
+										closeOnClickOverlay: true,
+										closeOnBackPress: true
 									})
 								}
 							})

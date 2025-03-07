@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { IBestButton, IBestNavBar, IBestToast } from '@ibestservices/ibest-ui';
+import { IBestButton, IBestNavBar } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../../assets/global.type';
@@ -8,8 +8,7 @@ import { LengthMetrics } from '@ohos.arkui.node';
 @Component
 struct ButtonPage {
 	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
-	@Builder
-	Arrow() {
+	@Builder Arrow() {
 		Image($r('app.media.title_back'))
 			.width(CONTAINER_SIZE.SIXTEEN)
 	}
@@ -24,44 +23,44 @@ struct ButtonPage {
 			})
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '按钮类型' }) {
+					ComponentShowContainer({ title: $r("app.string.custom_type", $r("app.string.button")) }) {
 						Flex({
 							wrap: FlexWrap.Wrap,
 							space: { main: LengthMetrics.vp(SPACE.SM), cross: LengthMetrics.vp(SPACE.SM) }
 						}) {
 							IBestButton({
-								text: '主要按钮',
+								text: $r("app.string.custom_button", $r("app.string.primary")),
 								type: 'primary'
 							})
 							IBestButton({
-								text: '成功按钮',
+								text: $r("app.string.custom_button", $r("app.string.success")),
 								type: 'success'
 							})
 							IBestButton({
-								text: '默认按钮',
+								text: $r("app.string.custom_button", $r("app.string.default")),
 								type: 'default'
 							})
 							IBestButton({
-								text: '危险按钮',
+								text: $r("app.string.custom_button", $r("app.string.danger")),
 								type: 'danger'
 							})
 							IBestButton({
-								text: '警告按钮',
+								text: $r("app.string.custom_button", $r("app.string.warning")),
 								type: 'warning'
 							})
 						}
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '朴素按钮' }) {
+					ComponentShowContainer({ title: $r("app.string.custom_button", $r("app.string.plain")) }) {
 						Row({ space: SPACE.SM }) {
 							IBestButton({
-								text: '朴素按钮',
+								text: $r("app.string.custom_button", $r("app.string.plain")),
 								type: 'primary',
 								plain: true
 							})
 							IBestButton({
-								text: '朴素按钮',
+								text: $r("app.string.custom_button", $r("app.string.plain")),
 								plain: true,
 								type: 'success'
 							})
@@ -69,9 +68,9 @@ struct ButtonPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '细边框' }) {
+					ComponentShowContainer({ title: $r("app.string.thin_border") }) {
 						IBestButton({
-							text: '朴素按钮',
+							text: $r("app.string.custom_button", $r("app.string.plain")),
 							type: 'primary',
 							plain: true,
 							hairline: true
@@ -79,15 +78,15 @@ struct ButtonPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '禁用状态' }) {
+					ComponentShowContainer({ title: $r("app.string.custom_status", $r("app.string.disabled")) }) {
 						Row({ space: SPACE.SM }) {
 							IBestButton({
-								text: '禁用状态',
+								text: $r("app.string.disabled"),
 								type: 'primary',
 								disabled: true
 							})
 							IBestButton({
-								text: '禁用状态',
+								text: $r("app.string.disabled"),
 								type: 'success',
 								disabled: true
 							})
@@ -95,15 +94,14 @@ struct ButtonPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '加载状态' }) {
+					ComponentShowContainer({ title: $r("app.string.custom_status", $r("app.string.loading")) }) {
 						Row({ space: SPACE.SM }) {
 							IBestButton({
 								loading: true,
 								type: 'primary',
 							})
 							IBestButton({
-								text: '加载状态',
-								loadingText: '加载中...',
+								loadingText: $r("app.string.loading"),
 								type: 'success',
 								loading: true
 							})
@@ -111,15 +109,15 @@ struct ButtonPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '按钮形状' }) {
+					ComponentShowContainer({ title: $r("app.string.custom_shape", $r("app.string.button")) }) {
 						Row({ space: SPACE.SM }) {
 							IBestButton({
-								text: '方形按钮',
+								text: $r("app.string.custom_button", $r("app.string.square")),
 								type: 'primary',
 								square: true
 							})
 							IBestButton({
-								text: '圆形按钮',
+								text: $r("app.string.custom_button", $r("app.string.circle")),
 								type: 'success',
 								round: true
 							})
@@ -127,21 +125,21 @@ struct ButtonPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '图标按钮' }) {
+					ComponentShowContainer({ title: $r("app.string.custom_button", $r("app.string.icon")) }) {
 						Row({ space: SPACE.SM }) {
 							IBestButton({
 								type: 'primary',
 								icon: 'plus'
 							})
 							IBestButton({
-								text: '按钮',
+								text: $r("app.string.button"),
 								type: 'primary',
 								iconPosition: 'right',
 								icon: $r('app.media.ibest_icon_star')
 							})
 							IBestButton({
 								plain: true,
-								text: '按钮',
+								text: $r("app.string.button"),
 								type: 'default',
 								iconBuilder: this.Arrow
 							})
@@ -149,28 +147,28 @@ struct ButtonPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '按钮尺寸' }) {
+					ComponentShowContainer({ title: $r("app.string.custom_size", $r("app.string.button")) }) {
 						Flex({
 							wrap: FlexWrap.Wrap,
 							alignItems: ItemAlign.Center,
 							space: { main: LengthMetrics.vp(SPACE.SM), cross: LengthMetrics.vp(SPACE.SM) }
 						}) {
 							IBestButton({
-								text: '大号按钮',
+								text: $r("app.string.large"),
 								type: 'primary',
 								buttonSize: 'large'
 							})
 							IBestButton({
 								type: 'primary',
-								text: '普通按钮',
+								text: $r("app.string.normal"),
 							})
 							IBestButton({
-								text: '小型按钮',
+								text: $r("app.string.small"),
 								type: 'primary',
 								buttonSize: 'small'
 							})
 							IBestButton({
-								text: '迷你按钮',
+								text: $r("app.string.mini"),
 								type: 'primary',
 								buttonSize: 'mini'
 							})
@@ -178,32 +176,32 @@ struct ButtonPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '自定义样式' }) {
+					ComponentShowContainer({ title: $r("app.string.custom_style", $r("app.string.custom")) }) {
 						Row({ space: SPACE.SM }) {
 							IBestButton({
-								text: '颜色',
+								text: $r("app.string.color"),
 								color: "#7232dd"
 							})
 							IBestButton({
-								text: '字体色',
+								text: $r("app.string.custom_color", $r("app.string.font")),
 								fontColor: "#7232dd"
 							})
 							IBestButton({
-								text: '边框',
+								text: $r("app.string.border"),
 								btnBorderColor: "red"
 							})
 							IBestButton({
 								type: "primary",
-								text: '圆角',
+								text: $r("app.string.radius"),
 								btnBorderRadius: 16
 							})
 						}
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '自定义大小' }) {
+					ComponentShowContainer({ title: $r("app.string.custom_size", $r("app.string.custom")) }) {
 						IBestButton({
-							text: '自定义大小按钮',
+							text: $r("app.string.custom_size", $r("app.string.custom")),
 							btnWidth: 150,
 							btnHeight: 40,
 							btnFontSize: 16

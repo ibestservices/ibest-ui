@@ -248,6 +248,26 @@ export struct IBestField{
      */
     @Provide({allowOverride: "radius"}) radius: string | number = 0
     /**
+     * 前缀内容
+     * @since 2.0.7
+     */
+    @Provide({allowOverride: "prefix"}) prefix: ResourceStr = ""
+    /**
+     * 前缀内容颜色
+     * @since 2.0.7
+     */
+    @Provide({allowOverride: "prefixFontColor"}) prefixFontColor: ResourceColor = IBestFieldColor.prefixFontColor
+    /**
+     * 后缀内容
+     * @since 2.0.7
+     */
+    @Provide({allowOverride: "suffix"}) suffix: ResourceStr = ""
+    /**
+     * 后缀内容颜色
+     * @since 2.0.7
+     */
+    @Provide({allowOverride: "suffixFontColor"}) suffixFontColor: ResourceColor = IBestFieldColor.suffixFontColor
+    /**
      * 格式化函数
      */
     formatter?: (value: string) => string
@@ -630,6 +650,10 @@ struct Content{
     @Consume caretColor: ResourceColor
     @Consume min: number
     @Consume max: number
+    @Consume prefix: ResourceStr
+    @Consume prefixFontColor: ResourceColor
+    @Consume suffix: ResourceStr
+    @Consume suffixFontColor: ResourceColor
     @BuilderParam buttonBuilder?: CustomBuilder
     @BuilderParam customRightContent?: CustomBuilder
     @Consume formatTrigger: FormatTriggerType
@@ -711,6 +735,13 @@ struct Content{
     build() {
         Column(){
             Row() {
+                // 前缀
+                if(this.prefix){
+                    Text(this.prefix)
+                        .fontSize(getSizeByUnit(this.inputFontSize, true))
+                        .fontColor(this.prefixFontColor)
+                        .margin({right: this.baseStyle.spaceBase})
+                }
                 if (this.customRightContent) {
                     this.customRightContent()
                 } else {
@@ -813,6 +844,13 @@ struct Content{
                         .onClick(() => {
                             this.onRightIconClick()
                         })
+                }
+                // 后缀
+                if(this.suffix){
+                    Text(this.suffix)
+                        .fontSize(getSizeByUnit(this.inputFontSize, true))
+                        .fontColor(this.suffixFontColor)
+                        .margin({left: this.baseStyle.spaceBase})
                 }
                 // link箭头
                 if(this.isLink){

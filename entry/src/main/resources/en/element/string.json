@@ -2,603 +2,603 @@
 	"string": [
 		{
 			"name": "tab_bar_basic",
-			"value": "基础组件"
+			"value": "Basic"
 		},
 		{
 			"name": "tab_bar_basic_desc",
-			"value": "以下为IBest-UI基础组件"
+			"value": "The following are the basic components of IBest UI"
 		},
 		{
 			"name": "tab_bar_extend",
-			"value": "扩展组件"
+			"value": "Extend"
 		},
 		{
 			"name": "tab_bar_extend_desc",
-			"value": "以下为IBest-UI扩展组件，持续更新中..."
+			"value": "The following are IBest UI extended business components, continuously updating..."
 		},
 		{
 			"name": "tab_view_doc",
-			"value": "文档详见"
+			"value": "Please refer to the document for details"
 		},
 		{
 			"name": "tab_bar_about",
-			"value": "关于"
+			"value": "About"
 		},
 		{
 			"name": "ibest_ui_desc",
-			"value": "一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库"
+			"value": "A lightweight, easy-to-use, customizable theme, and support for dark and light color modes HarmonyOS open-source UI component library"
 		},
 		{
 			"name": "app_version",
-			"value": "应用版本"
+			"value": "App Version"
 		},
 		{
 			"name": "ui_version",
-			"value": "当前版本"
+			"value": "UI Version"
 		},
 		{
 			"name": "ui_doc",
-			"value": "组件库文档"
+			"value": "UI Doc"
 		},
 		{
 			"name": "company_official_website",
-			"value": "公司官网"
+			"value": "Company Official Website"
 		},
 		{
 			"name": "privacy_policy",
-			"value": "隐私政策"
+			"value": "Privacy Policy"
 		},
 		{
 			"name": "copy_right",
-			"value": "版权所有 © 2025-2026 安徽百得思维信息科技有限公司保留一切权利"
+			"value": "Copyright © 2025-2026 Anhui BestService Information Technology Co., Ltd.All rights reserved."
 		},
 		{
 			"name": "basic_component",
-			"value": "基础组件"
+			"value": "Basic Components"
 		},
 		{
 			"name": "form_component",
-			"value": "表单组件"
+			"value": "Form Components"
 		},
 		{
 			"name": "action_component",
-			"value": "反馈组件"
+			"value": "Action Components"
 		},
 		{
 			"name": "display_component",
-			"value": "展示组件"
+			"value": "Display Components"
 		},
 		{
 			"name": "navigation_component",
-			"value": "导航组件"
+			"value": "Navigation Components"
 		},
 		{
 			"name": "component_button",
-			"value": "Button 按钮"
+			"value": "Button"
 		},
 		{
 			"name": "component_cell",
-			"value": "Cell 单元格"
+			"value": "Cell"
 		},
 		{
 			"name": "component_icon",
-			"value": "Icon 图标"
+			"value": "Icon"
 		},
 		{
 			"name": "component_popup",
-			"value": "Popup 弹出层"
+			"value": "Popup"
 		},
 		{
 			"name": "component_theme",
-			"value": "Theme 主题"
+			"value": "Theme"
 		},
 		{
 			"name": "component_toast",
-			"value": "Toast 轻提示"
+			"value": "Toast"
 		},
 		{
 			"name": "component_calendar",
-			"value": "Calendar 日历"
+			"value": "Calendar"
 		},
 		{
 			"name": "component_cascader",
-			"value": "Cascader 级联选择"
+			"value": "Cascader"
 		},
 		{
 			"name": "component_checkbox",
-			"value": "Checkbox 复选框"
+			"value": "Checkbox"
 		},
 		{
 			"name": "component_datePicker",
-			"value": "DatePicker 日期选择"
+			"value": "DatePicker"
 		},
 		{
 			"name": "component_field",
-			"value": "Field 输入框"
+			"value": "Field"
 		},
 		{
 			"name": "component_form",
-			"value": "Form 表单"
+			"value": "Form"
 		},
 		{
 			"name": "component_numberKeyboard",
-			"value": "NumberKeyboard 数字键盘"
+			"value": "NumberKeyboard"
 		},
 		{
 			"name": "component_passwordInput",
-			"value": "PasswordInput 密码输入框"
+			"value": "PasswordInput"
 		},
 		{
 			"name": "component_picker",
-			"value": "Picker 选择器"
+			"value": "Picker"
 		},
 		{
 			"name": "component_pickerGroup",
-			"value": "PickerGroup 选择器组"
+			"value": "PickerGroup"
 		},
 		{
 			"name": "component_radio",
-			"value": "Radio 单选框"
+			"value": "Radio"
 		},
 		{
 			"name": "component_rate",
-			"value": "Rate 评分"
+			"value": "Rate"
 		},
 		{
 			"name": "component_search",
-			"value": "Search 搜索"
+			"value": "Search"
 		},
 		{
 			"name": "component_slider",
-			"value": "Slider 滑块"
+			"value": "Slider"
 		},
 		{
 			"name": "component_signature",
-			"value": "Signature 签名"
+			"value": "Signature"
 		},
 		{
 			"name": "component_stepper",
-			"value": "Stepper 步进器"
+			"value": "Stepper"
 		},
 		{
 			"name": "component_switch",
-			"value": "Switch 开关"
+			"value": "Switch"
 		},
 		{
 			"name": "component_timePicker",
-			"value": "TimePicker 时间选择"
+			"value": "TimePicker"
 		},
 		{
 			"name": "component_uploader",
-			"value": "Uploader 文件上传"
+			"value": "Uploader"
 		},
 		{
 			"name": "component_actionSheet",
-			"value": "ActionSheet 动作面板"
+			"value": "ActionSheet"
 		},
 		{
 			"name": "component_dialog",
-			"value": "Dialog 对话框"
+			"value": "Dialog"
 		},
 		{
 			"name": "component_loading",
-			"value": "Loading 加载"
+			"value": "Loading"
 		},
 		{
 			"name": "component_notify",
-			"value": "Notify 消息通知"
+			"value": "Notify"
 		},
 		{
 			"name": "component_pullRefresh",
-			"value": "PullRefresh 下拉刷新"
+			"value": "PullRefresh"
 		},
 		{
 			"name": "component_swipeCell",
-			"value": "SwipeCell 滑动单元格"
+			"value": "SwipeCell"
 		},
 		{
 			"name": "component_badge",
-			"value": "Badge 徽标"
+			"value": "Badge"
 		},
 		{
 			"name": "component_circleprogress",
-			"value": "CircleProgress 环形进度条"
+			"value": "CircleProgress"
 		},
 		{
 			"name": "component_collapse",
-			"value": "Collapse 折叠面板"
+			"value": "Collapse"
 		},
 		{
 			"name": "component_countdown",
-			"value": "CountDown 倒计时"
+			"value": "CountDown"
 		},
 		{
 			"name": "component_divider",
-			"value": "Divider 分割线"
+			"value": "Divider"
 		},
 		{
 			"name": "component_empty",
-			"value": "Empty 空状态"
+			"value": "Empty"
 		},
 		{
 			"name": "component_imagepreview",
-			"value": "ImagePreview 图片预览"
+			"value": "ImagePreview"
 		},
 		{
 			"name": "component_noticebar",
-			"value": "NoticeBar 通知栏"
+			"value": "NoticeBar"
 		},
 		{
 			"name": "component_popover",
-			"value": "Popover 气泡弹出框"
+			"value": "Popover"
 		},
 		{
 			"name": "component_progress",
-			"value": "Progress 进度条"
+			"value": "Progress"
 		},
 		{
 			"name": "component_tag",
-			"value": "Tag 标签"
+			"value": "Tag"
 		},
 		{
 			"name": "component_textellipsis",
-			"value": "TextEllipsis 文本省略"
+			"value": "TextEllipsis"
 		},
 		{
 			"name": "component_watermark",
-			"value": "Watermark 水印"
+			"value": "Watermark"
 		},
 		{
 			"name": "component_navBar",
-			"value": "NavBar 导航栏"
+			"value": "NavBar"
 		},
 		{
 			"name": "component_sideBar",
-			"value": "SideBar 侧边导航"
+			"value": "SideBar"
 		},
 		{
 			"name": "component_tab",
-			"value": "Tab 标签页"
+			"value": "Tab"
 		},
 		{
 			"name": "component_canvasDrawer",
-			"value": "CanvasDrawer 画布绘制"
+			"value": "CanvasDrawer"
 		},
 		{
 			"name": "component_imageCropper",
-			"value": "ImageCropper 图片裁剪"
+			"value": "ImageCropper"
 		},
 		{
 			"name": "primary",
-			"value": "主要"
+			"value": "Primary"
 		},
 		{
 			"name": "success",
-			"value": "成功"
+			"value": "Success"
 		},
 		{
 			"name": "default",
-			"value": "默认"
+			"value": "Default"
 		},
 		{
 			"name": "warning",
-			"value": "警告"
+			"value": "Warning"
 		},
 		{
 			"name": "danger",
-			"value": "危险"
+			"value": "Danger"
 		},
 		{
 			"name": "fail",
-			"value": "失败"
+			"value": "Fail"
 		},
 		{
 			"name": "custom_custom",
-			"value": "自定义%s"
+			"value": "Custom %s"
 		},
 		{
 			"name": "custom_button",
-			"value": "%s按钮"
+			"value": "%s Button"
 		},
 		{
 			"name": "custom_status",
-			"value": "%s状态"
+			"value": "%s Status"
 		},
 		{
 			"name": "custom_type",
-			"value": "%s类型"
+			"value": "%s Type"
 		},
 		{
 			"name": "custom_shape",
-			"value": "%s形状"
+			"value": "%s Shape"
 		},
 		{
 			"name": "custom_size",
-			"value": "%s尺寸"
+			"value": "%s Size"
 		},
 		{
 			"name": "custom_style",
-			"value": "%s样式"
+			"value": "%s Style"
 		},
 		{
 			"name": "custom_color",
-			"value": "%s颜色"
+			"value": "%s Color"
 		},
 		{
 			"name": "custom_group",
-			"value": "分组 %d"
+			"value": "Group %d"
 		},
 		{
 			"name": "custom_placeholder",
-			"value": "请输入%s"
+			"value": "Place enter %s"
 		},
 		{
 			"name": "custom_basic",
-			"value": "基础%s"
+			"value": "Basic %s"
 		},
 		{
 			"name": "custom_option",
-			"value": "选项%d"
+			"value": "Option %d"
 		},
 		{
 			"name": "button",
-			"value": "按钮"
+			"value": "Button"
 		},
 		{
 			"name": "plain",
-			"value": "朴素"
+			"value": "Plain"
 		},
 		{
 			"name": "thin_border",
-			"value": "细边框"
+			"value": "Thin Border"
 		},
 		{
 			"name": "disabled",
-			"value": "禁用"
+			"value": "Disabled"
 		},
 		{
 			"name": "load",
-			"value": "加载"
+			"value": "Loading"
 		},
 		{
 			"name": "loading",
-			"value": "加载中..."
+			"value": "Loading"
 		},
 		{
 			"name": "square",
-			"value": "方形"
+			"value": "Square"
 		},
 		{
 			"name": "circle",
-			"value": "圆形"
+			"value": "Circle"
 		},
 		{
 			"name": "icon",
-			"value": "图标"
+			"value": "Icon"
 		},
 		{
 			"name": "large",
-			"value": "大号"
+			"value": "Large"
 		},
 		{
 			"name": "normal",
-			"value": "普通"
+			"value": "Normal"
 		},
 		{
 			"name": "small",
-			"value": "小号"
+			"value": "Small"
 		},
 		{
 			"name": "mini",
-			"value": "迷你"
+			"value": "Mini"
 		},
 		{
 			"name": "custom",
-			"value": "自定义"
+			"value": "Custom"
 		},
 		{
 			"name": "color",
-			"value": "颜色"
+			"value": "Color"
 		},
 		{
 			"name": "font",
-			"value": "字体"
+			"value": "Font"
 		},
 		{
 			"name": "border",
-			"value": "边框"
+			"value": "Border"
 		},
 		{
 			"name": "radius",
-			"value": "圆角"
+			"value": "Radius"
 		},
 		{
 			"name": "usage",
-			"value": "用法"
+			"value": "Usage"
 		},
 		{
 			"name": "title",
-			"value": "标题"
+			"value": "Title"
 		},
 		{
 			"name": "content",
-			"value": "内容"
+			"value": "Content"
 		},
 		{
 			"name": "desc",
-			"value": "描述信息"
+			"value": "Description"
 		},
 		{
 			"name": "card",
-			"value": "卡片"
+			"value": "Card"
 		},
 		{
 			"name": "group",
-			"value": "分组"
+			"value": "Group"
 		},
 		{
 			"name": "arrow",
-			"value": "箭头"
+			"value": "Arrow"
 		},
 		{
 			"name": "required",
-			"value": "必填"
+			"value": "Required"
 		},
 		{
 			"name": "position",
-			"value": "位置"
+			"value": "Position"
 		},
 		{
 			"name": "long_text",
-			"value": "内容内容内容内容内容内容内容内容内容内容内容内容内容内容"
+			"value": "content content content content content content content content content content "
 		},
 		{
 			"name": "slot",
-			"value": "插槽"
+			"value": "Slot"
 		},
 		{
 			"name": "tag",
-			"value": "标签"
+			"value": "Tag"
 		},
 		{
 			"name": "demo",
-			"value": "示例"
+			"value": "Demo"
 		},
 		{
 			"name": "basic_icon",
-			"value": "基础图标"
+			"value": "Basic"
 		},
 		{
 			"name": "outline_style",
-			"value": "线框风格"
+			"value": "Outline"
 		},
 		{
 			"name": "filled_style",
-			"value": "实底风格"
+			"value": "Filled"
 		},
 		{
 			"name": "show_popup",
-			"value": "展示弹出层"
+			"value": "Show Popup"
 		},
 		{
 			"name": "custom_popup_direction",
-			"value": "%s弹出"
+			"value": "%s"
 		},
 		{
 			"name": "custom_dialog",
-			"value": "%s弹窗"
+			"value": "%s Dialog"
 		},
 		{
 			"name": "top",
-			"value": "顶部"
+			"value": "Top"
 		},
 		{
 			"name": "bottom",
-			"value": "底部"
+			"value": "Bottom"
 		},
 		{
 			"name": "left",
-			"value": "左侧"
+			"value": "Left"
 		},
 		{
 			"name": "right",
-			"value": "右侧"
+			"value": "Right"
 		},
 		{
 			"name": "center",
-			"value": "居中"
+			"value": "Center"
 		},
 		{
 			"name": "custom_dynamics",
-			"value": "动态%s"
+			"value": "Dynamics %s"
 		},
 		{
 			"name": "width",
-			"value": "宽度"
+			"value": "Width"
 		},
 		{
 			"name": "height",
-			"value": "高度"
+			"value": "Height"
 		},
 		{
 			"name": "event",
-			"value": "事件"
+			"value": "Event"
 		},
 		{
 			"name": "safe_area",
-			"value": "安全区域"
+			"value": "Safe Area"
 		},
 		{
 			"name": "custom_switch",
-			"value": "切换%s"
+			"value": "Switch %s"
 		},
 		{
 			"name": "custom_legal_color",
-			"value": "合法颜色, 如red、#07c16"
+			"value": "legal color, like red、#07c16"
 		},
 		{
 			"name": "confirm",
-			"value": "确定"
+			"value": "OK"
 		},
 		{
 			"name": "cancel",
-			"value": "取消"
+			"value": "Cancel"
 		},
 		{
 			"name": "custom_tip",
-			"value": "%s提示"
+			"value": "%s Tip"
 		},
 		{
 			"name": "basic_usage",
-			"value": "基础用法"
+			"value": "Basic Usage"
 		},
 		{
 			"name": "image",
-			"value": "图片"
+			"value": "Image"
 		},
 		{
 			"name": "load_icon_type",
-			"value": "加载图标类型"
+			"value": "loading icon type"
 		},
 		{
 			"name": "break_type",
-			"value": "换行方式"
+			"value": "Break Type"
 		},
 		{
 			"name": "truncation_word",
-			"value": "截断单词"
+			"value": "Truncate word"
 		},
 		{
 			"name": "not_truncation_word",
-			"value": "不截断单词"
+			"value": "Not truncate word"
 		},
 		{
 			"name": "update",
-			"value": "更新"
+			"value": "Update"
 		},
 		{
 			"name": "year",
-			"value": "年"
+			"value": "Year"
 		},
 		{
 			"name": "month",
-			"value": "月"
+			"value": "Month"
 		},
 		{
 			"name": "day",
-			"value": "日"
+			"value": "Day"
 		},
 		{
 			"name": "hour",
-			"value": "时"
+			"value": "Hour"
 		},
 		{
 			"name": "minute",
-			"value": "分"
+			"value": "Minute"
 		},
 		{
 			"name": "second",
-			"value": "秒"
+			"value": "Second"
 		}
 	]
 }

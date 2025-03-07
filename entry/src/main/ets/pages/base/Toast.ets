@@ -3,15 +3,17 @@ import ComponentShowContainer from '../../components/ComponentShowContainer'
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../../assets/global.type'
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import { common } from '@kit.AbilityKit'
 @Entry
 @Component
 struct ToastPage {
 	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	private context = getContext() as common.UIAbilityContext
 	showSpinnerLoading() {
 		IBestToast.show({
 			type: "loading",
 			loadingType: "spinner",
-			message: "加载中...",
+			message: $r("app.string.loading"),
 			onOpened: () => {
 				// 可在此处延时关闭toast
 				console.log("toast打开成功")
@@ -27,18 +29,21 @@ struct ToastPage {
 		let count = 3
 		let toast = IBestToast.show({
 			type: "loading",
-			message: `倒计时 ${count} 秒`,
+			message: `${count} ${this.getResourceStr($r("app.string.second"))}`,
 			duration: 0
 		})
 		let timer = setInterval(() => {
 			count--
 			if (count) {
-				toast.message = `倒计时 ${count} 秒`
+				toast.message = `${count} ${this.getResourceStr($r("app.string.second"))}`
 			} else {
 				clearInterval(timer)
 				IBestToast.hide()
 			}
 		}, 1000)
+	}
+	getResourceStr(res: Resource){
+		return this.context.resourceManager.getStringSync(res)
 	}
 	build() {
 		Column() {
@@ -51,48 +56,48 @@ struct ToastPage {
 			})
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
+					ComponentShowContainer({ title: $r("app.string.basic_usage"), titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup() {
 							Column() {
 								IBestCell({
-									title: '文字提示',
+									title: $r("app.string.basic_usage"),
 									isLink: true,
 									onClickCell: () => {
-										IBestToast.show("提示内容")
+										IBestToast.show(this.getResourceStr($r("app.string.content")))
 									}
 								})
 								IBestCell({
-									title: '成功提示',
+									title: $r("app.string.custom_tip", $r("app.string.success")),
 									isLink: true,
 									onClickCell: () => {
 										IBestToast.show({
 											type: "success",
-											message: "提示内容"
+											message: this.getResourceStr($r("app.string.content"))
 										})
 									}
 								})
 								IBestCell({
-									title: '警告提示',
+									title: $r("app.string.custom_tip", $r("app.string.warning")),
 									isLink: true,
 									onClickCell: () => {
 										IBestToast.show({
 											type: "warning",
-											message: "提示内容"
+											message: this.getResourceStr($r("app.string.content"))
 										})
 									}
 								})
 								IBestCell({
-									title: '失败提示',
+									title: $r("app.string.custom_tip", $r("app.string.fail")),
 									isLink: true,
 									onClickCell: () => {
 										IBestToast.show({
 											type: "fail",
-											message: "提示内容"
+											message: this.getResourceStr($r("app.string.content"))
 										})
 									}
 								})
 								IBestCell({
-									title: '加载提示',
+									title: $r("app.string.custom_tip", $r("app.string.load")),
 									isLink: true,
 									hasBorder: false,
 									onClickCell: () => {
@@ -107,11 +112,11 @@ struct ToastPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '自定义图标', titlePaddingLeft: SPACE.XS }) {
+					ComponentShowContainer({ title: $r("app.string.custom_custom", $r("app.string.icon")), titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup() {
 							Column() {
 								IBestCell({
-									title: '自定义图标',
+									title: $r("app.string.custom_custom", $r("app.string.icon")),
 									isLink: true,
 									onClickCell: () => {
 										IBestToast.show({
@@ -122,7 +127,7 @@ struct ToastPage {
 									}
 								})
 								IBestCell({
-									title: '自定义图片',
+									title: $r("app.string.custom_custom", $r("app.string.image")),
 									isLink: true,
 									onClickCell: () => {
 										IBestToast.show({
@@ -132,7 +137,7 @@ struct ToastPage {
 									}
 								})
 								IBestCell({
-									title: '自定义加载图标类型',
+									title: $r("app.string.custom_custom", $r("app.string.load_icon_type")),
 									isLink: true,
 									hasBorder: false,
 									onClickCell: () => {
@@ -144,29 +149,29 @@ struct ToastPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '自定义位置', titlePaddingLeft: SPACE.XS }) {
+					ComponentShowContainer({ title: $r("app.string.position"), titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup() {
 							Column() {
 								IBestCell({
-									title: '顶部',
+									title: $r("app.string.top"),
 									isLink: true,
 									onClickCell: () => {
 										IBestToast.show({
 											position: "top",
 											offsetY: "20%",
-											message: "提示内容"
+											message: this.getResourceStr($r("app.string.content"))
 										})
 									}
 								})
 								IBestCell({
-									title: '底部',
+									title: $r("app.string.bottom"),
 									isLink: true,
 									hasBorder: false,
 									onClickCell: () => {
 										IBestToast.show({
 											position: "bottom",
 											offsetY: "-20%",
-											message: "提示内容"
+											message: this.getResourceStr($r("app.string.content"))
 										})
 									}
 								})
@@ -175,11 +180,11 @@ struct ToastPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '文字换行方式', titlePaddingLeft: SPACE.XS }) {
+					ComponentShowContainer({ title: $r("app.string.break_type"), titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup() {
 							Column() {
 								IBestCell({
-									title: '换行时截断单词',
+									title: $r("app.string.truncation_word"),
 									isLink: true,
 									onClickCell: () => {
 										IBestToast.show({
@@ -189,7 +194,7 @@ struct ToastPage {
 									}
 								})
 								IBestCell({
-									title: '换行时不截断单词',
+									title: $r("app.string.not_truncation_word"),
 									isLink: true,
 									hasBorder: false,
 									onClickCell: () => {
@@ -204,11 +209,11 @@ struct ToastPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '动态更新提示', titlePaddingLeft: SPACE.XS }) {
+					ComponentShowContainer({ title: $r("app.string.custom_dynamics", $r("app.string.update")), titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup() {
 							Column() {
 								IBestCell({
-									title: '动态更新提示',
+									title: $r("app.string.custom_dynamics", $r("app.string.update")),
 									isLink: true,
 									hasBorder: false,
 									onClickCell: () => {

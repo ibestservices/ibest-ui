@@ -10,32 +10,31 @@ struct IconsPage {
 	@State curTabName: string = "1"
 	@State tabsList: IBestTabItemType[] = [
 		{
-			label: "用法示例",
+			label: $r("app.string.demo"),
 			name: "1"
 		},
 		{
-			label: "基础图标",
+			label: $r("app.string.basic_icon"),
 			name: "2"
 		},
 		{
-			label: "线框风格",
+			label: $r("app.string.outline_style"),
 			name: "3"
 		},
 		{
-			label: "实底风格",
+			label: $r("app.string.filled_style"),
 			name: "4"
 		}
 	]
-	@Builder
-	example() {
+	@Builder example() {
 		List() {
 			ListItem() {
-				ComponentShowContainer({ title: '基础用法' }) {
+				ComponentShowContainer({ title: $r("app.string.basic_usage") }) {
 					IBestIcon({ name: 'like' })
 				}
 			}
 			ListItem() {
-				ComponentShowContainer({ title: '图标颜色' }) {
+				ComponentShowContainer({ title: $r("app.string.custom_color", $r("app.string.icon")) }) {
 					Row({ space: SPACE.SM }) {
 						IBestIcon({ name: 'cart-o', color: '#1989fa' })
 						IBestIcon({ name: 'fire-o', color: '#ee0a24' })
@@ -43,7 +42,7 @@ struct IconsPage {
 				}
 			}
 			ListItem() {
-				ComponentShowContainer({ title: '图标大小' }) {
+				ComponentShowContainer({ title: $r("app.string.custom_size", $r("app.string.icon")) }) {
 					Row({ space: SPACE.SM }) {
 						IBestIcon({ name: 'chat-o', iconSize: 20 })
 						IBestIcon({ name: 'chat-o', iconSize: 40 })
@@ -76,8 +75,7 @@ struct IconsPage {
 		//   }
 		// })
 	}
-	@Builder
-	iconShowList(list: string[]) {
+	@Builder iconShowList(list: string[]) {
 		Grid() {
 			ForEach(list, (item: string) => {
 				GridItem() {
