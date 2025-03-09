@@ -1,12 +1,10 @@
-import { CONTAINER_SIZE } from '@ibestservices/ibest-ui/src/main/ets/theme-chalk/src/container'
+import { IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { IBestIcon } from '../icon'
-import { IBestDivider } from '../divider'
 import { IBestPopoverColor } from './color'
 import { BorderSizeType, IBestPopoverAction, IBestPopoverController, PopoverMask } from './index.type'
-
 
 @Component
 export struct IBestPopover{
@@ -21,7 +19,7 @@ export struct IBestPopover{
     /**
      * 选项文字大小
      */
-    @Provide({allowOverride: "textFontSize"}) textFontSize: string | number = this.baseStyle.fontSizeMd as string
+    @Provide({allowOverride: "textFontSize"}) textFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
     /**
      * 文字颜色
      */
@@ -29,11 +27,11 @@ export struct IBestPopover{
     /**
      * 选项高度
      */
-    @Provide({allowOverride: "itemHeight"}) itemHeight: string | number = convertDimensionsWidthUnit(44)
+    @Provide({allowOverride: "itemHeight"}) itemHeight: IBestStringNumber = convertDimensionsWidthUnit(44)
     /**
      * 选项内边距
      */
-    @Provide({allowOverride: "itemPadding"}) itemPadding: string | number = this.baseStyle.spaceMd as string
+    @Provide({allowOverride: "itemPadding"}) itemPadding: IBestStringNumber = this.baseStyle.spaceMd as string
     /**
      * 文字对齐方式
      */
@@ -41,7 +39,7 @@ export struct IBestPopover{
     /**
      * 图标大小
      */
-    @Provide({allowOverride: "iconSize"}) iconSize: string | number = convertDimensionsWidthUnit(20)
+    @Provide({allowOverride: "iconSize"}) iconSize: IBestStringNumber = convertDimensionsWidthUnit(20)
     /**
      * 图标颜色
      */
@@ -57,7 +55,7 @@ export struct IBestPopover{
     /**
      * 气泡框宽度
      */
-    @Provide({allowOverride: "popoverWidth"}) popoverWidth: string | number = ""
+    @Provide({allowOverride: "popoverWidth"}) popoverWidth: IBestStringNumber = ""
     /**
      * 背景色
      */
@@ -69,11 +67,11 @@ export struct IBestPopover{
     /**
      * 箭头宽度
      */
-    @Prop arrowWidth: string | number = convertDimensionsWidthUnit(12)
+    @Prop arrowWidth: IBestStringNumber = convertDimensionsWidthUnit(12)
     /**
      * 箭头高度
      */
-    @Prop arrowHeight: string | number = convertDimensionsWidthUnit(6)
+    @Prop arrowHeight: IBestStringNumber = convertDimensionsWidthUnit(6)
     /**
      * 是否显示遮罩
      */
@@ -81,11 +79,11 @@ export struct IBestPopover{
     /**
      * 气泡与目标的间隙
      */
-    @Prop space: string | number = convertDimensionsWidthUnit(4)
+    @Prop space: IBestStringNumber = convertDimensionsWidthUnit(4)
     /**
      * 气泡圆角
      */
-    @Prop radius: string | number = convertDimensionsWidthUnit(8)
+    @Prop radius: IBestStringNumber = convertDimensionsWidthUnit(8)
     /**
      * 气泡阴影
      */
@@ -99,12 +97,12 @@ export struct IBestPopover{
      * 固定高度
      * @since 2.0.6
      */
-    @Provide({allowOverride: "fixHeight"}) fixHeight: string | number = "auto"
+    @Provide({allowOverride: "fixHeight"}) fixHeight: IBestStringNumber = "auto"
     /**
      * 最大高度
      * @since 2.0.6
      */
-    @Provide({allowOverride: "maxHeight"}) maxHeight: string | number = "auto"
+    @Provide({allowOverride: "maxHeight"}) maxHeight: IBestStringNumber = "auto"
     /**
      * 滚动条状态
      * @since 2.0.6
@@ -195,15 +193,15 @@ struct PopoverContent{
      */
     @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     @Prop actions: IBestPopoverAction[]
-    @Consume popoverWidth: string | number
-    @Consume fixHeight: string | number
-    @Consume maxHeight: string | number
-    @Consume itemHeight: string | number
-    @Consume textFontSize: string | number
+    @Consume popoverWidth: IBestStringNumber
+    @Consume fixHeight: IBestStringNumber
+    @Consume maxHeight: IBestStringNumber
+    @Consume itemHeight: IBestStringNumber
+    @Consume textFontSize: IBestStringNumber
     @Consume textColor: ResourceColor
     @Consume textAlign?: TextAlign
-    @Consume itemPadding: string | number
-    @Consume iconSize: string | number
+    @Consume itemPadding: IBestStringNumber
+    @Consume iconSize: IBestStringNumber
     @Consume iconColor: ResourceColor
     @Consume bgColor: ResourceColor
     @Consume borderSizeType: BorderSizeType

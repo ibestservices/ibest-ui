@@ -1,13 +1,13 @@
-import { IBestCell, IBestCellGroup, IBestNavBar } from "@ibestservices/ibest-ui"
-import router from "@ohos.router"
-import { BORDER_RADIUS, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, modeColor, SPACE } from "../assets/styles/BaseStyle"
-import ComponentShowContainer from "../components/ComponentShowContainer"
-import GlobalStore from "../utils/global"
-import { common, Want } from "@kit.AbilityKit"
-import { getAppVersion } from "../utils/utils"
-import { rcp } from "@kit.RemoteCommunicationKit"
-import fs from "@ohos.file.fs"
-import { updateManager } from "@kit.StoreKit"
+import { IBestCell, IBestCellGroup, IBestNavBar } from '@ibestservices/ibest-ui'
+import router from '@ohos.router'
+import { BORDER_RADIUS, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, modeColor, SPACE } from '../assets/styles/BaseStyle'
+import ComponentShowContainer from '../components/ComponentShowContainer'
+import GlobalStore from '../utils/global'
+import { common, Want } from '@kit.AbilityKit'
+import { getAppVersion } from '../utils/utils'
+import { rcp } from '@kit.RemoteCommunicationKit'
+import fs from '@ohos.file.fs'
+import { updateManager } from '@kit.StoreKit'
 
 interface ComponentPart {
 	title: Resource
@@ -237,7 +237,7 @@ struct Index {
 					path: "pages/base/NavBar"
 				},
 				{
-					name: $r("app.string.component_slider"),
+					name: $r("app.string.component_sideBar"),
 					path: "pages/base/SideBar"
 				},
 				{
@@ -535,7 +535,7 @@ struct Index {
 		await rcpSession.downloadToFile("https://gitee.com/ibestservices/ibest-ui/blob/master/library/BuildProfile.ets", { kind: "file", file: filePath })
 		rcpSession.close()
 		let str = fs.readTextSync(filePath)
-		let res = str.match(/"\b\d+\.\d+\.\d+\b"/)
+		let res = str.match(/'\b\d+\.\d+\.\d+\b'/)
 		if(res){
 			this.uiVersion = res[0].slice(1, -1)
 		}

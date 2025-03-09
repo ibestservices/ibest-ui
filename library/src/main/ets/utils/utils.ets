@@ -1,5 +1,5 @@
 import { componentUtils, ComponentUtils, LengthUnit, MeasureOptions, window } from '@kit.ArkUI'
-import { ComAvoidAreaSize, ComInfoType, IBestGlobalConfig } from '../model/Global.type'
+import { ComAvoidAreaSize, ComInfoType, IBestGlobalConfig, IBestStringNumber } from '../model/Global.type'
 import { AnyType } from '../model/AnyType'
 import GlobalStore from './GlobalStore'
 import { util } from '@kit.ArkTS'
@@ -22,7 +22,7 @@ export function sleep(time = 300): Promise<void> {
  * work.accAdd(1.1, 2)
  * */
 export const accAdd = (arg1: number, arg2: number) => {
-	let r1: string | number, r2: string | number, m: number;
+	let r1: IBestStringNumber, r2: IBestStringNumber, m: number;
 	try {
 		r1 = arg1.toString().split(".")[1].length;
 	} catch (e) {
@@ -43,7 +43,7 @@ export const accAdd = (arg1: number, arg2: number) => {
  * work.accSub(1.1, 2)
  * */
 export const accSub = (arg1: number, arg2: number) => {
-	let r1: number | string, r2: number | string, m: number, n: number;
+	let r1: IBestStringNumber, r2: IBestStringNumber, m: number, n: number;
 	try {
 		r1 = arg1.toString().split(".")[1].length;
 	} catch (e) {
@@ -193,13 +193,14 @@ export function addNumber(num1: number, num2: number) {
 /**
  * 生成事件名称
  */
-export function getEventName(componentName: string, groupId: string, eventName: string) {
-	return `IBest_${componentName}_${groupId}_${eventName}`
+export function getEventName(componentName: string, eventName: string, groupId?: string) {
+	let arr = ['IBest', componentName, eventName, groupId]
+	return arr.filter(e => e).join("_")
 }
 /**
  * 根据类型和单位拼接尺寸 用于组件尺寸类属性格式化
  */
-export function getSizeByUnit(val: string | number, isFont?: boolean): string {
+export function getSizeByUnit(val: IBestStringNumber, isFont?: boolean): string {
 	if (typeof val == "string") {
 		return val
 	}
@@ -253,4 +254,13 @@ export async function base64ToPixelMap(base64: string): Promise<PixelMap> {
 	let arrayBuffer = base64Helper.decodeSync(base64Str).buffer as ArrayBuffer
 	let imageSource = image.createImageSource(arrayBuffer)
 	return await imageSource.createPixelMap()
+}
+/**
+ * 获取Resource字符串
+ */
+export function getResourceStr(res: ResourceStr): string {
+	if(typeof res == 'string'){
+		return res
+	}
+	return GlobalStore.context.resourceManager.getStringSync(res)
 }

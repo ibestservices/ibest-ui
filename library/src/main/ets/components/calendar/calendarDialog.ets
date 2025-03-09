@@ -1,15 +1,16 @@
+import { IBestStringNumber } from '../../model/Global.type'
 import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
 import { convertDimensionsWidthUnit } from '../../utils/utils'
 import { IBestPopup } from '../popup'
 import { IBestCalendar } from './index'
-import { CalendarConfirmResultType, SelectedStyleType, SelectType, WeekDayType } from './index.type'
+import { IBestCalendarConfirmResult, SelectedStyleType, SelectType, WeekDayType } from './index.type'
 
 @Component
 export struct IBestCalendarDialog {
     /**
      * 已选日期
      */
-    @State selectedDate: Array<CalendarConfirmResultType> = []
+    @State selectedDate: IBestCalendarConfirmResult[] = []
     /**
      * 底部偏移
      */
@@ -21,7 +22,7 @@ export struct IBestCalendarDialog {
     /**
      * 背板的圆角半径
      */
-    @Prop cornerRadius: number | string = convertDimensionsWidthUnit(10)
+    @Prop cornerRadius: IBestStringNumber = convertDimensionsWidthUnit(10)
     /**
      * 弹框展示状态
      */
@@ -29,15 +30,15 @@ export struct IBestCalendarDialog {
     /**
      * 默认选中日期
      */
-    @Prop defaultSelectedDate: Array<string> = []
+    @Prop defaultSelectedDate: string[] = []
     /**
      * 单项宽度
      */
-    @Prop itemWidth: number | string = convertDimensionsWidthUnit(50)
+    @Prop itemWidth: IBestStringNumber = convertDimensionsWidthUnit(50)
     /**
      * 每周第一天是周几
      */
-    @Prop weekFirstDay: WeekDayType = "一"
+    @Prop weekFirstDay: WeekDayType = 1
     /**
      * 是否显示农历
      */
@@ -85,11 +86,11 @@ export struct IBestCalendarDialog {
     /**
      * 确认按钮文案
      */
-    @Prop confirmBtnText: string = "确认"
+    @Prop confirmBtnText: ResourceStr = $r("app.string.ibest_text_confirm")
     /**
      * 选择回调
      */
-    onConfirm: (value: Array<CalendarConfirmResultType>) => void = () => {}
+    onConfirm: (value: IBestCalendarConfirmResult[]) => void = () => {}
 
     @Builder baseBuilder() {
         IBestCalendar({
@@ -116,7 +117,7 @@ export struct IBestCalendarDialog {
     /**
      * 获取日历选择结果 触发onConfirm回调函数 并关闭弹框
      */
-    onGetCalendarResult(value: Array<CalendarConfirmResultType>) {
+    onGetCalendarResult(value: IBestCalendarConfirmResult[]) {
         if(value.length){
             this.selectedDate = value
             this.onConfirm(this.selectedDate)

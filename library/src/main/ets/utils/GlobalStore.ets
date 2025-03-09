@@ -81,8 +81,10 @@ export default class GlobalStore {
 		AppStorage.setOrCreate("IBestColorMode", GlobalStore.context.config.colorMode)
 		appContext.on('environment', {
 			onConfigurationUpdated(config) {
+				console.log("onConfigurationUpdated", config.language)
 				// 0 深色  1 浅色
 				AppStorage.setOrCreate("IBestColorMode", config.colorMode)
+				AppStorage.setOrCreate("IBestLanguage", config.language)
 			},
 			onMemoryLevel() {}
 		})

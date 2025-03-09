@@ -5,6 +5,8 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { debounce } from '../../utils/DebounceThrottle';
 import { IBestTabColor } from './color';
+import { IBestStringNumber } from '../../model/Global.type';
+
 @Component
 export struct IBestTabs{
     /**
@@ -15,7 +17,7 @@ export struct IBestTabs{
     /**
      * 唯一id
      */
-    @Provide uniId: string = ""
+    @Provide uniId: number = 0
     /**
      * 样式类型
      */
@@ -23,7 +25,7 @@ export struct IBestTabs{
     /**
      * tab高度
      */
-    @Provide({allowOverride: "tabHeight"}) tabHeight: number | string = convertDimensionsWidthUnit(35)
+    @Provide({allowOverride: "tabHeight"}) tabHeight: IBestStringNumber = convertDimensionsWidthUnit(35)
     /**
      * tab宽度类型
      */
@@ -35,7 +37,7 @@ export struct IBestTabs{
     /**
      * 单个tab内边距
      */
-    @Provide({allowOverride: "tabPadding"}) tabPadding: number | string = this.baseStyle.spaceXs as string
+    @Provide({allowOverride: "tabPadding"}) tabPadding: IBestStringNumber = this.baseStyle.spaceXs as string
     /**
      * tab盒子宽度
      */
@@ -51,7 +53,7 @@ export struct IBestTabs{
     /**
      * 当前激活的tab的name
      */
-    @Link @Watch("currentNameChange") currentName: string
+    @Link @Watch("currentNameChange") currentName: IBestStringNumber
     /**
      * 标记线宽度是否固定
      */
@@ -59,11 +61,11 @@ export struct IBestTabs{
     /**
      * 标记线宽度
      */
-    @Provide({allowOverride: "tabLineWidth"}) tabLineWidth: number = 0
+    @Provide({allowOverride: "tabLineWidth"}) tabLineWidth: IBestStringNumber = 0
     /**
      * 标记线高度
      */
-    @Provide({allowOverride: "tabLineHeight"}) tabLineHeight: number | string = convertDimensionsWidthUnit(2)
+    @Provide({allowOverride: "tabLineHeight"}) tabLineHeight: IBestStringNumber = convertDimensionsWidthUnit(2)
     /**
      * 标记块宽度
      */
@@ -91,7 +93,7 @@ export struct IBestTabs{
     /**
      * 标记线Y偏移量
      */
-    @Provide({allowOverride: "lineOffsetY"}) lineOffsetY: number | string = 0
+    @Provide({allowOverride: "lineOffsetY"}) lineOffsetY: IBestStringNumber = 0
     /**
      * tab区域背景颜色
      */
@@ -100,7 +102,7 @@ export struct IBestTabs{
      * 字体大小
      * @since 1.15.0
      */
-    @Provide({allowOverride: "fontSize"}) fontSize: number | string = this.baseStyle.fontSizeMd as string
+    @Provide({allowOverride: "fontSize"}) fontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
     /**
      * 是否显示激活背景, 仅type为`line`时有效
      * @since 2.0.5
@@ -120,16 +122,16 @@ export struct IBestTabs{
      * 选项圆角, 仅type为`line`时有效
      * @since 2.0.5
      */
-    @Provide({allowOverride: "radius"}) radius: number | string = 0
+    @Provide({allowOverride: "radius"}) radius: IBestStringNumber = 0
     /**
      * onChange事件回调
      */
-    onChange: (name: string) => void = () => {}
+    onChange: (name: IBestStringNumber) => void = () => {}
     /**
      * 点击事件
      * @since 1.17.0
      */
-    onTabClick: (name: string) => void = () => {}
+    onTabClick: (name: IBestStringNumber) => void = () => {}
     /**
      * tabContent 内容列表
      */
@@ -149,8 +151,8 @@ export struct IBestTabs{
     @State startTime: number = 0
 
     aboutToAppear(): void {
-        this.uniId = this.getUniqueId().toString()
-        this.tabController.changeTab = (name: string): void => this.changeTab(name)
+        this.uniId = this.getUniqueId()
+        this.tabController.changeTab = (name: IBestStringNumber): void => this.changeTab(name)
     }
 
     onDidBuild(): void {
@@ -191,7 +193,7 @@ export struct IBestTabs{
         // this.swiperController.changeIndex(index, animated)
     }
     // 切换name
-    changeTab(name: string){
+    changeTab(name: IBestStringNumber){
         if(this.tabsList.some((item: IBestTabItem) => item.name == name)){
             this.currentName = name
         }
@@ -233,7 +235,8 @@ export struct IBestTabs{
         }
     }
     getTabLineWidth(){
-        return typeof this.tabLineWidth == "number" ? this.tabLineWidth : parseFloat(this.tabLineWidth)
+        return getComponentsInfo(this.context, `ibest_tab_line_${this.uniId}`).width
+        // return typeof this.tabLineWidth == "number" ? this.tabLineWidth : parseFloat(this.tabLineWidth)
     }
     // 滚动居中
     scrollCenter(animate: boolean = true){
@@ -259,15 +262,11 @@ export struct IBestTabs{
                 let newOffset = event.touches[0].x - this.startX
                 this.touchOffsetX = newOffset
                 break
-            case TouchType.Up:  // TODO 滑动较快时 会触发swiper change 暂不知条件
-                // let time = (Date.now() - this.startTime) / 1000
-                // let speed = Math.abs(this.touchOffsetX / time)
-                // console.log("滑动距离", Math.abs(this.touchOffsetX), "时间 s", time, "速度 vp/s", speed)
+            case TouchType.Up:
                 if(Math.abs(this.touchOffsetX) >= this.tabContentWidth/2){
                     let index = this.touchOffsetX > 0 ? this.swiperIndex - 1 : this.swiperIndex + 1
                     this.currentName = this.tabsList[index].name
                 }else{
-                    // console.log("未触发", Math.abs(this.touchOffsetX))
                     this.translateX = this.tabBoxTranslateX = this.startTransX
                 }
                 this.touchOffsetX = 0
@@ -284,7 +283,7 @@ export struct IBestTabs{
                         tabBoxWidth: this.tabBoxWidth,
                         tabBoxTranslateX: this.tabBoxTranslateX,
                         initSize: (): void => this.initSize(),
-                        onTabClick: (name: string): void => this.onTabClick(name)
+                        onTabClick: (name: IBestStringNumber): void => this.onTabClick(name)
                     })
                 }
                 .scrollable(ScrollDirection.Horizontal)
@@ -299,7 +298,7 @@ export struct IBestTabs{
                     tabBoxWidth: this.tabBoxWidth,
                     tabBoxTranslateX: this.tabBoxTranslateX,
                     initSize: (): void => this.initSize(),
-                    onTabClick: (name: string): void => this.onTabClick(name)
+                    onTabClick: (name: IBestStringNumber): void => this.onTabClick(name)
                 }).id(`ibest_tabContent_${this.uniId}`)
             }
             // if(this.tabContent){
@@ -338,24 +337,25 @@ struct IBestTabBox{
      * 全局公共样式
      */
     @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-    @Link currentName: string
+    @Consume uniId: number
+    @Link currentName: IBestStringNumber
     @Consume isReady: boolean
     @Consume type: 'line' | 'card'
     @Consume tabWidthType: "auto" | "flex"
-    @Consume tabHeight: number | string
+    @Consume tabHeight: IBestStringNumber
     @Consume tabsList: IBestTabItem[]
     @Consume tabBgColor: ResourceColor
     @Consume tabLineWidth: number
-    @Consume tabLineHeight: number | string
+    @Consume tabLineHeight: IBestStringNumber
     @Consume tabLineColor: ResourceColor
-    @Consume lineOffsetY: number | string
+    @Consume lineOffsetY: IBestStringNumber
     @Consume isShowActiveBg: boolean
-    @Consume radius: number | string
+    @Consume radius: IBestStringNumber
     @Prop translateX: number
     @Prop tabBoxTranslateX: number
     @Prop tabBoxWidth: number
     initSize: () => void = () => () => {}
-    onTabClick: (name: string) => void = () => {}
+    onTabClick: (name: IBestStringNumber) => void = () => {}
     getLineColor(){
         return this.tabLineColor || this.baseStyle.primary
     }
@@ -383,7 +383,7 @@ struct IBestTabBox{
                         initSize: this.initSize,
                         onTabClick: this.onTabClick
                     })
-                }, (item: string, index: number) => index+'')
+                }, (item: IBestTabItem, index: number) => index+'')
             }
             .width(this.tabWidthType == "flex" ? "100%" : "")
             .height(getSizeByUnit(this.tabHeight))
@@ -392,7 +392,7 @@ struct IBestTabBox{
             // 标记线
             if(this.type == "line"){
                 Row()
-                    .width(this.tabLineWidth)
+                    .width(getSizeByUnit(this.tabLineWidth))
                     .height(getSizeByUnit(this.tabLineHeight))
                     .backgroundColor(this.getLineColor())
                     .translate({ x: this.translateX })
@@ -401,6 +401,7 @@ struct IBestTabBox{
                         curve: Curve.FastOutSlowIn
                     })
                     .offset({ y: `-${getSizeByUnit(this.lineOffsetY)}` })
+                    .id(`ibest_tab_line_${this.uniId}`)
             }
         }
         .backgroundColor(this.tabBgColor)
@@ -413,12 +414,12 @@ struct IBestTab{
      * 全局公共样式
      */
     @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-    @Consume uniId: string
+    @Consume uniId: number
     @Consume type: 'line' | 'card'
     @Consume tabWidthType: "auto" | "flex"
     @ObjectLink @Watch("itemChange") item: IBestTabItem
     @Prop index: number
-    @Link currentName: string
+    @Link currentName: IBestStringNumber
     @Consume tabPadding: number
     @Consume inactiveTextColor: ResourceColor
     @Consume activeTextColor: ResourceColor
@@ -427,9 +428,9 @@ struct IBestTab{
     @Consume isShowActiveBg: boolean
     @Consume activeBgColor: ResourceColor
     @Consume inactiveBgColor: ResourceColor
-    @Consume radius: number | string
+    @Consume radius: IBestStringNumber
     initSize: () => void = () => {}
-    onTabClick: (name: string) => void = () => {}
+    onTabClick: (name: IBestStringNumber) => void = () => {}
     itemChange(){
         this.initSize()
     }

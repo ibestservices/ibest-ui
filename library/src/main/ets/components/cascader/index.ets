@@ -1,4 +1,4 @@
-import { convertDimensionsWidthUnit, getSizeByUnit, sleep } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getResourceStr, getSizeByUnit, sleep } from '../../utils/utils'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestTabs } from '../tab'
@@ -7,6 +7,8 @@ import { IBestCascaderOption, IBestCascaderOptionInstance, IBestCascaderOptionIn
 import { IBestPopup } from '../popup/index'
 import { IBestCascaderColor } from './color'
 import { IBestIcon } from '../icon'
+import { IBestStringNumber } from '../../model/Global.type'
+
 @CustomDialog
 @Component
 export struct IBestCascaderContent{
@@ -21,14 +23,14 @@ export struct IBestCascaderContent{
 	 */
 	@State tabList: IBestTabItem[] = [
 		new IBestTabItem({
-			label: "请选择",
+			label: $r("app.string.ibest_please_select"),
 			name: "0"
 		})
 	]
 	/**
 	 * 当前激活tab name
 	 */
-	@State currentTabName: string = "0"
+	@State currentTabName: number = 0
 	/**
 	 * swiper默认显示选项
 	 */
@@ -44,7 +46,7 @@ export struct IBestCascaderContent{
 	/**
 	 * 已选中数据
 	 */
-	@Link value: (string | number)[]
+	@Link value: IBestStringNumber[]
 	/**
 	 * 选中颜色
 	 */
@@ -52,11 +54,11 @@ export struct IBestCascaderContent{
 	/**
 	 * 列表区域高度
 	 */
-	@Prop listHeight: number | string
+	@Prop listHeight: IBestStringNumber
 	/**
 	 * 单项高度
 	 */
-	@Provide({allowOverride: "itemHeight"}) itemHeight: number | string = convertDimensionsWidthUnit(40)
+	@Provide({allowOverride: "itemHeight"}) itemHeight: IBestStringNumber = convertDimensionsWidthUnit(40)
 	/**
 	 * 是否开启动态加载
 	 */
@@ -64,7 +66,7 @@ export struct IBestCascaderContent{
 	/**
 	 * 动态加载函数
 	 */
-	lazyLoad: ((value: string | number, level: number, cb: (arr: IBestCascaderOption[]) => void) => void) | null = null
+	lazyLoad: ((value: IBestStringNumber, level: number, cb: (arr: IBestCascaderOption[]) => void) => void) | null = null
 
 	controller?: CustomDialogController
 	private tabController: IBestTabController = new IBestTabController()
@@ -72,7 +74,7 @@ export struct IBestCascaderContent{
 	/**
 	 * 选中项变化时回调函数
 	 */
-	onChange: (value: string | number, selectedOptions: IBestCascaderOption[], index: number) => void = () => {}
+	onChange: (value: IBestStringNumber, selectedOptions: IBestCascaderOption[], index: number) => void = () => {}
 	/**
 	 * 全部选择完后回调函数
 	 */
@@ -123,14 +125,14 @@ export struct IBestCascaderContent{
 			this.createAllOptionsInstance(array, children[i].children, index + 1)
 		}else{
 			this.optionsInstance = array
-			this.tabList = this.value.map((item: string | number, j: number) => {
+			this.tabList = this.value.map((item: IBestStringNumber, j: number) => {
 				let a = array[j].find((e: IBestCascaderOptionInstance) => e.value == item)
 				return new IBestTabItem({
 					label: a?.text ?? "",
 					name: `${j}`
 				})
 			})
-			this.currentTabName = `${this.value.length - 1}`
+			this.currentTabName = this.value.length - 1
 			this.swiperDefaultIndex = this.value.length - 1
 		}
 	}
@@ -140,7 +142,6 @@ export struct IBestCascaderContent{
 	}
 	// 选中item
 	selectItem(index1: number, index2: number, item: IBestCascaderOptionInstance) {
-		// console.log(`选中${index1} ${index2} children ${item.children?.length} isEnd ${item.isEnd}`)
 		// 如果选中索引小于当前tab数量,清空tab在索引后的所有项
 		if (index1 < this.optionsInstance.length - 1) {
 			this.tabList.splice(index1 + 1)
@@ -188,7 +189,7 @@ export struct IBestCascaderContent{
 		let name = `${Number(this.tabList[this.tabList.length - 1].name) + 1}`
 		await sleep(50)
 		this.tabList.push(new IBestTabItem({
-			label: "请选择",
+			label: $r("app.string.ibest_please_select"),
 			name
 		}))
 		this.optionsInstance.push(this.createOptionsInstance(children))
@@ -202,7 +203,7 @@ export struct IBestCascaderContent{
 		this.optionsInstance.forEach((e: IBestCascaderOptionInstance[]) => {
 			arr = arr.concat(e.filter(f => f.actived).map(g => {
 				let obj: IBestCascaderOption = {
-					text: g.text,
+					text: getResourceStr(g.text),
 					value: g.value
 				}
 				return obj
@@ -220,7 +221,7 @@ export struct IBestCascaderContent{
 					tabWidthType: "auto",
 					tabLineColor: this.activeColor,
 					currentName: $currentTabName,
-					onChange: (name: string) => {
+					onChange: name => {
 						this.tabChange(Number(name))
 					}
 				})
@@ -254,7 +255,7 @@ export struct IBestCascaderContent{
 			.loop(false)
 			.duration(100)
 			.index(this.swiperDefaultIndex)
-			.onChange((index: number) => {
+			.onChange(index => {
 				this.tabController.changeTab(`${index}`)
 			})
 		}
@@ -322,7 +323,7 @@ export struct IBestCascader{
 	/**
 	 * 标题
 	 */
-	@Prop title: string = "请选择"
+	@Prop title: ResourceStr = $r("app.string.ibest_please_select")
 	/**
 	 * 可选项数据源
 	 */
@@ -334,11 +335,11 @@ export struct IBestCascader{
 	/**
 	 * 列表区域高度
 	 */
-	@Prop listHeight: number | string
+	@Prop listHeight: IBestStringNumber
 	/**
 	 * 单项高度
 	 */
-	@Prop itemHeight: number | string
+	@Prop itemHeight: IBestStringNumber
 	/**
 	 * 是否开启动态加载
 	 */
@@ -346,15 +347,15 @@ export struct IBestCascader{
 	/**
 	 * 动态加载函数
 	 */
-	lazyLoad: ((value: string | number, level: number, cb: (arr: IBestCascaderOption[]) => void) => void) | null = null
+	lazyLoad: ((value: IBestStringNumber, level: number, cb: (arr: IBestCascaderOption[]) => void) => void) | null = null
 	/**
 	 * 已选项
 	 */
-	@Link value: (string | number)[]
+	@Link value: IBestStringNumber[]
 	/**
 	 * 选中项变化时回调函数
 	 */
-	onChange: (value: string | number, selectedOptions: IBestCascaderOption[], index: number) => void = () => {}
+	onChange: (value: IBestStringNumber, selectedOptions: IBestCascaderOption[], index: number) => void = () => {}
 	/**
 	 * 全部选择完回调
 	 */

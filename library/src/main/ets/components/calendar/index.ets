@@ -4,7 +4,14 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
-import { CalendarConfirmResultType, SelectedStyleType, SelectType, WeekDayType } from './index.type'
+import {
+    DayItemType,
+    HeaderItemType,
+    IBestCalendarConfirmResult,
+    SelectedStyleType,
+    SelectType,
+    WeekDayType
+} from './index.type'
 import promptAction from '@ohos.promptAction'
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
 import { UIContext } from '@kit.ArkUI'
@@ -12,46 +19,10 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { isBeforeToday, set16ToRgb } from './utils'
 import { IBestCalendarColor } from './color'
 import { IBestIcon } from '../icon'
-class DayItemObj{
-    date: Dayjs = dayjs()
-    dateStr: string = ""
-    year: string = ""
-    month: string = ""
-    day: string = ""
-    weekNum: number = 0
-    lunarMonth: string = ""
-    lunarDay: string = ""
-    isCurMonthDay: boolean = false
-    isSelected: boolean = false
-    isDisabled?: boolean = false
-    isClock?: boolean = false
-}
-@Observed
-class DayItemType extends DayItemObj{
-    constructor(value?: DayItemObj){
-        super()
-        if(value){
-            this.date = value.date
-            this.dateStr = value.dateStr
-            this.weekNum = value.weekNum
-            this.lunarMonth = value.lunarMonth
-            this.lunarDay = value.lunarDay
-            this.year = value.year
-            this.month = value.month
-            this.day = value.day
-            this.isCurMonthDay = value.isCurMonthDay
-            this.isSelected = value.isSelected
-            this.isDisabled = value.isDisabled
-            this.isClock = value.isClock
-        }
-    }
-}
-interface HeaderItemType{
-    text: string
-    key: number
-}
+import { IBestStringNumber } from '../../model/Global.type'
 
-@Extend(Text) function headerStyle(itemWidth: number | string){
+
+@Extend(Text) function headerStyle(itemWidth: IBestStringNumber){
     .width(getSizeByUnit(itemWidth))
     .height(CONTAINER_SIZE.FULL)
     .textAlign(TextAlign.Center)
@@ -68,15 +39,15 @@ struct CalendarItem {
     @State fontColor: ResourceColor = IBestCalendarColor.textColor
     @State bgColor: ResourceColor = "transparent"
     @ObjectLink @Watch("itemChange") dayItem: DayItemType
-    @Consume daysList: Array<DayItemType>
+    @Consume daysList: DayItemType[]
     @Prop index: number
-    @Consume itemWidth: number | string
+    @Consume itemWidth: IBestStringNumber
     @Consume isShowLunar: boolean
     @Consume type: ColorType
     @Consume selectType: SelectType
     @Consume selectedStyleType: SelectedStyleType
     @Consume selectedColor: string
-    @Consume @Watch("itemChange") selectedList: Array<DayItemType>
+    @Consume @Watch("itemChange") selectedList: DayItemType[]
     @Consume clock: boolean
     @Consume clockSuccessText: ResourceStr
     @Consume isShowUnClock: boolean
@@ -149,13 +120,13 @@ struct CalendarItem {
         if (prevDisabled && nextDisabled) {
             return ""
         }
-        if (prevDisabled) {// 6 13 20
+        if (prevDisabled) {
             return {
                 topRight: borderRadius,
                 bottomRight: borderRadius
             }
         }
-        if (nextDisabled) { // 0 7 14
+        if (nextDisabled) {
             return {
                 topLeft: borderRadius,
                 bottomLeft: borderRadius
@@ -219,15 +190,15 @@ export struct IBestCalendar{
     /**
      * 默认选中日期
      */
-    @Prop @Watch("defaultSelectedDateChange") defaultSelectedDate: Array<string> = []
+    @Prop @Watch("defaultSelectedDateChange") defaultSelectedDate: string[] = []
     /**
      * 单项宽度
      */
-    @Provide({allowOverride: "itemWidth"}) itemWidth: number | string = convertDimensionsWidthUnit(50)
+    @Provide({allowOverride: "itemWidth"}) itemWidth: IBestStringNumber = convertDimensionsWidthUnit(50)
     /**
      * 每周第一天是周几
      */
-    @Prop weekFirstDay: WeekDayType = "一"
+    @Prop weekFirstDay: WeekDayType = 1
     /**
      * 是否显示农历
      */
@@ -239,7 +210,7 @@ export struct IBestCalendar{
     /**
      * 已选的日期列表
      */
-    @Provide({allowOverride: "selectedList"}) selectedList: Array<DayItemType> = []
+    @Provide({allowOverride: "selectedList"}) selectedList: DayItemType[] = []
     /**
      * 选中样式
      */
@@ -283,11 +254,11 @@ export struct IBestCalendar{
     /**
      * 确认按钮文案
      */
-    @Prop confirmBtnText: string = "确认"
+    @Prop confirmBtnText: ResourceStr = $r("app.string.ibest_text_confirm")
     /**
      * 圆角
      */
-    @Prop cornerRadius: number | string = convertDimensionsWidthUnit(10)
+    @Prop cornerRadius: IBestStringNumber = convertDimensionsWidthUnit(10)
     /**
      * 打卡模式
      * @since 2.0.1
@@ -297,7 +268,7 @@ export struct IBestCalendar{
      * 打卡成功提示
      * @since 2.0.1
      */
-    @Provide({allowOverride: "clockSuccessText"}) clockSuccessText: ResourceStr = "已打卡"
+    @Provide({allowOverride: "clockSuccessText"}) clockSuccessText: ResourceStr = $r("app.string.ibest_calendar_clocked")
     /**
      * 是否显示未打卡
      * @since 2.0.1
@@ -307,11 +278,11 @@ export struct IBestCalendar{
      * 未打卡提示
      * @since 2.0.1
      */
-    @Provide({allowOverride: "unClockText"}) unClockText: ResourceStr = "未打卡"
+    @Provide({allowOverride: "unClockText"}) unClockText: ResourceStr = $r("app.string.ibest_calendar_unclock")
     /**
      * 选择回调
      */
-    onConfirm: (value: Array<CalendarConfirmResultType>) => void = () => {}
+    onConfirm: (value: IBestCalendarConfirmResult[]) => void = () => {}
     controller?: CustomDialogController
     /**
      * 当前点击选择的年月日
@@ -328,40 +299,40 @@ export struct IBestCalendar{
     /**
      * 日历头部
      */
-    @State headerList: Array<HeaderItemType> = [
+    @State headerList: HeaderItemType[] = [
         {
-            text: "一",
+            text: $r("app.string.ibest_calendar_monday"),
             key: 1
         },
         {
-            text: "二",
+            text: $r("app.string.ibest_calendar_tuesday"),
             key: 2
         },
         {
-            text: "三",
+            text: $r("app.string.ibest_calendar_wednesday"),
             key: 3
         },
         {
-            text: "四",
+            text: $r("app.string.ibest_calendar_thursday"),
             key: 4
         },
         {
-            text: "五",
+            text: $r("app.string.ibest_calendar_friday"),
             key: 5
         },
         {
-            text: "六",
+            text: $r("app.string.ibest_calendar_saturday"),
             key: 6
         },
         {
-            text: "日",
+            text: $r("app.string.ibest_calendar_sunday"),
             key: 0
         }
     ]
     /**
      * 列表日期
      */
-    @Provide daysList: Array<DayItemType> = []
+    @Provide daysList: DayItemType[] = []
     // 日期区域高度
     @State contentHeight: number = 0
     private context: UIContext = this.getUIContext()
@@ -409,7 +380,8 @@ export struct IBestCalendar{
         if(this.clock){
             this.selectType = "range"
         }
-        let index = this.headerList.findIndex(e => e.text == this.weekFirstDay)
+        let index = this.headerList.findIndex(e => e.key == this.weekFirstDay)
+        index = index == -1 ? 1 : index
         this.monthChange()
         // index 变更 headerList顺序
         this.headerList = this.headerList.slice(index).concat(this.headerList.slice(0, index))
@@ -417,7 +389,7 @@ export struct IBestCalendar{
     }
     // 初始化selectedList
     initSelectedList(){
-        let list: Array<DayItemType> = []
+        let list: DayItemType[] = []
         if(this.defaultSelectedDate.length){
             if(this.defaultSelectedDate.some(e => !dayjs(e).isValid())){
                 return
@@ -459,7 +431,7 @@ export struct IBestCalendar{
      */
     initDaysList(){
         this.daysList = []
-        let list: Array<DayItemType> = []
+        let list: DayItemType[] = []
         // 获取当前月份1号是周几
         let firstDayWeekNum = this.getWeekNum(dayjs(this.curYearMonth).date(1))
         // console.log(`本月第一天周${firstDayWeekNum}`)
@@ -547,7 +519,7 @@ export struct IBestCalendar{
     /**
      * 刷新字段
      */
-    refreshListParam(list: Array<DayItemType>): Array<DayItemType>{
+    refreshListParam(list: DayItemType[]): DayItemType[]{
         list.forEach((item: DayItemType) => {
             item.isCurMonthDay = item.date.format('YYYY-MM') == this.curYearMonth
         })
@@ -653,7 +625,7 @@ export struct IBestCalendar{
                     }
                     if(isOutRange){
                         promptAction.showToast({
-                            message: `最多选择${this.maxRange}天`,
+                            message: $r("app.string.ibest_maximum_limit", this.maxRange),
                             duration: 2000
                         })
                     }
@@ -674,7 +646,7 @@ export struct IBestCalendar{
      * 获取两个日期之间的所有日期
      */
     getDateListBetween(startDayjs: Dayjs, endDayjs: Dayjs): DayItemType[]{
-        let dateArray: Array<DayItemType> = []
+        let dateArray: DayItemType[] = []
         let start = dayjs(startDayjs)
         let end = dayjs(endDayjs)
         while (!start.isAfter(end, 'day')) {
@@ -701,7 +673,7 @@ export struct IBestCalendar{
      */
     confirm(){
          this.onConfirm(this.selectedList.map(e => {
-            let obj: CalendarConfirmResultType = {
+            let obj: IBestCalendarConfirmResult = {
                 date: e.date.toDate(),
                 dateStr: e.dateStr
             }
@@ -762,7 +734,7 @@ export struct IBestCalendar{
                     GridCol() {
                         Text(item.text).headerStyle(this.itemWidth)
                     }
-                }, (item: HeaderItemType) => item.text)
+                }, (item: HeaderItemType, index: number) => index.toString())
             }
             .width(CONTAINER_SIZE.FULL)
             .height(convertDimensionsWidthUnit(30))

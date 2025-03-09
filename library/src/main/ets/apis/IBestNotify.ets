@@ -5,6 +5,8 @@ import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type'
 import CustomContent from '../common/components/CustomContent'
 import GlobalStore from '../utils/GlobalStore'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../utils/utils'
+import { IBestStringNumber } from '../model/Global.type'
+
 class IBestNotifyOption{
 	/**
 	 * 展示类型
@@ -13,7 +15,7 @@ class IBestNotifyOption{
 	/**
 	 * 展示文本
 	 */
-	message?: string = ""
+	message?: ResourceStr = ""
 	/**
 	 * 显示时长
 	 */
@@ -25,7 +27,7 @@ class IBestNotifyOption{
 	/**
 	 * 字体大小
 	 */
-	fontSize?: number | string
+	fontSize?: IBestStringNumber
 	/**
 	 * 背景色
      */
@@ -70,7 +72,7 @@ struct defaultContent{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@State transY: string | number = "-100%"
+	@State transY: IBestStringNumber = "-100%"
 	@Prop option: IBestNotifyParams
 
 	aboutToReuse(): void {

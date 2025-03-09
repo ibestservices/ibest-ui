@@ -1,6 +1,12 @@
 import router from '@ohos.router';
 import { CONTAINER_SIZE } from '../../assets/styles/BaseStyle';
-import { IBestNavBar, IBestPullRefresh, IBestRefreshContentParams, IBestTabItemType, IBestTabs } from '@ibestservices/ibest-ui';
+import {
+    IBestNavBar,
+    IBestPullRefresh,
+    IBestRefreshContentParams,
+    IBestTabItemType,
+    IBestTabs
+} from '@ibestservices/ibest-ui';
 import { ComponentRouterParams } from '../../assets/global.type';
 @Entry
 @Component
@@ -76,7 +82,8 @@ struct PullRefreshPage {
 			.width(60)
 	}
 
-	onRefresh(){
+	onRefresh(direction: string){
+		console.log("direction:" + direction)
 		// 此处模拟请求 延时关闭
 		setTimeout(() => {
 			this.isLoading = false
@@ -102,7 +109,7 @@ struct PullRefreshPage {
 						loading: $isLoading,
 						scroller: this.listScroller,
 						defaultContent: (): void => this.customContent("1"),
-						onRefresh: (): void => this.onRefresh()
+						onRefresh: (direction): void => this.onRefresh(direction)
 					})
 				}
 				if(this.currentTab == "2"){
@@ -111,7 +118,7 @@ struct PullRefreshPage {
 						successText: "加载成功",
 						scroller: this.scroller,
 						defaultContent: (): void => this.customContent("2"),
-						onRefresh: (): void => this.onRefresh()
+						onRefresh: (direction): void => this.onRefresh(direction)
 					})
 				}
 				if(this.currentTab == "3"){
@@ -121,7 +128,7 @@ struct PullRefreshPage {
 						pullingContent: this.customPullingContent,
 						loosingContent: this.customLoosingContent,
 						loadingContent: (): void => this.customLoadingContent(),
-						onRefresh: (): void => this.onRefresh()
+						onRefresh: (direction): void => this.onRefresh(direction)
 					})
 				}
 			}

@@ -3,6 +3,8 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
+import { IBestStringNumber } from '../../model/Global.type';
+
 @Extend(Button)
 function defaultBtnStyles(theme: 'default' | 'round-button') {
 	.layoutWeight(1)
@@ -37,7 +39,7 @@ export struct IBestDialogView {
 	/**
 	 * 弹窗宽度
 	 */
-	@Link dialogWidth: string | number
+	@Link dialogWidth: IBestStringNumber
 	/**
 	 * 标题
 	 */
@@ -49,15 +51,15 @@ export struct IBestDialogView {
 	/**
 	 * 标题的padding-top值
 	 */
-	@Prop titlePaddingTop: string | number = convertDimensionsWidthUnit(26)
+	@Prop titlePaddingTop: IBestStringNumber = convertDimensionsWidthUnit(26)
 	/**
 	 * 标题的padding-left与padding-right值
 	 */
-	@Prop titlePaddingX: string | number = convertDimensionsWidthUnit(24)
+	@Prop titlePaddingX: IBestStringNumber = convertDimensionsWidthUnit(24)
 	/**
 	 * 标题的padding-top值
 	 */
-	@Prop titleLineHeight: string | number = convertDimensionsWidthUnit(24)
+	@Prop titleLineHeight: IBestStringNumber = convertDimensionsWidthUnit(24)
 	/**
 	 * 标题的对齐方式
 	 */
@@ -69,15 +71,15 @@ export struct IBestDialogView {
 	/**
 	 * 内容区域的padding-left与padding-right值
 	 */
-	@Prop messagePaddingX: string | number = convertDimensionsWidthUnit(24)
+	@Prop messagePaddingX: IBestStringNumber = convertDimensionsWidthUnit(24)
 	/**
 	 * 内容区域的padding-top值
 	 */
-	@Prop messagePaddingTop: string | number = convertDimensionsWidthUnit(8)
+	@Prop messagePaddingTop: IBestStringNumber = convertDimensionsWidthUnit(8)
 	/**
 	 * 内容区域的padding-bottom值
 	 */
-	@Prop messagePaddingBottom: string | number = convertDimensionsWidthUnit(26)
+	@Prop messagePaddingBottom: IBestStringNumber = convertDimensionsWidthUnit(26)
 	/**
 	 * 内容区域的fontColor 默认#323233
 	 */
@@ -89,7 +91,7 @@ export struct IBestDialogView {
 	/**
 	 * 内容区域的滚动区域最大高度
 	 */
-	@Prop messageMaxHeight: string | number = '60%'
+	@Prop messageMaxHeight: IBestStringNumber = '60%'
 	/**
 	 * 样式风格
 	 * @since 1.16.0
@@ -99,7 +101,7 @@ export struct IBestDialogView {
 	 * 按钮间距
 	 * @since 1.16.0
 	 */
-	@Prop buttonSpace: string | number = 0
+	@Prop buttonSpace: IBestStringNumber = 0
 	/**
 	 * 是否展示确认按钮
 	 */
@@ -111,11 +113,11 @@ export struct IBestDialogView {
 	/**
 	 * 确认按钮文案
 	 */
-	@Prop confirmButtonText: ResourceStr = '确认'
+	@Prop confirmButtonText: ResourceStr = $r("app.string.ibest_text_confirm")
 	/**
 	 * 取消按钮的文案
 	 */
-	@Prop cancelButtonText: ResourceStr = '取消'
+	@Prop cancelButtonText: ResourceStr = $r("app.string.ibest_text_cancel")
 	/**
 	 * 确认按钮的字体颜色
 	 */
@@ -157,23 +159,23 @@ export struct IBestDialogView {
 	/**
 	 * 弹窗圆角
 	 */
-	@Prop dialogBorderRadius: string | number = this.baseStyle.spaceMd as string
+	@Prop dialogBorderRadius: IBestStringNumber = this.baseStyle.spaceMd as string
 	/**
 	 * 标题的fontSize
 	 */
-	@Prop titleFontSize: string | number = this.baseStyle.fontSizeLg as string
+	@Prop titleFontSize: IBestStringNumber = this.baseStyle.fontSizeLg as string
 	/**
 	 * 内容区域的fontSize
 	 */
-	@Prop messageFontSize: string | number = this.baseStyle.fontSizeMd as string
+	@Prop messageFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
 	/**
 	 * 内容区域的行高 lineHeight
 	 */
-	@Prop messageLineHeight: string | number = this.baseStyle.lineHeightMd as string
+	@Prop messageLineHeight: IBestStringNumber = this.baseStyle.lineHeightMd as string
 	/**
 	 * 按钮的文字大小
 	 */
-	@Prop buttonFontSize: string | number = this.baseStyle.fontSizeLg as string
+	@Prop buttonFontSize: IBestStringNumber = this.baseStyle.fontSizeLg as string
 	/**
 	 * 背景图片
 	 * @since 2.0.7
@@ -182,11 +184,11 @@ export struct IBestDialogView {
 	/**
 	 * 点击取消的回调
 	 */
-	onCancel: (event?: ClickEvent) => void = () => {}
+	onCancel: () => void = () => {}
 	/**
 	 * 点击确认的的回调
 	 */
-	onConfirm: (event?: ClickEvent) => void = () => {}
+	onConfirm: () => void = () => {}
 	colorModeChange() {
 		this.whiteColor = IBestDialogColor.white
 		this.contentBg = IBestDialogColor.contentBg
@@ -208,13 +210,6 @@ export struct IBestDialogView {
 				return TextAlign.Center
 		}
 	}
-	/**
-	 * 是否含有title
-	 * @returns
-	 */
-	isHasTitle() {
-		return typeof this.title != 'undefined'
-	}
 	getTitleColor() {
 		return this.titleColor || this.titleDefaultColor
 	}
@@ -223,7 +218,7 @@ export struct IBestDialogView {
 	 * @returns
 	 */
 	getMsgColor() {
-		return this.messageFontColor || (this.isHasTitle() ? GRAY_COLOR.GRAY_7 : this.messageColor)
+		return this.messageFontColor || (this.title ? GRAY_COLOR.GRAY_7 : this.messageColor)
 	}
 	/**
 	 * 确认按钮的文字颜色
@@ -257,7 +252,7 @@ export struct IBestDialogView {
 			if (this.titleBuilder) {
 				this.titleBuilder()
 			} else {
-				if (this.isHasTitle()) {
+				if (this.title) {
 					Text(this.title)
 						.fontSize(getSizeByUnit(this.titleFontSize, true))
 						.fontWeight(FontWeight.Medium)
@@ -283,7 +278,7 @@ export struct IBestDialogView {
 							right: getSizeByUnit(this.messagePaddingX),
 							bottom: getSizeByUnit(this.messagePaddingBottom)
 						})
-						.margin({ top: this.isHasTitle() ? 0 : getSizeByUnit(this.messagePaddingBottom) })
+						.margin({ top: this.title ? 0 : getSizeByUnit(this.messagePaddingBottom) })
 						.textAlign(this.getFormatAlign(this.messageTextAlign))
 						.lineHeight(getSizeByUnit(this.messageLineHeight))
 						.fontSize(getSizeByUnit(this.messageFontSize, true))
@@ -335,8 +330,8 @@ export struct IBestDialogView {
 							topRight: this.showConfirmButton && this.buttonSpace == 0 ? 0 : 999,
 							bottomRight: this.showConfirmButton && this.buttonSpace == 0 ? 0 : 999
 						} : 0)
-						.onClick(event => {
-							this.onCancel(event)
+						.onClick(() => {
+							this.onCancel()
 						})
 					}
 					// 确认按钮
@@ -370,8 +365,8 @@ export struct IBestDialogView {
 							topRight: 999,
 							bottomRight: 999
 						} : 0)
-						.onClick(event => {
-							this.onConfirm(event)
+						.onClick(() => {
+							this.onConfirm()
 						})
 					}
 				}

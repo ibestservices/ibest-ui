@@ -43,10 +43,10 @@ struct PickerGroupPage {
 	@State selectValue5: string[] = []
 	@State selectValue6: string[] = []
 
-	@State currentName: string = "0"
+	@State currentName: number = 0
 
 	changeName(){
-		this.currentName = this.currentName === "0" ? "1" : "0"
+		this.currentName = this.currentName === 0 ? 1 : 0
 	}
 
 	build() {
@@ -151,7 +151,7 @@ struct PickerGroupPage {
 								tabs: this.tabs,
 								nextStepText: "下一步",
 								currentName: this.currentName,
-								onTabNameChange: (name: string) => {
+								onTabNameChange: name => {
 									this.currentName = name
 								},
 								onConfirm: () => {

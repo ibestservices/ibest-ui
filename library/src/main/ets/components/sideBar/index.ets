@@ -1,3 +1,4 @@
+import { IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { emitter } from '../../utils/EventEmitter'
@@ -21,11 +22,11 @@ export struct IBestSideBar{
 	/**
 	 * 宽度
      */
-	@Prop sideWidth: string | number = convertDimensionsWidthUnit(80)
+	@Prop sideWidth: IBestStringNumber = convertDimensionsWidthUnit(80)
 	/**
 	 * 最大高度
      */
-	@Prop maxHeight: string | number = 0
+	@Prop maxHeight: IBestStringNumber = 0
 	/**
 	 * 背景色
      */
@@ -37,7 +38,7 @@ export struct IBestSideBar{
 	/**
 	 * 文字大小
 	 */
-	@Prop titleFontSize: number | string = this.baseStyle.fontSizeMd as string
+	@Prop titleFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
 	/**
 	 * 激活背景色
      */
@@ -71,20 +72,24 @@ export struct IBestSideBar{
      */
 	onChange: (index: number) => void = () => {}
 
+	@State uniId: number = 0
+
 	aboutToAppear(): void {
-		emitter.on(getEventName(COMPONENT_NAME, this.groupId, SIDEBAR_EVENT_NAME.CHANGE_ACTIVE), (active: number): void => this.changeActive(active))
-	}
-	onDidBuild(): void {
-		setTimeout(() => {
-			this.initItems()
-		})
+		this.uniId = this.getUniqueId()
+		if(this.groupId){
+			emitter.on(getEventName(COMPONENT_NAME, SIDEBAR_EVENT_NAME.CHANGE_ACTIVE, this.groupId), this.uniId, (active: number): void => this.changeActive(active))
+			setTimeout(() => {
+				this.initItems()
+			}, 0)
+		}
 	}
 	aboutToDisappear(): void {
-		emitter.off(getEventName(COMPONENT_NAME, this.groupId, SIDEBAR_EVENT_NAME.CHANGE_ACTIVE), (active: number): void => this.changeActive(active))
+		if(this.groupId){
+			emitter.off(getEventName(COMPONENT_NAME, SIDEBAR_EVENT_NAME.CHANGE_ACTIVE, this.groupId), this.uniId)
+		}
 	}
-
 	initItems(){
-		emitter.emit(getEventName(COMPONENT_NAME, this.groupId, SIDEBAR_EVENT_NAME.INIT_ITEM), this.active, {
+		emitter.emit(getEventName(COMPONENT_NAME, SIDEBAR_EVENT_NAME.INIT_ITEM, this.groupId), this.active, {
 			titleColor: this.titleColor,
 			titleFontSize: this.titleFontSize,
 			activeBgColor: this.activeBgColor,
@@ -95,14 +100,11 @@ export struct IBestSideBar{
 			activeFontWeight: this.activeFontWeight
 		})
 	}
-
 	changeActive(active: number){
 		this.active = active
 		this.initItems()
 		this.onChange(active)
 	}
-
-
 	build() {
 		Scroll(){
 			Column(){

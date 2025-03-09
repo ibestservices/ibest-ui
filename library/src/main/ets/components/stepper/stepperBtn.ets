@@ -1,15 +1,16 @@
+import { IBestStringNumber } from '../../model/Global.type';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { IBestIcon } from '../icon';
 import { IBestStepperColor } from './color';
 @Component
 export struct IBestStepperBtn {
 	@Prop type: 'plus' | 'minus'
-	@Prop buttonSize: string | number = convertDimensionsWidthUnit(20)
-	@Prop iconSize: number | string = convertDimensionsWidthUnit(20)
-	@Prop radiusLeftTop: string | number = 0
-	@Prop radiusLeftBottom: string | number = 0
-	@Prop radiusRightTop: string | number = 0
-	@Prop radiusRightBottom: string | number = 0
+	@Prop buttonSize: IBestStringNumber = convertDimensionsWidthUnit(20)
+	@Prop iconSize: IBestStringNumber = convertDimensionsWidthUnit(20)
+	@Prop radiusLeftTop: IBestStringNumber = 0
+	@Prop radiusLeftBottom: IBestStringNumber = 0
+	@Prop radiusRightTop: IBestStringNumber = 0
+	@Prop radiusRightBottom: IBestStringNumber = 0
 	@Prop disabled: boolean = false;
 	onClickBtn: () => void = () => {}
 	onLongPress: () => void = () => {}

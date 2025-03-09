@@ -1,6 +1,6 @@
-import { emitter } from "../../utils/EventEmitter"
-import { getComponentsInfo, clamp, getEventName } from "../../utils/utils"
-import { COMPONENT_NAME, SWIPECELL_EVENT_NAME } from "./index.type"
+import { emitter } from '../../utils/EventEmitter'
+import { clamp, getComponentsInfo, getEventName } from '../../utils/utils'
+import { COMPONENT_NAME, SWIPECELL_EVENT_NAME } from './index.type'
 type SwipeCellSide = 'left' | 'right' | 'center'
 
 @Component
@@ -41,13 +41,13 @@ export struct IBestSwipeCell{
 		setTimeout(() => {
 			this.getContentWidth()
 		}, 0)
-		emitter.on(getEventName(COMPONENT_NAME, "", SWIPECELL_EVENT_NAME.SWIPECELL_TOUCH), (uniId: number): void => this.onSwipeCellTouch(uniId))
+		emitter.on(getEventName(COMPONENT_NAME, SWIPECELL_EVENT_NAME.SWIPECELL_TOUCH,), this.uniId, (uniId: number): void => this.onSwipeCellTouch(uniId))
 	}
 	aboutToDisappear(): void {
-		emitter.off(getEventName(COMPONENT_NAME, "", SWIPECELL_EVENT_NAME.SWIPECELL_TOUCH), (uniId: number): void => this.onSwipeCellTouch(uniId))
+		emitter.off(getEventName(COMPONENT_NAME, SWIPECELL_EVENT_NAME.SWIPECELL_TOUCH), this.uniId)
 	}
 	emitTouch(){
-		emitter.emit(getEventName(COMPONENT_NAME, "", SWIPECELL_EVENT_NAME.SWIPECELL_TOUCH), this.uniId)
+		emitter.emit(getEventName(COMPONENT_NAME, SWIPECELL_EVENT_NAME.SWIPECELL_TOUCH), this.uniId)
 	}
 	onSwipeCellTouch(uniId: number){
 		if(uniId != this.uniId && this.isOpen){

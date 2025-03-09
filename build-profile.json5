@@ -14,19 +14,19 @@
 //					"storeFile": "/Users/damengbuxing/Desktop/IBest-UI应用文件/ibest_ui_p12.p12"
 //				}
 //			},
-			{
-				"name": "default",
-				"type": "HarmonyOS",
-				"material": {
-					"certpath": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.cer",
-					"storePassword": "0000001BBC0BC4FA393E00A811C5A2EB1307DB9811C0B8A35C7D16B4ECA08884E8AFB971687B3E256B37CC",
-					"keyAlias": "debugKey",
-					"keyPassword": "0000001B09EFB63CAE99ECC53194AE4DED8CF1666BED5177FB6F83142B124B4897A86AF0230301FF0D4A1B",
-					"profile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p7b",
-					"signAlg": "SHA256withECDSA",
-					"storeFile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p12"
-				}
-			},
+//			{
+//				"name": "default",
+//				"type": "HarmonyOS",
+//				"material": {
+//					"certpath": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.cer",
+//					"storePassword": "0000001BBC0BC4FA393E00A811C5A2EB1307DB9811C0B8A35C7D16B4ECA08884E8AFB971687B3E256B37CC",
+//					"keyAlias": "debugKey",
+//					"keyPassword": "0000001B09EFB63CAE99ECC53194AE4DED8CF1666BED5177FB6F83142B124B4897A86AF0230301FF0D4A1B",
+//					"profile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p7b",
+//					"signAlg": "SHA256withECDSA",
+//					"storeFile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p12"
+//				}
+//			},
 //			{
 //				"name": "default",
 //				"type": "HarmonyOS",

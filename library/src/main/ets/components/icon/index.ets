@@ -2,6 +2,7 @@ import { IBestIconData } from './config';
 import { IBestIconDataType } from './index.type';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { IBestIconColor } from './color';
+import { IBestStringNumber } from '../../model/Global.type';
 
 @Component
 export struct IBestIcon {
@@ -16,12 +17,12 @@ export struct IBestIcon {
 	/**
 	 * 图标大小
 	 */
-	@Prop iconSize: number | string = convertDimensionsWidthUnit(16)
+	@Prop iconSize: IBestStringNumber = convertDimensionsWidthUnit(16)
 	/**
 	 * 图标圆角
 	 * @since 1.19.0
 	 */
-	@Prop iconRadius: number | string = 0
+	@Prop iconRadius: IBestStringNumber = 0
 	/**
 	 * 点击回调
 	 */

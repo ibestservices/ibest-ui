@@ -1,5 +1,6 @@
+import { IBestStringNumber } from '../../model/Global.type';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { IBestEmptyColor } from './color';
@@ -12,19 +13,19 @@ export struct IBestEmpty {
 	/**
 	 * 描述文字底部的builder
 	 */
-	@BuilderParam defaultBuilder?: CustomBuilder;
+	@BuilderParam defaultBuilder: CustomBuilder
 	/**
 	 * 占位图的builder
 	 */
-	@BuilderParam emptyImgBuilder?: CustomBuilder;
+	@BuilderParam emptyImgBuilder: CustomBuilder
 	/**
 	 * 描述文字的builder
 	 */
-	@BuilderParam descriptionBuilder?: CustomBuilder;
+	@BuilderParam descriptionBuilder: CustomBuilder
 	/**
 	 * 图片下方的描述文字 默认空字符串
 	 */
-	@Prop description: ResourceStr = '';
+	@Prop description: ResourceStr = ''
 	/**
 	 * 描述文字颜色 默认 "#969799"
 	 */
@@ -32,26 +33,24 @@ export struct IBestEmpty {
 	/**
 	 * 描述文字大小
 	 */
-	@Prop descriptionFontSize: string | number = convertDimensionsWidthUnit(14)
+	@Prop descriptionFontSize: IBestStringNumber = convertDimensionsWidthUnit(14)
 	/**
 	 * 空占位图的高度
 	 */
-	@Prop imageSize: string | number = convertDimensionsWidthUnit(160)
+	@Prop imageSize: IBestStringNumber = convertDimensionsWidthUnit(160)
 	/**
 	 * 图片类型，可选值为 error network search default 默认default
 	 */
-	@Prop emptyImage: 'error' | 'network' | 'search' | 'default' = 'default';
+	@Prop emptyImage: 'error' | 'network' | 'search' | 'default' = 'default'
 	/**
 	 * 自定义占位图
 	 * @since 1.18.0
 	 */
 	@Prop emptyImgUrl: ResourceStr = ''
-	@Styles
-	imgStyle(){
+	@Styles imgStyle(){
 		.height(getSizeByUnit(this.imageSize))
 	}
-	@Builder
-	EmptyImg() {
+	@Builder EmptyImg() {
 		if (this.emptyImgUrl) {
 			Image(this.emptyImgUrl).imgStyle()
 		} else if (this.emptyImage === 'default') {
@@ -78,7 +77,7 @@ export struct IBestEmpty {
 			} else {
 				Text(this.description)
 					.margin({
-						top: this.description ?? false ? this.baseStyle.spaceMd : 0
+						top: this.description ? this.baseStyle.spaceMd : 0
 					})
 					.padding({
 						left: this.baseStyle.spaceXl,

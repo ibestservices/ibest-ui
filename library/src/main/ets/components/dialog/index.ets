@@ -2,6 +2,8 @@ import { IBestDialogView } from './dialog';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { convertDimensionsWidthUnit, sleep } from '../../utils/utils';
+import { IBestStringNumber } from '../../model/Global.type';
+
 @CustomDialog
 export struct IBestDialog {
 	/**
@@ -28,11 +30,11 @@ export struct IBestDialog {
 	/**
 	 * 弹窗宽度
 	 */
-	@Prop dialogWidth: string | number = convertDimensionsWidthUnit(320)
+	@Prop dialogWidth: IBestStringNumber = convertDimensionsWidthUnit(320)
 	/**
 	 * 弹窗border-radius
 	 */
-	@Prop dialogBorderRadius: string | number
+	@Prop dialogBorderRadius: IBestStringNumber
 	/**
 	 * 标题
 	 */
@@ -44,19 +46,19 @@ export struct IBestDialog {
 	/**
 	 * 标题的padding-top值
 	 */
-	@Prop titlePaddingTop: string | number
+	@Prop titlePaddingTop: IBestStringNumber
 	/**
 	 * 标题的padding-left与padding-right值
 	 */
-	@Prop titlePaddingX: string | number
+	@Prop titlePaddingX: IBestStringNumber
 	/**
 	 * 标题的padding-top值
 	 */
-	@Prop titleLineHeight: string | number
+	@Prop titleLineHeight: IBestStringNumber
 	/**
 	 * 标题的fontSize
 	 */
-	@Prop titleFontSize: string | number
+	@Prop titleFontSize: IBestStringNumber
 	/**
 	 * 标题的对齐方式
 	 */
@@ -68,15 +70,15 @@ export struct IBestDialog {
 	/**
 	 * 内容区域的padding-left与padding-right值
 	 */
-	@Prop messagePaddingX: string | number
+	@Prop messagePaddingX: IBestStringNumber
 	/**
 	 * 内容区域的padding-top值
 	 */
-	@Prop messagePaddingTop: string | number
+	@Prop messagePaddingTop: IBestStringNumber
 	/**
 	 * 内容区域的padding-bottom值
 	 */
-	@Prop messagePaddingBottom: string | number
+	@Prop messagePaddingBottom: IBestStringNumber
 	/**
 	 * 内容区域的字体色 默认#323233
 	 */
@@ -84,11 +86,11 @@ export struct IBestDialog {
 	/**
 	 * 内容区域的fontSize
 	 */
-	@Prop messageFontSize: string | number
+	@Prop messageFontSize: IBestStringNumber
 	/**
 	 * 内容区域的行高 lineHeight
 	 */
-	@Prop messageLineHeight: string | number
+	@Prop messageLineHeight: IBestStringNumber
 	/**
 	 * 内容区域的文字对齐方式
 	 */
@@ -96,7 +98,7 @@ export struct IBestDialog {
 	/**
 	 * 内容区域的滚动区域最大高度
 	 */
-	@Prop messageMaxHeight: string | number
+	@Prop messageMaxHeight: IBestStringNumber
 	/**
 	 * 按钮样式风格
 	 * @since 1.16.0
@@ -106,7 +108,7 @@ export struct IBestDialog {
 	 * 按钮间距
 	 * @since 1.16.0
 	 */
-	@Prop buttonSpace: number | number
+	@Prop buttonSpace: IBestStringNumber
 	/**
 	 * 是否展示确认按钮
 	 */
@@ -152,7 +154,7 @@ export struct IBestDialog {
 	/**
 	 * 按钮的文字大小
 	 */
-	@Prop buttonFontSize: string | number
+	@Prop buttonFontSize: IBestStringNumber
 	/**
 	 * 确认按钮的loading
 	 */
@@ -177,11 +179,11 @@ export struct IBestDialog {
 	/**
 	 * 弹窗相对alignment所在位置的横向偏移量。
 	 */
-	@Prop offsetX: string | number = 0
+	@Prop offsetX: IBestStringNumber = 0
 	/**
 	 * 弹窗相对alignment所在位置的纵向偏移量。
 	 */
-	@Prop offsetY: string | number = 0
+	@Prop offsetY: IBestStringNumber = 0
 	/**
 	 * 弹窗是否为模态窗口，模态窗口有蒙层，非模态窗口无蒙层。
 	 * API11+
@@ -245,11 +247,11 @@ export struct IBestDialog {
 			buttonFontSize: this.buttonFontSize,
 			confirmButtonLoading: this.confirmButtonLoading,
 			cancelButtonLoading: this.cancelButtonLoading,
-			onCancel: (event) => {
-				this.handleCancel(event)
+			onCancel: () => {
+				this.handleCancel()
 			},
-			onConfirm: (event) => {
-				this.handleConfirm(event)
+			onConfirm: () => {
+				this.handleConfirm()
 			}
 		}),
 		alignment: this.getAlignment(this.alignment),
@@ -324,7 +326,7 @@ export struct IBestDialog {
 	/**
 	 * 点击取消的回调
 	 */
-	async handleCancel(event?: ClickEvent) {
+	async handleCancel() {
 		if (this.cancelButtonDisabled || this.cancelButtonLoading) {
 			return
 		}
@@ -338,7 +340,7 @@ export struct IBestDialog {
 		}
 		this.cancelButtonDisabled = true
 		this.close()
-		this.onCancel(event)
+		this.onCancel()
 		// 等待动画结束
 		await sleep()
 		this.cancelButtonDisabled = false
@@ -346,7 +348,7 @@ export struct IBestDialog {
 	/**
 	 * 点击确定的回调
 	 */
-	async handleConfirm(event?: ClickEvent) {
+	async handleConfirm() {
 		if (this.confirmButtonDisabled || this.confirmButtonLoading) {
 			return
 		}
@@ -360,7 +362,7 @@ export struct IBestDialog {
 		}
 		this.confirmButtonDisabled = true;
 		this.close()
-		this.onConfirm(event)
+		this.onConfirm()
 		// 等待动画结束
 		await sleep()
 		this.confirmButtonDisabled = false;

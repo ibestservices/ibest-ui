@@ -1,10 +1,10 @@
 import {
-	IBestCascader,
-	IBestCascaderContent,
-	IBestCascaderOption,
-	IBestCell,
-	IBestNavBar,
-	IBestToast
+    IBestCascader,
+    IBestCascaderContent,
+    IBestCascaderOption,
+    IBestCell,
+    IBestNavBar,
+    IBestToast
 } from '@ibestservices/ibest-ui'
 import { ComponentRouterParams } from '../../assets/global.type'
 import router from '@ohos.router'
@@ -48,15 +48,15 @@ struct CascaderPage {
 			IBestToast.hide()
 			cb(value == "320000" ? [
 				{
-				text: "南京市",
-				value: "320100",
-				isEnd: level >= 1
-			},
-			{
-				text: "苏州市",
-				value: "320500",
-				isEnd: level >= 1
-			}
+					text: "南京市",
+					value: "320100",
+					isEnd: level >= 1
+				},
+				{
+					text: "苏州市",
+					value: "320500",
+					isEnd: level >= 1
+				}
 			] : [
 				{
 					text: "合肥市",

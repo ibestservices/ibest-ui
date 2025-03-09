@@ -1,3 +1,4 @@
+import { IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestWatermarkColor } from './color'
@@ -39,11 +40,11 @@ export struct IBestWatermark {
 	/**
 	 * 图片水印的链接
 	 */
-	@Prop imageUrl: string
+	@Prop imageUrl: ResourceStr
 	/**
 	 * 文字水印
 	 */
-	@Prop text: string
+	@Prop text: ResourceStr
 	/**
 	 * 文字的大小
 	 */
@@ -55,7 +56,7 @@ export struct IBestWatermark {
 	/**
 	 * 文字颜色
 	 */
-	@Prop fontColor: string | number | CanvasGradient | CanvasPattern
+	@Prop fontColor: IBestStringNumber | CanvasGradient | CanvasPattern
 	/**
 	 * 水印的z-index
 	 */
@@ -74,15 +75,14 @@ export struct IBestWatermark {
 	 */
 	@State waterMarkContainWidth: number = 0;
 	@State url: string = ''
-	getBgColor() {
-		return this.bgColor || IBestWatermarkColor.bgColor
-	}
-	@Builder
-	watermarkContent() {
+	@Builder watermarkContent() {
 		Image(this.url)
 			.width(this.waterMarkContainWidth)
 			.height(this.waterMarkContainHeight)
 			.opacity(this.waterMarkOpacity)
+	}
+	getBgColor() {
+		return this.bgColor || IBestWatermarkColor.bgColor
 	}
 	build() {
 		Stack() {

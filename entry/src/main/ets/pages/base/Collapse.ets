@@ -1,5 +1,11 @@
 import router from '@ohos.router';
-import { IBestButton, IBestCollapse, IBestCollapseController, IBestCollapseItem, IBestNavBar } from '@ibestservices/ibest-ui';
+import {
+    IBestButton,
+    IBestCollapse,
+    IBestCollapseController,
+    IBestCollapseItem,
+    IBestNavBar
+} from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../../assets/global.type';
@@ -11,13 +17,13 @@ struct CollapsePage {
     @State activeName: string[] = ['1']
     @State groupId: string = 'group'
 
-    @State activeName1: string = "1"
+    @State activeName1: number = 1
     @State groupId1: string = "group1"
 
     @State activeName2: string[] = []
     @State groupId2: string = "group2"
 
-    @State activeName3: string[] = ["2"]
+    @State activeName3: number[] = [2]
     @State groupId3: string = "group3"
     private controller: IBestCollapseController = new IBestCollapseController()
     build() {
@@ -72,7 +78,7 @@ struct CollapsePage {
                         }){
                             IBestCollapseItem({
                                 groupId: this.groupId1,
-                                name: '1',
+                                name: 1,
                                 index: 0,
                                 title: '标题1'
                             }){
@@ -80,7 +86,7 @@ struct CollapsePage {
                             }
                             IBestCollapseItem({
                                 groupId: this.groupId1,
-                                name: '2',
+                                name: 2,
                                 index: 1,
                                 title: '标题2'
                             }){
@@ -88,7 +94,7 @@ struct CollapsePage {
                             }
                             IBestCollapseItem({
                                 groupId: this.groupId1,
-                                name: '3',
+                                name: 3,
                                 index: 2,
                                 title: '标题3'
                             }){
@@ -162,7 +168,7 @@ struct CollapsePage {
                             }){
                                 IBestCollapseItem({
                                     groupId: this.groupId3,
-                                    name: '1',
+                                    name: 1,
                                     index: 0,
                                     title: '标题1'
                                 }){
@@ -170,7 +176,7 @@ struct CollapsePage {
                                 }
                                 IBestCollapseItem({
                                     groupId: this.groupId3,
-                                    name: '2',
+                                    name: 2,
                                     index: 1,
                                     title: '标题2',
                                     disabled: true
@@ -179,7 +185,7 @@ struct CollapsePage {
                                 }
                                 IBestCollapseItem({
                                     groupId: this.groupId3,
-                                    name: '3',
+                                    name: 3,
                                     index: 2,
                                     title: '标题3'
                                 }){

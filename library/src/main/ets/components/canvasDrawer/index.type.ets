@@ -1,3 +1,5 @@
+import { IBestStringNumber } from '../../model/Global.type'
+
 @Observed
 export class IBestCanvasContent {
 	/**
@@ -51,7 +53,7 @@ export class IBestCanvasContent {
 	/**
 	 * 文字颜色
 	 */
-	fontColor?: string | number | CanvasGradient | CanvasPattern
+	fontColor?: IBestStringNumber | CanvasGradient | CanvasPattern
 	/**
 	 * 文字字重 可选 'normal', 'bold', 'bolder', 'lighter', 100, 200, 300, 400, 500, 600, 700, 800, 900
 	 */

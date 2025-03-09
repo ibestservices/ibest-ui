@@ -1,8 +1,9 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { convertDimensionsWidthUnit } from "../../utils/utils"
-import { IBestBadgeColor } from "./color"
-import { IBestBadgePosition } from "./index.type"
+import { IBestStringNumber } from '../../model/Global.type'
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { convertDimensionsWidthUnit } from '../../utils/utils'
+import { IBestBadgeColor } from './color'
+import { IBestBadgePosition } from './index.type'
 @Component
 export struct IBestBadge {
 	/**
@@ -12,7 +13,7 @@ export struct IBestBadge {
 	/**
 	 * 徽标内容
 	 */
-	@Prop content: string | number = ''
+	@Prop content: IBestStringNumber = ''
 	/**
 	 * 徽标背景色
 	 */

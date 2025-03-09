@@ -1,7 +1,7 @@
 /**
  * 列表显示类型
  */
-export type TimePickerColumnType = "hour" | "minute" | "second"
+export type IBestTimePickerColumnType = "hour" | "minute" | "second"
 
 /**
  * 组件名称

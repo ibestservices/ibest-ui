@@ -1,12 +1,14 @@
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { curves } from '@kit.ArkUI';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
+import { IBestStringNumber } from '../../model/Global.type';
+
 @Component
 export struct IBestLoadingSpinner {
 	/**
 	 * 菊花图尺寸
 	 */
-	@Prop spinnerSize: number | string = convertDimensionsWidthUnit(30)
+	@Prop spinnerSize: IBestStringNumber = convertDimensionsWidthUnit(30)
 	/**
 	 * 菊花图线的宽度
 	 */
@@ -18,7 +20,7 @@ export struct IBestLoadingSpinner {
 	/**
 	 * 当前菊花图的每条线的长度
 	 */
-	@Prop strokeHeight: string | number = convertDimensionsWidthUnit(8)
+	@Prop strokeHeight: IBestStringNumber = convertDimensionsWidthUnit(8)
 	/**
 	 * loading的颜色
 	 */

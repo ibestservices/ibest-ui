@@ -1,20 +1,18 @@
-import image from '@ohos.multimedia.image'
-// import { rcp } from '@kit.RemoteCommunicationKit';
-import { http } from '@kit.NetworkKit'
-import { IBestCanvasContent } from './index.type'
+import { IBestCanvasContent } from './index.type';
 import { base64ToPixelMap, getComponentsInfo, getComponentSnapshot, getSizeByUnit, sleep } from '../../utils/utils';
 import GlobalStore from '../../utils/GlobalStore';
+import { IBestStringNumber } from '../../model/Global.type';
 
 @Component
 export struct IBestCanvasDrawer{
 	/**
 	 * 画板宽度
      */
-	@Prop canvasWidth: number | string = 0
+	@Prop canvasWidth: IBestStringNumber = 0
 	/**
 	 * 画板高度
      */
-	@Prop canvasHeight: number | string = 0
+	@Prop canvasHeight: IBestStringNumber = 0
 	/**
 	 * 画板背景色
      */
@@ -30,7 +28,7 @@ export struct IBestCanvasDrawer{
 	/**
 	 * 圆角
 	 */
-	@Prop radius: number | string = 0
+	@Prop radius: IBestStringNumber = 0
 	/**
 	 * 内容列表
      */
@@ -85,19 +83,7 @@ export struct IBestCanvasDrawer{
 		let deg = params.deg || 0
 		let imgModel: PixelMap | ImageBitmap
 		if (typeof url == 'string') {
-			if (url.startsWith("http")) { // 网络图片
-				// let request = rcp.createSession()
-				// let res: rcp.Response = await request.get(url, "array-buffer")
-				// request.close()
-				// if(res.statusCode != 200){
-				// 	return
-				// }
-				// let imageSource = image.createImageSource(res.body)
-				let httpRequest = http.createHttp()
-				let res: http.HttpResponse = await httpRequest.request(url, { expectDataType: http.HttpDataType.ARRAY_BUFFER })
-				let imageSource = image.createImageSource(res.result as ArrayBuffer)
-				imgModel = await imageSource.createPixelMap()
-			}else if(url.startsWith("data:image")){ // base64
+			if(url.startsWith("data:image")){ // base64
 				imgModel = await base64ToPixelMap(url)
 			} else { // 本地选择的图片
 				imgModel = new ImageBitmap(url)
@@ -224,7 +210,7 @@ export struct IBestCanvasDrawer{
 		return str + omitContent
 	}
 	// 划线
-	drawTextLine(left: number, top: number, textDecoration: string, size: TextMetrics, color: string | number |CanvasGradient | CanvasPattern) {
+	drawTextLine(left: number, top: number, textDecoration: string, size: TextMetrics, color: IBestStringNumber |CanvasGradient | CanvasPattern) {
 		this.ctx.save()
 		this.ctx.beginPath()
 		this.ctx.strokeStyle = color

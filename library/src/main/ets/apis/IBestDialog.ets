@@ -1,6 +1,7 @@
 import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
 import { convertDimensionsWidthUnit, generateId } from '../utils/utils'
 import { IBestDialogView } from '../components/dialog/dialog'
+import { IBestStringNumber } from '../model/Global.type'
 
 class IBestDialogOption {
 	/**
@@ -18,11 +19,11 @@ class IBestDialogOption {
 	/**
 	 * 弹窗宽度
 	 */
-	dialogWidth?: string | number
+	dialogWidth?: IBestStringNumber
 	/**
 	 * 弹窗border-radius
 	 */
-	dialogBorderRadius?: string | number
+	dialogBorderRadius?: IBestStringNumber
 	/**
 	 * 标题
 	 */
@@ -34,19 +35,19 @@ class IBestDialogOption {
 	/**
 	 * 标题的padding-top值
 	 */
-	titlePaddingTop?: string | number
+	titlePaddingTop?: IBestStringNumber
 	/**
 	 * 标题的padding-left与padding-right值
 	 */
-	titlePaddingX?: string | number
+	titlePaddingX?: IBestStringNumber
 	/**
 	 * 标题的padding-top值
 	 */
-	titleLineHeight?: string | number
+	titleLineHeight?: IBestStringNumber
 	/**
 	 * 标题的fontSize
 	 */
-	titleFontSize?: string | number
+	titleFontSize?: IBestStringNumber
 	/**
 	 * 标题的对齐方式
 	 */
@@ -58,27 +59,27 @@ class IBestDialogOption {
 	/**
 	 * 内容区域的padding-left与padding-right值
 	 */
-	messagePaddingX?: string | number
+	messagePaddingX?: IBestStringNumber
 	/**
 	 * 内容区域的padding-top值
 	 */
-	messagePaddingTop?: string | number
+	messagePaddingTop?: IBestStringNumber
 	/**
 	 * 内容区域的padding-bottom值
 	 */
-	messagePaddingBottom?: string | number
+	messagePaddingBottom?: IBestStringNumber
 	/**
 	 * 内容区域的fontColor
 	 */
-	messageFontColor?: string
+	messageFontColor?: ResourceColor
 	/**
 	 * 内容区域的fontSize
 	 */
-	messageFontSize?: string | number
+	messageFontSize?: IBestStringNumber
 	/**
 	 * 内容区域的行高 lineHeight
 	 */
-	messageLineHeight?: string | number
+	messageLineHeight?: IBestStringNumber
 	/**
 	 * 内容区域的文字对齐方式
 	 */
@@ -86,7 +87,7 @@ class IBestDialogOption {
 	/**
 	 * 内容区域的滚动区域最大高度
 	 */
-	messageMaxHeight?: string | number
+	messageMaxHeight?: IBestStringNumber
 	/**
 	 * 样式风格
 	 */
@@ -94,7 +95,7 @@ class IBestDialogOption {
 	/**
 	 * 按钮间距
 	 */
-	buttonSpace?: number | number
+	buttonSpace?: IBestStringNumber
 	/**
 	 * 是否展示确认按钮
 	 */
@@ -132,7 +133,7 @@ class IBestDialogOption {
 	/**
 	 * 按钮的文字大小
 	 */
-	buttonFontSize?: string | number
+	buttonFontSize?: IBestStringNumber
 	/**
 	 * 取消按钮的loading
 	 */
@@ -145,13 +146,13 @@ class IBestDialogOption {
 	 * 弹窗是否为模态窗口，模态窗口有蒙层，非模态窗口无蒙层。
 	 * API11+
 	 */
-	showOverlay?: boolean = true;
+	showOverlay?: boolean = true
 	/**
 	 * 某弹框需要显示在主窗口之外时，是否在子窗口显示此弹窗。
 	 * 默认值：false，弹窗显示在应用内，而非独立子窗口。
 	 * API 10 +
 	 */
-	showInSubWindow?: boolean = false;
+	showInSubWindow?: boolean = false
 	/**
 	 * 自定义蒙层颜色。默认值: 0x33000000 API10以上支持
 	 */
@@ -159,7 +160,7 @@ class IBestDialogOption {
 	/**
 	 * 是否在点击遮罩层后关闭弹窗
 	 */
-	closeOnClickOverlay?: boolean = false;
+	closeOnClickOverlay?: boolean = false
 	/**
 	 * 是否允许返回键关闭
 	 */
@@ -249,7 +250,7 @@ class IBestDialogParams extends IBestDialogOption {
 @Component
 struct DialogContent{
 	@Prop option: IBestDialogParams
-	@State dialogWidth?: number | string = 0
+	@State dialogWidth?: IBestStringNumber = 0
 	aboutToAppear(): void {
 		this.dialogWidth = this.option.dialogWidth || convertDimensionsWidthUnit(320)
 	}

@@ -23,6 +23,8 @@ import { runRuleValidator, runSyncRule } from './utils'
 import { clamp, convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
 import { IBestFieldColor } from './color'
 import { IBestIcon } from '../icon'
+import { IBestStringNumber } from '../../model/Global.type'
+
 @Component
 export struct IBestField{
     /**
@@ -57,7 +59,7 @@ export struct IBestField{
     /**
      * 文本宽度
      */
-    @Provide({allowOverride: "labelWidth"}) labelWidth: number | string = 0
+    @Provide({allowOverride: "labelWidth"}) labelWidth: IBestStringNumber = 0
     /**
      * 文本位置
      */
@@ -191,7 +193,7 @@ export struct IBestField{
      * label字体大小
      * @since 1.19.0
      */
-    @Provide({allowOverride: "labelFontSize"}) labelFontSize: string | number = this.baseStyle.fontSizeMd as string
+    @Provide({allowOverride: "labelFontSize"}) labelFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
     /**
      * label字体颜色
      * @since 1.19.0
@@ -201,12 +203,12 @@ export struct IBestField{
      * 左侧图标大小
      * @since 1.19.0
      */
-    @Provide({allowOverride: "leftIconSize"}) leftIconSize: number | string = convertDimensionsWidthUnit(18)
+    @Provide({allowOverride: "leftIconSize"}) leftIconSize: IBestStringNumber = convertDimensionsWidthUnit(18)
     /**
      * 右侧图标大小
      * @since 1.19.0
      */
-    @Provide({allowOverride: "rightIconSize"}) rightIconSize: number | string = convertDimensionsWidthUnit(18)
+    @Provide({allowOverride: "rightIconSize"}) rightIconSize: IBestStringNumber = convertDimensionsWidthUnit(18)
     /**
      * 是否显示label
      * @since 2.0.0
@@ -221,7 +223,7 @@ export struct IBestField{
      * 输入框文字大小
      * @since 2.0.4
      */
-    @Provide({allowOverride: "inputFontSize"}) inputFontSize: number | string = this.baseStyle.fontSizeMd as string
+    @Provide({allowOverride: "inputFontSize"}) inputFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
     /**
      * 光标颜色
      * @since 2.0.5
@@ -246,7 +248,7 @@ export struct IBestField{
      * 外部圆角
      * @since 2.0.6
      */
-    @Provide({allowOverride: "radius"}) radius: string | number = 0
+    @Provide({allowOverride: "radius"}) radius: IBestStringNumber = 0
     /**
      * 前缀内容
      * @since 2.0.7
@@ -344,7 +346,7 @@ export struct IBestField{
         this.uniId = this.getUniqueId()
         this.formatValue()
         if(this.formId && this.prop){
-            emitter.on(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.RESEND_FORM_ITEM), (): void => this.sendFormItemData())
+            emitter.on(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.RESEND_FORM_ITEM, this.formId), this.uniId, (): void => this.sendFormItemData())
             this.sendFormItemData()
         }else{
             this.init()
@@ -352,9 +354,9 @@ export struct IBestField{
     }
     aboutToDisappear(): void {
         if(this.formId && this.prop) {
-            emitter.off(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.RESEND_FORM_ITEM), (): void => this.sendFormItemData())
-            emitter.emit(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.DELETE_FORM_ITEM), this.uniId)
-            emitter.emit(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.RESEND_FORM_ITEM))
+            emitter.off(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.RESEND_FORM_ITEM, this.formId), this.uniId)
+            emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.DELETE_FORM_ITEM, this.formId), this.uniId)
+            emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.RESEND_FORM_ITEM, this.formId))
         }
     }
     rulesChange(){
@@ -373,7 +375,7 @@ export struct IBestField{
     }
     // 发送表单子项信息
     sendFormItemData(){
-        emitter.emit(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.SEND_FIELD), {
+        emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.SEND_FIELD, this.formId), {
             uniId: this.uniId,
             prop: this.prop,
             validate: (rules: IBestFormRuleItem[]):Promise<void | FieldValidateResult> => this.validate(rules),
@@ -472,7 +474,7 @@ export struct IBestField{
         if(this.formId && this.prop){
             let rules: IBestFormRuleItem[] = this.getFilteredRule(trigger)
             if(rules.length) {
-                emitter.emit(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), this.prop)
+                emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.VALIDATE_FIELD, this.formId), this.prop)
             }
         }
     }
@@ -549,16 +551,16 @@ struct Label{
      */
     @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
     @Consume label: ResourceStr
-    @Consume labelFontSize: number | string
+    @Consume labelFontSize: IBestStringNumber
     @Consume labelColor: ResourceColor
     @Consume colon: string
     @Consume labelPosition: 'left' | 'top'
     @Consume labelAlign: FieldTextAlign
-    @Consume labelWidth: number | string
+    @Consume labelWidth: IBestStringNumber
     @Consume requireAsteriskPosition: string
     @Consume leftIcon: ResourceStr
     @Consume leftIconColor: ResourceColor
-    @Consume leftIconSize: number | string
+    @Consume leftIconSize: IBestStringNumber
     onLeftIconClick: () => void = () => {}
     build() {
         Row(){
@@ -632,11 +634,11 @@ struct Content{
     @Consume rows: number
     @Consume maxlength: number
     @Consume showWordLimit: boolean
-    @Consume inputFontSize: number | string
+    @Consume inputFontSize: IBestStringNumber
     @Consume inputAlign: FieldTextAlign
     @Consume rightIcon: ResourceStr
     @Consume rightIconColor: ResourceColor
-    @Consume rightIconSize: number | string
+    @Consume rightIconSize: IBestStringNumber
     @Consume placeholder: string
     @Consume placeholderColor: ResourceColor
     @Consume disabled: boolean

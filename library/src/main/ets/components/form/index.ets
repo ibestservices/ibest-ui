@@ -1,23 +1,28 @@
 import { emitter } from '../../utils/EventEmitter'
-import { convertDimensionsWidthUnit, getSizeByUnit, getEventName } from '../../utils/utils'
-import { FieldTextAlign, IBestFieldValueType,
-	LabelPositionType,
-	RequireAsteriskPositionType } from '../field/index.type'
+import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
 import {
-	FieldValidateResult,
-	FORM_EVENT_NAME,
-	IBestFormController,
-	IBestFormRule,
-	IBestFieldItem,
-	IBestFormSendFieldCallResult,
-	COMPONENT_NAME,
-	IBestFormValidateResult,
-	IBestFieldValidateResult
+    FieldTextAlign,
+    IBestFieldValueType,
+    LabelPositionType,
+    RequireAsteriskPositionType
+} from '../field/index.type'
+import {
+    COMPONENT_NAME,
+    FieldValidateResult,
+    FORM_EVENT_NAME,
+    IBestFieldItem,
+    IBestFieldValidateResult,
+    IBestFormController,
+    IBestFormRule,
+    IBestFormSendFieldCallResult,
+    IBestFormValidateResult
 } from './index.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestForm {
+	@State uniId: number = 0
 	/**
      * form id 用于验证
      */
@@ -33,11 +38,11 @@ export struct IBestForm {
 	/**
 	 * 表单项间距
   	 */
-	@Prop space: number | string = convertDimensionsWidthUnit(10)
+	@Prop space: IBestStringNumber = convertDimensionsWidthUnit(10)
 	/**
      * 文本宽度
      */
-	@Prop labelWidth: number | string = convertDimensionsWidthUnit(80)
+	@Prop labelWidth: IBestStringNumber = convertDimensionsWidthUnit(80)
 	/**
      * 文本位置
      */
@@ -71,6 +76,7 @@ export struct IBestForm {
 	 */
 	controller: IBestFormController | null = null
 	aboutToAppear(): void {
+		this.uniId = this.getUniqueId()
 		if(this.controller){
 			this.controller.validate = (callBack?: (valid: boolean, field: FieldValidateResult[]) => void): Promise<IBestFormValidateResult> => this.validateForm(callBack)
 			this.controller.validateField = (name: string, callBack?: (valid: boolean, field?: FieldValidateResult) => void): Promise<IBestFieldValidateResult> => this.validateField(name, callBack)
@@ -80,17 +86,17 @@ export struct IBestForm {
 		}
 		if(this.formId){
 			// 初始化收集表单项信息
-			emitter.on(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.SEND_FIELD), (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void): void => this.init(data, callBack))
+			emitter.on(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.SEND_FIELD, this.formId), this.uniId, (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void): void => this.init(data, callBack))
 			// 验证单个表单
-			emitter.on(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (name: string): Promise<IBestFieldValidateResult> => this.validateField(name))
+			emitter.on(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.VALIDATE_FIELD, this.formId), this.uniId, (name: string): Promise<IBestFieldValidateResult> => this.validateField(name))
 			// 删除表单项
-			emitter.on(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.DELETE_FORM_ITEM), (uniId: number): void => this.deleteField(uniId))
+			emitter.on(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.DELETE_FORM_ITEM, this.formId), this.uniId, (uniId: number): void => this.deleteField(uniId))
 		}
 	}
 	aboutToDisappear(): void {
 		if(this.formId){
-			emitter.off(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.SEND_FIELD), (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void): void => this.init(data, callBack))
-			emitter.off(getEventName(COMPONENT_NAME, this.formId, FORM_EVENT_NAME.VALIDATE_FIELD), (name: string): Promise<IBestFieldValidateResult> => this.validateField(name))
+			emitter.off(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.SEND_FIELD, this.formId), this.uniId)
+			emitter.off(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.VALIDATE_FIELD, this.formId), this.uniId)
 		}
 	}
 	// 初始化

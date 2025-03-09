@@ -5,6 +5,8 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestLoading } from '../loading'
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
 import { IBestPullRefreshColor } from './color'
+import { IBestStringNumber } from '../../model/Global.type'
+
 @Component
 export struct IBestPullRefresh {
 	/**
@@ -14,15 +16,15 @@ export struct IBestPullRefresh {
 	/**
 	 * 下拉过程提示文案
 	 */
-	@Provide({allowOverride: 'pullingText'}) pullingText: ResourceStr = "下拉即可刷新..."
+	@Provide({allowOverride: 'pullingText'}) pullingText: ResourceStr = $r("app.string.ibest_text_pulling")
 	/**
 	 * 下拉释放过程提示文案
      */
-	@Provide({allowOverride: 'loosingText'}) loosingText: ResourceStr = "释放即可刷新..."
+	@Provide({allowOverride: 'loosingText'}) loosingText: ResourceStr = $r("app.string.ibest_text_loosing")
 	/**
 	 * 下拉加载过程提示文案
 	 */
-	@Provide({allowOverride: 'loadingText'}) loadingText: ResourceStr = "加载中..."
+	@Provide({allowOverride: 'loadingText'}) loadingText: ResourceStr = $r("app.string.ibest_text_loading")
 	/**
 	 * 下拉刷新成功提示文案
 	 */
@@ -38,7 +40,7 @@ export struct IBestPullRefresh {
 	/**
 	 * 顶部内容高度
 	 */
-	@Prop headHeight: number | string = convertDimensionsWidthUnit(50)
+	@Prop headHeight: IBestStringNumber = convertDimensionsWidthUnit(50)
 	/**
 	 * 默认内容
      */
@@ -68,17 +70,17 @@ export struct IBestPullRefresh {
 	 * 上滑过程提示文案
 	 * @since 2.0.4
 	 */
-	@Provide({allowOverride: 'slidingUpText'}) slidingUpText: ResourceStr = "上滑即可加载..."
+	@Provide({allowOverride: 'slidingUpText'}) slidingUpText: ResourceStr = $r("app.string.ibest_text_slidingUp")
 	/**
 	 * 上滑释放过程提示文案
 	 * @since 2.0.4
 	 */
-	@Provide({allowOverride: 'slideUpLoosingText'}) slideUpLoosingText: ResourceStr = "释放即可加载..."
+	@Provide({allowOverride: 'slideUpLoosingText'}) slideUpLoosingText: ResourceStr = $r("app.string.ibest_text_loosing")
 	/**
 	 * 上滑加载过程提示文案
 	 * @since 2.0.4
 	 */
-	@Provide({allowOverride: 'slideUpLoadingText'}) slideUpLoadingText: ResourceStr = "加载中..."
+	@Provide({allowOverride: 'slideUpLoadingText'}) slideUpLoadingText: ResourceStr = $r("app.string.ibest_text_loading")
 	/**
 	 * 上滑加载成功提示文案
 	 * @since 2.0.4
@@ -98,7 +100,7 @@ export struct IBestPullRefresh {
 	 * 顶部内容高度
 	 * @since 2.0.4
 	 */
-	@Prop bottomHeight: number | string = convertDimensionsWidthUnit(50)
+	@Prop bottomHeight: IBestStringNumber = convertDimensionsWidthUnit(50)
 	/**
 	 * 自定义上滑过程内容
 	 * @since 2.0.4
@@ -122,7 +124,7 @@ export struct IBestPullRefresh {
 	/**
 	 * 触发下拉刷新/上滑加载时的回调
 	 */
-	onRefresh: () => void = () => {}
+	onRefresh: (direction: 'pull' | 'slideUp') => void = () => {}
 	/**
 	 * 当自定义内容包含List Grid Scroll组件时必传
   	 */
@@ -194,7 +196,7 @@ export struct IBestPullRefresh {
 					if(this.refreshStatus == "loosing"){
 						this.setRefreshStatus(this.transY > 0 ? this.headSize : -this.bottomSize, true)
 						this.loading = true
-						this.onRefresh()
+						this.onRefresh(this.actionType)
 					}else{
 						this.setRefreshStatus(0)
 					}

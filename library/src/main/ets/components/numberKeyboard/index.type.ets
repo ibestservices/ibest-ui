@@ -6,7 +6,7 @@ export type ExtraKeyType = '' | 'delete' | 'extra' | 'close'
  * 基础键数据类型
  */
 export interface KeyboardType {
-	text?: string
+	text?: ResourceStr
 	type?: ExtraKeyType
 	fullWidth?: boolean
 }

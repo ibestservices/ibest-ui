@@ -330,7 +330,7 @@
 		},
 		{
 			"name": "custom_placeholder",
-			"value": "Place enter %s"
+			"value": "Please enter %s"
 		},
 		{
 			"name": "custom_basic",

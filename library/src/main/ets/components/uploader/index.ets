@@ -12,6 +12,7 @@ import fs from '@ohos.file.fs'
 import { IBestIcon, IBestImagePreview } from '../../../../../Index'
 import { convertDimensions, convertDimensionsWidthUnit, getLengthUnit, getSizeByUnit } from '../../utils/utils'
 import { IBestUploaderColor } from './color'
+import { IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestUploader {
@@ -35,7 +36,7 @@ export struct IBestUploader {
 	/**
 	 * 触发器图标大小
 	 */
-	@Prop uploaderIconSize: number | string = convertDimensionsWidthUnit(24)
+	@Prop uploaderIconSize: IBestStringNumber = convertDimensionsWidthUnit(24)
 	/**
 	 * 触发器图标颜色
 	 */
@@ -51,7 +52,7 @@ export struct IBestUploader {
 	/**
 	 * 预览大小
 	 */
-	@Provide({allowOverride: "previewSize"}) previewSize: number | string = convertDimensionsWidthUnit(80)
+	@Provide({allowOverride: "previewSize"}) previewSize: IBestStringNumber = convertDimensionsWidthUnit(80)
 	/**
 	 * 是否在点击预览图后展示全屏图片预览
 	 */
@@ -63,7 +64,7 @@ export struct IBestUploader {
 	/**
 	 * 圆角大小
 	 */
-	@Provide({allowOverride: "cornerRadius"}) cornerRadius: number | string = 0
+	@Provide({allowOverride: "cornerRadius"}) cornerRadius: IBestStringNumber = 0
 	/**
 	 * 是否显示删除按钮
 	 */
@@ -121,7 +122,7 @@ export struct IBestUploader {
 			options.defaultFilePathUri = this.fileSelectOptions.defaultFilePathUri
 			options.fileSuffixFilters = this.fileSelectOptions.fileSuffixFilters
 		}
-		docPicker.select(options).then((result: Array<string>) => {
+		docPicker.select(options).then(result => {
 			this.onFileSelect(result)
 		})
 	}
@@ -141,7 +142,7 @@ export struct IBestUploader {
 			this.onExceed()
 			return
 		}
-		let arr: Array<IBestUploaderFile> = []
+		let arr: IBestUploaderFile[] = []
 		for (let e of uris) {
 			let index = e.lastIndexOf("/")
 			let file = fs.openSync(e, fs.OpenMode.READ_ONLY)
@@ -324,7 +325,7 @@ struct UploadItem{
 							color: IBestUploaderColor.maskTextColor
 						})
 					}
-					Text(this.file.status == 'failed' ? "上传失败" : "上传中...")
+					Text(this.file.status == 'failed' ? $r("app.string.ibest_upload_failed") : $r("app.string.ibest_uploading"))
 						.fontSize(this.baseStyle.fontSizeSm)
 						.fontColor(IBestUploaderColor.maskTextColor)
 				}

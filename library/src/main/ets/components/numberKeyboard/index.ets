@@ -4,7 +4,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { LengthMetrics } from '@kit.ArkUI';
 import { KeyboardType } from './index.type';
 import { IBestPopup } from '../popup';
-import { convertDimensionsWidthUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getResourceStr } from '../../utils/utils';
 import GlobalStore from '../../utils/GlobalStore';
 import { IBestNumberKeyboardColor } from './color';
 
@@ -58,11 +58,11 @@ export struct NumberKeyboard{
 	/**
 	 * 标题
 	 */
-	@Prop title: string = ''
+	@Prop title: ResourceStr = ''
 	/**
 	 * 关闭按钮文字
 	 */
-	@Prop closeBtnText: string = '完成'
+	@Prop closeBtnText: ResourceStr = $r("app.string.ibest_text_complete")
 	/**
 	 * 额外按键
 	 */
@@ -70,7 +70,7 @@ export struct NumberKeyboard{
 	/**
 	 * 删除文字
 	 */
-	@Prop deleteButtonText: string = ''
+	@Prop deleteButtonText: ResourceStr = ''
 	/**
 	 * 样式风格
 	 */
@@ -174,7 +174,7 @@ export struct NumberKeyboard{
 				if(key.text){
 					if(this.maxLength == -1 || this.value.length < this.maxLength){
 						this.value += key.text
-						this.onInput(key.text)
+						this.onInput(getResourceStr(key.text))
 					}
 				}else{
 					this.onClose()
@@ -222,7 +222,7 @@ export struct NumberKeyboard{
 				if(this.styleType == "custom"){
 					Column({ space: 6 }){
 						Row() {
-							ExtraButton({ item: { type: 'delete' } })
+							ExtraButton({ item: { text: this.deleteButtonText, type: 'delete' } })
 						}
 						.keyCustomBoxStyle()
 						.onClick(() => {
@@ -253,15 +253,22 @@ export struct NumberKeyboard{
 // 扩展按钮
 @Component
 struct ExtraButton{
+	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
 	@Prop item: KeyboardType
 	build(){
-		if(this.item.text){
+		if(this.item.type == "delete"){
+			if(this.item.text){
+				Text(this.item.text)
+					.fontSize(this.baseStyle.fontSizeLg)
+					.fontColor(IBestNumberKeyboardColor.textColor)
+			}else{
+				Image($r("app.media.ibest_delete"))
+					.width(convertDimensionsWidthUnit(32))
+					.fillColor(IBestNumberKeyboardColor.textColor)
+			}
+		}else if(this.item.text){
 			Text(this.item.text)
 				.keyTextStyle()
-		}else if(this.item.type == "delete"){
-			Image($r("app.media.ibest_delete"))
-				.width(convertDimensionsWidthUnit(32))
-				.fillColor(IBestNumberKeyboardColor.textColor)
 		}else{
 			Image($r("app.media.ibest_key_board"))
 				.width(convertDimensionsWidthUnit(30))
@@ -283,11 +290,11 @@ export struct IBestNumberKeyboard{
 	/**
 	 * 标题
 	 */
-	@Prop title: string = ''
+	@Prop title: ResourceStr = ''
 	/**
 	 * 关闭按钮文字
 	 */
-	@Prop closeBtnText: string = '完成'
+	@Prop closeBtnText: ResourceStr = $r("app.string.ibest_text_complete")
 	/**
 	 * 额外按键
 	 */
@@ -295,7 +302,7 @@ export struct IBestNumberKeyboard{
 	/**
 	 * 删除文字
 	 */
-	@Prop deleteButtonText: string = ''
+	@Prop deleteButtonText: ResourceStr = ''
 	/**
 	 * 样式风格
 	 */

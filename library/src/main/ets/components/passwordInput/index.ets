@@ -7,6 +7,7 @@ import { IBestPasswordInputModel, NumberKeyboardConfig } from './index.type';
 import { FocusController } from '@ohos.arkui.UIContext';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { IBestPasInputColor } from './color';
+import { IBestStringNumber } from '../../model/Global.type';
 
 @Extend(TextInput) function passwordInputStyle(id: number, inputLength: number){
 	.width(CONTAINER_SIZE.FULL)
@@ -52,15 +53,15 @@ export struct IBestPasswordInput {
 	/**
 	 * 输入框高度
 	 */
-	@Prop inputHeight: number | string = convertDimensionsWidthUnit(50)
+	@Prop inputHeight: IBestStringNumber = convertDimensionsWidthUnit(50)
 	/**
 	 * 格子间距
 	 */
-	@Provide({allowOverride: "space"}) space: number | string = 0
+	@Provide({allowOverride: "space"}) space: IBestStringNumber = 0
 	/**
 	 * 圆角, 仅有间距时有效
 	 */
-	@Provide({allowOverride: "radius"}) radius: number | string = convertDimensionsWidthUnit(5)
+	@Provide({allowOverride: "radius"}) radius: IBestStringNumber = convertDimensionsWidthUnit(5)
 	/**
 	 * 是否高亮当前正在输入的格子
 	 */
@@ -113,17 +114,17 @@ export struct IBestPasswordInput {
 	 * 黑点大小
 	 * @since 1.19.0
      */
-	@Provide({allowOverride: "dotFontSize"}) dotFontSize: number | string = convertDimensionsWidthUnit(40)
+	@Provide({allowOverride: "dotFontSize"}) dotFontSize: IBestStringNumber = convertDimensionsWidthUnit(40)
 	/**
 	 * 明文展示时文字大小
 	 * @since 1.19.0
      */
-	@Provide({allowOverride: "textFontSize"}) textFontSize: number | string = this.baseStyle.fontSizeXl as string
+	@Provide({allowOverride: "textFontSize"}) textFontSize: IBestStringNumber = this.baseStyle.fontSizeXl as string
 	/**
 	 * 提示文字大小
 	 * @since 1.19.0
 	 */
-	@Prop tipFontSize: number | string = this.baseStyle.fontSizeLg as string
+	@Prop tipFontSize: IBestStringNumber = this.baseStyle.fontSizeLg as string
 	/**
 	 * 区域点击
 	 */
@@ -236,8 +237,8 @@ struct InputField {
 	@Consume bdColor: ResourceColor
 	@Consume cellBgColor: ResourceColor
 	@Consume cellTextColor: ResourceColor
-	@Consume dotFontSize: number | string
-	@Consume textFontSize: number | string
+	@Consume dotFontSize: IBestStringNumber
+	@Consume textFontSize: IBestStringNumber
 	@Prop focused: boolean
 	@Prop currentFocusIndex: number
 	@Prop index: number = 0

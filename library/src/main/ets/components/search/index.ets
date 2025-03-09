@@ -1,3 +1,4 @@
+import { IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
@@ -38,11 +39,11 @@ export struct IBestSearch {
 	 * 输入框文字大小
 	 * @since 2.0.1
      */
-	@Prop textFontSize: number | string = this.baseStyle.fontSizeMd as string
+	@Prop textFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
 	/**
 	 * 输入框 placeholder 提示文字
 	 */
-	@Prop placeholder: ResourceStr = '请输入搜索关键词'
+	@Prop placeholder: ResourceStr = ''
 	/**
 	 * placeholder 提示文字颜色
 	 */
@@ -50,7 +51,7 @@ export struct IBestSearch {
 	/**
 	 * 搜索框高度
 	 */
-	@Prop contentHeight: number | string = convertDimensionsWidthUnit(34)
+	@Prop contentHeight: IBestStringNumber = convertDimensionsWidthUnit(34)
 	/**
 	 * 外侧背景色
 	 */
@@ -66,7 +67,7 @@ export struct IBestSearch {
 	/**
 	 * 圆角大小
 	 */
-	@Prop radius: number | string = 0
+	@Prop radius: IBestStringNumber = 0
 	/**
 	 * 左侧图标
 	 */
@@ -98,7 +99,7 @@ export struct IBestSearch {
 	/**
 	 * 右侧按钮文字
 	 */
-	@Prop rightButtonText: string = '取消'
+	@Prop rightButtonText: ResourceStr = $r("app.string.ibest_text_cancel")
 	/**
 	 * 是否禁用
 	 */

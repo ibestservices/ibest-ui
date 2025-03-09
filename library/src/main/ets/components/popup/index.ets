@@ -5,12 +5,14 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestPopupColor } from './color'
 import { IBestIcon } from '../icon'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestStringNumber } from '../../model/Global.type'
+
 const popupDuration = 200
 const hideDuration = 220
 
 interface PopupSize{
-	width: string | number
-	height: string | number
+	width: IBestStringNumber
+	height: IBestStringNumber
 }
 
 @CustomDialog
@@ -20,8 +22,8 @@ struct IBestPopupBaseContent {
 	@StorageProp("IBestIsLandscape") @Watch("initSize") IBestIsLandscape: boolean = false
 	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
 	@StorageProp("IBestBottomBarHeight") bottomBarHeight: number = 0
-	@State transX: string | number = ""
-	@State transY: string | number = ""
+	@State transX: IBestStringNumber = ""
+	@State transY: IBestStringNumber = ""
 	/**
 	 * 弹框显示位置
 	 */
@@ -29,11 +31,11 @@ struct IBestPopupBaseContent {
 	/**
 	 * 弹框宽度
 	 */
-	@Link popupWidth: string | number
+	@Link popupWidth: IBestStringNumber
 	/**
 	 * 弹框高度
 	 */
-	@Link popupHeight: string | number
+	@Link popupHeight: IBestStringNumber
 	/**
 	 * 是否显示头部
 	 */
@@ -41,7 +43,7 @@ struct IBestPopupBaseContent {
 	/**
 	 * 背板的圆角半径
 	 */
-	@Link cornerRadius: number | string
+	@Link cornerRadius: IBestStringNumber
 	/**
 	 * 是否开启顶部安全区适配
 	 */
@@ -178,11 +180,11 @@ export struct IBestPopup{
 	/**
 	 * 弹框宽度
 	 */
-	@Prop popupWidth: string | number = ""
+	@Prop popupWidth: IBestStringNumber = ""
 	/**
 	 * 弹框高度
 	 */
-	@Prop popupHeight: string | number = ""
+	@Prop popupHeight: IBestStringNumber = ""
 	/**
 	 * 是否显示头部标题栏
 	 */
@@ -212,7 +214,7 @@ export struct IBestPopup{
 	/**
 	 * 背板的圆角半径
 	 */
-	@Prop cornerRadius: number | string = 0
+	@Prop cornerRadius: IBestStringNumber = 0
 	/**
 	 * 是否允许点击遮罩关闭
 	 */

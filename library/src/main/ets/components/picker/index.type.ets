@@ -1,9 +1,11 @@
+import { IBestStringNumber } from '../../model/Global.type'
+
 /**
  * 选项列表数据类型
  */
 export interface IBestPickerOption{
-	text: string
-	value: string
+	text: ResourceStr
+	value: IBestStringNumber
 	children?: IBestPickerOption[]
 }
 /**

@@ -1,9 +1,9 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
-import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { emitter } from "../../utils/EventEmitter"
-import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from "../../utils/utils"
-import { COMPONENT_NAME, SideBarConfig, SIDEBAR_EVENT_NAME } from "../sideBar/index.type"
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { emitter } from '../../utils/EventEmitter'
+import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
+import { COMPONENT_NAME, SIDEBAR_EVENT_NAME, SideBarConfig } from '../sideBar/index.type'
 @Component
 export struct IBestSideBarItem{
 	/**
@@ -21,7 +21,7 @@ export struct IBestSideBarItem{
 	/**
 	 * 选项文字
      */
-	@Prop title: string = ""
+	@Prop title: ResourceStr = ""
 	/**
 	 * 是否禁用该项
      */
@@ -35,16 +35,21 @@ export struct IBestSideBarItem{
      */
 	onItemClick: (index: number) => void = () => {}
 
+	@State uniId: number = 0
 	@State config: SideBarConfig = {} as SideBarConfig
 	@State isActive: boolean = false
 
 	aboutToAppear(): void {
-		emitter.on(getEventName(COMPONENT_NAME, this.groupId, SIDEBAR_EVENT_NAME.INIT_ITEM), (active: number, config?: SideBarConfig): void => this.init(active, config))
+		this.uniId = this.getUniqueId()
+		if(this.groupId){
+			emitter.on(getEventName(COMPONENT_NAME, SIDEBAR_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId, (active: number, config?: SideBarConfig): void => this.init(active, config))
+		}
 	}
 
 	aboutToDisappear(): void {
-		emitter.off(getEventName(COMPONENT_NAME, this.groupId, SIDEBAR_EVENT_NAME.INIT_ITEM), (active: number, config?: SideBarConfig): void => this.init(active, config))
-
+		if(this.groupId) {
+			emitter.off(getEventName(COMPONENT_NAME, SIDEBAR_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId)
+		}
 	}
 
 	init(active: number, config?: SideBarConfig){
@@ -54,10 +59,9 @@ export struct IBestSideBarItem{
 		}
 	}
 	changeActive(){
-		emitter.emit(getEventName(COMPONENT_NAME, this.groupId, SIDEBAR_EVENT_NAME.CHANGE_ACTIVE), this.index)
+		emitter.emit(getEventName(COMPONENT_NAME, SIDEBAR_EVENT_NAME.CHANGE_ACTIVE, this.groupId), this.index)
 		this.onItemClick(this.index)
 	}
-
 	build() {
 		Row(){
 			if(this.defaultBuilder){

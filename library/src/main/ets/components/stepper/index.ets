@@ -3,6 +3,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestStepperBtn } from './stepperBtn'
 import { accAdd, accSub, convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { IBestStepperColor } from './color'
+import { IBestStringNumber } from '../../model/Global.type'
 
 enum STEPPER_BTN_TYPE {
 	PLUS = 'PLUS',
@@ -22,19 +23,19 @@ export struct IBestStepper {
 	/**
 	 * 输入框宽度
 	 */
-	@Prop inputWidth: number | string = convertDimensionsWidthUnit(32)
+	@Prop inputWidth: IBestStringNumber = convertDimensionsWidthUnit(32)
 	/**
 	 * 按钮大小以及输入框高度
 	 */
-	@Prop buttonSize: number | string = convertDimensionsWidthUnit(27)
+	@Prop buttonSize: IBestStringNumber = convertDimensionsWidthUnit(27)
 	/**
 	 * 图标大小
 	 */
-	@Prop iconSize: number | string = convertDimensionsWidthUnit(20)
+	@Prop iconSize: IBestStringNumber = convertDimensionsWidthUnit(20)
 	/**
 	 * 加减按钮图标的左右radius值
 	 */
-	@Prop buttonRadius: number | string = this.baseStyle.borderRadiusSm as string
+	@Prop buttonRadius: IBestStringNumber = this.baseStyle.borderRadiusSm as string
 	/**
 	 * 默认值
 	 * @deprecated since 2.0.1 请使用 value
@@ -103,7 +104,7 @@ export struct IBestStepper {
 	/**
 	 * TODO 输入值变化前的回调函数，返回 false 可阻止输入，支持返回 Promise
 	 */
-	// beforeChange?: (val: number | string) => boolean | Promise<boolean>;
+	// beforeChange?: (val: IBestStringNumber) => boolean | Promise<boolean>;
 	/**
 	 * 改变的回调
 	 */

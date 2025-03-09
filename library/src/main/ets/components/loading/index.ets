@@ -1,7 +1,7 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { LoadingIconType } from '../../model/Global.type';
+import { IBestStringNumber, LoadingIconType } from '../../model/Global.type';
 import { IBestLoadingCircular } from './circular';
 import { IBestLoadingSpinner } from './spinner';
 import { getSizeByUnit } from '../../utils/utils';
@@ -31,7 +31,7 @@ export struct IBestLoading {
 	/**
 	 * loading的尺寸
 	 */
-	@Prop loadingSize: number | string
+	@Prop loadingSize: IBestStringNumber
 	/**
 	 * loading的颜色
 	 */
@@ -47,15 +47,15 @@ export struct IBestLoading {
 	/**
 	 * loading的图标距离顶部的margin 因为默认loading是垂直居中布局的 可通过该属性调整loading图标的上下位置 只有在vertical为true 即垂直布局时有效
 	 */
-	@Prop loadingIconMarginTop: string | number = 0
+	@Prop loadingIconMarginTop: IBestStringNumber = 0
 	/**
 	 * loadingText的marginLeft值 只有在vertical为false 即横向布局时有效
 	 */
-	@Prop loadingTextMarginLeft: string | number = this.baseStyle.spaceXs as string
+	@Prop loadingTextMarginLeft: IBestStringNumber = this.baseStyle.spaceXs as string
 	/**
 	 * loadingText的marginTop值 只有在vertical为true 即垂直布局时有效
 	 */
-	@Prop loadingTextMarginTop: string | number = this.baseStyle.spaceXs as string
+	@Prop loadingTextMarginTop: IBestStringNumber = this.baseStyle.spaceXs as string
 	/**
 	 * 加载的文案
 	 */
@@ -67,11 +67,11 @@ export struct IBestLoading {
 	/**
 	 * loading的文字大小
 	 */
-	@Prop loadingTextFontSize: number | string = this.baseStyle.fontSizeMd as string;
+	@Prop loadingTextFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string;
 	/**
 	 * 菊花图的每条线的长度
 	 */
-	@Prop spinnerStrokeHeight: string | number
+	@Prop spinnerStrokeHeight: IBestStringNumber
 	/**
 	 * 是否垂直排列图标和文字内容
 	 */

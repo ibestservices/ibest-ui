@@ -1,3 +1,4 @@
+import { IBestStringNumber } from '../../model/Global.type';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
@@ -29,7 +30,7 @@ export struct IBestCellGroup {
 	 * 圆角大小, 仅inset为true时有效
 	 * @since 2.0.6
      */
-	@Prop radius: number | string = this.baseStyle.borderRadiusLg as string
+	@Prop radius: IBestStringNumber = this.baseStyle.borderRadiusLg as string
 	/**
 	 * 获取边框宽度
 	 * @returns

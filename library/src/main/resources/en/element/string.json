@@ -2,111 +2,111 @@
 	"string": [
 		{
 			"name": "ibest_calendar_monday",
-			"value": "一"
+			"value": "Mon"
 		},
 		{
 			"name": "ibest_calendar_tuesday",
-			"value": "二"
+			"value": "Tue"
 		},
 		{
 			"name": "ibest_calendar_wednesday",
-			"value": "三"
+			"value": "Wed"
 		},
 		{
 			"name": "ibest_calendar_thursday",
-			"value": "四"
+			"value": "Thu"
 		},
 		{
 			"name": "ibest_calendar_friday",
-			"value": "五"
+			"value": "Fri"
 		},
 		{
 			"name": "ibest_calendar_saturday",
-			"value": "六"
+			"value": "Sat"
 		},
 		{
 			"name": "ibest_calendar_sunday",
-			"value": "日"
+			"value": "Sun"
 		},
 		{
 			"name": "ibest_calendar_clocked",
-			"value": "已打卡"
+			"value": "clocked"
 		},
 		{
 			"name": "ibest_calendar_unclock",
-			"value": "未打卡"
+			"value": "unclock"
 		},
 		{
 			"name": "ibest_text_confirm",
-			"value": "确定"
+			"value": "Confirm"
 		},
 		{
 			"name": "ibest_text_cancel",
-			"value": "取消"
+			"value": "Cancel"
 		},
 		{
 			"name": "ibest_maximum_limit",
-			"value": "最多选择%d天"
+			"value": "No more than %d days at most"
 		},
 		{
 			"name": "ibest_please_select",
-			"value": "请选择"
+			"value": "please select"
 		},
 		{
 			"name": "ibest_custom_select",
-			"value": "选择%s"
+			"value": "select %s"
 		},
 		{
 			"name": "ibest_year",
-			"value": "年"
+			"value": " Year"
 		},
 		{
 			"name": "ibest_month",
-			"value": "月"
+			"value": " Month"
 		},
 		{
 			"name": "ibest_day",
-			"value": "日"
+			"value": " Day"
 		},
 		{
 			"name": "ibest_text_complete",
-			"value": "完成"
+			"value": "Close"
 		},
 		{
 			"name": "ibest_text_clear",
-			"value": "清空"
+			"value": "Clear"
 		},
 		{
 			"name": "ibest_upload_failed",
-			"value": "上传失败"
+			"value": "Failed"
 		},
 		{
 			"name": "ibest_uploading",
-			"value": "上传中..."
+			"value": "Uploading"
 		},
 		{
 			"name": "ibest_text_pulling",
-			"value": "下拉即可刷新..."
+			"value": "Pull down to refresh"
 		},
 		{
 			"name": "ibest_text_loosing",
-			"value": "释放即可刷新..."
+			"value": "Release to refresh"
 		},
 		{
 			"name": "ibest_text_loading",
-			"value": "加载中..."
+			"value": "Loading"
 		},
 		{
 			"name": "ibest_text_slidingUp",
-			"value": "上滑即可加载..."
+			"value": "Slide up to refresh"
 		},
 		{
 			"name": "ibest_text_expand",
-			"value": "展开"
+			"value": "expand"
 		},
 		{
 			"name": "ibest_text_collapse",
-			"value": "收起"
+			"value": "collapse"
 		}
 	]
 }

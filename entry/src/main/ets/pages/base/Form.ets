@@ -1,26 +1,26 @@
 import {
-    IBestButton,
-    IBestCalendarDialog,
-    IBestCascader,
-    IBestCascaderOption,
+	IBestButton,
+	IBestCalendarDialog,
+	IBestCascader,
+	IBestCascaderOption,
 	IBestCellGroup,
 	IBestCheckbox,
-    IBestCheckboxGroup,
-    IBestField,
-    IBestForm,
-    IBestFormController,
-    IBestFormRule,
-    IBestNavBar,
+	IBestCheckboxGroup,
+	IBestField,
+	IBestForm,
+	IBestFormController,
+	IBestFormRule,
+	IBestNavBar,
 	IBestPicker,
 	IBestPickerOption,
 	IBestPopup,
 	IBestRadio,
-    IBestRadioGroup,
-    IBestStepper,
-    IBestSwitch,
-    IBestToast,
-    IBestUploader,
-    IBestUploaderFile
+	IBestRadioGroup,
+	IBestStepper,
+	IBestSwitch,
+	IBestToast,
+	IBestUploader,
+	IBestUploaderFile
 } from '@ibestservices/ibest-ui'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
 import { CONTAINER_SIZE, FONT_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
@@ -639,7 +639,7 @@ struct subjectItem{
 			title: "请选择学科",
 			visibleItemCount: 5,
 			value: $type,
-			onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => {
+			onConfirm: (selectedValues, selectTexts) => {
 				this.visible = false
 				this.name = selectTexts.join('-')
 			},

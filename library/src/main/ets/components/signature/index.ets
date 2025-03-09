@@ -1,3 +1,4 @@
+import { IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
@@ -15,11 +16,11 @@ export struct IBestSignature{
 	/**
 	 * 宽度
 	 */
-	@Prop boardWidth: number | string = CONTAINER_SIZE.FULL
+	@Prop boardWidth: IBestStringNumber = CONTAINER_SIZE.FULL
 	/**
 	 * 高度
 	 */
-	@Prop boardHeight: number | string = convertDimensionsWidthUnit(200)
+	@Prop boardHeight: IBestStringNumber = convertDimensionsWidthUnit(200)
 	/**
 	 * 导出图片类型
 	 */
@@ -27,7 +28,7 @@ export struct IBestSignature{
 	/**
 	 * 笔触颜色
 	 */
-	@Prop penColor: string | number | CanvasGradient | CanvasPattern = '#000'
+	@Prop penColor: IBestStringNumber | CanvasGradient | CanvasPattern = '#000'
 	/**
 	 * 线条宽度
 	 */
@@ -39,11 +40,11 @@ export struct IBestSignature{
 	/**
 	 * 清除按钮文案
 	 */
-	@Prop clearText: string = '清空'
+	@Prop clearText: ResourceStr = $r("app.string.ibest_text_clear")
 	/**
 	 * 确认按钮文案
 	 */
-	@Prop confirmText: string = '确认'
+	@Prop confirmText: ResourceStr = $r("app.string.ibest_text_confirm")
 	/**
 	 * 是否显示底部按钮
 	 */

@@ -19,22 +19,22 @@ export struct IBestPickerGroup{
 	/**
 	 * 标题
 	 */
-	@Prop title: string = ""
+	@Prop title: ResourceStr = ""
 	/**
 	 * 顶部标签栏列表
 	 */
-	@Prop tabs: Array<string> = []
+	@Prop tabs: ResourceStr[] = []
 	/**
 	 * 下一步
 	 */
-	@Prop nextStepText: string = ""
+	@Prop nextStepText: ResourceStr = ""
 
 	// 渲染的tab列表
 	@State tabsList: IBestTabItemType[] = []
 	/**
 	 * 当前激活tabName
 	 */
-	@Prop @Watch("tabNameChange") currentName: string = '0'
+	@Prop @Watch("tabNameChange") currentName: number = 0
 	// swiper索引
 	@State swiperIndex: number = 0
 	/**
@@ -44,11 +44,11 @@ export struct IBestPickerGroup{
 	/**
 	 * 确认按钮文字
 	 */
-	@Prop confirmText: string = "确定"
+	@Prop confirmText: ResourceStr = $r("app.string.ibest_text_confirm")
 	/**
 	 * 取消按钮文字
 	 */
-	@Prop cancelText: string = "取消"
+	@Prop cancelText: ResourceStr = $r("app.string.ibest_text_cancel")
 	/**
 	 * 默认插槽
 	 */
@@ -64,7 +64,7 @@ export struct IBestPickerGroup{
 	/**
 	 * currentName变化事件
 	 */
-	onTabNameChange: (name: string) => void = () => {}
+	onTabNameChange: (name: number) => void = () => {}
 	private swiperController: SwiperController = new SwiperController()
 
 	aboutToAppear(): void {
@@ -82,7 +82,7 @@ export struct IBestPickerGroup{
 	}
 	// tabName 改变
 	tabNameChange(){
-		this.tabChange(Number(this.currentName))
+		this.tabChange(this.currentName)
 	}
 	// tab切换
 	tabChange(index: number){
@@ -92,7 +92,7 @@ export struct IBestPickerGroup{
 	// 确认按钮点击
 	onConfirmClick(){
 		if(this.nextStepText && this.swiperIndex < this.tabsList.length - 1){
-			this.currentName = `${this.swiperIndex+1}`
+			this.currentName = this.swiperIndex+1
 			this.tabChange(this.swiperIndex+1)
 		}else{
 			this.onConfirm()
@@ -134,13 +134,12 @@ export struct IBestPickerGroup{
 						.textOverflow({ overflow: TextOverflow.Ellipsis })
 				}
 			}
-			// tabs
 			Row(){
 				IBestTabs({
 					currentName: $currentName,
 					tabsList: this.tabsList,
 					tabWidthType: "auto",
-					onChange: (name: string) => {
+					onChange: name => {
 						this.tabChange(Number(name))
 					}
 				})

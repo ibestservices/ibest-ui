@@ -1,3 +1,4 @@
+import { IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
@@ -12,7 +13,7 @@ export struct IBestDivider{
 	/**
 	 * 线宽, 仅hairline为false时生效
      */
-	@Prop lineWidth: number | string = convertDimensionsWidthUnit(1)
+	@Prop lineWidth: IBestStringNumber = convertDimensionsWidthUnit(1)
 	/**
 	 * 是否使用虚线
 	 */
@@ -28,7 +29,7 @@ export struct IBestDivider{
 	/**
 	 * 分割线高度, 仅垂直时生效
      */
-	@Prop lineHeight: number | string = convertDimensionsWidthUnit(14)
+	@Prop lineHeight: IBestStringNumber = convertDimensionsWidthUnit(14)
 	/**
 	 * 线颜色
      */
@@ -44,27 +45,27 @@ export struct IBestDivider{
 	/**
 	 * 文本大小, 仅水平时生效
      */
-	@Prop texFontSize: number | string = convertDimensionsWidthUnit(14, true)
+	@Prop texFontSize: IBestStringNumber = convertDimensionsWidthUnit(14, true)
 	/**
 	 * 文本与线段间距, 仅水平时生效
      */
-	@Prop textLineSpace: number | string = this.baseStyle.spaceMd as string
+	@Prop textLineSpace: IBestStringNumber = this.baseStyle.spaceMd as string
 	/**
 	 * 左侧线段宽度, 仅水平时生效
      */
-	@Prop leftLineWidth: number | string = ""
+	@Prop leftLineWidth: IBestStringNumber = ""
 	/**
 	 * 右侧线段宽度, 仅水平时生效
      */
-	@Prop rightLineWidth: number | string = ""
+	@Prop rightLineWidth: IBestStringNumber = ""
 	/**
 	 * 左右内边距, 仅水平时生效
      */
-	@Prop leftRightPadding: number | string = 0
+	@Prop leftRightPadding: IBestStringNumber = 0
 	/**
 	 * 左右外边距, 仅垂直时生效
      */
-	@Prop leftRightMargin: number | string = this.baseStyle.spaceXs as string
+	@Prop leftRightMargin: IBestStringNumber = this.baseStyle.spaceXs as string
 	/**
 	 * 自定义文本内容
      */

@@ -94,7 +94,7 @@ struct ButtonPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.custom_status", $r("app.string.loading")) }) {
+					ComponentShowContainer({ title: $r("app.string.loading") }) {
 						Row({ space: SPACE.SM }) {
 							IBestButton({
 								loading: true,
@@ -138,9 +138,15 @@ struct ButtonPage {
 								icon: $r('app.media.ibest_icon_star')
 							})
 							IBestButton({
-								plain: true,
+								type: 'primary',
 								text: $r("app.string.button"),
-								type: 'default',
+								iconPosition: 'top',
+								icon: $r("app.media.app_icon")
+							})
+							IBestButton({
+								type: 'primary',
+								text: $r("app.string.button"),
+								iconPosition: 'bottom',
 								iconBuilder: this.Arrow
 							})
 						}

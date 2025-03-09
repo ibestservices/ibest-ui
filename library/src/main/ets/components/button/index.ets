@@ -9,8 +9,9 @@ import { IBestLoading } from '../loading/index';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { IBestButtonColor } from './color';
 import { IBestIcon } from '../icon';
-@Extend(Button)
-function btnSizeStyle(data: ButtonSizeData) {
+import { IBestStringNumber } from '../../model/Global.type';
+
+@Extend(Button) function btnSizeStyle(data: ButtonSizeData) {
 	.padding({
 		top: 0,
 		right: data.padding,
@@ -75,19 +76,19 @@ export struct IBestButton {
 	/**
 	 * 加载图标的大小, 如果为-1就是默认值 默认值跟随字体大小
 	 */
-	@Prop loadingSize: number | string = -1;
+	@Prop loadingSize: IBestStringNumber = -1;
 	/**
 	 * 按钮宽度
 	 */
-	@Prop btnWidth?: number | string = undefined;
+	@Prop btnWidth: IBestStringNumber
 	/**
 	 * 按钮高度
 	 */
-	@Prop btnHeight?: number | string = undefined;
+	@Prop btnHeight: IBestStringNumber
 	/**
 	 * 按钮文字大小
 	 */
-	@Prop btnFontSize?: number | string = undefined;
+	@Prop btnFontSize: IBestStringNumber
 	/**
 	 * 按钮图标
 	 * @since 2.0.1
@@ -107,12 +108,17 @@ export struct IBestButton {
 	 * 按钮圆角
 	 * @since 2.0.1
 	 */
-	@Prop btnBorderRadius: number | string = ""
+	@Prop btnBorderRadius: IBestStringNumber = ""
 	/**
 	 * 图标位置
 	 * @since 2.0.3
      */
-	@Prop iconPosition: 'left' | 'right' = 'left'
+	@Prop iconPosition: 'left' | 'right' | 'top' | 'bottom' = 'left'
+	/**
+	 * 文字与图标间距
+	 * @since 2.0.7
+     */
+	@Prop space: IBestStringNumber = this.baseStyle.spaceBase as string
 	/**
 	 * defaultSlot 默认插槽
 	 */
@@ -141,11 +147,12 @@ export struct IBestButton {
 					loadingSize: this.getLoadingSize(),
 					loadingColor: this.getBtnTextColor()
 				}).margin({
-					left: this.iconPosition == "right" && this.text ? this.baseStyle.spaceBase : 0,
-					right: this.iconPosition == "left" && this.text ? this.baseStyle.spaceBase : 0
+					left: this.iconPosition == "right" && (this.text || this.loadingText) ? getSizeByUnit(this.space) : 0,
+					right: this.iconPosition == "left" && (this.text || this.loadingText) ? getSizeByUnit(this.space) : 0,
+					bottom: this.iconPosition == "top" && (this.text || this.loadingText) ? getSizeByUnit(this.space) : 0,
+					top: this.iconPosition == "bottom" && (this.text || this.loadingText) ? getSizeByUnit(this.space) : 0
 				})
 			}
-			// 加载loading显示的时候不显示图标
 		} else if (this.iconBuilder) {
 			this.iconBuilder()
 		} else if (this.icon) {
@@ -154,17 +161,16 @@ export struct IBestButton {
 				iconSize: this.getBtnSize()?.fontSize,
 				color: this.getBtnTextColor()
 			}).margin({
-				left: this.iconPosition == "right" && this.text ? this.baseStyle.spaceBase : 0,
-				right: this.iconPosition == "left" && this.text ? this.baseStyle.spaceBase : 0
+				left: this.iconPosition == "right" && (this.text || this.loadingText) ? getSizeByUnit(this.space) : 0,
+				right: this.iconPosition == "left" && (this.text || this.loadingText) ? getSizeByUnit(this.space) : 0,
+				bottom: this.iconPosition == "top" && (this.text || this.loadingText) ? getSizeByUnit(this.space) : 0,
+				top: this.iconPosition == "bottom" && (this.text || this.loadingText) ? getSizeByUnit(this.space) : 0
 			})
 		}
 	}
 
 	/**
 	 * 根据buttonSize换对应的按钮尺寸
-	 * 根据size获取按钮的尺寸
-	 * 字典形式写起来校验问题很多 改成switch了
-	 * @returns
 	 */
 	getBtnSize() {
 		if (this.btnWidth || this.btnHeight) {
@@ -194,7 +200,6 @@ export struct IBestButton {
 	}
 	/**
 	 * 获取按钮的borderRadius
-	 * @returns
 	 */
 	getBtnBorderRadius() {
 		return getSizeByUnit(this.btnBorderRadius) ||
@@ -202,7 +207,6 @@ export struct IBestButton {
 	}
 	/**
 	 * 获取按钮边框的颜色
-	 * @returns
 	 */
 	getBorderColor() {
 		return this.btnBorderColor ||
@@ -210,7 +214,6 @@ export struct IBestButton {
 	}
 	/**
 	 * 获取按钮文字的颜色
-	 * @returns
 	 */
 	getBtnTextColor() {
 		if (this.fontColor) {
@@ -224,7 +227,6 @@ export struct IBestButton {
 	}
 	/**
 	 * 根据颜色type获取背景色
-	 * @returns
 	 */
 	getBackgroundColor() {
 		return this.plain ? "transparent" :
@@ -232,7 +234,6 @@ export struct IBestButton {
 	}
 	/**
 	 * 获取loading的大小
-	 * @returns
 	 */
 	getLoadingSize() {
 		return this.loadingSize != -1 ? getSizeByUnit(this.loadingSize) : this.getBtnSize()?.fontSize as string
@@ -253,15 +254,29 @@ export struct IBestButton {
 			if (this.defaultBuilder) {
 				this.defaultBuilder()
 			} else {
-				Row() {
-					if(this.iconPosition == "left"){
-						this.iconContent()
+				if(['left', 'right'].includes(this.iconPosition)){
+					Row() {
+						if(this.iconPosition == "left"){
+							this.iconContent()
+						}
+						Text(this.loading ? this.loadingText ?? this.text : this.text)
+							.fontSize(this.getBtnSize()?.fontSize)
+							.fontColor(this.getBtnTextColor())
+						if(this.iconPosition == "right"){
+							this.iconContent()
+						}
 					}
-					Text(this.loading ? this.loadingText ?? this.text : this.text)
-						.fontSize(this.getBtnSize()?.fontSize)
-						.fontColor(this.getBtnTextColor())
-					if(this.iconPosition == "right"){
-						this.iconContent()
+				}else{
+					Column(){
+						if(this.iconPosition == "top"){
+							this.iconContent()
+						}
+						Text(this.loading ? this.loadingText ?? this.text : this.text)
+							.fontSize(this.getBtnSize()?.fontSize)
+							.fontColor(this.getBtnTextColor())
+						if(this.iconPosition == "bottom"){
+							this.iconContent()
+						}
 					}
 				}
 			}

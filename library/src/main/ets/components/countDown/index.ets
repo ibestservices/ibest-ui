@@ -1,3 +1,4 @@
+import { IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { getSizeByUnit, padZero } from '../../utils/utils'
@@ -43,7 +44,7 @@ export struct IBestCountDown{
 	/**
 	 * 文字大小
      */
-	@Prop fontSize: string | number = this.baseStyle.fontSizeMd as string
+	@Prop fontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
 	/**
 	 * 时间格式
      */

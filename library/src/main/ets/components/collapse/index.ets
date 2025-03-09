@@ -1,9 +1,11 @@
+import { IBestStringNumber } from '../../model/Global.type'
 import { emitter } from '../../utils/EventEmitter'
 import { getEventName } from '../../utils/utils'
 import { IBestCollapseColor } from './color'
-import { CollapseItem, COLLAPSE_EVENT_NAME, COMPONENT_NAME, IBestCollapseController, ToggleOption } from './index.type'
+import { COLLAPSE_EVENT_NAME, CollapseItem, COMPONENT_NAME, IBestCollapseController, ToggleOption } from './index.type'
 @Component
 export struct IBestCollapse {
+    @State uniId: number = 0
     /**
      * 分组id
      */
@@ -11,7 +13,7 @@ export struct IBestCollapse {
     /**
      * 当前展开面板的name
      */
-    @Link activeName: string | string[]
+    @Link activeName: IBestStringNumber | IBestStringNumber[]
     /**
      * 是否开启手风琴模式
      */
@@ -27,7 +29,7 @@ export struct IBestCollapse {
     /**
      * 监听面板状态变化
      */
-    onChange: (name: string | string[]) => void = () => {}
+    onChange: (name: IBestStringNumber | IBestStringNumber[]) => void = () => {}
     /**
      * 组件实例
      */
@@ -36,9 +38,10 @@ export struct IBestCollapse {
     @State allCollapseItem: CollapseItem[] = []
 
     aboutToAppear(): void {
+        this.uniId = this.getUniqueId()
         this.controller.toggleAll = (option?: boolean | ToggleOption): void => this.toggleAll(option)
-        emitter.on(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME), (name: string, disabled: boolean): void => this.getAllNames(name, disabled))
-        emitter.on(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE), (name: string, isExpand: boolean): void => this.setName(name, isExpand))
+        emitter.on(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME, this.groupId), this.uniId, (name: IBestStringNumber, disabled: boolean): void => this.getAllNames(name, disabled))
+        emitter.on(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE, this.groupId), this.uniId, (name: IBestStringNumber, isExpand: boolean): void => this.setName(name, isExpand))
     }
     onDidBuild(): void {
         setTimeout(() => {
@@ -46,27 +49,29 @@ export struct IBestCollapse {
         }, 0)
     }
     aboutToDisappear(): void {
-        emitter.off(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME), (name: string, disabled: boolean): void => this.getAllNames(name, disabled))
-        emitter.off(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE), (name: string, isExpand: boolean): void => this.setName(name, isExpand))
+        emitter.off(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME, this.groupId), this.uniId)
+        emitter.off(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE, this.groupId), this.uniId)
     }
 
     initItem(){
-        emitter.emit(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.INIT_ITEM), this.activeName)
+        emitter.emit(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.INIT_ITEM, this.groupId), this.activeName)
     }
 
-    getAllNames(name: string, disabled: boolean){
+    getAllNames(name: IBestStringNumber, disabled: boolean){
         if(!this.allCollapseItem.some(e => e.name == name)){
             this.allCollapseItem.push({name, disabled})
         }
     }
 
-    setName(name: string, isExpand: boolean){
+    setName(name: IBestStringNumber, isExpand: boolean){
         if(this.accordion){ // 手风琴模式
-            this.activeName = this.activeName && !isExpand ? "" : name
+            this.activeName = this.activeName != undefined && !isExpand ? "" : name
             this.initItem()
         }else{
             if(typeof this.activeName == 'string'){
                 this.activeName = this.activeName.split(" ")
+            }else if(typeof this.activeName == 'number'){
+                this.activeName = [this.activeName]
             }
             let index = this.activeName.indexOf(name)
             if(index > -1){
@@ -82,17 +87,18 @@ export struct IBestCollapse {
         if(this.accordion){
             return
         }
+        let actives = typeof this.activeName == 'number' ? this.activeName.toString() : this.activeName
         if(option == undefined){    // 切换
-            this.activeName = this.allCollapseItem.filter((e: CollapseItem) => !this.activeName.includes(e.name)).map((e: CollapseItem) => e.name)
+            this.activeName = this.allCollapseItem.filter((e: CollapseItem) => !actives.includes(e.name.toString())).map((e: CollapseItem) => e.name)
         }else if(typeof option == 'boolean'){
             this.activeName = option ? this.allCollapseItem.map((e: CollapseItem) => e.name) : []
         }else{
-            let disabledArr = this.allCollapseItem.filter(e => this.activeName.includes(e.name) && e.disabled)
+            let disabledArr = this.allCollapseItem.filter(e => actives.includes(e.name.toString()) && e.disabled)
             let arr: CollapseItem[] = []
             if(option.skipDisabled){
                 arr = this.allCollapseItem.filter((e: CollapseItem) => !e.disabled)
             }
-            arr = option.expanded == undefined ? arr.filter((e: CollapseItem) => !this.activeName.includes(e.name)) : option.expanded ? arr : []
+            arr = option.expanded == undefined ? arr.filter((e: CollapseItem) => !actives.includes(e.name.toString())) : option.expanded ? arr : []
             if(option.skipDisabled){
                 arr = arr.concat(disabledArr)
             }

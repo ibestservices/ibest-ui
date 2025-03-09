@@ -1,6 +1,10 @@
-import { FieldTextAlign, IBestFieldValueType,
+import { IBestStringNumber } from '../../model/Global.type'
+import {
+	FieldTextAlign,
+	IBestFieldValueType,
 	LabelPositionType,
-	RequireAsteriskPositionType } from '../field/index.type'
+	RequireAsteriskPositionType
+} from '../field/index.type'
 /**
  * 验证规则
  */
@@ -55,7 +59,7 @@ export enum FORM_EVENT_NAME {
  */
 export interface IBestFormSendFieldCallResult {
 	rules: IBestFormRuleItem[]
-	labelWidth: number | string
+	labelWidth: IBestStringNumber
 	labelPosition: LabelPositionType
 	labelAlign: FieldTextAlign
 	colon: boolean

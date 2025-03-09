@@ -1,3 +1,4 @@
+import { IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
@@ -19,7 +20,7 @@ export struct IBestNavBar{
 	/**
 	 * 导航栏高度
 	 */
-	@Prop navBarHeight: number | string = convertDimensionsWidthUnit(this.isApp ? 46 : 56)
+	@Prop navBarHeight: IBestStringNumber = convertDimensionsWidthUnit(this.isApp ? 46 : 56)
 	/**
 	 * 导航栏背景色
      */
@@ -31,7 +32,7 @@ export struct IBestNavBar{
 	/**
 	 * 导航栏左右内边距
      */
-	@Prop leftRightPadding: number | string = convertDimensionsWidthUnit(16)
+	@Prop leftRightPadding: IBestStringNumber = convertDimensionsWidthUnit(16)
 	/**
 	 * 是否显示下边框
      */
@@ -47,10 +48,11 @@ export struct IBestNavBar{
 	/**
 	 * 标题文字大小
      */
-	@Prop titleFontSize: number | string = convertDimensionsWidthUnit(16, true)
+	@Prop titleFontSize: IBestStringNumber = convertDimensionsWidthUnit(16, true)
 	/**
 	 * 标题图标
 	 * @deprecated 请使用titleIcon
+	 * @useinstead titleIcon
 	 */
 	@Prop titleIconName: string = ""
 	/**
@@ -64,11 +66,11 @@ export struct IBestNavBar{
 	/**
 	 * 标题图标大小
      */
-	@Prop titleIconSize: number | string = convertDimensionsWidthUnit(20)
+	@Prop titleIconSize: IBestStringNumber = convertDimensionsWidthUnit(20)
 	/**
 	 * 标题图标圆角
 	 */
-	@Prop titleIconRadius: number | string = 0
+	@Prop titleIconRadius: IBestStringNumber = 0
 	/**
 	 * 标题是否加粗
 	 */
@@ -84,7 +86,7 @@ export struct IBestNavBar{
 	/**
 	 * 二级标题字体大小
      */
-	@Prop subTitleFontSize: number | string = convertDimensionsWidthUnit(12, true)
+	@Prop subTitleFontSize: IBestStringNumber = convertDimensionsWidthUnit(12, true)
 	/**
 	 * 是否显示左侧
      */
@@ -92,6 +94,7 @@ export struct IBestNavBar{
 	/**
 	 * 左侧图标名称
 	 * @deprecated 请使用leftIcon
+	 * @useinstead leftIcon
      */
 	@Prop leftIconName: string = 'arrow-left'
 	/**
@@ -105,11 +108,11 @@ export struct IBestNavBar{
 	/**
 	 * 左侧图标大小
      */
-	@Prop leftIconSize: number | string = convertDimensionsWidthUnit(20)
+	@Prop leftIconSize: IBestStringNumber = convertDimensionsWidthUnit(20)
 	/**
 	 * 左侧图标圆角
 	 */
-	@Prop leftIconRadius: number | string = 0
+	@Prop leftIconRadius: IBestStringNumber = 0
 	/**
 	 * 左侧文本内容
      */
@@ -121,7 +124,7 @@ export struct IBestNavBar{
 	/**
 	 * 左侧文本大小
      */
-	@Prop leftLabelFontSize: number | string = convertDimensionsWidthUnit(16, true)
+	@Prop leftLabelFontSize: IBestStringNumber = convertDimensionsWidthUnit(16, true)
 	/**
 	 * 是否显示右侧
      */
@@ -129,6 +132,7 @@ export struct IBestNavBar{
 	/**
 	 * 右侧图标名称
 	 * @deprecated 请使用rightIcon
+	 * @useinstead rightIcon
      */
 	@Prop rightIconName: string = ''
 	/**
@@ -142,11 +146,11 @@ export struct IBestNavBar{
 	/**
 	 * 右侧图标大小
      */
-	@Prop rightIconSize: number | string = convertDimensionsWidthUnit(20)
+	@Prop rightIconSize: IBestStringNumber = convertDimensionsWidthUnit(20)
 	/**
 	 * 右侧图标圆角
 	 */
-	@Prop rightIconRadius: number | string = 0
+	@Prop rightIconRadius: IBestStringNumber = 0
 	/**
 	 * 右侧文本内容
      */
@@ -158,7 +162,7 @@ export struct IBestNavBar{
 	/**
 	 * 右侧文本大小
      */
-	@Prop rightLabelFontSize: number | string = convertDimensionsWidthUnit(16, true)
+	@Prop rightLabelFontSize: IBestStringNumber = convertDimensionsWidthUnit(16, true)
 	/**
 	 * 是否显示状态栏
 	 */
