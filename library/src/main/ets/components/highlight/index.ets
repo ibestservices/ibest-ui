@@ -1,8 +1,17 @@
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { getSizeByUnit } from '../../utils/utils';
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { Chunks, Chunk } from './index.type';
-
+import { IBestStringNumber } from '../../model/Global.type';
+import { convertDimensionsWidthUnit } from '../../utils/utils';
+import { IBestHighlightColor } from './color';
 
 @Component
 export struct IBestHighlight {
+  /**
+   * 全局公共样式
+   */
+  @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
   /**
    * 是否自动转义
    */
@@ -19,6 +28,22 @@ export struct IBestHighlight {
    * 源文本
    */
   @Prop sourceString: string = ''
+  /**
+   * 文字颜色 默认 "#969799"
+   */
+  @Prop textColor: ResourceColor = IBestHighlightColor.textColor
+  /**
+   * 文字大小
+   */
+  @Prop textFontSize: IBestStringNumber = convertDimensionsWidthUnit(14)
+  /**
+   * 高亮文字颜色 默认 "#1989fa"
+   */
+  @Prop highColor: ResourceColor = IBestHighlightColor.highColor
+  /**
+   * 高亮文字大小
+   */
+  @Prop highFontSize: IBestStringNumber = convertDimensionsWidthUnit(14)
 
   highlightChunks() {
     const flags = this.caseSensitive ? 'g' : 'gi';
@@ -108,11 +133,13 @@ export struct IBestHighlight {
     Text() {
       ForEach(this.highlightChunks(), (item: Chunk, index: number) => {
         if (item.highlight) {
-          Span(this.sourceString.slice(item.start, item.end)).fontColor(Color.Blue)
+          Span(this.sourceString.slice(item.start, item.end)).fontColor(this.highColor).fontSize(this.highFontSize)
         } else {
           Span(this.sourceString.slice(item.start, item.end))
         }
       })
     }
+    .fontSize(getSizeByUnit(this.textFontSize, true))
+    .fontColor(this.textColor)
   }
 }

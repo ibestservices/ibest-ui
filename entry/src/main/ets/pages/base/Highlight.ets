@@ -9,16 +9,6 @@ import { ComponentRouterParams } from '../../assets/global.type';
 struct HighlightPage {
   @State title: string = (router.getParams() as ComponentRouterParams).title || ''
 
-  @Builder
-  Arrow() {
-    Image($r('app.media.title_back')).height(160).rotate({ angle: 180 })
-  }
-
-  @Builder
-  Btn() {
-    IBestButton({ text: '按钮', type: 'primary' }).margin({ top: SPACE.SM })
-  }
-
   build() {
     Column() {
       IBestNavBar({
@@ -43,6 +33,28 @@ struct HighlightPage {
             IBestHighlight({
               keywords: ['难题', '终有一天', '答案'],
               sourceString: '慢慢来，不要急，生活给你出了难题，可也终有一天会给出答案。'
+            })
+          }
+        }
+
+        ListItem() {
+          ComponentShowContainer({ title: '设置高亮样式' }) {
+            IBestHighlight({
+              keywords: ['难题', '终有一天', '答案'],
+              sourceString: '慢慢来，不要急，生活给你出了难题，可也终有一天会给出答案。',
+              highColor: Color.Red,
+              highFontSize: 30
+            })
+          }
+        }
+
+        ListItem() {
+          ComponentShowContainer({ title: '设置默认样式' }) {
+            IBestHighlight({
+              keywords: ['难题', '终有一天', '答案'],
+              sourceString: '慢慢来，不要急，生活给你出了难题，可也终有一天会给出答案。',
+              textColor: Color.Red,
+              textFontSize: 16
             })
           }
         }.margin({
