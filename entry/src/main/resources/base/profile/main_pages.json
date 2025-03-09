@@ -11,6 +11,7 @@
 		"pages/base/Watermark",
 		"pages/base/Radio",
 		"pages/base/Empty",
+		"pages/base/Highlight",
 		"pages/base/Dialog",
 		"pages/base/Stepper",
 		"pages/base/Calendar",

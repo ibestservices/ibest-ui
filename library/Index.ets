@@ -54,6 +54,8 @@ export { IBestRadioGroup } from './src/main/ets/components/radioGroup/index'
 
 export { IBestEmpty } from './src/main/ets/components/empty/index'
 
+export { IBestHighlight } from './src/main/ets/components/highlight/index'
+
 export { IBestDialog } from './src/main/ets/components/dialog/index'
 
 export { IBestStepper } from './src/main/ets/components/stepper/index'
