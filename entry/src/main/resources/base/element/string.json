@@ -221,6 +221,10 @@
 			"value": "Empty 空状态"
 		},
 		{
+			"name": "component_highlight",
+			"value": "Highlight 高亮文本"
+		},
+		{
 			"name": "component_imagepreview",
 			"value": "ImagePreview 图片预览"
 		},

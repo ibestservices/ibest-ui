@@ -221,6 +221,10 @@
 			"value": "Empty"
 		},
 		{
+			"name": "component_highlight",
+			"value": "Highlight"
+		},
+		{
 			"name": "component_imagepreview",
 			"value": "ImagePreview"
 		},

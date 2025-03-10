@@ -200,6 +200,10 @@ struct Index {
 					path: "pages/base/Empty"
 				},
 				{
+					name: $r("app.string.component_highlight"),
+					path: "pages/base/Highlight"
+				},
+				{
 					name: $r("app.string.component_imagepreview"),
 					path: "pages/base/ImagePreview"
 				},
