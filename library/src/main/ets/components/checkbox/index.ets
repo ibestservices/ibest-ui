@@ -20,9 +20,9 @@ export struct IBestCheckbox {
 	 */
 	@Prop group: string = ''
 	/**
-	 * 标识符，通常为一个唯一的字符串
+	 * 标识符，通常为一个唯一的字符串或数字
 	 */
-	@Prop name: string
+	@Prop name: IBestStringNumber
 	/**
 	 * 形状
 	 */
@@ -30,7 +30,7 @@ export struct IBestCheckbox {
 	/**
 	 * 选中状态颜色
 	 */
-	@Prop checkedColor: ResourceColor = ''
+	@Prop checkedColor: ResourceColor = this.baseStyle.primary as string
 	/**
 	 * 图标大小
 	 */
@@ -65,6 +65,16 @@ export struct IBestCheckbox {
 	 * 是否为不确定状态
 	 */
 	@Prop @Watch('handleIndeterminateChange') indeterminate: boolean = false;
+	/**
+	 * 背景色
+	 * @since 2.0.7
+	 */
+	@Prop bgColor: ResourceColor = ''
+	/**
+	 * 边框色
+	 * @since 2.0.7
+     */
+	@Prop bdColor: ResourceColor = IBestCheckboxColor.borderColor
 	/**
 	 * 自定义文本插槽
 	 */
@@ -111,7 +121,7 @@ export struct IBestCheckbox {
 		if (this.mergeDisabled) {
 			return IBestCheckboxColor.borderColor
 		} else {
-			return this.isShowBackground() ? this.checkedColor || this.baseStyle.primary : ""
+			return this.isShowBackground() ? this.checkedColor : this.bgColor
 		}
 	}
 	/**
@@ -122,8 +132,7 @@ export struct IBestCheckbox {
 		if (this.mergeDisabled) {
 			return GRAY_COLOR.GRAY_5
 		} else {
-			return this.isShowBackground() ? this.checkedColor || this.baseStyle.primary :
-			IBestCheckboxColor.borderColor
+			return this.isShowBackground() ? this.checkedColor : this.bdColor
 		}
 	}
 	/**
@@ -220,7 +229,7 @@ export struct IBestCheckbox {
 	aboutToAppear() {
 		this.uniId = this.getUniqueId()
 		if (this.group) {
-			emitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId, (actives: string[]): void => this.init(actives))
+			emitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId, (actives: IBestStringNumber[]): void => this.init(actives))
 			emitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE, this.group), this.uniId, (data: MaxChangeArgs): void => this.handleMaxChange(data))
 			emitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL, this.group), this.uniId, (isSelectAll: boolean): void => this.handleToggleChange(isSelectAll))
 		} else {
@@ -236,12 +245,11 @@ export struct IBestCheckbox {
 		}
 		clearTimeout(this.isShowIndeterminateTimeId)
 	}
-	init(actives: string[]) {
+	init(actives: IBestStringNumber[]) {
 		this.value = actives.includes(this.name)
 	}
 
-	@Builder
-	LabelContain() {
+	@Builder LabelContain() {
 		Row() {
 			if (this.defaultBuilder) {
 				this.defaultBuilder({ checked: this.value, disabled: this.mergeDisabled })
@@ -264,7 +272,6 @@ export struct IBestCheckbox {
 			if (this.labelPosition === 'left') {
 				this.LabelContain()
 			}
-			// checkbox
 			Column() {
 				if (typeof this.iconBuilder === 'function') {
 					this.iconBuilder({ checked: this.value, disabled: this.mergeDisabled })

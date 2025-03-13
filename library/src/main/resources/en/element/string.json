@@ -107,6 +107,10 @@
 		{
 			"name": "ibest_text_collapse",
 			"value": "collapse"
+		},
+		{
+			"name": "ibest_text_sum",
+			"value": "Sum"
 		}
 	]
 }

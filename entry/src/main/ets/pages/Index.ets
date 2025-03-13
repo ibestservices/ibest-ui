@@ -220,6 +220,10 @@ struct Index {
 					path: "pages/base/Progress"
 				},
 				{
+					name: $r("app.string.component_table"),
+					path: "pages/base/Table"
+				},
+				{
 					name: $r("app.string.component_tag"),
 					path: "pages/base/Tag"
 				},
@@ -477,9 +481,9 @@ struct Index {
 		this.getUiVersion()
 		// setTimeout(() => {
 		// 	router.pushUrl({
-		// 		url: "pages/base/Dialog",
+		// 		url: "pages/base/Table",
 		// 		params: {
-		// 			title: ""
+		// 			title: "Table"
 		// 		}
 		// 	})
 		// }, 100)

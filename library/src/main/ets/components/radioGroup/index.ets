@@ -65,14 +65,12 @@ export struct IBestRadioGroup {
 					this.defaultBuilder()
 				}
 			}
-			.width(CONTAINER_SIZE.FULL)
 		} else {
 			Column({ space: getSizeByUnit(this.space) }) {
 				if (this.defaultBuilder) {
 					this.defaultBuilder()
 				}
 			}
-			.width(CONTAINER_SIZE.FULL)
 			.alignItems(HorizontalAlign.Start)
 		}
 	}

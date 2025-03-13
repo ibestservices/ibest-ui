@@ -241,6 +241,10 @@
 			"value": "Progress"
 		},
 		{
+			"name": "component_table",
+			"value": "Table"
+		},
+		{
 			"name": "component_tag",
 			"value": "Tag"
 		},
@@ -423,6 +427,10 @@
 		{
 			"name": "title",
 			"value": "Title"
+		},
+		{
+			"name": "background_image",
+			"value": "Background Image"
 		},
 		{
 			"name": "content",

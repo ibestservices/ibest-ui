@@ -61,6 +61,11 @@ export default class GlobalStore {
 		GlobalStore.screenWidth = o == 1 || o == 3 ? screenInfo.windowRect.height : screenInfo.windowRect.width
 		GlobalStore.screenHeight = o == 1 || o == 3 ? screenInfo.windowRect.width : screenInfo.windowRect.height
 		AppStorage.setOrCreate("IBestIsLandscape", o == 1 || o == 3)
+		mainWindow.on("avoidAreaChange", data => {
+			if (data.type == window.AvoidAreaType.TYPE_KEYBOARD) {
+				AppStorage.setOrCreate("IBestKeyBoardHeight", px2vp(data.area.bottomRect.height))
+			}
+		})
 	}
 	/**
 	 * 监听屏幕旋转

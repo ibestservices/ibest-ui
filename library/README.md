@@ -10,7 +10,9 @@ IBest-UI是一个轻量、简单易用、可定制主题、支持深色模式和
 
 ## 下载安装
 
-`ohpm install @ibestservices/ibest-ui`
+```ts
+ohpm install @ibestservices/ibest-ui
+```
 
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
@@ -67,10 +69,12 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | CountDown 倒计时        | 用于实时展示倒计时数值，支持毫秒精度。                | <a href="https://ibestui.ibestservices.com/components/countDown/" target="__blank">文档</a>      |
 | Divider 分割线          | 用于将内容分隔为多个区域。                      | <a href="https://ibestui.ibestservices.com/components/divider/" target="__blank">文档</a>        |
 | Empty 空状态            | 空状态时的占位提示。                         | <a href="https://ibestui.ibestservices.com/components/empty/" target="__blank">文档</a>          |
+| Highlight 高亮文本       | 高亮指定文本内容。                          | <a href="https://ibestui.ibestservices.com/components/highlight/" target="__blank">文档</a>      |
 | ImagePreview 图片预览    | 图片放大预览。                            | <a href="https://ibestui.ibestservices.com/components/imagepreview/" target="__blank">文档</a>   |
 | NoticeBar 通知栏        | 用于循环播放展示一组消息通知。                    | <a href="https://ibestui.ibestservices.com/components/noticeBar/" target="__blank">文档</a>      |
 | Popover 气泡弹出框        | 弹出式的气泡菜单。                          | <a href="https://ibestui.ibestservices.com/components/popover/" target="__blank">文档</a>        |
 | Progress 进度条         | 用于展示操作的当前进度。                       | <a href="https://ibestui.ibestservices.com/components/progress/" target="__blank">文档</a>       |
+| Table 表格             | 用于展示多条结构类似的数据。                     | <a href="https://ibestui.ibestservices.com/components/table/" target="__blank">文档</a>          |
 | Tag 标签               | 用于标记关键词和概括主要内容。                    | <a href="https://ibestui.ibestservices.com/components/tag/" target="__blank">文档</a>            |
 | TextEllipsis 文本省略    | 对长文本进行省略，支持展开/收起。                  | <a href="https://ibestui.ibestservices.com/components/textEllipsis/" target="__blank">文档</a>   |
 | Watermark 水印         | 在页面上添加特定的文字或图案作为水印，可用于防止信息盗用。      | <a href="https://ibestui.ibestservices.com/components/watermark/" target="__blank">文档</a>      |
@@ -99,7 +103,7 @@ https://ibestui.ibestservices.com/
 
 ## 仓库地址
 
-https://github.com/ibestservices/ibest-ui
+https://github.com/ibestservices/ibest-ui   
 https://gitee.com/ibestservices/ibest-ui
 
 ## IBest-UI 交流QQ群

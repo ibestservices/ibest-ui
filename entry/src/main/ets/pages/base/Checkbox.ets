@@ -18,7 +18,7 @@ struct CheckboxPage {
 	@State group: string = "group"
 	@State activeList: string[] = ["1", "2"]
 	@State group1: string = "group1"
-	@State activeList1: string[] = ["1"]
+	@State activeList1: number[] = [1]
 	@State group2: string = "group2"
 	@State activeList2: string[] = ["1", "2"]
 	@State group3: string = "group3"
@@ -32,8 +32,7 @@ struct CheckboxPage {
 	@State cellCheckedMaxNum: number = 2
 	private controller: IBestCheckboxGroupController = new IBestCheckboxGroupController()
 	private controller1: IBestCheckboxGroupController = new IBestCheckboxGroupController()
-	@Builder
-	CellCheckbox(name: string, group: string) {
+	@Builder CellCheckbox(name: string, group: string) {
 		IBestCheckbox({
 			name,
 			group
@@ -62,7 +61,7 @@ struct CheckboxPage {
 						IBestCheckbox({
 							value: this.isChecked,
 							label: this.isChecked + "",
-							onChange: (checked: boolean) => {
+							onChange: checked => {
 								this.isChecked = checked
 							}
 						})
@@ -90,7 +89,7 @@ struct CheckboxPage {
 							value: this.isChecked,
 							shape: 'square',
 							label: '自定义形状',
-							onChange: (checked: boolean) => {
+							onChange: checked => {
 								this.isChecked = checked
 							}
 						})
@@ -98,14 +97,22 @@ struct CheckboxPage {
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '自定义颜色' }) {
-						IBestCheckbox({
-							value: this.isChecked,
-							checkedColor: '#ee0a24',
-							label: '自定义颜色',
-							onChange: (checked: boolean) => {
-								this.isChecked = checked
-							}
-						})
+						Column({ space: SPACE.SM }) {
+							IBestCheckbox({
+								value: this.isChecked,
+								checkedColor: '#ee0a24',
+								label: '自定义颜色',
+								onChange: checked => {
+									this.isChecked = checked
+								}
+							})
+							IBestCheckbox({
+								value: false,
+								bdColor: '#ee0a24',
+								bgColor: "#fff",
+								label: '自定义背景色'
+							})
+						}.alignItems(HorizontalAlign.Start)
 					}
 				}
 				ListItem() {
@@ -114,7 +121,7 @@ struct CheckboxPage {
 							value: this.isChecked,
 							iconSize: 30,
 							label: '自定义大小',
-							onChange: (checked: boolean) => {
+							onChange: checked => {
 								this.isChecked = checked
 							}
 						})
@@ -126,7 +133,7 @@ struct CheckboxPage {
 							value: this.isChecked,
 							labelPosition: 'left',
 							label: '左侧文本',
-							onChange: (checked: boolean) => {
+							onChange: checked => {
 								this.isChecked = checked
 							}
 						})
@@ -138,7 +145,7 @@ struct CheckboxPage {
 							value: this.isChecked,
 							label: '复选框',
 							labelDisabled: true,
-							onChange: (checked: boolean) => {
+							onChange: checked => {
 								this.isChecked = checked
 							}
 						})
@@ -172,12 +179,12 @@ struct CheckboxPage {
 							IBestCheckbox({
 								group: this.group1,
 								label: '复选框1',
-								name: '1'
+								name: 1
 							})
 							IBestCheckbox({
 								group: this.group1,
 								label: '复选框2',
-								name: '2'
+								name: 2
 							})
 						}
 					}

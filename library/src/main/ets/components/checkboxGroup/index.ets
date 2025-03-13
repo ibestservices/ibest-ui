@@ -26,7 +26,7 @@ export struct IBestCheckboxGroup {
 	 * 激活的标识列表
 	 * @since 2.0.1
 	 */
-	@Link @Watch("activeChange") activeList: string[]
+	@Link @Watch("activeChange") activeList: IBestStringNumber[]
 	/**
 	 * 排列方向
 	 * @since 2.0.1
@@ -50,7 +50,7 @@ export struct IBestCheckboxGroup {
 	 * 选中变化的回调
 	 * 参数是checkbox子组件的的name值
 	 */
-	onChange: (checkedItemNames: string[]) => void = () => {}
+	onChange: (checkedItemNames: IBestStringNumber[]) => void = () => {}
 	/**
 	 * 初始化的回调
 	 * @deprecated since 2.0.1
@@ -117,14 +117,12 @@ export struct IBestCheckboxGroup {
 					this.defaultBuilder()
 				}
 			}
-			.width(CONTAINER_SIZE.FULL)
 		} else {
 			Column({ space: getSizeByUnit(this.space) }) {
 				if (this.defaultBuilder) {
 					this.defaultBuilder()
 				}
 			}
-			.width(CONTAINER_SIZE.FULL)
 			.alignItems(HorizontalAlign.Start)
 		}
 	}

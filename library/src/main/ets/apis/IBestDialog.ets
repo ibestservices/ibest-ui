@@ -5,18 +5,6 @@ import { IBestStringNumber } from '../model/Global.type'
 
 class IBestDialogOption {
 	/**
-	 * 标题区域的builder
-	 */
-	titleBuilder?: CustomBuilder
-	/**
-	 * 内容区域的builder
-	 */
-	defaultBuilder?: CustomBuilder
-	/**
-	 * 底部区域的builder
-	 */
-	footerBuilder?: CustomBuilder
-	/**
 	 * 弹窗宽度
 	 */
 	dialogWidth?: IBestStringNumber
@@ -25,9 +13,18 @@ class IBestDialogOption {
 	 */
 	dialogBorderRadius?: IBestStringNumber
 	/**
+	 * 背景图片
+	 * @since 2.0.7
+	 */
+	bgImage?: ResourceStr
+	/**
 	 * 标题
 	 */
 	title?: ResourceStr
+	/**
+	 * 标题的fontSize
+	 */
+	titleFontSize?: IBestStringNumber
 	/**
 	 * 标题颜色
 	 */
@@ -44,10 +41,6 @@ class IBestDialogOption {
 	 * 标题的padding-top值
 	 */
 	titleLineHeight?: IBestStringNumber
-	/**
-	 * 标题的fontSize
-	 */
-	titleFontSize?: IBestStringNumber
 	/**
 	 * 标题的对齐方式
 	 */
@@ -113,6 +106,10 @@ class IBestDialogOption {
 	 */
 	cancelButtonText?: ResourceStr
 	/**
+	 * 按钮的文字大小
+	 */
+	buttonFontSize?: IBestStringNumber
+	/**
 	 * 确认按钮的颜色
 	 */
 	confirmButtonColor?: ResourceColor
@@ -131,10 +128,6 @@ class IBestDialogOption {
 	 */
 	cancelButtonBgColor?: ResourceColor
 	/**
-	 * 按钮的文字大小
-	 */
-	buttonFontSize?: IBestStringNumber
-	/**
 	 * 取消按钮的loading
 	 */
 	cancelButtonLoading?: boolean
@@ -146,30 +139,49 @@ class IBestDialogOption {
 	 * 弹窗是否为模态窗口，模态窗口有蒙层，非模态窗口无蒙层。
 	 * API11+
 	 */
-	showOverlay?: boolean = true
+	showOverlay?: boolean
+	/**
+	 * 自定义蒙层颜色。默认值: 0x33000000 API10以上支持
+	 */
+	overlayColor?: ResourceColor
 	/**
 	 * 某弹框需要显示在主窗口之外时，是否在子窗口显示此弹窗。
 	 * 默认值：false，弹窗显示在应用内，而非独立子窗口。
 	 * API 10 +
 	 */
-	showInSubWindow?: boolean = false
-	/**
-	 * 自定义蒙层颜色。默认值: 0x33000000 API10以上支持
-	 */
-	overlayColor?: ResourceColor = '0x33000000'
+	showInSubWindow?: boolean
 	/**
 	 * 是否在点击遮罩层后关闭弹窗
 	 */
-	closeOnClickOverlay?: boolean = false
+	closeOnClickOverlay?: boolean
 	/**
 	 * 是否允许返回键关闭
 	 */
-	closeOnBackPress?: boolean = false
+	closeOnBackPress?: boolean
 	/**
-	 * 背景图片
-	 * @since 2.0.7
+	 * 弹窗在竖直方向上的对齐方式 默认center
 	 */
-	bgImage?: ResourceStr = ''
+	alignment?: 'center' | 'top' | 'bottom'
+	/**
+	 * 弹窗相对alignment所在位置的横向偏移量
+	 */
+	offsetX?: IBestStringNumber = 0
+	/**
+	 * 弹窗相对alignment所在位置的纵向偏移量。
+	 */
+	offsetY?: IBestStringNumber = 0
+	/**
+	 * 标题区域的builder
+	 */
+	titleBuilder?: CustomBuilder
+	/**
+	 * 内容区域的builder
+	 */
+	defaultBuilder?: CustomBuilder
+	/**
+	 * 底部区域的builder
+	 */
+	footerBuilder?: CustomBuilder
 	/**
 	 * 关闭前的回调函数，返回 false 可阻止关闭，支持返回 Promise
 	 */
@@ -224,7 +236,7 @@ class IBestDialogParams extends IBestDialogOption {
 		this.messageMaxHeight = option.messageMaxHeight
 		this.theme = option.theme
 		this.buttonSpace = option.buttonSpace
-		this.showConfirmButton = option.showConfirmButton
+		this.showConfirmButton = option.showConfirmButton !== undefined ? option.showConfirmButton : true
 		this.showCancelButton = option.showCancelButton
 		this.confirmButtonText = option.confirmButtonText
 		this.cancelButtonText = option.cancelButtonText
@@ -234,11 +246,11 @@ class IBestDialogParams extends IBestDialogOption {
 		this.cancelButtonBgColor = option.cancelButtonBgColor
 		this.buttonFontSize = option.buttonFontSize
 		this.confirmButtonLoading = option.confirmButtonLoading
-		this.showOverlay = option.showOverlay
+		this.showOverlay = option.showOverlay !== undefined ? option.showOverlay : true
 		this.showInSubWindow = option.showInSubWindow
 		this.overlayColor = option.overlayColor
 		this.closeOnClickOverlay = option.closeOnClickOverlay
-		this.closeOnBackPress = option.closeOnBackPress
+		this.closeOnBackPress = option.closeOnBackPress !== undefined ? option.closeOnBackPress : true
 		this.beforeClose = option.beforeClose
 		this.onCancel = option.onCancel
 		this.onConfirm = option.onConfirm
@@ -274,28 +286,24 @@ struct DialogContent{
 			this.option.onCancel()
 		}
 	}
-
 	build() {
 		IBestDialogView({
 			bgImage: this.option.bgImage,
-			titleBuilder: this.option.titleBuilder,
-			defaultBuilder: this.option.defaultBuilder,
-			footerBuilder: this.option.footerBuilder,
 			dialogWidth: $dialogWidth,
 			dialogBorderRadius: this.option.dialogBorderRadius,
 			title: this.option.title,
+			titleFontSize: this.option.titleFontSize,
 			titleColor: this.option.titleColor,
 			titlePaddingTop: this.option.titlePaddingTop,
 			titlePaddingX: this.option.titlePaddingX,
 			titleLineHeight: this.option.titleLineHeight,
-			titleFontSize: this.option.titleFontSize,
 			titleTextAlign: this.option.titleTextAlign,
 			message: this.option.message,
+			messageFontColor: this.option.messageFontColor,
+			messageFontSize: this.option.messageFontSize,
 			messagePaddingX: this.option.messagePaddingX,
 			messagePaddingTop: this.option.messagePaddingTop,
 			messagePaddingBottom: this.option.messagePaddingBottom,
-			messageFontColor: this.option.messageFontColor,
-			messageFontSize: this.option.messageFontSize,
 			messageLineHeight: this.option.messageLineHeight,
 			messageTextAlign: this.option.messageTextAlign,
 			messageMaxHeight: this.option.messageMaxHeight,
@@ -305,18 +313,26 @@ struct DialogContent{
 			showCancelButton: this.option.showCancelButton,
 			confirmButtonText: this.option.confirmButtonText,
 			cancelButtonText: this.option.cancelButtonText,
+			buttonFontSize: this.option.buttonFontSize,
 			confirmButtonColor: this.option.confirmButtonColor,
 			confirmButtonBgColor: this.option.confirmButtonBgColor,
 			cancelButtonColor: this.option.cancelButtonColor,
 			cancelButtonBgColor: this.option.cancelButtonBgColor,
-			buttonFontSize: this.option.buttonFontSize,
 			confirmButtonLoading: this.option.confirmButtonLoading,
 			cancelButtonLoading: this.option.cancelButtonLoading,
+			titleBuilder: this.option.titleBuilder,
+			defaultBuilder: this.option.defaultBuilder,
+			footerBuilder: this.option.footerBuilder,
 			onCancel: () => {
 				this.handleBtnClick('cancel')
 			},
 			onConfirm: () => {
 				this.handleBtnClick('confirm')
+			},
+			onClickOverlay: () => {
+				if(this.option.closeOnClickOverlay){
+					this.handleBtnClick('cancel')
+				}
 			}
 		})
 	}
@@ -332,6 +348,18 @@ interface DialogMapValue{
 	contentNode: ComponentContent<IBestDialogParams>
 	promptAction: PromptAction
 	params: IBestDialogParams
+}
+function getAlignment(type: string) {
+	switch (type) {
+		case 'center':
+			return DialogAlignment.Center
+		case 'top':
+			return DialogAlignment.Top
+		case 'bottom':
+			return DialogAlignment.Bottom
+		default:
+			return DialogAlignment.Center
+	}
 }
 /**
  * 弹窗管理器
@@ -357,9 +385,14 @@ class Dialog{
 			params: params
 		})
 		await promptAction.openCustomDialog(contentNode, {
-			alignment: DialogAlignment.Center,
+			alignment: getAlignment(params.alignment),
+			offset: {
+				dx: params.offsetX,
+				dy: params.offsetY
+			},
 			isModal: params.showOverlay,
 			maskColor: params.overlayColor,
+			keyboardAvoidMode: KeyboardAvoidMode.NONE,
 			onWillDismiss: async(dismissDialogAction: DismissDialogAction)=> {
 				// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
 				let reason = dismissDialogAction.reason

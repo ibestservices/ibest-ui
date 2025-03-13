@@ -107,6 +107,10 @@
 		{
 			"name": "ibest_text_collapse",
 			"value": "收起"
+		},
+		{
+			"name": "ibest_text_sum",
+			"value": "合计"
 		}
 	]
 }

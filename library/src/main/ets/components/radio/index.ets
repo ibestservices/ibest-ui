@@ -30,7 +30,7 @@ export struct IBestRadio {
 	/**
 	 * 选中状态颜色
 	 */
-	@Prop checkedColor: ResourceColor = ''
+	@Prop checkedColor: ResourceColor = this.baseStyle.primary as string
 	/**
 	 * 图标大小
 	 */
@@ -56,6 +56,16 @@ export struct IBestRadio {
 	 * 是否禁用复选框文本点击
 	 */
 	@Prop labelDisabled: boolean = false
+	/**
+	 * 背景色
+	 * @since 2.0.7
+	 */
+	@Prop bgColor: ResourceColor = ''
+	/**
+	 * 边框色
+	 * @since 2.0.7
+	 */
+	@Prop bdColor: ResourceColor = IBestRadioColor.borderColor
 	/**
 	 * 自定义文本插槽
 	 */
@@ -91,7 +101,7 @@ export struct IBestRadio {
 		if (this.disabled) {
 			return IBestRadioColor.borderColor
 		} else {
-			return this.isChecked && this.shape != 'dot' ? this.checkedColor || this.baseStyle.primary : ''
+			return this.isChecked && this.shape != 'dot' ? this.checkedColor : this.bgColor
 		}
 	}
 	/**
@@ -102,7 +112,7 @@ export struct IBestRadio {
 		if (this.disabled) {
 			return GRAY_COLOR.GRAY_5
 		} else {
-			return this.isChecked ? this.checkedColor || this.baseStyle.primary : IBestRadioColor.borderColor
+			return this.isChecked ? this.checkedColor : this.bdColor
 		}
 	}
 	/**
@@ -120,7 +130,7 @@ export struct IBestRadio {
 		if (this.disabled) {
 			return IBestRadioColor.disabledIconColor
 		} else {
-			return this.shape === 'dot' ? this.checkedColor || this.baseStyle.primary : IBestRadioColor.whiteColor
+			return this.shape === 'dot' ? this.checkedColor : IBestRadioColor.whiteColor
 		}
 	}
 	/**

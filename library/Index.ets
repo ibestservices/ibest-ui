@@ -129,6 +129,9 @@ export { IBestNoticeBar } from './src/main/ets/components/noticeBar/index'
 
 export { IBestProgress } from './src/main/ets/components/progress/index'
 
+export { IBestTable, IBestTableColumn } from './src/main/ets/components/table/index'
+export { IBestTableColumnData } from './src/main/ets/components/table/index.type'
+
 export { IBestCountDown } from './src/main/ets/components/countDown/index'
 export { IBestCountDownController } from './src/main/ets/components/countDown/index.type'
 

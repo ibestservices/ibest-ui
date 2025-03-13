@@ -40,6 +40,7 @@ struct PopupPage {
 	@State cusCloseIconVisible: boolean = false
 	@State centerCornerVisible: boolean = false
 	@State bottomCornerVisible: boolean = false
+	@State bgImageVisible: boolean = false
 	@State cusHeightVisible: boolean = false
 	@State eventVisible: boolean = false
 	@State safeAreaVisible: boolean = false
@@ -202,6 +203,20 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
+					ComponentShowContainer({ title: $r("app.string.background_image"), titlePaddingLeft: SPACE.MD }) {
+						IBestCellGroup({ inset: true }) {
+							IBestCell({
+								title: $r("app.string.background_image"),
+								isLink: true,
+								hasBorder: false,
+								onClickCell: () => {
+									this.bgImageVisible = true
+								}
+							})
+						}
+					}
+				}
+				ListItem() {
 					ComponentShowContainer({ title: $r("app.string.custom_dynamics", $r("app.string.height")), titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							IBestCell({
@@ -294,6 +309,14 @@ struct PopupPage {
 				visible: $bottomCornerVisible,
 				popupAlign: "bottom",
 				cornerRadius: 30
+			})
+			// 背景图片
+			IBestPopup({
+				visible: $bgImageVisible,
+				popupWidth: 300,
+				popupHeight: 200,
+				bgImage: "https://img1.baidu.com/it/u=1502587040,2600645085&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800",
+				contentBuilder: (): void => this.centerBuilder()
 			})
 			// 动态高度
 			IBestPopup({

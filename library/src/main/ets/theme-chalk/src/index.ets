@@ -21,6 +21,7 @@ export function getDefaultBaseStyle(): IBestUIBaseStyleObjType {
 		dangerOpacity: COLOR_OPACITY.DANGER,
 		spaceMini: convertDimensionsWidthUnit(SPACE.MINI),
 		spaceBase: convertDimensionsWidthUnit(SPACE.BASE),
+		spaceX: convertDimensionsWidthUnit(SPACE.X),
 		spaceXs: convertDimensionsWidthUnit(SPACE.XS),
 		spaceSm: convertDimensionsWidthUnit(SPACE.SM),
 		spaceMd: convertDimensionsWidthUnit(SPACE.MD),

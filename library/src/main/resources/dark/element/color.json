@@ -55,6 +55,14 @@
 		{
 			"name": "ibest_switch_background",
 			"value": "#272729"
+		},
+		{
+			"name": "ibest_table_cell_stripe_color",
+			"value": "$color:ibest_black"
+		},
+		{
+			"name": "ibest_table_footer_background",
+			"value": "#262727"
 		}
 	]
 }

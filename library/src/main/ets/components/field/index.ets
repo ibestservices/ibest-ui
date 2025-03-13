@@ -178,14 +178,6 @@ export struct IBestField{
      */
     @Provide({allowOverride: "validateMessage"}) validateMessage: string = ""
     /**
-     * 右侧按钮builder
-     */
-    @BuilderParam buttonBuilder?: CustomBuilder
-    /**
-     * 自定义右侧内容
-     */
-    @BuilderParam customRightContent?: CustomBuilder
-    /**
      * 执行格式化函数触发时机
      */
     @Provide({allowOverride: "formatTrigger"}) formatTrigger: FormatTriggerType = 'onchange'
@@ -269,6 +261,14 @@ export struct IBestField{
      * @since 2.0.7
      */
     @Provide({allowOverride: "suffixFontColor"}) suffixFontColor: ResourceColor = IBestFieldColor.suffixFontColor
+    /**
+     * 右侧按钮builder
+     */
+    @BuilderParam buttonBuilder?: CustomBuilder
+    /**
+     * 自定义右侧内容
+     */
+    @BuilderParam customRightContent?: CustomBuilder
     /**
      * 格式化函数
      */

@@ -54,6 +54,7 @@
 		"pages/PrivacyPolicy",
 		"pages/Doc",
 		"pages/MakePoster",
-		"pages/extend/ImageCropper"
+		"pages/extend/ImageCropper",
+		"pages/base/Table"
 	]
 }

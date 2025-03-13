@@ -241,6 +241,10 @@
 			"value": "Progress 进度条"
 		},
 		{
+			"name": "component_table",
+			"value": "Table 表格"
+		},
+		{
 			"name": "component_tag",
 			"value": "Tag 标签"
 		},
@@ -423,6 +427,10 @@
 		{
 			"name": "title",
 			"value": "标题"
+		},
+		{
+			"name": "background_image",
+			"value": "背景图片"
 		},
 		{
 			"name": "content",
