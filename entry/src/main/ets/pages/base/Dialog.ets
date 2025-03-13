@@ -54,7 +54,7 @@ struct DialogPage {
 					.fontColor(Color.Red)
 					.fontSize(12)
 			}
-		}.padding(SPACE.MD).height(700)
+		}.padding(SPACE.MD)
 	}
 	@Builder customComponentContent() {
 		Column() {

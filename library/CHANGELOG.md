@@ -2,9 +2,22 @@
 
 ## 2.0.7
 #### 新增:
+1. 适配国际化
+2. IBestHighlight 高亮文本组件;
+3. IBestTable 表格组件;1
+4. IBestButton iconPosition 增加 top bottom;
+5. IBestCheckbox 增加 bgColor bdColor 属性;
+6. IBestRadio 增加 bgColor bdColor 属性;
+7. IBestField 增加 prefix prefixFontColor suffix suffixFontColor 属性;
+8. IBestDialog 增加 bgImage 属性;
+9. IBestPopup 增加 bgImage 属性;
+10. IBestPullRefresh onRefresh 增加回调参数 direction。
 
 #### Bug修复:
+1. 修复日历组件在范围选择时未选日期确认后报错问题。
 
+#### 优化:
+1. IBestCalendar weekFirstDay 属性类型变更为number。
 
 ## 2.0.6
 #### 新增:

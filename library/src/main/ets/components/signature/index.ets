@@ -7,17 +7,16 @@ import { IBestButton } from '../button'
 import { IBestSignatureColor } from './color'
 import { IBestSignatureController } from './index.type'
 class Position {
-  isFirst: boolean;
-  isEnd: boolean;
-  x: number;
-  y: number;
-
-  constructor(isFirst: boolean, isEnd: boolean, x: number, y: number) {
-    this.isFirst = isFirst;
-    this.isEnd = isEnd;
-    this.x = x;
-    this.y = y;
-  }
+	isFirst: boolean
+	isEnd: boolean
+	x: number
+	y: number
+	constructor(isFirst: boolean, isEnd: boolean, x: number, y: number) {
+		this.isFirst = isFirst
+		this.isEnd = isEnd
+		this.x = x
+		this.y = y
+	}
 }
 @Component
 export struct IBestSignature{
@@ -138,54 +137,53 @@ export struct IBestSignature{
 		this.onConfirm(getComponentSnapshot(this.uiContext, `ibest_signature_${this.uniId}`))
 	}
 	// 生成预测点位
-  	generatePredictedPoints(p1: Position, p2: Position, numPoints: number = 3): Position[] {
-    	const dx = p2.x - p1.x;
-    	const dy = p2.y - p1.y;
-    	const angle = Math.atan2(dy, dx);
-    	const distance = Math.sqrt(dx * dx + dy * dy);
-    	const step = distance / (numPoints + 1);
-
-    	const predictedPoints: Position[] = [];
-    	for (let i = 1; i <= numPoints; i++) {
-      		const newX = p1.x + i * step * Math.cos(angle);
-      		const newY = p1.y + i * step * Math.sin(angle);
-      		predictedPoints.push(new Position(false, false, newX, newY));
-    	}
-    	return predictedPoints;
-  	}
-  	draw(){
-    	if(this.data.length > 3) {
-      		let ex = this.data[this.data.length - 1]
-      		if(ex.isFirst) {
-        		this.context.beginPath()
-        		this.context.moveTo(ex.x, ex.y)
-      		} else {
-      			if(this.predictionAssist) {
-        			const predictedPoints = this.generatePredictedPoints(
-          				this.data[this.data.length - 2],
-          				this.data[this.data.length - 1]
-        			)
-        			this.data.splice(this.data.length - 1, 0, ...predictedPoints)
-        		}
-
-        		let x = (this.data[this.data.length - 2].x + this.data[this.data.length - 1].x) / 2
-        		let y = (this.data[this.data.length - 2].y + this.data[this.data.length - 1].y) / 2
-        		this.context.quadraticCurveTo(this.data[this.data.length - 2].x, this.data[this.data.length - 2].y, x, y)
-        		this.context.stroke()
-      		}
-    	} else {
-      		this.data.forEach((res) => {
-        		if (res.isFirst) {
-          			this.context.beginPath()
-          			this.context.moveTo(res.x, res.y)
-        		} else {
-          			this.context.lineTo(res.x, res.y)
-          			if (res.isEnd) this.context.stroke()
-        		}
-      		})
-    	}
-  	}
-
+	generatePredictedPoints(p1: Position, p2: Position, numPoints: number = 3): Position[] {
+		const dx = p2.x - p1.x
+		const dy = p2.y - p1.y
+		const angle = Math.atan2(dy, dx)
+		const distance = Math.sqrt(dx * dx + dy * dy)
+		const step = distance / (numPoints + 1)
+		const predictedPoints: Position[] = []
+		for (let i = 1; i <= numPoints; i++) {
+			const newX = p1.x + i * step * Math.cos(angle)
+			const newY = p1.y + i * step * Math.sin(angle)
+			predictedPoints.push(new Position(false, false, newX, newY))
+		}
+		return predictedPoints
+	}
+	draw() {
+		if (this.data.length > 3) {
+			let ex = this.data[this.data.length - 1]
+			if (ex.isFirst) {
+				this.context.beginPath()
+				this.context.moveTo(ex.x, ex.y)
+			} else {
+				if (this.predictionAssist) {
+					const predictedPoints = this.generatePredictedPoints(
+						this.data[this.data.length - 2],
+						this.data[this.data.length - 1]
+					)
+					this.data.splice(this.data.length - 1, 0, ...predictedPoints)
+				}
+				let x = (this.data[this.data.length - 2].x + this.data[this.data.length - 1].x) / 2
+				let y = (this.data[this.data.length - 2].y + this.data[this.data.length - 1].y) / 2
+				this.context.quadraticCurveTo(this.data[this.data.length - 2].x, this.data[this.data.length - 2].y, x, y)
+				this.context.stroke()
+			}
+		} else {
+			this.data.forEach((res) => {
+				if (res.isFirst) {
+					this.context.beginPath()
+					this.context.moveTo(res.x, res.y)
+				} else {
+					this.context.lineTo(res.x, res.y)
+					if (res.isEnd) {
+						this.context.stroke()
+					}
+				}
+			})
+		}
+	}
 	build() {
 		Column() {
 			Row(){

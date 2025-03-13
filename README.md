@@ -1,16 +1,45 @@
-# IBest-UI
+<p align="center">
+    <img alt="logo" src="https://ibestservices.github.io/ibest-ui/AppScope/resources/base/media/app_logo_trans.png" 
+width="100">
+</p>
 
-## 简介
+<p align="center" style="font-size: 40px;font-weight: bold;">IBest-UI</p>
 
-IBest-UI是一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库, 完美兼容元服务。
+<p align="center">轻量、可定制的 HarmonyOS 组件库</p>
 
-![IBest-UI-Light](https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI-Light.png)
+<p align="center">
+    <a href="https://ibestui.ibestservices.com/">文档网站</a>
+    &nbsp;
+    ·
+    &nbsp;
+    <a href="https://github.com/ibestservices/ibest-ui">Github</a>
+</p>
 
-![IBest-UI-Dark](https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI-Dark.png)
+---
+
+## 介绍
+
+IBest-UI是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库, 完美兼容元服务。
+
+目前 ibestservices 官方推出了V1版本, V2版本正在路上!!!
+
+## 特性
+- 🚀 50+ 个高质量组件，覆盖移动端主流场景
+- 💪 单元测试覆盖率超过 90%，提供稳定性保障
+- 📖 提供丰富的中文文档和组件示例
+- 🍭 支持主题定制，内置 100+ 个主题变量
+- 🍭 支持深色模式
+- 🌍 支持国际化
+
+## 体验预览
+
+升级到 HarmonyOS NEXT 的手机, 可在应用商店搜索 `best`、`ibest` 关键字, 下载第一个名为 `IBest-UI` 的应用, 即可体验。
 
 ## 下载安装
 
-`ohpm install @ibestservices/ibest-ui`
+```ts
+ohpm install @ibestservices/ibest-ui
+```
 
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
@@ -93,21 +122,21 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 ## 需要权限
 ohos.permission.INTERNET
 
+## 官方生态
 
-## 文档地址
+| 项目        | 描述                                                              |                                                                                     |
+|:----------|:----------------------------------------------------------------|:------------------------------------------------------------------------------------|
+| area-data | 中国省市区数据，适用于鸿蒙 arkui的 TextPicker 和 IBest-ui 的 IBestCascader 等组件。 | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Farea-data">地址</a> |
 
-https://ibestui.ibestservices.com/
+## 链接
+- [Github](https://github.com/ibestservices/ibest-ui)
+- [Gitee](https://gitee.com/ibestservices/ibest-ui)
+- [更新日志](https://github.com/ibestservices/ibest-ui/releases)
 
+## 交流QQ群
+官方QQ群 953492584
 
-## 仓库地址
-
-https://github.com/ibestservices/ibest-ui   
-https://gitee.com/ibestservices/ibest-ui
-
-## IBest-UI 交流QQ群
-953492584
-
-![QQ群](https://ibestservices.github.io/ibest-ui/screenshot/QQ%E7%BE%A4.jpg)
+![QQ1群](https://ibestservices.github.io/ibest-ui/screenshot/QQ%E7%BE%A4.jpg)
 
 ## 微信群
 先进QQ群，拉你进微信群
