@@ -8,16 +8,18 @@ import { IBestImageCropperColor } from './color'
 import GlobalStore from '../../utils/GlobalStore'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { buffer } from '@kit.ArkTS'
+import { IBestStringNumber } from '../../model/Global.type'
+
 @Component
 export struct IBestImageCropper {
 	/**
 	 * 组件宽度
      */
-	@Prop componentWidth: number | string = "100%"
+	@Prop componentWidth: IBestStringNumber = "100%"
 	/**
 	 * 组件高度
      */
-	@Prop componentHeight: number | string = "100%"
+	@Prop componentHeight: IBestStringNumber = "100%"
 	/**
 	 * 背景色
      */
@@ -37,11 +39,11 @@ export struct IBestImageCropper {
 	/**
 	 * 裁剪区域宽度或直径
      */
-	@Prop centerWidth: number | string = "60%"
+	@Prop centerWidth: IBestStringNumber = "60%"
 	/**
 	 * 裁剪区域高度, 仅当shape为rect时有效
      */
-	@Prop centerHeight: number | string = "60%"
+	@Prop centerHeight: IBestStringNumber = "60%"
 	/**
 	 * 是否显示裁剪区域边框
      */

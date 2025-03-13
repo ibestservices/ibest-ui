@@ -1,7 +1,7 @@
 import { ComponentContent, PromptAction, UIObserver, window } from '@kit.ArkUI'
 import { IBestIcon } from '../components/icon'
 import { IBestLoading } from '../components/loading'
-import { LoadingIconType, WordBreakType } from '../model/Global.type'
+import { IBestStringNumber, LoadingIconType, WordBreakType } from '../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src/index'
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../utils/utils'
@@ -37,7 +37,7 @@ class ToastOption extends LoadingOption {
      * 自定义图标宽度
      * @since 1.18.0
      */
-    iconWidth?: number | string
+    iconWidth?: IBestStringNumber
     /**
      * 是否显示背景遮罩层
      */
@@ -49,7 +49,7 @@ class ToastOption extends LoadingOption {
     /**
      * 偏移量
      */
-    offsetY?: number | string
+    offsetY?: IBestStringNumber
     /**
      * toast打开后回调
      */

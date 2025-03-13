@@ -1,9 +1,12 @@
 import { emitter } from '../../utils/EventEmitter'
 import { COMPONENT_NAME, RADIO_GROUP_EVENT_NAME } from './index.type'
-import { getSizeByUnit, convertDimensionsWidthUnit, getEventName, sleep } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getEventName, getSizeByUnit, sleep } from '../../utils/utils'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestStringNumber } from '../../model/Global.type'
+
 @Component
 export struct IBestRadioGroup {
+	@State uniId: number = 0
 	/**
 	 * 分组标识
 	 */
@@ -12,7 +15,7 @@ export struct IBestRadioGroup {
 	 * 激活的标识列表
 	 * @since 2.0.1
 	 */
-	@Link @Watch("initRadio") active: string | number | boolean
+	@Link @Watch("initRadio") active: IBestStringNumber | boolean
 	/**
 	 * 排列方向
 	 * @since 2.0.1
@@ -22,7 +25,7 @@ export struct IBestRadioGroup {
 	 * 排列间距
 	 * @since 2.0.1
 	 */
-	@Prop space: number | string = convertDimensionsWidthUnit(12)
+	@Prop space: IBestStringNumber = convertDimensionsWidthUnit(12)
 	/**
 	 * 默认内容
 	 * @since 2.0.1
@@ -32,21 +35,26 @@ export struct IBestRadioGroup {
 	 * 选中变化的回调
 	 * @param name radio子组件的的name值
 	 */
-	onChange: (name: string | number | boolean) => void = () => {}
+	onChange: (name: IBestStringNumber | boolean) => void = () => {}
 
 	aboutToAppear() {
-		emitter.on(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE), (name: string | number | boolean): void => this.onItemChange(name))
-		sleep(50).then(() => {
-			this.initRadio()
-		})
+		this.uniId = this.getUniqueId()
+		if(this.group){
+			emitter.on(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.uniId, (name: IBestStringNumber | boolean): void => this.onItemChange(name))
+			sleep(50).then(() => {
+				this.initRadio()
+			})
+		}
 	}
 	aboutToDisappear() {
-		emitter.off(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE), (name: string | number | boolean): void => this.onItemChange(name))
+		if(this.group){
+			emitter.off(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.uniId)
+		}
 	}
 	initRadio() {
-		emitter.emit(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN), this.active)
+		emitter.emit(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.active)
 	}
-	onItemChange(name: string | number | boolean) {
+	onItemChange(name: IBestStringNumber | boolean) {
 		this.active = name
 		this.onChange(name)
 	}
@@ -57,14 +65,12 @@ export struct IBestRadioGroup {
 					this.defaultBuilder()
 				}
 			}
-			.width(CONTAINER_SIZE.FULL)
 		} else {
 			Column({ space: getSizeByUnit(this.space) }) {
 				if (this.defaultBuilder) {
 					this.defaultBuilder()
 				}
 			}
-			.width(CONTAINER_SIZE.FULL)
 			.alignItems(HorizontalAlign.Start)
 		}
 	}

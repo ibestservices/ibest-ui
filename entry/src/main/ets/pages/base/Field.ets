@@ -41,6 +41,8 @@ struct FieldPage {
     @State value20: string = ''
     @State value21: string = ''
     @State value22: string = ''
+    @State value23: string = ''
+    @State value24: string = ''
 
     @Builder sendCodeButton() {
         IBestButton({
@@ -164,6 +166,17 @@ struct FieldPage {
                             label: "文本",
                             hasBorder: false,
                             disabled: true
+                        })
+                    }
+                }
+                ListItem() {
+                    ComponentShowContainer({ title: '前后缀' }) {
+                        IBestField({
+                            value: $value23,
+                            label: "网址",
+                            prefix: "https://",
+                            suffix: ".com",
+                            hasBorder: false
                         })
                     }
                 }
@@ -327,7 +340,7 @@ struct FieldPage {
                 }
             }
             .layoutWeight(1)
-            .padding({left: SPACE.SM, right: SPACE.SM, bottom: SPACE.SM})
+            .padding({left: SPACE.SM, right: SPACE.SM})
         }
         .width(CONTAINER_SIZE.FULL)
         .height(CONTAINER_SIZE.FULL)

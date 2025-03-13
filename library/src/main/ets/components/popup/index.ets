@@ -5,12 +5,13 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestPopupColor } from './color'
 import { IBestIcon } from '../icon'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestStringNumber } from '../../model/Global.type'
 const popupDuration = 200
 const hideDuration = 220
 
 interface PopupSize{
-	width: string | number
-	height: string | number
+	width: IBestStringNumber
+	height: IBestStringNumber
 }
 
 @CustomDialog
@@ -20,8 +21,9 @@ struct IBestPopupBaseContent {
 	@StorageProp("IBestIsLandscape") @Watch("initSize") IBestIsLandscape: boolean = false
 	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
 	@StorageProp("IBestBottomBarHeight") bottomBarHeight: number = 0
-	@State transX: string | number = ""
-	@State transY: string | number = ""
+	// @StorageProp("IBestKeyBoardHeight") keyBoardHeight: number = 0
+	@State transX: IBestStringNumber = ""
+	@State transY: IBestStringNumber = ""
 	/**
 	 * 弹框显示位置
 	 */
@@ -29,11 +31,15 @@ struct IBestPopupBaseContent {
 	/**
 	 * 弹框宽度
 	 */
-	@Link popupWidth: string | number
+	@Link popupWidth: IBestStringNumber
 	/**
 	 * 弹框高度
 	 */
-	@Link popupHeight: string | number
+	@Link popupHeight: IBestStringNumber
+	/**
+	 * 背景图片
+     */
+	@Consume bgImage: ResourceStr
 	/**
 	 * 是否显示头部
 	 */
@@ -41,7 +47,7 @@ struct IBestPopupBaseContent {
 	/**
 	 * 背板的圆角半径
 	 */
-	@Link cornerRadius: number | string
+	@Link cornerRadius: IBestStringNumber
 	/**
 	 * 是否开启顶部安全区适配
 	 */
@@ -59,10 +65,19 @@ struct IBestPopupBaseContent {
 	 * 自定义内容
 	 */
 	@BuilderParam contentBuilder?: CustomBuilder
+	/**
+	 * 点击遮罩
+	 */
+	onClickOverlay: () => void = () => {}
 	close: () => void = () => {}
 	controller?: CustomDialogController
-
 	baseController: PopupBaseController = new PopupBaseController()
+	@Builder placeRow(){
+		Blank()
+			.onClick(() => {
+				this.onClickOverlay()
+			})
+	}
 
 	aboutToAppear(): void {
 		this.baseController.hide = (): void => this.init()
@@ -122,7 +137,10 @@ struct IBestPopupBaseContent {
 	}
 
 	build() {
-		Column(){
+		Row(){
+			if(this.popupAlign == 'center' || this.popupAlign == 'right'){
+				this.placeRow()
+			}
 			Column(){
 				if(this.isShowHeader){
 					if(this.headerBuilder){
@@ -140,6 +158,8 @@ struct IBestPopupBaseContent {
 			.width(getSizeByUnit(this.initSize().width))
 			.height(getSizeByUnit(this.initSize().height))
 			.backgroundColor(IBestPopupColor.bgColor)
+			.backgroundImage(this.bgImage)
+			.backgroundImageSize(ImageSize.FILL)
 			.padding({
 				top: this.safeAreaInsetTop && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
 					== "top") ? convertDimensionsWidthUnit(this.topAvoidHeight) : 0,
@@ -150,18 +170,22 @@ struct IBestPopupBaseContent {
 			.borderRadius(getSizeByUnit(this.cornerRadius))
 			.translate({
 				x: (this.popupAlign == "left" || this.popupAlign == "right") ? this.transX : "",
-				y: (this.popupAlign == "top" || this.popupAlign == 'bottom') ? this.transY : "" })
-			.animation({
-				duration: popupDuration,
-				curve: Curve.EaseInOut
+				y: (this.popupAlign == "top" || this.popupAlign == 'bottom') ? this.transY : ""
 			})
+			.animation({ duration: popupDuration, curve: Curve.EaseInOut })
 			.onAppear(() => {
 				setTimeout(() => {
 					this.trans()
 				}, 100)
 			})
+			if(this.popupAlign == 'center' || this.popupAlign == 'left'){
+				this.placeRow()
+			}
 		}
+		.width(['left', 'center', 'right'].includes(this.popupAlign) ? CONTAINER_SIZE.FULL : "")
 		.clip(true)
+		// .margin({bottom: this.keyBoardHeight})
+		// .animation({ duration: 430, curve: Curve.EaseInOut })
 	}
 }
 
@@ -178,11 +202,16 @@ export struct IBestPopup{
 	/**
 	 * 弹框宽度
 	 */
-	@Prop popupWidth: string | number = ""
+	@Prop popupWidth: IBestStringNumber = ""
 	/**
 	 * 弹框高度
 	 */
-	@Prop popupHeight: string | number = ""
+	@Prop popupHeight: IBestStringNumber = ""
+	/**
+	 * 背景图片
+	 * @since 2.0.7
+	 */
+	@Provide({allowOverride: "bgImage"}) bgImage: ResourceStr = ""
 	/**
 	 * 是否显示头部标题栏
 	 */
@@ -212,7 +241,7 @@ export struct IBestPopup{
 	/**
 	 * 背板的圆角半径
 	 */
-	@Prop cornerRadius: number | string = 0
+	@Prop cornerRadius: IBestStringNumber = 0
 	/**
 	 * 是否允许点击遮罩关闭
 	 */
@@ -270,7 +299,12 @@ export struct IBestPopup{
 			popupWidth: $popupWidth,
 			popupHeight: $popupHeight,
 			cornerRadius: $cornerRadius,
-			close: (): void => this.close()
+			close: (): void => this.close(),
+			onClickOverlay: () => {
+				if(this.closeOnClickOverlay){
+					this.close()
+				}
+			}
 		}),
 		alignment: this.popupAlign == "left" ? DialogAlignment.TopStart : this.popupAlign == "right" ?
 		DialogAlignment.TopEnd : this.popupAlign == "top" ? DialogAlignment.Top : this.popupAlign == "bottom" ?
@@ -279,6 +313,7 @@ export struct IBestPopup{
 		isModal: this.isModal,
 		maskColor: this.maskColor,
 		customStyle: true,
+		// keyboardAvoidMode: KeyboardAvoidMode.NONE,
 		onWillDismiss:(dismissDialogAction: DismissDialogAction)=> {
 			// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
 			let reason = dismissDialogAction.reason

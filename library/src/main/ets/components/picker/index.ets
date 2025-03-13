@@ -1,11 +1,12 @@
-import { clamp, convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils';
+import { clamp, convertDimensionsWidthUnit, getComponentsInfo, getResourceStr, getSizeByUnit } from '../../utils/utils';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { ColumnType, IBestPickerOption } from './index.type';
 import { IBestPickerColor } from './color';
+import { IBestStringNumber } from '../../model/Global.type';
 
-@Extend(Text) function pickerItemStyle(itemHeight: number | string, fontSize: number | string){
+@Extend(Text) function pickerItemStyle(itemHeight: IBestStringNumber, fontSize: IBestStringNumber){
 	.width(CONTAINER_SIZE.FULL)
 	.height(getSizeByUnit(itemHeight))
 	.padding({ left: getDefaultBaseStyle().spaceBase, right: getDefaultBaseStyle().spaceBase })
@@ -17,7 +18,7 @@ import { IBestPickerColor } from './color';
 	.textOverflow({ overflow: TextOverflow.Ellipsis })
 }
 
-@Extend(Text) function horizontalPickerItemStyle(itemWidth: number | string, fontSize: number | string){
+@Extend(Text) function horizontalPickerItemStyle(itemWidth: IBestStringNumber, fontSize: IBestStringNumber){
 	.width(getSizeByUnit(itemWidth))
 	.padding({ left: getDefaultBaseStyle().spaceBase, right: getDefaultBaseStyle().spaceBase })
 	.fontSize(getSizeByUnit(fontSize, true))
@@ -49,7 +50,7 @@ export struct IBestPicker{
 	/**
 	 * 当前选中的值
 	 */
-	@Link value: Array<string>
+	@Link value: IBestStringNumber[]
 	/**
 	 * 选项列表
 	 */
@@ -57,19 +58,19 @@ export struct IBestPicker{
 	/**
 	 * 标题
 	 */
-	@Provide({allowOverride: "title"}) title: string = ""
+	@Provide({allowOverride: "title"}) title: ResourceStr = ""
 	/**
 	 * 单项高度
 	 */
-	@Prop itemHeight: number | string = convertDimensionsWidthUnit(44)
+	@Prop itemHeight: IBestStringNumber = convertDimensionsWidthUnit(44)
 	/**
 	 * 确认按钮文字
 	 */
-	@Provide({allowOverride: "confirmText"}) confirmText: string = "确定"
+	@Provide({allowOverride: "confirmText"}) confirmText: ResourceStr = $r("app.string.ibest_text_confirm")
 	/**
 	 * 取消按钮文字
 	 */
-	@Provide({allowOverride: "cancelText"}) cancelText: string = "取消"
+	@Provide({allowOverride: "cancelText"}) cancelText: ResourceStr = $r("app.string.ibest_text_cancel")
 	/**
 	 * 是否显示顶部栏
 	 */
@@ -87,21 +88,21 @@ export struct IBestPicker{
 	 * 单项宽度, 仅横向时生效
 	 * @since 2.0.0
      */
-	@Prop itemWidth: number | string = convertDimensionsWidthUnit(44)
+	@Prop itemWidth: IBestStringNumber = convertDimensionsWidthUnit(44)
 	/**
 	 * 整体高度, 仅横向时生效
 	 * @since 2.0.0
      */
-	@Prop contentHeight: number | string = convertDimensionsWidthUnit(44)
+	@Prop contentHeight: IBestStringNumber = convertDimensionsWidthUnit(44)
 	/**
 	 * 选项字体大小
 	 * @since 2.0.0
      */
-	@Prop optionFontSize: number | string = this.baseStyle.fontSizeLg as string
+	@Prop optionFontSize: IBestStringNumber = this.baseStyle.fontSizeLg as string
 	/**
 	 * 确认按钮点击事件
 	 */
-	onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => void = () => {}
+	onConfirm: (selectedValues: IBestStringNumber[], selectTexts: string[]) => void = () => {}
 	/**
 	 * 取消按钮点击事件
 	 */
@@ -109,13 +110,13 @@ export struct IBestPicker{
 	/**
 	 * 选中项改变事件
 	 */
-	onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => void = () => {}
+	onChange: (selectedValues: IBestStringNumber[], selectTexts: string[], columnIndex: number) => void = () => {}
 
 	@State uniId: number = 0
 	// 列表类型
 	@State columnType: ColumnType = "multiple"
 	// 每列选中索引
-	@State indexArr: Array<number> = []
+	@State indexArr: number[] = []
 	// 触摸滑动相关参数
 	@State touchStartTime: number = 0
 	@State startOffset: number = 0
@@ -342,7 +343,7 @@ export struct IBestPicker{
 		}
 	}
 	// 初始化value
-	initWithEmptyValue(arr: string[], children: IBestPickerOption[]){
+	initWithEmptyValue(arr: IBestStringNumber[], children: IBestPickerOption[]){
 		if(children && children.length){
 			this.columns.push(children)
 			arr.push(children[0].value)
@@ -502,7 +503,7 @@ export struct IBestPicker{
 	}
 	// 根据索引获取值 文字
 	getTextByIndex(): string[]{
-		return this.columns.map((item, index) => item[this.indexArr[index]].text)
+		return this.columns.map((item, index) => getResourceStr(item[this.indexArr[index]].text))
 	}
 
 	build() {
@@ -535,11 +536,11 @@ export struct IBestPicker{
 @Component
 struct PickerHeader{
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@Consume cancelText: string
-	@Consume confirmText: string
-	@Consume title: string
-	@Prop value: string[]
-	onConfirm: (value: string[], text: string[]) => void = () => {}
+	@Consume cancelText: ResourceStr
+	@Consume confirmText: ResourceStr
+	@Consume title: ResourceStr
+	@Prop value: IBestStringNumber[]
+	onConfirm: (value: IBestStringNumber[], text: string[]) => void = () => {}
 	onCancel: () => void = () => {}
 	getTextByIndex: () => string[] = () => []
 	build() {

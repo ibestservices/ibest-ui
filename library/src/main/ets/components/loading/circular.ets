@@ -1,6 +1,7 @@
 import { UIContext } from '@ohos.arkui.UIContext';
-import { IBestGlobalConfig } from '../../model/Global.type';
+import { IBestGlobalConfig, IBestStringNumber } from '../../model/Global.type';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 class Point {
 	x: number
@@ -35,7 +36,7 @@ export struct IBestLoadingCircular {
 	/**
 	 * loading的尺寸
 	 */
-	@Prop circularSize: number | string = convertDimensionsWidthUnit(30)
+	@Prop circularSize: IBestStringNumber = convertDimensionsWidthUnit(30)
 	/**
 	 * loading的颜色
 	 */
@@ -94,7 +95,7 @@ export struct IBestLoadingCircular {
 	}
 	build() {
 		Row() {
-			Circle({ width: "100%", height: "100%" })
+			Circle({ width: CONTAINER_SIZE.FULL, height: CONTAINER_SIZE.FULL })
 				.fill("transparent")
 				.strokeWidth(this.strokeWidth)
 				.stroke(this.color)

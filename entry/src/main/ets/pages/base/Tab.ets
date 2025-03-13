@@ -1,4 +1,12 @@
-import { IBestButton, IBestNavBar, IBestTabController, IBestTabItem, IBestTabItemType, IBestTabs, IBestToast } from '@ibestservices/ibest-ui'
+import {
+    IBestButton,
+    IBestNavBar,
+    IBestTabController,
+    IBestTabItem,
+    IBestTabItemType,
+    IBestTabs,
+    IBestToast
+} from '@ibestservices/ibest-ui'
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../../assets/global.type'
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
@@ -240,7 +248,7 @@ struct TabPage {
                         IBestTabs({
                             tabsList: this.tabsList,
                             currentName: $curTabName4,
-                            onChange: (name: string) => {
+                            onChange: name => {
                                 IBestToast.show("当前点击的是：" + name)
                             }
                         })

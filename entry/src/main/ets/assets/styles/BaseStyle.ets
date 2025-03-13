@@ -7,6 +7,7 @@ interface ModeColor {
 	bg3: ResourceColor
 	active: ResourceColor
 	primaryColor: ResourceColor
+	white: ResourceColor
 	textColor: ResourceColor
 	textColor2: ResourceColor
 	textColor4: ResourceColor
@@ -21,6 +22,7 @@ export const modeColor: ModeColor = {
 	bg3: $r("app.color.doc_background_3"),
 	active: $r("app.color.doc_active_color"),
 	primaryColor: $r("app.color.doc_primary_color"),
+	white: $r("app.color.white"),
 	textColor: $r("app.color.doc_text_color_1"),
 	textColor2: $r("app.color.doc_text_color_2"),
 	textColor4: $r("app.color.doc_text_color_4"),

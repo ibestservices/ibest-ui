@@ -12,7 +12,7 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { LengthUnit } from '@kit.ArkUI'
 import { IBestSliderValue } from './index.type'
-import { IBestGlobalConfig } from '../../model/Global.type'
+import { IBestGlobalConfig, IBestStringNumber } from '../../model/Global.type'
 import { IBestSliderColor } from './color'
 
 @Component
@@ -47,7 +47,7 @@ export struct IBestSlider{
 	/**
 	 * 进度条高度
 	 */
-	@Prop barHeight: number | string = convertDimensionsWidthUnit(2)
+	@Prop barHeight: IBestStringNumber = convertDimensionsWidthUnit(2)
 	/**
 	 * 滑块大小
 	 */
@@ -288,7 +288,7 @@ struct DragBar{
 	@Prop uniId: number
 	@Consume buttonWidth: number
 	@Consume buttonHeight: number
-	@Consume buttonSize: number | string
+	@Consume buttonSize: IBestStringNumber
 	@Consume buttonBgColor: ResourceColor
 	@Consume vertical: boolean
 	@Consume reverse: boolean

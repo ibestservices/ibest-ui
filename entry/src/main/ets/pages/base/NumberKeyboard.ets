@@ -129,9 +129,10 @@ struct NumberKeyboardPage {
 			IBestNumberKeyboard({
 				visible: $visible4,
 				value: $value4,
+				deleteButtonText: "删除",
 				styleType: "custom",
 				extraKey: ['00', '.'],
-				closeBtnText: "完成"
+				closeBtnText: "确定"
 			})
 			IBestNumberKeyboard({
 				visible: $visible5,

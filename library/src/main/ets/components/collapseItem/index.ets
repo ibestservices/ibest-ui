@@ -1,3 +1,4 @@
+import { IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
@@ -20,7 +21,7 @@ export struct IBestCollapseItem {
     /**
      * 唯一标识符
      */
-    @Prop name: string = ""
+    @Prop name: IBestStringNumber = ""
     /**
      * 索引
      */
@@ -36,7 +37,7 @@ export struct IBestCollapseItem {
     /**
      * 标题栏左侧图标大小
      */
-    @Prop iconSize: number | string = convertDimensionsWidthUnit(16)
+    @Prop iconSize: IBestStringNumber = convertDimensionsWidthUnit(16)
     /**
      * 标题
      */
@@ -48,7 +49,7 @@ export struct IBestCollapseItem {
     /**
      * 标题文字大小
      */
-    @Prop titleFontSize: number | string = this.baseStyle.fontSizeMd as string
+    @Prop titleFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
     /**
      * 标题栏右侧内容
      */
@@ -60,7 +61,7 @@ export struct IBestCollapseItem {
     /**
      * 标题右侧文字大小
      */
-    @Prop valueFontSize: number | string = this.baseStyle.fontSizeMd as string
+    @Prop valueFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
     /**
      * 是否显示内边框
      */
@@ -89,19 +90,22 @@ export struct IBestCollapseItem {
         this.uniId = this.getUniqueId()
         this.getContentHeight()
         if(this.groupId){
-            emitter.emit(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME), this.name, this.disabled || this.readOnly)
-            emitter.on(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.INIT_ITEM), (activeNames: string | string[]): void => this.changeState(activeNames))
+            emitter.emit(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME, this.groupId), this.name, this.disabled || this.readOnly)
+            emitter.on(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId, (activeNames: IBestStringNumber | IBestStringNumber[]): void => this.changeState(activeNames))
         }
     }
     aboutToDisappear(): void {
         if(this.groupId){
-            emitter.off(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.INIT_ITEM), (activeNames: string | string[]): void => this.changeState(activeNames))
+            emitter.off(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId)
         }
     }
     getIsDisabled(){
         return this.disabled || this.readOnly
     }
-    changeState(activeNames: string | string[]){
+    changeState(activeNames: IBestStringNumber | IBestStringNumber[]){
+        if(typeof activeNames == 'number'){
+            activeNames = activeNames.toString()
+        }
         this.isExpand = typeof activeNames == "string" ? activeNames == this.name : activeNames.includes(this.name)
     }
     getContentHeight(){
@@ -119,7 +123,7 @@ export struct IBestCollapseItem {
 
     toggle(){
         this.isExpand = !this.isExpand
-        emitter.emit(getEventName(COMPONENT_NAME, this.groupId, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE), this.name, this.isExpand)
+        emitter.emit(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE, this.groupId), this.name, this.isExpand)
     }
 
     build() {

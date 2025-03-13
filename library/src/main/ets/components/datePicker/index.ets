@@ -1,12 +1,14 @@
 import dayjs from '@hview/dayjs'
 import { IBestPicker } from '../picker'
 import { IBestPickerOption } from '../picker/index.type'
-import { DatePickerColumnType, IBestDatePickerResultType, DATE_PICKER_EVENT_NAME,
-	COMPONENT_NAME } from './index.type'
+import { COMPONENT_NAME, DATE_PICKER_EVENT_NAME, DatePickerColumnType, IBestDatePickerResultType } from './index.type'
 import { emitter } from '../../utils/EventEmitter'
-import { clamp, convertDimensionsWidthUnit, getEventName } from '../../utils/utils'
+import { clamp, convertDimensionsWidthUnit, getEventName, getResourceStr } from '../../utils/utils'
+import { IBestStringNumber } from '../../model/Global.type'
+
 @Component
 export struct IBestDatePicker {
+    @StorageProp("IBestLanguage") @Watch("init") IBestLanguage: string = "zh"
 	/**
 	 * 分组id
 	 */
@@ -18,7 +20,7 @@ export struct IBestDatePicker {
 	/**
 	 * 已选择的值
 	 */
-	@Link value: Array<string>
+	@Link value: string[]
 	/**
 	 * 选项列表
 	 */
@@ -36,7 +38,7 @@ export struct IBestDatePicker {
 	 */
 	@Prop isShowDay: boolean = true
 	// 列表类型
-	@State listType: Array<DatePickerColumnType> = ["year", "month", "day"]
+	@State listType: DatePickerColumnType[] = ["year", "month", "day"]
 	/**
 	 * 是否显示单位
 	 */
@@ -48,15 +50,15 @@ export struct IBestDatePicker {
 	/**
 	 * 单项高度
 	 */
-	@Prop itemHeight: number | string = convertDimensionsWidthUnit(44)
+	@Prop itemHeight: IBestStringNumber = convertDimensionsWidthUnit(44)
 	/**
 	 * 确认按钮文字
 	 */
-	@Prop confirmText: string = "确定"
+	@Prop confirmText: ResourceStr = $r("app.string.ibest_text_confirm")
 	/**
 	 * 取消按钮文字
 	 */
-	@Prop cancelText: string = "取消"
+	@Prop cancelText: ResourceStr = $r("app.string.ibest_text_cancel")
 	/**
 	 * 是否显示顶部栏
 	 */
@@ -74,21 +76,21 @@ export struct IBestDatePicker {
 	 * 单项宽度, 仅横向时生效
 	 * @since 2.0.0
 	 */
-	@Prop itemWidth: number | string
+	@Prop itemWidth: IBestStringNumber
 	/**
 	 * 高度, 仅横向时生效
 	 * @since 2.0.0
 	 */
-	@Prop contentHeight: number | string
+	@Prop contentHeight: IBestStringNumber
 	/**
 	 * 选项字体大小
 	 * @since 2.0.0
 	 */
-	@Prop optionFontSize: number | string
+	@Prop optionFontSize: IBestStringNumber
 	/**
 	 * 过滤器
 	 */
-	filter: (type: DatePickerColumnType, options: IBestPickerOption[]) => IBestPickerOption[] = (type: DatePickerColumnType, options: IBestPickerOption[]) => options
+	filter: (type: DatePickerColumnType, options: IBestPickerOption[]) => IBestPickerOption[] = (type, options) => options
 	/**
 	 * 确认按钮点击事件
 	 */
@@ -107,12 +109,12 @@ export struct IBestDatePicker {
 		this.init()
 		if(this.groupId){
 			// 监听日期picker变化
-			emitter.on(getEventName(COMPONENT_NAME, this.groupId, DATE_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>): void => this.handleGroupChange(uniId, selectedValues))
+			emitter.on(getEventName(COMPONENT_NAME, DATE_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId),this.uniId, (uniId: number, selectedValues: string[]): void => this.handleGroupChange(uniId, selectedValues))
 		}
 	}
 	aboutToDisappear(): void {
 		if(this.groupId) {
-			emitter.off(getEventName(COMPONENT_NAME, this.groupId, DATE_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>): void => this.handleGroupChange(uniId, selectedValues))
+			emitter.off(getEventName(COMPONENT_NAME, DATE_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId), this.uniId)
 		}
 	}
 	// 初始化
@@ -123,8 +125,8 @@ export struct IBestDatePicker {
 		}
 		this.listType.forEach((item,index) => {
 			let list = item == "year" ? this.getYearsList() : item == "month" ? this.getMonthsList() : this.getDaysList()
-			let min = list[0].value
-			let max = list[list.length-1].value
+			let min = list[0].value.toString()
+			let max = list[list.length-1]
 			let newValue = this.value[index] || min
 			let i = list.findIndex((item) => item.value == newValue)
 			if(i == -1){
@@ -165,33 +167,33 @@ export struct IBestDatePicker {
 		}
 	}
 	// 获取年份列表
-	getYearsList(): Array<IBestPickerOption> {
-		let yearsList: Array<IBestPickerOption> = []
+	getYearsList(): IBestPickerOption[] {
+		let yearsList: IBestPickerOption[] = []
 		for(let i = this.minDate.getFullYear(); i <= this.maxDate.getFullYear(); i++){
 			yearsList.push({
 				value: i + "",
-				text: i + (this.showUnit ? "年" : "")
+				text: i + (this.showUnit ? getResourceStr($r("app.string.ibest_year")) : "")
 			})
 		}
 		return this.filter("year", yearsList)
 	}
 	// 获取月份列表
-	getMonthsList(): Array<IBestPickerOption> {
-		let monthsList: Array<IBestPickerOption> = []
+	getMonthsList(): IBestPickerOption[] {
+		let monthsList: IBestPickerOption[] = []
 		let year = this.getValue("year")
 		let minMonth = this.isMinYear(year) ? this.minDate.getMonth() + 1 : 1
 		let maxMonth = this.isMaxYear(year) ? this.maxDate.getMonth() + 1 : 12
 		for(let i = minMonth; i <= maxMonth; i++){
 			monthsList.push({
 				value: this.formatValue(i),
-				text: this.formatValue(i) + (this.showUnit ? "月" : "")
+				text: this.formatValue(i) + (this.showUnit ? getResourceStr($r("app.string.ibest_month")) : "")
 			})
 		}
 		return this.filter("month", monthsList)
 	}
 	// 获取日期列表
-	getDaysList(): Array<IBestPickerOption> {
-		let daysList: Array<IBestPickerOption> = []
+	getDaysList(): IBestPickerOption[] {
+		let daysList: IBestPickerOption[] = []
 		let year = this.getValue("year")
 		let month = this.getValue("month")
 		let minDay = this.isMinYear(year) && this.isMinMonth(month) ? this.minDate.getDate() : 1
@@ -200,7 +202,7 @@ export struct IBestDatePicker {
 		for(let i = minDay; i <= maxDay; i++){
 			daysList.push({
 				value: this.formatValue(i),
-				text: this.formatValue(i) + (this.showUnit ? "日" : "")
+				text: this.formatValue(i) + (this.showUnit ? getResourceStr($r("app.string.ibest_day")) : "")
 			})
 		}
 		return this.filter("day", daysList)
@@ -212,7 +214,7 @@ export struct IBestDatePicker {
 		}
 		this.onChange(this.getResult())
 		if(this.groupId) {
-			emitter.emit(getEventName(COMPONENT_NAME, this.groupId, DATE_PICKER_EVENT_NAME.COLUMN_CHANGE), this.uniId, this.value)
+			emitter.emit(getEventName(COMPONENT_NAME, DATE_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId), this.uniId, this.value)
 		}
 	}
 	// 获取组件结果
@@ -231,9 +233,8 @@ export struct IBestDatePicker {
 		return result
 	}
 	// 处理同组日期变化
-	handleGroupChange(uniId: number, selectedValues: Array<string>) {
+	handleGroupChange(uniId: number, selectedValues: string[]) {
 		if(this.uniId > uniId){
-			// console.log("监听到同组前一个datePicker值变化", `当前组件${this.uniId}`, uniId, selectedValues.join("-"))
 			let selectDate = dayjs(selectedValues.join("-")).toDate()
 			this.minDate = dayjs(selectedValues.join("-")).toDate()
 			if(selectDate > dayjs(this.maxDate).toDate() || selectDate < dayjs(this.minDate).toDate()){
@@ -264,7 +265,7 @@ export struct IBestDatePicker {
 			onCancel: () => {
 				this.onCancel()
 			},
-			onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => {
+			onChange: (selectedValues, selectTexts, columnIndex) => {
 				this.changeColumn(columnIndex)
 			}
 		})

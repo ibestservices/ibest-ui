@@ -1,8 +1,116 @@
 {
-  "string": [
-    {
-      "name": "page_show",
-      "value": "page from package"
-    }
-  ]
+	"string": [
+		{
+			"name": "ibest_calendar_monday",
+			"value": "一"
+		},
+		{
+			"name": "ibest_calendar_tuesday",
+			"value": "二"
+		},
+		{
+			"name": "ibest_calendar_wednesday",
+			"value": "三"
+		},
+		{
+			"name": "ibest_calendar_thursday",
+			"value": "四"
+		},
+		{
+			"name": "ibest_calendar_friday",
+			"value": "五"
+		},
+		{
+			"name": "ibest_calendar_saturday",
+			"value": "六"
+		},
+		{
+			"name": "ibest_calendar_sunday",
+			"value": "日"
+		},
+		{
+			"name": "ibest_calendar_clocked",
+			"value": "已打卡"
+		},
+		{
+			"name": "ibest_calendar_unclock",
+			"value": "未打卡"
+		},
+		{
+			"name": "ibest_text_confirm",
+			"value": "确定"
+		},
+		{
+			"name": "ibest_text_cancel",
+			"value": "取消"
+		},
+		{
+			"name": "ibest_maximum_limit",
+			"value": "最多选择%d天"
+		},
+		{
+			"name": "ibest_please_select",
+			"value": "请选择"
+		},
+		{
+			"name": "ibest_custom_select",
+			"value": "选择%s"
+		},
+		{
+			"name": "ibest_year",
+			"value": "年"
+		},
+		{
+			"name": "ibest_month",
+			"value": "月"
+		},
+		{
+			"name": "ibest_day",
+			"value": "日"
+		},
+		{
+			"name": "ibest_text_complete",
+			"value": "完成"
+		},
+		{
+			"name": "ibest_text_clear",
+			"value": "清空"
+		},
+		{
+			"name": "ibest_upload_failed",
+			"value": "上传失败"
+		},
+		{
+			"name": "ibest_uploading",
+			"value": "上传中..."
+		},
+		{
+			"name": "ibest_text_pulling",
+			"value": "下拉即可刷新..."
+		},
+		{
+			"name": "ibest_text_loosing",
+			"value": "释放即可刷新..."
+		},
+		{
+			"name": "ibest_text_loading",
+			"value": "加载中..."
+		},
+		{
+			"name": "ibest_text_slidingUp",
+			"value": "上滑即可加载..."
+		},
+		{
+			"name": "ibest_text_expand",
+			"value": "展开"
+		},
+		{
+			"name": "ibest_text_collapse",
+			"value": "收起"
+		},
+		{
+			"name": "ibest_text_sum",
+			"value": "合计"
+		}
+	]
 }

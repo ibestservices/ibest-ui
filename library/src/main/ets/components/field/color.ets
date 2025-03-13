@@ -6,6 +6,8 @@ interface IBestFieldColorType {
     borderColor: ResourceColor
     activeColor: ResourceColor
     bg2: ResourceColor
+    prefixFontColor: ResourceColor,
+    suffixFontColor: ResourceColor
 }
 
 export const IBestFieldColor: IBestFieldColorType = {
@@ -15,5 +17,7 @@ export const IBestFieldColor: IBestFieldColorType = {
     rightIconColor: $r("app.color.ibest_field_right_icon_color"),
     borderColor: $r("app.color.ibest_field_border_color"),
     activeColor: $r("app.color.ibest_field_active_color"),
-    bg2: $r("app.color.ibest_field_background")
+    bg2: $r("app.color.ibest_field_background"),
+    prefixFontColor: $r("app.color.ibest_field_prefix_font_color"),
+    suffixFontColor: $r("app.color.ibest_field_suffix_font_color")
 }

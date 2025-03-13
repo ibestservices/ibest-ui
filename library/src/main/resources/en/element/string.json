@@ -1,0 +1,116 @@
+{
+	"string": [
+		{
+			"name": "ibest_calendar_monday",
+			"value": "Mon"
+		},
+		{
+			"name": "ibest_calendar_tuesday",
+			"value": "Tue"
+		},
+		{
+			"name": "ibest_calendar_wednesday",
+			"value": "Wed"
+		},
+		{
+			"name": "ibest_calendar_thursday",
+			"value": "Thu"
+		},
+		{
+			"name": "ibest_calendar_friday",
+			"value": "Fri"
+		},
+		{
+			"name": "ibest_calendar_saturday",
+			"value": "Sat"
+		},
+		{
+			"name": "ibest_calendar_sunday",
+			"value": "Sun"
+		},
+		{
+			"name": "ibest_calendar_clocked",
+			"value": "clocked"
+		},
+		{
+			"name": "ibest_calendar_unclock",
+			"value": "unclock"
+		},
+		{
+			"name": "ibest_text_confirm",
+			"value": "Confirm"
+		},
+		{
+			"name": "ibest_text_cancel",
+			"value": "Cancel"
+		},
+		{
+			"name": "ibest_maximum_limit",
+			"value": "No more than %d days at most"
+		},
+		{
+			"name": "ibest_please_select",
+			"value": "please select"
+		},
+		{
+			"name": "ibest_custom_select",
+			"value": "select %s"
+		},
+		{
+			"name": "ibest_year",
+			"value": " Year"
+		},
+		{
+			"name": "ibest_month",
+			"value": " Month"
+		},
+		{
+			"name": "ibest_day",
+			"value": " Day"
+		},
+		{
+			"name": "ibest_text_complete",
+			"value": "Close"
+		},
+		{
+			"name": "ibest_text_clear",
+			"value": "Clear"
+		},
+		{
+			"name": "ibest_upload_failed",
+			"value": "Failed"
+		},
+		{
+			"name": "ibest_uploading",
+			"value": "Uploading"
+		},
+		{
+			"name": "ibest_text_pulling",
+			"value": "Pull down to refresh"
+		},
+		{
+			"name": "ibest_text_loosing",
+			"value": "Release to refresh"
+		},
+		{
+			"name": "ibest_text_loading",
+			"value": "Loading"
+		},
+		{
+			"name": "ibest_text_slidingUp",
+			"value": "Slide up to refresh"
+		},
+		{
+			"name": "ibest_text_expand",
+			"value": "expand"
+		},
+		{
+			"name": "ibest_text_collapse",
+			"value": "collapse"
+		},
+		{
+			"name": "ibest_text_sum",
+			"value": "Sum"
+		}
+	]
+}

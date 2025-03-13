@@ -1,8 +1,616 @@
 {
-  "string": [
-    {
-      "name": "module_desc",
-      "value": "desc"
-    }
-  ]
+	"string": [
+		{
+			"name": "tab_bar_basic",
+			"value": "基础组件"
+		},
+		{
+			"name": "tab_bar_basic_desc",
+			"value": "以下为IBest-UI基础组件"
+		},
+		{
+			"name": "tab_bar_extend",
+			"value": "扩展组件"
+		},
+		{
+			"name": "tab_bar_extend_desc",
+			"value": "以下为IBest-UI扩展组件，持续更新中..."
+		},
+		{
+			"name": "tab_view_doc",
+			"value": "文档详见"
+		},
+		{
+			"name": "tab_bar_about",
+			"value": "关于"
+		},
+		{
+			"name": "ibest_ui_desc",
+			"value": "一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库"
+		},
+		{
+			"name": "app_version",
+			"value": "应用版本"
+		},
+		{
+			"name": "ui_version",
+			"value": "当前版本"
+		},
+		{
+			"name": "ui_doc",
+			"value": "组件库文档"
+		},
+		{
+			"name": "company_official_website",
+			"value": "公司官网"
+		},
+		{
+			"name": "privacy_policy",
+			"value": "隐私政策"
+		},
+		{
+			"name": "copy_right",
+			"value": "版权所有 © 2025-2026 安徽百得思维信息科技有限公司保留一切权利"
+		},
+		{
+			"name": "basic_component",
+			"value": "基础组件"
+		},
+		{
+			"name": "form_component",
+			"value": "表单组件"
+		},
+		{
+			"name": "action_component",
+			"value": "反馈组件"
+		},
+		{
+			"name": "display_component",
+			"value": "展示组件"
+		},
+		{
+			"name": "navigation_component",
+			"value": "导航组件"
+		},
+		{
+			"name": "component_button",
+			"value": "Button 按钮"
+		},
+		{
+			"name": "component_cell",
+			"value": "Cell 单元格"
+		},
+		{
+			"name": "component_icon",
+			"value": "Icon 图标"
+		},
+		{
+			"name": "component_popup",
+			"value": "Popup 弹出层"
+		},
+		{
+			"name": "component_theme",
+			"value": "Theme 主题"
+		},
+		{
+			"name": "component_toast",
+			"value": "Toast 轻提示"
+		},
+		{
+			"name": "component_calendar",
+			"value": "Calendar 日历"
+		},
+		{
+			"name": "component_cascader",
+			"value": "Cascader 级联选择"
+		},
+		{
+			"name": "component_checkbox",
+			"value": "Checkbox 复选框"
+		},
+		{
+			"name": "component_datePicker",
+			"value": "DatePicker 日期选择"
+		},
+		{
+			"name": "component_field",
+			"value": "Field 输入框"
+		},
+		{
+			"name": "component_form",
+			"value": "Form 表单"
+		},
+		{
+			"name": "component_numberKeyboard",
+			"value": "NumberKeyboard 数字键盘"
+		},
+		{
+			"name": "component_passwordInput",
+			"value": "PasswordInput 密码输入框"
+		},
+		{
+			"name": "component_picker",
+			"value": "Picker 选择器"
+		},
+		{
+			"name": "component_pickerGroup",
+			"value": "PickerGroup 选择器组"
+		},
+		{
+			"name": "component_radio",
+			"value": "Radio 单选框"
+		},
+		{
+			"name": "component_rate",
+			"value": "Rate 评分"
+		},
+		{
+			"name": "component_search",
+			"value": "Search 搜索"
+		},
+		{
+			"name": "component_slider",
+			"value": "Slider 滑块"
+		},
+		{
+			"name": "component_signature",
+			"value": "Signature 签名"
+		},
+		{
+			"name": "component_stepper",
+			"value": "Stepper 步进器"
+		},
+		{
+			"name": "component_switch",
+			"value": "Switch 开关"
+		},
+		{
+			"name": "component_timePicker",
+			"value": "TimePicker 时间选择"
+		},
+		{
+			"name": "component_uploader",
+			"value": "Uploader 文件上传"
+		},
+		{
+			"name": "component_actionSheet",
+			"value": "ActionSheet 动作面板"
+		},
+		{
+			"name": "component_dialog",
+			"value": "Dialog 对话框"
+		},
+		{
+			"name": "component_loading",
+			"value": "Loading 加载"
+		},
+		{
+			"name": "component_notify",
+			"value": "Notify 消息通知"
+		},
+		{
+			"name": "component_pullRefresh",
+			"value": "PullRefresh 下拉刷新"
+		},
+		{
+			"name": "component_swipeCell",
+			"value": "SwipeCell 滑动单元格"
+		},
+		{
+			"name": "component_badge",
+			"value": "Badge 徽标"
+		},
+		{
+			"name": "component_circleprogress",
+			"value": "CircleProgress 环形进度条"
+		},
+		{
+			"name": "component_collapse",
+			"value": "Collapse 折叠面板"
+		},
+		{
+			"name": "component_countdown",
+			"value": "CountDown 倒计时"
+		},
+		{
+			"name": "component_divider",
+			"value": "Divider 分割线"
+		},
+		{
+			"name": "component_empty",
+			"value": "Empty 空状态"
+		},
+		{
+			"name": "component_highlight",
+			"value": "Highlight 高亮文本"
+		},
+		{
+			"name": "component_imagepreview",
+			"value": "ImagePreview 图片预览"
+		},
+		{
+			"name": "component_noticebar",
+			"value": "NoticeBar 通知栏"
+		},
+		{
+			"name": "component_popover",
+			"value": "Popover 气泡弹出框"
+		},
+		{
+			"name": "component_progress",
+			"value": "Progress 进度条"
+		},
+		{
+			"name": "component_table",
+			"value": "Table 表格"
+		},
+		{
+			"name": "component_tag",
+			"value": "Tag 标签"
+		},
+		{
+			"name": "component_textellipsis",
+			"value": "TextEllipsis 文本省略"
+		},
+		{
+			"name": "component_watermark",
+			"value": "Watermark 水印"
+		},
+		{
+			"name": "component_navBar",
+			"value": "NavBar 导航栏"
+		},
+		{
+			"name": "component_sideBar",
+			"value": "SideBar 侧边导航"
+		},
+		{
+			"name": "component_tab",
+			"value": "Tab 标签页"
+		},
+		{
+			"name": "component_canvasDrawer",
+			"value": "CanvasDrawer 画布绘制"
+		},
+		{
+			"name": "component_imageCropper",
+			"value": "ImageCropper 图片裁剪"
+		},
+		{
+			"name": "primary",
+			"value": "主要"
+		},
+		{
+			"name": "success",
+			"value": "成功"
+		},
+		{
+			"name": "default",
+			"value": "默认"
+		},
+		{
+			"name": "warning",
+			"value": "警告"
+		},
+		{
+			"name": "danger",
+			"value": "危险"
+		},
+		{
+			"name": "fail",
+			"value": "失败"
+		},
+		{
+			"name": "custom_custom",
+			"value": "自定义%s"
+		},
+		{
+			"name": "custom_button",
+			"value": "%s按钮"
+		},
+		{
+			"name": "custom_status",
+			"value": "%s状态"
+		},
+		{
+			"name": "custom_type",
+			"value": "%s类型"
+		},
+		{
+			"name": "custom_shape",
+			"value": "%s形状"
+		},
+		{
+			"name": "custom_size",
+			"value": "%s尺寸"
+		},
+		{
+			"name": "custom_style",
+			"value": "%s样式"
+		},
+		{
+			"name": "custom_color",
+			"value": "%s颜色"
+		},
+		{
+			"name": "custom_group",
+			"value": "分组 %d"
+		},
+		{
+			"name": "custom_placeholder",
+			"value": "请输入%s"
+		},
+		{
+			"name": "custom_basic",
+			"value": "基础%s"
+		},
+		{
+			"name": "custom_option",
+			"value": "选项%d"
+		},
+		{
+			"name": "button",
+			"value": "按钮"
+		},
+		{
+			"name": "plain",
+			"value": "朴素"
+		},
+		{
+			"name": "thin_border",
+			"value": "细边框"
+		},
+		{
+			"name": "disabled",
+			"value": "禁用"
+		},
+		{
+			"name": "load",
+			"value": "加载"
+		},
+		{
+			"name": "loading",
+			"value": "加载中..."
+		},
+		{
+			"name": "square",
+			"value": "方形"
+		},
+		{
+			"name": "circle",
+			"value": "圆形"
+		},
+		{
+			"name": "icon",
+			"value": "图标"
+		},
+		{
+			"name": "large",
+			"value": "大号"
+		},
+		{
+			"name": "normal",
+			"value": "普通"
+		},
+		{
+			"name": "small",
+			"value": "小号"
+		},
+		{
+			"name": "mini",
+			"value": "迷你"
+		},
+		{
+			"name": "custom",
+			"value": "自定义"
+		},
+		{
+			"name": "color",
+			"value": "颜色"
+		},
+		{
+			"name": "font",
+			"value": "字体"
+		},
+		{
+			"name": "border",
+			"value": "边框"
+		},
+		{
+			"name": "radius",
+			"value": "圆角"
+		},
+		{
+			"name": "usage",
+			"value": "用法"
+		},
+		{
+			"name": "title",
+			"value": "标题"
+		},
+		{
+			"name": "background_image",
+			"value": "背景图片"
+		},
+		{
+			"name": "content",
+			"value": "内容"
+		},
+		{
+			"name": "desc",
+			"value": "描述信息"
+		},
+		{
+			"name": "card",
+			"value": "卡片"
+		},
+		{
+			"name": "group",
+			"value": "分组"
+		},
+		{
+			"name": "arrow",
+			"value": "箭头"
+		},
+		{
+			"name": "required",
+			"value": "必填"
+		},
+		{
+			"name": "position",
+			"value": "位置"
+		},
+		{
+			"name": "long_text",
+			"value": "内容内容内容内容内容内容内容内容内容内容内容内容内容内容"
+		},
+		{
+			"name": "slot",
+			"value": "插槽"
+		},
+		{
+			"name": "tag",
+			"value": "标签"
+		},
+		{
+			"name": "demo",
+			"value": "示例"
+		},
+		{
+			"name": "basic_icon",
+			"value": "基础图标"
+		},
+		{
+			"name": "outline_style",
+			"value": "线框风格"
+		},
+		{
+			"name": "filled_style",
+			"value": "实底风格"
+		},
+		{
+			"name": "show_popup",
+			"value": "展示弹出层"
+		},
+		{
+			"name": "custom_popup_direction",
+			"value": "%s弹出"
+		},
+		{
+			"name": "custom_dialog",
+			"value": "%s弹窗"
+		},
+		{
+			"name": "top",
+			"value": "顶部"
+		},
+		{
+			"name": "bottom",
+			"value": "底部"
+		},
+		{
+			"name": "left",
+			"value": "左侧"
+		},
+		{
+			"name": "right",
+			"value": "右侧"
+		},
+		{
+			"name": "center",
+			"value": "居中"
+		},
+		{
+			"name": "custom_dynamics",
+			"value": "动态%s"
+		},
+		{
+			"name": "width",
+			"value": "宽度"
+		},
+		{
+			"name": "height",
+			"value": "高度"
+		},
+		{
+			"name": "event",
+			"value": "事件"
+		},
+		{
+			"name": "safe_area",
+			"value": "安全区域"
+		},
+		{
+			"name": "custom_switch",
+			"value": "切换%s"
+		},
+		{
+			"name": "custom_legal_color",
+			"value": "合法颜色, 如red、#07c16"
+		},
+		{
+			"name": "confirm",
+			"value": "确定"
+		},
+		{
+			"name": "cancel",
+			"value": "取消"
+		},
+		{
+			"name": "custom_tip",
+			"value": "%s提示"
+		},
+		{
+			"name": "basic_usage",
+			"value": "基础用法"
+		},
+		{
+			"name": "image",
+			"value": "图片"
+		},
+		{
+			"name": "load_icon_type",
+			"value": "加载图标类型"
+		},
+		{
+			"name": "break_type",
+			"value": "换行方式"
+		},
+		{
+			"name": "truncation_word",
+			"value": "截断单词"
+		},
+		{
+			"name": "not_truncation_word",
+			"value": "不截断单词"
+		},
+		{
+			"name": "update",
+			"value": "更新"
+		},
+		{
+			"name": "year",
+			"value": "年"
+		},
+		{
+			"name": "month",
+			"value": "月"
+		},
+		{
+			"name": "day",
+			"value": "日"
+		},
+		{
+			"name": "hour",
+			"value": "时"
+		},
+		{
+			"name": "minute",
+			"value": "分"
+		},
+		{
+			"name": "second",
+			"value": "秒"
+		}
+	]
 }

@@ -1,8 +1,9 @@
 import { IBestPicker } from '../picker'
 import { IBestPickerOption } from '../picker/index.type'
-import { COMPONENT_NAME, TimePickerColumnType, TIME_PICKER_EVENT_NAME } from './index.type'
+import { COMPONENT_NAME, IBestTimePickerColumnType, TIME_PICKER_EVENT_NAME } from './index.type'
 import { emitter } from '../../utils/EventEmitter'
 import { clamp, convertDimensionsWidthUnit, getEventName } from '../../utils/utils'
+import { IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestTimePicker {
@@ -17,7 +18,7 @@ export struct IBestTimePicker {
 	/**
 	 * 已选择的值
 	 */
-	@Link value: Array<string>
+	@Link value: string[]
 	/**
 	 * 选项列表
 	 */
@@ -33,7 +34,7 @@ export struct IBestTimePicker {
 	/**
 	 * 列表类型
      */
-	@Prop listType: Array<TimePickerColumnType> = ["hour", "minute", "second"]
+	@Prop listType: IBestTimePickerColumnType[] = ["hour", "minute", "second"]
 	/**
 	 * 是否显示单位
 	 */
@@ -41,19 +42,19 @@ export struct IBestTimePicker {
 	/**
 	 * 标题
 	 */
-	@Prop title: string = ""
+	@Prop title: ResourceStr = ""
 	/**
 	 * 单项高度
 	 */
-	@Prop itemHeight: number | string = convertDimensionsWidthUnit(44)
+	@Prop itemHeight: IBestStringNumber = convertDimensionsWidthUnit(44)
 	/**
 	 * 确认按钮文字
 	 */
-	@Prop confirmText: string = "确定"
+	@Prop confirmText: ResourceStr = $r("app.string.ibest_text_confirm")
 	/**
 	 * 取消按钮文字
 	 */
-	@Prop cancelText: string = "取消"
+	@Prop cancelText: ResourceStr = $r("app.string.ibest_text_cancel")
 	/**
 	 * 是否显示顶部栏
 	 */
@@ -71,21 +72,21 @@ export struct IBestTimePicker {
 	 * 单项宽度, 仅横向时生效
 	 * @since 2.0.0
 	 */
-	@Prop itemWidth: number | string
+	@Prop itemWidth: IBestStringNumber
 	/**
 	 * 高度, 仅横向时生效
 	 * @since 2.0.0
 	 */
-	@Prop contentHeight: number | string
+	@Prop contentHeight: IBestStringNumber
 	/**
 	 * 选项字体大小
 	 * @since 2.0.0
 	 */
-	@Prop optionFontSize: number | string
+	@Prop optionFontSize: IBestStringNumber
 	/**
 	 * 过滤器
 	 */
-	filter: (type: TimePickerColumnType, options: IBestPickerOption[]) => IBestPickerOption[] = (type: TimePickerColumnType, options: IBestPickerOption[]) => options
+	filter: (type: IBestTimePickerColumnType, options: IBestPickerOption[]) => IBestPickerOption[] = (type, options) => options
 	/**
 	 * 确认按钮点击事件
 	 */
@@ -104,12 +105,12 @@ export struct IBestTimePicker {
 		this.init()
 		if(this.groupId){
 			// 监听日期picker变化
-			emitter.on(getEventName(COMPONENT_NAME, this.groupId, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>): void => this.handleGroupTimeChange(uniId, selectedValues))
+			emitter.on(getEventName(COMPONENT_NAME, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId), this.uniId, (uniId: number, selectedValues: string[]): void => this.handleGroupTimeChange(uniId, selectedValues))
 		}
 	}
 	aboutToDisappear(): void {
 		if(this.groupId) {
-			emitter.off(getEventName(COMPONENT_NAME, this.groupId, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE), (uniId: number, selectedValues: Array<string>): void => this.handleGroupTimeChange(uniId, selectedValues))
+			emitter.off(getEventName(COMPONENT_NAME, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId), this.uniId)
 		}
 	}
 	// 初始化
@@ -146,7 +147,7 @@ export struct IBestTimePicker {
 	formatValue(value: number): string {
 		return value < 10 ? "0" + value : (value + "")
 	}
-	getValue(type: TimePickerColumnType): string{
+	getValue(type: IBestTimePickerColumnType): string{
 		let minTime = this.minTime
 		let columnsType = this.listType
 		const index = columnsType.indexOf(type)
@@ -164,8 +165,8 @@ export struct IBestTimePicker {
 		}
 	}
 	// 获取小时列表
-	getHoursList(): Array<IBestPickerOption> {
-		let list: Array<IBestPickerOption> = []
+	getHoursList(): IBestPickerOption[] {
+		let list: IBestPickerOption[] = []
 		let min = Number(this.minTime.slice(0, 2))
 		let max = Number(this.maxTime.slice(0, 2))
 		for(let i = min; i <= max; i++){
@@ -177,8 +178,8 @@ export struct IBestTimePicker {
 		return this.filter("hour", list)
 	}
 	// 获取分钟列表
-	getMinutesList(): Array<IBestPickerOption> {
-		let monthsList: Array<IBestPickerOption> = []
+	getMinutesList(): IBestPickerOption[] {
+		let monthsList: IBestPickerOption[] = []
 		let hour = this.getValue("hour")
 		let min = this.isMinHour(hour) ? Number(this.minTime.slice(3, 5)) : 0
 		let max = this.isMaxHour(hour) ? Number(this.maxTime.slice(3, 5)) : 59
@@ -191,8 +192,8 @@ export struct IBestTimePicker {
 		return this.filter("minute", monthsList)
 	}
 	// 获取日期列表
-	getSecondsList(): Array<IBestPickerOption> {
-		let daysList: Array<IBestPickerOption> = []
+	getSecondsList(): IBestPickerOption[] {
+		let daysList: IBestPickerOption[] = []
 		let hour = this.getValue("hour")
 		let minute = this.getValue("minute")
 		let min = this.isMinHour(hour) && this.isMinMinute(minute) ? Number(this.minTime.slice(6)) : 0
@@ -212,13 +213,12 @@ export struct IBestTimePicker {
 		}
 		this.onChange(this.value)
 		if(this.groupId) {
-			emitter.emit(getEventName(COMPONENT_NAME, this.groupId, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE), this.uniId, this.value)
+			emitter.emit(getEventName(COMPONENT_NAME, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId), this.uniId, this.value)
 		}
 	}
 	// 处理同组时间变化
-	handleGroupTimeChange(uniId: number, selectedValues: Array<string>) {
+	handleGroupTimeChange(uniId: number, selectedValues: string[]) {
 		if(this.uniId > uniId){
-			// console.log("监听到同组前一个datePicker值变化", `当前组件${this.uniId}`, uniId, selectedValues.join("-"))
 			let selectTime = selectedValues.join(":")
 			this.minTime = selectTime
 			if(selectTime > this.maxTime || selectTime < this.minTime){
@@ -243,13 +243,13 @@ export struct IBestTimePicker {
 			itemWidth: this.itemWidth,
 			contentHeight: this.contentHeight,
 			optionFontSize: this.optionFontSize,
-			onConfirm: (selectedValues: Array<string>) => {
-				this.onConfirm(selectedValues)
+			onConfirm: (selectedValues) => {
+				this.onConfirm(selectedValues as string[])
 			},
 			onCancel: () => {
 				this.onCancel()
 			},
-			onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => {
+			onChange: (selectedValues, selectTexts, columnIndex) => {
 				this.changeColumn(columnIndex)
 			}
 		})

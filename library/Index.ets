@@ -5,7 +5,7 @@ import IBestImagePreview from './src/main/ets/apis/IBestImagePreview'
 import IBestDialogUtil from './src/main/ets/apis/IBestDialog'
 import IBestNotify from './src/main/ets/apis/IBestNotify'
 import GlobalStore from './src/main/ets/utils/GlobalStore'
-import { IBestGlobalConfigType, IBestGlobalVoid } from './src/main/ets/model/Global.type'
+import { IBestGlobalConfigType } from './src/main/ets/model/Global.type'
 const init = GlobalStore.init
 const setGlobalConfig = GlobalStore.setGlobalConfig
 
@@ -25,12 +25,6 @@ export {
 
 export type {
 	IBestGlobalConfigType
-}
-
-export const IBest: IBestGlobalVoid = {
-	init: GlobalStore.init,
-	setGlobalConfig: GlobalStore.setGlobalConfig,
-	setUIBaseStyle: setIBestUIBaseStyle
 }
 
 export { debounce, throttle } from './src/main/ets/utils/DebounceThrottle'
@@ -60,13 +54,15 @@ export { IBestRadioGroup } from './src/main/ets/components/radioGroup/index'
 
 export { IBestEmpty } from './src/main/ets/components/empty/index'
 
+export { IBestHighlight } from './src/main/ets/components/highlight/index'
+
 export { IBestDialog } from './src/main/ets/components/dialog/index'
 
 export { IBestStepper } from './src/main/ets/components/stepper/index'
 
 export { IBestCalendar } from './src/main/ets/components/calendar/index'
 export { IBestCalendarDialog } from './src/main/ets/components/calendar/calendarDialog'
-export { CalendarConfirmResultType, SelectType, SelectedStyleType } from './src/main/ets/components/calendar/index.type'
+export { IBestCalendarConfirmResult, CalendarConfirmResultType, SelectType, SelectedStyleType } from './src/main/ets/components/calendar/index.type'
 
 export { IBestLoading } from './src/main/ets/components/loading/index'
 
@@ -132,6 +128,9 @@ export { IBestDivider } from './src/main/ets/components/divider/index'
 export { IBestNoticeBar } from './src/main/ets/components/noticeBar/index'
 
 export { IBestProgress } from './src/main/ets/components/progress/index'
+
+export { IBestTable, IBestTableColumn } from './src/main/ets/components/table/index'
+export { IBestTableColumnData } from './src/main/ets/components/table/index.type'
 
 export { IBestCountDown } from './src/main/ets/components/countDown/index'
 export { IBestCountDownController } from './src/main/ets/components/countDown/index.type'

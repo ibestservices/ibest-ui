@@ -4,6 +4,8 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { RateOption } from './index.type'
+import { IBestStringNumber } from '../../model/Global.type'
+
 @Component
 export struct IBestRate {
 	/**
@@ -33,11 +35,11 @@ export struct IBestRate {
 	/**
 	 * 图标大小
 	 */
-	@Provide({allowOverride: "iconSize"}) iconSize: number | string = convertDimensions(20)
+	@Provide({allowOverride: "iconSize"}) iconSize: IBestStringNumber = convertDimensions(20)
 	/**
 	 * 间距
 	 */
-	@Prop space: number | string = convertDimensions(4)
+	@Prop space: IBestStringNumber = convertDimensions(4)
 	/**
 	 * 选中图标
 	 */
@@ -174,7 +176,7 @@ struct RateItem {
 	@Consume activeIcon: ResourceStr
 	@Consume activeColor: ResourceColor
 	@Consume inactiveColor: ResourceColor
-	@Consume iconSize: number | string
+	@Consume iconSize: IBestStringNumber
 	@Consume disabled: boolean
 	@Consume disabledColor: ResourceColor
 	build() {

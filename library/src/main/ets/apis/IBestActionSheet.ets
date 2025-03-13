@@ -8,6 +8,8 @@ import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type';
 import GlobalStore from '../utils/GlobalStore';
 import { IBestActionSheetColor } from './color';
 import { IBestIcon } from '../components/icon';
+import { IBestStringNumber } from '../model/Global.type';
+
 // 选项类型
 class IBestActionType {
 	name: ResourceStr = ""
@@ -114,7 +116,7 @@ class IBestActionSheetOption {
 	/**
 	 * 选择后回调
 	 */
-	onSelect?: (index1: number, index2?: number | string, value?: string) => void
+	onSelect?: (index1: number, index2?: IBestStringNumber, value?: string) => void
 	/**
 	 * 点击取消回调
 	 */
@@ -137,7 +139,7 @@ class IBestActionSheetOption {
 	 * 选项高度
 	 * @since 2.0.0
      */
-	itemHeight?: number | string
+	itemHeight?: IBestStringNumber
 }
 
 class IBestActionSheetParams extends IBestActionSheetOption {

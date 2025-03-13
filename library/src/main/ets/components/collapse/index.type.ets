@@ -1,3 +1,5 @@
+import { IBestStringNumber } from '../../model/Global.type'
+
 /**
  * 组件名称
  */
@@ -22,7 +24,7 @@ export enum COLLAPSE_EVENT_NAME {
 }
 
 export interface CollapseItem{
-	name: string
+	name: IBestStringNumber
 	disabled: boolean
 }
 

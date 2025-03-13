@@ -9,27 +9,23 @@ struct CellPage {
 	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
 	@State showTag: boolean = true;
 	@State inputValue: string = ''
-	@Builder
-	StarIcon(width = 16) {
+	@Builder StarIcon(width = 16) {
 		Image($r('app.media.app_icon')).width(width)
 	}
-	@Builder
-	Arrow() {
+	@Builder Arrow() {
 		Image($r('app.media.title_back')).height(14).margin({ left: SPACE.BASE }).rotate({ angle: 180 })
 	}
-	@Builder
-	Title() {
+	@Builder Title() {
 		Row() {
-			Text('单元格')
+			Text($r("app.string.title"))
 				.fontSize(14)
-			IBestTag({ text: '标签' }).margin({
+			IBestTag({ text: $r("app.string.tag") }).margin({
 				left: SPACE.BASE
 			})
 		}
 	}
-	@Builder
-	InputContain() {
-		TextInput({ placeholder: '请输入内容' })
+	@Builder InputContain() {
+		TextInput({ placeholder: $r("app.string.custom_placeholder", $r("app.string.content")) })
 	}
 	build() {
 		Column() {
@@ -42,74 +38,74 @@ struct CellPage {
 			})
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
+					ComponentShowContainer({ title: $r("app.string.basic_usage"), titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup() {
-							IBestCell({ title: '标题', value: '内容' })
+							IBestCell({ title: $r("app.string.title"), value: $r("app.string.content") })
 							IBestCell({
-								title: '标题',
-								value: '内容',
-								label: '描述信息',
+								title: $r("app.string.title"),
+								value: $r("app.string.content"),
+								label: $r("app.string.desc"),
 								hasBorder: false
 							})
 						}
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '下边框样式', titlePaddingLeft: SPACE.XS }) {
+					ComponentShowContainer({ title: $r("app.string.custom_style", $r("app.string.border")), titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup() {
-							IBestCell({ title: 'full', value: '内容', borderSizeType: 'full' })
-							IBestCell({ title: 'center', value: '内容', borderSizeType: 'center' })
+							IBestCell({ title: 'full', value: $r("app.string.content"), borderSizeType: 'full' })
+							IBestCell({ title: 'center', value: $r("app.string.content"), borderSizeType: 'center' })
 							IBestCell({
 								leftIcon: $r("app.media.icon_like_o"),
 								title: 'right',
-								value: '内容',
+								value: $r("app.string.content"),
 								borderSizeType: 'right'
 							})
-							IBestCell({ title: '占位', value: '内容', hasBorder: false })
+							IBestCell({ title: $r("app.string.title"), value: $r("app.string.content"), hasBorder: false })
 						}
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '卡片风格', titlePaddingLeft: SPACE.XS }) {
+					ComponentShowContainer({ title: $r("app.string.custom_style", $r("app.string.card")), titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup({ inset: true }) {
-							IBestCell({ title: '标题', value: '内容' })
+							IBestCell({ title: $r("app.string.title"), value: $r("app.string.content") })
 							IBestCell({
-								title: '标题',
-								value: '内容',
-								label: '描述信息',
+								title: $r("app.string.title"),
+								value: $r("app.string.content"),
+								label: $r("app.string.desc"),
 								hasBorder: false
 							})
 						}
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '分组标题', titlePaddingLeft: SPACE.XS }) {
-						IBestCellGroup({ title: '分组1' }) {
+					ComponentShowContainer({ title: $r("app.string.group"), titlePaddingLeft: SPACE.XS }) {
+						IBestCellGroup({ title: $r("app.string.custom_group", 1) }) {
 							IBestCell({
-								title: '标题',
-								value: '内容',
-								label: '描述信息',
+								title: $r("app.string.title"),
+								value: $r("app.string.content"),
+								label: $r("app.string.desc"),
 								hasBorder: false
 							})
 						}
-						IBestCellGroup({ title: '分组2' }) {
+						IBestCellGroup({ title: $r("app.string.custom_group", 2) }) {
 							IBestCell({
-								title: '标题',
-								value: '内容',
-								label: '描述信息',
+								title: $r("app.string.title"),
+								value: $r("app.string.content"),
+								label: $r("app.string.desc"),
 								hasBorder: false
 							})
 						}
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '单元格大小', titlePaddingLeft: SPACE.XS }) {
+					ComponentShowContainer({ title: $r("app.string.custom_size", $r("app.string.custom")), titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup() {
-							IBestCell({ title: '标题', value: '内容', cellSize: 'large' })
+							IBestCell({ title: $r("app.string.title"), value: $r("app.string.content"), cellSize: 'large' })
 							IBestCell({
-								title: '标题',
-								value: '内容',
-								label: '描述信息',
+								title: $r("app.string.title"),
+								value: $r("app.string.content"),
+								label: $r("app.string.desc"),
 								hasBorder: false,
 								cellSize: 'large'
 							})
@@ -117,21 +113,21 @@ struct CellPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '展示图标', titlePaddingLeft: SPACE.XS }) {
+					ComponentShowContainer({ title: $r("app.string.icon"), titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup() {
 							IBestCell({
-								title: '标题',
-								value: '内容',
+								title: $r("app.string.title"),
+								value: $r("app.string.content"),
 								leftIcon: $r("app.media.icon_like")
 							})
 							IBestCell({
-								title: '标题',
-								value: '内容',
+								title: $r("app.string.title"),
+								value: $r("app.string.content"),
 								iconBuilder: () => this.StarIcon()
 							})
 							IBestCell({
-								title: '标题',
-								value: '内容',
+								title: $r("app.string.title"),
+								value: $r("app.string.content"),
 								rightIcon: $r("app.media.ibest_icon_star"),
 								rightIconColor: '#FF0000',
 								hasBorder: false
@@ -140,24 +136,24 @@ struct CellPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '展示箭头', titlePaddingLeft: SPACE.XS }) {
+					ComponentShowContainer({ title: $r("app.string.arrow"), titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup() {
-							IBestCell({ title: '标题', value: '箭头朝右', isLink: true })
+							IBestCell({ title: $r("app.string.title"), value: $r("app.string.content"), isLink: true })
 							IBestCell({
-								title: '标题',
-								value: '箭头朝下',
+								title: $r("app.string.title"),
+								value: $r("app.string.content"),
 								isLink: true,
 								arrowDirection: 'bottom'
 							})
 							IBestCell({
-								title: '标题',
-								value: '箭头朝左',
+								title: $r("app.string.title"),
+								value: $r("app.string.content"),
 								isLink: true,
 								arrowDirection: 'left'
 							})
 							IBestCell({
-								title: '标题',
-								value: '箭头朝上',
+								title: $r("app.string.title"),
+								value: $r("app.string.content"),
 								isLink: true,
 								arrowDirection: 'top',
 								hasBorder: false
@@ -166,20 +162,20 @@ struct CellPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '禁用', titlePaddingLeft: SPACE.XS }) {
+					ComponentShowContainer({ title: $r("app.string.disabled"), titlePaddingLeft: SPACE.XS }) {
 						IBestCell({
-							title: '标题',
-							value: '内容',
+							title: $r("app.string.title"),
+							value: $r("app.string.content"),
 							hasBorder: false,
 							disabled: true
 						})
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '必填项', titlePaddingLeft: SPACE.XS }) {
+					ComponentShowContainer({ title: $r("app.string.required"), titlePaddingLeft: SPACE.XS }) {
 						IBestCell({
-							title: '标题',
-							value: '内容',
+							title: $r("app.string.title"),
+							value: $r("app.string.content"),
 							center: true,
 							required: true,
 							hasBorder: false,
@@ -188,20 +184,20 @@ struct CellPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '内容居中', titlePaddingLeft: SPACE.XS }) {
+					ComponentShowContainer({ title: $r("app.string.position"), titlePaddingLeft: SPACE.XS }) {
 						IBestCell({
-							title: '居中',
-							label: '描述内容',
+							title: $r("app.string.title"),
+							label: $r("app.string.desc"),
 							leftContentWidth: 100,
-							value: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容',
+							value: $r("app.string.long_text"),
 							center: true,
 							iconBuilder: () => this.StarIcon(),
 							isLink: true
 						})
 						IBestCell({
-							title: '居上',
-							label: '描述内容',
-							value: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容',
+							title: $r("app.string.title"),
+							label: $r("app.string.desc"),
+							value: $r("app.string.long_text"),
 							hasBorder: false,
 							iconBuilder: () => this.StarIcon(),
 							isLink: true
@@ -209,22 +205,22 @@ struct CellPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '使用插槽', titlePaddingLeft: SPACE.XS }) {
+					ComponentShowContainer({ title: $r("app.string.slot"), titlePaddingLeft: SPACE.XS }) {
 						IBestCell({
-							title: '标题',
-							value: '内容内容内容内容内容内容内容内容内容内容内容内容内容内容',
+							title: $r("app.string.title"),
+							value: $r("app.string.long_text"),
 							iconBuilder: () => this.StarIcon(),
 							rightIconBuilder: this.Arrow,
 							clickable: true
 						})
 						IBestCell({
 							titleBuilder: this.Title,
-							value: '内容',
+							value: $r("app.string.content"),
 							rightIconBuilder: this.Arrow,
 							clickable: true
 						})
 						IBestCell({
-							title: '标题',
+							title: $r("app.string.title"),
 							iconBuilder: () => this.StarIcon(),
 							hasBorder: false,
 							rightIconBuilder: this.Arrow,

@@ -31,10 +31,10 @@ struct PickerPage {
 			title: "标题",
 			visibleItemCount: 5,
 			value: $selectValue1,
-			onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => {
+			onChange: (selectedValues, selectTexts) => {
 				IBestToast.show(selectTexts.join('-'))
 			},
-			onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => {
+			onConfirm: (selectedValues, selectTexts) => {
 				this.visible = false
 				this.filedValue = selectTexts.join('-')
 			},
@@ -150,10 +150,10 @@ struct PickerPage {
 							options: this.options1,
 							title: "标题",
 							value: $selectValue,
-							onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => {
+							onConfirm: (selectedValues, selectTexts) => {
 								IBestToast.show(selectTexts.join('-'))
 							},
-							onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => {
+							onChange: (selectedValues, selectTexts) => {
 								IBestToast.show(selectTexts.join('-'))
 							}
 						})
@@ -166,10 +166,10 @@ struct PickerPage {
 							title: "标题",
 							value: $selectValue,
 							horizontal: true,
-							onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => {
+							onConfirm: (selectedValues, selectTexts) => {
 								IBestToast.show(selectTexts.join('-'))
 							},
-							onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => {
+							onChange: (selectedValues, selectTexts) => {
 								IBestToast.show(selectTexts.join('-'))
 							}
 						})
@@ -195,10 +195,10 @@ struct PickerPage {
 							options: this.options1,
 							title: "标题",
 							value: $selectValue2,
-							onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => {
+							onConfirm: (selectedValues, selectTexts) => {
 								IBestToast.show(selectTexts.join('-'))
 							},
-							onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => {
+							onChange: (selectedValues, selectTexts) => {
 								IBestToast.show(selectTexts.join('-'))
 							}
 						})
@@ -210,10 +210,10 @@ struct PickerPage {
 							options: this.options3,
 							title: "标题",
 							value: $selectValue3,
-							onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => {
+							onConfirm: (selectedValues, selectTexts) => {
 								IBestToast.show(selectTexts.join('-'))
 							},
-							onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => {
+							onChange: (selectedValues, selectTexts) => {
 								IBestToast.show(selectTexts.join('-'))
 							}
 						})
@@ -225,10 +225,10 @@ struct PickerPage {
 							options: this.options4,
 							title: "标题",
 							value: $selectValue4,
-							onConfirm: (selectedValues: Array<string>, selectTexts: Array<string>) => {
+							onConfirm: (selectedValues, selectTexts) => {
 								IBestToast.show(selectTexts.join('-'))
 							},
-							onChange: (selectedValues: Array<string>, selectTexts: Array<string>, columnIndex: number) => {
+							onChange: (selectedValues, selectTexts) => {
 								IBestToast.show(selectTexts.join('-'))
 							}
 						})

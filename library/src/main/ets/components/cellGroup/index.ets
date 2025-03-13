@@ -1,3 +1,4 @@
+import { IBestStringNumber } from '../../model/Global.type';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
@@ -15,9 +16,8 @@ export struct IBestCellGroup {
 	@BuilderParam defaultBuilder?: CustomBuilder;
 	/**
 	 * 分组标题
-	 * title没有设计成builder是因为如果设计成了builder就没法用尾随闭包方式初始化Cell或别的组件了
 	 */
-	@Prop title: string | number = '';
+	@Prop title: ResourceStr = '';
 	/**
 	 * 是否展示为圆角卡片风格
 	 */
@@ -30,7 +30,7 @@ export struct IBestCellGroup {
 	 * 圆角大小, 仅inset为true时有效
 	 * @since 2.0.6
      */
-	@Prop radius: number | string = this.baseStyle.borderRadiusLg as string
+	@Prop radius: IBestStringNumber = this.baseStyle.borderRadiusLg as string
 	/**
 	 * 获取边框宽度
 	 * @returns
@@ -45,18 +45,10 @@ export struct IBestCellGroup {
 	getMargin() {
 		return this.inset ? { left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd } as Padding : 0
 	}
-	/**
-	 * 是否传入了title
-	 * @returns
-	 */
-	isHasTitle() {
-		const titleText = String(this.title);
-		return titleText.length
-	}
 	build() {
 		Column() {
-			if (this.isHasTitle()) {
-				Text(String(this.title))
+			if (this.title) {
+				Text(this.title)
 					.textAlign(TextAlign.Start)
 					.width(CONTAINER_SIZE.FULL)
 					.border({
@@ -73,7 +65,7 @@ export struct IBestCellGroup {
 			}
 		}
 		.border({
-			width: { bottom: this.getBorderWidth(), top: this.isHasTitle() ? 0 : this.getBorderWidth() },
+			width: { bottom: this.getBorderWidth(), top: this.title ? 0 : this.getBorderWidth() },
 			color: IBestCellGroupColor.borderColor
 		})
 		.margin(this.getMargin())

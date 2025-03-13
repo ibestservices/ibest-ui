@@ -1,3 +1,4 @@
+import { IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
@@ -17,7 +18,7 @@ export struct IBestProgress{
 	/**
 	 * 进度条粗细
      */
-	@Prop lineWidth: number | string = convertDimensionsWidthUnit(4)
+	@Prop lineWidth: IBestStringNumber = convertDimensionsWidthUnit(4)
 	/**
 	 * 进度条颜色
      */
@@ -45,7 +46,7 @@ export struct IBestProgress{
 	/**
 	 * 文字大小
      */
-	@Prop textFontSize: number | string = this.baseStyle.fontSizeMd as string
+	@Prop textFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
 	/**
 	 * 是否置灰
      */

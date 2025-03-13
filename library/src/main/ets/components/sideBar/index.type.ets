@@ -1,3 +1,5 @@
+import { IBestStringNumber } from '../../model/Global.type'
+
 /**
  * 组件名称
  */
@@ -28,7 +30,7 @@ export interface SideBarConfig {
 	/**
 	 * 文字大小
      */
-	titleFontSize: number | string
+	titleFontSize: IBestStringNumber
 	/**
 	 * 激活态背景色
      */
@@ -59,6 +61,6 @@ export interface SideBarConfig {
  * 左侧颜色条尺寸类型
  */
 export interface LeftBarSize {
-	width: number | string
-	height: number | string
+	width: IBestStringNumber
+	height: IBestStringNumber
 }

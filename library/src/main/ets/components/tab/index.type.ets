@@ -1,3 +1,5 @@
+import { IBestStringNumber } from '../../model/Global.type'
+
 /**
  * tab宽度类型
  */
@@ -11,10 +13,25 @@ export interface TabWidthType{
  * tabItem类型
  */
 export class IBestTabItemType{
-    label: string = ""
-    name: string = ""
+    /**
+     * 选项文字
+     */
+    label: ResourceStr = ""
+    /**
+     * 选项标识
+     */
+    name: IBestStringNumber = ""
+    /**
+     * 选项数量
+     */
     number?: number
+    /**
+     * 选项图标
+     */
     icon?: ResourceStr
+    /**
+     * 是否禁用
+     */
     isDisable?: boolean
 }
 @Observed
@@ -32,5 +49,5 @@ export class IBestTabItem extends IBestTabItemType{
  * tabController类型
  */
 export class IBestTabController{
-    changeTab: (name: string) => void = () => {}
+    changeTab: (name: IBestStringNumber) => void = () => {}
 }

@@ -1,20 +1,22 @@
+import { IBestStringNumber } from '../../model/Global.type'
+
 /**
  * 按钮尺寸样式的类型
  */
 export interface BtnSizeStyle {
-	height: string | number;
-	padding: string | number;
-	width?: string | number;
+	height: IBestStringNumber
+	padding: IBestStringNumber
+	width?: IBestStringNumber
 }
 /**
  * 按钮尺寸对象数据
  */
 export class ButtonSizeData {
-	padding: string | number
-	height: string | number
-	fontSize: string | number
-	width?: string | number
-	constructor(padding: string | number, height: string | number, fontSize: string | number, width?: string | number) {
+	padding: IBestStringNumber
+	height: IBestStringNumber
+	fontSize: IBestStringNumber
+	width?: IBestStringNumber
+	constructor(padding: IBestStringNumber, height: IBestStringNumber, fontSize: IBestStringNumber, width?: IBestStringNumber) {
 		this.padding = padding;
 		this.height = height;
 		this.fontSize = fontSize

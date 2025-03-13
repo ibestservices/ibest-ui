@@ -40,9 +40,9 @@ struct ThemePage {
 			})
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '更改primary颜色' }) {
+					ComponentShowContainer({ title: $r("app.string.custom_switch", $r("app.string.color")) }) {
 						Row() {
-							TextInput({ placeholder: '请输入合法颜色值，如red、#07c16', text: $$this.colorText })
+							TextInput({ placeholder: $r("app.string.custom_placeholder", $r("app.string.custom_legal_color")), text: $$this.colorText })
 								.fontSize(FONT_SIZE.SM)
 								.layoutWeight(1)
 								.margin({
@@ -50,7 +50,7 @@ struct ThemePage {
 								})
 							IBestButton({
 								type: 'primary',
-								text: '确定',
+								text: $r("app.string.confirm"),
 								round: true,
 								buttonSize: 'small',
 								onClickBtn: () => {
@@ -62,32 +62,32 @@ struct ThemePage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: 'Button组件' }) {
+					ComponentShowContainer({ title: $r("app.string.component_button") }) {
 						IBestButton({
 							type: 'primary',
-							text: '按钮'
+							text: $r("app.string.button")
 						})
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: 'Checkbox组件' }) {
+					ComponentShowContainer({ title: $r("app.string.component_checkbox") }) {
 						IBestCheckbox({
 							value: true,
 							name: '1',
-							label: '复选框'
+							label: $r("app.string.content")
 						})
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: 'Radio组件' }) {
+					ComponentShowContainer({ title: $r("app.string.component_radio") }) {
 						IBestRadioGroup({ group: this.group, active: $active }) {
-							IBestRadio({ group: this.group, label: '单选框1', name: '1' })
-							IBestRadio({ group: this.group, label: '单选框2', name: '2' })
+							IBestRadio({ group: this.group, label: $r("app.string.content"), name: '1' })
+							IBestRadio({ group: this.group, label: $r("app.string.content"), name: '2' })
 						}
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: 'Switch组件' }) {
+					ComponentShowContainer({ title: $r("app.string.component_switch") }) {
 						Row() {
 							IBestSwitch({
 								value: $switchValue
@@ -96,7 +96,7 @@ struct ThemePage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: 'CircleProgress组件' }) {
+					ComponentShowContainer({ title: $r("app.string.component_circleprogress") }) {
 						IBestCircleProgress({
 							value: $progressValue,
 							text: `50%`
@@ -104,34 +104,34 @@ struct ThemePage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: 'Progress组件' }) {
+					ComponentShowContainer({ title: $r("app.string.component_progress") }) {
 						IBestProgress({
 							value: 50
 						})
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: 'Tabs组件' }) {
+					ComponentShowContainer({ title: $r("app.string.component_tab") }) {
 						IBestTabs({
 							tabsList: [
 								{
-									label: "标签一",
+									label: $r("app.string.custom_option", 1),
 									name: "1"
 								},
 								{
-									label: "标签二",
+									label: $r("app.string.custom_option", 2),
 									name: "2"
 								},
 								{
-									label: "标签三",
+									label: $r("app.string.custom_option", 3),
 									name: "3"
 								},
 								{
-									label: "标签四",
+									label: $r("app.string.custom_option", 4),
 									name: "4"
 								},
 								{
-									label: "标签五",
+									label: $r("app.string.custom_option", 5),
 									name: "5"
 								}
 							],
@@ -140,10 +140,10 @@ struct ThemePage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: 'Tag组件' }) {
+					ComponentShowContainer({ title: $r("app.string.component_tag") }) {
 						IBestTag({
 							type: 'primary',
-							text: '标签'
+							text: $r("app.string.tag")
 						})
 					}
 				}

@@ -1,9 +1,11 @@
+import { IBestStringNumber } from '../../model/Global.type'
+
 /**
  * 组件基本类型
  */
 class IBestCascaderBaseType{
-	text: string = ""
-	value: string | number = ""
+	text: ResourceStr = ""
+	value: IBestStringNumber = ""
 }
 /**
  * 用户传入数据类型

@@ -105,27 +105,37 @@ struct CheckboxPage {
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '自定义颜色' }) {
-						IBestRadioGroup({ group: this.group, active: $active }){
-							IBestRadio({
-								group: this.group,
-								label: '单选框',
-								shape: 'square',
-								checkedColor: '#ee0a24',
-								name: '1'
-							})
-							IBestRadio({
-								group: this.group,
-								label: '单选框',
-								checkedColor: '#ee0a24',
-								name: '2'
-							})
-							IBestRadio({
-								group: this.group,
-								label: '单选框',
-								shape: 'dot',
-								checkedColor: '#ee0a24',
-								name: '3'
-							})
+						Row({space: SPACE.XL}){
+							IBestRadioGroup({ group: this.group, active: $active }){
+								IBestRadio({
+									group: this.group,
+									label: '单选框',
+									checkedColor: '#ee0a24',
+									name: '1'
+								})
+								IBestRadio({
+									group: this.group,
+									label: '单选框',
+									checkedColor: '#ee0a24',
+									name: '2'
+								})
+							}
+							IBestRadioGroup({ group: this.group, active: $active }){
+								IBestRadio({
+									group: this.group,
+									label: '单选框',
+									bgColor: "#fff",
+									bdColor: "#ee0a24",
+									name: '1'
+								})
+								IBestRadio({
+									group: this.group,
+									label: '单选框',
+									bgColor: "#fff",
+									bdColor: "#ee0a24",
+									name: '2'
+								})
+							}
 						}
 					}
 				}

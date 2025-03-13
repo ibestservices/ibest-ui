@@ -1,0 +1,616 @@
+{
+	"string": [
+		{
+			"name": "tab_bar_basic",
+			"value": "Basic"
+		},
+		{
+			"name": "tab_bar_basic_desc",
+			"value": "The following are the basic components of IBest UI"
+		},
+		{
+			"name": "tab_bar_extend",
+			"value": "Extend"
+		},
+		{
+			"name": "tab_bar_extend_desc",
+			"value": "The following are IBest UI extended business components, continuously updating..."
+		},
+		{
+			"name": "tab_view_doc",
+			"value": "Please refer to the document for details"
+		},
+		{
+			"name": "tab_bar_about",
+			"value": "About"
+		},
+		{
+			"name": "ibest_ui_desc",
+			"value": "A lightweight, easy-to-use, customizable theme, and support for dark and light color modes HarmonyOS open-source UI component library"
+		},
+		{
+			"name": "app_version",
+			"value": "App Version"
+		},
+		{
+			"name": "ui_version",
+			"value": "UI Version"
+		},
+		{
+			"name": "ui_doc",
+			"value": "UI Doc"
+		},
+		{
+			"name": "company_official_website",
+			"value": "Company Official Website"
+		},
+		{
+			"name": "privacy_policy",
+			"value": "Privacy Policy"
+		},
+		{
+			"name": "copy_right",
+			"value": "Copyright © 2025-2026 Anhui BestService Information Technology Co., Ltd.All rights reserved."
+		},
+		{
+			"name": "basic_component",
+			"value": "Basic Components"
+		},
+		{
+			"name": "form_component",
+			"value": "Form Components"
+		},
+		{
+			"name": "action_component",
+			"value": "Action Components"
+		},
+		{
+			"name": "display_component",
+			"value": "Display Components"
+		},
+		{
+			"name": "navigation_component",
+			"value": "Navigation Components"
+		},
+		{
+			"name": "component_button",
+			"value": "Button"
+		},
+		{
+			"name": "component_cell",
+			"value": "Cell"
+		},
+		{
+			"name": "component_icon",
+			"value": "Icon"
+		},
+		{
+			"name": "component_popup",
+			"value": "Popup"
+		},
+		{
+			"name": "component_theme",
+			"value": "Theme"
+		},
+		{
+			"name": "component_toast",
+			"value": "Toast"
+		},
+		{
+			"name": "component_calendar",
+			"value": "Calendar"
+		},
+		{
+			"name": "component_cascader",
+			"value": "Cascader"
+		},
+		{
+			"name": "component_checkbox",
+			"value": "Checkbox"
+		},
+		{
+			"name": "component_datePicker",
+			"value": "DatePicker"
+		},
+		{
+			"name": "component_field",
+			"value": "Field"
+		},
+		{
+			"name": "component_form",
+			"value": "Form"
+		},
+		{
+			"name": "component_numberKeyboard",
+			"value": "NumberKeyboard"
+		},
+		{
+			"name": "component_passwordInput",
+			"value": "PasswordInput"
+		},
+		{
+			"name": "component_picker",
+			"value": "Picker"
+		},
+		{
+			"name": "component_pickerGroup",
+			"value": "PickerGroup"
+		},
+		{
+			"name": "component_radio",
+			"value": "Radio"
+		},
+		{
+			"name": "component_rate",
+			"value": "Rate"
+		},
+		{
+			"name": "component_search",
+			"value": "Search"
+		},
+		{
+			"name": "component_slider",
+			"value": "Slider"
+		},
+		{
+			"name": "component_signature",
+			"value": "Signature"
+		},
+		{
+			"name": "component_stepper",
+			"value": "Stepper"
+		},
+		{
+			"name": "component_switch",
+			"value": "Switch"
+		},
+		{
+			"name": "component_timePicker",
+			"value": "TimePicker"
+		},
+		{
+			"name": "component_uploader",
+			"value": "Uploader"
+		},
+		{
+			"name": "component_actionSheet",
+			"value": "ActionSheet"
+		},
+		{
+			"name": "component_dialog",
+			"value": "Dialog"
+		},
+		{
+			"name": "component_loading",
+			"value": "Loading"
+		},
+		{
+			"name": "component_notify",
+			"value": "Notify"
+		},
+		{
+			"name": "component_pullRefresh",
+			"value": "PullRefresh"
+		},
+		{
+			"name": "component_swipeCell",
+			"value": "SwipeCell"
+		},
+		{
+			"name": "component_badge",
+			"value": "Badge"
+		},
+		{
+			"name": "component_circleprogress",
+			"value": "CircleProgress"
+		},
+		{
+			"name": "component_collapse",
+			"value": "Collapse"
+		},
+		{
+			"name": "component_countdown",
+			"value": "CountDown"
+		},
+		{
+			"name": "component_divider",
+			"value": "Divider"
+		},
+		{
+			"name": "component_empty",
+			"value": "Empty"
+		},
+		{
+			"name": "component_highlight",
+			"value": "Highlight"
+		},
+		{
+			"name": "component_imagepreview",
+			"value": "ImagePreview"
+		},
+		{
+			"name": "component_noticebar",
+			"value": "NoticeBar"
+		},
+		{
+			"name": "component_popover",
+			"value": "Popover"
+		},
+		{
+			"name": "component_progress",
+			"value": "Progress"
+		},
+		{
+			"name": "component_table",
+			"value": "Table"
+		},
+		{
+			"name": "component_tag",
+			"value": "Tag"
+		},
+		{
+			"name": "component_textellipsis",
+			"value": "TextEllipsis"
+		},
+		{
+			"name": "component_watermark",
+			"value": "Watermark"
+		},
+		{
+			"name": "component_navBar",
+			"value": "NavBar"
+		},
+		{
+			"name": "component_sideBar",
+			"value": "SideBar"
+		},
+		{
+			"name": "component_tab",
+			"value": "Tab"
+		},
+		{
+			"name": "component_canvasDrawer",
+			"value": "CanvasDrawer"
+		},
+		{
+			"name": "component_imageCropper",
+			"value": "ImageCropper"
+		},
+		{
+			"name": "primary",
+			"value": "Primary"
+		},
+		{
+			"name": "success",
+			"value": "Success"
+		},
+		{
+			"name": "default",
+			"value": "Default"
+		},
+		{
+			"name": "warning",
+			"value": "Warning"
+		},
+		{
+			"name": "danger",
+			"value": "Danger"
+		},
+		{
+			"name": "fail",
+			"value": "Fail"
+		},
+		{
+			"name": "custom_custom",
+			"value": "Custom %s"
+		},
+		{
+			"name": "custom_button",
+			"value": "%s Button"
+		},
+		{
+			"name": "custom_status",
+			"value": "%s Status"
+		},
+		{
+			"name": "custom_type",
+			"value": "%s Type"
+		},
+		{
+			"name": "custom_shape",
+			"value": "%s Shape"
+		},
+		{
+			"name": "custom_size",
+			"value": "%s Size"
+		},
+		{
+			"name": "custom_style",
+			"value": "%s Style"
+		},
+		{
+			"name": "custom_color",
+			"value": "%s Color"
+		},
+		{
+			"name": "custom_group",
+			"value": "Group %d"
+		},
+		{
+			"name": "custom_placeholder",
+			"value": "Please enter %s"
+		},
+		{
+			"name": "custom_basic",
+			"value": "Basic %s"
+		},
+		{
+			"name": "custom_option",
+			"value": "Option %d"
+		},
+		{
+			"name": "button",
+			"value": "Button"
+		},
+		{
+			"name": "plain",
+			"value": "Plain"
+		},
+		{
+			"name": "thin_border",
+			"value": "Thin Border"
+		},
+		{
+			"name": "disabled",
+			"value": "Disabled"
+		},
+		{
+			"name": "load",
+			"value": "Loading"
+		},
+		{
+			"name": "loading",
+			"value": "Loading"
+		},
+		{
+			"name": "square",
+			"value": "Square"
+		},
+		{
+			"name": "circle",
+			"value": "Circle"
+		},
+		{
+			"name": "icon",
+			"value": "Icon"
+		},
+		{
+			"name": "large",
+			"value": "Large"
+		},
+		{
+			"name": "normal",
+			"value": "Normal"
+		},
+		{
+			"name": "small",
+			"value": "Small"
+		},
+		{
+			"name": "mini",
+			"value": "Mini"
+		},
+		{
+			"name": "custom",
+			"value": "Custom"
+		},
+		{
+			"name": "color",
+			"value": "Color"
+		},
+		{
+			"name": "font",
+			"value": "Font"
+		},
+		{
+			"name": "border",
+			"value": "Border"
+		},
+		{
+			"name": "radius",
+			"value": "Radius"
+		},
+		{
+			"name": "usage",
+			"value": "Usage"
+		},
+		{
+			"name": "title",
+			"value": "Title"
+		},
+		{
+			"name": "background_image",
+			"value": "Background Image"
+		},
+		{
+			"name": "content",
+			"value": "Content"
+		},
+		{
+			"name": "desc",
+			"value": "Description"
+		},
+		{
+			"name": "card",
+			"value": "Card"
+		},
+		{
+			"name": "group",
+			"value": "Group"
+		},
+		{
+			"name": "arrow",
+			"value": "Arrow"
+		},
+		{
+			"name": "required",
+			"value": "Required"
+		},
+		{
+			"name": "position",
+			"value": "Position"
+		},
+		{
+			"name": "long_text",
+			"value": "content content content content content content content content content content "
+		},
+		{
+			"name": "slot",
+			"value": "Slot"
+		},
+		{
+			"name": "tag",
+			"value": "Tag"
+		},
+		{
+			"name": "demo",
+			"value": "Demo"
+		},
+		{
+			"name": "basic_icon",
+			"value": "Basic"
+		},
+		{
+			"name": "outline_style",
+			"value": "Outline"
+		},
+		{
+			"name": "filled_style",
+			"value": "Filled"
+		},
+		{
+			"name": "show_popup",
+			"value": "Show Popup"
+		},
+		{
+			"name": "custom_popup_direction",
+			"value": "%s"
+		},
+		{
+			"name": "custom_dialog",
+			"value": "%s Dialog"
+		},
+		{
+			"name": "top",
+			"value": "Top"
+		},
+		{
+			"name": "bottom",
+			"value": "Bottom"
+		},
+		{
+			"name": "left",
+			"value": "Left"
+		},
+		{
+			"name": "right",
+			"value": "Right"
+		},
+		{
+			"name": "center",
+			"value": "Center"
+		},
+		{
+			"name": "custom_dynamics",
+			"value": "Dynamics %s"
+		},
+		{
+			"name": "width",
+			"value": "Width"
+		},
+		{
+			"name": "height",
+			"value": "Height"
+		},
+		{
+			"name": "event",
+			"value": "Event"
+		},
+		{
+			"name": "safe_area",
+			"value": "Safe Area"
+		},
+		{
+			"name": "custom_switch",
+			"value": "Switch %s"
+		},
+		{
+			"name": "custom_legal_color",
+			"value": "legal color, like red、#07c16"
+		},
+		{
+			"name": "confirm",
+			"value": "OK"
+		},
+		{
+			"name": "cancel",
+			"value": "Cancel"
+		},
+		{
+			"name": "custom_tip",
+			"value": "%s Tip"
+		},
+		{
+			"name": "basic_usage",
+			"value": "Basic Usage"
+		},
+		{
+			"name": "image",
+			"value": "Image"
+		},
+		{
+			"name": "load_icon_type",
+			"value": "loading icon type"
+		},
+		{
+			"name": "break_type",
+			"value": "Break Type"
+		},
+		{
+			"name": "truncation_word",
+			"value": "Truncate word"
+		},
+		{
+			"name": "not_truncation_word",
+			"value": "Not truncate word"
+		},
+		{
+			"name": "update",
+			"value": "Update"
+		},
+		{
+			"name": "year",
+			"value": "Year"
+		},
+		{
+			"name": "month",
+			"value": "Month"
+		},
+		{
+			"name": "day",
+			"value": "Day"
+		},
+		{
+			"name": "hour",
+			"value": "Hour"
+		},
+		{
+			"name": "minute",
+			"value": "Minute"
+		},
+		{
+			"name": "second",
+			"value": "Second"
+		}
+	]
+}

@@ -4,6 +4,8 @@ import { convertDimensions, getSizeByUnit } from '../../utils/utils'
 import { matrix4 } from '@kit.ArkUI'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestCircleProgressColor } from './color'
+import { IBestStringNumber } from '../../model/Global.type'
+
 class Point {
     x: number
     y: number
@@ -59,7 +61,7 @@ export struct IBestCircleProgress{
     /**
      * 文字大小
      */
-    @Prop textFontSize: number | string = this.baseStyle.fontSizeMd as string
+    @Prop textFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
     /**
      * 字重
      */

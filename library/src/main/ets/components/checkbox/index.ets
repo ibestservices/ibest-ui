@@ -7,37 +7,34 @@ import { BuilderArgs, MaxChangeArgs } from './index.type';
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils';
 import { IBestCheckboxColor } from './color';
 import { IBestIcon } from '../icon';
+import { IBestStringNumber } from '../../model/Global.type';
+
 @Component
 export struct IBestCheckbox {
-	/**
-	 * 自定义文本插槽
-	 */
-	@BuilderParam defaultBuilder?: (data: BuilderArgs) => void;
-	/**
-	 * 自定义图标插槽
-	 */
-	@BuilderParam iconBuilder?: (data: BuilderArgs) => void;
 	/**
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
-	 * 标识符，通常为一个唯一的字符串
-	 * 多选框名称。
+	 * 组名
 	 */
-	@Prop name: string;
+	@Prop group: string = ''
+	/**
+	 * 标识符，通常为一个唯一的字符串或数字
+	 */
+	@Prop name: IBestStringNumber
 	/**
 	 * 形状
 	 */
-	@Prop shape: 'square' | 'round' = 'round';
+	@Prop shape: 'square' | 'round' = 'round'
 	/**
 	 * 选中状态颜色
 	 */
-	@Prop checkedColor: ResourceColor = '';
+	@Prop checkedColor: ResourceColor = this.baseStyle.primary as string
 	/**
 	 * 图标大小
 	 */
-	@Prop iconSize: number | string = convertDimensionsWidthUnit(18)
+	@Prop iconSize: IBestStringNumber = convertDimensionsWidthUnit(18)
 	/**
 	 * 默认是否选中 非双向绑定
 	 * 如果要更改数据请从onChange回调中获取最新的值
@@ -55,7 +52,7 @@ export struct IBestCheckbox {
 	 * 文本大小
 	 * @since 1.18.0
 	 */
-	@Prop labelFontSize: number | string = convertDimensionsWidthUnit(16)
+	@Prop labelFontSize: IBestStringNumber = convertDimensionsWidthUnit(16)
 	/**
 	 * 文本位置，可选值为 left
 	 */
@@ -65,13 +62,31 @@ export struct IBestCheckbox {
 	 */
 	@Prop labelDisabled: boolean = false;
 	/**
-	 * 组名
-	 */
-	@Prop group: string = '';
-	/**
 	 * 是否为不确定状态
 	 */
 	@Prop @Watch('handleIndeterminateChange') indeterminate: boolean = false;
+	/**
+	 * 背景色
+	 * @since 2.0.7
+	 */
+	@Prop bgColor: ResourceColor = ''
+	/**
+	 * 边框色
+	 * @since 2.0.7
+     */
+	@Prop bdColor: ResourceColor = IBestCheckboxColor.borderColor
+	/**
+	 * 自定义文本插槽
+	 */
+	@BuilderParam defaultBuilder?: (data: BuilderArgs) => void;
+	/**
+	 * 自定义图标插槽
+	 */
+	@BuilderParam iconBuilder?: (data: BuilderArgs) => void;
+	/**
+	 * 改变的回调
+	 */
+	onChange: (checked: boolean) => void = () => {}
 	/**
 	 * 受checkboxgroup的最大可选数量禁用的
 	 */
@@ -85,14 +100,11 @@ export struct IBestCheckbox {
 	 * 因为checkbox在切换状态时有动画 但是图片切换没有动画 就会导致有不确定状态切换的时候 会先闪成勾选状态
 	 */
 	@State isShowIndeterminateImg: boolean = false;
+	@State uniId: number = 0
 	/**
 	 * 当不确定图标从显示变隐藏时 等待动画结束后再变
 	 */
 	private isShowIndeterminateTimeId: number | null = null
-	/**
-	 * 改变的回调
-	 */
-	onChange: (checked: boolean) => void = () => {}
 	/**
 	 * 是否展示背景色
 	 * 比如选中了或者需要显示不确定状态时
@@ -109,7 +121,7 @@ export struct IBestCheckbox {
 		if (this.mergeDisabled) {
 			return IBestCheckboxColor.borderColor
 		} else {
-			return this.isShowBackground() ? this.checkedColor || this.baseStyle.primary : ""
+			return this.isShowBackground() ? this.checkedColor : this.bgColor
 		}
 	}
 	/**
@@ -120,8 +132,7 @@ export struct IBestCheckbox {
 		if (this.mergeDisabled) {
 			return GRAY_COLOR.GRAY_5
 		} else {
-			return this.isShowBackground() ? this.checkedColor || this.baseStyle.primary :
-			IBestCheckboxColor.borderColor
+			return this.isShowBackground() ? this.checkedColor : this.bdColor
 		}
 	}
 	/**
@@ -145,12 +156,9 @@ export struct IBestCheckbox {
 	isLeftLabel() {
 		return this.labelPosition === 'left'
 	}
-	isHasGroup() {
-		return typeof this.group === 'string' && this.group.length > 0
-	}
 	updateGroup() {
-		if (this.isHasGroup()) {
-			emitter.emit(getEventName(COMPONENT_NAME, this.group, CHECKBOX_GROUP_EVENT_NAME.ITEM_CHANGE), this.name, this.value)
+		if (this.group) {
+			emitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.name, this.value)
 		}
 	}
 	/**
@@ -219,29 +227,29 @@ export struct IBestCheckbox {
 		this.isShowIndeterminateImg = this.indeterminate;
 	}
 	aboutToAppear() {
-		if (this.isHasGroup()) {
-			emitter.on(getEventName(COMPONENT_NAME, this.group, CHECKBOX_GROUP_EVENT_NAME.INIT_CHILDREN), (actives: string[]): void => this.init(actives))
-			emitter.on(getEventName(COMPONENT_NAME, this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), (data: MaxChangeArgs): void => this.handleMaxChange(data))
-			emitter.on(getEventName(COMPONENT_NAME, this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), (isSelectAll: boolean): void => this.handleToggleChange(isSelectAll))
+		this.uniId = this.getUniqueId()
+		if (this.group) {
+			emitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId, (actives: IBestStringNumber[]): void => this.init(actives))
+			emitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE, this.group), this.uniId, (data: MaxChangeArgs): void => this.handleMaxChange(data))
+			emitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL, this.group), this.uniId, (isSelectAll: boolean): void => this.handleToggleChange(isSelectAll))
 		} else {
 			this.getIsDisabled()
 		}
 		this.handleIndeterminateChange()
 	}
 	aboutToDisappear() {
-		if (this.isHasGroup()) {
-			emitter.off(getEventName(COMPONENT_NAME, this.group, CHECKBOX_GROUP_EVENT_NAME.INIT_CHILDREN), (actives: string[]): void => this.init(actives))
-			emitter.off(getEventName(COMPONENT_NAME, this.group, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE), (data: MaxChangeArgs): void => this.handleMaxChange(data))
-			emitter.on(getEventName(COMPONENT_NAME, this.group, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL), (isSelectAll: boolean): void => this.handleToggleChange(isSelectAll))
+		if (this.group) {
+			emitter.off(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId)
+			emitter.off(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE, this.group), this.uniId)
+			emitter.off(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL, this.group), this.uniId)
 		}
 		clearTimeout(this.isShowIndeterminateTimeId)
 	}
-	init(actives: string[]) {
+	init(actives: IBestStringNumber[]) {
 		this.value = actives.includes(this.name)
 	}
 
-	@Builder
-	LabelContain() {
+	@Builder LabelContain() {
 		Row() {
 			if (this.defaultBuilder) {
 				this.defaultBuilder({ checked: this.value, disabled: this.mergeDisabled })
@@ -264,7 +272,6 @@ export struct IBestCheckbox {
 			if (this.labelPosition === 'left') {
 				this.LabelContain()
 			}
-			// checkbox
 			Column() {
 				if (typeof this.iconBuilder === 'function') {
 					this.iconBuilder({ checked: this.value, disabled: this.mergeDisabled })

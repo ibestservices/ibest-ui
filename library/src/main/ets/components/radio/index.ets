@@ -7,6 +7,8 @@ import { BuilderArgs } from './index.type'
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
 import { IBestRadioColor } from './color'
 import { IBestIcon } from '../icon'
+import { IBestStringNumber } from '../../model/Global.type'
+
 @Component
 export struct IBestRadio {
 	/**
@@ -20,7 +22,7 @@ export struct IBestRadio {
 	/**
 	 * 标识符，通常为一个唯一的字符串
 	 */
-	@Prop name: string | number | boolean
+	@Prop name: IBestStringNumber | boolean
 	/**
 	 * 形状
 	 */
@@ -28,11 +30,11 @@ export struct IBestRadio {
 	/**
 	 * 选中状态颜色
 	 */
-	@Prop checkedColor: ResourceColor = ''
+	@Prop checkedColor: ResourceColor = this.baseStyle.primary as string
 	/**
 	 * 图标大小
 	 */
-	@Prop iconSize: number | string = convertDimensionsWidthUnit(20)
+	@Prop iconSize: IBestStringNumber = convertDimensionsWidthUnit(20)
 	/**
 	 * 是否禁用
 	 */
@@ -45,7 +47,7 @@ export struct IBestRadio {
 	 * 文本大小
 	 * @since 1.18.0
 	 */
-	@Prop labelFontSize: number | string = convertDimensionsWidthUnit(16)
+	@Prop labelFontSize: IBestStringNumber = convertDimensionsWidthUnit(16)
 	/**
 	 * 文本位置，可选值为 left
 	 */
@@ -54,6 +56,16 @@ export struct IBestRadio {
 	 * 是否禁用复选框文本点击
 	 */
 	@Prop labelDisabled: boolean = false
+	/**
+	 * 背景色
+	 * @since 2.0.7
+	 */
+	@Prop bgColor: ResourceColor = ''
+	/**
+	 * 边框色
+	 * @since 2.0.7
+	 */
+	@Prop bdColor: ResourceColor = IBestRadioColor.borderColor
 	/**
 	 * 自定义文本插槽
 	 */
@@ -68,7 +80,19 @@ export struct IBestRadio {
 	 */
 	onChange: (checked: boolean) => void = () => {}
 
+	@State uniId: number = 0
 	@State isChecked: boolean = false
+	aboutToAppear() {
+		this.uniId = this.getUniqueId()
+		if (this.group) {
+			emitter.on(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId, (name: IBestStringNumber | boolean): void => this.handleRadioGroupInit(name))
+		}
+	}
+	aboutToDisappear() {
+		if (this.group) {
+			emitter.off(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId)
+		}
+	}
 	/**
 	 * 获取背景色
 	 * @returns
@@ -77,7 +101,7 @@ export struct IBestRadio {
 		if (this.disabled) {
 			return IBestRadioColor.borderColor
 		} else {
-			return this.isChecked && this.shape != 'dot' ? this.checkedColor || this.baseStyle.primary : ''
+			return this.isChecked && this.shape != 'dot' ? this.checkedColor : this.bgColor
 		}
 	}
 	/**
@@ -88,7 +112,7 @@ export struct IBestRadio {
 		if (this.disabled) {
 			return GRAY_COLOR.GRAY_5
 		} else {
-			return this.isChecked ? this.checkedColor || this.baseStyle.primary : IBestRadioColor.borderColor
+			return this.isChecked ? this.checkedColor : this.bdColor
 		}
 	}
 	/**
@@ -106,7 +130,7 @@ export struct IBestRadio {
 		if (this.disabled) {
 			return IBestRadioColor.disabledIconColor
 		} else {
-			return this.shape === 'dot' ? this.checkedColor || this.baseStyle.primary : IBestRadioColor.whiteColor
+			return this.shape === 'dot' ? this.checkedColor : IBestRadioColor.whiteColor
 		}
 	}
 	/**
@@ -116,12 +140,9 @@ export struct IBestRadio {
 	isLeftLabel() {
 		return this.labelPosition === 'left'
 	}
-	isHasGroup() {
-		return typeof this.group === 'string' && this.group.length > 0
-	}
 	updateGroup() {
-		if (this.isHasGroup()) {
-			emitter.emit(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE), this.name)
+		if (this.group) {
+			emitter.emit(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.name)
 		}
 	}
 	/**
@@ -139,21 +160,10 @@ export struct IBestRadio {
 	 * 初始化
 	 * @param name
 	 */
-	handleRadioGroupInit(name: string | number | boolean) {
+	handleRadioGroupInit(name: IBestStringNumber | boolean) {
 		this.isChecked = name === this.name
 	}
-	aboutToAppear() {
-		if (this.isHasGroup()) {
-			emitter.on(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN), (name: string | number | boolean): void => this.handleRadioGroupInit(name))
-		}
-	}
-	aboutToDisappear() {
-		if (this.isHasGroup()) {
-			emitter.off(getEventName(COMPONENT_NAME, this.group, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN), (name: string | number | boolean): void => this.handleRadioGroupInit(name))
-		}
-	}
-	@Builder
-	LabelContain() {
+	@Builder LabelContain() {
 		Row() {
 			if (this.defaultBuilder) {
 				this.defaultBuilder({ checked: this.isChecked, disabled: this.disabled })

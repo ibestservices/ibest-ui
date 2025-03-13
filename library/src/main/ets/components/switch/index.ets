@@ -1,3 +1,4 @@
+import { IBestStringNumber } from '../../model/Global.type';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils';
@@ -17,7 +18,7 @@ export struct IBestSwitch {
 	/**
 	 * 开关按钮的尺寸
 	 */
-	@Prop switchSize: number | string = convertDimensionsWidthUnit(26)
+	@Prop switchSize: IBestStringNumber = convertDimensionsWidthUnit(26)
 	/**
 	 * 打开时的背景色
 	 */

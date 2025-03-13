@@ -185,6 +185,14 @@
 			"value": "$color:ibest_active_color"
 		},
 		{
+			"name": "ibest_field_prefix_font_color",
+			"value": "$color:ibest_gray_6"
+		},
+		{
+			"name": "ibest_field_suffix_font_color",
+			"value": "$color:ibest_gray_6"
+		},
+		{
 			"name": "ibest_number_keyboard_background",
 			"value": "$color:ibest_gray_2"
 		},
@@ -395,6 +403,34 @@
 		{
 			"name": "ibest_tab_active_text_color",
 			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_table_header_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_table_header_text_color",
+			"value": "$color:ibest_gray_6"
+		},
+		{
+			"name": "ibest_table_border_color",
+			"value": "$color:ibest_border_color"
+		},
+		{
+			"name": "ibest_table_cell_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_table_cell_stripe_color",
+			"value": "#fafafa"
+		},
+		{
+			"name": "ibest_table_cell_text_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_table_footer_background",
+			"value": "$color:ibest_gray_2"
 		}
 	]
 }

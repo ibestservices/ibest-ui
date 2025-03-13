@@ -1,8 +1,9 @@
 import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
 import { CONTAINER_SIZE } from '../theme-chalk/src/container'
 import { clamp, convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../utils/utils'
-import { getDefaultBaseStyle } from '../theme-chalk/src'
 import { IBestActionSheetColor } from './color'
+import { IBestStringNumber } from '../model/Global.type'
+
 type IBestPreviewImgType = PixelMap | ResourceStr | DrawableDescriptor
 
 interface CenterLocation {
@@ -40,7 +41,7 @@ class IBestImagePreviewOption{
 	/**
 	 * 页码距离顶部或底部距离
 	 */
-	indexOffset?: number | string = 52
+	indexOffset?: IBestStringNumber = 52
 	/**
 	 * 页码字体颜色
 	 */
@@ -48,7 +49,7 @@ class IBestImagePreviewOption{
 	/**
 	 * 页码字体大小
 	 */
-	indexFontSize?: number | string = 14
+	indexFontSize?: IBestStringNumber = 14
 	/**
 	 * 是否循环
 	 */
@@ -88,7 +89,6 @@ class IBestImagePreviewParams extends IBestImagePreviewOption {
 	// 关闭
 	hide: () => void = () => {}
 	constructor(list: IBestPreviewImgType[], params?: IBestImagePreviewOption) {
-		let baseStyle = getDefaultBaseStyle()
 		super()
 		this.list = list
 		this.maskColor = params?.maskColor || 'rgba(24,24,25,0.95)'

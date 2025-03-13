@@ -1,3 +1,4 @@
+import { IBestStringNumber } from '../../model/Global.type';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
@@ -12,33 +13,33 @@ export struct IBestCell {
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * title的插槽 优先级大于 title
 	 */
-	@BuilderParam titleBuilder?: CustomBuilder;
+	@BuilderParam titleBuilder: CustomBuilder
 	/**
 	 * value的插槽 优先级大于 value
 	 */
-	@BuilderParam valueBuilder?: CustomBuilder;
+	@BuilderParam valueBuilder: CustomBuilder
 	/**
 	 * value的插槽 优先级大于 label
 	 */
-	@BuilderParam labelBuilder?: CustomBuilder;
+	@BuilderParam labelBuilder: CustomBuilder
 	/**
 	 * 自定义title左侧icon的插槽
 	 * 使用titleBuilder时，该插槽不生效
 	 */
-	@BuilderParam iconBuilder?: CustomBuilder;
+	@BuilderParam iconBuilder: CustomBuilder
 	/**
 	 * 自定义value右侧icon的插槽
 	 * 使用valueBuilder时，该插槽不生效
 	 */
-	@BuilderParam rightIconBuilder?: CustomBuilder;
+	@BuilderParam rightIconBuilder: CustomBuilder
 	/**
 	 * 左侧标题
 	 */
-	@Prop title: ResourceStr = '';
+	@Prop title: ResourceStr = ''
 	/**
 	 * 标题的文字颜色 默认 #323233
 	 */
@@ -46,7 +47,7 @@ export struct IBestCell {
 	/**
 	 * 右侧内容
 	 */
-	@Prop value: ResourceStr = '';
+	@Prop value: ResourceStr = ''
 	/**
 	 * 内容的文字颜色 默认 #969799
 	 */
@@ -54,7 +55,7 @@ export struct IBestCell {
 	/**
 	 * 标题下方的描述信息
 	 */
-	@Prop label: ResourceStr = '';
+	@Prop label: ResourceStr = ''
 	/**
 	 * 描述的文字颜色 默认 #969799
 	 */
@@ -62,31 +63,31 @@ export struct IBestCell {
 	/**
 	 * 是否显示底部边框
 	 */
-	@Prop hasBorder: boolean = true;
+	@Prop hasBorder: boolean = true
 	/**
 	 * 单元格大小 默认 'normal'
 	 */
-	@Prop cellSize: `${SIZE.LARGE}` | `${SIZE.NORMAL}` = SIZE.NORMAL;
+	@Prop cellSize: `${SIZE.LARGE}` | `${SIZE.NORMAL}` = SIZE.NORMAL
 	/**
 	 * 是否开启点击反馈
 	 */
-	@Prop clickable: boolean = false;
+	@Prop clickable: boolean = false
 	/**
 	 * 是否展示右侧箭头并开启点击反馈
 	 */
-	@Prop isLink: boolean = false;
+	@Prop isLink: boolean = false
 	/**
 	 * 是否展示右侧箭头并开启点击反馈
 	 */
-	@Prop arrowDirection: `${ARROW_DIRECTION}` = ARROW_DIRECTION.RIGHT;
+	@Prop arrowDirection: `${ARROW_DIRECTION}` = ARROW_DIRECTION.RIGHT
 	/**
 	 * 是否显示必填*号
 	 */
-	@Prop required: boolean = false;
+	@Prop required: boolean = false
 	/**
 	 * 是否使内容垂直居中
 	 */
-	@Prop center: boolean = false;
+	@Prop center: boolean = false
 	/**
 	 * 左侧图标
 	 * @since 1.17.0
@@ -101,12 +102,12 @@ export struct IBestCell {
 	 * 左侧图标大小
 	 * @since 1.17.0
 	 */
-	@Prop leftIconSize: number | string = convertDimensionsWidthUnit(16)
+	@Prop leftIconSize: IBestStringNumber = convertDimensionsWidthUnit(16)
 	/**
 	 * 左侧图标与title间距
 	 * @since 1.18.0
 	 */
-	@Prop leftIconMarginRight: number | string = this.baseStyle.spaceBase as string
+	@Prop leftIconMarginRight: IBestStringNumber = this.baseStyle.spaceBase as string
 	/**
 	 * 右侧图标
 	 * @since 1.17.0
@@ -121,22 +122,22 @@ export struct IBestCell {
 	 * 右侧图标大小
 	 * @since 1.17.0
 	 */
-	@Prop rightIconSize: number | string = convertDimensionsWidthUnit(14)
+	@Prop rightIconSize: IBestStringNumber = convertDimensionsWidthUnit(14)
 	/**
 	 * 右侧图标与内容间距
 	 * @since 1.18.0
 	 */
-	@Prop rightIconMarginLeft: number | string = this.baseStyle.spaceBase as string
+	@Prop rightIconMarginLeft: IBestStringNumber = this.baseStyle.spaceBase as string
 	/**
 	 * 左侧内容宽度
 	 * @since 1.18.0
 	 */
-	@Prop leftContentWidth: number | string = 0
+	@Prop leftContentWidth: IBestStringNumber = 0
 	/**
 	 * 左右padding
 	 * @since 1.18.0
 	 */
-	@Prop leftRightPadding: number | string = this.baseStyle.spaceMd as string
+	@Prop leftRightPadding: IBestStringNumber = this.baseStyle.spaceMd as string
 	/**
 	 * 底部分割线尺寸类型
 	 * @since 1.18.0

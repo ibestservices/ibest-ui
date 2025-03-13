@@ -1,7 +1,9 @@
+import { IBestStringNumber } from '../../model/Global.type'
+
 /**
  * field 值类型
  */
-export type IBestFieldValueType = string | number | boolean | Array<string | number>
+export type IBestFieldValueType = IBestStringNumber | boolean | IBestStringNumber[]
 /**
  * 文本对齐方式
  */

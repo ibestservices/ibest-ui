@@ -30,7 +30,7 @@ struct TextEllipsisPage {
                 ListItem() {
                     ComponentShowContainer({ title: '展开/收起' }) {
                         IBestTextEllipsis({
-                            text: this.text,
+                            text: $r("app.string.app_desc"),
                             showAction: true
                         })
                     }

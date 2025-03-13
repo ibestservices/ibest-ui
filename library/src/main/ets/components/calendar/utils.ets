@@ -13,7 +13,7 @@ export function set16ToRgb(str:string): string{
         }
         newStr = t
     }
-    let arr: Array<number> = []
+    let arr: number[] = []
     for(let i = 0; i < 6; i = i + 2){
         let s = newStr.slice(i,i+2)
         arr.push(parseInt("0x" + s))

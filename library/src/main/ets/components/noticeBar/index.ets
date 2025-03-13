@@ -1,3 +1,4 @@
+import { IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
@@ -16,7 +17,7 @@ export struct IBestNoticeBar{
 	/**
 	 * 通知栏高度
      */
-	@Prop barHeight: number | string = convertDimensionsWidthUnit(40)
+	@Prop barHeight: IBestStringNumber = convertDimensionsWidthUnit(40)
 	/**
 	 * 背景色
      */
@@ -24,7 +25,7 @@ export struct IBestNoticeBar{
 	/**
 	 * 左右内边距
      */
-	@Prop leftRightPadding: number | string = convertDimensionsWidthUnit(16)
+	@Prop leftRightPadding: IBestStringNumber = convertDimensionsWidthUnit(16)
 	/**
 	 * 左侧图标名称
 	 * @deprecated 请使用leftIcon
@@ -37,7 +38,7 @@ export struct IBestNoticeBar{
 	/**
 	 * 左侧图标尺寸
      */
-	@Prop leftIconSize: number | string = convertDimensionsWidthUnit(16)
+	@Prop leftIconSize: IBestStringNumber = convertDimensionsWidthUnit(16)
 	/**
 	 * 左侧图标颜色
      */
@@ -53,7 +54,7 @@ export struct IBestNoticeBar{
 	/**
 	 * 文本大小
      */
-	@Prop textFontSize: number | string = this.baseStyle.fontSizeMd as string
+	@Prop textFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
 	/**
 	 * 右侧图标名称
 	 * @deprecated 请使用rightIcon
@@ -66,7 +67,7 @@ export struct IBestNoticeBar{
 	/**
 	 * 右侧图标大小
      */
-	@Prop rightIconSize: number | string = convertDimensionsWidthUnit(16)
+	@Prop rightIconSize: IBestStringNumber = convertDimensionsWidthUnit(16)
 	/**
 	 * 右侧图标颜色
      */

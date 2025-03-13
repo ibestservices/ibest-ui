@@ -30,45 +30,46 @@ struct DialogPage {
 	@State inputValue: string = ''
 	@State formInputError: boolean = false
 	@State dialogVisible: boolean = false
-	@State dialogWidth: number = 320
-	@Builder
-	formInputContain() {
+	@State dialogWidth: number | string = "90%"
+	@Builder formInputContain() {
 		Column({ space: SPACE.MD }) {
 			IBestButton({
 				type: 'primary',
 				text: "切换宽度",
 				onClickBtn: () => {
-					this.dialogWidth = this.dialogWidth === 320 ? 360 : 320
+					this.dialogWidth = this.dialogWidth === "90%" ? "80%" : "90%"
 				}
 			})
-			TextInput({ 'placeholder': '请输入' })
+			TextInput({ placeholder: '请输入' })
 				.fontSize(14)
 				.placeholderFont({ size: 14 })
 				.onChange((value) => {
-					this.inputValue = value;
+					this.inputValue = value
 					this.formInputError = false
 				})
 			if (this.formInputError) {
 				Text('不能为空')
 					.width(CONTAINER_SIZE.FULL)
 					.textAlign(TextAlign.Start)
-					.margin({
-						top: SPACE.SM,
-						left: SPACE.BASE
-					})
 					.fontColor(Color.Red)
 					.fontSize(12)
-					.transition({ type: TransitionType.Insert, opacity: 1 })
-					.transition({ type: TransitionType.Delete, opacity: 0 })
 			}
-		}.width('90%').margin({ top: SPACE.LG, bottom: SPACE.LG })
+		}.padding(SPACE.MD)
 	}
-	@Builder
-	customComponentContent() {
+	@Builder customComponentContent() {
 		Column() {
 			Text(textData.program)
 		}
 		.padding(20)
+	}
+	@Builder imageBgBuilder() {
+		Column() {
+			Text(textData.life)
+				.fontColor(modeColor.white)
+		}
+		.height(200)
+		.padding(20)
+		.justifyContent(FlexAlign.Center)
 	}
 	build() {
 		Column() {
@@ -168,6 +169,26 @@ struct DialogPage {
 										showCancelButton: true,
 										theme: "round-button",
 										buttonSpace: 20
+									})
+								}
+							})
+						}
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '背景图片', titlePaddingLeft: SPACE.MD }) {
+						IBestCellGroup({ inset: true }) {
+							IBestCell({
+								title: '背景图片',
+								isLink: true,
+								hasBorder: false,
+								onClickCell: () => {
+									IBestDialogUtil.open({
+										bgImage: "https://img0.baidu.com/it/u=3217812679,2585737758&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500",
+										showConfirmButton: false,
+										defaultBuilder: () => this.imageBgBuilder(),
+										closeOnClickOverlay: true,
+										closeOnBackPress: true
 									})
 								}
 							})

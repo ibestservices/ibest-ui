@@ -1,14 +1,15 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { ColorType, COLOR_TYPE } from '../../theme-chalk/src/color.type';
-import { GRAY_COLOR } from '../../theme-chalk/src/color'
+import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type';
+import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SIZE } from '../../theme-chalk/src/size.type';
 import { TagSizeData } from './index.type';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { IBestTagColor } from './color';
 import { IBestIcon } from '../icon';
-@Extend(Row)
-function tagSizeStyle(data: TagSizeData) {
+import { IBestStringNumber } from '../../model/Global.type';
+
+@Extend(Row) function tagSizeStyle(data: TagSizeData) {
 	.padding({
 		top: 0,
 		right: data.padding,
@@ -78,8 +79,7 @@ export struct IBestTag {
 	 * @returns
 	 */
 	getBorderColor() {
-		return this.color ? this.color :
-			this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_4 : this.baseStyle[this.type]
+		return this.color ? this.color : this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_4 : this.baseStyle[this.type]
 	}
 	/**
 	 * 获取按钮文字的颜色
@@ -90,8 +90,7 @@ export struct IBestTag {
 			return this.textColor
 		}
 		if (this.plain) {
-			return this.color ? this.color :
-				this.type === COLOR_TYPE.DEFAULT ? IBestTagColor.textColor : this.baseStyle[this.type]
+			return this.color ? this.color : this.type === COLOR_TYPE.DEFAULT ? IBestTagColor.textColor : this.baseStyle[this.type]
 		}
 		return this.type === COLOR_TYPE.DEFAULT ? IBestTagColor.textColor : IBestTagColor.whiteColor
 	}
@@ -100,8 +99,7 @@ export struct IBestTag {
 	 * @returns
 	 */
 	getBackgroundColor() {
-		return this.plain ? "transparent" :
-			this.color ? this.color : this.type == "default" ? IBestTagColor.defaultBg : this.baseStyle[this.type]
+		return this.plain ? "transparent" : this.color ? this.color : this.type == "default" ? IBestTagColor.defaultBg : this.baseStyle[this.type]
 	}
 	/**
 	 * 根据size获取tag的尺寸
@@ -126,7 +124,7 @@ export struct IBestTag {
 	 * @param borderRadius
 	 * @returns
 	 */
-	getBorderRadius(borderRadius: number | string): BorderRadiuses | Length {
+	getBorderRadius(borderRadius: IBestStringNumber): BorderRadiuses | Length {
 		if (this.round) {
 			return this.baseStyle.borderRadiusMax
 		} else if (this.mark) {

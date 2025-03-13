@@ -39,6 +39,7 @@ struct SearchPage {
 					ComponentShowContainer({ title: '圆角' }) {
 						IBestSearch({
 							value: $value,
+							placeholder: "请输入关键词",
 							radius: 6
 						})
 					}
@@ -47,6 +48,7 @@ struct SearchPage {
 					ComponentShowContainer({ title: '禁用' }) {
 						IBestSearch({
 							value: $value,
+							placeholder: "请输入关键词",
 							disabled: true
 						})
 					}
@@ -55,6 +57,7 @@ struct SearchPage {
 					ComponentShowContainer({ title: '自定义背景色' }) {
 						IBestSearch({
 							value: $value,
+							placeholder: "请输入关键词",
 							isRound: true,
 							outBgColor: "#4fc08d",
 							innerBgColor: "#F29C73",
@@ -66,6 +69,7 @@ struct SearchPage {
 					ComponentShowContainer({ title: '事件监听' }) {
 						IBestSearch({
 							value: $value,
+							placeholder: "请输入关键词",
 							showRightButton: true,
 							clearable: true,
 							onRightButtonClick: () => {
@@ -88,6 +92,7 @@ struct SearchPage {
 						Column({ space: 20 }){
 							IBestSearch({
 								value: $value,
+								placeholder: "请输入关键词",
 								label: "地址",
 								showRightButton: true,
 								rightButtonText: "搜索"
