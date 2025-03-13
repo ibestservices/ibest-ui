@@ -16,7 +16,7 @@ export struct IBestDialogView {
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@StorageProp("IBestColorMode") @Watch("colorModeChange") colorMode: ColorMode = ColorMode.LIGHT
-	@StorageProp("IBestKeyBoardHeight") keyBoardHeight: number = 0
+	// @StorageProp("IBestKeyBoardHeight") keyBoardHeight: number = 0
 	@State whiteColor: ResourceColor = IBestDialogColor.white
 	@State contentBg: ResourceColor = IBestDialogColor.contentBg
 	@State titleDefaultColor: ResourceColor = IBestDialogColor.titleColor
@@ -399,7 +399,7 @@ export struct IBestDialogView {
 			this.placeRow()
 		}
 		.width(CONTAINER_SIZE.FULL)
-		.margin({bottom: this.keyBoardHeight})
-		.animation({ duration: 430, curve: Curve.EaseInOut })
+		// .margin({bottom: this.keyBoardHeight})
+		// .animation({ duration: 430, curve: Curve.EaseInOut })
 	}
 }

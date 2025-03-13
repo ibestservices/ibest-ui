@@ -288,7 +288,7 @@ export struct IBestDialog {
 		isModal: this.showOverlay,
 		maskColor: this.overlayColor,
 		showInSubWindow: this.showInSubWindow,
-		keyboardAvoidMode: KeyboardAvoidMode.NONE,
+		// keyboardAvoidMode: KeyboardAvoidMode.NONE,
 		onWillDismiss: (dismissDialogAction: DismissDialogAction) => {
 			// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
 			let reason = dismissDialogAction.reason

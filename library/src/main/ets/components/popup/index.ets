@@ -6,8 +6,6 @@ import { IBestPopupColor } from './color'
 import { IBestIcon } from '../icon'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestStringNumber } from '../../model/Global.type'
-import { window } from '@kit.ArkUI'
-import GlobalStore from '../../utils/GlobalStore'
 const popupDuration = 200
 const hideDuration = 220
 
@@ -23,7 +21,7 @@ struct IBestPopupBaseContent {
 	@StorageProp("IBestIsLandscape") @Watch("initSize") IBestIsLandscape: boolean = false
 	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
 	@StorageProp("IBestBottomBarHeight") bottomBarHeight: number = 0
-	@StorageProp("IBestKeyBoardHeight") keyBoardHeight: number = 0
+	// @StorageProp("IBestKeyBoardHeight") keyBoardHeight: number = 0
 	@State transX: IBestStringNumber = ""
 	@State transY: IBestStringNumber = ""
 	/**
@@ -186,8 +184,8 @@ struct IBestPopupBaseContent {
 		}
 		.width(['left', 'center', 'right'].includes(this.popupAlign) ? CONTAINER_SIZE.FULL : "")
 		.clip(true)
-		.margin({bottom: this.keyBoardHeight})
-		.animation({ duration: 430, curve: Curve.EaseInOut })
+		// .margin({bottom: this.keyBoardHeight})
+		// .animation({ duration: 430, curve: Curve.EaseInOut })
 	}
 }
 
@@ -315,7 +313,7 @@ export struct IBestPopup{
 		isModal: this.isModal,
 		maskColor: this.maskColor,
 		customStyle: true,
-		keyboardAvoidMode: KeyboardAvoidMode.NONE,
+		// keyboardAvoidMode: KeyboardAvoidMode.NONE,
 		onWillDismiss:(dismissDialogAction: DismissDialogAction)=> {
 			// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
 			let reason = dismissDialogAction.reason
