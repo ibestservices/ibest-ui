@@ -62,6 +62,11 @@ export struct IBestSignature{
 	 */
 	@Prop isShowFooter: boolean = true
 	/**
+	 * 是否开启报点预测
+	 * @since 2.0.7
+	 */
+	@Prop predictionAssist: boolean = false
+	/**
 	 * 绘制完毕的回调
 	 */
 	onDrawEnd: () => void = () => {}
@@ -73,10 +78,6 @@ export struct IBestSignature{
 	 * 点击清空按钮的回调
 	 */
 	onClear: () => void = () => {}
-	/**
-	 * 是否开启报点预测
-	 */
-	@Prop predictionAssist: boolean = false
 	/**
 	 * 控制器
 	 */
