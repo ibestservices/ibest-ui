@@ -13,7 +13,7 @@ export struct IBestCellGroup {
 	/**
 	 * 默认插槽
 	 */
-	@BuilderParam defaultBuilder?: CustomBuilder;
+	@BuilderParam defaultBuilder: CustomBuilder;
 	/**
 	 * 分组标题
 	 */
@@ -31,17 +31,11 @@ export struct IBestCellGroup {
 	 * @since 2.0.6
      */
 	@Prop radius: IBestStringNumber = this.baseStyle.borderRadiusLg as string
-	/**
-	 * 获取边框宽度
-	 * @returns
-	 */
+	// 获取边框宽度
 	getBorderWidth() {
 		return this.hasBorder && !this.inset ? 1 : 0
 	}
-	/**
-	 * 获取margin
-	 * @returns
-	 */
+	// 获取margin
 	getMargin() {
 		return this.inset ? { left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd } as Padding : 0
 	}

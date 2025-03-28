@@ -1,8 +1,8 @@
-export interface MaxChangeArgs {
+export interface IBestCheckboxMaxChangeParams {
 	max: number,
 	checkedList: string[]
 }
-export interface BuilderArgs {
+export interface IBestCheckboxBuilderParams {
 	checked: boolean,
 	disabled: boolean
 }

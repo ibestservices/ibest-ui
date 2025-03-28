@@ -47,7 +47,6 @@ struct StepperPage {
 					ComponentShowContainer({ title: '限制输入范围' }) {
 						IBestStepper({
 							value: $value2,
-							defaultValue: 5,
 							min: 5,
 							max: 8
 						})

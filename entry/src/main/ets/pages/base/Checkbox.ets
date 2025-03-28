@@ -5,6 +5,7 @@ import {
 	IBestCheckbox,
 	IBestCheckboxGroup,
 	IBestCheckboxGroupController,
+	IBestDialogUtil,
 	IBestNavBar
 } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
@@ -152,9 +153,49 @@ struct CheckboxPage {
 					}
 				}
 				ListItem() {
+					ComponentShowContainer({ title: '异步切换' }) {
+						IBestCheckbox({
+							value: this.isChecked,
+							label: '复选框',
+							beforeChange: () => {
+								return new Promise((resolve, reject) => {
+									IBestDialogUtil.open({
+										title: "提示",
+										message: "确定更改状态?",
+										showCancelButton: true,
+										onConfirm: () => {
+											resolve(true)
+										},
+										onCancel: () => {
+											reject(false)
+										}
+									})
+								})
+							},
+							onChange: checked => {
+								this.isChecked = checked
+							}
+						})
+					}
+				}
+				ListItem() {
 					ComponentShowContainer({ title: '复选框组', }) {
 						Text("选中标识 " + this.activeList.join(',')).fontSize(14).margin({ bottom: 10 })
-						IBestCheckboxGroup({ group: this.group, activeList: $activeList }) {
+						IBestCheckboxGroup({ group: this.group, activeList: $activeList, beforeChange: () => {
+							return new Promise((resolve, reject) => {
+								IBestDialogUtil.open({
+									title: "提示",
+									message: "确定更改状态?",
+									showCancelButton: true,
+									onConfirm: () => {
+										resolve(true)
+									},
+									onCancel: () => {
+										reject(false)
+									}
+								})
+							})
+						}}) {
 							IBestCheckbox({
 								group: this.group,
 								label: '复选框1',
@@ -239,20 +280,20 @@ struct CheckboxPage {
 							IBestButton({
 								text: '全选',
 								type: 'primary',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller.toggleAll(true)
 								}
 							})
 							IBestButton({
 								text: '反选',
 								type: 'warning',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller.toggleAll()
 								}
 							})
 							IBestButton({
 								text: '取消选中',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller.toggleAll(false)
 								}
 							})
@@ -315,7 +356,7 @@ struct CheckboxPage {
 								disabled: this.activeList5.length >= this.cellCheckedMaxNum &&
 									!this.activeList5.includes('1'),
 								rightIconBuilder: (): void => this.CellCheckbox('1', this.group5),
-								onClickCell: (): void => this.handleClickCell('1')
+								onCellClick: (): void => this.handleClickCell('1')
 							})
 							IBestCell({
 								clickable: true,
@@ -323,7 +364,7 @@ struct CheckboxPage {
 								disabled: this.activeList5.length >= this.cellCheckedMaxNum &&
 									!this.activeList5.includes('2'),
 								rightIconBuilder: (): void => this.CellCheckbox('2', this.group5),
-								onClickCell: (): void => this.handleClickCell('2')
+								onCellClick: (): void => this.handleClickCell('2')
 							})
 							IBestCell({
 								clickable: true,
@@ -332,7 +373,7 @@ struct CheckboxPage {
 									!this.activeList5.includes('3'),
 								hasBorder: false,
 								rightIconBuilder: (): void => this.CellCheckbox('3', this.group5),
-								onClickCell: (): void => this.handleClickCell('3')
+								onCellClick: (): void => this.handleClickCell('3')
 							})
 						}
 					}

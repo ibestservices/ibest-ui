@@ -12,7 +12,7 @@ export struct IBestDatePicker {
 	/**
 	 * 分组id
 	 */
-	@Prop groupId: string = ""
+	@Prop groupId: IBestStringNumber = ""
 	/**
 	 * 唯一id
 	 */
@@ -125,15 +125,20 @@ export struct IBestDatePicker {
 		}
 		this.listType.forEach((item,index) => {
 			let list = item == "year" ? this.getYearsList() : item == "month" ? this.getMonthsList() : this.getDaysList()
-			let min = list[0].value.toString()
-			let max = list[list.length-1]
+			let min = list.length ? list[0].value.toString() : ""
+			let max = list.length ? list[list.length-1].value.toString() : ""
 			let newValue = this.value[index] || min
-			let i = list.findIndex((item) => item.value == newValue)
+			let i = list.findIndex((item) => item.value === newValue)
 			if(i == -1){
-				this.value[index] = this.formatValue(clamp(Number(newValue), Number(min), Number(max)))
+				if(list.length) {
+					this.value[index] = this.formatValue(clamp(Number(newValue), Number(min), Number(max)))
+				}else{
+					this.value[index] = ''
+				}
 			}else{
 				this.value[index] = newValue
 			}
+			this.value = this.value.filter(e => e)
 			this.options.push(list)
 		})
 	}

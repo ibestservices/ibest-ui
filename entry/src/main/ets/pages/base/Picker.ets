@@ -31,9 +31,6 @@ struct PickerPage {
 			title: "标题",
 			visibleItemCount: 5,
 			value: $selectValue1,
-			onChange: (selectedValues, selectTexts) => {
-				IBestToast.show(selectTexts.join('-'))
-			},
 			onConfirm: (selectedValues, selectTexts) => {
 				this.visible = false
 				this.filedValue = selectTexts.join('-')

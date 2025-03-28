@@ -3,8 +3,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src'
 import { CONTAINER_SIZE } from '../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type'
 import CustomContent from '../common/components/CustomContent'
-import GlobalStore from '../utils/GlobalStore'
-import { convertDimensionsWidthUnit, getSizeByUnit } from '../utils/utils'
+import { convertDimensionsWidthUnit, getSizeByUnit, sleep } from '../utils/utils'
 import { IBestStringNumber } from '../model/Global.type'
 
 class IBestNotifyOption{
@@ -54,11 +53,11 @@ class IBestNotifyParams extends IBestNotifyOption{
 	constructor(value: IBestNotifyOption) {
 		super()
 		this.type = value.type || "danger"
-		this.message = value.message || ""
+		this.message = value.message
 		this.duration = value.duration || 1500
-		this.color = value.color || "#fff"
-		this.fontSize = value.fontSize || convertDimensionsWidthUnit(14)
-		this.backgroundColor = value.backgroundColor || getDefaultBaseStyle()[this.type]
+		this.color = value.color
+		this.fontSize = value.fontSize
+		this.backgroundColor = value.backgroundColor
 		this.customContent = value.customContent
 		this.onOpen = value.onOpen
 		this.onClose = value.onClose
@@ -72,6 +71,7 @@ struct defaultContent{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
 	@State transY: IBestStringNumber = "-100%"
 	@Prop option: IBestNotifyParams
 
@@ -87,14 +87,14 @@ struct defaultContent{
 				}else{
 					Row(){
 						Text(this.option.message)
-							.fontColor(this.option.color)
-							.fontSize(this.option.fontSize ? getSizeByUnit(this.option.fontSize) : "")
+							.fontColor(this.option.color ?? "#fff")
+							.fontSize(getSizeByUnit(this.option.fontSize ?? this.baseStyle.fontSizeMd as string))
 							.textAlign(TextAlign.Center)
 							.wordBreak(WordBreak.BREAK_WORD)
 					}
 					.width(CONTAINER_SIZE.FULL)
 					.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd, top: this.baseStyle.spaceXs, bottom: this.baseStyle.spaceXs })
-					.backgroundColor(this.option.backgroundColor)
+					.backgroundColor(this.option.backgroundColor ?? this.baseStyle[this.option.type as string])
 					.justifyContent(FlexAlign.Center)
 					.alignItems(VerticalAlign.Center)
 					.onClick(() => {
@@ -112,7 +112,7 @@ struct defaultContent{
 				}, 100)
 			})
 		}
-		.margin({ top: convertDimensionsWidthUnit(GlobalStore.topAvoidHeight) })
+		.margin({ top: convertDimensionsWidthUnit(this.topAvoidHeight) })
 		.clip(true)
 	}
 }
@@ -122,85 +122,71 @@ struct defaultContent{
 }
 
 class Notify{
-	private static _instance: Notify = new Notify()
-	private params: IBestNotifyParams | null = null
-	private contentNode: ComponentContent<IBestNotifyParams> | null = null
 	private promptAction: PromptAction | null = null
+	private contentNode: ComponentContent<IBestNotifyParams> | null = null
 	private timer: number = 0
-
-	constructor() {}
-
-	private static getInstance(params: IBestNotifyParams, contentNode: ComponentContent<IBestNotifyParams>, promptAction: PromptAction): Notify{
-		if(!Notify._instance){
-			Notify._instance = new Notify()
-		}
-		Notify._instance.params = params
-		Notify._instance.contentNode = contentNode
-		Notify._instance.promptAction = promptAction
-		return Notify._instance
-	}
+	private isLock: boolean = false
 	/**
 	 * 显示
 	 */
 	public async show(option: IBestNotifyOption){
-		let params: IBestNotifyParams = new IBestNotifyParams(option)
-		if(Notify._instance.contentNode){
-			Notify._instance.params = params
-			Notify._instance.contentNode.update(params)
-			this.autoClose(params)
+		if(this.isLock){
 			return
+		}
+		if(this.contentNode){
+			await this.close()
 		}
 		let windowClass = await window.getLastWindow(getContext())
 		let uiContext = windowClass.getUIContext()
-		let promptAction = uiContext.getPromptAction()
-		let contentNode = new ComponentContent(uiContext, wrapBuilder(defaultBuilder), params)
-		Notify._instance = Notify.getInstance(params, contentNode, promptAction)
-		promptAction.openCustomDialog(contentNode, {
+		let params: IBestNotifyParams = new IBestNotifyParams(option)
+		this.promptAction = uiContext.getPromptAction()
+		this.contentNode = new ComponentContent(uiContext, wrapBuilder(defaultBuilder), params)
+		await this.promptAction.openCustomDialog(this.contentNode, {
 			alignment: DialogAlignment.Top,
 			isModal: false,
 			autoCancel: false,
+			onDidAppear: () => {
+				params.onOpen?.()
+			},
+			onDidDisappear: () => {
+				params.onClose?.()
+			},
 			onWillDismiss: ((DismissSheetAction: DismissSheetAction) => {
 				// 0: 点击三键back、左滑/右滑、键盘ESC
 				if (DismissSheetAction.reason == DismissReason.PRESS_BACK) {
 					this.close()
-					params.onClose?.()
 				}
 			})
-		}).then(()=>{
-			params.onOpen?.()
-			this.autoClose(params)
 		})
+		this.autoClose(params)
 	}
 	/**
 	 * 开启自动关闭
 	 */
 	private autoClose(params: IBestNotifyParams){
-		if(Notify._instance.timer){
-			clearTimeout(Notify._instance.timer)
-			Notify._instance.timer = 0
+		if(this.timer){
+			clearTimeout(this.timer)
+			this.timer = 0
 		}
-		Notify._instance.timer = setTimeout(() => {
+		this.timer = setTimeout(() => {
 			this.close()
 		}, params.duration)
 	}
 	/**
 	 * 关闭
 	 */
-	public close(){
-		if(Notify._instance.contentNode){
-			Notify._instance.contentNode.reuse()
-			if(Notify._instance.timer){
-				clearTimeout(Notify._instance.timer)
-				Notify._instance.timer = 0
+	public async close(){
+		if(this.contentNode && this.promptAction){
+			if(this.timer){
+				clearTimeout(this.timer)
+				this.timer = 0
 			}
-			setTimeout(() => {
-				if(Notify._instance.contentNode){
-					Notify._instance.promptAction?.closeCustomDialog(Notify._instance.contentNode)
-					Notify._instance.contentNode.dispose()
-					Notify._instance.contentNode = null
-					Notify._instance.params?.onClose?.()
-				}
-			}, 220)
+			this.contentNode.reuse()
+			await sleep(220)
+			await this.promptAction.closeCustomDialog(this.contentNode)
+			this.contentNode.dispose()
+			this.contentNode = null
+			this.isLock = false
 		}
 	}
 }

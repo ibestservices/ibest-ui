@@ -17,7 +17,7 @@ export struct IBestCollapseItem {
     /**
      * 分组id
      */
-    @Prop groupId: string = ""
+    @Prop groupId: IBestStringNumber = ""
     /**
      * 唯一标识符
      */
@@ -77,7 +77,7 @@ export struct IBestCollapseItem {
     /**
      * 默认内容
      */
-    @BuilderParam defaultBuilder?: CustomBuilder
+    @BuilderParam defaultBuilder: CustomBuilder
 
     @State isExpand: boolean = false
     @State uniId: number = 0

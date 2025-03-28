@@ -58,21 +58,21 @@ struct CountDownPage {
 								IBestButton({
 									type: 'primary',
 									text: "开始",
-									onClickBtn: () => {
+									onBtnClick: () => {
 										this.controller.start()
 									}
 								})
 								IBestButton({
 									type: 'primary',
 									text: "暂停",
-									onClickBtn: () => {
+									onBtnClick: () => {
 										this.controller.pause()
 									}
 								})
 								IBestButton({
 									type: 'primary',
 									text: "重置",
-									onClickBtn: () => {
+									onBtnClick: () => {
 										this.controller.reset()
 									}
 								})

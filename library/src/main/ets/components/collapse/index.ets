@@ -2,14 +2,14 @@ import { IBestStringNumber } from '../../model/Global.type'
 import { emitter } from '../../utils/EventEmitter'
 import { getEventName } from '../../utils/utils'
 import { IBestCollapseColor } from './color'
-import { COLLAPSE_EVENT_NAME, CollapseItem, COMPONENT_NAME, IBestCollapseController, ToggleOption } from './index.type'
+import { COLLAPSE_EVENT_NAME, IBestCollapseItemData, COMPONENT_NAME, IBestCollapseController, ToggleOption } from './index.type'
 @Component
 export struct IBestCollapse {
     @State uniId: number = 0
     /**
      * 分组id
      */
-    @Prop groupId: string = ""
+    @Prop groupId: IBestStringNumber = ""
     /**
      * 当前展开面板的name
      */
@@ -25,7 +25,7 @@ export struct IBestCollapse {
     /**
      * 默认内容
      */
-    @BuilderParam defaultBuilder?: CustomBuilder
+    @BuilderParam defaultBuilder: CustomBuilder
     /**
      * 监听面板状态变化
      */
@@ -35,7 +35,7 @@ export struct IBestCollapse {
      */
     controller: IBestCollapseController = new IBestCollapseController()
 
-    @State allCollapseItem: CollapseItem[] = []
+    @State allCollapseItem: IBestCollapseItemData[] = []
 
     aboutToAppear(): void {
         this.uniId = this.getUniqueId()
@@ -87,22 +87,22 @@ export struct IBestCollapse {
         if(this.accordion){
             return
         }
-        let actives = typeof this.activeName == 'number' ? this.activeName.toString() : this.activeName
+        let actives = Array.isArray(this.activeName) ? this.activeName : [this.activeName]
         if(option == undefined){    // 切换
-            this.activeName = this.allCollapseItem.filter((e: CollapseItem) => !actives.includes(e.name.toString())).map((e: CollapseItem) => e.name)
+            this.activeName = this.allCollapseItem.filter((e: IBestCollapseItemData) => !actives.includes(e.name)).map((e: IBestCollapseItemData) => e.name)
         }else if(typeof option == 'boolean'){
-            this.activeName = option ? this.allCollapseItem.map((e: CollapseItem) => e.name) : []
+            this.activeName = option ? this.allCollapseItem.map((e: IBestCollapseItemData) => e.name) : []
         }else{
-            let disabledArr = this.allCollapseItem.filter(e => actives.includes(e.name.toString()) && e.disabled)
-            let arr: CollapseItem[] = []
+            let disabledArr = this.allCollapseItem.filter(e => actives.includes(e.name) && e.disabled)
+            let arr: IBestCollapseItemData[] = []
             if(option.skipDisabled){
-                arr = this.allCollapseItem.filter((e: CollapseItem) => !e.disabled)
+                arr = this.allCollapseItem.filter((e: IBestCollapseItemData) => !e.disabled)
             }
-            arr = option.expanded == undefined ? arr.filter((e: CollapseItem) => !actives.includes(e.name.toString())) : option.expanded ? arr : []
+            arr = option.expanded == undefined ? arr.filter((e: IBestCollapseItemData) => !actives.includes(e.name)) : option.expanded ? arr : []
             if(option.skipDisabled){
                 arr = arr.concat(disabledArr)
             }
-            this.activeName = arr.map((e: CollapseItem) => e.name)
+            this.activeName = arr.map((e: IBestCollapseItemData) => e.name)
         }
         this.onChange(this.activeName)
         this.initItem()

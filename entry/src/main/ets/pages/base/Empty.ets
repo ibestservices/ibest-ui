@@ -7,12 +7,10 @@ import { ComponentRouterParams } from '../../assets/global.type';
 @Component
 struct EmptyPage {
 	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
-	@Builder
-	Arrow() {
+	@Builder Arrow() {
 		Image($r('app.media.title_back')).height(160).rotate({ angle: 180 })
 	}
-	@Builder
-	Btn() {
+	@Builder Btn() {
 		IBestButton({ text: '按钮', type: 'primary' }).margin({ top: SPACE.SM })
 	}
 	build() {
@@ -60,7 +58,7 @@ struct EmptyPage {
 					ComponentShowContainer({ title: '自定义图片' }) {
 						IBestEmpty({
 							description: '描述文字',
-							emptyImgBuilder: this.Arrow
+							emptyImgBuilder: (): void => this.Arrow()
 						})
 					}
 				}
@@ -68,18 +66,14 @@ struct EmptyPage {
 					ComponentShowContainer({ title: '底部内容' }) {
 						IBestEmpty({
 							description: '描述文字',
-							defaultBuilder: this.Btn
+							defaultBuilder: (): void => this.Btn()
 						})
 					}
-				}.margin({
-					bottom: SPACE.SM
-				})
+				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding({
-				left: SPACE.SM,
-				right: SPACE.SM
-			})
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)

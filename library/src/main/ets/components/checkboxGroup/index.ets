@@ -1,8 +1,8 @@
-import { emitter } from '../../utils/EventEmitter';
-import { convertDimensionsWidthUnit, getEventName, getSizeByUnit, sleep } from '../../utils/utils';
-import { CHECKBOX_GROUP_EVENT_NAME, COMPONENT_NAME, IBestCheckboxGroupController } from './index.type';
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
-import { IBestStringNumber } from '../../model/Global.type';
+import { emitter } from '../../utils/EventEmitter'
+import { convertDimensionsWidthUnit, getEventName, getSizeByUnit, sleep } from '../../utils/utils'
+import { CHECKBOX_GROUP_EVENT_NAME, COMPONENT_NAME, IBestCheckboxGroupController } from './index.type'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestStringNumber } from '../../model/Global.type'
 
 export interface CheckboxGroupContext {
 	/**
@@ -13,15 +13,14 @@ export interface CheckboxGroupContext {
 }
 @Component
 export struct IBestCheckboxGroup {
-	@State uniId: number = 0
 	/**
 	 * 多个相同群组名称的CheckboxGroup，仅第一个CheckboxGroup生效。
 	 */
-	@Prop group: string;
+	@Prop group: string
 	/**
 	 * 最大可选数量 默认0是都可选
 	 */
-	@Prop @Watch('handleMaxChange') max: number = 0;
+	@Prop @Watch('handleMaxChange') max: number = 0
 	/**
 	 * 激活的标识列表
 	 * @since 2.0.1
@@ -40,7 +39,7 @@ export struct IBestCheckboxGroup {
 	/**
 	 * 默认内容
 	 */
-	@BuilderParam defaultBuilder?: CustomBuilder
+	@BuilderParam defaultBuilder: CustomBuilder
 	/**
 	 * 实例控制器
 	 * @since 2.0.1
@@ -52,28 +51,37 @@ export struct IBestCheckboxGroup {
 	 */
 	onChange: (checkedItemNames: IBestStringNumber[]) => void = () => {}
 	/**
-	 * 初始化的回调
-	 * @deprecated since 2.0.1
+	 * 改变前的回调
+	 * @since 2.0.8
 	 */
-	onReady: (checkboxGroupContext: CheckboxGroupContext) => void = () => {}
+	beforeChange?: (checkedItemNames: IBestStringNumber[]) => Promise<boolean> | boolean
+
+	@State uniId: number = 0
+	@State allCheckNames: IBestStringNumber[] = []
+
 	aboutToAppear() {
 		this.uniId = this.getUniqueId()
 		this.controller.toggleAll = (isSelectAll?: boolean): void => this.toggleAll(isSelectAll)
 		if (this.group) {
-			emitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.uniId, (name: string, checked: boolean): void => this.onItemChange(name, checked))
+			emitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.GET_ALL_NAME, this.group), this.uniId, (name: IBestStringNumber): void => this.getAllNames(name))
+			emitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.uniId, (name: string, checked: boolean): Promise<void> => this.onItemChange(name, checked))
 			sleep().then(() => {
 				this.initChildren()
 				this.handleMaxChange()
-				this.onReady(this)
 			})
 		}
 	}
 	aboutToDisappear() {
 		if(this.group){
+			emitter.off(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.GET_ALL_NAME, this.group), this.uniId)
 			emitter.off(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.uniId)
 		}
 	}
-
+	getAllNames(name: IBestStringNumber){
+		if(!this.allCheckNames.includes(name)){
+			this.allCheckNames.push(name)
+		}
+	}
 	initChildren() {
 		emitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.activeList)
 	}
@@ -81,21 +89,37 @@ export struct IBestCheckboxGroup {
 		this.initChildren()
 		this.handleMaxChange()
 	}
-	onItemChange(name: string, checked: boolean) {
+	async handleBeforeClose(checkedNames: IBestStringNumber[]) {
+		let status = true
+		try {
+			if (this.beforeChange) {
+				status = await this.beforeChange(checkedNames)
+			}
+		} catch (e) {
+			status = false
+		}
+		return status
+	}
+	async onItemChange(name: string, checked: boolean) {
+		let checkedNames: IBestStringNumber[] = [...this.activeList]
 		if(checked){
 			let index = this.activeList.indexOf(name)
 			if(index == -1){
-				this.activeList.push(name)
+				checkedNames.push(name)
 			}
 		}else {
-			this.activeList = this.activeList.filter(item => item !== name)
+			checkedNames = checkedNames.filter(item => item !== name)
 		}
-		this.onChange(this.activeList)
+		let status = await this.handleBeforeClose(checkedNames)
+		if(!status){
+			this.activeList = [...this.activeList]
+			return
+		}
+		this.activeList = checkedNames
+		this.onChange(checkedNames)
 		this.handleMaxChange()
 	}
-	/**
-	 * 当最大数量变化时
-	 */
+	// 当最大数量变化时
 	handleMaxChange() {
 		this.max > 0 &&
 		emitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE, this.group), {
@@ -103,12 +127,17 @@ export struct IBestCheckboxGroup {
 			checkedList: this.activeList
 		})
 	}
-	/**
-	 * 全选与反选
-	 * @param {boolean} [isSelectAll] 切换所有复选框，传 true 为选中，false 为取消选中，不传参为取反
-	 */
+	// 全选与反选
 	toggleAll(isSelectAll?: boolean) {
-		emitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ON_TOGGLE_ALL, this.group), isSelectAll)
+		if(typeof isSelectAll == 'boolean'){
+			if(isSelectAll){
+				this.activeList = this.allCheckNames
+			}else {
+				this.activeList = []
+			}
+		}else{
+			this.activeList = this.allCheckNames.filter(item => !this.activeList.includes(item))
+		}
 	}
 	build() {
 		if (this.placeDirection == Axis.Horizontal) {

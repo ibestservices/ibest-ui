@@ -101,7 +101,6 @@ struct CellPage {
 				ListItem() {
 					ComponentShowContainer({ title: $r("app.string.custom_size", $r("app.string.custom")), titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup() {
-							IBestCell({ title: $r("app.string.title"), value: $r("app.string.content"), cellSize: 'large' })
 							IBestCell({
 								title: $r("app.string.title"),
 								value: $r("app.string.content"),

@@ -91,7 +91,7 @@ struct ProgressPage {
 						IBestButton({
 							type: 'primary',
 							text: "增加",
-							onClickBtn: () => {
+							onBtnClick: () => {
 								this.value += 10
 								if(this.value > 100){
 									this.value = 100
@@ -101,7 +101,7 @@ struct ProgressPage {
 						IBestButton({
 							type: 'danger',
 							text: "减少",
-							onClickBtn: () => {
+							onBtnClick: () => {
 								this.value -= 10
 								if(this.value < 0){
 									this.value = 0

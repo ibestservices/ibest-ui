@@ -28,9 +28,9 @@ struct DividerPage {
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
-						Column({space: SPACE.MD}){
+						Column(){
 							IBestDivider()
-						}.padding({top: SPACE.MD, bottom: SPACE.MD})
+						}.padding({top: SPACE.MD})
 					}
 				}
 				ListItem() {
@@ -41,7 +41,7 @@ struct DividerPage {
 							IBestDivider({
 								textBuilder: this.textBuilder
 							})
-						}.padding({top: SPACE.MD, bottom: SPACE.MD})
+						}.padding({top: SPACE.MD})
 					}
 				}
 				ListItem() {
@@ -55,29 +55,29 @@ struct DividerPage {
 								text: '文本',
 								rightLineWidth: 50
 							})
-						}.padding({top: SPACE.MD, bottom: SPACE.MD})
+						}.padding({top: SPACE.MD})
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '虚线', titlePaddingLeft: SPACE.MD }) {
-						Column({space: SPACE.MD}){
+						Column(){
 							IBestDivider({
 								text: '文本',
 								dashed: true
 							})
-						}.padding({top: SPACE.MD, bottom: SPACE.MD})
+						}.padding({top: SPACE.MD})
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '自定义样式', titlePaddingLeft: SPACE.MD }) {
-						Column({space: SPACE.MD}){
+						Column(){
 							IBestDivider({
 								text: '文本',
 								color: "#3d8af2",
 								lineColor: "#3d8af2",
 								leftRightPadding: 20
 							})
-						}.padding({top: SPACE.MD, bottom: SPACE.MD})
+						}.padding({top: SPACE.MD})
 					}
 				}
 				ListItem() {

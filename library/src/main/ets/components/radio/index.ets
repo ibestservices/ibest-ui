@@ -3,7 +3,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { COMPONENT_NAME, RADIO_GROUP_EVENT_NAME } from '../radioGroup/index.type'
-import { BuilderArgs } from './index.type'
+import { IBestRadioBuilderParams } from './index.type'
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
 import { IBestRadioColor } from './color'
 import { IBestIcon } from '../icon'
@@ -30,7 +30,7 @@ export struct IBestRadio {
 	/**
 	 * 选中状态颜色
 	 */
-	@Prop checkedColor: ResourceColor = this.baseStyle.primary as string
+	@Prop checkedColor: ResourceColor = ""
 	/**
 	 * 图标大小
 	 */
@@ -69,100 +69,20 @@ export struct IBestRadio {
 	/**
 	 * 自定义文本插槽
 	 */
-	@BuilderParam defaultBuilder?: (data: BuilderArgs) => void
+	@BuilderParam defaultBuilder: (data: IBestRadioBuilderParams) => void
 	/**
 	 * 自定义图标插槽
 	 */
-	@BuilderParam iconBuilder?: (data: BuilderArgs) => void
+	@BuilderParam iconBuilder: (data: IBestRadioBuilderParams) => void
 	/**
 	 * 改变的回调
 	 * @deprecated since 2.0.1
 	 */
-	onChange: (checked: boolean) => void = () => {}
+	onChange: (checked: IBestStringNumber | boolean) => void = () => {}
 
 	@State uniId: number = 0
 	@State isChecked: boolean = false
-	aboutToAppear() {
-		this.uniId = this.getUniqueId()
-		if (this.group) {
-			emitter.on(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId, (name: IBestStringNumber | boolean): void => this.handleRadioGroupInit(name))
-		}
-	}
-	aboutToDisappear() {
-		if (this.group) {
-			emitter.off(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId)
-		}
-	}
-	/**
-	 * 获取背景色
-	 * @returns
-	 */
-	getBackgroundColor() {
-		if (this.disabled) {
-			return IBestRadioColor.borderColor
-		} else {
-			return this.isChecked && this.shape != 'dot' ? this.checkedColor : this.bgColor
-		}
-	}
-	/**
-	 * 获取边框色
-	 * @returns
-	 */
-	getBorderColor() {
-		if (this.disabled) {
-			return GRAY_COLOR.GRAY_5
-		} else {
-			return this.isChecked ? this.checkedColor : this.bdColor
-		}
-	}
-	/**
-	 * 获取label的颜色
-	 * @returns
-	 */
-	getLabelColor() {
-		return this.disabled ? IBestRadioColor.disabledLabelColor : IBestRadioColor.labelColor
-	}
-	/**
-	 * 获取图标的颜色
-	 * @returns
-	 */
-	getIconColor() {
-		if (this.disabled) {
-			return IBestRadioColor.disabledIconColor
-		} else {
-			return this.shape === 'dot' ? this.checkedColor : IBestRadioColor.whiteColor
-		}
-	}
-	/**
-	 * 是否是在左边的label
-	 * @returns
-	 */
-	isLeftLabel() {
-		return this.labelPosition === 'left'
-	}
-	updateGroup() {
-		if (this.group) {
-			emitter.emit(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.name)
-		}
-	}
-	/**
-	 * 改变选中状态的回调
-	 */
-	handleCheckedChange() {
-		if (this.disabled || this.isChecked) {
-			return
-		}
-		this.isChecked = true
-		this.onChange(this.isChecked)
-		this.updateGroup()
-	}
-	/**
-	 * 初始化
-	 * @param name
-	 */
-	handleRadioGroupInit(name: IBestStringNumber | boolean) {
-		this.isChecked = name === this.name
-	}
+
 	@Builder LabelContain() {
 		Row() {
 			if (this.defaultBuilder) {
@@ -181,6 +101,67 @@ export struct IBestRadio {
 			!this.labelDisabled && this.handleCheckedChange()
 		})
 	}
+
+	aboutToAppear() {
+		this.uniId = this.getUniqueId()
+		if (this.group) {
+			emitter.on(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId, (name: IBestStringNumber | boolean): void => this.handleRadioGroupInit(name))
+		}
+	}
+	aboutToDisappear() {
+		if (this.group) {
+			emitter.off(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId)
+		}
+	}
+	// 初始化
+	handleRadioGroupInit(name: IBestStringNumber | boolean) {
+		this.isChecked = name === this.name
+	}
+	// 获取背景色
+	getBackgroundColor() {
+		if (this.disabled) {
+			return IBestRadioColor.borderColor
+		} else {
+			return this.isChecked && this.shape != 'dot' ? (this.checkedColor || this.baseStyle.primary as string) : this.bgColor
+		}
+	}
+	// 获取边框色
+	getBorderColor() {
+		if (this.disabled) {
+			return GRAY_COLOR.GRAY_5
+		} else {
+			return this.isChecked ? (this.checkedColor || this.baseStyle.primary as string) : this.bdColor
+		}
+	}
+	// 获取label的颜色
+	getLabelColor() {
+		return this.disabled ? IBestRadioColor.disabledLabelColor : IBestRadioColor.labelColor
+	}
+	// 获取图标的颜色
+	getIconColor() {
+		if (this.disabled) {
+			return IBestRadioColor.disabledIconColor
+		} else {
+			return this.shape === 'dot' ? this.checkedColor : IBestRadioColor.whiteColor
+		}
+	}
+	// 是否是在左边的label
+	isLeftLabel() {
+		return this.labelPosition === 'left'
+	}
+	updateGroup() {
+		if (this.group) {
+			emitter.emit(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.name)
+		}
+	}
+	// 改变选中状态的回调
+	handleCheckedChange() {
+		if (this.disabled || this.isChecked) {
+			return
+		}
+		this.updateGroup()
+	}
+
 	build() {
 		Row() {
 			if (this.labelPosition === 'left') {
@@ -211,7 +192,7 @@ export struct IBestRadio {
 						})
 							.opacity(this.isChecked ? 1 : 0)
 							.animation({
-								duration: this.baseStyle.animationDuration as number,
+								duration: this.baseStyle.animationDuration as number
 							})
 					}
 				}
@@ -223,10 +204,12 @@ export struct IBestRadio {
 			.borderRadius(['round', 'dot'].includes(this.shape) ? this.baseStyle.borderRadiusMax : 0)
 			.backgroundColor(this.getBackgroundColor())
 			.animation({
-				duration: this.baseStyle.animationDuration as number,
+				duration: this.baseStyle.animationDuration as number
 			})
-			.onClick(() => {
-				this.handleCheckedChange()
+			.onTouch(event => {
+				if(event.type == TouchType.Up){
+					this.handleCheckedChange()
+				}
 			})
 			if (this.labelPosition === 'right') {
 				this.LabelContain()

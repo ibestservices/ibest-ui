@@ -5,17 +5,12 @@ import { IBestTabs } from '../tab';
 import { IBestTabItemType } from '../tab/index.type';
 import { convertDimensionsWidthUnit } from '../../utils/utils';
 import { IBestPickerGroupColor } from './color';
-
 @Component
 export struct IBestPickerGroup{
 	/**
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	/**
-	 * 分组id
-	 */
-	@Prop groupId: string = ""
 	/**
 	 * 标题
 	 */
@@ -28,15 +23,10 @@ export struct IBestPickerGroup{
 	 * 下一步
 	 */
 	@Prop nextStepText: ResourceStr = ""
-
-	// 渲染的tab列表
-	@State tabsList: IBestTabItemType[] = []
 	/**
 	 * 当前激活tabName
 	 */
 	@Prop @Watch("tabNameChange") currentName: number = 0
-	// swiper索引
-	@State swiperIndex: number = 0
 	/**
 	 * 是否显示头部工具栏
 	 */
@@ -52,7 +42,7 @@ export struct IBestPickerGroup{
 	/**
 	 * 默认插槽
 	 */
-	@BuilderParam defaultBuilder?: CustomBuilder
+	@BuilderParam defaultBuilder: CustomBuilder
 	/**
 	 * 确认按钮点击事件
 	 */
@@ -65,6 +55,11 @@ export struct IBestPickerGroup{
 	 * currentName变化事件
 	 */
 	onTabNameChange: (name: number) => void = () => {}
+
+	// 渲染的tab列表
+	@State tabsList: IBestTabItemType[] = []
+	// swiper索引
+	@State swiperIndex: number = 0
 	private swiperController: SwiperController = new SwiperController()
 
 	aboutToAppear(): void {
@@ -150,7 +145,7 @@ export struct IBestPickerGroup{
 					this.defaultBuilder()
 				}
 			}
-			.width("100%")
+			.width(CONTAINER_SIZE.FULL)
 			.disableSwipe(true)
 			.indicator(false)
 			.loop(false)

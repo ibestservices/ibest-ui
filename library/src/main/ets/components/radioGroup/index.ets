@@ -1,7 +1,6 @@
 import { emitter } from '../../utils/EventEmitter'
 import { COMPONENT_NAME, RADIO_GROUP_EVENT_NAME } from './index.type'
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit, sleep } from '../../utils/utils'
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestStringNumber } from '../../model/Global.type'
 
 @Component
@@ -36,11 +35,16 @@ export struct IBestRadioGroup {
 	 * @param name radio子组件的的name值
 	 */
 	onChange: (name: IBestStringNumber | boolean) => void = () => {}
+	/**
+	 * 改变前的回调
+	 * @since 2.0.8
+	 */
+	beforeChange?: (name: IBestStringNumber | boolean) => Promise<boolean> | boolean
 
 	aboutToAppear() {
 		this.uniId = this.getUniqueId()
 		if(this.group){
-			emitter.on(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.uniId, (name: IBestStringNumber | boolean): void => this.onItemChange(name))
+			emitter.on(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.uniId, (name: IBestStringNumber | boolean): Promise<void> => this.onItemChange(name))
 			sleep(50).then(() => {
 				this.initRadio()
 			})
@@ -54,7 +58,22 @@ export struct IBestRadioGroup {
 	initRadio() {
 		emitter.emit(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.active)
 	}
-	onItemChange(name: IBestStringNumber | boolean) {
+	async handleBeforeClose(name: IBestStringNumber | boolean) {
+		let status = true
+		try {
+			if (this.beforeChange) {
+				status = await this.beforeChange(name)
+			}
+		} catch (e) {
+			status = false
+		}
+		return status
+	}
+	async onItemChange(name: IBestStringNumber | boolean) {
+		let status = await this.handleBeforeClose(name)
+		if(!status){
+			return
+		}
 		this.active = name
 		this.onChange(name)
 	}

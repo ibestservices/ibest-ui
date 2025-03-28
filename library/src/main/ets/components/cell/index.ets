@@ -158,9 +158,7 @@ export struct IBestCell {
 	 * @since 2.0.1
 	 */
 	@Prop disabled: boolean = false
-	/**
-	 * 根据arrow direction获取图标旋转角度
-	 */
+	// 根据arrow direction获取图标旋转角度
 	arrowDirection2RotateDegMap: Record<string, number> = {
 		[ARROW_DIRECTION.RIGHT]: 0,
 		[ARROW_DIRECTION.TOP]: -90,
@@ -169,13 +167,13 @@ export struct IBestCell {
 	}
 	/**
 	 * 点击单元格的回调
+	 * @deprecated since 2.0.8
+	 * @useinstead onCellClick
 	 */
-	onClickCell: (event?: ClickEvent) => void = () => {}
+	onClickCell: () => void = () => {}
+	onCellClick: () => void = () => {}
 
-	/**
-	 * 根据size获取单元格的尺寸
-	 * @returns
-	 */
+	// 根据size获取单元格的尺寸
 	getCellSize() {
 		const cellSize = this.cellSize;
 		switch (cellSize) {
@@ -196,9 +194,7 @@ export struct IBestCell {
 	}
 	build() {
 		Column() {
-			// 标题与内容
 			Row() {
-				// 必选符号
 				if (this.required) {
 					Text('*')
 						.margin({
@@ -207,9 +203,7 @@ export struct IBestCell {
 						.fontSize(this.baseStyle.fontSizeSm)
 						.fontColor(this.baseStyle.danger)
 				}
-				// 标题与描述
 				Column() {
-					// 标题
 					if (this.titleBuilder) {
 						Row() {
 							this.titleBuilder()
@@ -232,7 +226,6 @@ export struct IBestCell {
 										.margin({ right: getSizeByUnit(this.leftIconMarginRight) })
 								}
 							}
-							// 默认标题内容
 							Text(this.title)
 								.layoutWeight(1)
 								.fontSize(this.getCellSize().fontSize)
@@ -240,7 +233,6 @@ export struct IBestCell {
 						}.width(CONTAINER_SIZE.FULL)
 						.alignItems(this.getAlignItems())
 					}
-					// 描述信息
 					if (this.labelBuilder) {
 						Row() {
 							this.labelBuilder()
@@ -260,7 +252,6 @@ export struct IBestCell {
 				.layoutWeight(this.leftContentWidth ? 0 : 1)
 				.width(getSizeByUnit(this.leftContentWidth))
 				.alignItems(this.center ? HorizontalAlign.Center : HorizontalAlign.Start)
-				// 内容
 				if (this.valueBuilder) {
 					Row() {
 						this.valueBuilder()
@@ -304,7 +295,6 @@ export struct IBestCell {
 					.layoutWeight(1)
 					.alignItems(this.getAlignItems())
 				}
-				// 底部边框线
 				if (this.hasBorder && this.borderSizeType == "center") {
 					CellDivider({ bottom: "-" + this.getCellSize().padding as Dimension })
 				}
@@ -336,8 +326,11 @@ export struct IBestCell {
 		})
 		.enabled(!this.disabled)
 		.opacity(this.disabled ? 0.6 : 1)
-		.onClick((event) => {
-			this.onClickCell(event)
+		.onTouch(event => {
+			if(event.type == TouchType.Up){
+				this.onClickCell()
+				this.onCellClick()
+			}
 		})
 	}
 }
@@ -348,7 +341,7 @@ struct CellDivider {
 	@Prop bottom: Dimension = 0
 	build() {
 		Divider()
-			.width("100%")
+			.width(CONTAINER_SIZE.FULL)
 			.height(1)
 			.color(this.bdColor)
 			.position({ left: this.left, bottom: this.bottom })

@@ -235,7 +235,7 @@ struct MakePoster {
 						type: "primary",
 						round: true,
 						btnWidth: "90%",
-						onClickBtn: () => {
+						onBtnClick: () => {
 							this.contentList.push(new canvasContent())
 						}
 					})
@@ -244,7 +244,7 @@ struct MakePoster {
 						type: "primary",
 						round: true,
 						btnWidth: "90%",
-						onClickBtn: () => {
+						onBtnClick: () => {
 							this.formController.validate((valid, field) => {
 								if(valid){
 									console.log("海报内容", JSON.stringify(this.contentList))

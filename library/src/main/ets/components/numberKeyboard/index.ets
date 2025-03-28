@@ -5,10 +5,9 @@ import { LengthMetrics } from '@kit.ArkUI';
 import { KeyboardType } from './index.type';
 import { IBestPopup } from '../popup';
 import { convertDimensionsWidthUnit, getResourceStr } from '../../utils/utils';
-import GlobalStore from '../../utils/GlobalStore';
 import { IBestNumberKeyboardColor } from './color';
 
-@Extend(Row) function keyBoxStyle(fullWidth?: boolean){
+@Extend(Row) function ibestNumberKeyboardKeyBoxStyle(fullWidth?: boolean){
 	.width(fullWidth ? `calc((100% - ${convertDimensionsWidthUnit(12)})/3*2 + ${convertDimensionsWidthUnit(6)})` : `calc((100% - ${convertDimensionsWidthUnit(12)})/3)`)
 	.height(convertDimensionsWidthUnit(48))
 	.borderRadius(getDefaultBaseStyle().borderRadiusMd)
@@ -23,11 +22,11 @@ import { IBestNumberKeyboardColor } from './color';
 		}
 	})
 }
-@Extend(Text) function keyTextStyle(){
+@Extend(Text) function ibestNumberKeyboardKeyTextStyle(){
 	.fontSize(convertDimensionsWidthUnit(28, true))
 	.fontColor(IBestNumberKeyboardColor.textColor)
 }
-@Extend(Row) function keyCustomBoxStyle(bg?: boolean){
+@Extend(Row) function ibestNumberKeyboardKeyCustomBoxStyle(bg?: boolean){
 	.width(CONTAINER_SIZE.FULL)
 	.height(convertDimensionsWidthUnit(102))
 	.borderRadius(getDefaultBaseStyle().borderRadiusMd)
@@ -44,13 +43,13 @@ import { IBestNumberKeyboardColor } from './color';
 	})
 }
 
-@CustomDialog
 @Component
 export struct NumberKeyboard{
 	/**
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+	@StorageProp("IBestBottomBarHeight") bottomBarHeight: number = 0
 	/**
 	 * 值
 	 */
@@ -97,7 +96,27 @@ export struct NumberKeyboard{
 	onClose: () => void = () => {}
 
 	@State keysList: KeyboardType[] = []
-	controller?: CustomDialogController
+
+	@Builder extraButton(item: KeyboardType){
+		if(item.type == "delete"){
+			if(item.text){
+				Text(item.text)
+					.fontSize(this.baseStyle.fontSizeLg)
+					.fontColor(IBestNumberKeyboardColor.textColor)
+			}else{
+				Image($r("app.media.ibest_delete"))
+					.width(convertDimensionsWidthUnit(32))
+					.fillColor(IBestNumberKeyboardColor.textColor)
+			}
+		}else if(item.text){
+			Text(item.text)
+				.ibestNumberKeyboardKeyTextStyle()
+		}else{
+			Image($r("app.media.ibest_key_board"))
+				.width(convertDimensionsWidthUnit(30))
+				.fillColor(IBestNumberKeyboardColor.textColor)
+		}
+	}
 
 	aboutToAppear(): void {
 		this.init()
@@ -210,9 +229,9 @@ export struct NumberKeyboard{
 				Flex({ justifyContent: FlexAlign.SpaceBetween, wrap: FlexWrap.Wrap, space: { cross: new LengthMetrics(6) } }){
 					ForEach(this.keysList, (item: KeyboardType) => {
 						Row() {
-							ExtraButton({ item: item })
+							this.extraButton(item)
 						}
-						.keyBoxStyle(item.fullWidth)
+						.ibestNumberKeyboardKeyBoxStyle(item.fullWidth)
 						.onClick(() => {
 							this.selectKey(item)
 						})
@@ -222,9 +241,9 @@ export struct NumberKeyboard{
 				if(this.styleType == "custom"){
 					Column({ space: 6 }){
 						Row() {
-							ExtraButton({ item: { text: this.deleteButtonText, type: 'delete' } })
+							this.extraButton({ text: this.deleteButtonText, type: 'delete' })
 						}
-						.keyCustomBoxStyle()
+						.ibestNumberKeyboardKeyCustomBoxStyle()
 						.onClick(() => {
 							this.selectKey({ type: 'delete' })
 						})
@@ -233,7 +252,7 @@ export struct NumberKeyboard{
 								.fontColor(IBestNumberKeyboardColor.white)
 								.fontSize(this.baseStyle.fontSizeLg)
 						}
-						.keyCustomBoxStyle(true)
+						.ibestNumberKeyboardKeyCustomBoxStyle(true)
 						.onClick(() => {
 							this.selectKey({ type: 'close' })
 						})
@@ -246,34 +265,7 @@ export struct NumberKeyboard{
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.backgroundColor(IBestNumberKeyboardColor.bg)
-		.padding({ bottom: convertDimensionsWidthUnit(GlobalStore.bottomBarHeight) })
-	}
-}
-
-// 扩展按钮
-@Component
-struct ExtraButton{
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
-	@Prop item: KeyboardType
-	build(){
-		if(this.item.type == "delete"){
-			if(this.item.text){
-				Text(this.item.text)
-					.fontSize(this.baseStyle.fontSizeLg)
-					.fontColor(IBestNumberKeyboardColor.textColor)
-			}else{
-				Image($r("app.media.ibest_delete"))
-					.width(convertDimensionsWidthUnit(32))
-					.fillColor(IBestNumberKeyboardColor.textColor)
-			}
-		}else if(this.item.text){
-			Text(this.item.text)
-				.keyTextStyle()
-		}else{
-			Image($r("app.media.ibest_key_board"))
-				.width(convertDimensionsWidthUnit(30))
-				.fillColor(IBestNumberKeyboardColor.textColor)
-		}
+		.padding({ bottom: convertDimensionsWidthUnit(this.bottomBarHeight) })
 	}
 }
 

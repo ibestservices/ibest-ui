@@ -94,6 +94,11 @@ export struct IBestCircleProgress{
      * 起始位置
      */
     @Prop startPosition: "left" | "right" | "bottom" | "top" = "top"
+	/**
+	 * 到达目标值
+	 * @since 2.0.8
+	 */
+	onReachTarget: () => void = () => {}
 
     @State maxPerimeter: number = 0
     @State isShow: boolean = false
@@ -110,7 +115,10 @@ export struct IBestCircleProgress{
         }
         this.value = Math.min(this.target, Math.max(this.value, 0))
         this.strokeDashArray = new Point(this.value ? (this.maxPerimeter * this.value) / this.target : 0.01, this.maxPerimeter)
-    }
+		if(this.value == this.target){
+			this.onReachTarget()
+		}
+	}
     getSize(){
         return getSizeByUnit(this.diameter - this.strokeWidth)
     }

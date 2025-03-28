@@ -61,3 +61,13 @@ export async function savePixelMap(context: Context, pixelMap: PixelMap){
     fs.closeSync(file.fd)
     helper.release()
 }
+
+/**
+ * 获取Resource字符串
+ */
+export function getResourceStr(res: ResourceStr): string {
+    if(typeof res == 'string'){
+        return res
+    }
+    return GlobalStore.context.resourceManager.getStringSync(res)
+}

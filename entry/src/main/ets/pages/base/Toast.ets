@@ -3,24 +3,23 @@ import ComponentShowContainer from '../../components/ComponentShowContainer'
 import { router } from '@kit.ArkUI'
 import { ComponentRouterParams } from '../../assets/global.type'
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
-import { common } from '@kit.AbilityKit'
+import { getResourceStr } from '../../utils/utils'
+
 @Entry
 @Component
 struct ToastPage {
 	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
-	private context = getContext() as common.UIAbilityContext
+
 	showSpinnerLoading() {
 		IBestToast.show({
 			type: "loading",
 			loadingType: "spinner",
 			message: $r("app.string.loading"),
 			onOpened: () => {
-				// 可在此处延时关闭toast
 				console.log("toast打开成功")
 			}
 		})
 		setTimeout(() => {
-			// 也可在此处关闭toast
 			IBestToast.hide()
 		}, 2000)
 	}
@@ -29,22 +28,20 @@ struct ToastPage {
 		let count = 3
 		let toast = IBestToast.show({
 			type: "loading",
-			message: `${count} ${this.getResourceStr($r("app.string.second"))}`,
+			message: `${count} ${getResourceStr($r("app.string.second"))}`,
 			duration: 0
 		})
 		let timer = setInterval(() => {
 			count--
 			if (count) {
-				toast.message = `${count} ${this.getResourceStr($r("app.string.second"))}`
+				toast.message = `${count} ${getResourceStr($r("app.string.second"))}`
 			} else {
 				clearInterval(timer)
 				IBestToast.hide()
 			}
 		}, 1000)
 	}
-	getResourceStr(res: Resource){
-		return this.context.resourceManager.getStringSync(res)
-	}
+
 	build() {
 		Column() {
 			IBestNavBar({
@@ -62,37 +59,37 @@ struct ToastPage {
 								IBestCell({
 									title: $r("app.string.basic_usage"),
 									isLink: true,
-									onClickCell: () => {
-										IBestToast.show(this.getResourceStr($r("app.string.content")))
+									onCellClick: () => {
+										IBestToast.show(getResourceStr($r("app.string.content")))
 									}
 								})
 								IBestCell({
 									title: $r("app.string.custom_tip", $r("app.string.success")),
 									isLink: true,
-									onClickCell: () => {
+									onCellClick: () => {
 										IBestToast.show({
 											type: "success",
-											message: this.getResourceStr($r("app.string.content"))
+											message: getResourceStr($r("app.string.content"))
 										})
 									}
 								})
 								IBestCell({
 									title: $r("app.string.custom_tip", $r("app.string.warning")),
 									isLink: true,
-									onClickCell: () => {
+									onCellClick: () => {
 										IBestToast.show({
 											type: "warning",
-											message: this.getResourceStr($r("app.string.content"))
+											message: getResourceStr($r("app.string.content"))
 										})
 									}
 								})
 								IBestCell({
 									title: $r("app.string.custom_tip", $r("app.string.fail")),
 									isLink: true,
-									onClickCell: () => {
+									onCellClick: () => {
 										IBestToast.show({
 											type: "fail",
-											message: this.getResourceStr($r("app.string.content"))
+											message: getResourceStr($r("app.string.content"))
 										})
 									}
 								})
@@ -100,7 +97,7 @@ struct ToastPage {
 									title: $r("app.string.custom_tip", $r("app.string.load")),
 									isLink: true,
 									hasBorder: false,
-									onClickCell: () => {
+									onCellClick: () => {
 										IBestToast.showLoading()
 										setTimeout(() => {
 											IBestToast.hide()
@@ -118,7 +115,7 @@ struct ToastPage {
 								IBestCell({
 									title: $r("app.string.custom_custom", $r("app.string.icon")),
 									isLink: true,
-									onClickCell: () => {
+									onCellClick: () => {
 										IBestToast.show({
 											icon: $r("app.media.app_icon"),
 											message: $r("app.string.app_name"),
@@ -129,7 +126,7 @@ struct ToastPage {
 								IBestCell({
 									title: $r("app.string.custom_custom", $r("app.string.image")),
 									isLink: true,
-									onClickCell: () => {
+									onCellClick: () => {
 										IBestToast.show({
 											icon: "https://ibestui.ibestservices.com/favicon.ico",
 											message: $r("app.string.app_name")
@@ -140,7 +137,7 @@ struct ToastPage {
 									title: $r("app.string.custom_custom", $r("app.string.load_icon_type")),
 									isLink: true,
 									hasBorder: false,
-									onClickCell: () => {
+									onCellClick: () => {
 										this.showSpinnerLoading()
 									}
 								})
@@ -155,11 +152,11 @@ struct ToastPage {
 								IBestCell({
 									title: $r("app.string.top"),
 									isLink: true,
-									onClickCell: () => {
+									onCellClick: () => {
 										IBestToast.show({
 											position: "top",
 											offsetY: "20%",
-											message: this.getResourceStr($r("app.string.content"))
+											message: getResourceStr($r("app.string.content"))
 										})
 									}
 								})
@@ -167,11 +164,11 @@ struct ToastPage {
 									title: $r("app.string.bottom"),
 									isLink: true,
 									hasBorder: false,
-									onClickCell: () => {
+									onCellClick: () => {
 										IBestToast.show({
 											position: "bottom",
 											offsetY: "-20%",
-											message: this.getResourceStr($r("app.string.content"))
+											message: getResourceStr($r("app.string.content"))
 										})
 									}
 								})
@@ -186,7 +183,7 @@ struct ToastPage {
 								IBestCell({
 									title: $r("app.string.truncation_word"),
 									isLink: true,
-									onClickCell: () => {
+									onCellClick: () => {
 										IBestToast.show({
 											wordBreak: "break-all",
 											message: "This message will contain a incomprehensibilities long word."
@@ -197,7 +194,7 @@ struct ToastPage {
 									title: $r("app.string.not_truncation_word"),
 									isLink: true,
 									hasBorder: false,
-									onClickCell: () => {
+									onCellClick: () => {
 										IBestToast.show({
 											wordBreak: "break-word",
 											message: "This message will contain a incomprehensibilities long word."
@@ -216,7 +213,7 @@ struct ToastPage {
 									title: $r("app.string.custom_dynamics", $r("app.string.update")),
 									isLink: true,
 									hasBorder: false,
-									onClickCell: () => {
+									onCellClick: () => {
 										this.showCountDownLoading()
 									}
 								})

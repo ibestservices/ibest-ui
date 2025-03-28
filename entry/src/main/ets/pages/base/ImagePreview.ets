@@ -34,7 +34,7 @@ struct ImagePreviewPage {
 								title: '预览图片',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestImagePreview.show(this.imageList)
 								}
 							})
@@ -47,7 +47,7 @@ struct ImagePreviewPage {
 							IBestCell({
 								title: '自定义遮罩颜色',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestImagePreview.show(this.imageList, {
 										maskColor: '#fff',
 										indexFontColor: "#000"
@@ -57,7 +57,7 @@ struct ImagePreviewPage {
 							IBestCell({
 								title: '指定初始索引',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestImagePreview.show(this.imageList, {
 										startIndex: 1
 									})
@@ -66,7 +66,7 @@ struct ImagePreviewPage {
 							IBestCell({
 								title: '指定页码位置',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestImagePreview.show(this.imageList, {
 										indexPosition: 'top'
 									})
@@ -75,7 +75,7 @@ struct ImagePreviewPage {
 							IBestCell({
 								title: '禁止循环',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestImagePreview.show(this.imageList, {
 										loop: false
 									})
@@ -85,7 +85,7 @@ struct ImagePreviewPage {
 								title: '监听事件',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestImagePreview.show(this.imageList, {
 										closeOnClickImage: false,
 										onImgClick: (index) => {

@@ -59,7 +59,7 @@ struct PopupPage {
 			IBestButton({
 				text: $r("app.string.custom_switch", $r("app.string.height")),
 				type: "primary",
-				onClickBtn: () => {
+				onBtnClick: () => {
 					this.popupHeight = this.popupHeight == 150 ? 300 : 150
 				}
 			})
@@ -96,7 +96,7 @@ struct PopupPage {
 								title: $r("app.string.show_popup"),
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									this.baseVisible = true
 								}
 							})
@@ -166,7 +166,7 @@ struct PopupPage {
 							IBestCell({
 								title: $r("app.string.title"),
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									this.showHeaderVisible = true
 								}
 							})
@@ -174,7 +174,7 @@ struct PopupPage {
 								title: $r("app.string.custom_custom", $r("app.string.icon")),
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									this.cusCloseIconVisible = true
 								}
 							})
@@ -187,7 +187,7 @@ struct PopupPage {
 							IBestCell({
 								title: $r("app.string.center"),
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									this.centerCornerVisible = true
 								}
 							})
@@ -195,7 +195,7 @@ struct PopupPage {
 								title: $r("app.string.bottom"),
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									this.bottomCornerVisible = true
 								}
 							})
@@ -209,7 +209,7 @@ struct PopupPage {
 								title: $r("app.string.background_image"),
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									this.bgImageVisible = true
 								}
 							})
@@ -223,7 +223,7 @@ struct PopupPage {
 								title: $r("app.string.custom_dynamics", $r("app.string.height")),
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									this.cusHeightVisible = true
 								}
 							})
@@ -237,7 +237,7 @@ struct PopupPage {
 								title: $r("app.string.event"),
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									this.eventVisible = true
 								}
 							})
@@ -251,7 +251,7 @@ struct PopupPage {
 								title: $r("app.string.safe_area"),
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									this.safeAreaVisible = true
 								}
 							})

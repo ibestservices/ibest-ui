@@ -63,7 +63,7 @@ struct CircleProgressPage {
                                     text: "增加",
                                     type: "primary",
                                     buttonSize: "small",
-                                    onClickBtn: () => {
+                                    onBtnClick: () => {
                                         this.value += 10
                                     }
                                 })
@@ -71,7 +71,7 @@ struct CircleProgressPage {
                                     text: "减少",
                                     type: "danger",
                                     buttonSize: "small",
-                                    onClickBtn: () => {
+                                    onBtnClick: () => {
                                         this.value -= 10
                                     }
                                 })

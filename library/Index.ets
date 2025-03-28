@@ -5,7 +5,7 @@ import IBestImagePreview from './src/main/ets/apis/IBestImagePreview'
 import IBestDialogUtil from './src/main/ets/apis/IBestDialog'
 import IBestNotify from './src/main/ets/apis/IBestNotify'
 import GlobalStore from './src/main/ets/utils/GlobalStore'
-import { IBestGlobalConfigType } from './src/main/ets/model/Global.type'
+import { IBestGlobalConfigType, IBestStringNumber } from './src/main/ets/model/Global.type'
 const init = GlobalStore.init
 const setGlobalConfig = GlobalStore.setGlobalConfig
 
@@ -24,7 +24,8 @@ export {
 }
 
 export type {
-	IBestGlobalConfigType
+	IBestGlobalConfigType,
+	IBestStringNumber
 }
 
 export { debounce, throttle } from './src/main/ets/utils/DebounceThrottle'

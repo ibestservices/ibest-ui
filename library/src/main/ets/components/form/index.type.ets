@@ -10,7 +10,7 @@ import {
  */
 export interface IBestFormRuleItem {
 	required?: boolean
-	message?: string
+	message?: ResourceStr
 	pattern?: RegExp
 	validator?: (value: string) => boolean | string | Promise<boolean | string>
 	trigger?: 'blur' | 'change'

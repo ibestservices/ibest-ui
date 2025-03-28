@@ -20,7 +20,7 @@ import type {
 } from './index.type'
 import { emitter } from '../../utils/EventEmitter'
 import { runRuleValidator, runSyncRule } from './utils'
-import { clamp, convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
+import { clamp, convertDimensionsWidthUnit, getEventName, getResourceStr, getSizeByUnit } from '../../utils/utils'
 import { IBestFieldColor } from './color'
 import { IBestIcon } from '../icon'
 import { IBestStringNumber } from '../../model/Global.type'
@@ -35,7 +35,7 @@ export struct IBestField{
     /**
      * form id 用于验证
      */
-    @Prop formId: string = ""
+    @Prop formId: IBestStringNumber = ""
     /**
      * 表单绑定属性名
      */
@@ -176,7 +176,7 @@ export struct IBestField{
     /**
      * 验证信息
      */
-    @Provide({allowOverride: "validateMessage"}) validateMessage: string = ""
+    @Provide({allowOverride: "validateMessage"}) validateMessage: ResourceStr = ""
     /**
      * 执行格式化函数触发时机
      */
@@ -310,7 +310,7 @@ export struct IBestField{
             .zIndex(-10)
             .id(`ibest_field_${this.uniId}`)
     }
-    @Styles fieldStyles(){
+    @Styles ibestFieldStyle(){
         .width(CONTAINER_SIZE.FULL)
         .padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
         .stateStyles({
@@ -334,7 +334,7 @@ export struct IBestField{
             }
         })
     }
-    @Styles fieldContentStyles(){
+    @Styles ibestFieldContentStyle(){
         .padding({ top: convertDimensionsWidthUnit(10), bottom: convertDimensionsWidthUnit(10) })
         .border({
             width: { bottom: this.hasBorder ? 1 : 0 },
@@ -418,7 +418,7 @@ export struct IBestField{
                         resolve({
                             label: this.getLabel(),
                             name: this.prop,
-                            message: this.validateMessage
+                            message: getResourceStr(this.validateMessage)
                         })
                     } else {
                         this.status = 'passed'
@@ -509,10 +509,10 @@ export struct IBestField{
                     })
                 }
                 .alignItems(this.getVerticalAlign())
-                .fieldContentStyles()
+                .ibestFieldContentStyle()
                 this.focusText()
             }
-            .fieldStyles()
+            .ibestFieldStyle()
         }else{
             Column(){
                 Column(){
@@ -535,11 +535,11 @@ export struct IBestField{
                     })
                 }
                 .alignItems(HorizontalAlign.Start)
-                .fieldContentStyles()
+                .ibestFieldContentStyle()
                 this.focusText()
             }
             .alignItems(HorizontalAlign.Start)
-            .fieldStyles()
+            .ibestFieldStyle()
         }
     }
 }
@@ -553,8 +553,8 @@ struct Label{
     @Consume label: ResourceStr
     @Consume labelFontSize: IBestStringNumber
     @Consume labelColor: ResourceColor
-    @Consume colon: string
-    @Consume labelPosition: 'left' | 'top'
+    @Consume colon: boolean
+    @Consume labelPosition: LabelPositionType
     @Consume labelAlign: FieldTextAlign
     @Consume labelWidth: IBestStringNumber
     @Consume requireAsteriskPosition: string
@@ -667,7 +667,7 @@ struct Content{
     onFieldBlur: () => void = () => {}
     onRightIconClick: () => void = () => {}
 
-    @Styles inputStyle(){
+    @Styles ibestFieldInputStyle(){
         .layoutWeight(1)
         .padding(0)
         .borderRadius(0)
@@ -749,7 +749,7 @@ struct Content{
                 } else {
                     if (this.autosize) {
                         TextArea({ text: $$this.value, placeholder: this.placeholder })
-                            .inputStyle()
+                            .ibestFieldInputStyle()
                             .caretColor(this.caretColor)
                             .fontSize(getSizeByUnit(this.inputFontSize, true))
                             .fontColor(IBestFieldColor.inputColor)
@@ -783,7 +783,7 @@ struct Content{
                             })
                     } else {
                         TextInput({ text: $$this.value, placeholder: this.placeholder })
-                            .inputStyle()
+                            .ibestFieldInputStyle()
                             .caretColor(this.caretColor)
                             .fontSize(getSizeByUnit(this.inputFontSize, true))
                             .fontColor(IBestFieldColor.inputColor)

@@ -1,12 +1,4 @@
-import {
-    IBestButton,
-    IBestCellGroup,
-    IBestField,
-    IBestNavBar,
-    IBestRadio,
-    IBestRadioGroup,
-    IBestToast
-} from '@ibestservices/ibest-ui';
+import { IBestButton, IBestField, IBestNavBar, IBestRadio, IBestRadioGroup, IBestToast } from '@ibestservices/ibest-ui';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import { router } from '@kit.ArkUI';
@@ -49,7 +41,7 @@ struct FieldPage {
             text: this.count == 60 ? '发送验证码' : `重新发送(${this.count})`,
             type: 'primary',
             buttonSize: 'mini',
-            onClickBtn: () => {
+            onBtnClick: () => {
                 this.sendCode()
             }
         })

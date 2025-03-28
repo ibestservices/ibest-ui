@@ -1,5 +1,5 @@
-import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
-import { convertDimensionsWidthUnit, generateId } from '../utils/utils'
+import { ComponentContent, ImmersiveMode, LengthMetrics, LevelMode, PromptAction, window } from '@kit.ArkUI'
+import { generateId } from '../utils/utils'
 import { IBestDialogView } from '../components/dialog/dialog'
 import { IBestStringNumber } from '../model/Global.type'
 
@@ -136,18 +136,15 @@ class IBestDialogOption {
 	 */
 	confirmButtonLoading?: boolean
 	/**
-	 * 弹窗是否为模态窗口，模态窗口有蒙层，非模态窗口无蒙层。
-	 * API11+
+	 * 弹窗是否为模态窗口，模态窗口有蒙层，非模态窗口无蒙层
 	 */
 	showOverlay?: boolean
 	/**
-	 * 自定义蒙层颜色。默认值: 0x33000000 API10以上支持
+	 * 自定义蒙层颜色。默认值: 0x33000000
 	 */
 	overlayColor?: ResourceColor
 	/**
-	 * 某弹框需要显示在主窗口之外时，是否在子窗口显示此弹窗。
-	 * 默认值：false，弹窗显示在应用内，而非独立子窗口。
-	 * API 10 +
+	 * 某弹框需要显示在主窗口之外时，是否在子窗口显示此弹窗
 	 */
 	showInSubWindow?: boolean
 	/**
@@ -165,11 +162,26 @@ class IBestDialogOption {
 	/**
 	 * 弹窗相对alignment所在位置的横向偏移量
 	 */
-	offsetX?: IBestStringNumber = 0
+	offsetX?: IBestStringNumber
 	/**
 	 * 弹窗相对alignment所在位置的纵向偏移量。
 	 */
-	offsetY?: IBestStringNumber = 0
+	offsetY?: IBestStringNumber
+	/**
+	 * 弹窗避让键盘后，和键盘之间的距离
+	 * @since 2.0.8
+     */
+	keyboardAvoidDistance?: LengthMetrics
+	/**
+	 * 弹窗显示层级
+	 * @since 2.0.8
+	 */
+	levelMode?: LevelMode = LevelMode.OVERLAY
+	/**
+	 * 页面级弹窗需要显示的层级下的节点 uniqueId, 仅当levelMode属性设置为LevelMode.EMBEDDED时生效
+	 * @since 2.0.8
+	 */
+	levelUniqueId?: number = 0
 	/**
 	 * 标题区域的builder
 	 */
@@ -189,11 +201,11 @@ class IBestDialogOption {
 	/**
 	 * 点击取消的回调
 	 */
-	onCancel?: (event?: ClickEvent) => void
+	onCancel?: () => void
 	/**
 	 * 点击确认的的回调
 	 */
-	onConfirm?: (event?: ClickEvent) => void
+	onConfirm?: () => void
 	/**
 	 * 弹框打开回调
 	 * @since 1.16.0
@@ -212,12 +224,9 @@ class IBestDialogParams extends IBestDialogOption {
 	close: (id: string) => void = () => {}
 	constructor(option: IBestDialogOption) {
 		super()
-		this.bgImage = option.bgImage
-		this.titleBuilder = option.titleBuilder
-		this.defaultBuilder = option.defaultBuilder
-		this.footerBuilder = option.footerBuilder
 		this.dialogWidth = option.dialogWidth
 		this.dialogBorderRadius = option.dialogBorderRadius
+		this.bgImage = option.bgImage
 		this.title = option.title
 		this.titleColor = option.titleColor
 		this.titlePaddingTop = option.titlePaddingTop
@@ -246,32 +255,36 @@ class IBestDialogParams extends IBestDialogOption {
 		this.cancelButtonBgColor = option.cancelButtonBgColor
 		this.buttonFontSize = option.buttonFontSize
 		this.confirmButtonLoading = option.confirmButtonLoading
-		this.showOverlay = option.showOverlay !== undefined ? option.showOverlay : true
-		this.showInSubWindow = option.showInSubWindow
-		this.overlayColor = option.overlayColor
-		this.closeOnClickOverlay = option.closeOnClickOverlay
-		this.closeOnBackPress = option.closeOnBackPress !== undefined ? option.closeOnBackPress : true
+		this.cancelButtonLoading = option.cancelButtonLoading
+		this.titleBuilder = option.titleBuilder
+		this.defaultBuilder = option.defaultBuilder
+		this.footerBuilder = option.footerBuilder
 		this.beforeClose = option.beforeClose
 		this.onCancel = option.onCancel
 		this.onConfirm = option.onConfirm
-		this.onOpen = option.onOpen
-		this.onClose = option.onClose
 	}
+}
+
+async function handleBeforeClose(option: IBestDialogParams, action: 'cancel' | 'confirm'){
+	let status = true
+	if(option.beforeClose){
+		try {
+			status = await option.beforeClose(action)
+		} catch (e) {
+			status = false
+		}
+	}
+	return status
 }
 
 @Component
 struct DialogContent{
 	@Prop option: IBestDialogParams
-	@State dialogWidth?: IBestStringNumber = 0
-	aboutToAppear(): void {
-		this.dialogWidth = this.option.dialogWidth || convertDimensionsWidthUnit(320)
-	}
 	async handleBtnClick(action: 'cancel' | 'confirm') {
 		if (this.option.beforeClose) {
 			action == 'cancel' ? this.option.cancelButtonLoading = true : this.option.confirmButtonLoading = true
 			this.option.contentNode?.update(this.option)
-			const status = await this.option.beforeClose(action)
-			// console.log('status', status)
+			let status = await handleBeforeClose(this.option, action)
 			action == 'cancel' ? this.option.cancelButtonLoading = false : this.option.confirmButtonLoading = false
 			this.option.contentNode?.update(this.option)
 			if (!status) {
@@ -289,7 +302,7 @@ struct DialogContent{
 	build() {
 		IBestDialogView({
 			bgImage: this.option.bgImage,
-			dialogWidth: $dialogWidth,
+			dialogWidth: this.option.dialogWidth,
 			dialogBorderRadius: this.option.dialogBorderRadius,
 			title: this.option.title,
 			titleFontSize: this.option.titleFontSize,
@@ -351,8 +364,6 @@ interface DialogMapValue{
 }
 function getAlignment(type: string) {
 	switch (type) {
-		case 'center':
-			return DialogAlignment.Center
 		case 'top':
 			return DialogAlignment.Top
 		case 'bottom':
@@ -385,31 +396,37 @@ class Dialog{
 			params: params
 		})
 		await promptAction.openCustomDialog(contentNode, {
-			alignment: getAlignment(params.alignment),
+			alignment: getAlignment(option.alignment),
 			offset: {
-				dx: params.offsetX,
-				dy: params.offsetY
+				dx: option.offsetX,
+				dy: option.offsetY
 			},
-			isModal: params.showOverlay,
-			maskColor: params.overlayColor,
-			// keyboardAvoidMode: KeyboardAvoidMode.NONE,
+			isModal: option.showOverlay ?? true,
+			maskColor: option.overlayColor,
+			showInSubWindow: option.showInSubWindow,
+			keyboardAvoidDistance: option.keyboardAvoidDistance,
+			immersiveMode: ImmersiveMode.EXTEND,
+			levelMode: option.levelMode,
+			levelUniqueId: option.levelUniqueId,
+			onDidAppear: () => {
+				option.onOpen?.()
+			},
+			onDidDisappear: () => {
+				option.onClose?.()
+			},
 			onWillDismiss: async(dismissDialogAction: DismissDialogAction)=> {
 				// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
 				let reason = dismissDialogAction.reason
-				if (reason == DismissReason.PRESS_BACK && !params.closeOnBackPress || reason == DismissReason.TOUCH_OUTSIDE && !params.closeOnClickOverlay) {
+				if (reason == DismissReason.PRESS_BACK && !(params.closeOnBackPress ?? true) || reason == DismissReason.TOUCH_OUTSIDE && !params.closeOnClickOverlay) {
 					return
 				}
-				if (params.beforeClose) {
-					const status = await params.beforeClose("cancel")
-					if (!status) {
-						return
-					}
+				let status = await handleBeforeClose(params, "cancel")
+				if (!status) {
+					return
 				}
 				dismissDialogAction.dismiss()
-				params.onClose?.()
 			}
 		})
-		params.onOpen?.()
 		return key
 	}
 	/**
@@ -421,7 +438,6 @@ class Dialog{
 			let dialog = this.contentNodeMap.get(key)
 			dialog?.promptAction?.closeCustomDialog(dialog?.contentNode).then(() => {
 				dialog?.contentNode?.dispose()
-				dialog?.params.onClose?.()
 			})
 		}
 	}

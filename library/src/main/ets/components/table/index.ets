@@ -8,7 +8,7 @@ import { emitter } from '../../utils/EventEmitter'
 import { IBestTableColor } from './color'
 import { IBestTableColumnInfo, COMPONENT_NAME, TABLE_EVENT_NAME, IBestTableColumnData, IBestCellPosition } from './index.type'
 
-@Extend(Scroll) function fixScrollStyle(position: string){
+@Extend(Scroll) function ibestTableFixScrollStyle(position: string){
     .scrollBar(BarState.Off)
     .enableScrollInteraction(false)
     .edgeEffect(EdgeEffect.None)
@@ -148,7 +148,7 @@ export struct IBestTable {
             }, (_: AnyType, index: number) => index.toString())
         }
     }
-    @Styles fixBodyStyle(){
+    @Styles ibestTableFixBodyStyle(){
         .height(getSizeByUnit(this.fixHeight))
         .constraintSize({maxHeight: getSizeByUnit(this.maxHeight)})
         .align(Alignment.Start)
@@ -273,7 +273,7 @@ export struct IBestTable {
                         }
                     })
                 }
-                .fixBodyStyle()
+                .ibestTableFixBodyStyle()
                 .scrollable(this.fixHeight || this.maxHeight ? ScrollDirection.Vertical : ScrollDirection.None)
                 .edgeEffect(EdgeEffect.None)
                 .nestedScroll({
@@ -293,15 +293,15 @@ export struct IBestTable {
                     Scroll(this.leftFixedBodyScroller){
                         this.bodyCellBuilder('left')
                     }
-                    .fixBodyStyle()
-                    .fixScrollStyle('left')
+                    .ibestTableFixBodyStyle()
+                    .ibestTableFixScrollStyle('left')
                 }
                 if(this.rightFixedColumnList.length){
                     Scroll(this.rightFixedBodyScroller) {
                         this.bodyCellBuilder('right')
                     }
-                    .fixBodyStyle()
-                    .fixScrollStyle('right')
+                    .ibestTableFixBodyStyle()
+                    .ibestTableFixScrollStyle('right')
                 }
             }
             if(this.showSummary){

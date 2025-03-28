@@ -39,10 +39,9 @@ class Subject {
 	}
 }
 
-
 @Entry
 @Component
-struct FieldPage {
+struct FormPage {
 	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
 	@State name: string = ""
 	@State phone: string = ""
@@ -119,7 +118,7 @@ struct FieldPage {
 		]
 	}
 	private controller3: IBestFormController = new IBestFormController()
-	@State options: IBestCascaderOption[] = [
+	private options: IBestCascaderOption[] = [
 		{
 			text: "江苏省",
 			value: "320000",
@@ -197,7 +196,7 @@ struct FieldPage {
 	@State list: Subject[] = []
 	private rules4: IBestFormRule = {
 		"sex": [
-			{ required: true, message: "请选择是否" }
+			{ required: true, message: "请选择性别" }
 		],
 		"info1": [
 			{ required: true, message: "请输入男生信息" }
@@ -289,8 +288,7 @@ struct FieldPage {
 		IBestStepper({
 			value: $value9,
 			min: 1,
-			max: 99,
-			step: 1
+			max: 99
 		})
 	}
 	@Builder uploadImg(){
@@ -347,7 +345,7 @@ struct FieldPage {
 								text: "验证姓名",
 								type: 'primary',
 								buttonSize: 'large',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller1.validateField("name").then(res => {
 										if(res.valid){
 											IBestToast.show("验证成功")
@@ -363,7 +361,7 @@ struct FieldPage {
 								text: "提交",
 								type: 'primary',
 								buttonSize: 'large',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller1.validate().then(res => {
 										if(res.valid){
 											IBestToast.show("验证成功")
@@ -421,7 +419,7 @@ struct FieldPage {
 								text: "提交",
 								type: 'primary',
 								buttonSize: 'large',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller2.validate((valid) => {
 										if (valid) {
 											IBestToast.show("验证成功")
@@ -511,7 +509,7 @@ struct FieldPage {
 								text: "提交",
 								type: 'primary',
 								buttonSize: 'large',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller3.validate((valid) => {
 										if (valid) {
 											IBestToast.show("验证成功")
@@ -567,10 +565,10 @@ struct FieldPage {
 								}, (item: Subject) => item.id)
 							}
 							IBestButton({
-								text: "添加内容",
+								text: "添加学科",
 								type: "primary",
 								buttonSize: 'large',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.list.push(new Subject())
 								}
 							})
@@ -578,7 +576,7 @@ struct FieldPage {
 								text: "提交",
 								type: 'primary',
 								buttonSize: 'large',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller4.validate((valid) => {
 										if (valid) {
 											IBestToast.show("验证成功")

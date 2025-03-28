@@ -46,7 +46,7 @@ export struct IBestNoticeBar{
 	/**
 	 * 通知文本
      */
-	@Prop @Watch("reset") text: ResourceStr = ''
+	@Prop @Watch("init") text: ResourceStr = ''
 	/**
 	 * 文本颜色
      */
@@ -75,7 +75,7 @@ export struct IBestNoticeBar{
 	/**
 	 * 是否开启滚动播放，内容长度溢出时默认开启
      */
-	@Prop @Watch("reset") scrollable: boolean
+	@Prop scrollable: boolean
 	/**
 	 * 动画延迟时间(s)
      */
@@ -124,27 +124,30 @@ export struct IBestNoticeBar{
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
+		this.init()
 	}
-
-	reset(){
+	init(){
+		this.transX = 0
+		this.duration = 0
 		if(this.scrollable === false || this.wrapable){
 			return
 		}
-		this.transX = 0
-		this.duration = 0
-		clearTimeout(this.startTimer)
-		this.startTimer = setTimeout(() => {
+		setTimeout(() => {
 			let contentWidth = getComponentsInfo(this.uiContext, `ibest_noticeBar_${this.uniId}`).width
 			let textWidth = getComponentsInfo(this.uiContext, `ibest_noticeBar_text_${this.uniId}`).width
 			this.contentWidth = contentWidth
 			this.textWidth = textWidth
-			if (this.scrollable || textWidth > contentWidth) {
-				if(this.scrollable === undefined){
-					this.scrollable = true
-				}
-				this.duration = textWidth / +this.speed
-				this.transX = -textWidth
+			this.reset()
+		}, 20)
+	}
+	reset(){
+		clearTimeout(this.startTimer)
+		this.startTimer = setTimeout(() => {
+			if (this.textWidth > this.contentWidth && this.scrollable === undefined) {
+				this.scrollable = true
 			}
+			this.duration = this.textWidth / +this.speed
+			this.transX = -this.textWidth
 		}, +this.delay * 1000)
 	}
 	onFinish(){
@@ -203,9 +206,6 @@ export struct IBestNoticeBar{
 							duration: this.duration * 1000,
 							curve: Curve.Linear,
 							onFinish: (): void => this.onFinish()
-						})
-						.onAppear(() => {
-							this.reset()
 						})
 				}
 				.layoutWeight(1)

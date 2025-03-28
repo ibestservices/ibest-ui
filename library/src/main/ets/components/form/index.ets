@@ -26,7 +26,7 @@ export struct IBestForm {
 	/**
      * form id 用于验证
      */
-	@Prop formId: string = ""
+	@Prop formId: IBestStringNumber = ""
 	/**
 	 * 表单子项信息
 	 */
@@ -74,16 +74,14 @@ export struct IBestForm {
 	/**
 	 * 表单控制器
 	 */
-	controller: IBestFormController | null = null
+	controller: IBestFormController = new IBestFormController()
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
-		if(this.controller){
-			this.controller.validate = (callBack?: (valid: boolean, field: FieldValidateResult[]) => void): Promise<IBestFormValidateResult> => this.validateForm(callBack)
-			this.controller.validateField = (name: string, callBack?: (valid: boolean, field?: FieldValidateResult) => void): Promise<IBestFieldValidateResult> => this.validateField(name, callBack)
-			this.controller.resetValidation = (name?: string | string[]): void => this.resetValidation(name)
-			this.controller.getValues = (): Promise<Record<string, IBestFieldValueType>> => this.getValues()
-			this.controller.getFormValues = (): Record<string, IBestFieldValueType> => this.getFormValues()
-		}
+		this.controller.validate = (callBack?: (valid: boolean, field: FieldValidateResult[]) => void): Promise<IBestFormValidateResult> => this.validateForm(callBack)
+		this.controller.validateField = (name: string, callBack?: (valid: boolean, field?: FieldValidateResult) => void): Promise<IBestFieldValidateResult> => this.validateField(name, callBack)
+		this.controller.resetValidation = (name?: string | string[]): void => this.resetValidation(name)
+		this.controller.getValues = (): Promise<Record<string, IBestFieldValueType>> => this.getValues()
+		this.controller.getFormValues = (): Record<string, IBestFieldValueType> => this.getFormValues()
 		if(this.formId){
 			// 初始化收集表单项信息
 			emitter.on(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.SEND_FIELD, this.formId), this.uniId, (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void): void => this.init(data, callBack))

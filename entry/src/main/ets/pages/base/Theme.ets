@@ -53,7 +53,7 @@ struct ThemePage {
 								text: $r("app.string.confirm"),
 								round: true,
 								buttonSize: 'small',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									setIBestUIBaseStyle({ primary: this.colorText || '#3D8AF2' })
 									this.colorText = getRandomColor()
 								}

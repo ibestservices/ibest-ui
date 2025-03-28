@@ -1,3 +1,4 @@
+import { IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
@@ -13,7 +14,7 @@ export struct IBestSideBarItem{
 	/**
 	 * 分组id
 	 */
-	@Prop groupId: string = ""
+	@Prop groupId: IBestStringNumber = ""
 	/**
 	 * 索引
      */

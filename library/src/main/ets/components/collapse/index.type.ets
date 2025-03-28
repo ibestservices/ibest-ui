@@ -23,7 +23,7 @@ export enum COLLAPSE_EVENT_NAME {
 	ITEM_STATE_CHANGE = "ITEM_STATE_CHANGE"
 }
 
-export interface CollapseItem{
+export interface IBestCollapseItemData{
 	name: IBestStringNumber
 	disabled: boolean
 }

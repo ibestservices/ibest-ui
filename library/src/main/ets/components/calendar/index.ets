@@ -22,14 +22,14 @@ import { IBestIcon } from '../icon'
 import { IBestStringNumber } from '../../model/Global.type'
 
 
-@Extend(Text) function headerStyle(itemWidth: IBestStringNumber){
+@Extend(Text) function ibestCalendarHeaderStyle(itemWidth: IBestStringNumber){
     .width(getSizeByUnit(itemWidth))
     .height(CONTAINER_SIZE.FULL)
     .textAlign(TextAlign.Center)
     .fontSize(getDefaultBaseStyle().fontSizeSm)
     .fontColor(IBestCalendarColor.textColor)
 }
-@Extend(Text) function clockStyle(fontColor: ResourceColor){
+@Extend(Text) function ibestCalendarClockStyle(fontColor: ResourceColor){
     .fontSize(getDefaultBaseStyle().fontSizeSm)
     .fontColor(fontColor)
 }
@@ -152,14 +152,14 @@ struct CalendarItem {
                     .fontColor(this.fontColor)
                 if (this.isShowLunar) {
                     Text(this.dayItem.lunarDay)
-                        .clockStyle(this.fontColor)
+                        .ibestCalendarClockStyle(this.fontColor)
                 }else if(this.clock && this.dayItem.isCurMonthDay && isBeforeToday(this.dayItem.date)){
                     if(this.dayItem.isClock){
                         Text(this.clockSuccessText)
-                            .clockStyle(this.fontColor)
+                            .ibestCalendarClockStyle(this.fontColor)
                     }else if(this.isShowUnClock){
                         Text(this.unClockText)
-                            .clockStyle(this.fontColor)
+                            .ibestCalendarClockStyle(this.fontColor)
                     }
                 }
             }
@@ -732,7 +732,7 @@ export struct IBestCalendar{
             GridRow({ columns: 7 }) {
                 ForEach(this.headerList, (item: HeaderItemType) => {
                     GridCol() {
-                        Text(item.text).headerStyle(this.itemWidth)
+                        Text(item.text).ibestCalendarHeaderStyle(this.itemWidth)
                     }
                 }, (item: HeaderItemType, index: number) => index.toString())
             }

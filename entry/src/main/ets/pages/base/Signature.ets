@@ -18,8 +18,8 @@ struct SignaturePage {
 	@State imgUrl3: PixelMap | null = null
 	private controller: IBestSignatureController = new IBestSignatureController()
 
-	@Builder imgUrlView($$: params) {
-		Image($$.url)
+	@Builder imgUrlView(url: PixelMap) {
+		Image(url)
 			.margin({ top: 20 })
 	}
 	build() {
@@ -37,10 +37,13 @@ struct SignaturePage {
 						IBestSignature({
 							onConfirm: (pixelMap: PixelMap) => {
 								this.imgUrl = pixelMap
+							},
+							onClear: () => {
+								this.imgUrl = null
 							}
 						})
 						if(this.imgUrl){
-							this.imgUrlView({url: this.imgUrl})
+							this.imgUrlView(this.imgUrl)
 						}
 					}
 				}
@@ -51,11 +54,14 @@ struct SignaturePage {
 							lineWidth: 5,
 							bgColor: "#eee",
 							onConfirm: (pixelMap: PixelMap) => {
-								this.imgUrl = pixelMap
+								this.imgUrl1 = pixelMap
+							},
+							onClear: () => {
+								this.imgUrl1 = null
 							}
 						})
 						if(this.imgUrl1){
-							this.imgUrlView({url: this.imgUrl1})
+							this.imgUrlView(this.imgUrl1)
 						}
 					}
 				}
@@ -65,11 +71,14 @@ struct SignaturePage {
 							boardWidth: 260,
 							boardHeight: 150,
 							onConfirm: (pixelMap: PixelMap) => {
-								this.imgUrl = pixelMap
+								this.imgUrl2 = pixelMap
+							},
+							onClear: () => {
+								this.imgUrl2 = null
 							}
 						})
 						if(this.imgUrl2){
-							this.imgUrlView({url: this.imgUrl2})
+							this.imgUrlView(this.imgUrl2)
 						}
 					}
 				}
@@ -79,23 +88,26 @@ struct SignaturePage {
 							controller: this.controller,
 							isShowFooter: false,
 							onConfirm: (pixelMap: PixelMap) => {
-								this.imgUrl = pixelMap
+								this.imgUrl3 = pixelMap
+							},
+							onClear: () => {
+								this.imgUrl3 = null
 							}
 						})
 						if(this.imgUrl3){
-							this.imgUrlView({url: this.imgUrl3})
+							this.imgUrlView(this.imgUrl3)
 						}
 						Row({ space: 10 }){
 							IBestButton({
 								text: '清空',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller.clear()
 								}
 							})
 							IBestButton({
 								text: '确认',
 								type: 'primary',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller.confirm()
 								}
 							})

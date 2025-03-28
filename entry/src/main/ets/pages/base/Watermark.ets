@@ -14,7 +14,7 @@ struct WatermarkPage {
 			IBestButton({
 				type: "primary",
 				text: "打开弹框",
-				onClickBtn: () => {
+				onBtnClick: () => {
 					IBestToast.show("点击了按钮")
 				}
 			})

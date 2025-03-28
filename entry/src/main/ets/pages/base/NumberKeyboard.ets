@@ -37,7 +37,7 @@ struct NumberKeyboardPage {
 							title: '默认键盘',
 							value: this.value,
 							clickable: true,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.visible = true
 							}
 						})
@@ -45,7 +45,7 @@ struct NumberKeyboardPage {
 							title: '带右侧栏的键盘',
 							value: this.value1,
 							clickable: true,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.visible1 = true
 							}
 						})
@@ -53,7 +53,7 @@ struct NumberKeyboardPage {
 							title: '身份证号键盘',
 							value: this.value2,
 							clickable: true,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.visible2 = true
 							}
 						})
@@ -61,7 +61,7 @@ struct NumberKeyboardPage {
 							title: '带标题的键盘',
 							value: this.value3,
 							clickable: true,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.visible3 = true
 							}
 						})
@@ -69,7 +69,7 @@ struct NumberKeyboardPage {
 							title: '配置多个按键的键盘',
 							value: this.value4,
 							clickable: true,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.visible4 = true
 							}
 						})
@@ -77,7 +77,7 @@ struct NumberKeyboardPage {
 							title: '配置随机数字的键盘',
 							value: this.value5,
 							clickable: true,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.visible5 = true
 							}
 						})
@@ -86,7 +86,7 @@ struct NumberKeyboardPage {
 							value: this.value6 || "点此输入",
 							clickable: true,
 							hasBorder: false,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.visible6 = true
 							}
 						})

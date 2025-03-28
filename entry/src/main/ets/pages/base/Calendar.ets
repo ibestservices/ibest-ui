@@ -91,14 +91,14 @@ struct CalendarPage {
                                 IBestCell({
                                     title: '选择单个日期',
                                     value: this.selectDate,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.singleVisible = true
                                     }
                                 })
                                 IBestCell({
                                     title: '选择多个日期',
                                     value: this.multipleDateRange,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.multipleVisible = true
                                     }
                                 })
@@ -106,7 +106,7 @@ struct CalendarPage {
                                     title: '选择日期区间',
                                     hasBorder: false,
                                     value: this.rangeDateRange,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.rangeVisible = true
                                     }
                                 })
@@ -121,35 +121,35 @@ struct CalendarPage {
                                 IBestCell({
                                     title: '自定义颜色',
                                     value: this.customColorDate,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.customColorVisible = true
                                     }
                                 })
                                 IBestCell({
                                     title: '显示农历',
                                     value: this.lunarDate,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.lunarVisible = true
                                     }
                                 })
                                 IBestCell({
                                     title: '自定义日期范围',
                                     value: this.customRangeDate,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.customRangeVisible = true
                                     }
                                 })
                                 IBestCell({
                                     title: '日期区间最大范围',
                                     value: this.rangeNumDate,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.rangeNumVisible = true
                                     }
                                 })
                                 IBestCell({
                                     title: '自定义周起始日期',
                                     value: this.customWeekDate,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.customWeekVisible = true
                                     }
                                 })
@@ -157,7 +157,7 @@ struct CalendarPage {
                                     title: '显示月份背景水印',
                                     value: this.waterBgDate,
                                     hasBorder: false,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.waterBgVisible = true
                                     }
                                 })
@@ -191,7 +191,7 @@ struct CalendarPage {
                             IBestButton({
                                 type: "primary",
                                 text: "打卡",
-                                onClickBtn: () => {
+                                onBtnClick: () => {
                                     this.clockDate.push(dayjs(this.clockDate[this.clockDate.length-1]).add(1, 'day').format("YYYY-MM-DD"))
                                 }
                             })

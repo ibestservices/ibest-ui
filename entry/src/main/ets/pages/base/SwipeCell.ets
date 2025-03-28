@@ -1,6 +1,5 @@
 import router from '@ohos.router';
-import { IBestButton, IBestCell, IBestDialogUtil, IBestNavBar, IBestSwipeCell,
-	IBestToast } from '@ibestservices/ibest-ui';
+import { IBestButton, IBestCell, IBestDialogUtil, IBestNavBar, IBestSwipeCell, IBestToast } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import { ComponentRouterParams } from '../../assets/global.type';
@@ -22,7 +21,7 @@ struct SwipeCellPage {
 			type: 'primary',
 			text: '选择',
 			square: true,
-			onClickBtn: () => {
+			onBtnClick: () => {
 				IBestToast.show("选择")
 			}
 		})
@@ -32,7 +31,7 @@ struct SwipeCellPage {
 			type: 'primary',
 			text: '编辑',
 			square: true,
-			onClickBtn: () => {
+			onBtnClick: () => {
 				IBestToast.show("编辑")
 			}
 		})
@@ -40,7 +39,7 @@ struct SwipeCellPage {
 			type: 'danger',
 			text: '删除',
 			square: true,
-			onClickBtn: () => {
+			onBtnClick: () => {
 				IBestToast.show("删除")
 			}
 		})
@@ -59,17 +58,17 @@ struct SwipeCellPage {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
 						IBestSwipeCell({
-							defaultContent: this.cellContent,
-							leftContent: this.leftContent,
-							rightContent: this.rightContent
+							defaultContent: (): void => this.cellContent(),
+							leftContent: (): void => this.leftContent(),
+							rightContent: (): void => this.rightContent()
 						})
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '异步关闭', titlePaddingLeft: SPACE.XS }) {
 						IBestSwipeCell({
-							defaultContent: this.cellContent,
-							rightContent: this.rightContent,
+							defaultContent: (): void => this.cellContent(),
+							rightContent: (): void => this.rightContent(),
 							beforeClose: (position) => {
 								if(position == 'center'){
 									return true

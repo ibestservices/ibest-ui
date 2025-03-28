@@ -77,14 +77,14 @@ struct ImageCropPage {
 							Row({space: SPACE.XS}){
 								IBestButton({
 									text: "重选",
-									onClickBtn: () => {
+									onBtnClick: () => {
 										this.imgList = []
 									}
 								})
 								IBestButton({
 									type: "primary",
 									text: "获取结果",
-									onClickBtn: () => {
+									onBtnClick: () => {
 										this.controller.getResult().then(res => {
 											this.previewUrl = res
 											this.showResult()
@@ -106,7 +106,7 @@ struct ImageCropPage {
 							IBestButton({
 								type: "primary",
 								text: "获取结果",
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller1.getResult(res => {
 										this.previewUrl = res
 										this.showResult()
@@ -129,7 +129,7 @@ struct ImageCropPage {
 							IBestButton({
 								type: "primary",
 								text: "获取结果",
-								onClickBtn: async () => {
+								onBtnClick: async () => {
 									this.previewUrl = await this.controller2.getResult()
 									this.showResult()
 								}

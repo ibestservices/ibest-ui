@@ -236,7 +236,7 @@ struct TabPage {
                             IBestButton({
                                 text: "禁用标签3",
                                 buttonSize: "small",
-                                onClickBtn: () => {
+                                onBtnClick: () => {
                                     this.tabsList2[2].isDisable = true
                                 }
                             })
@@ -264,28 +264,10 @@ struct TabPage {
                             IBestButton({
                                 text: "修改数字",
                                 buttonSize: "small",
-                                onClickBtn: () => {
+                                onBtnClick: () => {
                                     if(this.tabsList3[1].number != undefined){
                                         this.tabsList3[1].number += 1
                                     }
-                                }
-                            })
-                        }
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: 'controller 切换', titlePaddingLeft: SPACE.MD }) {
-                        Column({space: 20}){
-                            IBestTabs({
-                                tabsList: this.tabsList,
-                                currentName: $curTabName6,
-                                tabController: this.tabController
-                            })
-                            IBestButton({
-                                text: "跳转标签3",
-                                buttonSize: "small",
-                                onClickBtn: () => {
-                                    this.tabController.changeTab("3")
                                 }
                             })
                         }

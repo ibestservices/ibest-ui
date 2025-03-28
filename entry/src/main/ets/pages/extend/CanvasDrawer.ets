@@ -144,7 +144,7 @@ struct CanvasDrawerPage {
 								IBestButton({
 									text: "重选",
 									type: "primary",
-									onClickBtn: () => {
+									onBtnClick: () => {
 										this.imgList = []
 										this.pixelMap5 = null
 									}
@@ -165,7 +165,7 @@ struct CanvasDrawerPage {
 						IBestCell({
 							title: '试一试',
 							isLink: true,
-							onClickCell: () => {
+							onCellClick: () => {
 								router.pushUrl({ url: "pages/MakePoster" })
 							}
 						})

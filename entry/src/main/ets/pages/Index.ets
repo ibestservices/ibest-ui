@@ -4,7 +4,7 @@ import { BORDER_RADIUS, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, modeColor, SPACE
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import GlobalStore from '../utils/global'
 import { common, Want } from '@kit.AbilityKit'
-import { getAppVersion } from '../utils/utils'
+import { getAppVersion, getResourceStr } from '../utils/utils'
 import { rcp } from '@kit.RemoteCommunicationKit'
 import fs from '@ohos.file.fs'
 import { updateManager } from '@kit.StoreKit'
@@ -336,7 +336,7 @@ struct Index {
 				ForEach(this.baseComponentList, (part: ComponentPart) => {
 					ListItem() {
 						ComponentShowContainer({
-							title: `${this.getResourceStr(part.title)}(${part.list.length})`,
+							title: `${getResourceStr(part.title)}(${part.list.length})`,
 							titlePaddingLeft: SPACE.XS
 						}) {
 							ForEach(part.list, (item: ComponentItem) => {
@@ -389,14 +389,14 @@ struct Index {
 						IBestCell({
 							title: $r("app.string.ui_doc"),
 							isLink: true,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.viewUrl("doc")
 							}
 						})
 						IBestCell({
 							title: $r("app.string.company_official_website"),
 							isLink: true,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.viewUrl("company")
 							}
 						})
@@ -404,7 +404,7 @@ struct Index {
 							title: $r("app.string.privacy_policy"),
 							isLink: true,
 							hasBorder: false,
-							onClickCell: () => {
+							onCellClick: () => {
 								router.pushUrl({
 									url: "pages/PrivacyPolicy"
 								})
@@ -487,10 +487,6 @@ struct Index {
 		// 		}
 		// 	})
 		// }, 100)
-	}
-	// 获取Resource内容
-	getResourceStr(res: Resource){
-		return this.context.resourceManager.getStringSync(res)
 	}
 	getTitleOpacity(){
 		// let scrollY = this.scrollTop < 50 ? this.scrollTop : 50

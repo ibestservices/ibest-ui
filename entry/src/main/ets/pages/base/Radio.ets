@@ -1,5 +1,5 @@
 import router from '@ohos.router'
-import { IBestCell, IBestNavBar, IBestRadio, IBestRadioGroup } from '@ibestservices/ibest-ui'
+import { IBestCell, IBestDialogUtil, IBestNavBar, IBestRadio, IBestRadioGroup } from '@ibestservices/ibest-ui'
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
 import { ComponentRouterParams } from '../../assets/global.type'
@@ -19,7 +19,10 @@ struct CheckboxPage {
 	@State active2: number = 1
 
 	@State group3: string = "group3"
-	@State active3: boolean = false
+	@State active3: number = 1
+
+	@State group4: string = "group4"
+	@State active4: boolean = false
 
 	@Builder
 	CellRadio(name: boolean, group: string) {
@@ -194,25 +197,55 @@ struct CheckboxPage {
 					}
 				}
 				ListItem() {
+					ComponentShowContainer({ title: '异步切换' }) {
+						IBestRadioGroup({ group: this.group3, active: $active3, beforeChange: () => {
+							return new Promise((resolve, reject) => {
+								IBestDialogUtil.open({
+									title: "提示",
+									message: "确定切换?",
+									showCancelButton: true,
+									onConfirm: () => {
+										resolve(true)
+									},
+									onCancel: () => {
+										reject(false)
+									}
+								})
+							})
+						} }){
+							IBestRadio({
+								group: this.group3,
+								label: '单选框',
+								name: 1
+							})
+							IBestRadio({
+								group: this.group3,
+								label: '单选框',
+								name: 2
+							})
+						}
+					}
+				}
+				ListItem() {
 					ComponentShowContainer({ title: '搭配单元格组件使用' }) {
-						IBestRadioGroup({ group: this.group3, active: $active3 }){
+						IBestRadioGroup({ group: this.group4, active: $active4 }){
 							IBestCell({
 								title: '是',
 								center: true,
-								rightIconBuilder: () => this.CellRadio(true, this.group3),
+								rightIconBuilder: () => this.CellRadio(true, this.group4),
 								clickable: true,
-								onClickCell: () => {
-									this.active3 = true
+								onCellClick: () => {
+									this.active4 = true
 								}
 							})
 							IBestCell({
 								title: '否',
 								center: true,
-								rightIconBuilder: () => this.CellRadio(false, this.group3),
+								rightIconBuilder: () => this.CellRadio(false, this.group4),
 								hasBorder: false,
 								clickable: true,
-								onClickCell: () => {
-									this.active3 = false
+								onCellClick: () => {
+									this.active4 = false
 								}
 							})
 						}

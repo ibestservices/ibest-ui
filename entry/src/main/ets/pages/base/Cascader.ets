@@ -167,7 +167,7 @@ struct CascaderPage {
 							value: this.fieldValue,
 							isLink: true,
 							hasBorder: false,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.visible = true
 							}
 						})
@@ -180,7 +180,7 @@ struct CascaderPage {
 							value: this.fieldValue1,
 							isLink: true,
 							hasBorder: false,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.visible1 = true
 							}
 						})
@@ -193,7 +193,7 @@ struct CascaderPage {
 							value: this.fieldValue2,
 							isLink: true,
 							hasBorder: false,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.visible2 = true
 							}
 						})
@@ -206,7 +206,7 @@ struct CascaderPage {
 							value: this.fieldValue3,
 							isLink: true,
 							hasBorder: false,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.visible3 = true
 							}
 						})
@@ -219,7 +219,7 @@ struct CascaderPage {
 							value: this.fieldValue4,
 							isLink: true,
 							hasBorder: false,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.visible4 = true
 							}
 						})

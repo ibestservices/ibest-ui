@@ -126,7 +126,7 @@ struct PopoverPage {
                 type: "primary",
                 buttonSize: "small",
                 text: "确定",
-                onClickBtn: () => {
+                onBtnClick: () => {
                     this.controller.close()
                 }
             })
@@ -255,7 +255,7 @@ struct PopoverPage {
                             IBestButton({
                                 type: "primary",
                                 text: "打开popover",
-                                onClickBtn: () => {
+                                onBtnClick: () => {
                                     this.controller.open()
                                 }
                             })

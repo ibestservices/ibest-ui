@@ -9,7 +9,7 @@ import { IBestTagColor } from './color';
 import { IBestIcon } from '../icon';
 import { IBestStringNumber } from '../../model/Global.type';
 
-@Extend(Row) function tagSizeStyle(data: TagSizeData) {
+@Extend(Row) function ibestTagSizeStyle(data: TagSizeData) {
 	.padding({
 		top: 0,
 		right: data.padding,
@@ -72,19 +72,16 @@ export struct IBestTag {
 	onClose: () => void = () => {}
 	/**
 	 * 点击标签触发的回调
+	 * @deprecated since 2.0.8
+	 * @useinstead onTagClick
 	 */
 	onClickTag: () => void = () => {}
-	/**
-	 * 获取按钮边框的颜色
-	 * @returns
-	 */
+	onTagClick: () => void = () => {}
+	// 获取按钮边框的颜色
 	getBorderColor() {
 		return this.color ? this.color : this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_4 : this.baseStyle[this.type]
 	}
-	/**
-	 * 获取按钮文字的颜色
-	 * @returns
-	 */
+	// 获取按钮文字的颜色
 	getTextColor() {
 		if (this.textColor) {
 			return this.textColor
@@ -94,17 +91,11 @@ export struct IBestTag {
 		}
 		return this.type === COLOR_TYPE.DEFAULT ? IBestTagColor.textColor : IBestTagColor.whiteColor
 	}
-	/**
-	 * 根据颜色type获取背景色
-	 * @returns
-	 */
+	// 根据颜色type获取背景色
 	getBackgroundColor() {
 		return this.plain ? "transparent" : this.color ? this.color : this.type == "default" ? IBestTagColor.defaultBg : this.baseStyle[this.type]
 	}
-	/**
-	 * 根据size获取tag的尺寸
-	 * @returns
-	 */
+	// 根据size获取tag的尺寸
 	getTagSize() {
 		const tagSize = this.tagSize;
 		switch (tagSize) {
@@ -119,11 +110,7 @@ export struct IBestTag {
 					this.baseStyle.fontSizeSm, this.getBorderRadius(convertDimensionsWidthUnit(2)));
 		}
 	}
-	/**
-	 * 获取边框radius
-	 * @param borderRadius
-	 * @returns
-	 */
+	// 获取边框radius
 	getBorderRadius(borderRadius: IBestStringNumber): BorderRadiuses | Length {
 		if (this.round) {
 			return this.baseStyle.borderRadiusMax
@@ -158,7 +145,7 @@ export struct IBestTag {
 						.margin({ left: this.baseStyle.spaceMini })
 				}
 			}
-			.tagSizeStyle(this.getTagSize())
+			.ibestTagSizeStyle(this.getTagSize())
 			.alignItems(VerticalAlign.Center)
 			.justifyContent(FlexAlign.Center)
 			.borderWidth(1)
@@ -167,7 +154,10 @@ export struct IBestTag {
 			.transition({ type: TransitionType.Insert, opacity: 1 })
 			.transition({ type: TransitionType.Delete, opacity: 0 })
 			.onTouch(event => {
-				event.type == TouchType.Up && this.onClickTag()
+				if(event.type == TouchType.Up){
+					this.onClickTag()
+					this.onTagClick()
+				}
 			})
 		}
 	}

@@ -1,4 +1,4 @@
-import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
+import { ComponentContent, ImmersiveMode, PromptAction, window } from '@kit.ArkUI'
 import { CONTAINER_SIZE } from '../theme-chalk/src/container'
 import { clamp, convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../utils/utils'
 import { IBestActionSheetColor } from './color'
@@ -376,48 +376,39 @@ struct SwiperItem{
 }
 
 class ImagePreview{
-	private static _instance: ImagePreview = new ImagePreview()
-	private contentNode: ComponentContent<IBestImagePreviewParams> | null = null
 	private promptAction: PromptAction | null = null
-
-	private getInstance(contentNode: ComponentContent<IBestImagePreviewParams>, promptAction: PromptAction): ImagePreview{
-		if(!ImagePreview._instance){
-			ImagePreview._instance = new ImagePreview()
-		}
-		ImagePreview._instance.contentNode = contentNode
-		ImagePreview._instance.promptAction = promptAction
-		return ImagePreview._instance
-	}
+	private contentNode: ComponentContent<IBestImagePreviewParams> | null = null
 	/**
 	 * 显示预览
 	 */
 	public async show(list: IBestPreviewImgType[], option?: IBestImagePreviewOption){
-		let opt: IBestImagePreviewParams = new IBestImagePreviewParams(list, option)
-		opt.hide = (): void => this.hide()
-		if(ImagePreview._instance.contentNode){
-			this.hide()
+		if(this.contentNode){
+			return
 		}
 		let windowClass = await window.getLastWindow(getContext())
 		let uiContext = windowClass.getUIContext()
+		this.promptAction = uiContext.getPromptAction()
+		let opt: IBestImagePreviewParams = new IBestImagePreviewParams(list, option)
+		opt.hide = (): void => this.hide()
 		let contentNode = new ComponentContent(uiContext, wrapBuilder(previewBuilder), opt)
-		let promptAction = uiContext.getPromptAction()
-		ImagePreview._instance = this.getInstance(contentNode, promptAction)
-		promptAction.openCustomDialog(contentNode, {
+		this.contentNode = contentNode
+		this.promptAction.openCustomDialog(contentNode, {
 			alignment: DialogAlignment.Center,
 			isModal: true,
 			maskColor: opt.maskColor,
-			autoCancel: false
+			autoCancel: false,
+			immersiveMode: ImmersiveMode.EXTEND
 		})
 	}
-
 	/**
 	 * 关闭预览
 	 */
 	public hide(){
-		if(ImagePreview._instance.contentNode){
-			ImagePreview._instance.promptAction?.closeCustomDialog(ImagePreview._instance.contentNode)
-			ImagePreview._instance.contentNode?.dispose()
-			ImagePreview._instance.contentNode = null
+		if(this.contentNode && this.promptAction){
+			this.promptAction.closeCustomDialog(this.contentNode).then(() => {
+				this.contentNode?.dispose()
+				this.contentNode = null
+			})
 		}
 	}
 }

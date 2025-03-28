@@ -36,7 +36,7 @@ struct NotifyPage {
 								title: '基础用法',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										message: '我们嘲笑过少年的无知，也嘲笑过岁月的苍老。我们行走在路上，理想宏大，眼窝却浅显。'
 									})
@@ -51,7 +51,7 @@ struct NotifyPage {
 							IBestCell({
 								title: '主要通知',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										message: '通知内容',
 										type: 'primary'
@@ -61,7 +61,7 @@ struct NotifyPage {
 							IBestCell({
 								title: '成功通知',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										message: '通知内容',
 										type: 'success'
@@ -71,7 +71,7 @@ struct NotifyPage {
 							IBestCell({
 								title: '危险通知',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										message: '通知内容',
 										type: 'danger'
@@ -82,7 +82,7 @@ struct NotifyPage {
 								title: '警告通知',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										message: '通知内容',
 										type: 'warning'
@@ -98,7 +98,7 @@ struct NotifyPage {
 							IBestCell({
 								title: '自定义颜色',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										message: '通知内容',
 										color: '#ad0000',
@@ -109,7 +109,7 @@ struct NotifyPage {
 							IBestCell({
 								title: '自定义文字大小',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										message: '如果你爱上了某个星球的一朵花。那么，只要在夜晚仰望星空，就会觉得漫天的繁星就像一朵朵盛开的花。',
 										fontSize: 18
@@ -120,7 +120,7 @@ struct NotifyPage {
 								title: '自定义时长',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										message: '通知内容',
 										duration: 3000
@@ -137,7 +137,7 @@ struct NotifyPage {
 								title: '自定义内容',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										customContent: (): void => this.customContent()
 									})
