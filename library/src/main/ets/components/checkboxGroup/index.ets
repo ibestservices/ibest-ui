@@ -1,7 +1,6 @@
 import { emitter } from '../../utils/EventEmitter'
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit, sleep } from '../../utils/utils'
 import { CHECKBOX_GROUP_EVENT_NAME, COMPONENT_NAME, IBestCheckboxGroupController } from './index.type'
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestStringNumber } from '../../model/Global.type'
 
 export interface CheckboxGroupContext {
@@ -16,7 +15,7 @@ export struct IBestCheckboxGroup {
 	/**
 	 * 多个相同群组名称的CheckboxGroup，仅第一个CheckboxGroup生效。
 	 */
-	@Prop group: string
+	@Prop group: IBestStringNumber
 	/**
 	 * 最大可选数量 默认0是都可选
 	 */

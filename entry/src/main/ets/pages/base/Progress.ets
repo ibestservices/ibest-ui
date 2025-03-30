@@ -8,6 +8,9 @@ import { ComponentRouterParams } from '../../assets/global.type';
 struct ProgressPage {
 	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
 	@State value: number = 50
+	@State value1: number = 120
+	@State value2: number = 50
+	@State value3: number = 100
 
 	format(value: number){
 		return value < 100 ? `${value}%` : 'Full'
@@ -26,14 +29,22 @@ struct ProgressPage {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }){
 						IBestProgress({
-							value: this.value
+							value: $value
+						})
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '最大值' }){
+						IBestProgress({
+							value: $value,
+							target: 100
 						})
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '进度内显示百分比' }){
 						IBestProgress({
-							value: this.value,
+							value: $value,
 							lineWidth: 18,
 							textInside: true
 						})
@@ -43,11 +54,11 @@ struct ProgressPage {
 					ComponentShowContainer({ title: '自定义样式' }){
 						Column({space: SPACE.MD}){
 							IBestProgress({
-								value: this.value,
+								value: $value,
 								color: "#ee0a24"
 							})
 							IBestProgress({
-								value: this.value,
+								value: $value,
 								linearGradientColor:{
 									angle: 90,
 									colors: [['#be99ff', 0], ['#7232dd', 1]]
@@ -60,7 +71,7 @@ struct ProgressPage {
 				ListItem() {
 					ComponentShowContainer({ title: '置灰' }){
 						IBestProgress({
-							value: this.value,
+							value: $value,
 							inactive: true
 						})
 					}
@@ -69,16 +80,16 @@ struct ProgressPage {
 					ComponentShowContainer({ title: '不确定进度' }){
 						Column({space: SPACE.MD}){
 							IBestProgress({
-								value: 50,
+								value: $value2,
 								indeterminate: true
 							})
 							IBestProgress({
-								value: 100,
+								value: $value3,
 								indeterminate: true,
 								format: (value: number): string => this.format(value)
 							})
 							IBestProgress({
-								value: 100,
+								value: $value3,
 								indeterminate: true,
 								duration: 1,
 								color: "#DB3131"
@@ -93,9 +104,6 @@ struct ProgressPage {
 							text: "增加",
 							onBtnClick: () => {
 								this.value += 10
-								if(this.value > 100){
-									this.value = 100
-								}
 							}
 						})
 						IBestButton({
@@ -103,9 +111,6 @@ struct ProgressPage {
 							text: "减少",
 							onBtnClick: () => {
 								this.value -= 10
-								if(this.value < 0){
-									this.value = 0
-								}
 							}
 						})
 					}
@@ -115,10 +120,7 @@ struct ProgressPage {
 				}
 			}
 			.layoutWeight(1)
-			.padding({
-				left: SPACE.SM,
-				right: SPACE.SM
-			})
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)

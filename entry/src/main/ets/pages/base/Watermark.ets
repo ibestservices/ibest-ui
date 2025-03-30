@@ -7,8 +7,7 @@ import { ComponentRouterParams } from '../../assets/global.type';
 @Component
 struct WatermarkPage {
 	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
-	@Builder
-	content() {
+	@Builder content() {
 		Column({space: SPACE.SM}) {
 			Text($r("app.string.app_desc"))
 			IBestButton({
@@ -107,9 +106,9 @@ struct WatermarkPage {
 						}
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding({ bottom: SPACE.SM })
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)

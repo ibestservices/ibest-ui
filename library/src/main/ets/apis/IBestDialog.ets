@@ -176,12 +176,12 @@ class IBestDialogOption {
 	 * 弹窗显示层级
 	 * @since 2.0.8
 	 */
-	levelMode?: LevelMode = LevelMode.OVERLAY
+	levelMode?: LevelMode
 	/**
 	 * 页面级弹窗需要显示的层级下的节点 uniqueId, 仅当levelMode属性设置为LevelMode.EMBEDDED时生效
 	 * @since 2.0.8
 	 */
-	levelUniqueId?: number = 0
+	levelUniqueId?: number
 	/**
 	 * 标题区域的builder
 	 */
@@ -404,9 +404,9 @@ class Dialog{
 			isModal: option.showOverlay ?? true,
 			maskColor: option.overlayColor,
 			showInSubWindow: option.showInSubWindow,
-			keyboardAvoidDistance: option.keyboardAvoidDistance,
+			keyboardAvoidDistance: option.keyboardAvoidDistance ?? LengthMetrics.vp(16),
 			immersiveMode: ImmersiveMode.EXTEND,
-			levelMode: option.levelMode,
+			levelMode: option.levelMode ?? 0,
 			levelUniqueId: option.levelUniqueId,
 			onDidAppear: () => {
 				option.onOpen?.()

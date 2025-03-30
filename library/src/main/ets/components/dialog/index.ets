@@ -198,7 +198,7 @@ export struct IBestDialog {
 	 * 弹窗显示层级
 	 * @since 2.0.8
 	 */
-	@Prop levelMode: LevelMode = LevelMode.OVERLAY
+	@Prop levelMode: LevelMode = 0
 	/**
 	 * 页面级弹窗需要显示的层级下的节点 uniqueId, 仅当levelMode属性设置为LevelMode.EMBEDDED时生效
 	 * @since 2.0.8

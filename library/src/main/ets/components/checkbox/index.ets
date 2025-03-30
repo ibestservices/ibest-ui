@@ -18,11 +18,16 @@ export struct IBestCheckbox {
 	/**
 	 * 组名
 	 */
-	@Prop group: string = ''
+	@Prop group: IBestStringNumber = ''
 	/**
 	 * 标识符，通常为一个唯一的字符串或数字
 	 */
-	@Prop name: IBestStringNumber
+	@Prop name: IBestStringNumber = ''
+	/**
+	 * 默认是否选中 非双向绑定
+	 * 如果要更改数据请从onChange回调中获取最新的值
+	 */
+	@Prop value: boolean = false
 	/**
 	 * 形状
 	 */
@@ -35,11 +40,6 @@ export struct IBestCheckbox {
 	 * 图标大小
 	 */
 	@Prop iconSize: IBestStringNumber = convertDimensionsWidthUnit(18)
-	/**
-	 * 默认是否选中 非双向绑定
-	 * 如果要更改数据请从onChange回调中获取最新的值
-	 */
-	@Prop value: boolean = false
 	/**
 	 * 是否禁用
 	 */

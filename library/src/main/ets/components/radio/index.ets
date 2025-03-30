@@ -18,7 +18,7 @@ export struct IBestRadio {
 	/**
 	 * 组名
 	 */
-	@Prop group: string = ''
+	@Prop group: IBestStringNumber = ''
 	/**
 	 * 标识符，通常为一个唯一的字符串
 	 */

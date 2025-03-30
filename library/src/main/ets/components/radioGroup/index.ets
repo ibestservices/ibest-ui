@@ -9,7 +9,7 @@ export struct IBestRadioGroup {
 	/**
 	 * 分组标识
 	 */
-	@Prop group: string
+	@Prop group: IBestStringNumber = ''
 	/**
 	 * 激活的标识列表
 	 * @since 2.0.1

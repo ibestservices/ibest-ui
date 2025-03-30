@@ -2,12 +2,12 @@ import router from '@ohos.router';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import {
-	IBestButton,
-	IBestCell,
-	IBestCellGroup,
-	IBestDialog,
-	IBestDialogUtil,
-	IBestNavBar
+    IBestButton,
+    IBestCell,
+    IBestCellGroup,
+    IBestDialog,
+    IBestDialogUtil,
+    IBestNavBar
 } from '@ibestservices/ibest-ui';
 import { ComponentRouterParams } from '../../assets/global.type';
 
@@ -210,8 +210,7 @@ struct DialogPage {
 										bgImage: "https://img0.baidu.com/it/u=3217812679,2585737758&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500",
 										showConfirmButton: false,
 										defaultBuilder: () => this.imageBgBuilder(),
-										closeOnClickOverlay: true,
-										closeOnBackPress: true
+										closeOnClickOverlay: true
 									})
 								}
 							})
