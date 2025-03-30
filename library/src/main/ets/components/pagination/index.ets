@@ -5,6 +5,7 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { emitter } from '../../utils/EventEmitter'
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
 import { PageItem, PaginationMode } from './index.type'
+import { IBestPaginationColor } from './color'
 
 const makePage = (
   number: number,
@@ -71,7 +72,7 @@ export struct IBestPagination {
 
   updatePages() {
     const count = this.getCount()
-    const showPageSize = Number(this.showPageSize) + 1
+    const showPageSize = Number(this.showPageSize)
     const isMaxSized = showPageSize < count
     let startPage = 1
     let endPage = count
@@ -134,27 +135,40 @@ export struct IBestPagination {
           Button(this.prevText, { type: ButtonType.Normal })
             .enabled(this.modelValue !== 1)
             .onClick(() => this.updateModelValue(this.modelValue - 1, true))
-            .width('auto')
             .height(convertDimensionsWidthUnit(40))
+            .fontSize(this.baseStyle.fontSizeSm)
+            .fontColor(this.modelValue !== 1 ? IBestPaginationColor.textColor : IBestPaginationColor.activeTextColor)
             .borderRadius(0)
-            .margin({ right: 5 })
+            .margin({ right: 0 })
+            .backgroundColor(this.modelValue !== 1 ? IBestPaginationColor.bgColor :
+            IBestPaginationColor.itemDisabledBackground)
+            .fontColor(this.modelValue !== 1 ? IBestPaginationColor.textColor : IBestPaginationColor.itemDisabledColor)
+            .stateEffect(true)
+            .border({ width: 1, color: IBestPaginationColor.borderColor })
+            .flexGrow(1)
+            .flexShrink(1)
         }
 
         if (this.mode === 'simple') {
           Text(`${this.modelValue}/${this.getCount()}`)
-            .fontSize(14)
+            .fontSize(this.baseStyle.fontSizeSm)
             .margin({ left: 10, right: 10 })
+            .flexGrow(1)
+            .flexShrink(1)
+            .textAlign(TextAlign.Center)
         } else {
           ForEach(this.pages, (page: PageItem) => {
             Button(page.text.toString(), { type: ButtonType.Normal })
-              .enabled(!page.active)
               .onClick(() => this.updateModelValue(page.number, true))
               .width(convertDimensionsWidthUnit(36))
               .height(convertDimensionsWidthUnit(40))
+              .fontSize(this.baseStyle.fontSizeSm)
+              .fontColor(page.active ? IBestPaginationColor.activeTextColor : IBestPaginationColor.textColor)
               .borderRadius(0)
-              .margin({ left: 1, right: 1 })
-              .backgroundColor(page.active ? '#1989fa' : '#f7f8fa')
-              .fontColor(page.active ? '#ffffff' : '#000000')
+              .margin({ left: 0, right: 0 })
+              .padding(2)
+              .backgroundColor(page.active ? IBestPaginationColor.activeBg : IBestPaginationColor.bgColor)
+              .border({ width: 1, color: IBestPaginationColor.borderColor })
           })
         }
 
@@ -162,15 +176,25 @@ export struct IBestPagination {
           Button(this.nextText, { type: ButtonType.Normal })
             .enabled(this.modelValue !== this.getCount())
             .onClick(() => this.updateModelValue(this.modelValue + 1, true))
-            .width('auto')
             .height(convertDimensionsWidthUnit(40))
+            .fontSize(this.baseStyle.fontSizeSm)
+            .fontColor(this.modelValue !== this.getCount() ? IBestPaginationColor.textColor :
+            IBestPaginationColor.activeTextColor)
             .borderRadius(0)
-            .margin({ left: 5 })
+            .margin({ left: 0 })
+            .backgroundColor(this.modelValue !== this.getCount() ? IBestPaginationColor.bgColor :
+            IBestPaginationColor.itemDisabledBackground)
+            .fontColor(this.modelValue !== this.getCount() ? IBestPaginationColor.textColor :
+            IBestPaginationColor.itemDisabledColor)
+            .stateEffect(true)
+            .border({ width: 1, color: IBestPaginationColor.borderColor })
+            .flexGrow(1)
+            .flexShrink(1)
+
         }
       }
       .justifyContent(FlexAlign.SpaceBetween)
       .width('100%')
     }.width(CONTAINER_SIZE.FULL)
-
   }
 }

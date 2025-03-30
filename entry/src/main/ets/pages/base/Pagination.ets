@@ -23,9 +23,6 @@ struct PaginationPage {
                     router.back()
                 }
             })
-            Text(String(this.currentPage1))
-                .fontSize(32)
-                .margin({ top: 20, bottom: 20 })
             ComponentShowContainer({ title: '基础用法' }) {
                 IBestPagination({
                     modelValue: $currentPage1,
@@ -36,7 +33,6 @@ struct PaginationPage {
                 })
             }
 
-            Text(String(this.currentPage2))
             ComponentShowContainer({ title: '简单模式' }) {
                 IBestPagination({
                     modelValue: $currentPage2,
@@ -46,7 +42,6 @@ struct PaginationPage {
                     mode: 'simple'
                 })
             }
-            Text(String(this.currentPage3))
             ComponentShowContainer({ title: '显示省略号' }) {
                 IBestPagination({
                     modelValue: $currentPage3,
@@ -57,7 +52,6 @@ struct PaginationPage {
                     nextText: '下一页'
                 })
             }
-            Text(String(this.currentPage4))
             ComponentShowContainer({ title: '自定义按钮' }) {
                 IBestPagination({
                     modelValue: $currentPage4,
@@ -68,6 +62,7 @@ struct PaginationPage {
         }
         .width(CONTAINER_SIZE.FULL)
         .height(CONTAINER_SIZE.FULL)
+        .padding({ left: 20, right: 20 })
         .backgroundColor(modeColor.bg2)
     }
 }
