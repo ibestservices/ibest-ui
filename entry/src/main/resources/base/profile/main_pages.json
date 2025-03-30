@@ -48,6 +48,7 @@
 		"pages/base/CountDown",
 		"pages/base/Popover",
 		"pages/base/TextEllipsis",
+		"pages/base/Pagination",
 		"pages/base/SideBar",
 		"pages/extend/CanvasDrawer",
 		"pages/Splash",
