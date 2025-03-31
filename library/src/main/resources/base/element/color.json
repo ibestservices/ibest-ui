@@ -388,22 +388,22 @@
 			"name": "ibest_navbar_border_color",
 			"value": "$color:ibest_border_color"
 		},
-    {
-      "name": "ibest_pagination_background",
-      "value": "$color:ibest_white"
-    },
+		{
+			"name": "ibest_pagination_background",
+			"value": "$color:ibest_white"
+		},
 		{
 			"name": "ibest_pagination_active_background",
 			"value": "$color:ibest_primary_color"
 		},
-    {
-      "name": "ibest_pagination_text_color",
-      "value": "$color:ibest_primary_color"
-    },
-    {
-      "name": "ibest_pagination_active_text_color",
-      "value": "$color:ibest_white"
-    },
+		{
+			"name": "ibest_pagination_text_color",
+			"value": "$color:ibest_primary_color"
+		},
+		{
+			"name": "ibest_pagination_active_text_color",
+			"value": "$color:ibest_white"
+		},
 		{
 			"name": "ibest_pagination_item_disabled_color",
 			"value": "$color:ibest_gray_7"
