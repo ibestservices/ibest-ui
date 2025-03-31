@@ -2,8 +2,7 @@ import { IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
-import { emitter } from '../../utils/EventEmitter'
-import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
+import { convertDimensionsWidthUnit } from '../../utils/utils'
 import { PageItem, PaginationMode } from './index.type'
 import { IBestPaginationColor } from './color'
 
@@ -65,6 +64,10 @@ export struct IBestPagination {
    */
   @Prop showNextButton: boolean = true
   @State pages: PageItem[] = []
+  /**
+   * 页码变化时的回调函数
+   */
+  onChange: (checked: number) => void = () => {}
 
   aboutToAppear() {
     this.updatePages();
@@ -123,7 +126,7 @@ export struct IBestPagination {
       this.modelValue = value
 
       if (emitChange) {
-        emitter.emit(getEventName('pagination', 'change'), value)
+        this.onChange(value)
       }
     }
   }

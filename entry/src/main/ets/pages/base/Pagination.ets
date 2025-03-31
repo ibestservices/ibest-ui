@@ -28,8 +28,10 @@ struct PaginationPage {
                     modelValue: $currentPage1,
                     totalItems: 24,
                     itemsPerPage: 5,
-                    prevText: '上一页',
-                    nextText: '下一页'
+                    onChange: (value: number) => {
+                      // IBestToast.show(`基础用法 - 当前页码:${value}`)
+                      console.log('基础用法 - 当前页码:', value)
+                    }
                 })
             }
 
@@ -37,8 +39,6 @@ struct PaginationPage {
                 IBestPagination({
                     modelValue: $currentPage2,
                     pageCount: 12,
-                    prevText: '上一页',
-                    nextText: '下一页',
                     mode: 'simple'
                 })
             }
@@ -47,16 +47,16 @@ struct PaginationPage {
                     modelValue: $currentPage3,
                     totalItems: 125,
                     showPageSize: 3,
-                    forceEllipses: true,
-                    prevText: '上一页',
-                    nextText: '下一页'
+                    forceEllipses: true
                 })
             }
             ComponentShowContainer({ title: '自定义按钮' }) {
                 IBestPagination({
                     modelValue: $currentPage4,
                     totalItems: 125,
-                    showPageSize: 5
+                    showPageSize: 5,
+                    prevText: 'prev',
+                    nextText: 'next'
                 })
             }
         }
