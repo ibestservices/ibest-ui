@@ -245,6 +245,10 @@ struct Index {
 					path: "pages/base/NavBar"
 				},
 				{
+					name: $r("app.string.component_pagination"),
+					path: "pages/base/Pagination"
+				},
+				{
 					name: $r("app.string.component_sideBar"),
 					path: "pages/base/SideBar"
 				},
