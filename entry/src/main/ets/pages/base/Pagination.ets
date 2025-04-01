@@ -1,13 +1,17 @@
-import router from '@ohos.router';
-import { IBestNavBar, IBestSideBar, IBestSideBarItem, IBestToast, IBestPagination } from '@ibestservices/ibest-ui';
-import { CONTAINER_SIZE, modeColor } from '../../assets/styles/BaseStyle';
+import { IBestPagination } from '@ibestservices/ibest-ui';
+import { modeColor } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function PaginationBuilder(_: string, title: string){
+	PaginationPage({title})
+}
 
 @Entry
 @Component
 struct PaginationPage {
-    @State title: string = (router.getParams() as ComponentRouterParams).title || ''
+    @State title: string = ''
 
     @State currentPage1: number = 1
     @State currentPage2: number = 1
@@ -15,21 +19,14 @@ struct PaginationPage {
     @State currentPage4: number = 1
 
     build() {
-        Column() {
-            IBestNavBar({
-                title: this.title,
-                isShowStatusBar: true,
-                onLeftClick: () => {
-                    router.back()
-                }
-            })
+        NavDestination() {
+			CustomNavBar({title: this.title})
             ComponentShowContainer({ title: '基础用法' }) {
                 IBestPagination({
                     modelValue: $currentPage1,
                     totalItems: 24,
                     itemsPerPage: 5,
                     onChange: (value: number) => {
-                      // IBestToast.show(`基础用法 - 当前页码:${value}`)
                       console.log('基础用法 - 当前页码:', value)
                     }
                 })
@@ -60,8 +57,7 @@ struct PaginationPage {
                 })
             }
         }
-        .width(CONTAINER_SIZE.FULL)
-        .height(CONTAINER_SIZE.FULL)
+        .hideTitleBar(true)
         .padding({ left: 20, right: 20 })
         .backgroundColor(modeColor.bg2)
     }
