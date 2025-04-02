@@ -1,13 +1,17 @@
-import router from '@ohos.router';
-import { IBestCell, IBestCellGroup, IBestNavBar, IBestNotify } from '@ibestservices/ibest-ui';
+import { IBestCell, IBestCellGroup, IBestNotify } from '@ibestservices/ibest-ui';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
-import { ComponentRouterParams } from '../../assets/global.type';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function NotifyBuilder(_: string, title: string){
+	NotifyPage({title})
+}
 
 @Entry
 @Component
 struct NotifyPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@Builder customContent(){
 		Row({space: 10}){
 			Image("https://img0.baidu.com/it/u=2616823501,3205478532&fm=253&fmt=auto&app=138&f=JPEG?w=509&h=500")
@@ -20,14 +24,8 @@ struct NotifyPage {
 	}
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
@@ -149,8 +147,7 @@ struct NotifyPage {
 			}
 			.layoutWeight(1)
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

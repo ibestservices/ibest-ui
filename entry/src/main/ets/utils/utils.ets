@@ -5,6 +5,9 @@ import { ComAvoidAreaSize } from '../assets/global.type'
 import { image } from '@kit.ImageKit'
 import fs from '@ohos.file.fs'
 import { photoAccessHelper } from '@kit.MediaLibraryKit'
+import { systemShare } from '@kit.ShareKit'
+import { fileUri } from '@kit.CoreFileKit';
+import { uniformTypeDescriptor as utd } from '@kit.ArkData'
 /**
  * 获取随机色
  */
@@ -70,4 +73,41 @@ export function getResourceStr(res: ResourceStr): string {
         return res
     }
     return GlobalStore.context.resourceManager.getStringSync(res)
+}
+
+/**
+ * 分享图片
+ */
+export function shareImage(context: common.UIAbilityContext, pixelMap: PixelMap){
+	const imagePackerApi: image.ImagePacker = image.createImagePacker()
+	imagePackerApi.packing(pixelMap, {
+		format: "image/jpeg",
+		quality: 70
+	}).then((data: ArrayBuffer) => {
+		let filePath = `${context.cacheDir}/1.jpg`
+		try {
+			fs.unlinkSync(filePath)
+		} catch(err) {}
+		let file = fs.openSync(filePath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE)
+		fs.writeSync(file.fd, data)
+		fs.closeSync(file.fd)
+		let sharedData: systemShare.SharedData = new systemShare.SharedData({
+			utd: utd.UniformDataType.IMAGE,
+			uri: fileUri.getUriFromPath(filePath)
+		})
+		let controller: systemShare.ShareController = new systemShare.ShareController(sharedData)
+		// 注册分享面板关闭监听
+		// controller.on('dismiss', () => {
+		// 	console.info('Share panel closed')
+		// })
+		// 进行分享面板显示
+		controller.show(context, {
+			selectionMode: systemShare.SelectionMode.SINGLE,
+			previewMode: systemShare.SharePreviewMode.DETAIL
+		}).then(() => {
+			try {
+				fs.unlinkSync(filePath)
+			} catch(err) {}
+		})
+	})
 }

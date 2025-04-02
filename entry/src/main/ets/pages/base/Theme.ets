@@ -1,9 +1,7 @@
-import router from '@ohos.router';
 import {
 	IBestButton,
 	IBestCheckbox,
 	IBestCircleProgress,
-	IBestNavBar,
 	IBestProgress,
 	IBestRadio,
 	IBestRadioGroup,
@@ -12,14 +10,20 @@ import {
 	IBestTag,
 	setIBestUIBaseStyle
 } from '@ibestservices/ibest-ui';
-import { CONTAINER_SIZE, FONT_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import { FONT_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
 import { getRandomColor } from '../../utils/utils';
+
+@Builder
+export function ThemeBuilder(_: string, title: string){
+	ThemePage({title})
+}
+
 @Entry
 @Component
 struct ThemePage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State curTabName: string = "1"
 	@State colorText: string = '#07c160';
 	@State group: string = "themeGroup"
@@ -30,14 +34,8 @@ struct ThemePage {
 		setIBestUIBaseStyle({ primary: '#3D8AF2' })
 	}
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: $r("app.string.custom_switch", $r("app.string.color")) }) {
@@ -147,15 +145,12 @@ struct ThemePage {
 						})
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding({
-				left: SPACE.SM,
-				right: SPACE.SM
-			})
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

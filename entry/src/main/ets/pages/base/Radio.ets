@@ -1,13 +1,17 @@
-import router from '@ohos.router'
-import { IBestCell, IBestDialogUtil, IBestNavBar, IBestRadio, IBestRadioGroup } from '@ibestservices/ibest-ui'
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import { IBestCell, IBestDialogUtil, IBestRadio, IBestRadioGroup } from '@ibestservices/ibest-ui'
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
-import { ComponentRouterParams } from '../../assets/global.type'
+import CustomNavBar from '../../components/CustomNavBar'
+
+@Builder
+export function RadioBuilder(_: string, title: string){
+	RadioPage({title})
+}
 
 @Entry
 @Component
-struct CheckboxPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+struct RadioPage {
+	@State title: string = ''
 
 	@State group: string = "group"
 	@State active: string = "1"
@@ -29,14 +33,8 @@ struct CheckboxPage {
 		IBestRadio({ name, group })
 	}
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -251,16 +249,12 @@ struct CheckboxPage {
 						}
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding({
-				left: SPACE.SM,
-				right: SPACE.SM,
-				bottom: SPACE.MD
-			})
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

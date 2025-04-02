@@ -1,13 +1,17 @@
-import { IBestNavBar, IBestSlider, IBestToast } from '@ibestservices/ibest-ui'
-import { router } from '@kit.ArkUI'
-import { ComponentRouterParams } from '../../assets/global.type'
+import { IBestSlider, IBestToast } from '@ibestservices/ibest-ui'
 import { COLOR_BLUE, CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
+import CustomNavBar from '../../components/CustomNavBar'
+
+@Builder
+export function SliderBuilder(_: string, title: string){
+	SliderPage({title})
+}
 
 @Entry
 @Component
 struct SliderPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State value: number = 30
 	@State value1: [number, number] = [20, 60]
 	@State value2: number = 30
@@ -29,14 +33,8 @@ struct SliderPage {
 	}
 
 	build() {
-		Column(){
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -181,17 +179,12 @@ struct SliderPage {
 						.justifyContent(FlexAlign.Center)
 					}
 				}
+				ListItem().height(50)
 			}
-			.width(CONTAINER_SIZE.FULL)
 			.layoutWeight(1)
-			.padding({
-				left: SPACE.XS,
-				right: SPACE.XS,
-				bottom: SPACE.XS
-			})
+			.padding({ left: SPACE.XS, right: SPACE.XS })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

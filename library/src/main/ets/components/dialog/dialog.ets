@@ -17,13 +17,6 @@ export struct IBestDialogView {
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@StorageProp("IBestColorMode") @Watch("colorModeChange") colorMode: ColorMode = ColorMode.LIGHT
-	@State whiteColor: ResourceColor = IBestDialogColor.white
-	@State contentBg: ResourceColor = IBestDialogColor.contentBg
-	@State titleDefaultColor: ResourceColor = IBestDialogColor.titleColor
-	@State messageColor: ResourceColor = IBestDialogColor.messageColor
-	@State cancelTextColor: ResourceColor = IBestDialogColor.cancelTextColor
-	@State bdColor: ResourceColor = IBestDialogColor.borderColor
-	@State activeBg: ResourceColor = IBestDialogColor.activeBg
 	/**
 	 * 弹窗宽度
 	 */
@@ -32,6 +25,11 @@ export struct IBestDialogView {
 	 * 弹窗圆角
 	 */
 	@Prop dialogBorderRadius: IBestStringNumber = this.baseStyle.spaceMd as string
+	/**
+	 * 背景图片
+	 * @since 2.0.8
+	 */
+	@Prop bgColor: ResourceColor = ''
 	/**
 	 * 背景图片
 	 * @since 2.0.7
@@ -189,6 +187,13 @@ export struct IBestDialogView {
 	 * 点击遮罩
      */
 	onClickOverlay: () => void = () => {}
+
+	@State whiteColor: ResourceColor = IBestDialogColor.white
+	@State contentBg: ResourceColor = this.bgColor || IBestDialogColor.contentBg
+	@State titleDefaultColor: ResourceColor = IBestDialogColor.titleColor
+	@State messageColor: ResourceColor = IBestDialogColor.messageColor
+	@State cancelTextColor: ResourceColor = IBestDialogColor.cancelTextColor
+	@State bdColor: ResourceColor = IBestDialogColor.borderColor
 	@Builder placeRow(){
 		Blank()
 			.onClick(() => {
@@ -198,9 +203,11 @@ export struct IBestDialogView {
 	// 颜色模式切换
 	colorModeChange() {
 		this.whiteColor = IBestDialogColor.white
-		this.contentBg = IBestDialogColor.contentBg
+		this.contentBg = this.bgColor || IBestDialogColor.contentBg
+		this.titleDefaultColor = IBestDialogColor.titleColor
+		this.messageColor = IBestDialogColor.messageColor
+		this.cancelTextColor = IBestDialogColor.cancelTextColor
 		this.bdColor = IBestDialogColor.borderColor
-		this.activeBg = IBestDialogColor.activeBg
 	}
 	// 标题对齐
 	getTitleAlign() {

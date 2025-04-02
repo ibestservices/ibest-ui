@@ -1,13 +1,16 @@
-import router from '@ohos.router';
-import { IBestDivider, IBestNavBar } from '@ibestservices/ibest-ui';
+import { IBestDivider } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
+@Builder
+export function DividerBuilder(_: string, title: string){
+	DividerPage({title})
+}
 
 @Entry
 @Component
 struct DividerPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 
 	@Builder textBuilder(){
 		Row({space: 10}){
@@ -17,14 +20,8 @@ struct DividerPage {
 	}
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
@@ -96,8 +93,7 @@ struct DividerPage {
 			}
 			.layoutWeight(1)
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg2)
 	}
 }

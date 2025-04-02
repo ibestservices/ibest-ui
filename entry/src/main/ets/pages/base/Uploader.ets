@@ -1,13 +1,17 @@
-import router from '@ohos.router';
-import { IBestNavBar, IBestToast, IBestUploader, IBestUploaderFile } from '@ibestservices/ibest-ui';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import { IBestToast, IBestUploader, IBestUploaderFile } from '@ibestservices/ibest-ui';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function UploaderBuilder(_: string, title: string){
+	UploaderPage({title})
+}
 
 @Entry
 @Component
 struct UploaderPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 
 	@State imgList: IBestUploaderFile[] = []
 	@State imgList1: IBestUploaderFile[] = []
@@ -71,14 +75,8 @@ struct UploaderPage {
 	}
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -172,15 +170,12 @@ struct UploaderPage {
 						})
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding({
-				left: SPACE.SM,
-				right: SPACE.SM
-			})
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg2)
 	}
 }

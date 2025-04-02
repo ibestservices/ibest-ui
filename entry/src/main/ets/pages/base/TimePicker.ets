@@ -1,13 +1,15 @@
-import { IBestNavBar, IBestPickerOption, IBestTimePicker, IBestToast } from '@ibestservices/ibest-ui'
+import { IBestPickerOption, IBestTimePicker, IBestToast } from '@ibestservices/ibest-ui'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
-import { router } from '@kit.ArkUI'
-import { ComponentRouterParams } from '../../assets/global.type'
-
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import CustomNavBar from '../../components/CustomNavBar'
+@Builder
+export function TimePickerBuilder(_: string, title: string) {
+	TimePickerPage({title})
+}
 @Entry
 @Component
-struct TimerPickerPage {
-    @State title: string = (router.getParams() as ComponentRouterParams).title || ''
+struct TimePickerPage {
+    @State title: string = ''
     @State selectValue: string[] = ["10", "18", "18"]
     @State selectValue1: string[] = ["10", "18"]
     @State selectValue2: string[] = []
@@ -20,14 +22,8 @@ struct TimerPickerPage {
         return options
     }
     build() {
-        Column() {
-            IBestNavBar({
-                title: this.title,
-                isShowStatusBar: true,
-                onLeftClick: () => {
-                    router.back()
-                }
-            })
+		NavDestination() {
+			CustomNavBar({title: this.title})
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SM, card: true }) {
@@ -104,12 +100,11 @@ struct TimerPickerPage {
                         })
                     }
                 }
+				ListItem().height(50)
             }
             .layoutWeight(1)
-            .padding({ bottom: SPACE.LG })
         }
-        .width(CONTAINER_SIZE.FULL)
-        .height(CONTAINER_SIZE.FULL)
+        .hideTitleBar(true)
         .backgroundColor(modeColor.bg)
     }
 }

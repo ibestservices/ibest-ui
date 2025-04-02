@@ -1,17 +1,15 @@
-import router from '@ohos.router';
-import { CONTAINER_SIZE } from '../../assets/styles/BaseStyle';
-import {
-    IBestNavBar,
-    IBestPullRefresh,
-    IBestRefreshContentParams,
-    IBestTabItemType,
-    IBestTabs
-} from '@ibestservices/ibest-ui';
-import { ComponentRouterParams } from '../../assets/global.type';
+import { IBestPullRefresh, IBestRefreshContentParams, IBestTabItemType, IBestTabs } from '@ibestservices/ibest-ui';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function PullRefreshBuilder(_: string, title: string){
+	PullRefreshPage({title})
+}
+
 @Entry
 @Component
 struct PullRefreshPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State tabsList: Array<IBestTabItemType> = [
 		{
 			name: "1",
@@ -107,14 +105,8 @@ struct PullRefreshPage {
 	}
 
 	build() {
-		Column(){
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			IBestTabs({
 				tabsList: this.tabsList,
 				currentName: $currentTab
@@ -151,7 +143,6 @@ struct PullRefreshPage {
 			}
 			.layoutWeight(1)
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 	}
 }

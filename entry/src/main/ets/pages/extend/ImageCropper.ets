@@ -1,16 +1,18 @@
-import router from '@ohos.router';
-import { IBestButton, IBestDialogUtil, IBestNavBar, IBestImageCropper, IBestImageCropperController,
-	IBestUploader,
-	IBestUploaderFile,
-	IBestToast} from '@ibestservices/ibest-ui';
+import { IBestButton, IBestDialogUtil, IBestImageCropper, IBestImageCropperController, IBestUploader, IBestUploaderFile, IBestToast } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
 import { savePixelMap } from '../../utils/utils';
+
+@Builder
+export function ImageCropperBuilder(_: string, title: string){
+	ImageCropperPage({title})
+}
+
 @Entry
 @Component
-struct ImageCropPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+struct ImageCropperPage {
+	@State title: string = ''
 	@State imgList: IBestUploaderFile[] = []
 	@State initImg: string = ""
 	private controller: IBestImageCropperController = new IBestImageCropperController()
@@ -50,14 +52,8 @@ struct ImageCropPage {
 		}
 	}
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -137,12 +133,12 @@ struct ImageCropPage {
 						}
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding({ left: SPACE.SM, right: SPACE.SM, bottom: SPACE.SM })
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

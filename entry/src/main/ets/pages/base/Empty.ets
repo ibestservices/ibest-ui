@@ -1,12 +1,16 @@
-import router from '@ohos.router';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { IBestButton, IBestEmpty, IBestNavBar } from '@ibestservices/ibest-ui';
-import { ComponentRouterParams } from '../../assets/global.type';
+import { IBestButton, IBestEmpty } from '@ibestservices/ibest-ui';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function EmptyBuilder(_: string, title: string){
+	EmptyPage({title})
+}
 @Entry
 @Component
 struct EmptyPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@Builder Arrow() {
 		Image($r('app.media.title_back')).height(160).rotate({ angle: 180 })
 	}
@@ -14,14 +18,8 @@ struct EmptyPage {
 		IBestButton({ text: '按钮', type: 'primary' }).margin({ top: SPACE.SM })
 	}
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -75,8 +73,7 @@ struct EmptyPage {
 			.layoutWeight(1)
 			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

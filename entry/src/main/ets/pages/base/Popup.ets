@@ -1,16 +1,12 @@
-import {
-    IBestButton,
-    IBestCell,
-    IBestCellGroup,
-    IBestIcon,
-    IBestNavBar,
-    IBestPopup,
-    IBestToast
-} from '@ibestservices/ibest-ui'
-import { router } from '@kit.ArkUI'
-import { ComponentRouterParams } from '../../assets/global.type'
+import { IBestButton, IBestCell, IBestCellGroup, IBestIcon, IBestPopup, IBestToast } from '@ibestservices/ibest-ui'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import CustomNavBar from '../../components/CustomNavBar'
+
+@Builder
+export function PopupBuilder(_: string, title: string){
+	PopupPage({title})
+}
 
 @Extend(Column) function positionColStyle(bd: boolean = false){
 	.layoutWeight(1)
@@ -30,7 +26,7 @@ import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
 @Entry
 @Component
 struct PopupPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State baseVisible: boolean = false
 	@State upVisible: boolean = false
 	@State downVisible: boolean = false
@@ -44,18 +40,23 @@ struct PopupPage {
 	@State cusHeightVisible: boolean = false
 	@State eventVisible: boolean = false
 	@State safeAreaVisible: boolean = false
+	@State popupWidth: number = 300
 	@State popupHeight: number = 150
 
 	@Builder centerBuilder() {
-		Column() {
-			Text($r("app.string.content")).fontColor(modeColor.textColor)
-		}
-		.width("100%")
-		.aspectRatio(1)
-		.justifyContent(FlexAlign.Center)
+		Column()
+			.width("100%")
+			.aspectRatio(1)
 	}
 	@Builder cusHeightBuilder() {
-		Column() {
+		Column({space: SPACE.MD}) {
+			IBestButton({
+				text: $r("app.string.custom_switch", $r("app.string.width")),
+				type: "primary",
+				onBtnClick: () => {
+					this.popupWidth = this.popupWidth == 300 ? 200 : 300
+				}
+			})
 			IBestButton({
 				text: $r("app.string.custom_switch", $r("app.string.height")),
 				type: "primary",
@@ -67,6 +68,7 @@ struct PopupPage {
 		.width("100%")
 		.padding(20)
 		.justifyContent(FlexAlign.Center)
+		.alignItems(HorizontalAlign.Center)
 	}
 	@Builder safeBuilder() {
 		Column(){
@@ -80,14 +82,8 @@ struct PopupPage {
 	}
 
 	build() {
-		Column(){
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination(){
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: $r("app.string.basic_usage"), titlePaddingLeft: SPACE.MD }) {
@@ -217,10 +213,10 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.custom_dynamics", $r("app.string.height")), titlePaddingLeft: SPACE.MD }) {
+					ComponentShowContainer({ title: $r("app.string.custom_dynamics", $r("app.string.size")), titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							IBestCell({
-								title: $r("app.string.custom_dynamics", $r("app.string.height")),
+								title: $r("app.string.custom_dynamics", $r("app.string.size")),
 								isLink: true,
 								hasBorder: false,
 								onCellClick: () => {
@@ -258,6 +254,7 @@ struct PopupPage {
 						}
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
 			// 基础展示
@@ -321,7 +318,7 @@ struct PopupPage {
 			// 动态高度
 			IBestPopup({
 				visible: $cusHeightVisible,
-				popupWidth: 300,
+				popupWidth: this.popupWidth,
 				popupHeight: this.popupHeight,
 				contentBuilder: (): void => this.cusHeightBuilder()
 			})
@@ -345,8 +342,7 @@ struct PopupPage {
 				safeAreaInsetBottom: true
 			})
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

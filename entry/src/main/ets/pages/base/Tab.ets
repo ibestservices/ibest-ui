@@ -1,21 +1,16 @@
-import {
-    IBestButton,
-    IBestNavBar,
-    IBestTabController,
-    IBestTabItem,
-    IBestTabItemType,
-    IBestTabs,
-    IBestToast
-} from '@ibestservices/ibest-ui'
-import { router } from '@kit.ArkUI'
-import { ComponentRouterParams } from '../../assets/global.type'
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import { IBestButton, IBestTabItem, IBestTabItemType, IBestTabs, IBestToast } from '@ibestservices/ibest-ui'
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
+import CustomNavBar from '../../components/CustomNavBar'
+@Builder
+export function TabBuilder(_: string, title: string){
+	TabPage({title})
+}
 
 @Entry
 @Component
 struct TabPage {
-    @State title: string = (router.getParams() as ComponentRouterParams).title || ''
+    @State title: string = ''
     @State tabsList: IBestTabItemType[] = [
         {
             label: "标签一",
@@ -140,8 +135,6 @@ struct TabPage {
     @State curTabName5: string = "1"
     @State curTabName6: string = "1"
 
-    private tabController: IBestTabController = new IBestTabController()
-
     // @Builder tabContent(){
     //     ForEach([1,2,3], (item: number) => {
     //         Row(){
@@ -153,14 +146,8 @@ struct TabPage {
     // }
 
     build() {
-        Column(){
-            IBestNavBar({
-                title: this.title,
-                isShowStatusBar: true,
-                onLeftClick: () => {
-                    router.back()
-                }
-            })
+		NavDestination(){
+			CustomNavBar({title: this.title})
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
@@ -273,13 +260,11 @@ struct TabPage {
                         }
                     }
                 }
+				ListItem().height(50)
             }
-            .width(CONTAINER_SIZE.FULL)
             .layoutWeight(1)
-            .padding({ bottom: SPACE.SM })
         }
-        .width(CONTAINER_SIZE.FULL)
-        .height(CONTAINER_SIZE.FULL)
+        .hideTitleBar(true)
         .backgroundColor(modeColor.bg)
     }
 }

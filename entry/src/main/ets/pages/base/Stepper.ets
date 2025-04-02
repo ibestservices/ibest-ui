@@ -1,12 +1,17 @@
-import router from '@ohos.router';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
-import { IBestNavBar, IBestStepper } from '@ibestservices/ibest-ui';
+import { IBestStepper } from '@ibestservices/ibest-ui';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function StepperBuilder(_: string, title: string){
+	StepperPage({title})
+}
+
 @Entry
 @Component
 struct StepperPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 
 	@State value: number = 1
 	@State value1: number = 1
@@ -19,14 +24,8 @@ struct StepperPage {
 
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -96,13 +95,9 @@ struct StepperPage {
 				}
 			}
 			.layoutWeight(1)
-			.padding({
-				left: SPACE.SM,
-				right: SPACE.SM
-			})
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg2)
 	}
 }

@@ -25,6 +25,11 @@ export struct IBestDialog {
 	@Prop dialogBorderRadius: IBestStringNumber = this.baseStyle.spaceMd as string
 	/**
 	 * 背景图片
+	 * @since 2.0.8
+	 */
+	@Prop bgColor: ResourceColor = ''
+	/**
+	 * 背景图片
 	 * @since 2.0.7
 	 */
 	@Prop bgImage: ResourceStr = ''
@@ -245,6 +250,7 @@ export struct IBestDialog {
 		IBestDialogView({
 			dialogWidth: this.dialogWidth,
 			dialogBorderRadius: this.dialogBorderRadius,
+			bgColor: this.bgColor,
 			bgImage: this.bgImage,
 			title: this.title,
 			titleColor: this.titleColor,
@@ -382,7 +388,7 @@ export struct IBestDialog {
 			maskColor: this.overlayColor,
 			showInSubWindow: this.showInSubWindow,
 			keyboardAvoidDistance: this.keyboardAvoidDistance,
-			immersiveMode: ImmersiveMode.EXTEND,
+			// immersiveMode: ImmersiveMode.EXTEND,
 			levelMode: this.levelMode,
 			levelUniqueId: this.levelUniqueId,
 			onDidAppear: () => {

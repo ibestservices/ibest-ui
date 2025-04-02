@@ -10,7 +10,6 @@ import {
 	IBestForm,
 	IBestFormController,
 	IBestFormRule,
-	IBestNavBar,
 	IBestPicker,
 	IBestPickerOption,
 	IBestPopup,
@@ -23,10 +22,14 @@ import {
 	IBestUploaderFile
 } from '@ibestservices/ibest-ui'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
-import { CONTAINER_SIZE, FONT_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
-import { router } from '@kit.ArkUI'
-import { ComponentRouterParams } from '../../assets/global.type'
+import { FONT_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
 import { generateId } from '../../utils/utils'
+import CustomNavBar from '../../components/CustomNavBar'
+
+@Builder
+export function FormBuilder(_: string, title: string){
+	FormPage({title})
+}
 
 @Observed
 class Subject {
@@ -42,7 +45,7 @@ class Subject {
 @Entry
 @Component
 struct FormPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State name: string = ""
 	@State phone: string = ""
 	private formId1: string = 'form1'
@@ -302,14 +305,8 @@ struct FormPage {
 		this.list.splice(index, 1)
 	}
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
@@ -587,6 +584,7 @@ struct FormPage {
 						}
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
 			.padding({ left: SPACE.MD, right: SPACE.MD })
@@ -607,8 +605,7 @@ struct FormPage {
 				}
 			})
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

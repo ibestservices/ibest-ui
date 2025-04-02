@@ -1,21 +1,17 @@
-import {
-    IBestButton,
-    IBestDatePicker,
-    IBestNavBar,
-    IBestPicker,
-    IBestPickerGroup,
-    IBestPickerOption,
-    IBestToast
-} from '@ibestservices/ibest-ui'
+import { IBestButton, IBestDatePicker, IBestPicker, IBestPickerGroup, IBestPickerOption, IBestToast } from '@ibestservices/ibest-ui'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
-import { router } from '@kit.ArkUI'
-import { ComponentRouterParams } from '../../assets/global.type'
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import CustomNavBar from '../../components/CustomNavBar'
+
+@Builder
+export function PickerGroupBuilder(_: string, title: string){
+	PickerGroupPage({title})
+}
 
 @Entry
 @Component
 struct PickerGroupPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State groupId: string = "1"
 	@State options1: IBestPickerOption[] = [
 		{ text: '南京', value: '南京' },
@@ -47,14 +43,8 @@ struct PickerGroupPage {
 	}
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SM, card: true }) {
@@ -163,12 +153,11 @@ struct PickerGroupPage {
 						.padding({top: SPACE.SM})
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding({ bottom: SPACE.LG })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

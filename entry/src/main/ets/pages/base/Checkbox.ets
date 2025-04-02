@@ -1,20 +1,24 @@
-import router from '@ohos.router';
 import {
 	IBestButton,
 	IBestCell,
 	IBestCheckbox,
 	IBestCheckboxGroup,
 	IBestCheckboxGroupController,
-	IBestDialogUtil,
-	IBestNavBar
+	IBestDialogUtil
 } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function CheckboxBuilder(_: string, title: string){
+	CheckboxPage({title})
+}
+
 @Entry
 @Component
 struct CheckboxPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State isChecked: boolean = true
 	@State group: string = "group"
 	@State activeList: string[] = ["1", "2"]
@@ -48,14 +52,8 @@ struct CheckboxPage {
 		}
 	}
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -378,16 +376,12 @@ struct CheckboxPage {
 						}
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding({
-				left: SPACE.SM,
-				right: SPACE.SM,
-				bottom: SPACE.MD
-			})
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

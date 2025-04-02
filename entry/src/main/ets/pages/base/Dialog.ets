@@ -1,16 +1,8 @@
-import router from '@ohos.router';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import {
-    IBestButton,
-    IBestCell,
-    IBestCellGroup,
-    IBestDialog,
-    IBestDialogUtil,
-    IBestNavBar
-} from '@ibestservices/ibest-ui';
-import { ComponentRouterParams } from '../../assets/global.type';
-
+import { IBestButton, IBestCell, IBestCellGroup, IBestDialog, IBestDialogUtil } from '@ibestservices/ibest-ui';
+import CustomNavBar from '../../components/CustomNavBar';
+import RouterUtil from '../../utils/routerUtil';
 export interface TextData {
 	title: string,
 	code: string,
@@ -24,10 +16,15 @@ const textData: TextData = {
 	program: '如果解决方法是丑陋的，那就肯定还有更好的解决方法，只是还没有发现而已。'
 }
 
+@Builder
+export function DialogBuilder(_: string, title: string){
+	DialogPage({title})
+}
+
 @Entry
 @Component
 struct DialogPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State inputValue: string = ''
 	@State formInputError: boolean = false
 	@State dialogVisible: boolean = false
@@ -66,43 +63,30 @@ struct DialogPage {
 				type: 'primary',
 				text: "跳转页面",
 				onBtnClick: () => {
-					router.pushUrl({
-						url: "pages/base/Button",
-						params: {
-							title: "Button 按钮"
-						}
-					})
+					RouterUtil.push("Button", "Button 按钮")
 				}
 			})
 		}
 		.padding(20)
 	}
 	@Builder imageBgBuilder() {
-		Column() {
-			Text(textData.life)
-				.fontColor(modeColor.white)
-		}
-		.height(200)
-		.padding(20)
-		.justifyContent(FlexAlign.Center)
+		Column()
+			.height(200)
+			.padding(20)
 	}
 
 	onDidBuild(): void {
-		let uniId = this.uiContext.getAttachedFrameNodeById("main")?.getUniqueId()
-		if(uniId){
-			this.uniId = uniId
-		}
+		setTimeout(() => {
+			let uniId = this.uiContext.getAttachedFrameNodeById("main")?.getUniqueId()
+			if(uniId){
+				this.uniId = uniId
+			}
+		}, 50)
 	}
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			// 使用组件
 			IBestDialog({
 				visible: $dialogVisible,
@@ -288,11 +272,11 @@ struct DialogPage {
 						}
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 		.id("main")
 	}

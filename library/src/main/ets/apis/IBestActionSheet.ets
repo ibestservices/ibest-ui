@@ -12,7 +12,7 @@ import { IBestStringNumber } from '../model/Global.type';
 // 选项类型
 class IBestActionType {
 	name: ResourceStr = ""
-	value?: string
+	value?: IBestStringNumber
 	subName?: ResourceStr
 	color?: ResourceColor
 	icon?: ResourceStr
@@ -115,7 +115,7 @@ class IBestActionSheetOption {
 	/**
 	 * 选择后回调
 	 */
-	onSelect?: (index1: number, index2?: IBestStringNumber, value?: string) => void
+	onSelect?: (index1: number, index2?: IBestStringNumber, value?: IBestStringNumber) => void
 	/**
 	 * 点击取消回调
 	 */
@@ -157,19 +157,19 @@ class IBestActionSheetParams extends IBestActionSheetOption {
 		this.detents = option.detents
 		this.preferType = option.preferType || SheetType.BOTTOM
 		this.mode = option.mode
-		this.dragBar = option.dragBar != undefined ? option.dragBar : false
+		this.dragBar = option.dragBar ?? false
 		this.title = option.title
-		this.showClose = option.showClose || option.title != undefined || false
+		this.showClose = option.showClose ?? false
 		this.actions = option.actions || []
 		this.customTitle = option.customTitle || ""
 		this.titleBgColor = option.titleBgColor || IBestActionSheetColor.buttonBg
 		this.description = option.description || ""
-		this.closeable = option.closeable != undefined ? option.closeable : true
+		this.closeable = option.closeable ?? true
 		this.closeIcon = option.closeIcon || "cross"
 		this.cancelText = option.cancelText || ""
-		this.safeAreaInsetBottom = option.safeAreaInsetBottom != undefined ? option.safeAreaInsetBottom : true
-		this.closeOnBackPress = option.closeOnBackPress != undefined ? option.closeOnBackPress : true
-		this.closeOnClickOverlay = option.closeOnClickOverlay != undefined ? option.closeOnClickOverlay : true
+		this.safeAreaInsetBottom = option.safeAreaInsetBottom ?? true
+		this.closeOnBackPress = option.closeOnBackPress ?? true
+		this.closeOnClickOverlay = option.closeOnClickOverlay ?? true
 		this.customContent = option.customContent || undefined
 		this.onOpen = option.onOpen || undefined
 		this.onSelect = option.onSelect || undefined
@@ -178,7 +178,7 @@ class IBestActionSheetParams extends IBestActionSheetOption {
 		this.cancelTextColor = option.cancelTextColor || GRAY_COLOR.GRAY_7
 		this.beforeClose = option.beforeClose || undefined
 		this.itemHeight = option.itemHeight || convertDimensionsWidthUnit(50)
-		this.radius = option.radius || 16
+		this.radius = option.radius ?? 16
 	}
 }
 

@@ -1,17 +1,17 @@
-import router from '@ohos.router';
-import { IBestButton, IBestNavBar, IBestSignature, IBestSignatureController } from '@ibestservices/ibest-ui';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import { IBestButton, IBestSignature, IBestSignatureController } from '@ibestservices/ibest-ui';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
 
-class params {
-	url: PixelMap | null = null
+@Builder
+export function SignatureBuilder(_: string, title: string){
+	SignaturePage({title})
 }
 
 @Entry
 @Component
 struct SignaturePage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State imgUrl: PixelMap | null = null
 	@State imgUrl1: PixelMap | null = null
 	@State imgUrl2: PixelMap | null = null
@@ -23,14 +23,8 @@ struct SignaturePage {
 			.margin({ top: 20 })
 	}
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -116,13 +110,9 @@ struct SignaturePage {
 				}
 			}
 			.layoutWeight(1)
-			.padding({
-				left: SPACE.SM,
-				right: SPACE.SM
-			})
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

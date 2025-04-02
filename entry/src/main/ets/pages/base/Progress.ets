@@ -1,12 +1,17 @@
-import router from '@ohos.router';
-import { IBestButton, IBestNavBar, IBestProgress } from '@ibestservices/ibest-ui';
+import { IBestButton, IBestProgress } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function ProgressBuilder(_: string, title: string){
+	ProgressPage({title})
+}
+
 @Entry
 @Component
 struct ProgressPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State value: number = 50
 	@State value1: number = 120
 	@State value2: number = 50
@@ -17,14 +22,8 @@ struct ProgressPage {
 	}
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }){
@@ -122,8 +121,7 @@ struct ProgressPage {
 			.layoutWeight(1)
 			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

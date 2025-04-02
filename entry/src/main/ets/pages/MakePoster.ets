@@ -8,16 +8,20 @@ import {
 	IBestForm,
 	IBestFormController,
 	IBestFormRule,
-	IBestNavBar,
 	IBestRadio,
 	IBestRadioGroup,
 	IBestToast,
 	IBestUploader,
 	IBestUploaderFile
 } from '@ibestservices/ibest-ui'
-import { router } from '@kit.ArkUI'
-import { CONTAINER_SIZE, FONT_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle'
-import { generateId, savePixelMap } from '../utils/utils'
+import { FONT_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle'
+import CustomNavBar from '../components/CustomNavBar'
+import { generateId, savePixelMap, shareImage } from '../utils/utils'
+import { common } from '@kit.AbilityKit'
+@Builder
+export function MakePosterBuilder(){
+	MakePosterPage()
+}
 @Observed
 class canvasContent extends IBestCanvasContent {
 	id: string = ""
@@ -48,7 +52,7 @@ class canvasContent extends IBestCanvasContent {
 }
 @Entry
 @Component
-struct MakePoster {
+struct MakePosterPage {
 	@State canvasShow: boolean = false
 	@State pixelMap: PixelMap | null = null
 	@State imgVisible: boolean = false
@@ -94,7 +98,7 @@ struct MakePoster {
 		    { required: true, message: '请输入高度'}
 		]
 	}
-	private context = getContext(this)
+	private context = getContext(this) as common.UIAbilityContext
 
 	@Builder bgTypeBuilder(){
 		IBestRadioGroup({group: "radioGroup", active: $canvasBgType, placeDirection: Axis.Horizontal}){
@@ -126,15 +130,27 @@ struct MakePoster {
 			Image(this.pixelMap)
 				.width(this.canvasWidth)
 				.height(this.canvasHeight)
-			SaveButton({ text: SaveDescription.SAVE_IMAGE })
-				.onClick((event: ClickEvent, result: SaveButtonOnClickResult) => {
-					if (result == SaveButtonOnClickResult.SUCCESS) {
-						this.saveImg(this.pixelMap)
+			Row({space: SPACE.MD}){
+				SaveButton({ text: SaveDescription.SAVE_IMAGE })
+					.onClick((event: ClickEvent, result: SaveButtonOnClickResult) => {
+						if (result == SaveButtonOnClickResult.SUCCESS) {
+							this.saveImg(this.pixelMap)
+						}
+					})
+				IBestButton({
+					text: "分享",
+					btnWidth: 100,
+					btnHeight: 40,
+					round: true,
+					onBtnClick: () => {
+						shareImage(this.context, this.pixelMap!)
 					}
 				})
+			}
 		}
 		.padding(SPACE.MD)
 	}
+
 	async saveImg(pixelMap: PixelMap | null){
 		if(pixelMap){
 			await savePixelMap(this.context, pixelMap)
@@ -149,14 +165,8 @@ struct MakePoster {
 	}
 
 	build() {
-		Column(){
-			IBestNavBar({
-				title: '制作海报',
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination(){
+			CustomNavBar({title: "制作海报"})
 			Scroll(){
 				Column({space: SPACE.MD}){
 					IBestForm({
@@ -276,11 +286,10 @@ struct MakePoster {
 			}
 			IBestDialog({
 				visible: $imgVisible,
-				defaultBuilder: () => this.imgBuilder()
+				defaultBuilder: (): void => this.imgBuilder()
 			})
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

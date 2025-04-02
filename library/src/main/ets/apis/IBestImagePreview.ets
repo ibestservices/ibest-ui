@@ -397,7 +397,7 @@ class ImagePreview{
 			isModal: true,
 			maskColor: opt.maskColor,
 			autoCancel: false,
-			immersiveMode: ImmersiveMode.EXTEND
+			// immersiveMode: ImmersiveMode.EXTEND
 		})
 	}
 	/**

@@ -108,6 +108,11 @@ export struct IBestButton {
      */
 	@Prop space: IBestStringNumber = this.baseStyle.spaceBase as string
 	/**
+	 * 文字字重
+	 * @since 2.0.8
+     */
+	@Prop fontWeight: IBestStringNumber | FontWeight = FontWeight.Normal
+	/**
 	 * defaultSlot 默认插槽
 	 */
 	@BuilderParam defaultBuilder: CustomBuilder
@@ -255,6 +260,7 @@ export struct IBestButton {
 						Text(this.loading ? this.loadingText ?? this.text : this.text)
 							.fontSize(this.getBtnSize()?.fontSize)
 							.fontColor(this.getBtnTextColor())
+							.fontWeight(this.fontWeight)
 						if(this.iconPosition == "right"){
 							this.iconContent()
 						}
@@ -267,6 +273,7 @@ export struct IBestButton {
 						Text(this.loading ? this.loadingText ?? this.text : this.text)
 							.fontSize(this.getBtnSize()?.fontSize)
 							.fontColor(this.getBtnTextColor())
+							.fontWeight(this.fontWeight)
 						if(this.iconPosition == "bottom"){
 							this.iconContent()
 						}

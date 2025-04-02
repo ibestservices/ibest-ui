@@ -1,24 +1,22 @@
-import router from '@ohos.router';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
-import { ComponentRouterParams } from '../../assets/global.type';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { IBestNavBar, IBestTextEllipsis } from '@ibestservices/ibest-ui';
+import { IBestTextEllipsis } from '@ibestservices/ibest-ui';
+import CustomNavBar from '../../components/CustomNavBar';
+@Builder
+export function TextEllipsisBuilder(_: string, title: string){
+	TextEllipsisPage({title})
+}
+
 @Entry
 @Component
 struct TextEllipsisPage {
-    @State title: string = (router.getParams() as ComponentRouterParams).title || ''
+    @State title: string = ''
     @State text: string = '人一生的大部分时间都是平淡无奇的。这也是我们身体养精蓄锐的必要条件。因为只有身心在泛起涟漪的生活中得到充分的修正，才能圆满的迎接人生的下一次高峰。'
     @State text1: string = "那一天我二十一岁，在我一生的黄金时代。我有好多奢望。我想爱，想吃，还想在一瞬间变成天上半明半暗的云。后来我才知道，生活就是个缓慢受锤的过程，人一天天老下去，奢望也一天天消失，最后变得像挨了锤的牛一样。可是我过二十一岁生日时没有预见到这一点。我觉得自己会永远生猛下去，什么也锤不了我。"
 
     build() {
-        Column() {
-            IBestNavBar({
-                title: this.title,
-                isShowStatusBar: true,
-                onLeftClick: () => {
-                    router.back()
-                }
-            })
+		NavDestination() {
+			CustomNavBar({title: this.title})
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '基础用法' }) {
@@ -93,13 +91,9 @@ struct TextEllipsisPage {
                 }
             }
             .layoutWeight(1)
-            .padding({
-                left: SPACE.SM,
-                right: SPACE.SM
-            })
+            .padding({ left: SPACE.SM, right: SPACE.SM })
         }
-        .width(CONTAINER_SIZE.FULL)
-        .height(CONTAINER_SIZE.FULL)
+        .hideTitleBar(true)
         .backgroundColor(modeColor.bg2)
     }
 }

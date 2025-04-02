@@ -14,6 +14,11 @@ class IBestDialogOption {
 	dialogBorderRadius?: IBestStringNumber
 	/**
 	 * 背景图片
+	 * @since 2.0.8
+	 */
+	bgColor?: ResourceColor
+	/**
+	 * 背景图片
 	 * @since 2.0.7
 	 */
 	bgImage?: ResourceStr
@@ -226,6 +231,7 @@ class IBestDialogParams extends IBestDialogOption {
 		super()
 		this.dialogWidth = option.dialogWidth
 		this.dialogBorderRadius = option.dialogBorderRadius
+		this.bgColor = option.bgColor
 		this.bgImage = option.bgImage
 		this.title = option.title
 		this.titleColor = option.titleColor
@@ -301,9 +307,10 @@ struct DialogContent{
 	}
 	build() {
 		IBestDialogView({
-			bgImage: this.option.bgImage,
 			dialogWidth: this.option.dialogWidth,
 			dialogBorderRadius: this.option.dialogBorderRadius,
+			bgImage: this.option.bgImage,
+			bgColor: this.option.bgColor,
 			title: this.option.title,
 			titleFontSize: this.option.titleFontSize,
 			titleColor: this.option.titleColor,
@@ -405,7 +412,7 @@ class Dialog{
 			maskColor: option.overlayColor,
 			showInSubWindow: option.showInSubWindow,
 			keyboardAvoidDistance: option.keyboardAvoidDistance ?? LengthMetrics.vp(16),
-			immersiveMode: ImmersiveMode.EXTEND,
+			// immersiveMode: ImmersiveMode.EXTEND,
 			levelMode: option.levelMode ?? 0,
 			levelUniqueId: option.levelUniqueId,
 			onDidAppear: () => {

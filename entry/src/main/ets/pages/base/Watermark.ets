@@ -1,12 +1,17 @@
-import router from '@ohos.router';
-import { IBestButton, IBestNavBar, IBestToast, IBestWatermark } from '@ibestservices/ibest-ui';
+import { IBestButton, IBestToast, IBestWatermark } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function WatermarkBuilder(_: string, title: string){
+	WatermarkPage({title})
+}
+
 @Entry
 @Component
 struct WatermarkPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@Builder content() {
 		Column({space: SPACE.SM}) {
 			Text($r("app.string.app_desc"))
@@ -24,14 +29,8 @@ struct WatermarkPage {
 		.justifyContent(FlexAlign.Center)
 	}
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '文字水印', titlePaddingLeft: SPACE.XS }) {
@@ -110,8 +109,7 @@ struct WatermarkPage {
 			}
 			.layoutWeight(1)
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

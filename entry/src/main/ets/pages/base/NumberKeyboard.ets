@@ -1,12 +1,16 @@
-import router from '@ohos.router';
-import { IBestCell, IBestCellGroup, IBestNavBar, IBestNumberKeyboard } from '@ibestservices/ibest-ui';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
-import { ComponentRouterParams } from '../../assets/global.type';
+import { IBestCell, IBestCellGroup, IBestNumberKeyboard } from '@ibestservices/ibest-ui';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function NumberKeyboardBuilder(_:string, title: string){
+	NumberKeyboardPage({title})
+}
 
 @Entry
 @Component
 struct NumberKeyboardPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State visible: boolean = false
 	@State value: string = ''
 	@State visible1: boolean = false
@@ -22,14 +26,8 @@ struct NumberKeyboardPage {
 	@State visible6: boolean = false
 	@State value6: string = ''
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					IBestCellGroup({ inset: true }) {
@@ -145,8 +143,7 @@ struct NumberKeyboardPage {
 				maxLength: 6
 			})
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

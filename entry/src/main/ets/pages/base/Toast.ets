@@ -1,14 +1,18 @@
-import { IBestCell, IBestCellGroup, IBestNavBar, IBestToast } from '@ibestservices/ibest-ui'
+import { IBestCell, IBestCellGroup, IBestToast } from '@ibestservices/ibest-ui'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
-import { router } from '@kit.ArkUI'
-import { ComponentRouterParams } from '../../assets/global.type'
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
 import { getResourceStr } from '../../utils/utils'
+import CustomNavBar from '../../components/CustomNavBar'
+
+@Builder
+export function ToastBuilder(_: string, title: string){
+	ToastPage({title})
+}
 
 @Entry
 @Component
 struct ToastPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 
 	showSpinnerLoading() {
 		IBestToast.show({
@@ -43,14 +47,8 @@ struct ToastPage {
 	}
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: $r("app.string.basic_usage"), titlePaddingLeft: SPACE.XS }) {
@@ -221,11 +219,11 @@ struct ToastPage {
 						}
 					}
 				}
-			}.layoutWeight(1)
-			.padding({ bottom: SPACE.SM })
+				ListItem().height(50)
+			}
+			.layoutWeight(1)
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

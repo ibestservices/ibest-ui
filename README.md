@@ -5,7 +5,7 @@ width="100">
 
 <p align="center" style="font-size: 40px;font-weight: bold;">IBest-UI</p>
 
-<p align="center">轻量、可定制的 HarmonyOS 组件库</p>
+<p align="center">轻量、可定制的 HarmonyOS NEXT 组件库</p>
 
 <p align="center">
     <a href="https://ibestui.ibestservices.com/">文档网站</a>
@@ -19,15 +19,18 @@ width="100">
 
 ## 介绍
 
-IBest-UI是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库, 完美兼容元服务。
+IBest-UI是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库, 包含 
+Button、Calendar、Form、Field、Picker、Popup、Toast、Dialog、ImageCropper 
+等50+个优质组件。
 
-目前 ibestservices 官方推出了V1版本, V2版本正在路上!!!
+目前 ibestservices 官方提供了 <a href="https://ibestui.ibestservices.com/guide/home/" target="_blank">V1</a> 和 <a href="https://ibestui-v2.ibestservices.com/guide/home/" target="_blank">V2</a> 版本, 当前为状态管理 **V1** 版本，请根据自己项目使用的**状态管理版本**选择对应的版本使用。
 
 ## 特性
 - 🚀 50+ 个高质量组件，覆盖移动端主流场景
 - 💪 单元测试覆盖率超过 90%，提供稳定性保障
 - 📖 提供丰富的中文文档和组件示例
 - 🍭 支持主题定制，内置 100+ 个主题变量
+- 🍭 支持元服务
 - 🍭 支持深色模式
 - 🌍 支持国际化
 
@@ -107,11 +110,12 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | Watermark 水印         | 在页面上添加特定的文字或图案作为水印，可用于防止信息盗用。      | <a href="https://ibestui.ibestservices.com/components/watermark/" target="__blank">文档</a>      |
 
 ### 导航组件
-| 组件           | 介绍                         |                                                                                         |
-|:-------------|:---------------------------|-----------------------------------------------------------------------------------------|
-| NavBar 导航栏   | 为页面提供导航功能，常用于页面顶部。         | <a href="https://ibestui.ibestservices.com/components/navBar/" target="__blank">文档</a>  |
-| SideBar 侧边导航 | 垂直展示的导航栏，用于在不同的内容区域之间进行切换。 | <a href="https://ibestui.ibestservices.com/components/sideBar/" target="__blank">文档</a> |
-| Tab 标签页      | 选项卡组件，用于在不同的内容区域之间进行切换。    | <a href="https://ibestui.ibestservices.com/components/tab/" target="__blank">文档</a>     |
+| 组件            | 介绍                                     |                                                                                            |
+|:--------------|:---------------------------------------|--------------------------------------------------------------------------------------------|
+| NavBar 导航栏    | 为页面提供导航功能，常用于页面顶部。                     | <a href="https://ibestui.ibestservices.com/components/navBar/" target="__blank">文档</a>     |
+| Pagination 分页 | 数据量过多时，采用分页的形式将数据分隔，每次只加载一个页面。         | <a href="https://ibestui.ibestservices.com/components/pagination/" target="__blank">文档</a> |
+| SideBar 侧边导航  | 垂直展示的导航栏，用于在不同的内容区域之间进行切换。             | <a href="https://ibestui.ibestservices.com/components/sideBar/" target="__blank">文档</a>    |
+| Tab 标签页       | 选项卡组件，用于在不同的内容区域之间进行切换。                | <a href="https://ibestui.ibestservices.com/components/tab/" target="__blank">文档</a>        |
 
 ### 业务组件
 | 组件                | 介绍               |                                                                                              |
@@ -124,9 +128,9 @@ ohos.permission.INTERNET
 
 ## 官方生态
 
-| 项目        | 描述                                                              |                                                                                     |
-|:----------|:----------------------------------------------------------------|:------------------------------------------------------------------------------------|
-| area-data | 中国省市区数据，适用于鸿蒙 arkui的 TextPicker 和 IBest-ui 的 IBestCascader 等组件。 | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Farea-data">地址</a> |
+| 项目                       | 描述                                                              |                                                                                     |
+|:-------------------------|:----------------------------------------------------------------|:------------------------------------------------------------------------------------|
+| @ibestservices/area-data | 中国省市区数据，适用于鸿蒙 arkui的 TextPicker 和 IBest-UI 的 IBestCascader 等组件。 | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Farea-data">地址</a> |
 
 ## 链接
 - [Github](https://github.com/ibestservices/ibest-ui)
@@ -144,12 +148,12 @@ ohos.permission.INTERNET
 ## 约束与限制
 在下述版本验证通过：
 ```text
-DevEco Studio 5.0.2 Release
-Build #DS-233.14475.28.36.507210
-构建版本：5.0.7.210, built on February 11, 2025
+DevEco Studio 5.0.4 Release
+Build #DS-233.14475.28.36.5011100
+构建版本：5.0.11.100, built on March 28, 2025
 Runtime version: 17.0.12+1-b1087.25 x86_64
 VM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.
-macOS 15.3.1
+macOS 15.3.2
 GC: G1 Young Generation, G1 Old Generation
 Memory: 2048M
 Cores: 12
@@ -157,7 +161,7 @@ Metal Rendering is ON
 Registry:
   idea.plugins.compatible.build=IC-233.14475.28
 Non-Bundled Plugins:
-  com.alibabacloud.intellij.cosy (2.1.2)
+  com.alibabacloud.intellij.cosy (2.1.6)
 ```
 
 ## 开源协议

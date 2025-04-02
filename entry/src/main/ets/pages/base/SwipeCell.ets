@@ -1,14 +1,17 @@
-import router from '@ohos.router';
-import { IBestButton, IBestCell, IBestDialogUtil, IBestNavBar, IBestSwipeCell, IBestToast } from '@ibestservices/ibest-ui';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import { IBestButton, IBestCell, IBestDialogUtil, IBestSwipeCell, IBestToast } from '@ibestservices/ibest-ui';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
 
+@Builder
+export function SwipeCellBuilder(_: string, title: string){
+	SwipeCellPage({title})
+}
 
 @Entry
 @Component
 struct SwipeCellPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@Builder cellContent(){
 		IBestCell({
 			title: '单元格',
@@ -46,14 +49,8 @@ struct SwipeCellPage {
 	}
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
@@ -92,8 +89,7 @@ struct SwipeCellPage {
 			}
 			.layoutWeight(1)
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

@@ -1,7 +1,7 @@
 import dayjs from '@hview/dayjs'
 import { IBestPicker } from '../picker'
 import { IBestPickerOption } from '../picker/index.type'
-import { COMPONENT_NAME, DATE_PICKER_EVENT_NAME, DatePickerColumnType, IBestDatePickerResultType } from './index.type'
+import { COMPONENT_NAME, DATE_PICKER_EVENT_NAME, DatePickerColumnType, IBestDatePickerResult } from './index.type'
 import { emitter } from '../../utils/EventEmitter'
 import { clamp, convertDimensionsWidthUnit, getEventName, getResourceStr } from '../../utils/utils'
 import { IBestStringNumber } from '../../model/Global.type'
@@ -90,11 +90,11 @@ export struct IBestDatePicker {
 	/**
 	 * 过滤器
 	 */
-	filter: (type: DatePickerColumnType, options: IBestPickerOption[]) => IBestPickerOption[] = (type, options) => options
+	filter: (type: DatePickerColumnType, options: IBestPickerOption[]) => IBestPickerOption[] = (_, options) => options
 	/**
 	 * 确认按钮点击事件
 	 */
-	onConfirm: (value: IBestDatePickerResultType) => void = () => {}
+	onConfirm: (value: IBestDatePickerResult) => void = () => {}
 	/**
 	 * 取消按钮点击事件
 	 */
@@ -102,7 +102,7 @@ export struct IBestDatePicker {
 	/**
 	 * 选中项改变事件
 	 */
-	onChange: (value: IBestDatePickerResultType) => void = () => {}
+	onChange: (value: IBestDatePickerResult) => void = () => {}
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
@@ -223,10 +223,10 @@ export struct IBestDatePicker {
 		}
 	}
 	// 获取组件结果
-	getResult(): IBestDatePickerResultType {
+	getResult() {
 		let dateStr = this.value.join("-")
 		let date = dayjs(dateStr).toDate()
-		let result: IBestDatePickerResultType = {
+		let result: IBestDatePickerResult = {
 			date,
 			dateStr,
 			year: this.value[0],

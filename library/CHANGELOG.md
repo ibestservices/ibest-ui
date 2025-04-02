@@ -1,10 +1,21 @@
 # 版本记录
 
+## 2.0.8
+#### 新增:
+1. IBestPagination 分页组件;
+2. IBestHighlight 增加 maxLine overflow 属性;
+3. IBestCheckbox IBestCheckboxGroup IBestRadioGroup 增加 beforeChange;
+4. IBestDialog IBestPopup 增加 bgColor keyboardAvoidDistance levelMode levelUniqueId 属性;
+5. IBestActionSheet 增加 radius 属性;
+6. IBestPasswordInput 增加 onFinish;
+7. IBestCircleProgress 增加 onReachTarget;
+8. IBestProgress 增加 target onReachTarget，value 变更为双向绑定.
+
 ## 2.0.7
 #### 新增:
 1. 适配国际化
 2. IBestHighlight 高亮文本组件;
-3. IBestTable 表格组件;1
+3. IBestTable 表格组件;
 4. IBestButton iconPosition 增加 top bottom;
 5. IBestCheckbox 增加 bgColor bdColor 属性;
 6. IBestRadio 增加 bgColor bdColor 属性;

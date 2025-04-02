@@ -1,12 +1,16 @@
-import router from '@ohos.router';
-import { IBestActionSheet, IBestButton, IBestNavBar, IBestToast } from '@ibestservices/ibest-ui';
+import { IBestActionSheet, IBestButton, IBestToast } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function ActionSheetBuilder(_: string, title: string){
+	ActionSheetPage({title})
+}
 
 @Entry
 @Component
 struct ActionSheetPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@Builder defaultContent(){
 		Scroll(){
 			Column({ space: 10 }){
@@ -49,14 +53,8 @@ struct ActionSheetPage {
 	}
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			Column({ space: 20 }){
 				IBestButton({
 					text: '基础用法',
@@ -170,7 +168,7 @@ struct ActionSheetPage {
 								]
 							],
 							cancelText: '取消',
-							onSelect: (index1: number, index2?: number | string, value?: string) => {
+							onSelect: (index1: number, index2?: number | string, value?: number | string) => {
 								IBestToast.show(`点击了第${index1}行第${index2}个选项，标识为${value}`)
 							}
 						})
@@ -208,14 +206,9 @@ struct ActionSheetPage {
 			.width(CONTAINER_SIZE.FULL)
 			.justifyContent(FlexAlign.Center)
 			.layoutWeight(1)
-			.padding({
-				top: SPACE.SM,
-				left: SPACE.SM,
-				right: SPACE.SM
-			})
+			.padding({ top: SPACE.SM, left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

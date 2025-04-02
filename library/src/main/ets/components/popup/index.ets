@@ -27,7 +27,7 @@ struct IBestPopupBaseContent {
 	/**
 	 * 弹框显示位置
 	 */
-	@Prop popupAlign: PopupAlign
+	@Consume popupAlign: PopupAlign
 	/**
 	 * 弹框宽度
 	 */
@@ -36,6 +36,10 @@ struct IBestPopupBaseContent {
 	 * 弹框高度
 	 */
 	@Link popupHeight: IBestStringNumber
+	/**
+	 * 背景图片
+	 */
+	@Consume bgColor: ResourceColor
 	/**
 	 * 背景图片
      */
@@ -47,7 +51,7 @@ struct IBestPopupBaseContent {
 	/**
 	 * 背板的圆角半径
 	 */
-	@Link cornerRadius: IBestStringNumber
+	@Consume cornerRadius: IBestStringNumber
 	/**
 	 * 底部偏移
 	 */
@@ -165,7 +169,7 @@ struct IBestPopupBaseContent {
 				}
 				.width(getSizeByUnit(this.initSize().width))
 				.height(getSizeByUnit(this.initSize().height))
-				.backgroundColor(IBestPopupColor.bgColor)
+				.backgroundColor(this.bgColor)
 				.backgroundImage(this.bgImage)
 				.backgroundImageSize(ImageSize.FILL)
 				.padding({
@@ -211,7 +215,7 @@ export struct IBestPopup{
 	/**
 	 * 弹框显示位置
 	 */
-	@Prop popupAlign: PopupAlign = 'center'
+	@Provide({allowOverride: "popupAlign"}) popupAlign: PopupAlign = 'center'
 	/**
 	 * 弹框宽度
 	 */
@@ -220,6 +224,11 @@ export struct IBestPopup{
 	 * 弹框高度
 	 */
 	@Prop popupHeight: IBestStringNumber = ""
+	/**
+	 * 背景图片
+	 * @since 2.0.8
+	 */
+	@Provide({allowOverride: "bgColor"}) bgColor: ResourceColor = IBestPopupColor.bgColor
 	/**
 	 * 背景图片
 	 * @since 2.0.7
@@ -254,7 +263,7 @@ export struct IBestPopup{
 	/**
 	 * 背板的圆角半径
 	 */
-	@Prop cornerRadius: IBestStringNumber = 0
+	@Provide({allowOverride: "cornerRadius"}) cornerRadius: IBestStringNumber = 0
 	/**
 	 * 是否允许点击遮罩关闭
 	 */
@@ -307,10 +316,8 @@ export struct IBestPopup{
 	private dialogId: number = 0
 	@Builder defaultContentBuilder() {
 		IBestPopupBaseContent({
-			popupAlign: this.popupAlign,
-			popupWidth: this.popupWidth,
-			popupHeight: this.popupHeight,
-			cornerRadius: this.cornerRadius,
+			popupWidth: $popupWidth,
+			popupHeight: $popupHeight,
 			headerBuilder: this.headerBuilder,
 			contentBuilder: this.contentBuilder,
 			baseController: this.baseController,
@@ -360,7 +367,7 @@ export struct IBestPopup{
 			offset: { dx: 0, dy: -(this.topAvoidHeight) },
 			isModal: this.isModal,
 			maskColor: this.maskColor,
-			immersiveMode: ImmersiveMode.EXTEND,
+			// immersiveMode: ImmersiveMode.EXTEND,
 			onDidAppear: () => {
 				this.onOpen()
 			},

@@ -615,6 +615,10 @@
 		{
 			"name": "second",
 			"value": "秒"
+		},
+		{
+			"name": "size",
+			"value": "尺寸"
 		}
 	]
 }
