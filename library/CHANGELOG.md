@@ -12,6 +12,7 @@
 8. IBestCircleProgress 增加 onReachTarget;
 9. IBestProgress 增加 target onReachTarget，value 变更为双向绑定.
 
+
 ## 2.0.7
 #### 新增:
 1. 适配国际化
