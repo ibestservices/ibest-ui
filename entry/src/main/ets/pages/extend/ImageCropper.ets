@@ -1,9 +1,9 @@
 import { IBestButton, IBestDialogUtil, IBestImageCropper, IBestImageCropperController, IBestUploader, IBestUploaderFile, IBestToast } from '@ibestservices/ibest-ui';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import CustomNavBar from '../../components/CustomNavBar';
-import { savePixelMap } from '../../utils/utils';
-
+import { savePixelMap, shareImage } from '../../utils/utils';
+import { common } from '@kit.AbilityKit';
 @Builder
 export function ImageCropperBuilder(_: string, title: string){
 	ImageCropperPage({title})
@@ -24,18 +24,30 @@ struct ImageCropperPage {
 	private controller2: IBestImageCropperController = new IBestImageCropperController()
 
 	@State previewUrl: PixelMap | null = null
-	private context = getContext(this)
+	private context = getContext(this) as common.UIAbilityContext
+
 	@Builder
 	imgBuilder() {
 		Column({space: SPACE.MD}) {
 			Image(this.previewUrl)
 				.width(260)
-			SaveButton({ text: SaveDescription.SAVE_IMAGE })
-				.onClick((event: ClickEvent, result: SaveButtonOnClickResult) => {
-					if (result == SaveButtonOnClickResult.SUCCESS) {
-						this.saveImg(this.previewUrl)
+			Row({space: SPACE.MD}){
+				SaveButton({ text: SaveDescription.SAVE_IMAGE })
+					.onClick((event: ClickEvent, result: SaveButtonOnClickResult) => {
+						if (result == SaveButtonOnClickResult.SUCCESS) {
+							this.saveImg(this.previewUrl)
+						}
+					})
+				IBestButton({
+					text: "分享",
+					btnWidth: 100,
+					btnHeight: 40,
+					round: true,
+					onBtnClick: () => {
+						shareImage(this.context, this.previewUrl!)
 					}
 				})
+			}
 		}
 		.padding(SPACE.MD)
 	}

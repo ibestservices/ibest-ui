@@ -9,8 +9,6 @@ import { rcp } from '@kit.RemoteCommunicationKit'
 import fs from '@ohos.file.fs'
 import { updateManager } from '@kit.StoreKit'
 import RouterUtil from '../utils/routerUtil'
-import { systemShare } from '@kit.ShareKit';
-import { uniformTypeDescriptor as utd } from '@kit.ArkData'
 
 interface ComponentPart {
 	title: Resource
@@ -312,9 +310,6 @@ struct Index {
 				Text($r("app.string.app_name"))
 					.fontSize(32)
 					.fontColor(modeColor.textColor2)
-					.onClick(() => {
-						this.share()
-					})
 			}.justifyContent(FlexAlign.Center)
 			Text() {
 				if(index == 0){
@@ -550,27 +545,6 @@ struct Index {
 			if(checkResult.updateAvailable == 1){
 				updateManager.showUpdateDialog(this.context)
 			}
-		})
-	}
-	// 分享
-	share(){
-		let data: systemShare.SharedData = new systemShare.SharedData({
-			// utd: utd.UniformDataType.PLAIN_TEXT,
-			// content: 'Hello HarmonyOS'
-			utd: utd.UniformDataType.IMAGE,
-			// uri: fileUri.getUriFromPath(filePath)
-		})
-		let controller: systemShare.ShareController = new systemShare.ShareController(data);
-		// 获取UIAbility上下文对象
-		let context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;
-		// 注册分享面板关闭监听
-		controller.on('dismiss', () => {
-			console.info('Share panel closed');
-		});
-		// 进行分享面板显示
-		controller.show(context, {
-			selectionMode: systemShare.SelectionMode.SINGLE,
-			previewMode: systemShare.SharePreviewMode.DETAIL,
 		})
 	}
 	build() {

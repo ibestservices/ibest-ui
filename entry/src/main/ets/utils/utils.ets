@@ -104,10 +104,6 @@ export function shareImage(context: common.UIAbilityContext, pixelMap: PixelMap)
 		controller.show(context, {
 			selectionMode: systemShare.SelectionMode.SINGLE,
 			previewMode: systemShare.SharePreviewMode.DETAIL
-		}).then(() => {
-			try {
-				fs.unlinkSync(filePath)
-			} catch(err) {}
 		})
 	})
 }
