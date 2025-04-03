@@ -13,18 +13,6 @@ export struct IBestLoading {
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
 	/**
-	 * 默认插槽 loading覆盖的插槽
-	 */
-	@BuilderParam defaultBuilder?: CustomBuilder;
-	/**
-	 * loading的图标的插槽
-	 */
-	@BuilderParam loadingIconBuilder?: CustomBuilder;
-	/**
-	 * loading的文案的插槽
-	 */
-	@BuilderParam loadingTextBuilder?: CustomBuilder;
-	/**
 	 * 类型，可选值为 spinner
 	 */
 	@Prop loadingIconType: LoadingIconType = 'circular'
@@ -45,15 +33,21 @@ export struct IBestLoading {
 	 */
 	@Prop loadingMaskColor: ResourceColor = 'transparent';
 	/**
-	 * loading的图标距离顶部的margin 因为默认loading是垂直居中布局的 可通过该属性调整loading图标的上下位置 只有在vertical为true 即垂直布局时有效
+	 * loading的图标距离顶部的margin 只有在vertical为true 即垂直布局时有效
+	 * @deprecated since 2.0.8
+	 * @useinstead space
 	 */
 	@Prop loadingIconMarginTop: IBestStringNumber = 0
 	/**
 	 * loadingText的marginLeft值 只有在vertical为false 即横向布局时有效
+	 * @deprecated since 2.0.8
+	 * @useinstead space
 	 */
 	@Prop loadingTextMarginLeft: IBestStringNumber = this.baseStyle.spaceXs as string
 	/**
 	 * loadingText的marginTop值 只有在vertical为true 即垂直布局时有效
+	 * @deprecated since 2.0.8
+	 * @useinstead space
 	 */
 	@Prop loadingTextMarginTop: IBestStringNumber = this.baseStyle.spaceXs as string
 	/**
@@ -77,6 +71,22 @@ export struct IBestLoading {
 	 */
 	@Prop vertical: boolean = true;
 	/**
+	 * 图标与文字间距
+	 */
+	@Prop space: IBestStringNumber = this.baseStyle.spaceXs as string;
+	/**
+	 * 默认插槽 loading覆盖的插槽
+	 */
+	@BuilderParam defaultBuilder: CustomBuilder;
+	/**
+	 * loading的图标的插槽
+	 */
+	@BuilderParam loadingIconBuilder: CustomBuilder;
+	/**
+	 * loading的文案的插槽
+	 */
+	@BuilderParam loadingTextBuilder: CustomBuilder;
+	/**
 	 * 当前stack容器的尺寸
 	 */
 	@State sizeValue?: SizeOptions = undefined;
@@ -98,8 +108,6 @@ export struct IBestLoading {
 					circularSize: this.loadingSize,
 					color: this.loadingColor,
 					strokeWidth: this.loadingStrokeWidth
-				}).margin({
-					top: this.vertical ? getSizeByUnit(this.loadingIconMarginTop) : 0
 				})
 			}
 		}
@@ -109,10 +117,6 @@ export struct IBestLoading {
 		} else {
 			if (this.loadingText) {
 				Text(this.loadingText)
-					.margin({
-						top: this.vertical ? getSizeByUnit(this.loadingTextMarginTop) : 0,
-						left: this.vertical ? 0 : getSizeByUnit(this.loadingTextMarginLeft)
-					})
 					.fontSize(getSizeByUnit(this.loadingTextFontSize, true))
 					.fontColor(this.loadingTextColor)
 			}
@@ -125,7 +129,7 @@ export struct IBestLoading {
 			}
 			// 如果是竖直排列的loading
 			if (this.vertical) {
-				Column() {
+				Column({space: getSizeByUnit(this.space)}) {
 					this.LoadingContent()
 				}
 				.justifyContent(FlexAlign.Center)
@@ -133,7 +137,7 @@ export struct IBestLoading {
 				.height(this.sizeValue?.height || 'auto')
 				.backgroundColor(this.loadingMaskColor)
 			} else {
-				Row() {
+				Row({space: getSizeByUnit(this.space)}) {
 					this.LoadingContent()
 				}
 				.justifyContent(FlexAlign.Center)

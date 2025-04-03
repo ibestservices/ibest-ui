@@ -9,6 +9,7 @@ import { IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestPullRefresh {
+	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 是否处于加载状态
   	 */
@@ -44,23 +45,23 @@ export struct IBestPullRefresh {
 	/**
 	 * 默认内容
      */
-	@BuilderParam defaultContent?: CustomBuilder
+	@BuilderParam defaultContent: CustomBuilder
 	/**
 	 * 自定义下拉过程顶部内容
   	 */
-	@BuilderParam pullingContent?: ($$: IBestRefreshContentParams) => void
+	@BuilderParam pullingContent: ($$: IBestRefreshContentParams) => void
 	/**
 	 * 自定义下拉释放过程顶部内容
   	 */
-	@BuilderParam loosingContent?: ($$: IBestRefreshContentParams) => void
+	@BuilderParam loosingContent: ($$: IBestRefreshContentParams) => void
 	/**
 	 * 自定义下拉加载过程顶部内容
   	 */
-	@BuilderParam loadingContent?: CustomBuilder
+	@BuilderParam loadingContent: CustomBuilder
 	/**
 	 * 自定义下拉刷新成功提示内容
 	 */
-	@BuilderParam successContent?: CustomBuilder
+	@BuilderParam successContent: CustomBuilder
 	/**
 	 * 是否启用上滑加载
 	 * @since 2.0.4
@@ -105,22 +106,22 @@ export struct IBestPullRefresh {
 	 * 自定义上滑过程内容
 	 * @since 2.0.4
 	 */
-	@BuilderParam slidingUpContent?: ($$: IBestRefreshContentParams) => void
+	@BuilderParam slidingUpContent: ($$: IBestRefreshContentParams) => void
 	/**
 	 * 自定义上滑释放过程内容
 	 * @since 2.0.4
 	 */
-	@BuilderParam slideUpLoosingContent?: ($$: IBestRefreshContentParams) => void
+	@BuilderParam slideUpLoosingContent: ($$: IBestRefreshContentParams) => void
 	/**
 	 * 自定义上滑加载过程内容
 	 * @since 2.0.4
 	 */
-	@BuilderParam slideUpLoadingContent?: CustomBuilder
+	@BuilderParam slideUpLoadingContent: CustomBuilder
 	/**
 	 * 自定义上滑加载成功提示内容
 	 * @since 2.0.4
 	 */
-	@BuilderParam slideUpSuccessContent?: CustomBuilder
+	@BuilderParam slideUpSuccessContent: CustomBuilder
 	/**
 	 * 触发下拉刷新/上滑加载时的回调
 	 */
@@ -139,6 +140,19 @@ export struct IBestPullRefresh {
 	@State headSize: number = 0
 	@State bottomSize: number = 0
 	private uiContext = this.getUIContext()
+
+	@Builder textTip(){
+		Row({space: convertDimensionsWidthUnit(5)}){
+			if(this.refreshStatus == "loading") {
+				IBestLoading({
+					loadingSize: this.baseStyle.fontSizeMd as string
+				})
+			}
+			Text(this.getStatusText())
+				.fontColor(IBestPullRefreshColor.textColor)
+				.fontSize(this.baseStyle.fontSizeMd)
+		}
+	}
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
@@ -179,11 +193,25 @@ export struct IBestPullRefresh {
 			this.refreshStatus = 'loosing'
 		}
 	}
+	getStatusText(): ResourceStr{
+		switch(this.refreshStatus){
+			case "normal":
+				return ""
+			case "pulling":
+				return this.actionType == 'pull' ? this.pullingText : this.slidingUpText
+			case "loosing":
+				return this.actionType == 'pull' ? this.loosingText : this.slideUpLoosingText
+			case "loading":
+				return this.actionType == 'pull' ? this.loadingText : this.slideUpLoadingText
+			case "success":
+				return this.actionType == 'pull' ? this.successText : this.slideUpSuccessText
+		}
+	}
 	onPanGestureChange(type: string, event: GestureEvent){
 		if(this.isTouchable()) {
 			switch (type) {
 				case "start":
-					this.scrollTop = this.scroller.currentOffset()?.yOffset
+					this.scrollTop = this.scroller.currentOffset()?.yOffset ?? 0
 					this.isAtEnd = this.scroller.isAtEnd()
 					break
 				case "move":
@@ -226,28 +254,28 @@ export struct IBestPullRefresh {
 						if(this.pullingContent){
 							this.pullingContent({ distance: this.transY })
 						}else{
-							TextTip()
+							this.textTip()
 						}
 					}.visibility(this.refreshStatus == "pulling" ? Visibility.Visible : Visibility.None)
 					Row(){
 						if(this.loosingContent){
 							this.loosingContent({ distance: this.transY })
 						}else{
-							TextTip()
+							this.textTip()
 						}
 					}.visibility(this.refreshStatus == "loosing" ? Visibility.Visible : Visibility.None)
 					Row(){
 						if(this.loadingContent){
 							this.loadingContent()
 						}else{
-							TextTip()
+							this.textTip()
 						}
 					}.visibility(this.refreshStatus == "loading" ? Visibility.Visible : Visibility.None)
 					Row(){
 						if(this.successContent){
 							this.successContent()
 						}else{
-							TextTip()
+							this.textTip()
 						}
 					}.visibility(this.refreshStatus == "success" ? Visibility.Visible : Visibility.None)
 				}
@@ -265,28 +293,28 @@ export struct IBestPullRefresh {
 						if(this.slidingUpContent){
 							this.slidingUpContent({ distance: Math.abs(this.transY) })
 						}else{
-							TextTip()
+							this.textTip()
 						}
 					}.visibility(this.refreshStatus == "pulling" ? Visibility.Visible : Visibility.None)
 					Row(){
 						if(this.slideUpLoosingContent){
 							this.slideUpLoosingContent({ distance: Math.abs(this.transY) })
 						}else{
-							TextTip()
+							this.textTip()
 						}
 					}.visibility(this.refreshStatus == "loosing" ? Visibility.Visible : Visibility.None)
 					Row(){
 						if(this.slideUpLoadingContent){
 							this.slideUpLoadingContent()
 						}else{
-							TextTip()
+							this.textTip()
 						}
 					}.visibility(this.refreshStatus == "loading" ? Visibility.Visible : Visibility.None)
 					Row(){
 						if(this.slideUpSuccessContent){
 							this.slideUpSuccessContent()
 						}else{
-							TextTip()
+							this.textTip()
 						}
 					}.visibility(this.refreshStatus == "success" ? Visibility.Visible : Visibility.None)
 				}
@@ -318,46 +346,5 @@ export struct IBestPullRefresh {
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
 		.clip(true)
-	}
-}
-
-@Component
-struct TextTip{
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@Consume refreshStatus: PullRefreshStatus
-	@Consume actionType: string
-	@Consume pullingText: ResourceStr
-	@Consume loosingText: ResourceStr
-	@Consume loadingText: ResourceStr
-	@Consume successText: ResourceStr
-	@Consume slidingUpText: ResourceStr
-	@Consume slideUpLoosingText: ResourceStr
-	@Consume slideUpLoadingText: ResourceStr
-	@Consume slideUpSuccessText: ResourceStr
-	getStatusText(): ResourceStr{
-		switch(this.refreshStatus){
-			case "normal":
-				return ""
-			case "pulling":
-				return this.actionType == 'pull' ? this.pullingText : this.slidingUpText
-			case "loosing":
-				return this.actionType == 'pull' ? this.loosingText : this.slideUpLoosingText
-			case "loading":
-				return this.actionType == 'pull' ? this.loadingText : this.slideUpLoadingText
-			case "success":
-				return this.actionType == 'pull' ? this.successText : this.slideUpSuccessText
-		}
-	}
-	build() {
-		Row({space: convertDimensionsWidthUnit(5)}){
-			if(this.refreshStatus == "loading") {
-				IBestLoading({
-					loadingSize: this.baseStyle.fontSizeMd as string
-				})
-			}
-			Text(this.getStatusText())
-				.fontColor(IBestPullRefreshColor.textColor)
-				.fontSize(this.baseStyle.fontSizeMd)
-		}
 	}
 }

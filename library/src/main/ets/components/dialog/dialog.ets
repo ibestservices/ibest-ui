@@ -1,41 +1,35 @@
-import { IBestDialogColor } from './color';
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { GRAY_COLOR } from '../../theme-chalk/src/color';
-import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
-import { IBestStringNumber } from '../../model/Global.type';
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
-@Extend(Button) function defaultBtnStyles(theme: 'default' | 'round-button') {
+import { IBestDialogColor } from './color'
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { GRAY_COLOR } from '../../theme-chalk/src/color'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
+import { IBestStringNumber } from '../../model/Global.type'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+@Extend(Button) function ibestDialogDefaultBtnStyles(theme: 'default' | 'round-button') {
 	.layoutWeight(1)
 	.height(convertDimensionsWidthUnit(theme == 'default' ? 48 : 36))
 }
-@CustomDialog
+
+@Component
 export struct IBestDialogView {
 	/**
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@StorageProp("IBestColorMode") @Watch("colorModeChange") colorMode: ColorMode = ColorMode.LIGHT
-	// @StorageProp("IBestKeyBoardHeight") keyBoardHeight: number = 0
-	@State whiteColor: ResourceColor = IBestDialogColor.white
-	@State contentBg: ResourceColor = IBestDialogColor.contentBg
-	@State titleDefaultColor: ResourceColor = IBestDialogColor.titleColor
-	@State messageColor: ResourceColor = IBestDialogColor.messageColor
-	@State cancelTextColor: ResourceColor = IBestDialogColor.cancelTextColor
-	@State bdColor: ResourceColor = IBestDialogColor.borderColor
-	@State activeBg: ResourceColor = IBestDialogColor.activeBg
-	/**
-	 * 控制器
-	 */
-	controller?: CustomDialogController;
 	/**
 	 * 弹窗宽度
 	 */
-	@Link dialogWidth: IBestStringNumber
+	@Prop dialogWidth: IBestStringNumber = convertDimensionsWidthUnit(320)
 	/**
 	 * 弹窗圆角
 	 */
 	@Prop dialogBorderRadius: IBestStringNumber = this.baseStyle.spaceMd as string
+	/**
+	 * 背景图片
+	 * @since 2.0.8
+	 */
+	@Prop bgColor: ResourceColor = ''
 	/**
 	 * 背景图片
 	 * @since 2.0.7
@@ -44,7 +38,7 @@ export struct IBestDialogView {
 	/**
 	 * 标题
 	 */
-	@Prop title: ResourceStr
+	@Prop title: ResourceStr = ""
 	/**
 	 * 标题颜色
 	 */
@@ -72,7 +66,7 @@ export struct IBestDialogView {
 	/**
 	 * 文本内容，支持通过 \n 换行
 	 */
-	@Prop message: ResourceStr
+	@Prop message: ResourceStr = ""
 	/**
 	 * 内容区域的fontColor 默认#323233
 	 */
@@ -172,15 +166,15 @@ export struct IBestDialogView {
 	/**
 	 * 标题区域的builder
 	 */
-	@BuilderParam titleBuilder?: CustomBuilder;
+	@BuilderParam titleBuilder: CustomBuilder
 	/**
 	 * 内容区域的builder
 	 */
-	@BuilderParam defaultBuilder?: CustomBuilder;
+	@BuilderParam defaultBuilder: CustomBuilder
 	/**
 	 * 底部区域的builder
 	 */
-	@BuilderParam footerBuilder?: CustomBuilder;
+	@BuilderParam footerBuilder: CustomBuilder
 	/**
 	 * 点击取消的回调
 	 */
@@ -193,6 +187,13 @@ export struct IBestDialogView {
 	 * 点击遮罩
      */
 	onClickOverlay: () => void = () => {}
+
+	@State whiteColor: ResourceColor = IBestDialogColor.white
+	@State contentBg: ResourceColor = this.bgColor || IBestDialogColor.contentBg
+	@State titleDefaultColor: ResourceColor = IBestDialogColor.titleColor
+	@State messageColor: ResourceColor = IBestDialogColor.messageColor
+	@State cancelTextColor: ResourceColor = IBestDialogColor.cancelTextColor
+	@State bdColor: ResourceColor = IBestDialogColor.borderColor
 	@Builder placeRow(){
 		Blank()
 			.onClick(() => {
@@ -202,19 +203,28 @@ export struct IBestDialogView {
 	// 颜色模式切换
 	colorModeChange() {
 		this.whiteColor = IBestDialogColor.white
-		this.contentBg = IBestDialogColor.contentBg
+		this.contentBg = this.bgColor || IBestDialogColor.contentBg
+		this.titleDefaultColor = IBestDialogColor.titleColor
+		this.messageColor = IBestDialogColor.messageColor
+		this.cancelTextColor = IBestDialogColor.cancelTextColor
 		this.bdColor = IBestDialogColor.borderColor
-		this.activeBg = IBestDialogColor.activeBg
 	}
-	/**
-	 * 对齐置换TextAlign
-	 */
-	getFormatAlign(align: string) {
-		switch (align) {
+	// 标题对齐
+	getTitleAlign() {
+		switch (this.titleTextAlign) {
+			case 'left':
+				return FlexAlign.Start
+			case 'right':
+				return FlexAlign.End
+			default:
+				return FlexAlign.Center
+		}
+	}
+	// 内容对齐
+	getMessageAlign(){
+		switch (this.messageTextAlign) {
 			case 'left':
 				return TextAlign.Start
-			case 'center':
-				return TextAlign.Center
 			case 'right':
 				return TextAlign.End
 			default:
@@ -224,36 +234,23 @@ export struct IBestDialogView {
 	getTitleColor() {
 		return this.titleColor || this.titleDefaultColor
 	}
-	/**
-	 * 获取内容区域文字颜色
-	 * @returns
-	 */
+	// 获取内容区域文字颜色
 	getMsgColor() {
 		return this.messageFontColor || (this.title ? GRAY_COLOR.GRAY_7 : this.messageColor)
 	}
-	/**
-	 * 确认按钮的文字颜色
-	 * @returns
-	 */
+	// 确认按钮的文字颜色
 	getConfirmBtnFontColor() {
 		return this.confirmButtonColor || (this.theme == 'round-button' ? this.whiteColor : this.baseStyle.primary)
 	}
-	/**
-	 * 确认按钮背景色
-	 */
+	// 确认按钮背景色
 	getConfirmBtnBgColor() {
 		return this.confirmButtonBgColor || (this.theme == 'round-button' ? this.baseStyle.primary : "transparent")
 	}
-	/**
-	 * 取消按钮的文字颜色
-	 * @returns
-	 */
+	// 取消按钮的文字颜色
 	getCancelBtnFontColor() {
 		return this.cancelButtonColor || this.cancelTextColor
 	}
-	/**
-	 * 取消按钮背景色
-	 */
+	// 取消按钮背景色
 	getCancelBtnBgColor() {
 		return this.cancelButtonBgColor || "transparent"
 	}
@@ -265,17 +262,20 @@ export struct IBestDialogView {
 					this.titleBuilder()
 				} else {
 					if (this.title) {
-						Text(this.title)
-							.fontSize(getSizeByUnit(this.titleFontSize, true))
-							.fontWeight(FontWeight.Medium)
-							.lineHeight(getSizeByUnit(this.titleLineHeight))
-							.padding({
-								top: getSizeByUnit(this.titlePaddingTop),
-								left: getSizeByUnit(this.titlePaddingX),
-								right: getSizeByUnit(this.titlePaddingX)
-							})
-							.textAlign(this.getFormatAlign(this.titleTextAlign))
-							.fontColor(this.getTitleColor())
+						Row(){
+							Text(this.title)
+								.fontSize(getSizeByUnit(this.titleFontSize, true))
+								.fontWeight(FontWeight.Medium)
+								.lineHeight(getSizeByUnit(this.titleLineHeight))
+								.padding({
+									top: getSizeByUnit(this.titlePaddingTop),
+									left: getSizeByUnit(this.titlePaddingX),
+									right: getSizeByUnit(this.titlePaddingX)
+								})
+								.fontColor(this.getTitleColor())
+						}
+						.width(CONTAINER_SIZE.FULL)
+						.justifyContent(this.getTitleAlign())
 					}
 				}
 				if (this.defaultBuilder) {
@@ -283,6 +283,7 @@ export struct IBestDialogView {
 				} else {
 					Scroll() {
 						Text(this.message)
+							.width(CONTAINER_SIZE.FULL)
 							.padding({
 								top: getSizeByUnit(this.messagePaddingTop),
 								left: getSizeByUnit(this.messagePaddingX),
@@ -290,7 +291,7 @@ export struct IBestDialogView {
 								bottom: getSizeByUnit(this.messagePaddingBottom)
 							})
 							.margin({ top: this.title ? 0 : getSizeByUnit(this.messagePaddingBottom) })
-							.textAlign(this.getFormatAlign(this.messageTextAlign))
+							.textAlign(this.getMessageAlign())
 							.lineHeight(getSizeByUnit(this.messageLineHeight))
 							.fontSize(getSizeByUnit(this.messageFontSize, true))
 							.fontColor(this.getMsgColor())
@@ -332,7 +333,7 @@ export struct IBestDialogView {
 								color: this.bdColor
 							})
 							.enabled(!this.cancelButtonDisabled || !this.cancelButtonLoading)
-							.defaultBtnStyles(this.theme)
+							.ibestDialogDefaultBtnStyles(this.theme)
 							.backgroundColor(this.getCancelBtnBgColor())
 							.borderRadius(this.theme == "round-button" ? {
 								topLeft: 999,
@@ -367,7 +368,7 @@ export struct IBestDialogView {
 								}
 							}
 							.enabled(!this.confirmButtonDisabled || !this.confirmButtonLoading)
-							.defaultBtnStyles(this.theme)
+							.ibestDialogDefaultBtnStyles(this.theme)
 							.backgroundColor(this.getConfirmBtnBgColor())
 							.borderRadius(this.theme == "round-button" ? {
 								topLeft: this.showCancelButton && this.buttonSpace == 0 ? 0 : 999,
@@ -389,17 +390,15 @@ export struct IBestDialogView {
 					} : "")
 				}
 			}
-			.width(getSizeByUnit(this.dialogWidth))
+			.width(CONTAINER_SIZE.FULL)
 			.backgroundColor(this.contentBg)
 			.backgroundImage(this.bgImage)
 			.backgroundImageSize(ImageSize.FILL)
 			.borderRadius(getSizeByUnit(this.dialogBorderRadius))
-			.animation({ duration: 200, curve: Curve.EaseInOut })
 			.clip(true)
 			this.placeRow()
 		}
-		.width(CONTAINER_SIZE.FULL)
-		// .margin({bottom: this.keyBoardHeight})
-		// .animation({ duration: 430, curve: Curve.EaseInOut })
+		.width(getSizeByUnit(this.dialogWidth))
+		.animation({ duration: 200, curve: Curve.EaseInOut })
 	}
 }

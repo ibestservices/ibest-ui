@@ -1,26 +1,15 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type';
-import { GRAY_COLOR } from '../../theme-chalk/src/color';
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
-import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { SIZE, SizeType } from '../../theme-chalk/src/size.type';
-import { ButtonSizeData } from './index.type';
-import { IBestLoading } from '../loading/index';
-import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
-import { IBestButtonColor } from './color';
-import { IBestIcon } from '../icon';
-import { IBestStringNumber } from '../../model/Global.type';
-
-@Extend(Button) function btnSizeStyle(data: ButtonSizeData) {
-	.padding({
-		top: 0,
-		right: data.padding,
-		bottom: 0,
-		left: data.padding
-	})
-	.height(data.height)
-	.width(data.width || 'auto')
-}
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
+import { GRAY_COLOR } from '../../theme-chalk/src/color'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { SIZE, SizeType } from '../../theme-chalk/src/size.type'
+import { BtnSizeType } from './index.type'
+import { IBestLoading } from '../loading/index'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
+import { IBestButtonColor } from './color'
+import { IBestIcon } from '../icon'
+import { IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestButton {
@@ -31,32 +20,31 @@ export struct IBestButton {
 	/**
 	 * 类型，可选值为 primary success warning danger 默认值为default
 	 */
-	@Prop type: ColorType = COLOR_TYPE.DEFAULT;
+	@Prop type: ColorType = COLOR_TYPE.DEFAULT
 	/**
 	 * 大小，可选值为 large normal small mini
-	 * size是保留字所以没使用size
 	 */
-	@Prop buttonSize: SizeType = SIZE.NORMAL;
+	@Prop buttonSize: SizeType = SIZE.NORMAL
 	/**
 	 * 是否为朴素按钮
 	 */
-	@Prop plain: boolean = false;
+	@Prop plain: boolean = false
 	/**
 	 * 是否为方形按钮
 	 */
-	@Prop square: boolean = false;
+	@Prop square: boolean = false
 	/**
 	 * 是否为圆形按钮
 	 */
-	@Prop round: boolean = false;
+	@Prop round: boolean = false
 	/**
 	 * 是否使用 0.5px 边框
 	 */
-	@Prop hairline: boolean = false;
+	@Prop hairline: boolean = false
 	/**
 	 * 是否显示为加载状态
 	 */
-	@Prop loading: boolean = false;
+	@Prop loading: boolean = false
 	/**
 	 * loading加载的文案
 	 */
@@ -68,15 +56,15 @@ export struct IBestButton {
 	/**
 	 * 是否禁用
 	 */
-	@Prop disabled: boolean = false;
+	@Prop disabled: boolean = false
 	/**
 	 * 按钮颜色
 	 */
-	@Prop @Watch('handleColorChange') color: ResourceColor = '';
+	@Prop @Watch('handleColorChange') color: ResourceColor = ''
 	/**
 	 * 加载图标的大小, 如果为-1就是默认值 默认值跟随字体大小
 	 */
-	@Prop loadingSize: IBestStringNumber = -1;
+	@Prop loadingSize: IBestStringNumber = -1
 	/**
 	 * 按钮宽度
 	 */
@@ -120,29 +108,39 @@ export struct IBestButton {
      */
 	@Prop space: IBestStringNumber = this.baseStyle.spaceBase as string
 	/**
+	 * 文字字重
+	 * @since 2.0.8
+     */
+	@Prop fontWeight: IBestStringNumber | FontWeight = FontWeight.Normal
+	/**
 	 * defaultSlot 默认插槽
 	 */
-	@BuilderParam defaultBuilder?: CustomBuilder
+	@BuilderParam defaultBuilder: CustomBuilder
 	/**
 	 * 图标的builder
 	 */
-	@BuilderParam iconBuilder?: CustomBuilder;
+	@BuilderParam iconBuilder: CustomBuilder
 	/**
 	 * 加载图标的builder
 	 */
-	@BuilderParam loadingIconBuilder?: CustomBuilder;
+	@BuilderParam loadingIconBuilder: CustomBuilder
 	/**
 	 * 点击按钮，且按钮状态不为加载或禁用时触发
+	 * @deprecated since 2.0.8
+	 * @useinstead onBtnClick
 	 */
-	onClickBtn: (event: TouchEvent) => void = () => {}
+	onClickBtn: () => void = () => {}
+	/**
+	 * 点击按钮，且按钮状态不为加载或禁用时触发
+	 * @since 2.0.8
+	 */
+	onBtnClick: () => void = () => {}
 
 	@Builder iconContent() {
 		if (this.loading) {
-			// 如果有自定义loading
 			if (this.loadingIconBuilder) {
 				this.loadingIconBuilder()
 			} else {
-				// 默认的loading
 				IBestLoading({
 					loadingSize: this.getLoadingSize(),
 					loadingColor: this.getBtnTextColor()
@@ -169,78 +167,78 @@ export struct IBestButton {
 		}
 	}
 
-	/**
-	 * 根据buttonSize换对应的按钮尺寸
-	 */
-	getBtnSize() {
+	// 根据buttonSize换对应的按钮尺寸
+	getBtnSize(): BtnSizeType {
 		if (this.btnWidth || this.btnHeight) {
-			return new ButtonSizeData(this.btnWidth ? 0 : convertDimensionsWidthUnit(15),
-				this.btnHeight != undefined ? getSizeByUnit(this.btnHeight) : convertDimensionsWidthUnit(44),
-				this.getBtnFontSize() || this.baseStyle.fontSizeMd as string,
-				this.btnWidth != undefined ? getSizeByUnit(this.btnWidth) : '')
+			return {
+				width: this.btnWidth || "auto",
+				height: this.btnHeight || convertDimensionsWidthUnit(44),
+				padding: convertDimensionsWidthUnit(15),
+				fontSize: this.btnFontSize || this.baseStyle.fontSizeMd as string
+			}
 		}
-		const buttonSize = this.buttonSize;
+		const buttonSize = this.buttonSize
 		switch (buttonSize) {
-			case SIZE.SMALL:
-				return new ButtonSizeData(this.baseStyle.spaceXs as string, convertDimensionsWidthUnit(32),
-					this.getBtnFontSize() || this.baseStyle.fontSizeSm as string);
 			case SIZE.MINI:
-				return new ButtonSizeData(this.baseStyle.spaceBase as string, convertDimensionsWidthUnit(32),
-					this.getBtnFontSize() || this.baseStyle.fontSizeXs as string);
+				return {
+					width: "auto",
+					height: convertDimensionsWidthUnit(24),
+					padding: this.baseStyle.spaceBase as string,
+					fontSize: this.btnFontSize || this.baseStyle.fontSizeXs as string
+				}
+			case SIZE.SMALL:
+				return {
+					width: "auto",
+					height: convertDimensionsWidthUnit(32),
+					padding: this.baseStyle.spaceXs as string,
+					fontSize: this.btnFontSize || this.baseStyle.fontSizeSm as string
+				}
 			case SIZE.LARGE:
-				return new ButtonSizeData(this.baseStyle.spaceXs as string, convertDimensionsWidthUnit(50),
-					this.getBtnFontSize() || this.baseStyle.fontSizeLg as string, CONTAINER_SIZE.FULL);
+				return {
+					width: CONTAINER_SIZE.FULL,
+					height: convertDimensionsWidthUnit(50),
+					padding: this.baseStyle.spaceXs as string,
+					fontSize: this.btnFontSize || this.baseStyle.fontSizeLg as string
+				}
 			default:
-				return new ButtonSizeData(convertDimensionsWidthUnit(15), convertDimensionsWidthUnit(44),
-					this.getBtnFontSize() || this.baseStyle.fontSizeMd as string);
+				return {
+					width: "auto",
+					height: convertDimensionsWidthUnit(44),
+					padding: convertDimensionsWidthUnit(15),
+					fontSize: this.btnFontSize || this.baseStyle.fontSizeMd as string
+				}
 		}
 	}
 	getBtnFontSize() {
 		return this.btnFontSize != undefined ? getSizeByUnit(this.btnFontSize, true) : ""
 	}
-	/**
-	 * 获取按钮的borderRadius
-	 */
+	// 获取按钮的borderRadius
 	getBtnBorderRadius() {
-		return getSizeByUnit(this.btnBorderRadius) ||
-			(this.square ? 0 : this.baseStyle[`borderRadius${this.round ? 'Max' : 'Md'}`])
+		return getSizeByUnit(this.btnBorderRadius) || (this.square ? 0 : this.baseStyle[`borderRadius${this.round ? 'Max' : 'Md'}`])
 	}
-	/**
-	 * 获取按钮边框的颜色
-	 */
+	// 获取按钮边框的颜色
 	getBorderColor() {
-		return this.btnBorderColor ||
-			(this.color ? this.color : this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_4 : this.baseStyle[this.type])
+		return this.btnBorderColor || (this.color ? this.color : this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_4 : this.baseStyle[this.type])
 	}
-	/**
-	 * 获取按钮文字的颜色
-	 */
+	// 获取按钮文字的颜色
 	getBtnTextColor() {
 		if (this.fontColor) {
 			return this.fontColor
 		}
 		if (this.plain) {
-			return this.color ? this.color :
-				this.type === COLOR_TYPE.DEFAULT ? IBestButtonColor.textColor : this.baseStyle[this.type]
+			return this.color ? this.color : this.type === COLOR_TYPE.DEFAULT ? IBestButtonColor.textColor : this.baseStyle[this.type]
 		}
 		return this.type === COLOR_TYPE.DEFAULT ? IBestButtonColor.textColor : IBestButtonColor.whiteColor
 	}
-	/**
-	 * 根据颜色type获取背景色
-	 */
+	// 根据颜色type获取背景色
 	getBackgroundColor() {
-		return this.plain ? "transparent" :
-			this.color ? this.color : this.type == "default" ? IBestButtonColor.defaultBg : this.baseStyle[this.type]
+		return this.plain ? "transparent" : this.color ? this.color : this.type == "default" ? IBestButtonColor.defaultBg : this.baseStyle[this.type]
 	}
-	/**
-	 * 获取loading的大小
-	 */
+	// 获取loading的大小
 	getLoadingSize() {
 		return this.loadingSize != -1 ? getSizeByUnit(this.loadingSize) : this.getBtnSize()?.fontSize as string
 	}
-	/**
-	 * 当传入自定义颜色时 设置type保证颜色渲染正常
-	 */
+	// 当传入自定义颜色时 设置type保证颜色渲染正常
 	handleColorChange() {
 		if (this.color) {
 			this.type = 'primary'
@@ -262,6 +260,7 @@ export struct IBestButton {
 						Text(this.loading ? this.loadingText ?? this.text : this.text)
 							.fontSize(this.getBtnSize()?.fontSize)
 							.fontColor(this.getBtnTextColor())
+							.fontWeight(this.fontWeight)
 						if(this.iconPosition == "right"){
 							this.iconContent()
 						}
@@ -274,6 +273,7 @@ export struct IBestButton {
 						Text(this.loading ? this.loadingText ?? this.text : this.text)
 							.fontSize(this.getBtnSize()?.fontSize)
 							.fontColor(this.getBtnTextColor())
+							.fontWeight(this.fontWeight)
 						if(this.iconPosition == "bottom"){
 							this.iconContent()
 						}
@@ -281,7 +281,9 @@ export struct IBestButton {
 				}
 			}
 		}
-		.btnSizeStyle(this.getBtnSize())
+		.width(getSizeByUnit(this.getBtnSize().width))
+		.height(getSizeByUnit(this.getBtnSize().height))
+		.padding({ left: getSizeByUnit(this.getBtnSize().padding), right: getSizeByUnit(this.getBtnSize().padding), top: 0, bottom: 0 })
 		.borderWidth(convertDimensionsWidthUnit(this.hairline ? 0.5 : 1))
 		.borderRadius(this.getBtnBorderRadius())
 		.fontColor(this.getBtnTextColor())
@@ -291,7 +293,10 @@ export struct IBestButton {
 		.enabled(!this.disabled)
 		.opacity(this.disabled && this.plain ? 0.5 : 1)
 		.onTouch(event => {
-			event.type == TouchType.Up && this.onClickBtn(event)
+			if(event.type == TouchType.Up){
+				this.onClickBtn()
+				this.onBtnClick()
+			}
 		})
 		.animation({ duration: this.baseStyle.animationDuration as number })
 	}

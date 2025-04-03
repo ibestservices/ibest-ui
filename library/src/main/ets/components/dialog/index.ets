@@ -3,8 +3,8 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { convertDimensionsWidthUnit, sleep } from '../../utils/utils';
 import { IBestStringNumber } from '../../model/Global.type';
-
-@CustomDialog
+import { ImmersiveMode, LengthMetrics, LevelMode } from '@kit.ArkUI';
+@Component
 export struct IBestDialog {
 	/**
 	 * 全局公共样式
@@ -23,6 +23,11 @@ export struct IBestDialog {
 	 * 弹窗圆角
 	 */
 	@Prop dialogBorderRadius: IBestStringNumber = this.baseStyle.spaceMd as string
+	/**
+	 * 背景图片
+	 * @since 2.0.8
+	 */
+	@Prop bgColor: ResourceColor = ''
 	/**
 	 * 背景图片
 	 * @since 2.0.7
@@ -157,8 +162,7 @@ export struct IBestDialog {
 	 */
 	@Prop cancelButtonLoading: boolean = false
 	/**
-	 * 弹窗是否为模态窗口，模态窗口有蒙层，非模态窗口无蒙层。
-	 * API11+
+	 * 弹窗是否为模态窗口，模态窗口有蒙层，非模态窗口无蒙层
 	 */
 	@Prop showOverlay: boolean = true
 	/**
@@ -166,9 +170,7 @@ export struct IBestDialog {
 	 */
 	@Prop overlayColor: ResourceColor = '0x33000000'
 	/**
-	 * 某弹框需要显示在主窗口之外时，是否在子窗口显示此弹窗。
-	 * 默认值：false，弹窗显示在应用内，而非独立子窗口。
-	 * API 10 +
+	 * 某弹框需要显示在主窗口之外时，是否在子窗口显示此弹窗
 	 */
 	@Prop showInSubWindow: boolean = false
 	/**
@@ -193,21 +195,36 @@ export struct IBestDialog {
 	 */
 	@Prop offsetY: IBestStringNumber = 0
 	/**
-	 * 关闭前的回调函数，返回 false 可阻止关闭，支持返回 Promise
+	 * 弹窗避让键盘后，和键盘之间的距离
+	 * @since 2.0.8
 	 */
-	beforeClose?: (action: 'cancel' | 'confirm') => Promise<boolean> | boolean
+	@Prop keyboardAvoidDistance: LengthMetrics = LengthMetrics.vp(16)
+	/**
+	 * 弹窗显示层级
+	 * @since 2.0.8
+	 */
+	@Prop levelMode: LevelMode = 0
+	/**
+	 * 页面级弹窗需要显示的层级下的节点 uniqueId, 仅当levelMode属性设置为LevelMode.EMBEDDED时生效
+	 * @since 2.0.8
+	 */
+	@Prop levelUniqueId: number = 0
 	/**
 	 * 标题区域的builder
 	 */
-	@BuilderParam titleBuilder?: CustomBuilder
+	@BuilderParam titleBuilder: CustomBuilder
 	/**
 	 * 内容区域的builder
 	 */
-	@BuilderParam defaultBuilder?: CustomBuilder
+	@BuilderParam defaultBuilder: CustomBuilder
 	/**
 	 * 底部区域的builder
 	 */
-	@BuilderParam footerBuilder?: CustomBuilder
+	@BuilderParam footerBuilder: CustomBuilder
+	/**
+	 * 关闭前的回调函数，返回 false 可阻止关闭，支持返回 Promise
+	 */
+	beforeClose?: (action: 'cancel' | 'confirm') => Promise<boolean> | boolean
 	/**
 	 * 弹框打开回调
 	 * @since 1.16.0
@@ -221,18 +238,20 @@ export struct IBestDialog {
 	/**
 	 * 点击取消的回调
 	 */
-	onCancel: (event?: ClickEvent) => void = () => {}
+	onCancel: () => void = () => {}
 	/**
 	 * 点击确认的的回调
 	 */
-	onConfirm: (event?: ClickEvent) => void = () => {}
-	dialogController?: CustomDialogController = new CustomDialogController({
-		builder: IBestDialogView({
-			bgImage: this.bgImage,
-			titleBuilder: this.titleBuilder,
-			defaultBuilder: this.defaultBuilder,
-			footerBuilder: this.footerBuilder,
+	onConfirm: () => void = () => {}
+
+	private promptAction = this.getUIContext().getPromptAction()
+	private dialogId: number = 0
+	@Builder dialogBuilder(){
+		IBestDialogView({
+			dialogWidth: this.dialogWidth,
 			dialogBorderRadius: this.dialogBorderRadius,
+			bgColor: this.bgColor,
+			bgImage: this.bgImage,
 			title: this.title,
 			titleColor: this.titleColor,
 			titlePaddingTop: this.titlePaddingTop,
@@ -241,7 +260,6 @@ export struct IBestDialog {
 			titleFontSize: this.titleFontSize,
 			titleTextAlign: this.titleTextAlign,
 			message: this.message,
-			dialogWidth: $dialogWidth,
 			messagePaddingX: this.messagePaddingX,
 			messagePaddingTop: this.messagePaddingTop,
 			messagePaddingBottom: this.messagePaddingBottom,
@@ -255,15 +273,18 @@ export struct IBestDialog {
 			showCancelButton: this.showCancelButton,
 			confirmButtonText: this.confirmButtonText,
 			cancelButtonText: this.cancelButtonText,
+			buttonFontSize: this.buttonFontSize,
 			confirmButtonColor: this.confirmButtonColor,
 			confirmButtonBgColor: this.confirmButtonBgColor,
 			cancelButtonColor: this.cancelButtonColor,
 			cancelButtonBgColor: this.cancelButtonBgColor,
 			confirmButtonDisabled: this.confirmButtonDisabled,
 			cancelButtonDisabled: this.cancelButtonDisabled,
-			buttonFontSize: this.buttonFontSize,
 			confirmButtonLoading: this.confirmButtonLoading,
 			cancelButtonLoading: this.cancelButtonLoading,
+			titleBuilder: this.titleBuilder,
+			defaultBuilder: this.defaultBuilder,
+			footerBuilder: this.footerBuilder,
 			onCancel: () => {
 				this.handleCancel()
 			},
@@ -271,37 +292,22 @@ export struct IBestDialog {
 				this.handleConfirm()
 			},
 			onClickOverlay: () => {
-				if(this.closeOnClickOverlay){
+				if (this.closeOnClickOverlay) {
 					this.handleCancel()
 				}
 			}
-		}),
-		alignment: this.getAlignment(this.alignment),
-		customStyle: true,
-		offset: {
-			dx: this.offsetX,
-			dy: this.offsetY
-		},
-		cancel: () => {
-			this.handleCancel()
-		},
-		isModal: this.showOverlay,
-		maskColor: this.overlayColor,
-		showInSubWindow: this.showInSubWindow,
-		// keyboardAvoidMode: KeyboardAvoidMode.NONE,
-		onWillDismiss: (dismissDialogAction: DismissDialogAction) => {
-			// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
-			let reason = dismissDialogAction.reason
-			if (reason == DismissReason.PRESS_BACK && this.closeOnBackPress) {
-				dismissDialogAction.dismiss()
-			}
-			if (reason == DismissReason.TOUCH_OUTSIDE && this.closeOnClickOverlay) {
-				dismissDialogAction.dismiss()
-			}
+		})
+	}
+	// visible 变化
+	visibleChange() {
+		if (this.visible) {
+			this.open()
+		} else {
+			this.promptAction.closeCustomDialog(this.dialogId)
 		}
-	})
-	getAlignment(type: string) {
-		switch (type) {
+	}
+	getAlignment() {
+		switch (this.alignment) {
 			case 'center':
 				return DialogAlignment.Center
 			case 'top':
@@ -312,25 +318,19 @@ export struct IBestDialog {
 				return DialogAlignment.Center
 		}
 	}
-	/**
-	 * 结束前的动画
-	 * @param from
-	 * @returns
-	 */
+	// 结束前的动画
 	async handleBeforeClose(action: 'cancel' | 'confirm') {
 		let status = true
 		try {
 			if (this.beforeClose) {
-				status = await this.beforeClose(action);
+				status = await this.beforeClose(action)
 			}
 		} catch (e) {
 			status = false
 		}
 		return status
 	}
-	/**
-	 * 点击取消的回调
-	 */
+	// 点击取消的回调
 	async handleCancel() {
 		if (this.cancelButtonDisabled || this.cancelButtonLoading) {
 			return
@@ -350,9 +350,7 @@ export struct IBestDialog {
 		await sleep()
 		this.cancelButtonDisabled = false
 	}
-	/**
-	 * 点击确定的回调
-	 */
+	// 点击确定的回调
 	async handleConfirm() {
 		if (this.confirmButtonDisabled || this.confirmButtonLoading) {
 			return
@@ -373,25 +371,44 @@ export struct IBestDialog {
 		this.confirmButtonDisabled = false;
 		this.confirmButtonLoading = false;
 	}
-	/**
-	 * visible 变化
-	 */
-	visibleChange() {
-		if (this.visible) {
-			this.dialogController?.open()
-			this.onOpen()
-		} else {
-			this.dialogController?.close()
-			this.onClose()
-		}
+	// 打开
+	async open(){
+		this.dialogId = await this.promptAction.openCustomDialog({
+			builder: () => {
+				this.dialogBuilder()
+			},
+			backgroundBlurStyle: BlurStyle.NONE,
+			cornerRadius: 0,
+			alignment: this.getAlignment(),
+			offset: {
+				dx: this.offsetX,
+				dy: this.offsetY
+			},
+			isModal: this.showOverlay,
+			maskColor: this.overlayColor,
+			showInSubWindow: this.showInSubWindow,
+			keyboardAvoidDistance: this.keyboardAvoidDistance,
+			// immersiveMode: ImmersiveMode.EXTEND,
+			levelMode: this.levelMode,
+			levelUniqueId: this.levelUniqueId,
+			onDidAppear: () => {
+				this.onOpen()
+			},
+			onDidDisappear: () => {
+				this.onClose()
+			},
+			onWillDismiss:(dismissDialogAction: DismissDialogAction)=> {
+				// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
+				let reason = dismissDialogAction.reason
+				if (reason == DismissReason.PRESS_BACK && this.closeOnBackPress || reason == DismissReason.TOUCH_OUTSIDE && this.closeOnClickOverlay) {
+					this.close()
+				}
+			}
+		})
 	}
-	/**
-	 * 关闭
-	 */
+	// 关闭
 	close() {
-		this.dialogController?.close()
 		this.visible = false
-		this.onClose()
 	}
 	build() {}
 }

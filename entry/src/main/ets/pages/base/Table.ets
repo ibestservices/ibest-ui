@@ -1,8 +1,12 @@
-import router from '@ohos.router';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { IBestButton, IBestIcon, IBestNavBar, IBestTable, IBestTableColumn, IBestTableColumnData, IBestToast } from '@ibestservices/ibest-ui';
-import { ComponentRouterParams } from '../../assets/global.type';
+import { IBestButton, IBestIcon, IBestTable, IBestTableColumn, IBestTableColumnData, IBestToast } from '@ibestservices/ibest-ui';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function TableBuilder(_: string, title: string){
+	TablePage({title})
+}
 
 interface TableData{
 	date: string
@@ -20,7 +24,7 @@ interface TableData1{
 @Entry
 @Component
 struct TablePage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State tableId: string = "table"
 	@State data: TableData[] = [
         { date: '2025-03-10', name: 'IBest-UI', desc: '一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库。' },
@@ -74,7 +78,7 @@ struct TablePage {
 			IBestButton({
 				type: "primary",
 				text: "操作",
-				onClickBtn: () => {
+				onBtnClick: () => {
 					IBestToast.show(`当前点击的行数据为${row.date} ${row.name}`)
 				}
 			})
@@ -85,14 +89,8 @@ struct TablePage {
 		return row.date.replaceAll('-', '/')
 	}
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -136,7 +134,7 @@ struct TablePage {
 							IBestButton({
 								type: "primary",
 								text: "切换日期列显示",
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.showDate = !this.showDate
 								}
 							})
@@ -196,16 +194,12 @@ struct TablePage {
 						}
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding({
-				left: SPACE.SM,
-				right: SPACE.SM,
-				bottom: SPACE.XL
-			})
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

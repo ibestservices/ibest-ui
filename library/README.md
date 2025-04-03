@@ -2,9 +2,11 @@
 
 ## 简介
 
-IBest-UI是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库, 完美兼容元服务。
+IBest-UI是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库, 包含
+Button、Calendar、Form、Field、Picker、Popup、Toast、Dialog、ImageCropper
+等50+个优质组件。
 
-目前 ibestservices 官方推出了V1版本, V2版本正在路上!!!
+目前 ibestservices 官方提供了 <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui" target="_blank">V1</a> 和 <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2" target="_blank">V2</a> 版本, 当前为状态管理 **V1** 版本，请根据自己项目使用的**状态管理版本**选择对应的版本使用。
 
 ![IBest-UI-Light](https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI-Light.png)
 
@@ -12,13 +14,14 @@ IBest-UI是一个**轻量、简单易用、可定制主题、支持深色模式�
 
 ## 文档地址
 
-https://ibestui.ibestservices.com/
+https://ibestui.ibestservices.com
 
 ## 特性
 - 🚀 50+ 个高质量组件，覆盖移动端主流场景
 - 💪 单元测试覆盖率超过 90%，提供稳定性保障
 - 📖 提供丰富的中文文档和组件示例
 - 🍭 支持主题定制，内置 100+ 个主题变量
+- 🍭 支持元服务
 - 🍭 支持深色模式
 - 🌍 支持国际化
 
@@ -98,11 +101,12 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | Watermark 水印         | 在页面上添加特定的文字或图案作为水印，可用于防止信息盗用。      | <a href="https://ibestui.ibestservices.com/components/watermark/" target="__blank">文档</a>      |
 
 ### 导航组件
-| 组件           | 介绍                         |                                                                                         |
-|:-------------|:---------------------------|-----------------------------------------------------------------------------------------|
-| NavBar 导航栏   | 为页面提供导航功能，常用于页面顶部。         | <a href="https://ibestui.ibestservices.com/components/navBar/" target="__blank">文档</a>  |
-| SideBar 侧边导航 | 垂直展示的导航栏，用于在不同的内容区域之间进行切换。 | <a href="https://ibestui.ibestservices.com/components/sideBar/" target="__blank">文档</a> |
-| Tab 标签页      | 选项卡组件，用于在不同的内容区域之间进行切换。    | <a href="https://ibestui.ibestservices.com/components/tab/" target="__blank">文档</a>     |
+| 组件            | 介绍                             |                                                                                            |
+|:--------------|:-------------------------------|--------------------------------------------------------------------------------------------|
+| NavBar 导航栏    | 为页面提供导航功能，常用于页面顶部。             | <a href="https://ibestui.ibestservices.com/components/navBar/" target="__blank">文档</a>     |
+| Pagination 分页 | 数据量过多时，采用分页的形式将数据分隔，每次只加载一个页面。 | <a href="https://ibestui.ibestservices.com/components/pagination/" target="__blank">文档</a> |
+| SideBar 侧边导航  | 垂直展示的导航栏，用于在不同的内容区域之间进行切换。     | <a href="https://ibestui.ibestservices.com/components/sideBar/" target="__blank">文档</a>    |
+| Tab 标签页       | 选项卡组件，用于在不同的内容区域之间进行切换。        | <a href="https://ibestui.ibestservices.com/components/tab/" target="__blank">文档</a>        |
 
 ### 业务组件
 | 组件                | 介绍               |                                                                                              |
@@ -153,10 +157,3 @@ Non-Bundled Plugins:
 
 ## 开源协议
 本项目基于 Apache License 2.0，请自由地享受和参与开源。
-
-## 贡献者
-感谢以下同学对IBest-UI做的贡献:
-
-<a href="https://github.com/ibestservices/ibest-ui/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=ibestservices/ibest-ui" />
-</a>

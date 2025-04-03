@@ -1,56 +1,51 @@
-import router from '@ohos.router';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
-import { IBestEmpty, IBestLoading, IBestNavBar } from '@ibestservices/ibest-ui';
+import { IBestEmpty, IBestLoading } from '@ibestservices/ibest-ui';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function LoadingBuilder(_: string, title: string){
+	LoadingPage({title})
+}
+
 @Entry
 @Component
 struct LoadingPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@Builder
 	EmptyContain() {
 		IBestEmpty()
 	}
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '加载类型' }) {
-						Row() {
+						Row({space: SPACE.MD}) {
 							IBestLoading()
 							IBestLoading({
 								loadingIconType: 'spinner'
-							}).margin({ left: 20 })
+							})
 						}
 					}
-				}.margin({
-					bottom: SPACE.SM
-				})
+				}
 				ListItem() {
 					ComponentShowContainer({ title: '自定义颜色' }) {
-						Row() {
+						Row({space: SPACE.MD}) {
 							IBestLoading({
 								loadingColor: '#DB3131'
 							})
 							IBestLoading({
 								loadingColor: '#DB3131',
 								loadingIconType: 'spinner'
-							}).margin({ left: 20 })
+							})
 						}
 					}
-				}.margin({
-					bottom: SPACE.SM
-				})
+				}
 				ListItem() {
 					ComponentShowContainer({ title: '自定义大小' }) {
-						Row({ space: 20 }) {
+						Row({space: SPACE.MD}) {
 							IBestLoading({
 								loadingSize: 40
 							})
@@ -60,35 +55,25 @@ struct LoadingPage {
 							})
 						}
 					}
-				}.margin({
-					bottom: SPACE.SM
-				})
+				}
 				ListItem() {
 					ComponentShowContainer({ title: '加载文案' }) {
-						Row() {
-							IBestLoading({
-								loadingText: '加载中...'
-							})
-						}
+						IBestLoading({
+							loadingText: '加载中...'
+						})
 					}
-				}.margin({
-					bottom: SPACE.SM
-				})
+				}
 				ListItem() {
 					ComponentShowContainer({ title: '水平排列' }) {
-						Row() {
-							IBestLoading({
-								loadingText: '加载中...',
-								vertical: false
-							})
-						}
+						IBestLoading({
+							loadingText: '加载中...',
+							vertical: false
+						})
 					}
-				}.margin({
-					bottom: SPACE.SM
-				})
+				}
 				ListItem() {
 					ComponentShowContainer({ title: '自定义文本颜色' }) {
-						Row() {
+						Row({space: SPACE.MD}) {
 							IBestLoading({
 								loadingText: '加载中...',
 								loadingTextColor: 'rgb(25, 137, 250)'
@@ -97,32 +82,25 @@ struct LoadingPage {
 								loadingText: '加载中...',
 								loadingColor: '#3D8AF2',
 								loadingTextColor: 'rgb(25, 137, 250)'
-							}).margin({ left: 20 })
+							})
 						}
 					}
-				}.margin({
-					bottom: SPACE.SM
-				})
+				}
 				ListItem() {
 					ComponentShowContainer({ title: '包含内容' }) {
 						IBestLoading({
-							defaultBuilder: this.EmptyContain,
+							defaultBuilder: (): void => this.EmptyContain(),
 							loadingMaskColor: 'rgba(0,0,0,0.5)',
 							loadingColor: 'rgb(25, 137, 250)'
 						})
 					}
-				}.margin({
-					bottom: SPACE.SM
-				})
+				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding({
-				left: SPACE.SM,
-				right: SPACE.SM
-			})
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

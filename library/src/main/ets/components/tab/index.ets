@@ -59,7 +59,7 @@ export struct IBestTabs{
      */
     @Prop isTabLineWidthFixed: boolean = false
     /**
-     * 标记线宽度
+     * 标记线宽度, isTabLineWidthFixed 为true时有效
      */
     @Provide({allowOverride: "tabLineWidth"}) tabLineWidth: IBestStringNumber = 0
     /**
@@ -73,7 +73,7 @@ export struct IBestTabs{
     /**
      * 标记线X偏移量
      */
-    @State translateX: number = typeof this.tabPadding == "number" ? this.tabPadding : parseFloat(this.tabPadding)
+    @State translateX: number = 0
     /**
      * 标记块X偏移量
      */
@@ -139,7 +139,7 @@ export struct IBestTabs{
     /**
      * controller 控制器
      */
-    tabController: IBestTabController = new IBestTabController()
+	private tabController: IBestTabController = new IBestTabController()
     private scroller: Scroller = new Scroller()
     private context: UIContext = this.getUIContext()
     private swiperController: SwiperController = new SwiperController()
@@ -149,6 +149,55 @@ export struct IBestTabs{
     @State startX: number = 0
     @State touchOffsetX: number = 0
     @State startTime: number = 0
+
+	@Builder tabBoxBuilder(showId: boolean = false){
+		Stack({alignContent: Alignment.BottomStart}){
+			// 标记块
+			if(this.isShowActiveBg || this.type == "card"){
+				Row()
+					.width(this.tabBoxWidth)
+					.height(getSizeByUnit(this.tabHeight))
+					.backgroundColor(this.getLineColor())
+					.borderRadius(this.type == "line" ? { topLeft: getSizeByUnit(this.radius), topRight: getSizeByUnit(this.radius) } : 0)
+					.translate({ x: this.tabBoxTranslateX })
+					.animation({
+						duration: this.isReady ? 100 : 0,
+						curve: Curve.FastOutSlowIn
+					})
+			}
+			Row(){
+				ForEach(this.tabsList, (item: IBestTabItem, index: number) => {
+					IBestTab({
+						item: item,
+						index: index,
+						currentName: this.currentName,
+						initSize: (): void => this.initSize(),
+						onTabClick: (name: IBestStringNumber): void => this.onTabClick(name)
+					})
+				}, (_: IBestTabItem, index: number) => index+'')
+			}
+			.width(this.tabWidthType == "flex" ? "100%" : "")
+			.height(getSizeByUnit(this.tabHeight))
+			.borderRadius(this.baseStyle.borderRadiusSm)
+			.border({ width: this.type == "card" ? 1 : 0, color: this.getLineColor() })
+			// 标记线
+			if(this.type == "line"){
+				Row()
+					.width(this.isTabLineWidthFixed ? getSizeByUnit(this.tabLineWidth) : this.tabLineWidth)
+					.height(getSizeByUnit(this.tabLineHeight))
+					.backgroundColor(this.getLineColor())
+					.translate({ x: this.translateX })
+					.animation({
+						duration: this.isReady ? 100 : 0,
+						curve: Curve.FastOutSlowIn
+					})
+					.offset({ y: `-${getSizeByUnit(this.lineOffsetY)}` })
+					.id(`ibest_tab_line_${this.uniId}`)
+			}
+		}
+		.backgroundColor(this.tabBgColor)
+		.id(showId ? `ibest_tab_box_${this.uniId}` : "")
+	}
 
     aboutToAppear(): void {
         this.uniId = this.getUniqueId()
@@ -234,9 +283,11 @@ export struct IBestTabs{
             }
         }
     }
+	getLineColor(){
+		return this.tabLineColor || this.baseStyle.primary
+	}
     getTabLineWidth(){
         return getComponentsInfo(this.context, `ibest_tab_line_${this.uniId}`).width
-        // return typeof this.tabLineWidth == "number" ? this.tabLineWidth : parseFloat(this.tabLineWidth)
     }
     // 滚动居中
     scrollCenter(animate: boolean = true){
@@ -277,14 +328,7 @@ export struct IBestTabs{
         Column({ space: convertDimensionsWidthUnit(15) }){
             if(this.tabWidthType == "auto"){
                 Scroll(this.scroller){
-                    IBestTabBox({
-                        currentName: $currentName,
-                        translateX: this.translateX,
-                        tabBoxWidth: this.tabBoxWidth,
-                        tabBoxTranslateX: this.tabBoxTranslateX,
-                        initSize: (): void => this.initSize(),
-                        onTabClick: (name: IBestStringNumber): void => this.onTabClick(name)
-                    })
+					this.tabBoxBuilder()
                 }
                 .scrollable(ScrollDirection.Horizontal)
                 .scrollBar(BarState.Off)
@@ -292,14 +336,7 @@ export struct IBestTabs{
                 .constraintSize({ maxHeight: getSizeByUnit(this.tabHeight) })
                 .id(`ibest_tabContent_${this.uniId}`)
             }else{
-                IBestTabBox({
-                    currentName: $currentName,
-                    translateX: this.translateX,
-                    tabBoxWidth: this.tabBoxWidth,
-                    tabBoxTranslateX: this.tabBoxTranslateX,
-                    initSize: (): void => this.initSize(),
-                    onTabClick: (name: IBestStringNumber): void => this.onTabClick(name)
-                }).id(`ibest_tabContent_${this.uniId}`)
+				this.tabBoxBuilder(true)
             }
             // if(this.tabContent){
             //     Swiper(this.swiperController){
@@ -328,83 +365,6 @@ export struct IBestTabs{
         }
         .width(CONTAINER_SIZE.FULL)
         .alignItems(HorizontalAlign.Start)
-    }
-}
-
-@Component
-struct IBestTabBox{
-    /**
-     * 全局公共样式
-     */
-    @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-    @Consume uniId: number
-    @Link currentName: IBestStringNumber
-    @Consume isReady: boolean
-    @Consume type: 'line' | 'card'
-    @Consume tabWidthType: "auto" | "flex"
-    @Consume tabHeight: IBestStringNumber
-    @Consume tabsList: IBestTabItem[]
-    @Consume tabBgColor: ResourceColor
-    @Consume tabLineWidth: number
-    @Consume tabLineHeight: IBestStringNumber
-    @Consume tabLineColor: ResourceColor
-    @Consume lineOffsetY: IBestStringNumber
-    @Consume isShowActiveBg: boolean
-    @Consume radius: IBestStringNumber
-    @Prop translateX: number
-    @Prop tabBoxTranslateX: number
-    @Prop tabBoxWidth: number
-    initSize: () => void = () => () => {}
-    onTabClick: (name: IBestStringNumber) => void = () => {}
-    getLineColor(){
-        return this.tabLineColor || this.baseStyle.primary
-    }
-    build() {
-        Stack({alignContent: Alignment.BottomStart}){
-            // 标记块
-            if(this.isShowActiveBg || this.type == "card"){
-                Row()
-                    .width(this.tabBoxWidth)
-                    .height(getSizeByUnit(this.tabHeight))
-                    .backgroundColor(this.getLineColor())
-                    .borderRadius(this.type == "line" ? { topLeft: getSizeByUnit(this.radius), topRight: getSizeByUnit(this.radius) } : 0)
-                    .translate({ x: this.tabBoxTranslateX })
-                    .animation({
-                        duration: this.isReady ? 100 : 0,
-                        curve: Curve.FastOutSlowIn
-                    })
-            }
-            Row(){
-                ForEach(this.tabsList, (item: IBestTabItem, index: number) => {
-                    IBestTab({
-                        item: item,
-                        index: index,
-                        currentName: $currentName,
-                        initSize: this.initSize,
-                        onTabClick: this.onTabClick
-                    })
-                }, (item: IBestTabItem, index: number) => index+'')
-            }
-            .width(this.tabWidthType == "flex" ? "100%" : "")
-            .height(getSizeByUnit(this.tabHeight))
-            .borderRadius(this.baseStyle.borderRadiusSm)
-            .border({ width: this.type == "card" ? 1 : 0, color: this.getLineColor() })
-            // 标记线
-            if(this.type == "line"){
-                Row()
-                    .width(getSizeByUnit(this.tabLineWidth))
-                    .height(getSizeByUnit(this.tabLineHeight))
-                    .backgroundColor(this.getLineColor())
-                    .translate({ x: this.translateX })
-                    .animation({
-                        duration: this.isReady ? 100 : 0,
-                        curve: Curve.FastOutSlowIn
-                    })
-                    .offset({ y: `-${getSizeByUnit(this.lineOffsetY)}` })
-                    .id(`ibest_tab_line_${this.uniId}`)
-            }
-        }
-        .backgroundColor(this.tabBgColor)
     }
 }
 

@@ -1,26 +1,25 @@
-import router from '@ohos.router';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
-import { ComponentRouterParams } from '../../assets/global.type';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { IBestButton, IBestCountDown, IBestCountDownController, IBestNavBar } from '@ibestservices/ibest-ui';
+import { IBestButton, IBestCountDown, IBestCountDownController } from '@ibestservices/ibest-ui';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function CountDownBuilder(_: string, title: string){
+	CountDownPage({title})
+}
+
 @Entry
 @Component
 struct CountDownPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State time: number = 30 * 60 * 60 * 1000
 
 	@State time1: number = 3 * 1000
 	private controller = new IBestCountDownController()
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -58,21 +57,21 @@ struct CountDownPage {
 								IBestButton({
 									type: 'primary',
 									text: "开始",
-									onClickBtn: () => {
+									onBtnClick: () => {
 										this.controller.start()
 									}
 								})
 								IBestButton({
 									type: 'primary',
 									text: "暂停",
-									onClickBtn: () => {
+									onBtnClick: () => {
 										this.controller.pause()
 									}
 								})
 								IBestButton({
 									type: 'primary',
 									text: "重置",
-									onClickBtn: () => {
+									onBtnClick: () => {
 										this.controller.reset()
 									}
 								})
@@ -84,13 +83,9 @@ struct CountDownPage {
 				}
 			}
 			.layoutWeight(1)
-			.padding({
-				left: SPACE.SM,
-				right: SPACE.SM
-			})
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg2)
 	}
 }

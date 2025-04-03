@@ -42,6 +42,16 @@ export struct IBestHighlight {
 	 * 高亮文字大小
 	 */
 	@Prop highLightFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
+	/**
+	 * 最大行数
+	 * @since 2.0.8
+	 */
+	@Prop maxLines?: number = undefined
+	/**
+	 * 超出隐藏
+	 * @since 2.0.8
+  	 */
+	@Prop overflow: TextOverflow = TextOverflow.None
 
 	highlightChunks(): Chunk[] {
 		const flags = this.caseSensitive ? 'g' : 'gi'
@@ -129,5 +139,7 @@ export struct IBestHighlight {
 		}
 		.fontSize(getSizeByUnit(this.textFontSize, true))
 		.fontColor(this.textColor)
+		.maxLines(this.maxLines)
+		.textOverflow({overflow: this.overflow})
 	}
 }

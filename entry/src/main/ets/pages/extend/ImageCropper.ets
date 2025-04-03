@@ -1,16 +1,18 @@
-import router from '@ohos.router';
-import { IBestButton, IBestDialogUtil, IBestNavBar, IBestImageCropper, IBestImageCropperController,
-	IBestUploader,
-	IBestUploaderFile,
-	IBestToast} from '@ibestservices/ibest-ui';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import { IBestButton, IBestDialogUtil, IBestImageCropper, IBestImageCropperController, IBestUploader, IBestUploaderFile, IBestToast } from '@ibestservices/ibest-ui';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
-import { savePixelMap } from '../../utils/utils';
+import CustomNavBar from '../../components/CustomNavBar';
+import { savePixelMap, shareImage } from '../../utils/utils';
+import { common } from '@kit.AbilityKit';
+@Builder
+export function ImageCropperBuilder(_: string, title: string){
+	ImageCropperPage({title})
+}
+
 @Entry
 @Component
-struct ImageCropPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+struct ImageCropperPage {
+	@State title: string = ''
 	@State imgList: IBestUploaderFile[] = []
 	@State initImg: string = ""
 	private controller: IBestImageCropperController = new IBestImageCropperController()
@@ -22,18 +24,30 @@ struct ImageCropPage {
 	private controller2: IBestImageCropperController = new IBestImageCropperController()
 
 	@State previewUrl: PixelMap | null = null
-	private context = getContext(this)
+	private context = getContext(this) as common.UIAbilityContext
+
 	@Builder
 	imgBuilder() {
 		Column({space: SPACE.MD}) {
 			Image(this.previewUrl)
 				.width(260)
-			SaveButton({ text: SaveDescription.SAVE_IMAGE })
-				.onClick((event: ClickEvent, result: SaveButtonOnClickResult) => {
-					if (result == SaveButtonOnClickResult.SUCCESS) {
-						this.saveImg(this.previewUrl)
+			Row({space: SPACE.MD}){
+				SaveButton({ text: SaveDescription.SAVE_IMAGE })
+					.onClick((event: ClickEvent, result: SaveButtonOnClickResult) => {
+						if (result == SaveButtonOnClickResult.SUCCESS) {
+							this.saveImg(this.previewUrl)
+						}
+					})
+				IBestButton({
+					text: "分享",
+					btnWidth: 100,
+					btnHeight: 40,
+					round: true,
+					onBtnClick: () => {
+						shareImage(this.context, this.previewUrl!)
 					}
 				})
+			}
 		}
 		.padding(SPACE.MD)
 	}
@@ -50,14 +64,8 @@ struct ImageCropPage {
 		}
 	}
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -77,14 +85,14 @@ struct ImageCropPage {
 							Row({space: SPACE.XS}){
 								IBestButton({
 									text: "重选",
-									onClickBtn: () => {
+									onBtnClick: () => {
 										this.imgList = []
 									}
 								})
 								IBestButton({
 									type: "primary",
 									text: "获取结果",
-									onClickBtn: () => {
+									onBtnClick: () => {
 										this.controller.getResult().then(res => {
 											this.previewUrl = res
 											this.showResult()
@@ -106,7 +114,7 @@ struct ImageCropPage {
 							IBestButton({
 								type: "primary",
 								text: "获取结果",
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller1.getResult(res => {
 										this.previewUrl = res
 										this.showResult()
@@ -129,7 +137,7 @@ struct ImageCropPage {
 							IBestButton({
 								type: "primary",
 								text: "获取结果",
-								onClickBtn: async () => {
+								onBtnClick: async () => {
 									this.previewUrl = await this.controller2.getResult()
 									this.showResult()
 								}
@@ -137,12 +145,12 @@ struct ImageCropPage {
 						}
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding({ left: SPACE.SM, right: SPACE.SM, bottom: SPACE.SM })
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

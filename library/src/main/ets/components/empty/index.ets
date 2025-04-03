@@ -47,20 +47,20 @@ export struct IBestEmpty {
 	 * @since 1.18.0
 	 */
 	@Prop emptyImgUrl: ResourceStr = ''
-	@Styles imgStyle(){
+	@Styles ibestEmptyImageStyle(){
 		.height(getSizeByUnit(this.imageSize))
 	}
 	@Builder EmptyImg() {
 		if (this.emptyImgUrl) {
-			Image(this.emptyImgUrl).imgStyle()
+			Image(this.emptyImgUrl).ibestEmptyImageStyle()
 		} else if (this.emptyImage === 'default') {
-			Image($r("app.media.ibest_empty")).imgStyle()
+			Image($r("app.media.ibest_empty")).ibestEmptyImageStyle()
 		} else if (this.emptyImage === 'network') {
-			Image($r("app.media.ibest_empty_network_error")).imgStyle()
+			Image($r("app.media.ibest_empty_network_error")).ibestEmptyImageStyle()
 		} else if (this.emptyImage === 'search') {
-			Image($r("app.media.ibest_empty_search_error")).imgStyle()
+			Image($r("app.media.ibest_empty_search_error")).ibestEmptyImageStyle()
 		} else if (this.emptyImage === 'error') {
-			Image($r("app.media.ibest_empty_error")).imgStyle()
+			Image($r("app.media.ibest_empty_error")).ibestEmptyImageStyle()
 		}
 	}
 	build() {

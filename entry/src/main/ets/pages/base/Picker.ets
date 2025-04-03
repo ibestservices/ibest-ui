@@ -1,20 +1,17 @@
-import {
-    IBestField,
-    IBestNavBar,
-    IBestPicker,
-    IBestPickerOption,
-    IBestPopup,
-    IBestToast
-} from '@ibestservices/ibest-ui'
+import { IBestField, IBestPicker, IBestPickerOption, IBestPopup, IBestToast } from '@ibestservices/ibest-ui'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
-import { router } from '@kit.ArkUI'
-import { ComponentRouterParams } from '../../assets/global.type'
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import CustomNavBar from '../../components/CustomNavBar'
+
+@Builder
+export function PickerBuilder(_: string, title: string){
+	PickerPage({title})
+}
 
 @Entry
 @Component
 struct PickerPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State options1: IBestPickerOption[] = [
 		{ text: '南京', value: 'Nanjing' },
 		{ text: '苏州', value: 'Suzhou' },
@@ -31,9 +28,6 @@ struct PickerPage {
 			title: "标题",
 			visibleItemCount: 5,
 			value: $selectValue1,
-			onChange: (selectedValues, selectTexts) => {
-				IBestToast.show(selectTexts.join('-'))
-			},
 			onConfirm: (selectedValues, selectTexts) => {
 				this.visible = false
 				this.filedValue = selectTexts.join('-')
@@ -135,14 +129,8 @@ struct PickerPage {
 	@State selectValue4: string[] = []
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SM, card: true }) {
@@ -234,9 +222,9 @@ struct PickerPage {
 						})
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding({ bottom: SPACE.LG })
 			// 弹出层
 			IBestPopup({
 				visible: $visible,
@@ -244,8 +232,7 @@ struct PickerPage {
 				contentBuilder: (): void => this.pickerBuilder()
 			})
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

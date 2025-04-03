@@ -261,6 +261,10 @@
 			"value": "NavBar"
 		},
 		{
+			"name": "component_pagination",
+			"value": "Pagination"
+		},
+		{
 			"name": "component_sideBar",
 			"value": "SideBar"
 		},
@@ -611,6 +615,10 @@
 		{
 			"name": "second",
 			"value": "Second"
+		},
+		{
+			"name": "size",
+			"value": "Size"
 		}
 	]
 }

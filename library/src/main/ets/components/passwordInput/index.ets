@@ -9,7 +9,7 @@ import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { IBestPasInputColor } from './color';
 import { IBestStringNumber } from '../../model/Global.type';
 
-@Extend(TextInput) function passwordInputStyle(id: number, inputLength: number){
+@Extend(TextInput) function ibestPasswordInputStyle(id: number, inputLength: number){
 	.width(CONTAINER_SIZE.FULL)
 	.height(CONTAINER_SIZE.FULL)
 	.maxLength(inputLength)
@@ -129,6 +129,12 @@ export struct IBestPasswordInput {
 	 * 区域点击
 	 */
 	onFieldClick: () => void = () => {}
+	/**
+	 * 输入完成
+	 * @since 2.0.8
+     */
+	onFinish: () => void = () => {}
+
 	private textInputController: TextInputController = new TextInputController()
 	private focusController: FocusController = this.getUIContext().getFocusController()
 	@Builder numberKeyboardBuilder(){
@@ -158,6 +164,8 @@ export struct IBestPasswordInput {
 			this.value = value.replace(/\s/g, "")
 		}else if(value.length > this.inputLength){
 			this.value = value.slice(0, this.inputLength)
+		}else if(value.length == this.inputLength){
+			this.onFinish()
 		}else{
 			this.inputList = Array(this.inputLength).fill("").map((_: string, index: number) => new IBestPasswordInputModel(value[index] || ""))
 			this.currentFocusIndex = value.length
@@ -172,7 +180,7 @@ export struct IBestPasswordInput {
 			Stack(){
 				if(this.useSystemKeyboard){
 					TextInput({ text: $$this.value, controller: this.textInputController })
-						.passwordInputStyle(this.uniId, this.inputLength)
+						.ibestPasswordInputStyle(this.uniId, this.inputLength)
 						.onFocus(() => {
 							this.focused = true
 						})
@@ -181,7 +189,7 @@ export struct IBestPasswordInput {
 						})
 				}else{
 					TextInput({ text: $$this.value, controller: this.textInputController })
-						.passwordInputStyle(this.uniId, this.inputLength)
+						.ibestPasswordInputStyle(this.uniId, this.inputLength)
 						.customKeyboard(this.numberKeyboardBuilder, { supportAvoidance: true })
 						.onFocus(() => {
 							this.focused = true

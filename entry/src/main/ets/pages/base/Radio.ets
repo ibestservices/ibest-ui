@@ -1,13 +1,17 @@
-import router from '@ohos.router'
-import { IBestCell, IBestNavBar, IBestRadio, IBestRadioGroup } from '@ibestservices/ibest-ui'
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import { IBestCell, IBestDialogUtil, IBestRadio, IBestRadioGroup } from '@ibestservices/ibest-ui'
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
-import { ComponentRouterParams } from '../../assets/global.type'
+import CustomNavBar from '../../components/CustomNavBar'
+
+@Builder
+export function RadioBuilder(_: string, title: string){
+	RadioPage({title})
+}
 
 @Entry
 @Component
-struct CheckboxPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+struct RadioPage {
+	@State title: string = ''
 
 	@State group: string = "group"
 	@State active: string = "1"
@@ -19,21 +23,18 @@ struct CheckboxPage {
 	@State active2: number = 1
 
 	@State group3: string = "group3"
-	@State active3: boolean = false
+	@State active3: number = 1
+
+	@State group4: string = "group4"
+	@State active4: boolean = false
 
 	@Builder
 	CellRadio(name: boolean, group: string) {
 		IBestRadio({ name, group })
 	}
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -194,40 +195,66 @@ struct CheckboxPage {
 					}
 				}
 				ListItem() {
+					ComponentShowContainer({ title: '异步切换' }) {
+						IBestRadioGroup({ group: this.group3, active: $active3, beforeChange: () => {
+							return new Promise((resolve, reject) => {
+								IBestDialogUtil.open({
+									title: "提示",
+									message: "确定切换?",
+									showCancelButton: true,
+									onConfirm: () => {
+										resolve(true)
+									},
+									onCancel: () => {
+										reject(false)
+									}
+								})
+							})
+						} }){
+							IBestRadio({
+								group: this.group3,
+								label: '单选框',
+								name: 1
+							})
+							IBestRadio({
+								group: this.group3,
+								label: '单选框',
+								name: 2
+							})
+						}
+					}
+				}
+				ListItem() {
 					ComponentShowContainer({ title: '搭配单元格组件使用' }) {
-						IBestRadioGroup({ group: this.group3, active: $active3 }){
+						IBestRadioGroup({ group: this.group4, active: $active4 }){
 							IBestCell({
 								title: '是',
 								center: true,
-								rightIconBuilder: () => this.CellRadio(true, this.group3),
+								rightIconBuilder: () => this.CellRadio(true, this.group4),
 								clickable: true,
-								onClickCell: () => {
-									this.active3 = true
+								onCellClick: () => {
+									this.active4 = true
 								}
 							})
 							IBestCell({
 								title: '否',
 								center: true,
-								rightIconBuilder: () => this.CellRadio(false, this.group3),
+								rightIconBuilder: () => this.CellRadio(false, this.group4),
 								hasBorder: false,
 								clickable: true,
-								onClickCell: () => {
-									this.active3 = false
+								onCellClick: () => {
+									this.active4 = false
 								}
 							})
 						}
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding({
-				left: SPACE.SM,
-				right: SPACE.SM,
-				bottom: SPACE.MD
-			})
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

@@ -6,7 +6,7 @@ import { ColumnType, IBestPickerOption } from './index.type';
 import { IBestPickerColor } from './color';
 import { IBestStringNumber } from '../../model/Global.type';
 
-@Extend(Text) function pickerItemStyle(itemHeight: IBestStringNumber, fontSize: IBestStringNumber){
+@Extend(Text) function ibestPickerItemStyle(itemHeight: IBestStringNumber, fontSize: IBestStringNumber){
 	.width(CONTAINER_SIZE.FULL)
 	.height(getSizeByUnit(itemHeight))
 	.padding({ left: getDefaultBaseStyle().spaceBase, right: getDefaultBaseStyle().spaceBase })
@@ -18,7 +18,7 @@ import { IBestStringNumber } from '../../model/Global.type';
 	.textOverflow({ overflow: TextOverflow.Ellipsis })
 }
 
-@Extend(Text) function horizontalPickerItemStyle(itemWidth: IBestStringNumber, fontSize: IBestStringNumber){
+@Extend(Text) function ibestHorizontalPickerItemStyle(itemWidth: IBestStringNumber, fontSize: IBestStringNumber){
 	.width(getSizeByUnit(itemWidth))
 	.padding({ left: getDefaultBaseStyle().spaceBase, right: getDefaultBaseStyle().spaceBase })
 	.fontSize(getSizeByUnit(fontSize, true))
@@ -46,7 +46,7 @@ export struct IBestPicker{
 	/**
 	 * 分组id
 	 */
-	@Prop groupId: string = ""
+	@Prop groupId: IBestStringNumber = ""
 	/**
 	 * 当前选中的值
 	 */
@@ -54,7 +54,7 @@ export struct IBestPicker{
 	/**
 	 * 选项列表
 	 */
-	@Prop @Watch("optionsChange") options: IBestPickerOption[] | IBestPickerOption[][] = []
+	@Prop @Watch("init") options: IBestPickerOption[] | IBestPickerOption[][] = []
 	/**
 	 * 标题
 	 */
@@ -131,12 +131,12 @@ export struct IBestPicker{
 	@State isReady: boolean = false
 	private uiContext = this.getUIContext()
 
-	@Styles columnItemStyle(){
+	@Styles ibestPickerColumnItemStyle(){
 		.height(CONTAINER_SIZE.FULL)
 		.layoutWeight(1)
 		.monopolizeEvents(true)
 	}
-	@Styles rowItemStyle(){
+	@Styles ibestPickerRowItemStyle(){
 		.width(CONTAINER_SIZE.FULL)
 		.layoutWeight(1)
 		.monopolizeEvents(true)
@@ -145,16 +145,16 @@ export struct IBestPicker{
 		Stack() {
 			// 数据层
 			Row() {
-				ForEach(this.columns, (item: IBestPickerOption[], index) => {
+				ForEach(this.getColumns(), (item: IBestPickerOption[], index) => {
 					Column() {
-						ForEach(item, (e: IBestPickerOption, index: number) => {
+						ForEach(item, (e: IBestPickerOption, index1) => {
 							Text(e.text)
-								.pickerItemStyle(this.itemHeight, this.optionFontSize)
-								.id(`ibest_picker_text_${this.uniId}_${index}`)
+								.ibestPickerItemStyle(this.itemHeight, this.optionFontSize)
+								.id(`ibest_picker_text_${this.uniId}_${index1}`)
 						})
 					}
 					.translate({ y: this.offsetList[index] + this.getBaseOffset() })
-					.columnItemStyle()
+					.ibestPickerColumnItemStyle()
 					.animation({
 						duration: this.isReady ? swipeDuration : 0,
 						curve: Curve.Ease
@@ -186,9 +186,9 @@ export struct IBestPicker{
 			.justifyContent(FlexAlign.SpaceBetween)
 			// 触摸层
 			Row() {
-				ForEach(this.columns, (item: IBestPickerOption[], index) => {
+				ForEach(this.getColumns(), (_: IBestPickerOption[], index) => {
 					Column()
-						.columnItemStyle()
+						.ibestPickerColumnItemStyle()
 						.gesture(
 							PanGesture({
 								fingers: 1,
@@ -218,16 +218,16 @@ export struct IBestPicker{
 		Stack() {
 			// 数据层
 			Column() {
-				ForEach(this.columns, (item: IBestPickerOption[], index) => {
+				ForEach(this.getColumns(), (item: IBestPickerOption[], index) => {
 					Row() {
-						ForEach(item, (e: IBestPickerOption) => {
+						ForEach(item, (e: IBestPickerOption, index1) => {
 							Text(e.text)
-								.horizontalPickerItemStyle(this.itemWidth, this.optionFontSize)
-								.id(`ibest_picker_text_${this.uniId}_${index}`)
+								.ibestHorizontalPickerItemStyle(this.itemWidth, this.optionFontSize)
+								.id(`ibest_picker_text_${this.uniId}_${index1}`)
 						})
 					}
 					.translate({ x: this.offsetList[index] + this.getBaseOffset() })
-					.rowItemStyle()
+					.ibestPickerRowItemStyle()
 					.animation({
 						duration: this.isReady ? swipeDuration : 0,
 						curve: Curve.Ease
@@ -260,9 +260,9 @@ export struct IBestPicker{
 			.justifyContent(FlexAlign.SpaceBetween)
 			// 触摸层
 			Column() {
-				ForEach(this.columns, (item: IBestPickerOption[], index) => {
+				ForEach(this.getColumns(), (_: IBestPickerOption[], index) => {
 					Row()
-						.rowItemStyle()
+						.ibestPickerRowItemStyle()
 						.gesture(
 							PanGesture({
 								fingers: 1,
@@ -299,7 +299,7 @@ export struct IBestPicker{
 		return Array.isArray(this.options[0]) ? "multiple" : "cascade"
 	}
 	// 初始化数据
-	init(type?: string){
+	init(){
 		this.columnType = this.getColumnType()
 		this.columns = []
 		if(this.columnType == "cascade") {
@@ -311,7 +311,7 @@ export struct IBestPicker{
 				this.initWithEmptyValue([], this.options as IBestPickerOption[])
 			}
 		}else{
-			this.initWidthMultiple(type)
+			this.initWidthMultiple()
 		}
 		this.initSize()
 	}
@@ -355,22 +355,21 @@ export struct IBestPicker{
 		}
 	}
 	// 初始化多列类型
-	initWidthMultiple(type?:string){
+	initWidthMultiple(){
 		let options = this.options as IBestPickerOption[][]
 		if(!this.value.length){
 			this.value = Array(options.length).fill(0)
 		}
 		options.forEach((item, index) => {
-			let i = item.findIndex(e => e.value == this.value[index])
-			i = i > -1 ? i : 0
-			this.indexArr[index] = i
-			this.value[index] = item[i].value
-			if(i > -1){
-				if(type == "change"){
-					this.value[index] = item[i].value
-				}
+			if(item.length) {
+				let i = item.findIndex(e => e.value == this.value[index])
+				i = i > -1 ? i : 0
+				this.indexArr[index] = i
+				this.value[index] = item[i].value
+			}else{
+				this.indexArr[index] = 0
+				this.value[index] = ''
 			}
-			this.columns.push(item)
 		})
 	}
 	// 初始化多列位置
@@ -403,9 +402,9 @@ export struct IBestPicker{
 			this.initCascadeOffset(index+1, children[i].children!)
 		}
 	}
-	// 列表变化
-	optionsChange(){
-		this.init("change")
+	// 获取列数据
+	getColumns(){
+		return this.columnType == "cascade" ? this.columns : this.options as IBestPickerOption[][]
 	}
 	// 获取初始位置
 	getBaseOffset(): number{
@@ -417,7 +416,7 @@ export struct IBestPicker{
 	}
 	// 通过偏移量获取索引
 	getIndexByOffset(columnIndex: number, offset: number) {
-		return clamp(Math.round(-offset / (this.horizontal ? this.itemCalcWidth : this.itemCalcHeight)), 0, this.columns[columnIndex].length - 1)
+		return clamp(Math.round(-offset / (this.horizontal ? this.itemCalcWidth : this.itemCalcHeight)), 0, this.getColumns()[columnIndex].length - 1)
 	}
 	// 通过索引更新偏移量
 	updateOffsetByIndex(columnIndex: number, index: number){
@@ -427,7 +426,7 @@ export struct IBestPicker{
 	// 重置列表数据
 	resetColumnOptions(columnIndex: number, i: number){
 		// console.log("重置列表数据", columnIndex, i)
-		this.columns.forEach((item, index, arr) => {
+		this.columns.forEach((_, index, arr) => {
 			if(index > columnIndex){
 				this.offsetList[index] = 0
 				this.indexArr[index] = 0
@@ -460,7 +459,7 @@ export struct IBestPicker{
 		let bl = this.horizontal ? event.offsetX : event.offsetY
 		let itemSize = this.horizontal ? this.itemCalcWidth : this.itemCalcHeight
 		let newOffset = this.startOffset + bl
-		let list = this.columns[columnIndex]
+		let list = this.getColumns()[columnIndex]
 		if(bl > 0 && newOffset > itemSize){
 			newOffset = itemSize
 		}else if(bl < 0 && newOffset < - list.length * itemSize){
@@ -499,11 +498,11 @@ export struct IBestPicker{
 	}
 	// 根据索引设置value
 	setValueByIndex(){
-		this.value = this.columns.map((item, index) => item[this.indexArr[index]].value)
+		this.value = this.getColumns().map((item, index) => item[this.indexArr[index]]?.value || "")
 	}
 	// 根据索引获取值 文字
 	getTextByIndex(): string[]{
-		return this.columns.map((item, index) => getResourceStr(item[this.indexArr[index]].text))
+		return this.getColumns().map((item, index) => getResourceStr(item[this.indexArr[index]]?.text || ""))
 	}
 
 	build() {

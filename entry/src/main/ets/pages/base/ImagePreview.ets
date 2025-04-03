@@ -1,13 +1,17 @@
-import router from '@ohos.router';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { IBestCell, IBestCellGroup, IBestImagePreview, IBestNavBar, IBestToast } from '@ibestservices/ibest-ui';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
-import { ComponentRouterParams } from '../../assets/global.type';
+import { IBestCell, IBestCellGroup, IBestImagePreview, IBestToast } from '@ibestservices/ibest-ui';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function ImagePreviewBuilder(_: string, title: string){
+	ImagePreviewPage({title})
+}
 
 @Entry
 @Component
 struct ImagePreviewPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 
 	@State imageList: string[] = [
 		"https://inews.gtimg.com/om_bt/Os3eJ8u3SgB3Kd-zrRRhgfR5hUvdwcVPKUTNO6O7sZfUwAA/641",
@@ -18,14 +22,8 @@ struct ImagePreviewPage {
 	]
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
@@ -34,7 +32,7 @@ struct ImagePreviewPage {
 								title: '预览图片',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestImagePreview.show(this.imageList)
 								}
 							})
@@ -47,7 +45,7 @@ struct ImagePreviewPage {
 							IBestCell({
 								title: '自定义遮罩颜色',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestImagePreview.show(this.imageList, {
 										maskColor: '#fff',
 										indexFontColor: "#000"
@@ -57,7 +55,7 @@ struct ImagePreviewPage {
 							IBestCell({
 								title: '指定初始索引',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestImagePreview.show(this.imageList, {
 										startIndex: 1
 									})
@@ -66,7 +64,7 @@ struct ImagePreviewPage {
 							IBestCell({
 								title: '指定页码位置',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestImagePreview.show(this.imageList, {
 										indexPosition: 'top'
 									})
@@ -75,7 +73,7 @@ struct ImagePreviewPage {
 							IBestCell({
 								title: '禁止循环',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestImagePreview.show(this.imageList, {
 										loop: false
 									})
@@ -85,7 +83,7 @@ struct ImagePreviewPage {
 								title: '监听事件',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestImagePreview.show(this.imageList, {
 										closeOnClickImage: false,
 										onImgClick: (index) => {
@@ -103,8 +101,7 @@ struct ImagePreviewPage {
 			}
 			.layoutWeight(1)
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

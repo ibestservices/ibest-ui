@@ -1,19 +1,21 @@
-import router from '@ohos.router';
 import {
     IBestButton,
     IBestCollapse,
     IBestCollapseController,
-    IBestCollapseItem,
-    IBestNavBar
+    IBestCollapseItem
 } from '@ibestservices/ibest-ui';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
+@Builder
+export function CollapseBuilder(_: string, title: string){
+	CollapsePage({title})
+}
 
 @Entry
 @Component
 struct CollapsePage {
-    @State title: string = (router.getParams() as ComponentRouterParams).title || ''
+    @State title: string = ''
     @State activeName: string[] = ['1']
     @State groupId: string = 'group'
 
@@ -27,20 +29,14 @@ struct CollapsePage {
     @State groupId3: string = "group3"
     private controller: IBestCollapseController = new IBestCollapseController()
     build() {
-        Column() {
-            IBestNavBar({
-                title: this.title,
-                isShowStatusBar: true,
-                onLeftClick: () => {
-                    router.back()
-                }
-            })
+		NavDestination() {
+			CustomNavBar({title: this.title})
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
                         IBestCollapse({
                             groupId: this.groupId,
-                            activeName: this.activeName
+                            activeName: $activeName
                         }){
                             IBestCollapseItem({
                                 groupId: this.groupId,
@@ -73,7 +69,7 @@ struct CollapsePage {
                     ComponentShowContainer({ title: '手风琴', titlePaddingLeft: SPACE.MD }) {
                         IBestCollapse({
                             groupId: this.groupId1,
-                            activeName: this.activeName1,
+                            activeName: $activeName1,
                             accordion: true
                         }){
                             IBestCollapseItem({
@@ -107,7 +103,7 @@ struct CollapsePage {
                     ComponentShowContainer({ title: '禁用状态', titlePaddingLeft: SPACE.MD }) {
                         IBestCollapse({
                             groupId: this.groupId,
-                            activeName: this.activeName
+                            activeName: $activeName
                         }){
                             IBestCollapseItem({
                                 groupId: this.groupId,
@@ -142,7 +138,7 @@ struct CollapsePage {
                     ComponentShowContainer({ title: '自定义标题', titlePaddingLeft: SPACE.MD }) {
                         IBestCollapse({
                             groupId: this.groupId2,
-                            activeName: this.activeName2
+                            activeName: $activeName2
                         }){
                             IBestCollapseItem({
                                 groupId: this.groupId2,
@@ -163,7 +159,7 @@ struct CollapsePage {
                             Text("当前禁用name: 2, 当前激活names: " + this.activeName3.join(",")).margin({bottom: SPACE.BASE})
                             IBestCollapse({
                                 groupId: this.groupId3,
-                                activeName: this.activeName3,
+                                activeName: $activeName3,
                                 controller: this.controller
                             }){
                                 IBestCollapseItem({
@@ -198,7 +194,7 @@ struct CollapsePage {
                                         type: "primary",
                                         text: "全部展开",
                                         buttonSize: "small",
-                                        onClickBtn: () => {
+                                        onBtnClick: () => {
                                             this.controller.toggleAll(true)
                                         }
                                     })
@@ -206,7 +202,7 @@ struct CollapsePage {
                                         type: "primary",
                                         text: "全部收起",
                                         buttonSize: "small",
-                                        onClickBtn: () => {
+                                        onBtnClick: () => {
                                             this.controller.toggleAll(false)
                                         }
                                     })
@@ -214,7 +210,7 @@ struct CollapsePage {
                                         type: "primary",
                                         text: "切换",
                                         buttonSize: "small",
-                                        onClickBtn: () => {
+                                        onBtnClick: () => {
                                             this.controller.toggleAll()
                                         }
                                     })
@@ -225,7 +221,7 @@ struct CollapsePage {
                                         type: "primary",
                                         text: "跳过禁用展开",
                                         buttonSize: "small",
-                                        onClickBtn: () => {
+                                        onBtnClick: () => {
                                             this.controller.toggleAll({
                                                 expanded: true,
                                                 skipDisabled: true
@@ -236,7 +232,7 @@ struct CollapsePage {
                                         type: "primary",
                                         text: "跳过禁用收起",
                                         buttonSize: "small",
-                                        onClickBtn: () => {
+                                        onBtnClick: () => {
                                             this.controller.toggleAll({
                                                 expanded: false,
                                                 skipDisabled: true
@@ -247,7 +243,7 @@ struct CollapsePage {
                                         type: "primary",
                                         text: "跳过禁用切换",
                                         buttonSize: "small",
-                                        onClickBtn: () => {
+                                        onBtnClick: () => {
                                             this.controller.toggleAll({
                                                 skipDisabled: true
                                             })
@@ -259,12 +255,11 @@ struct CollapsePage {
                         }.alignItems(HorizontalAlign.Center)
                     }
                 }
+				ListItem().height(true)
             }
             .layoutWeight(1)
-            .padding({bottom: SPACE.SM})
         }
-        .width(CONTAINER_SIZE.FULL)
-        .height(CONTAINER_SIZE.FULL)
+        .hideTitleBar(true)
         .backgroundColor(modeColor.bg)
     }
 }

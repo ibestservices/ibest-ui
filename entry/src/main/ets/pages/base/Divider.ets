@@ -1,13 +1,16 @@
-import router from '@ohos.router';
-import { IBestDivider, IBestNavBar } from '@ibestservices/ibest-ui';
+import { IBestDivider } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
+@Builder
+export function DividerBuilder(_: string, title: string){
+	DividerPage({title})
+}
 
 @Entry
 @Component
 struct DividerPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 
 	@Builder textBuilder(){
 		Row({space: 10}){
@@ -17,20 +20,14 @@ struct DividerPage {
 	}
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
-						Column({space: SPACE.MD}){
+						Column(){
 							IBestDivider()
-						}.padding({top: SPACE.MD, bottom: SPACE.MD})
+						}.padding({top: SPACE.MD})
 					}
 				}
 				ListItem() {
@@ -41,7 +38,7 @@ struct DividerPage {
 							IBestDivider({
 								textBuilder: this.textBuilder
 							})
-						}.padding({top: SPACE.MD, bottom: SPACE.MD})
+						}.padding({top: SPACE.MD})
 					}
 				}
 				ListItem() {
@@ -55,29 +52,29 @@ struct DividerPage {
 								text: '文本',
 								rightLineWidth: 50
 							})
-						}.padding({top: SPACE.MD, bottom: SPACE.MD})
+						}.padding({top: SPACE.MD})
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '虚线', titlePaddingLeft: SPACE.MD }) {
-						Column({space: SPACE.MD}){
+						Column(){
 							IBestDivider({
 								text: '文本',
 								dashed: true
 							})
-						}.padding({top: SPACE.MD, bottom: SPACE.MD})
+						}.padding({top: SPACE.MD})
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '自定义样式', titlePaddingLeft: SPACE.MD }) {
-						Column({space: SPACE.MD}){
+						Column(){
 							IBestDivider({
 								text: '文本',
 								color: "#3d8af2",
 								lineColor: "#3d8af2",
 								leftRightPadding: 20
 							})
-						}.padding({top: SPACE.MD, bottom: SPACE.MD})
+						}.padding({top: SPACE.MD})
 					}
 				}
 				ListItem() {
@@ -96,8 +93,7 @@ struct DividerPage {
 			}
 			.layoutWeight(1)
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg2)
 	}
 }

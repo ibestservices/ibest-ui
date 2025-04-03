@@ -1,25 +1,23 @@
-import router from '@ohos.router';
-import { IBestButton, IBestCircleProgress, IBestNavBar } from '@ibestservices/ibest-ui';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import { IBestButton, IBestCircleProgress } from '@ibestservices/ibest-ui';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
 import { LengthMetrics } from '@kit.ArkUI';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function CircleProgressBuilder(_: string, title: string){
+	CircleProgressPage({title})
+}
 
 @Entry
 @Component
 struct CircleProgressPage {
-    @State title: string = (router.getParams() as ComponentRouterParams).title || ''
+    @State title: string = ''
     @State value: number = 10
 
     build() {
-        Column() {
-            IBestNavBar({
-                title: this.title,
-                isShowStatusBar: true,
-                onLeftClick: () => {
-                    router.back()
-                }
-            })
+        NavDestination() {
+			CustomNavBar({title: this.title})
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '基础用法' }) {
@@ -63,7 +61,7 @@ struct CircleProgressPage {
                                     text: "增加",
                                     type: "primary",
                                     buttonSize: "small",
-                                    onClickBtn: () => {
+                                    onBtnClick: () => {
                                         this.value += 10
                                     }
                                 })
@@ -71,7 +69,7 @@ struct CircleProgressPage {
                                     text: "减少",
                                     type: "danger",
                                     buttonSize: "small",
-                                    onClickBtn: () => {
+                                    onBtnClick: () => {
                                         this.value -= 10
                                     }
                                 })
@@ -118,12 +116,12 @@ struct CircleProgressPage {
                         }
                     }
                 }
+				ListItem().height(50)
             }
             .padding({left: SPACE.MD, right: SPACE.MD})
-            .width(CONTAINER_SIZE.FULL)
             .layoutWeight(1)
         }
-        .height(CONTAINER_SIZE.FULL)
+        .hideTitleBar(true)
         .backgroundColor(modeColor.bg)
     }
 }

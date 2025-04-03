@@ -1,13 +1,17 @@
-import router from '@ohos.router';
-import { IBestCell, IBestCellGroup, IBestNavBar, IBestNotify } from '@ibestservices/ibest-ui';
+import { IBestCell, IBestCellGroup, IBestNotify } from '@ibestservices/ibest-ui';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
-import { ComponentRouterParams } from '../../assets/global.type';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function NotifyBuilder(_: string, title: string){
+	NotifyPage({title})
+}
 
 @Entry
 @Component
 struct NotifyPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@Builder customContent(){
 		Row({space: 10}){
 			Image("https://img0.baidu.com/it/u=2616823501,3205478532&fm=253&fmt=auto&app=138&f=JPEG?w=509&h=500")
@@ -20,14 +24,8 @@ struct NotifyPage {
 	}
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
@@ -36,7 +34,7 @@ struct NotifyPage {
 								title: '基础用法',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										message: '我们嘲笑过少年的无知，也嘲笑过岁月的苍老。我们行走在路上，理想宏大，眼窝却浅显。'
 									})
@@ -51,7 +49,7 @@ struct NotifyPage {
 							IBestCell({
 								title: '主要通知',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										message: '通知内容',
 										type: 'primary'
@@ -61,7 +59,7 @@ struct NotifyPage {
 							IBestCell({
 								title: '成功通知',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										message: '通知内容',
 										type: 'success'
@@ -71,7 +69,7 @@ struct NotifyPage {
 							IBestCell({
 								title: '危险通知',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										message: '通知内容',
 										type: 'danger'
@@ -82,7 +80,7 @@ struct NotifyPage {
 								title: '警告通知',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										message: '通知内容',
 										type: 'warning'
@@ -98,7 +96,7 @@ struct NotifyPage {
 							IBestCell({
 								title: '自定义颜色',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										message: '通知内容',
 										color: '#ad0000',
@@ -109,7 +107,7 @@ struct NotifyPage {
 							IBestCell({
 								title: '自定义文字大小',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										message: '如果你爱上了某个星球的一朵花。那么，只要在夜晚仰望星空，就会觉得漫天的繁星就像一朵朵盛开的花。',
 										fontSize: 18
@@ -120,7 +118,7 @@ struct NotifyPage {
 								title: '自定义时长',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										message: '通知内容',
 										duration: 3000
@@ -137,7 +135,7 @@ struct NotifyPage {
 								title: '自定义内容',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestNotify.show({
 										customContent: (): void => this.customContent()
 									})
@@ -149,8 +147,7 @@ struct NotifyPage {
 			}
 			.layoutWeight(1)
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

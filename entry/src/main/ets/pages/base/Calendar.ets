@@ -4,20 +4,23 @@ import {
     IBestCalendarConfirmResult,
     IBestCalendarDialog,
     IBestCell,
-    IBestCellGroup,
-    IBestNavBar,
-    SelectType
+    IBestCellGroup
 } from '@ibestservices/ibest-ui'
-import { router } from '@kit.ArkUI'
 import promptAction from '@ohos.promptAction'
-import { ComponentRouterParams } from '../../assets/global.type'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
 import dayjs from '@hview/dayjs'
+import CustomNavBar from '../../components/CustomNavBar'
+
+@Builder
+export function CalendarBuilder(_: string, title: string){
+	CalendarPage({title})
+}
+
 @Entry
 @Component
 struct CalendarPage {
-    @State title: string = (router.getParams() as ComponentRouterParams).title || ''
+    @State title: string = ''
     @State singleVisible: boolean = false
     @State selectDate: string = "请选择日期"
     @State multipleVisible: boolean = false
@@ -36,7 +39,6 @@ struct CalendarPage {
     @State rangeNumDate: string = "请选择日期"
     @State waterBgVisible: boolean = false
     @State waterBgDate: string = "请选择日期"
-    @State tileSelectType: SelectType = "multiple"
 
     @State clockDate: string[] = [dayjs().startOf("month").format('YYYY-MM-DD')]
 
@@ -75,14 +77,8 @@ struct CalendarPage {
     }
 
     build() {
-        Column(){
-            IBestNavBar({
-                title: this.title,
-                isShowStatusBar: true,
-                onLeftClick: () => {
-                    router.back()
-                }
-            })
+		NavDestination(){
+			CustomNavBar({title: this.title})
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
@@ -91,14 +87,14 @@ struct CalendarPage {
                                 IBestCell({
                                     title: '选择单个日期',
                                     value: this.selectDate,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.singleVisible = true
                                     }
                                 })
                                 IBestCell({
                                     title: '选择多个日期',
                                     value: this.multipleDateRange,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.multipleVisible = true
                                     }
                                 })
@@ -106,7 +102,7 @@ struct CalendarPage {
                                     title: '选择日期区间',
                                     hasBorder: false,
                                     value: this.rangeDateRange,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.rangeVisible = true
                                     }
                                 })
@@ -121,35 +117,35 @@ struct CalendarPage {
                                 IBestCell({
                                     title: '自定义颜色',
                                     value: this.customColorDate,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.customColorVisible = true
                                     }
                                 })
                                 IBestCell({
                                     title: '显示农历',
                                     value: this.lunarDate,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.lunarVisible = true
                                     }
                                 })
                                 IBestCell({
                                     title: '自定义日期范围',
                                     value: this.customRangeDate,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.customRangeVisible = true
                                     }
                                 })
                                 IBestCell({
                                     title: '日期区间最大范围',
                                     value: this.rangeNumDate,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.rangeNumVisible = true
                                     }
                                 })
                                 IBestCell({
                                     title: '自定义周起始日期',
                                     value: this.customWeekDate,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.customWeekVisible = true
                                     }
                                 })
@@ -157,7 +153,7 @@ struct CalendarPage {
                                     title: '显示月份背景水印',
                                     value: this.waterBgDate,
                                     hasBorder: false,
-                                    onClickCell: () => {
+                                    onCellClick: () => {
                                         this.waterBgVisible = true
                                     }
                                 })
@@ -170,17 +166,16 @@ struct CalendarPage {
                         IBestCalendar({
                             isShowLunar: true,
                             weekFirstDay: 0,
-                            selectType: this.tileSelectType,
+                            selectType: "multiple",
                             selectedColor: "#ed4040",
                             isShowMark: true,
                             defaultSelectedDate: this.defaultSelectedDate,
                             onConfirm: value => {
-                                let text = value.length > 1 && this.tileSelectType === "range" ? `${value[0].dateStr}
-                                ~ ${value[value.length-1].dateStr}` : value.map(item => item.dateStr).join(",")
-                                promptAction.showDialog({
-                                    message: `当前日期${value.length > 1 && this.tileSelectType === "range" ? '区间' : ''}为：${text}`,
-                                    alignment: DialogAlignment.Center
-                                })
+								let text = value.map(item => item.dateStr).join(",")
+								promptAction.showDialog({
+									message: `当前日期为：${text}`,
+									alignment: DialogAlignment.Center
+								})
                             }
                         })
                     }
@@ -191,7 +186,7 @@ struct CalendarPage {
                             IBestButton({
                                 type: "primary",
                                 text: "打卡",
-                                onClickBtn: () => {
+                                onBtnClick: () => {
                                     this.clockDate.push(dayjs(this.clockDate[this.clockDate.length-1]).add(1, 'day').format("YYYY-MM-DD"))
                                 }
                             })
@@ -202,6 +197,7 @@ struct CalendarPage {
                         }
                     }
                 }
+				ListItem().height(50)
             }
             .layoutWeight(1)
             // 弹框展示
@@ -268,8 +264,7 @@ struct CalendarPage {
                 onConfirm: (value): void => this.onDialogConfirm("waterBgDate", value)
             })
         }
-        .width(CONTAINER_SIZE.FULL)
-        .height(CONTAINER_SIZE.FULL)
+        .hideTitleBar(true)
         .backgroundColor(modeColor.bg)
     }
 }

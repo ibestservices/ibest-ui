@@ -1,15 +1,15 @@
-import { IBestStringNumber } from '../../model/Global.type';
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
-import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils';
-import { IBestLoading } from '../loading';
-import { IBestSwitchColor } from './color';
+import { IBestStringNumber } from '../../model/Global.type'
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
+import { IBestLoading } from '../loading'
+import { IBestSwitchColor } from './color'
 @Component
 export struct IBestSwitch {
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 开关默认选中的状态
 	 * @since 2.0.1
@@ -30,26 +30,23 @@ export struct IBestSwitch {
 	/**
 	 * 是否禁用 禁用状态下开关不可点击
 	 */
-	@Prop disabled: boolean = false;
+	@Prop disabled: boolean = false
 	/**
 	 * 是否为加载状态 加载状态下开关不可点击
 	 */
-	@Prop loading: boolean = false;
+	@Prop loading: boolean = false
 	/**
 	 * 打开时的loading颜色
 	 */
-	@Prop loadingActiveColor: ResourceColor = '';
+	@Prop loadingActiveColor: ResourceColor = ''
 	/**
 	 * 关闭时的loading颜色
 	 */
-	@Prop loadingInactiveColor: ResourceColor = '';
+	@Prop loadingInactiveColor: ResourceColor = ''
 	/**
 	 * 自定义按钮的内容
 	 */
-	@BuilderParam nodeBuilder?: CustomBuilder
-	@State uniId: number = 0
-	@State switchBarSize: number = 0
-	private uiContext = this.getUIContext()
+	@BuilderParam nodeBuilder: CustomBuilder
 	/**
 	 * 改变的回调
 	 */
@@ -57,30 +54,49 @@ export struct IBestSwitch {
 	/**
 	 * 改变前的回调
 	 */
-	onBeforeChange: (value: boolean) => Promise<boolean> = () => Promise.resolve(true)
+	onBeforeChange?: (value: boolean) => Promise<boolean> | boolean
 	/**
 	 * 点击的回调
+	 * @deprecated since 2.0.8
+	 * @useinstead onSwitchClick
 	 */
-	onClickSwitch: (event: ClickEvent) => void = () => {}
+	onClickSwitch: () => void = () => {}
+	onSwitchClick: () => void = () => {}
+
+
+	@State uniId: number = 0
+	@State switchBarSize: number = 0
+	private uiContext = this.getUIContext()
+
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
 		setTimeout(() => {
 			this.switchBarSize = getComponentsInfo(this.uiContext, `ibest_switch_${this.uniId}`).width
 		}, 10)
 	}
-	/**
-	 * 改变的回调
-	 */
+	// 结束前的动画
+	async handleBeforeClose(value: boolean) {
+		let status = true
+		try {
+			if (this.onBeforeChange) {
+				status = await this.onBeforeChange(value)
+			}
+		} catch (e) {
+			status = false
+		}
+		return status
+	}
+	// 改变的回调
 	async handleChange() {
 		const nextValue = !this.value
-		await this.onBeforeChange(nextValue)
+		let status = await this.handleBeforeClose(nextValue)
+		if(!status){
+			return
+		}
 		this.value = nextValue
 		this.onChange(nextValue)
 	}
-	/**
-	 * 获取激活的颜色
-	 * @returns
-	 */
+	// 获取激活的颜色
 	getActiveColor() {
 		return this.activeColor || this.baseStyle.primary as string
 	}
@@ -132,9 +148,10 @@ export struct IBestSwitch {
 		.animation({
 			duration: this.baseStyle.animationDuration as number
 		})
-		.onClick((event) => {
+		.onClick(() => {
 			this.handleChange()
-			this.onClickSwitch(event)
+			this.onClickSwitch()
+			this.onSwitchClick()
 		})
 	}
 }

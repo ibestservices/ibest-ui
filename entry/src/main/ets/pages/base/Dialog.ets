@@ -1,15 +1,8 @@
-import router from '@ohos.router';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import {
-	IBestButton,
-	IBestCell,
-	IBestCellGroup,
-	IBestDialog,
-	IBestDialogUtil,
-	IBestNavBar
-} from '@ibestservices/ibest-ui';
-import { ComponentRouterParams } from '../../assets/global.type';
+import { IBestButton, IBestCell, IBestCellGroup, IBestDialog, IBestDialogUtil } from '@ibestservices/ibest-ui';
+import CustomNavBar from '../../components/CustomNavBar';
+import RouterUtil from '../../utils/routerUtil';
 export interface TextData {
 	title: string,
 	code: string,
@@ -23,20 +16,27 @@ const textData: TextData = {
 	program: '如果解决方法是丑陋的，那就肯定还有更好的解决方法，只是还没有发现而已。'
 }
 
+@Builder
+export function DialogBuilder(_: string, title: string){
+	DialogPage({title})
+}
+
 @Entry
 @Component
 struct DialogPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State inputValue: string = ''
 	@State formInputError: boolean = false
 	@State dialogVisible: boolean = false
 	@State dialogWidth: number | string = "90%"
+	@State uniId: number = 0
+	private uiContext = this.getUIContext()
 	@Builder formInputContain() {
 		Column({ space: SPACE.MD }) {
 			IBestButton({
 				type: 'primary',
 				text: "切换宽度",
-				onClickBtn: () => {
+				onBtnClick: () => {
 					this.dialogWidth = this.dialogWidth === "90%" ? "80%" : "90%"
 				}
 			})
@@ -57,29 +57,36 @@ struct DialogPage {
 		}.padding(SPACE.MD)
 	}
 	@Builder customComponentContent() {
-		Column() {
+		Column({space: SPACE.MD}) {
 			Text(textData.program)
+			IBestButton({
+				type: 'primary',
+				text: "跳转页面",
+				onBtnClick: () => {
+					RouterUtil.push("Button", "Button 按钮")
+				}
+			})
 		}
 		.padding(20)
 	}
 	@Builder imageBgBuilder() {
-		Column() {
-			Text(textData.life)
-				.fontColor(modeColor.white)
-		}
-		.height(200)
-		.padding(20)
-		.justifyContent(FlexAlign.Center)
+		Column()
+			.height(200)
+			.padding(20)
 	}
+
+	onDidBuild(): void {
+		setTimeout(() => {
+			let uniId = this.uiContext.getAttachedFrameNodeById("main")?.getUniqueId()
+			if(uniId){
+				this.uniId = uniId
+			}
+		}, 50)
+	}
+
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			// 使用组件
 			IBestDialog({
 				visible: $dialogVisible,
@@ -103,7 +110,7 @@ struct DialogPage {
 							IBestCell({
 								title: '提示弹窗',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestDialogUtil.open({
 										title: textData.title,
 										message: textData.code
@@ -113,7 +120,7 @@ struct DialogPage {
 							IBestCell({
 								title: '提示弹窗（无标题）',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestDialogUtil.open({
 										message: textData.life
 									})
@@ -123,7 +130,7 @@ struct DialogPage {
 								title: '确认弹窗',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestDialogUtil.open({
 										title: textData.title,
 										message: textData.life,
@@ -140,7 +147,7 @@ struct DialogPage {
 							IBestCell({
 								title: '提示弹窗',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestDialogUtil.open({
 										title: textData.title,
 										message: textData.life,
@@ -151,7 +158,7 @@ struct DialogPage {
 							IBestCell({
 								title: '确认弹窗(无标题)',
 								isLink: true,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestDialogUtil.open({
 										message: textData.life,
 										showCancelButton: true,
@@ -163,7 +170,7 @@ struct DialogPage {
 								title: '按钮带间距确认弹窗',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestDialogUtil.open({
 										message: textData.life,
 										showCancelButton: true,
@@ -182,13 +189,12 @@ struct DialogPage {
 								title: '背景图片',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestDialogUtil.open({
 										bgImage: "https://img0.baidu.com/it/u=3217812679,2585737758&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500",
 										showConfirmButton: false,
 										defaultBuilder: () => this.imageBgBuilder(),
-										closeOnClickOverlay: true,
-										closeOnBackPress: true
+										closeOnClickOverlay: true
 									})
 								}
 							})
@@ -202,7 +208,7 @@ struct DialogPage {
 								title: '异步关闭',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestDialogUtil.open({
 										title: textData.title,
 										message: textData.life,
@@ -232,17 +238,19 @@ struct DialogPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '使用插槽', titlePaddingLeft: SPACE.MD }) {
+					ComponentShowContainer({ title: '内部跳转', titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							IBestCell({
-								title: '使用插槽',
+								title: '内部跳转',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									IBestDialogUtil.open({
 										title: textData.title,
 										message: textData.life,
 										showCancelButton: true,
+										levelMode: 1,
+										levelUniqueId: this.uniId,
 										defaultBuilder: (): void => this.customComponentContent()
 									})
 								}
@@ -257,16 +265,19 @@ struct DialogPage {
 								title: '使用组件',
 								isLink: true,
 								hasBorder: false,
-								onClickCell: () => {
+								onCellClick: () => {
 									this.dialogVisible = true
 								}
 							})
 						}
 					}
 				}
-			}.layoutWeight(1)
-		}.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+				ListItem().height(50)
+			}
+			.layoutWeight(1)
+		}
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
+		.id("main")
 	}
 }

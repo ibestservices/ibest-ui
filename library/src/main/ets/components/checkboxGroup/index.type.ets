@@ -7,6 +7,10 @@ export const COMPONENT_NAME = 'CHECKBOX';
  */
 export enum CHECKBOX_GROUP_EVENT_NAME {
 	/**
+	 * 获取所有name
+	 */
+	GET_ALL_NAME = 'GET_ALL_NAME',
+	/**
 	 * 初始化子组件
 	 */
 	INIT_CHILDREN = 'INIT_CHILDREN',
@@ -17,11 +21,7 @@ export enum CHECKBOX_GROUP_EVENT_NAME {
 	/**
 	 * 当最大可选数量变化时
 	 */
-	ON_MAX_CHANGE = 'ON_MAX_CHANGE',
-	/**
-	 * 当触发全选/反选时
-	 */
-	ON_TOGGLE_ALL = 'ON_TOGGLE_ALL'
+	ON_MAX_CHANGE = 'ON_MAX_CHANGE'
 }
 /**
  * checkboxGroup 控制器

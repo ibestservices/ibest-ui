@@ -1,21 +1,17 @@
-import {
-    IBestButton,
-    IBestCellGroup,
-    IBestField,
-    IBestNavBar,
-    IBestRadio,
-    IBestRadioGroup,
-    IBestToast
-} from '@ibestservices/ibest-ui';
+import { IBestButton, IBestField, IBestNavBar, IBestRadio, IBestRadioGroup, IBestToast } from '@ibestservices/ibest-ui';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
-import { router } from '@kit.ArkUI';
-import { ComponentRouterParams } from '../../assets/global.type';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function FieldBuilder(_: string, title: string){
+	FieldPage({title})
+}
 
 @Entry
 @Component
 struct FieldPage {
-    @State title: string = (router.getParams() as ComponentRouterParams).title || ''
+    @State title: string = ''
     @State value: string = ''
     @State value1: string = ''
     @State value2: string = ''
@@ -49,7 +45,7 @@ struct FieldPage {
             text: this.count == 60 ? '发送验证码' : `重新发送(${this.count})`,
             type: 'primary',
             buttonSize: 'mini',
-            onClickBtn: () => {
+            onBtnClick: () => {
                 this.sendCode()
             }
         })
@@ -92,14 +88,8 @@ struct FieldPage {
         return value.replace(/\d/g, '')
     }
     build() {
-        Column() {
-            IBestNavBar({
-                title: this.title,
-                isShowStatusBar: true,
-                onLeftClick: () => {
-                    router.back()
-                }
-            })
+		NavDestination() {
+			CustomNavBar({title: this.title})
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '基础用法' }) {
@@ -338,12 +328,12 @@ struct FieldPage {
                         })
                     }
                 }
+				ListItem().height(50)
             }
             .layoutWeight(1)
             .padding({left: SPACE.SM, right: SPACE.SM})
         }
-        .width(CONTAINER_SIZE.FULL)
-        .height(CONTAINER_SIZE.FULL)
+        .hideTitleBar(true)
         .backgroundColor(modeColor.bg)
     }
 }

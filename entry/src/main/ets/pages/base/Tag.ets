@@ -1,8 +1,13 @@
-import router from '@ohos.router';
-import { IBestNavBar, IBestTag } from '@ibestservices/ibest-ui';
+import { IBestTag } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, FONT_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function TagBuilder(_: string, title: string){
+	TagPage({title})
+}
+
 @Extend(Row)
 function rowStyles(hasBottomBorder: boolean = true) {
 	.width(CONTAINER_SIZE.FULL)
@@ -22,17 +27,11 @@ function blockStyles() {
 @Entry
 @Component
 struct TagPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State showTag: boolean = true
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -176,16 +175,12 @@ struct TagPage {
 						}.blockStyles()
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding({
-				left: SPACE.SM,
-				right: SPACE.SM,
-				bottom: SPACE.SM
-			})
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

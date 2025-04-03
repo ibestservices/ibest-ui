@@ -211,7 +211,7 @@ export struct IBestSignature{
 						btnWidth: convertDimensions(60),
 						btnHeight: convertDimensions(32),
 						btnFontSize: convertDimensions(12),
-						onClickBtn: () => {
+						onBtnClick: () => {
 							this.clearCanvas()
 						}
 					})
@@ -221,7 +221,7 @@ export struct IBestSignature{
 						btnWidth: convertDimensions(60),
 						btnHeight: convertDimensions(32),
 						btnFontSize: convertDimensions(12),
-						onClickBtn: () => {
+						onBtnClick: () => {
 							this.confirm()
 						}
 					})

@@ -1,13 +1,17 @@
-import { IBestNavBar, IBestSearch, IBestToast } from '@ibestservices/ibest-ui'
-import { router } from '@kit.ArkUI'
-import { ComponentRouterParams } from '../../assets/global.type'
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import { IBestSearch, IBestToast } from '@ibestservices/ibest-ui'
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
+import CustomNavBar from '../../components/CustomNavBar'
+
+@Builder
+export function SearchBuilder(_: string, title: string){
+	SearchPage({title})
+}
 
 @Entry
 @Component
 struct SearchPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State value: string = ''
 	@Builder customBtn(){
 		Text("自定义按钮")
@@ -17,14 +21,8 @@ struct SearchPage {
 	}
 
 	build() {
-		Column(){
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination(){
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -105,17 +103,12 @@ struct SearchPage {
 						}
 					}
 				}
+				ListItem().height(50)
 			}
-			.width(CONTAINER_SIZE.FULL)
 			.layoutWeight(1)
-			.padding({
-				left: SPACE.SM,
-				right: SPACE.SM,
-				bottom: SPACE.SM
-			})
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

@@ -1,14 +1,18 @@
-import router from '@ohos.router';
 import { IBestNavBar } from '@ibestservices/ibest-ui';
 import { COLOR_BLUE, CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
 import { getRandomColor } from '../../utils/utils';
+
+@Builder
+export function NavBarBuilder(_: string, title: string){
+	NavBarPage({title})
+}
 
 @Entry
 @Component
 struct NavBarPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State searchVal: string = ''
 	@State navBarBgColor: string = "#3D8AF2"
 
@@ -31,14 +35,8 @@ struct NavBarPage {
 	}
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }){
@@ -150,8 +148,8 @@ struct NavBarPage {
 						})
 					}
 				}
+				ListItem().height(50)
 			}
-			.width(CONTAINER_SIZE.FULL)
 			.layoutWeight(1)
 		}
 		.height(CONTAINER_SIZE.FULL)

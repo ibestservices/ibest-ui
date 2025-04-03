@@ -261,6 +261,10 @@
 			"value": "NavBar 导航栏"
 		},
 		{
+			"name": "component_pagination",
+			"value": "Pagination 分页"
+		},
+		{
 			"name": "component_sideBar",
 			"value": "SideBar 侧边导航"
 		},
@@ -611,6 +615,10 @@
 		{
 			"name": "second",
 			"value": "秒"
+		},
+		{
+			"name": "size",
+			"value": "尺寸"
 		}
 	]
 }

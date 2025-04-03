@@ -12,10 +12,6 @@ export default class GlobalStore {
 	public static windowStage: window.WindowStage
 	// context
 	public static context: common.UIAbilityContext
-	// 顶部规避尺寸
-	public static topAvoidHeight: number = 0
-	// 底部导航条高度
-	public static bottomBarHeight: number = 0
 	// 屏幕信息
 	public static screenWidth: number = 0
 	public static screenHeight: number = 0
@@ -46,10 +42,8 @@ export default class GlobalStore {
      */
 	private static getAvoidSize(){
 		let res = getWindowAvoidSize()
-		GlobalStore.topAvoidHeight = res.topSize
-		GlobalStore.bottomBarHeight = res.navigationSize
-		AppStorage.setOrCreate("IBestTopAvoidHeight", GlobalStore.topAvoidHeight)
-		AppStorage.setOrCreate("IBestBottomBarHeight", GlobalStore.bottomBarHeight)
+		AppStorage.setOrCreate("IBestTopAvoidHeight", res.topSize)
+		AppStorage.setOrCreate("IBestBottomBarHeight", res.navigationSize)
 	}
 	/**
 	 * 获取屏幕尺寸

@@ -1,17 +1,15 @@
-import router from '@ohos.router';
-import { CONTAINER_SIZE } from '../../assets/styles/BaseStyle';
-import {
-    IBestNavBar,
-    IBestPullRefresh,
-    IBestRefreshContentParams,
-    IBestTabItemType,
-    IBestTabs
-} from '@ibestservices/ibest-ui';
-import { ComponentRouterParams } from '../../assets/global.type';
+import { IBestPullRefresh, IBestRefreshContentParams, IBestTabItemType, IBestTabs } from '@ibestservices/ibest-ui';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function PullRefreshBuilder(_: string, title: string){
+	PullRefreshPage({title})
+}
+
 @Entry
 @Component
 struct PullRefreshPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State tabsList: Array<IBestTabItemType> = [
 		{
 			name: "1",
@@ -29,8 +27,9 @@ struct PullRefreshPage {
 	@State currentTab: string = "1"
 	@State isLoading: boolean = false
 
-	private scroller: Scroller = new Scroller()
 	private listScroller: ListScroller = new ListScroller()
+	private scroller: Scroller = new Scroller()
+	private scroller1: Scroller = new Scroller()
 
 	@State isRefreshing: boolean = false
 	@State arr: String[] = ['0', '1', '2', '3', '4','5','6','7','8','9','10']
@@ -52,6 +51,21 @@ struct PullRefreshPage {
 			}.width("100%").edgeEffect(EdgeEffect.None).height("100%")
 		}else if(type == "2"){
 			Scroll(this.scroller){
+				Column(){
+					ForEach(this.arr, (item: string) => {
+						Text('' + item)
+							.width('70%')
+							.height(80)
+							.fontSize(16)
+							.margin(10)
+							.textAlign(TextAlign.Center)
+							.borderRadius(10)
+							.backgroundColor(0x89CFF0)
+					}, (item: string) => item)
+				}.width("100%")
+			}.height("100%")
+		}else if(type == "3"){
+			Scroll(this.scroller1){
 				Column(){
 					ForEach(this.arr, (item: string) => {
 						Text('' + item)
@@ -91,14 +105,8 @@ struct PullRefreshPage {
 	}
 
 	build() {
-		Column(){
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			IBestTabs({
 				tabsList: this.tabsList,
 				currentName: $currentTab
@@ -115,8 +123,8 @@ struct PullRefreshPage {
 				if(this.currentTab == "2"){
 					IBestPullRefresh({
 						loading: $isLoading,
-						successText: "加载成功",
 						scroller: this.scroller,
+						successText: "加载成功",
 						defaultContent: (): void => this.customContent("2"),
 						onRefresh: (direction): void => this.onRefresh(direction)
 					})
@@ -124,7 +132,8 @@ struct PullRefreshPage {
 				if(this.currentTab == "3"){
 					IBestPullRefresh({
 						loading: $isLoading,
-						defaultContent: (): void => this.customContent("2"),
+						scroller: this.scroller1,
+						defaultContent: (): void => this.customContent("3"),
 						pullingContent: this.customPullingContent,
 						loosingContent: this.customLoosingContent,
 						loadingContent: (): void => this.customLoadingContent(),
@@ -134,7 +143,6 @@ struct PullRefreshPage {
 			}
 			.layoutWeight(1)
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 	}
 }

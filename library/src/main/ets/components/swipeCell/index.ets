@@ -1,40 +1,38 @@
 import { emitter } from '../../utils/EventEmitter'
 import { clamp, getComponentsInfo, getEventName } from '../../utils/utils'
-import { COMPONENT_NAME, SWIPECELL_EVENT_NAME } from './index.type'
-type SwipeCellSide = 'left' | 'right' | 'center'
+import { COMPONENT_NAME, IBestSwipeCellSide, SWIPECELL_EVENT_NAME } from './index.type'
 
 @Component
 export struct IBestSwipeCell{
-	@State uniId: number = 0
 	/**
 	 * 自定义左侧滑动区域的内容
   	 */
-	@BuilderParam leftContent?: CustomBuilder
+	@BuilderParam leftContent: CustomBuilder
 	/**
 	 * 自定义右侧滑动区域的内容
   	 */
-	@BuilderParam rightContent?: CustomBuilder
+	@BuilderParam rightContent: CustomBuilder
 	/**
 	 * 中间内容
   	 */
-	@BuilderParam defaultContent?: CustomBuilder
+	@BuilderParam defaultContent: CustomBuilder
 	/**
 	 * 关闭前回调
      */
-	beforeClose?: (position: SwipeCellSide) => boolean | Promise<boolean>
+	beforeClose?: (position: IBestSwipeCellSide) => boolean | Promise<boolean>
 	/**
 	 * 中间内容点击回调
   	 */
 	onContentClick: () => void = () => {}
 
-	private uiContext = this.getUIContext()
-
-	private leftWidth: number = 0
-	private rightWidth: number = 0
+	@State uniId: number = 0
 	@State centerHeight: number = 0
 	@State transX: number = 0
-	private startTransX: number = 0
 	@State isOpen: boolean = false
+	private leftWidth: number = 0
+	private rightWidth: number = 0
+	private startTransX: number = 0
+	private uiContext = this.getUIContext()
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
@@ -75,7 +73,7 @@ export struct IBestSwipeCell{
 		const offset = Math.abs(this.transX)
 		const THRESHOLD = 0.15
 		const threshold = this.isOpen ? 1 - THRESHOLD : THRESHOLD
-		let side: SwipeCellSide = this.transX > 0 ? 'left' : 'right'
+		let side: IBestSwipeCellSide = this.transX > 0 ? 'left' : 'right'
 		const width = side === 'left' ? this.leftWidth : this.rightWidth
 		if (width && offset > width * threshold) {
 			this.open(side)
@@ -83,7 +81,7 @@ export struct IBestSwipeCell{
 			this.close("center")
 		}
 	}
-	async handleBeforeClose(position: SwipeCellSide) {
+	async handleBeforeClose(position: IBestSwipeCellSide) {
 		let status = true
 		try {
 			if (this.beforeClose) {
@@ -94,14 +92,14 @@ export struct IBestSwipeCell{
 		}
 		return status
 	}
-	open (side: SwipeCellSide) {
+	open (side: IBestSwipeCellSide) {
 		this.transX = side === 'left' ? this.leftWidth : -this.rightWidth
 		if (!this.isOpen) {
 			this.isOpen = true
 			this.emitTouch()
 		}
 	}
-	async close (position: SwipeCellSide){
+	async close (position: IBestSwipeCellSide){
 		if (this.beforeClose) {
 			const status = await this.handleBeforeClose(position)
 			if (!status) {

@@ -1,4 +1,4 @@
-export interface BuilderArgs {
+export interface IBestRadioBuilderParams {
 	checked: boolean,
 	disabled: boolean
 }

@@ -193,7 +193,7 @@ export function addNumber(num1: number, num2: number) {
 /**
  * 生成事件名称
  */
-export function getEventName(componentName: string, eventName: string, groupId?: string) {
+export function getEventName(componentName: string, eventName: string, groupId?: IBestStringNumber) {
 	let arr = ['IBest', componentName, eventName, groupId]
 	return arr.filter(e => e).join("_")
 }

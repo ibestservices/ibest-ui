@@ -1,3 +1,5 @@
+export type IBestSwipeCellSide = 'left' | 'right' | 'center'
+
 /**
  * 组件名称
  */

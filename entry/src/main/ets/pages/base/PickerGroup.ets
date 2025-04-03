@@ -1,25 +1,18 @@
-import {
-    IBestButton,
-    IBestDatePicker,
-    IBestNavBar,
-    IBestPicker,
-    IBestPickerGroup,
-    IBestPickerOption,
-    IBestToast
-} from '@ibestservices/ibest-ui'
+import { IBestButton, IBestDatePicker, IBestPicker, IBestPickerGroup, IBestPickerOption, IBestToast } from '@ibestservices/ibest-ui'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
-import { router } from '@kit.ArkUI'
-import { ComponentRouterParams } from '../../assets/global.type'
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import CustomNavBar from '../../components/CustomNavBar'
+
+@Builder
+export function PickerGroupBuilder(_: string, title: string){
+	PickerGroupPage({title})
+}
 
 @Entry
 @Component
 struct PickerGroupPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State groupId: string = "1"
-	@State groupId1: string = "2"
-	@State groupId2: string = "3"
-	@State groupId3: string = "4"
 	@State options1: IBestPickerOption[] = [
 		{ text: '南京', value: '南京' },
 		{ text: '苏州', value: '苏州' },
@@ -50,19 +43,12 @@ struct PickerGroupPage {
 	}
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SM, card: true }) {
 						IBestPickerGroup({
-							groupId: this.groupId,
 							title: "选择地点时间",
 							tabs: this.tabs,
 							onConfirm: () => {
@@ -72,12 +58,10 @@ struct PickerGroupPage {
 							}
 						}){
 							IBestPicker({
-								groupId: this.groupId,
 								options: this.options1,
 								value: $selectValue1
 							})
 							IBestPicker({
-								groupId: this.groupId,
 								options: this.options2,
 								value: $selectValue2
 							})
@@ -87,7 +71,6 @@ struct PickerGroupPage {
 				ListItem() {
 					ComponentShowContainer({ title: '下一步按钮', titlePaddingLeft: SPACE.SM, card: true }) {
 						IBestPickerGroup({
-							groupId: this.groupId1,
 							title: "选择地点时间",
 							tabs: this.tabs,
 							nextStepText: "下一步",
@@ -98,12 +81,10 @@ struct PickerGroupPage {
 							}
 						}){
 							IBestPicker({
-								groupId: this.groupId1,
 								options: this.options1,
 								value: $selectValue3
 							})
 							IBestPicker({
-								groupId: this.groupId1,
 								options: this.options2,
 								value: $selectValue4
 							})
@@ -113,7 +94,6 @@ struct PickerGroupPage {
 				ListItem() {
 					ComponentShowContainer({ title: '选择日期范围', titlePaddingLeft: SPACE.SM, card: true }) {
 						IBestPickerGroup({
-							groupId: this.groupId2,
 							title: "预约日期",
 							tabs: this.tabs1,
 							nextStepText: "下一步",
@@ -124,11 +104,11 @@ struct PickerGroupPage {
 							}
 						}){
 							IBestDatePicker({
-								groupId: this.groupId2,
+								groupId: this.groupId,
 								value: $selectValue5
 							})
 							IBestDatePicker({
-								groupId: this.groupId2,
+								groupId: this.groupId,
 								value: $selectValue6
 							})
 						}
@@ -141,12 +121,11 @@ struct PickerGroupPage {
 								text: `点击切换tab 当前为${this.currentName}`,
 								type: "primary",
 								buttonSize: "small",
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.changeName()
 								}
 							})
 							IBestPickerGroup({
-								groupId: this.groupId3,
 								title: "选择地点时间",
 								tabs: this.tabs,
 								nextStepText: "下一步",
@@ -161,12 +140,10 @@ struct PickerGroupPage {
 								}
 							}) {
 								IBestPicker({
-									groupId: this.groupId3,
 									options: this.options1,
 									value: $selectValue1
 								})
 								IBestPicker({
-									groupId: this.groupId3,
 									options: this.options2,
 									value: $selectValue2
 								})
@@ -176,12 +153,11 @@ struct PickerGroupPage {
 						.padding({top: SPACE.SM})
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding({ bottom: SPACE.LG })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

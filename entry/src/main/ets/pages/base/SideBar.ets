@@ -1,12 +1,16 @@
-import router from '@ohos.router';
-import { IBestNavBar, IBestSideBar, IBestSideBarItem, IBestToast } from '@ibestservices/ibest-ui';
-import { CONTAINER_SIZE, modeColor } from '../../assets/styles/BaseStyle';
+import { IBestSideBar, IBestSideBarItem, IBestToast } from '@ibestservices/ibest-ui';
+import { modeColor } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
+@Builder
+export function SideBarBuilder(_: string, title: string){
+	SideBarPage({title})
+}
+
 @Entry
 @Component
 struct SideBarPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 
 	@State groupId: string = "group"
 	@State active: number = 0
@@ -22,14 +26,8 @@ struct SideBarPage {
 	@State active3: number = 0
 
 	build() {
-		Column(){
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			Grid() {
 				GridItem() {
 					Column(){
@@ -120,8 +118,7 @@ struct SideBarPage {
 			}
 			.columnsTemplate('1fr 1fr')
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg2)
 	}
 }

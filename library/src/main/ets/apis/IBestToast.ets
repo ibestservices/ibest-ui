@@ -1,4 +1,4 @@
-import { ComponentContent, PromptAction, UIObserver, window } from '@kit.ArkUI'
+import { ComponentContent, LevelMode, PromptAction, window } from '@kit.ArkUI'
 import { IBestIcon } from '../components/icon'
 import { IBestLoading } from '../components/loading'
 import { IBestStringNumber, LoadingIconType, WordBreakType } from '../model/Global.type'
@@ -81,25 +81,24 @@ struct defaultContent{
     @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     @Prop option: ToastParams
     build() {
-        Column(){
+        Column({space: this.baseStyle.spaceXs as string}){
             if(this.option.icon){
                 Image(this.option.icon)
                     .width(getSizeByUnit(this.option.iconWidth || ""))
                     .aspectRatio(1)
-                    .margin({bottom: this.baseStyle.spaceXs})
             }else if(this.option.type){
                 if(this.option.type == "loading"){
                     IBestLoading({
                         loadingIconType: this.option.loadingType,
                         loadingSize: convertDimensionsWidthUnit(20),
                         loadingStrokeWidth: 2
-                    }).margin({bottom: this.baseStyle.spaceXs})
+                    })
                 }else{
                     IBestIcon({
                         name: this.option.type == "success" ? "success" : this.option.type == "warning" ? "fail" : "cross",
                         iconSize: this.option.iconWidth,
                         color: $r("app.color.ibest_white")
-                    }).margin({bottom: this.baseStyle.spaceXs})
+                    })
                 }
             }
             Text(this.option.message)
@@ -120,83 +119,66 @@ struct defaultContent{
 }
 
 class Toast{
-    private static _instance: Toast = new Toast()
-    private toastOption: ToastParams | null = null
-    private uiObserver: UIObserver | null = null
-    private loadingDialog: ComponentContent<ToastParams> | null = null
-    private promptAction: PromptAction | null = null
-    private timer: number = 0
-    private isLock: boolean = false
+	private promptAction: PromptAction | null = null
+	private toastOption: ToastParams | null = null
+	private toastContent: ComponentContent<ToastParams> | null = null
+	private timer: number = 0
+	private isLock: boolean = false
 
     set message(msg: string){
-        if(Toast._instance && Toast._instance.toastOption){
-            Toast._instance.toastOption.message = msg
-            Toast._instance?.loadingDialog?.update(new ToastParams(Toast._instance.toastOption))
+        if(this.toastContent && this.toastOption){
+			this.toastOption.message = msg
+			this.toastContent.update(new ToastParams(this.toastOption))
         }
-    }
-
-    constructor() {}
-
-    private static getInstance(option: ToastParams, uiObserver: UIObserver, loadingDialog: ComponentContent<ToastOption>, promptAction: PromptAction): Toast{
-        if(!Toast._instance){
-            Toast._instance = new Toast()
-        }
-        Toast._instance.toastOption = option
-        Toast._instance.uiObserver = uiObserver
-        Toast._instance.loadingDialog = loadingDialog
-        Toast._instance.promptAction = promptAction
-        return Toast._instance
     }
     /**
      * 根据参数打开弹框
      */
-    private async open(option?: string | ToastOption) {
-        if(Toast._instance.isLock){
+    private async open(option: string | ToastOption) {
+        if(this.isLock){
             return
         }
-        Toast._instance.isLock = true
-        let params: ToastParams = typeof option == "string" ? new ToastParams({ message: option }) : new ToastParams(option)
-        if(Toast._instance.loadingDialog){
-            this.autoHide()
-        }
-        let windowClass = await window.getLastWindow(getContext())
-        let uiContext = windowClass.getUIContext()
-        let uiObserver = uiContext.getUIObserver()
-        let loadingDialog = new ComponentContent(uiContext, wrapBuilder(defaultBuilder), params)
-        let promptAction = uiContext.getPromptAction()
-        Toast._instance = Toast.getInstance(params, uiObserver, loadingDialog, promptAction)
-        await promptAction.openCustomDialog(loadingDialog, {
+		if(this.toastContent){
+			await this.hide()
+		}
+		this.isLock = true
+		let windowClass = await window.getLastWindow(getContext())
+		let uiContext = windowClass.getUIContext()
+		this.promptAction = uiContext.getPromptAction()
+		let params: ToastParams = typeof option == "string" ? new ToastParams({ message: option }) : new ToastParams(option)
+		let toastContent = new ComponentContent(uiContext, wrapBuilder(defaultBuilder), params)
+		this.toastContent = toastContent
+		this.toastOption = params
+        await this.promptAction.openCustomDialog(toastContent, {
             alignment: params.position == "top" ? DialogAlignment.Top : params.position == "bottom" ? DialogAlignment.Bottom : DialogAlignment.Center,
             offset: {dx: 0, dy: params.offsetY},
             isModal: params.isShowMask || params.type == "loading",
             maskColor: params.type == "loading" ? "transparent" : "0x33000000",
             autoCancel: false,
             transition: TransitionEffect.IDENTITY,
+			onDidAppear: () => {
+				params.onOpened?.()
+			},
             onWillDismiss: (dismissDialogAction: DismissDialogAction) => {
                 // console.log("原因", JSON.stringify(dismissDialogAction.reason))
             }
         })
-        params.onOpened?.()
-        if(params.type!="loading"){
-            Toast._instance.isLock = false
-        }
-        // 监听路由变化，关闭toast
-        Toast._instance?.uiObserver?.on("routerPageUpdate", ()=>{
-            this.autoHide()
-        })
-        // 非loading自动关闭
-        if(params.type!="loading" && params.duration){
-            Toast._instance.timer = setTimeout(()=>{
-                this.autoHide()
-            }, params.duration)
-        }
+		if(params.type!="loading"){
+			this.isLock = false
+			// 自动关闭
+			if(params.duration){
+				this.timer = setTimeout(()=>{
+					this.hide()
+				}, params.duration)
+			}
+		}
     }
     /**
      * 显示toast
      */
-    public show(option?: string | ToastOption){
+    public show(option: string | ToastOption){
         this.open(option)
-        return Toast._instance
+        return this
     }
     /**
      * 显示loading
@@ -210,24 +192,20 @@ class Toast{
         }
         this.open(opt)
     }
-    private async autoHide(){
-        if(Toast._instance === null || Toast._instance.loadingDialog === null){
-            return
-        }
-        await Toast._instance.promptAction?.closeCustomDialog(Toast._instance.loadingDialog)
-        Toast._instance.loadingDialog?.dispose()
-        Toast._instance.uiObserver?.off("routerPageUpdate")
-        clearTimeout(Toast._instance.timer)
-        Toast._instance.loadingDialog = null
-        Toast._instance.isLock = false
-    }
-    /**
-     * 关闭toast
-     */
-    public hide(){
-        setTimeout(() => {
-            this.autoHide()
-        }, 1)
+	/**
+	 * 关闭toast
+	 */
+	public async hide(){
+		if(this.toastContent === null || this.promptAction === null){
+			return
+		}
+		clearTimeout(this.timer)
+		this.timer = 0
+		await this.promptAction.closeCustomDialog(this.toastContent)
+		this.toastContent.dispose()
+		this.toastContent = null
+		this.toastOption = null
+		this.isLock = false
     }
 }
 

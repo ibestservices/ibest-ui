@@ -10,7 +10,6 @@ import {
 	IBestForm,
 	IBestFormController,
 	IBestFormRule,
-	IBestNavBar,
 	IBestPicker,
 	IBestPickerOption,
 	IBestPopup,
@@ -23,10 +22,14 @@ import {
 	IBestUploaderFile
 } from '@ibestservices/ibest-ui'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
-import { CONTAINER_SIZE, FONT_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
-import { router } from '@kit.ArkUI'
-import { ComponentRouterParams } from '../../assets/global.type'
+import { FONT_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
 import { generateId } from '../../utils/utils'
+import CustomNavBar from '../../components/CustomNavBar'
+
+@Builder
+export function FormBuilder(_: string, title: string){
+	FormPage({title})
+}
 
 @Observed
 class Subject {
@@ -39,11 +42,10 @@ class Subject {
 	}
 }
 
-
 @Entry
 @Component
-struct FieldPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+struct FormPage {
+	@State title: string = ''
 	@State name: string = ""
 	@State phone: string = ""
 	private formId1: string = 'form1'
@@ -119,7 +121,7 @@ struct FieldPage {
 		]
 	}
 	private controller3: IBestFormController = new IBestFormController()
-	@State options: IBestCascaderOption[] = [
+	private options: IBestCascaderOption[] = [
 		{
 			text: "江苏省",
 			value: "320000",
@@ -197,7 +199,7 @@ struct FieldPage {
 	@State list: Subject[] = []
 	private rules4: IBestFormRule = {
 		"sex": [
-			{ required: true, message: "请选择是否" }
+			{ required: true, message: "请选择性别" }
 		],
 		"info1": [
 			{ required: true, message: "请输入男生信息" }
@@ -289,8 +291,7 @@ struct FieldPage {
 		IBestStepper({
 			value: $value9,
 			min: 1,
-			max: 99,
-			step: 1
+			max: 99
 		})
 	}
 	@Builder uploadImg(){
@@ -304,14 +305,8 @@ struct FieldPage {
 		this.list.splice(index, 1)
 	}
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
@@ -347,7 +342,7 @@ struct FieldPage {
 								text: "验证姓名",
 								type: 'primary',
 								buttonSize: 'large',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller1.validateField("name").then(res => {
 										if(res.valid){
 											IBestToast.show("验证成功")
@@ -363,7 +358,7 @@ struct FieldPage {
 								text: "提交",
 								type: 'primary',
 								buttonSize: 'large',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller1.validate().then(res => {
 										if(res.valid){
 											IBestToast.show("验证成功")
@@ -421,7 +416,7 @@ struct FieldPage {
 								text: "提交",
 								type: 'primary',
 								buttonSize: 'large',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller2.validate((valid) => {
 										if (valid) {
 											IBestToast.show("验证成功")
@@ -511,7 +506,7 @@ struct FieldPage {
 								text: "提交",
 								type: 'primary',
 								buttonSize: 'large',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller3.validate((valid) => {
 										if (valid) {
 											IBestToast.show("验证成功")
@@ -567,10 +562,10 @@ struct FieldPage {
 								}, (item: Subject) => item.id)
 							}
 							IBestButton({
-								text: "添加内容",
+								text: "添加学科",
 								type: "primary",
 								buttonSize: 'large',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.list.push(new Subject())
 								}
 							})
@@ -578,7 +573,7 @@ struct FieldPage {
 								text: "提交",
 								type: 'primary',
 								buttonSize: 'large',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller4.validate((valid) => {
 										if (valid) {
 											IBestToast.show("验证成功")
@@ -589,6 +584,7 @@ struct FieldPage {
 						}
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
 			.padding({ left: SPACE.MD, right: SPACE.MD })
@@ -609,8 +605,7 @@ struct FieldPage {
 				}
 			})
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

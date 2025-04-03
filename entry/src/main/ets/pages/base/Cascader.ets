@@ -6,15 +6,19 @@ import {
     IBestNavBar,
     IBestToast
 } from '@ibestservices/ibest-ui'
-import { ComponentRouterParams } from '../../assets/global.type'
-import router from '@ohos.router'
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
 import { regionData } from '@ibestservices/area-data'
+import CustomNavBar from '../../components/CustomNavBar'
+@Builder
+export function CascaderBuilder(_: string, title: string){
+	CascaderPage({title})
+}
+
 @Entry
 @Component
 struct CascaderPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State visible: boolean = false
 	@State fieldValue: string = '请选择地区'
 	@State selectValue: string[] = []
@@ -151,14 +155,8 @@ struct CascaderPage {
 	@State selectValue5: string[] = []
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
@@ -167,7 +165,7 @@ struct CascaderPage {
 							value: this.fieldValue,
 							isLink: true,
 							hasBorder: false,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.visible = true
 							}
 						})
@@ -180,7 +178,7 @@ struct CascaderPage {
 							value: this.fieldValue1,
 							isLink: true,
 							hasBorder: false,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.visible1 = true
 							}
 						})
@@ -193,7 +191,7 @@ struct CascaderPage {
 							value: this.fieldValue2,
 							isLink: true,
 							hasBorder: false,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.visible2 = true
 							}
 						})
@@ -206,7 +204,7 @@ struct CascaderPage {
 							value: this.fieldValue3,
 							isLink: true,
 							hasBorder: false,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.visible3 = true
 							}
 						})
@@ -219,7 +217,7 @@ struct CascaderPage {
 							value: this.fieldValue4,
 							isLink: true,
 							hasBorder: false,
-							onClickCell: () => {
+							onCellClick: () => {
 								this.visible4 = true
 							}
 						})
@@ -233,6 +231,7 @@ struct CascaderPage {
 						})
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
 			.padding({ left: SPACE.SM, right: SPACE.SM })
@@ -286,8 +285,7 @@ struct CascaderPage {
 				}
 			})
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

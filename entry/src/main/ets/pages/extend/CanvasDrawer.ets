@@ -1,22 +1,28 @@
-import router from '@ohos.router';
 import {
     IBestButton,
     IBestCanvasContent,
     IBestCanvasDrawer,
 	IBestCell,
-	IBestNavBar,
 	IBestToast,
 	IBestUploader,
     IBestUploaderFile
 } from '@ibestservices/ibest-ui';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
-import { savePixelMap } from '../../utils/utils';
+import CustomNavBar from '../../components/CustomNavBar';
+import RouterUtil from '../../utils/routerUtil';
+import { savePixelMap, shareImage } from '../../utils/utils';
+import { common } from '@kit.AbilityKit';
+
+@Builder
+export function CanvasDrawerBuilder(_: string, title: string){
+	CanvasDrawerPage({title})
+}
+
 @Entry
 @Component
 struct CanvasDrawerPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State canvasWidth: number = 360
 	@State canvasHeight: number = 200
 	@State contentList: IBestCanvasContent[] = [
@@ -53,7 +59,7 @@ struct CanvasDrawerPage {
 	@State canvasShow6: boolean = false
 	@State pixelMap6: PixelMap | null = null
 
-	private context = getContext(this)
+	private context = getContext(this) as common.UIAbilityContext;
 
 	aboutToAppear() {
 		this.canvasShow = true
@@ -72,14 +78,8 @@ struct CanvasDrawerPage {
 	}
 
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
@@ -88,14 +88,25 @@ struct CanvasDrawerPage {
 								.width(this.canvasWidth)
 								.height(160)
 							if(this.pixelMap){
-								SaveButton({
-									text: SaveDescription.SAVE_IMAGE,
-									buttonType: ButtonType.Capsule
-								}).onClick((event: ClickEvent, result: SaveButtonOnClickResult) => {
-									if (result == SaveButtonOnClickResult.SUCCESS) {
-										this.saveImg(this.pixelMap)
-									}
-								})
+								Row({space: SPACE.XS}){
+									SaveButton({
+										text: SaveDescription.SAVE_IMAGE,
+										buttonType: ButtonType.Capsule
+									}).onClick((event: ClickEvent, result: SaveButtonOnClickResult) => {
+										if (result == SaveButtonOnClickResult.SUCCESS) {
+											this.saveImg(this.pixelMap)
+										}
+									})
+									IBestButton({
+										text: "分享",
+										btnWidth: 100,
+										btnHeight: 40,
+										round: true,
+										onBtnClick: () => {
+											shareImage(this.context, this.pixelMap!)
+										}
+									})
+								}
 							}
 						}
 					}
@@ -144,7 +155,7 @@ struct CanvasDrawerPage {
 								IBestButton({
 									text: "重选",
 									type: "primary",
-									onClickBtn: () => {
+									onBtnClick: () => {
 										this.imgList = []
 										this.pixelMap5 = null
 									}
@@ -165,15 +176,16 @@ struct CanvasDrawerPage {
 						IBestCell({
 							title: '试一试',
 							isLink: true,
-							onClickCell: () => {
-								router.pushUrl({ url: "pages/MakePoster" })
+							onCellClick: () => {
+								RouterUtil.push("MakePoster")
 							}
 						})
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding({ left: SPACE.SM, right: SPACE.SM, bottom: SPACE.SM })
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 			if(this.canvasShow){
 				IBestCanvasDrawer({
 					canvasWidth: this.canvasWidth,
@@ -255,8 +267,7 @@ struct CanvasDrawerPage {
 				})
 			}
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

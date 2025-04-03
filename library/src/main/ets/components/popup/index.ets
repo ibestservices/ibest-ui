@@ -6,6 +6,8 @@ import { IBestPopupColor } from './color'
 import { IBestIcon } from '../icon'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestStringNumber } from '../../model/Global.type'
+import GlobalStore from '../../utils/GlobalStore'
+import { ImmersiveMode } from '@kit.ArkUI'
 const popupDuration = 200
 const hideDuration = 220
 
@@ -14,20 +16,18 @@ interface PopupSize{
 	height: IBestStringNumber
 }
 
-@CustomDialog
 @Component
 struct IBestPopupBaseContent {
 	// 是否横屏
 	@StorageProp("IBestIsLandscape") @Watch("initSize") IBestIsLandscape: boolean = false
 	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
 	@StorageProp("IBestBottomBarHeight") bottomBarHeight: number = 0
-	// @StorageProp("IBestKeyBoardHeight") keyBoardHeight: number = 0
 	@State transX: IBestStringNumber = ""
 	@State transY: IBestStringNumber = ""
 	/**
 	 * 弹框显示位置
 	 */
-	@Prop popupAlign: PopupAlign
+	@Consume popupAlign: PopupAlign
 	/**
 	 * 弹框宽度
 	 */
@@ -36,6 +36,10 @@ struct IBestPopupBaseContent {
 	 * 弹框高度
 	 */
 	@Link popupHeight: IBestStringNumber
+	/**
+	 * 背景图片
+	 */
+	@Consume bgColor: ResourceColor
 	/**
 	 * 背景图片
      */
@@ -47,7 +51,11 @@ struct IBestPopupBaseContent {
 	/**
 	 * 背板的圆角半径
 	 */
-	@Link cornerRadius: IBestStringNumber
+	@Consume cornerRadius: IBestStringNumber
+	/**
+	 * 底部偏移
+	 */
+	@Consume offsetY: number
 	/**
 	 * 是否开启顶部安全区适配
 	 */
@@ -60,11 +68,11 @@ struct IBestPopupBaseContent {
 	 * 自定义头部
 	 * @since 1.18.0
      */
-	@BuilderParam headerBuilder?: CustomBuilder
+	@BuilderParam headerBuilder: CustomBuilder
 	/**
 	 * 自定义内容
 	 */
-	@BuilderParam contentBuilder?: CustomBuilder
+	@BuilderParam contentBuilder: CustomBuilder
 	/**
 	 * 点击遮罩
 	 */
@@ -137,60 +145,69 @@ struct IBestPopupBaseContent {
 	}
 
 	build() {
-		Row(){
-			if(this.popupAlign == 'center' || this.popupAlign == 'right'){
+		Column(){
+			if(this.popupAlign == 'center' || this.popupAlign == 'bottom'){
 				this.placeRow()
 			}
-			Column(){
-				if(this.isShowHeader){
-					if(this.headerBuilder){
-						this.headerBuilder()
-					}else{
-						PopupTitle({
-							close: this.close
-						})
+			Row(){
+				if(this.popupAlign == 'center' || this.popupAlign == 'right'){
+					this.placeRow()
+				}
+				Column(){
+					if(this.isShowHeader){
+						if(this.headerBuilder){
+							this.headerBuilder()
+						}else{
+							PopupTitle({
+								close: (): void => this.close()
+							})
+						}
+					}
+					if(this.contentBuilder){
+						this.contentBuilder()
 					}
 				}
-				if(this.contentBuilder){
-					this.contentBuilder()
+				.width(getSizeByUnit(this.initSize().width))
+				.height(getSizeByUnit(this.initSize().height))
+				.backgroundColor(this.bgColor)
+				.backgroundImage(this.bgImage)
+				.backgroundImageSize(ImageSize.FILL)
+				.padding({
+					top: this.safeAreaInsetTop && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
+						== "top") ? convertDimensionsWidthUnit(this.topAvoidHeight) : 0,
+					bottom: this.safeAreaInsetBottom && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
+						== "bottom") ? convertDimensionsWidthUnit(this.bottomBarHeight) : 0
+				})
+				.alignItems(HorizontalAlign.Start)
+				.borderRadius(getSizeByUnit(this.cornerRadius))
+				.translate({
+					x: (this.popupAlign == "left" || this.popupAlign == "right") ? this.transX : "",
+					y: (this.popupAlign == "top" || this.popupAlign == 'bottom') ? this.transY : ""
+				})
+				.animation({ duration: popupDuration, curve: Curve.EaseInOut })
+				.onAppear(() => {
+					setTimeout(() => {
+						this.trans()
+					}, 100)
+				})
+				if(this.popupAlign == 'center' || this.popupAlign == 'left'){
+					this.placeRow()
 				}
 			}
-			.width(getSizeByUnit(this.initSize().width))
-			.height(getSizeByUnit(this.initSize().height))
-			.backgroundColor(IBestPopupColor.bgColor)
-			.backgroundImage(this.bgImage)
-			.backgroundImageSize(ImageSize.FILL)
-			.padding({
-				top: this.safeAreaInsetTop && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
-					== "top") ? convertDimensionsWidthUnit(this.topAvoidHeight) : 0,
-				bottom: this.safeAreaInsetBottom && (this.popupAlign == "left" || this.popupAlign == "right" || this.popupAlign
-					== "bottom") ? convertDimensionsWidthUnit(this.bottomBarHeight) : 0
-			})
-			.alignItems(HorizontalAlign.Start)
-			.borderRadius(getSizeByUnit(this.cornerRadius))
-			.translate({
-				x: (this.popupAlign == "left" || this.popupAlign == "right") ? this.transX : "",
-				y: (this.popupAlign == "top" || this.popupAlign == 'bottom') ? this.transY : ""
-			})
-			.animation({ duration: popupDuration, curve: Curve.EaseInOut })
-			.onAppear(() => {
-				setTimeout(() => {
-					this.trans()
-				}, 100)
-			})
-			if(this.popupAlign == 'center' || this.popupAlign == 'left'){
+			.width(['left', 'center', 'right'].includes(this.popupAlign) ? CONTAINER_SIZE.FULL : "")
+			if(this.popupAlign == 'center' || this.popupAlign == 'top'){
 				this.placeRow()
 			}
 		}
-		.width(['left', 'center', 'right'].includes(this.popupAlign) ? CONTAINER_SIZE.FULL : "")
+		.height(CONTAINER_SIZE.FULL)
+		.offset({x: 0, y: this.offsetY})
 		.clip(true)
-		// .margin({bottom: this.keyBoardHeight})
-		// .animation({ duration: 430, curve: Curve.EaseInOut })
 	}
 }
 
 @Component
 export struct IBestPopup{
+	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
 	/**
 	 * 弹框展示状态
 	 */
@@ -198,7 +215,7 @@ export struct IBestPopup{
 	/**
 	 * 弹框显示位置
 	 */
-	@Prop popupAlign: PopupAlign = 'center'
+	@Provide({allowOverride: "popupAlign"}) popupAlign: PopupAlign = 'center'
 	/**
 	 * 弹框宽度
 	 */
@@ -207,6 +224,11 @@ export struct IBestPopup{
 	 * 弹框高度
 	 */
 	@Prop popupHeight: IBestStringNumber = ""
+	/**
+	 * 背景图片
+	 * @since 2.0.8
+	 */
+	@Provide({allowOverride: "bgColor"}) bgColor: ResourceColor = IBestPopupColor.bgColor
 	/**
 	 * 背景图片
 	 * @since 2.0.7
@@ -228,7 +250,7 @@ export struct IBestPopup{
 	/**
 	 * 底部偏移
 	 */
-	@Prop offsetY: number = 0
+	@Provide({allowOverride: "offsetY"}) offsetY: number = 0
 	/**
 	 * 是否为模态窗口
 	 */
@@ -241,7 +263,7 @@ export struct IBestPopup{
 	/**
 	 * 背板的圆角半径
 	 */
-	@Prop cornerRadius: IBestStringNumber = 0
+	@Provide({allowOverride: "cornerRadius"}) cornerRadius: IBestStringNumber = 0
 	/**
 	 * 是否允许点击遮罩关闭
 	 */
@@ -275,11 +297,11 @@ export struct IBestPopup{
 	 * 自定义头部 优先级大于title
 	 * @since 1.18.0
 	 */
-	@BuilderParam headerBuilder?: CustomBuilder
+	@BuilderParam headerBuilder: CustomBuilder
 	/**
 	 * 自定义内容
 	 */
-	@BuilderParam contentBuilder?: CustomBuilder
+	@BuilderParam contentBuilder: CustomBuilder
 	/**
 	 * 弹框打开回调
 	 */
@@ -290,51 +312,76 @@ export struct IBestPopup{
 	onClose: () => void = () => {}
 
 	private baseController: PopupBaseController = new PopupBaseController()
-	dialogController: CustomDialogController = new CustomDialogController({
-		builder: IBestPopupBaseContent({
-			baseController: this.baseController,
-			headerBuilder: this.headerBuilder,
-			contentBuilder: this.contentBuilder,
-			popupAlign: this.popupAlign,
+	private promptAction = this.getUIContext().getPromptAction()
+	private dialogId: number = 0
+	@Builder defaultContentBuilder() {
+		IBestPopupBaseContent({
 			popupWidth: $popupWidth,
 			popupHeight: $popupHeight,
-			cornerRadius: $cornerRadius,
-			close: (): void => this.close(),
+			headerBuilder: this.headerBuilder,
+			contentBuilder: this.contentBuilder,
+			baseController: this.baseController,
 			onClickOverlay: () => {
 				if(this.closeOnClickOverlay){
 					this.close()
 				}
-			}
-		}),
-		alignment: this.popupAlign == "left" ? DialogAlignment.TopStart : this.popupAlign == "right" ?
-		DialogAlignment.TopEnd : this.popupAlign == "top" ? DialogAlignment.Top : this.popupAlign == "bottom" ?
-			DialogAlignment.Bottom : DialogAlignment.Center,
-		offset: { dx: 0, dy: -this.offsetY },
-		isModal: this.isModal,
-		maskColor: this.maskColor,
-		customStyle: true,
-		// keyboardAvoidMode: KeyboardAvoidMode.NONE,
-		onWillDismiss:(dismissDialogAction: DismissDialogAction)=> {
-			// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
-			let reason = dismissDialogAction.reason
-			if (reason == DismissReason.PRESS_BACK && this.closeOnBackPress || reason == DismissReason.TOUCH_OUTSIDE && this.closeOnClickOverlay) {
-				this.close()
-			}
-		},
-		cancel: this.close
-	})
+			},
+			close: (): void => this.close()
+		})
+	}
 
 	visibleChange(){
 		if(this.visible){
-			this.dialogController.open()
-			this.onOpen()
+			this.open()
 		}else{
 			this.baseController.hide()
 			setTimeout(() => {
-				this.dialogController.close()
-				this.onClose()
+				this.promptAction.closeCustomDialog(this.dialogId)
 			}, hideDuration)
 		}
+	}
+	getAlignment() {
+		switch (this.popupAlign) {
+			case 'left':
+				return DialogAlignment.TopStart
+			case 'right':
+				return DialogAlignment.TopEnd
+			case 'top':
+				return DialogAlignment.Top
+			case 'bottom':
+				return DialogAlignment.Bottom
+			default:
+				return DialogAlignment.Center
+		}
+	}
+	async open() {
+		this.dialogId = await this.promptAction.openCustomDialog({
+			builder: () => {
+				this.defaultContentBuilder()
+			},
+			width: CONTAINER_SIZE.FULL,
+			height: px2vp(GlobalStore.screenHeight),
+			backgroundBlurStyle: BlurStyle.NONE,
+			cornerRadius: 0,
+			alignment: this.getAlignment(),
+			offset: { dx: 0, dy: -(this.topAvoidHeight) },
+			isModal: this.isModal,
+			maskColor: this.maskColor,
+			// immersiveMode: ImmersiveMode.EXTEND,
+			onDidAppear: () => {
+				this.onOpen()
+			},
+			onDidDisappear: () => {
+				this.onClose()
+			},
+			onWillDismiss:(dismissDialogAction: DismissDialogAction)=> {
+				// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
+				let reason = dismissDialogAction.reason
+				if (reason == DismissReason.PRESS_BACK && this.closeOnBackPress || reason == DismissReason.TOUCH_OUTSIDE && this.closeOnClickOverlay) {
+					this.close()
+				}
+			}
+		})
 	}
 	// 关闭弹框
 	close() {

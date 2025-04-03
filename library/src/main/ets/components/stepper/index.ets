@@ -131,10 +131,6 @@ export struct IBestStepper {
 	 */
 	@State plusBtnDisabled: boolean = false;
 	/**
-	 * loading状态
-	 */
-	@State loading: boolean = false;
-	/**
 	 * 上一次输入正确的值
 	 */
 	preValue: string = this.inputNumValue
@@ -215,7 +211,7 @@ export struct IBestStepper {
 	 * @param { STEPPER_BTN_TYPE } btnType
 	 */
 	handleClickStepperBtn(btnType: STEPPER_BTN_TYPE) {
-		if (this.disabled || this.loading) {
+		if (this.disabled) {
 			return
 		}
 		let nextValue = '0';
@@ -254,7 +250,7 @@ export struct IBestStepper {
 					iconSize: this.iconSize,
 					radiusLeftTop: this.buttonRadius,
 					radiusLeftBottom: this.buttonRadius,
-					disabled: this.reduceBtnDisabled || this.disabled || this.disableMinus || this.loading,
+					disabled: this.reduceBtnDisabled || this.disabled || this.disableMinus,
 					onClickBtn: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.REDUCE),
 					onLongPress: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.REDUCE)
 				})
@@ -278,7 +274,7 @@ export struct IBestStepper {
 					.textAlign(TextAlign.Center)
 					.inputFilter(this.integer ? '[0-9-]' : '[0-9\.-]')
 					.onChange((val) => this.handleInputNumChange(val, true))
-					.focusable(!(this.disabled || this.disableInput || this.loading))
+					.focusable(!(this.disabled || this.disableInput))
 			}
 			if (this.showPlus) {
 				// 增加按钮
@@ -287,7 +283,7 @@ export struct IBestStepper {
 					buttonSize: this.buttonSize,
 					radiusRightTop: this.buttonRadius,
 					radiusRightBottom: this.buttonRadius,
-					disabled: this.plusBtnDisabled || this.disabled || this.disablePlus || this.loading,
+					disabled: this.plusBtnDisabled || this.disabled || this.disablePlus,
 					onClickBtn: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.PLUS),
 					onLongPress: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.PLUS)
 				})

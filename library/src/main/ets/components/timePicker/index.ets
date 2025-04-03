@@ -10,19 +10,11 @@ export struct IBestTimePicker {
 	/**
 	 * 分组id
 	 */
-	@Prop groupId: string = ""
-	/**
-	 * 唯一id
-	 */
-	@State uniId: number = 0
+	@Prop groupId: IBestStringNumber = ""
 	/**
 	 * 已选择的值
 	 */
 	@Link value: string[]
-	/**
-	 * 选项列表
-	 */
-	@State options: IBestPickerOption[][] = []
 	/**
 	 * 最小时间
 	 */
@@ -99,6 +91,11 @@ export struct IBestTimePicker {
 	 * 选中项改变事件
 	 */
 	onChange: (value: string[]) => void = () => {}
+
+	// 唯一id
+	@State uniId: number = 0
+	// 选项列表
+	@State options: IBestPickerOption[][] = []
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()

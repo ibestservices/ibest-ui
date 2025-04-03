@@ -1,6 +1,3 @@
-export interface ComponentRouterParams {
-	title: string
-}
 /**
  * 窗口规避尺寸信息
  */

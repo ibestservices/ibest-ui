@@ -1,46 +1,43 @@
-import router from '@ohos.router';
-import { IBestButton, IBestNavBar, IBestSignature, IBestSignatureController } from '@ibestservices/ibest-ui';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import { IBestButton, IBestSignature, IBestSignatureController } from '@ibestservices/ibest-ui';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
 
-class params {
-	url: PixelMap | null = null
+@Builder
+export function SignatureBuilder(_: string, title: string){
+	SignaturePage({title})
 }
 
 @Entry
 @Component
 struct SignaturePage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State imgUrl: PixelMap | null = null
 	@State imgUrl1: PixelMap | null = null
 	@State imgUrl2: PixelMap | null = null
 	@State imgUrl3: PixelMap | null = null
 	private controller: IBestSignatureController = new IBestSignatureController()
 
-	@Builder imgUrlView($$: params) {
-		Image($$.url)
+	@Builder imgUrlView(url: PixelMap) {
+		Image(url)
 			.margin({ top: 20 })
 	}
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
 						IBestSignature({
 							onConfirm: (pixelMap: PixelMap) => {
 								this.imgUrl = pixelMap
+							},
+							onClear: () => {
+								this.imgUrl = null
 							}
 						})
 						if(this.imgUrl){
-							this.imgUrlView({url: this.imgUrl})
+							this.imgUrlView(this.imgUrl)
 						}
 					}
 				}
@@ -51,11 +48,14 @@ struct SignaturePage {
 							lineWidth: 5,
 							bgColor: "#eee",
 							onConfirm: (pixelMap: PixelMap) => {
-								this.imgUrl = pixelMap
+								this.imgUrl1 = pixelMap
+							},
+							onClear: () => {
+								this.imgUrl1 = null
 							}
 						})
 						if(this.imgUrl1){
-							this.imgUrlView({url: this.imgUrl1})
+							this.imgUrlView(this.imgUrl1)
 						}
 					}
 				}
@@ -65,11 +65,14 @@ struct SignaturePage {
 							boardWidth: 260,
 							boardHeight: 150,
 							onConfirm: (pixelMap: PixelMap) => {
-								this.imgUrl = pixelMap
+								this.imgUrl2 = pixelMap
+							},
+							onClear: () => {
+								this.imgUrl2 = null
 							}
 						})
 						if(this.imgUrl2){
-							this.imgUrlView({url: this.imgUrl2})
+							this.imgUrlView(this.imgUrl2)
 						}
 					}
 				}
@@ -79,23 +82,26 @@ struct SignaturePage {
 							controller: this.controller,
 							isShowFooter: false,
 							onConfirm: (pixelMap: PixelMap) => {
-								this.imgUrl = pixelMap
+								this.imgUrl3 = pixelMap
+							},
+							onClear: () => {
+								this.imgUrl3 = null
 							}
 						})
 						if(this.imgUrl3){
-							this.imgUrlView({url: this.imgUrl3})
+							this.imgUrlView(this.imgUrl3)
 						}
 						Row({ space: 10 }){
 							IBestButton({
 								text: '清空',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller.clear()
 								}
 							})
 							IBestButton({
 								text: '确认',
 								type: 'primary',
-								onClickBtn: () => {
+								onBtnClick: () => {
 									this.controller.confirm()
 								}
 							})
@@ -104,13 +110,9 @@ struct SignaturePage {
 				}
 			}
 			.layoutWeight(1)
-			.padding({
-				left: SPACE.SM,
-				right: SPACE.SM
-			})
+			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }

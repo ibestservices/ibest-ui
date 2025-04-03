@@ -14,7 +14,12 @@ export struct IBestProgress{
 	/**
 	 * 进度值
      */
-	@Prop @Watch("valueChange") value: number = 0
+	@Link @Watch("valueChange") value: number
+	/**
+	 * 目标值
+	 * @since 2.0.8
+	 */
+	@Prop target: number = 100
 	/**
 	 * 进度条粗细
      */
@@ -63,17 +68,32 @@ export struct IBestProgress{
 	 * 格式化文本函数
      */
 	format?: (value: number) => string
+	/**
+	 * 到达目标值
+	 * @since 2.0.8
+	 */
+	onReachTarget: () => void = () => {}
 
 	@State positionX: string = `-${this.value}%`
 
 	valueChange(){
-		this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value
+		let value = Math.min(this.target, Math.max(this.value, 0))
+		this.value = value
+		if(value == this.target){
+			this.onReachTarget()
+		}
 	}
 	getColor(){
 		return this.inactive ? GRAY_COLOR.GRAY_5 : (this.color || this.baseStyle.primary)
 	}
 	getTextColor(){
 		return this.inactive ? GRAY_COLOR.GRAY_5 : this.textColor
+	}
+	getText(){
+		return this.format ? this.format(this.value) : this.value + "%"
+	}
+	getWidth(){
+		return this.value / this.target * 100 + "%"
 	}
 
 	build() {
@@ -85,13 +105,13 @@ export struct IBestProgress{
 					.backgroundColor(this.bgColor)
 				Row(){
 					if(this.showText && this.textInside && this.value){
-						Text(this.format ? this.format(this.value) : this.value + "%")
+						Text(this.getText())
 							.fontSize(getSizeByUnit(this.textFontSize, true))
 							.fontColor(IBestProgressColor.whiteColor)
 							.margin({right: this.baseStyle.spaceXs})
 					}
 				}
-				.width(this.value + "%")
+				.width(this.getWidth())
 				.height(CONTAINER_SIZE.FULL)
 				.backgroundColor(this.getColor())
 				.borderRadius(this.baseStyle.borderRadiusMax)
@@ -119,7 +139,7 @@ export struct IBestProgress{
 			.borderRadius(this.baseStyle.borderRadiusMax)
 			.clip(true)
 			if(this.showText && !this.textInside){
-				Text(this.format ? this.format(this.value) : this.value + "%")
+				Text(this.getText())
 					.fontSize(getSizeByUnit(this.textFontSize, true))
 					.fontColor(this.getTextColor())
 					.margin({left: this.baseStyle.spaceXs})

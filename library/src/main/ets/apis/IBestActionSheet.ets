@@ -1,11 +1,10 @@
-import { ComponentContent, UIContext, window } from '@kit.ArkUI';
-import { convertDimensionsWidthUnit, generateId, getSizeByUnit } from '../utils/utils';
+import { ComponentContent, LengthMetrics, UIContext, window } from '@kit.ArkUI';
+import { convertDimensionsWidthUnit, generateId, getLengthUnit, getSizeByUnit } from '../utils/utils';
 import CustomContent from '../common/components/CustomContent';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src';
 import { GRAY_COLOR } from '../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type';
-import GlobalStore from '../utils/GlobalStore';
 import { IBestActionSheetColor } from './color';
 import { IBestIcon } from '../components/icon';
 import { IBestStringNumber } from '../model/Global.type';
@@ -13,7 +12,7 @@ import { IBestStringNumber } from '../model/Global.type';
 // 选项类型
 class IBestActionType {
 	name: ResourceStr = ""
-	value?: string
+	value?: IBestStringNumber
 	subName?: ResourceStr
 	color?: ResourceColor
 	icon?: ResourceStr
@@ -116,7 +115,7 @@ class IBestActionSheetOption {
 	/**
 	 * 选择后回调
 	 */
-	onSelect?: (index1: number, index2?: IBestStringNumber, value?: string) => void
+	onSelect?: (index1: number, index2?: IBestStringNumber, value?: IBestStringNumber) => void
 	/**
 	 * 点击取消回调
 	 */
@@ -140,6 +139,11 @@ class IBestActionSheetOption {
 	 * @since 2.0.0
      */
 	itemHeight?: IBestStringNumber
+	/**
+	 * 圆角
+	 * @since 2.0.8
+     */
+	radius?: number
 }
 
 class IBestActionSheetParams extends IBestActionSheetOption {
@@ -153,19 +157,19 @@ class IBestActionSheetParams extends IBestActionSheetOption {
 		this.detents = option.detents
 		this.preferType = option.preferType || SheetType.BOTTOM
 		this.mode = option.mode
-		this.dragBar = option.dragBar != undefined ? option.dragBar : false
+		this.dragBar = option.dragBar ?? false
 		this.title = option.title
-		this.showClose = option.showClose || option.title != undefined || false
+		this.showClose = option.showClose ?? false
 		this.actions = option.actions || []
 		this.customTitle = option.customTitle || ""
 		this.titleBgColor = option.titleBgColor || IBestActionSheetColor.buttonBg
 		this.description = option.description || ""
-		this.closeable = option.closeable != undefined ? option.closeable : true
+		this.closeable = option.closeable ?? true
 		this.closeIcon = option.closeIcon || "cross"
 		this.cancelText = option.cancelText || ""
-		this.safeAreaInsetBottom = option.safeAreaInsetBottom != undefined ? option.safeAreaInsetBottom : true
-		this.closeOnBackPress = option.closeOnBackPress != undefined ? option.closeOnBackPress : true
-		this.closeOnClickOverlay = option.closeOnClickOverlay != undefined ? option.closeOnClickOverlay : true
+		this.safeAreaInsetBottom = option.safeAreaInsetBottom ?? true
+		this.closeOnBackPress = option.closeOnBackPress ?? true
+		this.closeOnClickOverlay = option.closeOnClickOverlay ?? true
 		this.customContent = option.customContent || undefined
 		this.onOpen = option.onOpen || undefined
 		this.onSelect = option.onSelect || undefined
@@ -174,6 +178,7 @@ class IBestActionSheetParams extends IBestActionSheetOption {
 		this.cancelTextColor = option.cancelTextColor || GRAY_COLOR.GRAY_7
 		this.beforeClose = option.beforeClose || undefined
 		this.itemHeight = option.itemHeight || convertDimensionsWidthUnit(50)
+		this.radius = option.radius ?? 16
 	}
 }
 
@@ -184,6 +189,7 @@ struct defaultContent{
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@StorageProp("IBestColorMode") @Watch("colorModeChange") colorMode: ColorMode = ColorMode.LIGHT
+	@StorageProp("IBestBottomBarHeight") bottomBarHeight: number = 0
 	@Prop option: IBestActionSheetParams
 
 	@State bgColor: ResourceColor = IBestActionSheetColor.contentBg
@@ -381,8 +387,7 @@ struct defaultContent{
 			}
 		}
 		.width(CONTAINER_SIZE.FULL)
-		.padding({ bottom: this.option.safeAreaInsetBottom ? convertDimensionsWidthUnit(GlobalStore.bottomBarHeight) : 0 })
-		.backgroundColor(this.bgColor)
+		.padding({ bottom: this.option.safeAreaInsetBottom ? convertDimensionsWidthUnit(this.bottomBarHeight) : 0 })
 	}
 }
 
@@ -395,6 +400,17 @@ interface contentNodeMapVal{
 	content: ComponentContent<IBestActionSheetParams>
 	params: IBestActionSheetParams
 }
+async function handleBeforeClose(params: IBestActionSheetParams) {
+	let status = true
+	try {
+		if (params.beforeClose) {
+			status = await params.beforeClose()
+		}
+	} catch (e) {
+		status = false
+	}
+	return status
+}
 
 class ActionSheet{
 	private uiContext: UIContext | null = null
@@ -404,7 +420,7 @@ class ActionSheet{
   	 */
 	public async show(option: IBestActionSheetOption): Promise<string> {
 		let key = this.getUniKey()
-		if(this.uiContext == null){
+		if(!this.uiContext){
 			let windowClass: window.Window = await window.getLastWindow(getContext())
 			this.uiContext = windowClass.getUIContext()
 		}
@@ -415,22 +431,25 @@ class ActionSheet{
 		let sheetOption: SheetOptions = {
 			width: params.width,
 			height: params.height,
+			radius: new LengthMetrics(params.radius as number, getLengthUnit()),
 			dragBar: params.dragBar,
 			preferType: params.preferType,
 			showClose: params.showClose,
+			onAppear: () => {
+				params.onOpen?.()
+			},
 			onWillDismiss: async (DismissSheetAction: DismissSheetAction) => {
-				// console.log("onWillDismiss", DismissSheetAction.reason)
 				// 0: 点击三键back、左滑/右滑、键盘ESC 1 点击蒙层  3: 跟手拖拽
 				if (DismissSheetAction.reason == DismissReason.PRESS_BACK && !params.closeOnBackPress || DismissSheetAction.reason == DismissReason.TOUCH_OUTSIDE && !params.closeOnClickOverlay) {
 					return
 				}
-				if(params.beforeClose){
-					let status = await params.beforeClose?.()
-					if(!status){
-						return
-					}
+				let state = await handleBeforeClose(params)
+				if(!state){
+					return
 				}
 				DismissSheetAction.dismiss()
+			},
+			onDisappear: () => {
 				params.onClose?.()
 			}
 		}
@@ -451,7 +470,6 @@ class ActionSheet{
 			params: params
 		})
 		await this.uiContext.openBindSheet(contentNode, sheetOption)
-		params.onOpen?.()
 		return key
 	}
 	/**

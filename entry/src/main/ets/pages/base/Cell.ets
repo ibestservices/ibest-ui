@@ -1,12 +1,17 @@
-import router from '@ohos.router';
-import { IBestCell, IBestCellGroup, IBestNavBar, IBestTag } from '@ibestservices/ibest-ui';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import { IBestCell, IBestCellGroup, IBestTag } from '@ibestservices/ibest-ui';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { ComponentRouterParams } from '../../assets/global.type';
+import CustomNavBar from '../../components/CustomNavBar';
+
+@Builder
+export function CellBuilder(_: string, title: string){
+	CellPage({title})
+}
+
 @Entry
 @Component
 struct CellPage {
-	@State title: string = (router.getParams() as ComponentRouterParams).title || ''
+	@State title: string = ''
 	@State showTag: boolean = true;
 	@State inputValue: string = ''
 	@Builder StarIcon(width = 16) {
@@ -28,14 +33,8 @@ struct CellPage {
 		TextInput({ placeholder: $r("app.string.custom_placeholder", $r("app.string.content")) })
 	}
 	build() {
-		Column() {
-			IBestNavBar({
-				title: this.title,
-				isShowStatusBar: true,
-				onLeftClick: () => {
-					router.back()
-				}
-			})
+		NavDestination() {
+			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: $r("app.string.basic_usage"), titlePaddingLeft: SPACE.XS }) {
@@ -101,7 +100,6 @@ struct CellPage {
 				ListItem() {
 					ComponentShowContainer({ title: $r("app.string.custom_size", $r("app.string.custom")), titlePaddingLeft: SPACE.XS }) {
 						IBestCellGroup() {
-							IBestCell({ title: $r("app.string.title"), value: $r("app.string.content"), cellSize: 'large' })
 							IBestCell({
 								title: $r("app.string.title"),
 								value: $r("app.string.content"),
@@ -228,12 +226,12 @@ struct CellPage {
 						})
 					}
 				}
+				ListItem().height(50)
 			}
 			.layoutWeight(1)
 			.padding({ bottom: SPACE.MD })
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }
