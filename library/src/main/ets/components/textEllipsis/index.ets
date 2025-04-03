@@ -148,7 +148,7 @@ export struct IBestTextEllipsis{
             if(this.textHeight > this.maxLineHeight && !this.isExpand && this.omitPosition == "end"){
                 this.OmitContent()
             }
-            if(this.showAction){
+            if(this.showAction && this.textHeight > this.maxLineHeight){
                 Span(this.isExpand ? this.collapseText : this.expandText)
                     .fontColor(this.actionColor)
                     .fontSize(getSizeByUnit(this.textFontSize, true))
