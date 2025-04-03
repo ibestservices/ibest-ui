@@ -277,6 +277,10 @@
 			"value": "CanvasDrawer 画布绘制"
 		},
 		{
+			"name": "component_colorPicker",
+			"value": "ColorPicker 颜色选取"
+		},
+		{
 			"name": "component_imageCropper",
 			"value": "ImageCropper 图片裁剪"
 		},

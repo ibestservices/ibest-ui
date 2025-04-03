@@ -266,6 +266,11 @@
 			"buildFunction": "CanvasDrawerBuilder"
 		},
 		{
+			"name": "ColorPicker",
+			"pageSourceFile": "src/main/ets/pages/extend/ColorPicker.ets",
+			"buildFunction": "ColorPickerBuilder"
+		},
+		{
 			"name": "ImageCropper",
 			"pageSourceFile": "src/main/ets/pages/extend/ImageCropper.ets",
 			"buildFunction": "ImageCropperBuilder"

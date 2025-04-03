@@ -148,5 +148,7 @@ export { IBestTabItem, IBestTabItemType } from './src/main/ets/components/tab/in
 export { IBestCanvasDrawer } from './src/main/ets/components/canvasDrawer/index'
 export { IBestCanvasContent } from './src/main/ets/components/canvasDrawer/index.type'
 
+export { IBestColorPicker } from './src/main/ets/components/colorPicker/index'
+
 export { IBestImageCropper } from './src/main/ets/components/imageCropper/index'
 export { IBestImageCropperController } from './src/main/ets/components/imageCropper/index.type'

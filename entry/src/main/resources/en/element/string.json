@@ -277,6 +277,10 @@
 			"value": "CanvasDrawer"
 		},
 		{
+			"name": "component_colorPicker",
+			"value": "ColorPicker"
+		},
+		{
 			"name": "component_imageCropper",
 			"value": "ImageCropper"
 		},
