@@ -12,13 +12,16 @@ export function ColorPickerBuilder(_: string, title: string){
 @Component
 struct ColorPickerPage {
 	@State title: string = ""
+	@State color: string = "#409EFF"
 	build() {
 		NavDestination(){
 			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
-						IBestColorPicker()
+						IBestColorPicker({
+							value: $color
+						})
 					}
 				}
 				ListItem().height(50)

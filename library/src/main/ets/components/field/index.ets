@@ -318,7 +318,7 @@ export struct IBestField{
                 .backgroundColor(this.bgColor)
             },
             pressed: {
-                .backgroundColor((this.clickable || this.isLink) ? IBestFieldColor.activeColor : IBestFieldColor.bg2)
+                .backgroundColor((this.clickable || this.isLink) ? IBestFieldColor.activeColor : this.bgColor)
             }
         })
         .borderRadius(getSizeByUnit(this.radius))
