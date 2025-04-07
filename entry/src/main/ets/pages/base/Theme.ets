@@ -104,7 +104,7 @@ struct ThemePage {
 				ListItem() {
 					ComponentShowContainer({ title: $r("app.string.component_progress") }) {
 						IBestProgress({
-							value: 50
+							value: $progressValue
 						})
 					}
 				}
