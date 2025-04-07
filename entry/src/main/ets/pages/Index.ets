@@ -377,60 +377,62 @@ struct Index {
 			})
 		}else{
 			Column() {
-				Column({ space: SPACE.MD }) {
-					Image($r("app.media.app_icon")).width(100).borderRadius(BORDER_RADIUS.BASE)
-					Text($r("app.string.app_name"))
-						.fontSize(32)
-						.fontColor(modeColor.textColor2)
-					Text($r("app.string.ibest_ui_desc"))
-						.width("80%")
-						.textAlign(TextAlign.Center)
-						.fontSize(FONT_SIZE.MD)
-						.fontColor(modeColor.textColor4)
-					IBestCellGroup({inset: true}){
-						IBestCell({
-							title: $r("app.string.app_version"),
-							value: `v${getAppVersion()}`
-						})
-						IBestCell({
-							title: $r("app.string.ui_version"),
-							value: this.uiVersion ? `v${this.uiVersion}` : ""
-						})
-						IBestCell({
-							title: $r("app.string.ui_doc"),
-							isLink: true,
-							onCellClick: () => {
-								this.viewUrl("doc")
-							}
-						})
-						IBestCell({
-							title: $r("app.string.company_official_website"),
-							isLink: true,
-							onCellClick: () => {
-								this.viewUrl("company")
-							}
-						})
-						IBestCell({
-							title: $r("app.string.privacy_policy"),
-							isLink: true,
-							hasBorder: false,
-							onCellClick: () => {
-								router.pushUrl({
-									url: "pages/PrivacyPolicy"
-								})
-							}
-						})
-					}
+				Scroll(){
+					Column({ space: SPACE.MD }) {
+						Image($r("app.media.app_icon")).width(100).borderRadius(BORDER_RADIUS.BASE)
+						Text($r("app.string.app_name"))
+							.fontSize(32)
+							.fontColor(modeColor.textColor2)
+						Text($r("app.string.ibest_ui_desc"))
+							.width("80%")
+							.textAlign(TextAlign.Center)
+							.fontSize(FONT_SIZE.MD)
+							.fontColor(modeColor.textColor4)
+						IBestCellGroup({inset: true}){
+							IBestCell({
+								title: $r("app.string.app_version"),
+								value: `v${getAppVersion()}`
+							})
+							IBestCell({
+								title: $r("app.string.ui_version"),
+								value: this.uiVersion ? `v${this.uiVersion}` : ""
+							})
+							IBestCell({
+								title: $r("app.string.ui_doc"),
+								isLink: true,
+								onCellClick: () => {
+									this.viewUrl("doc")
+								}
+							})
+							IBestCell({
+								title: $r("app.string.company_official_website"),
+								isLink: true,
+								onCellClick: () => {
+									this.viewUrl("company")
+								}
+							})
+							IBestCell({
+								title: $r("app.string.privacy_policy"),
+								isLink: true,
+								hasBorder: false,
+								onCellClick: () => {
+									router.pushUrl({
+										url: "pages/PrivacyPolicy"
+									})
+								}
+							})
+						}
+					}.padding({top: 80})
 				}
+				.layoutWeight(1)
+				.align(Alignment.Top)
 				Column({ space: SPACE.BASE }){
 					Text("皖ICP备16012151号-7A").fontColor(modeColor.primaryColor).fontSize(FONT_SIZE.XS)
 					Text($r("app.string.copy_right")).fontSize(FONT_SIZE.XS).textAlign(TextAlign.Center)
-				}.padding({left: SPACE.BASE, right: SPACE.BASE})
+				}.padding(SPACE.BASE)
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.height(CONTAINER_SIZE.FULL)
-			.justifyContent(FlexAlign.SpaceBetween)
-			.padding({ top: 80, bottom: SPACE.MD })
 		}
 	}
 	@Builder componentItem(item: ComponentItem) {
@@ -583,6 +585,7 @@ struct Index {
 			})
 		}
 		.hideTitleBar(true)
+		.mode(NavigationMode.Stack)
 		.backgroundColor(modeColor.bg)
 	}
 }

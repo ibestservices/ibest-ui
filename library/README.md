@@ -2,11 +2,9 @@
 
 ## 简介
 
-IBest-UI是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库, 包含
-Button、Calendar、Form、Field、Picker、Popup、Toast、Dialog、ImageCropper
-等50+个优质组件。
+IBest-UI是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库, 包含 Button、Calendar、Form、Field、Picker、Popup、Toast、Dialog、ImageCropper 等50+个优质组件。
 
-目前 ibestservices 官方提供了 <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui" target="_blank">V1</a> 和 <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2" target="_blank">V2</a> 版本, 当前为状态管理 **V1** 版本，请根据自己项目使用的**状态管理版本**选择对应的版本使用。
+目前 ibestservices 官方提供了 <a href='https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui' target="_blank">V1</a> 和 <a href='https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2' target="_blank">V2</a> 版本, 当前为状态管理 **V1** 版本，请根据自己项目使用的**状态管理版本**选择对应的版本使用。
 
 ![IBest-UI-Light](https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI-Light.png)
 
