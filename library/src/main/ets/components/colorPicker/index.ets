@@ -3,7 +3,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
 import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
 import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
 import { SPACE } from "../../theme-chalk/src/space"
-import { convertDimensionsWidthUnit, getComponentsInfo, getResourceStr, getSizeByUnit } from "../../utils/utils"
+import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from "../../utils/utils"
 import { IBestHsva, IBestColorFormat } from "./index.type"
 import { color2Hsva, hsva2HexColor, hsva2RgbColor, hue2Rgb } from "./util"
 
@@ -16,7 +16,7 @@ export struct IBestColorPicker{
 	/**
 	 * 初始颜色值, 仅支持HEX 或 rgb格式
      */
-	@Link @Watch("update") value: ResourceStr
+	@Link @Watch("update") value: string
 	/**
 	 *  颜色格式
      */
@@ -87,7 +87,7 @@ export struct IBestColorPicker{
 	}
 	// 记录hsv
 	setHsva(){
-		let hsva = color2Hsva(getResourceStr(this.value))
+		let hsva = color2Hsva(this.value)
 		this.hsva.h = hsva.h
 		this.hsva.s = hsva.s
 		this.hsva.v = hsva.v
@@ -157,7 +157,6 @@ export struct IBestColorPicker{
 
 	build() {
 		Column({space: SPACE.XS}){
-			Text(this.value)
 			Row({space: SPACE.XS}){
 				Stack(){
 					Row()

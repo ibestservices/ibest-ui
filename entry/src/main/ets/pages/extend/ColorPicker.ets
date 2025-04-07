@@ -12,15 +12,25 @@ export function ColorPickerBuilder(_: string, title: string){
 @Component
 struct ColorPickerPage {
 	@State title: string = ""
-	@State color: string = "#409EFF"
+	@State color: string = "#1989fa"
+	@State color1: string = ""
 	build() {
 		NavDestination(){
 			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
+						Text(this.color)
 						IBestColorPicker({
 							value: $color
+						})
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '透明度' }) {
+						IBestColorPicker({
+							value: $color1,
+							enableAlpha: true
 						})
 					}
 				}
