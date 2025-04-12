@@ -4,7 +4,7 @@
 
 IBest-UI是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库, 包含 Button、Calendar、Form、Field、Picker、Popup、Toast、Dialog、ImageCropper 等50+个优质组件。
 
-目前 ibestservices 官方提供了 <a href='https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui' target="_blank">V1</a> 和 <a href='https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2' target="_blank">V2</a> 版本, 当前为状态管理 **V1** 版本，请根据自己项目使用的**状态管理版本**选择对应的版本使用。
+目前 ibestservices 官方提供了 <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui')">V1</a> 和 <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2')">V2</a> 版本, 当前为状态管理 **V1** 版本，请根据自己项目使用的**状态管理版本**选择对应的版本使用。
 
 ![IBest-UI-Light](https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI-Light.png)
 
@@ -117,9 +117,9 @@ ohos.permission.INTERNET
 
 ## 官方生态
 
-| 项目        | 描述                                                              |                                                                                     |
-|:----------|:----------------------------------------------------------------|:------------------------------------------------------------------------------------|
-| area-data | 中国省市区数据，适用于鸿蒙 arkui的 TextPicker 和 IBest-ui 的 IBestCascader 等组件。 | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Farea-data">地址</a> |
+| 项目                       | 描述                                                              |                                                                                                                           |
+|:-------------------------|:----------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------|
+| @ibestservices/area-data | 中国省市区数据，适用于鸿蒙 arkui的 TextPicker 和 IBest-UI 的 IBestCascader 等组件。 | <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Farea-data')">地址</a> |
 
 ## 链接
 - [Github](https://github.com/ibestservices/ibest-ui)
@@ -137,12 +137,12 @@ ohos.permission.INTERNET
 ## 约束与限制
 在下述版本验证通过：
 ```text
-DevEco Studio 5.0.2 Release
-Build #DS-233.14475.28.36.507210
-构建版本：5.0.7.210, built on February 11, 2025
+DevEco Studio 5.0.4 Release
+Build #DS-233.14475.28.36.5011100
+构建版本：5.0.11.100, built on March 28, 2025
 Runtime version: 17.0.12+1-b1087.25 x86_64
 VM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.
-macOS 15.3.1
+macOS 15.3.2
 GC: G1 Young Generation, G1 Old Generation
 Memory: 2048M
 Cores: 12
@@ -150,7 +150,7 @@ Metal Rendering is ON
 Registry:
   idea.plugins.compatible.build=IC-233.14475.28
 Non-Bundled Plugins:
-  com.alibabacloud.intellij.cosy (2.1.2)
+  com.alibabacloud.intellij.cosy (2.1.6)
 ```
 
 ## 开源协议

@@ -2,7 +2,8 @@ import {
     IBestButton,
     IBestCalendar,
     IBestCalendarConfirmResult,
-    IBestCalendarDialog,
+	IBestCalendarDayItem,
+	IBestCalendarDialog,
     IBestCell,
     IBestCellGroup
 } from '@ibestservices/ibest-ui'
@@ -43,6 +44,23 @@ struct CalendarPage {
     @State clockDate: string[] = [dayjs().startOf("month").format('YYYY-MM-DD')]
 
     @State defaultSelectedDate: string[] = [dayjs().format('YYYY-MM-DD')]
+
+	@Builder itemBuilder($$: IBestCalendarDayItem){
+		Column({space: 6}){
+			Text($$.day)
+				.fontSize(12)
+				.fontColor($$.isSelected ? "#1989fa" : "#333")
+			Text($$.lunarDay)
+				.fontSize(12)
+				.fontColor($$.isSelected ? "#1989fa" : "#333")
+		}
+		.width(50)
+		.aspectRatio(1)
+		.justifyContent(FlexAlign.Center)
+		.backgroundImage($$.isSelected ? "https://img95.699pic.com/xsj/0w/ev/jl.jpg%21/fh/300" : "")
+		.backgroundImageSize(ImageSize.FILL)
+		.backgroundImagePosition(Alignment.Center)
+	}
 
     onDialogConfirm(type: string, value: IBestCalendarConfirmResult[]): void {
         switch (type){
@@ -170,13 +188,7 @@ struct CalendarPage {
                             selectedColor: "#ed4040",
                             isShowMark: true,
                             defaultSelectedDate: this.defaultSelectedDate,
-                            onConfirm: value => {
-								let text = value.map(item => item.dateStr).join(",")
-								promptAction.showDialog({
-									message: `当前日期为：${text}`,
-									alignment: DialogAlignment.Center
-								})
-                            }
+							dayItemBuilder: ($$: IBestCalendarDayItem): void => this.itemBuilder($$)
                         })
                     }
                 }

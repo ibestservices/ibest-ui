@@ -2,11 +2,10 @@ import { IBestStringNumber } from "../../model/Global.type"
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
 import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
 import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { SPACE } from "../../theme-chalk/src/space"
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from "../../utils/utils"
-import { IBestHsva, IBestColorFormat } from "./index.type"
-import { color2Hsva, hsva2HexColor, hsva2RgbColor, hue2Rgb } from "./util"
-
+import { IBestHsva, IBestColorFormat, IBestFormatPredefineColor } from "./index.type"
+import { color2Hsva, getRgbaStr, hsva2HexColor, hsva2RgbColor } from "./util"
+import { LengthMetrics } from "@kit.ArkUI"
 @Component
 export struct IBestColorPicker{
 	/**
@@ -16,11 +15,15 @@ export struct IBestColorPicker{
 	/**
 	 * 初始颜色值, 仅支持HEX 或 rgb格式
      */
-	@Link @Watch("update") value: string
+	@Link @Watch("valueChange") value: string
 	/**
 	 *  颜色格式
      */
 	@Prop colorFormat: IBestColorFormat = "hex"
+	/**
+	 * 是否支持透明度选择
+	 */
+	@Prop enableAlpha: boolean = false
 	/**
 	 * 面板高度
      */
@@ -46,9 +49,25 @@ export struct IBestColorPicker{
      */
 	@Prop alphaSliderHeight: IBestStringNumber = convertDimensionsWidthUnit(16)
 	/**
-	 * 是否支持透明度选择
+	 * 颜色面板与色相滑块之间的距离
      */
-	@Prop enableAlpha: boolean = false
+	@Prop panelHueSpace: IBestStringNumber = this.baseStyle.spaceSm as string
+	/**
+	 * 颜色面板与透明度滑块之间的距离
+     */
+	@Prop panelAlphaSpace: IBestStringNumber = this.baseStyle.spaceSm as string
+	/**
+	 * 预定颜色
+     */
+	@Prop predefineColors: string[] = []
+	/**
+	 * 预定颜色块宽度
+	 */
+	@Prop predefineBlockWidth: IBestStringNumber = convertDimensionsWidthUnit(20)
+	/**
+	 * 颜色值变化时触发
+     */
+	onChange: (value: string) => void = () => {}
 
 	@State uniId: number = 0
 	@State realPanelWidth: number = 0
@@ -66,6 +85,7 @@ export struct IBestColorPicker{
 	@State alphaSliderPositionX: number = 0
 	@State hsva: IBestHsva = {} as IBestHsva
 	@State isLock: boolean = false
+	@State formatPredefineColor: IBestFormatPredefineColor[] = []
 	private uiContext = this.getUIContext()
 
 	aboutToAppear(): void {
@@ -78,30 +98,65 @@ export struct IBestColorPicker{
 			this.realHueSliderHeight = getComponentsInfo(this.uiContext, `ibest_colorpicker_hueslider_${this.uniId}`).height
 			this.realAlphaSliderWidth = getComponentsInfo(this.uiContext, `ibest_colorpicker_alphaslider_${this.uniId}`).width
 			this.hsva = new IBestHsva()
+			this.initColorFormat()
 			if(this.value){
 				this.setHsva()
 			}else{
-				this.setValue()
+				this.update()
+			}
+			if(this.predefineColors.length){
+				this.getFormatPredefineColor()
 			}
 		}, 50)
 	}
+	// 初始化 colorFormat
+	initColorFormat(){
+		if(this.value.startsWith("#") && this.colorFormat != 'hex'){
+			this.colorFormat = "hex"
+		}else if(this.value.startsWith("rgb") && this.colorFormat != 'rgb'){
+			this.colorFormat = "rgb"
+		}
+	}
+	// 格式化 预设颜色
+	getFormatPredefineColor(){
+		let colors = this.predefineColors.filter(e => e.startsWith("#") || e.startsWith("rgb"))
+		this.formatPredefineColor = colors.map((e) => {
+			let obj: IBestFormatPredefineColor = {
+				origin: e,
+				format: ""
+			}
+			if(this.colorFormat == 'hex'){
+				obj.format = hsva2HexColor(color2Hsva(e, this.enableAlpha), this.enableAlpha)
+			}else {
+				let rgb = hsva2RgbColor(color2Hsva(e, this.enableAlpha))
+				obj.format = getRgbaStr(rgb, this.enableAlpha)
+			}
+			return obj
+		})
+	}
+	valueChange(){
+		if(this.value){
+			this.setHsva()
+		}
+	}
 	// 记录hsv
-	setHsva(){
-		let hsva = color2Hsva(this.value)
+	setHsva(value?: string){
+		let hsva = color2Hsva(value || this.value, this.enableAlpha)
 		this.hsva.h = hsva.h
 		this.hsva.s = hsva.s
 		this.hsva.v = hsva.v
 		this.hsva.a = hsva.a
 		this.setValue()
 	}
-	// 根据色相滑块位置获取面板背景颜色
+	// 获取面板背景颜色
 	getPanelBgColor(): string{
-		let rgb = hue2Rgb(this.hueSliderY / (this.realPanelHeight - this.realHueSliderHeight / 2))
-		return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`
+		let h = this.hueSliderY / (this.realPanelHeight - this.realHueSliderHeight / 2)
+		return getRgbaStr(hsva2RgbColor({h, s: 1, v: 1, a: 1}), false)
 	}
-	// 当前颜色转rgb颜色
+	// 获取透明度面板渐变色
 	getAlphaLinearGradient(): [string, number][]{
-		let rgb = hue2Rgb(this.hueSliderY / (this.realPanelHeight - this.realHueSliderHeight / 2))
+		let h = this.hueSliderY / (this.realPanelHeight - this.realHueSliderHeight / 2)
+		let rgb = hsva2RgbColor({h, s: 1, v: 1, a: 1})
 		return [[`rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0)`, 0], [`rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`, 1]]
 	}
 	setH(y: number){
@@ -123,9 +178,9 @@ export struct IBestColorPicker{
 		this.hsva.a = a
 		this.setValue()
 	}
-	// 根据颜色获取选取块、色相滑块位置
+	// 更新坐标
 	update(){
-		let sliderY = this.hsva.h * this.realPanelHeight
+		let sliderY = this.hsva.h == 0 ? this.realHueSliderHeight / 2 : this.hsva.h == 1 ? this.realPanelHeight - this.realHueSliderHeight / 2 :  this.hsva.h * this.realPanelHeight
 		let cursorX = this.hsva.s * this.realPanelWidth
 		let cursorY = (1 - this.hsva.v) * this.realPanelHeight
 		let alphaX = this.hsva.a == 0 ? this.realAlphaSliderWidth / 2 : this.hsva.a == 1 ? this.realPanelWidth - this.realAlphaSliderWidth / 2 : this.hsva.a * this.realPanelWidth
@@ -143,21 +198,27 @@ export struct IBestColorPicker{
 	setValue(){
 		let value = ''
 		if (this.colorFormat == 'rgb') {
-			value = hsva2RgbColor(this.hsva, this.enableAlpha)
+			value = getRgbaStr(hsva2RgbColor(this.hsva), this.enableAlpha)
 		} else {
 			value = hsva2HexColor(this.hsva, this.enableAlpha)
 		}
-		console.log("setValue", value)
 		if(value === this.value){
 			this.update()
 		}else {
 			this.value = value
+			this.onChange(value)
+		}
+	}
+	// 选择预设颜色
+	choosePredefineColor(item: IBestFormatPredefineColor){
+		if(this.value != item.format){
+			this.setHsva(item.format)
 		}
 	}
 
 	build() {
-		Column({space: SPACE.XS}){
-			Row({space: SPACE.XS}){
+		Column({space: getSizeByUnit(this.panelAlphaSpace)}){
+			Row({space: getSizeByUnit(this.panelHueSpace)}){
 				Stack(){
 					Row()
 						.width(CONTAINER_SIZE.FULL)
@@ -220,9 +281,9 @@ export struct IBestColorPicker{
 						.width(CONTAINER_SIZE.FULL)
 						.height(getSizeByUnit(this.hueSliderHeight))
 						.backgroundColor("#fff")
-						.borderRadius(1)
-						.border({width: 1, color: "#363637"})
-						.shadow({ radius: 2, color: "#0009" })
+						.borderRadius(2)
+						.border({width: 2, color: "#363637"})
+						.shadow({ radius: 10, color: "#0009" })
 						.position({x: 0, y: this.hueSliderY})
 						.id(`ibest_colorpicker_hueslider_${this.uniId}`)
 						.translate({x: 0, y: "-50%"})
@@ -263,9 +324,9 @@ export struct IBestColorPicker{
 						.width(getSizeByUnit(this.alphaSliderWidth))
 						.height(CONTAINER_SIZE.FULL)
 						.backgroundColor("#fff")
-						.borderRadius(1)
-						.border({width: 1, color: "#363637"})
-						.shadow({ radius: 2, color: "#0009" })
+						.borderRadius(2)
+						.border({width: 2, color: "#363637"})
+						.shadow({ radius: 10, color: "#0009" })
 						.position({x: this.alphaSliderX, y: 0})
 						.id(`ibest_colorpicker_alphaslider_${this.uniId}`)
 						.translate({x: "-50%", y: 0})
@@ -296,6 +357,23 @@ export struct IBestColorPicker{
 							this.alphaSliderPositionX = this.alphaSliderX
 						})
 				)
+			}
+			if(this.formatPredefineColor.length){
+				Flex({space: {main: LengthMetrics.vp(8), cross: LengthMetrics.vp(8) }, wrap: FlexWrap.Wrap}){
+					ForEach(this.formatPredefineColor, (item: IBestFormatPredefineColor) => {
+						Row()
+							.width(getSizeByUnit(this.predefineBlockWidth))
+							.aspectRatio(1)
+							.borderRadius(this.baseStyle.borderRadiusMd)
+							.backgroundColor(item.format)
+							.shadow({radius: this.value == item.format ? 12 : 0, color: this.baseStyle.primary as string})
+							.onClick(() => {
+								this.choosePredefineColor(item)
+							})
+					}, (_: string, index: number) => index.toString())
+				}
+				.width(this.realPanelWidth)
+				.padding({left: this.baseStyle.spaceBase})
 			}
 		}
 		.width(CONTAINER_SIZE.FULL)

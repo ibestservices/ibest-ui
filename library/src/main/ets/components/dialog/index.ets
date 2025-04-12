@@ -132,6 +132,11 @@ export struct IBestDialog {
 	 */
 	@Prop confirmButtonColor: ResourceColor = ''
 	/**
+	 * 确认按钮字重
+	 * @since 2.0.9
+	 */
+	@Prop confirmButtonFontWeight: FontWeight = FontWeight.Normal
+	/**
 	 * 确认按钮的背景颜色
 	 * @since 1.16.0
 	 */
@@ -275,6 +280,7 @@ export struct IBestDialog {
 			cancelButtonText: this.cancelButtonText,
 			buttonFontSize: this.buttonFontSize,
 			confirmButtonColor: this.confirmButtonColor,
+			confirmButtonFontWeight: this.confirmButtonFontWeight,
 			confirmButtonBgColor: this.confirmButtonBgColor,
 			cancelButtonColor: this.cancelButtonColor,
 			cancelButtonBgColor: this.cancelButtonBgColor,

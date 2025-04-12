@@ -78,7 +78,7 @@ struct IBestPopupBaseContent {
 	 */
 	onClickOverlay: () => void = () => {}
 	close: () => void = () => {}
-	controller?: CustomDialogController
+
 	baseController: PopupBaseController = new PopupBaseController()
 	@Builder placeRow(){
 		Blank()

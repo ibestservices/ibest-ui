@@ -119,6 +119,11 @@ class IBestDialogOption {
 	 */
 	confirmButtonColor?: ResourceColor
 	/**
+	 * 确认按钮字重
+	 * @since 2.0.9
+	 */
+	confirmButtonFontWeight?: FontWeight
+	/**
 	 * 确认按钮的背景颜色
 	 * @since 1.16.0
 	 */
@@ -256,6 +261,7 @@ class IBestDialogParams extends IBestDialogOption {
 		this.confirmButtonText = option.confirmButtonText
 		this.cancelButtonText = option.cancelButtonText
 		this.confirmButtonColor = option.confirmButtonColor
+		this.confirmButtonFontWeight = option.confirmButtonFontWeight
 		this.confirmButtonBgColor = option.confirmButtonBgColor
 		this.cancelButtonColor = option.cancelButtonColor
 		this.cancelButtonBgColor = option.cancelButtonBgColor
@@ -335,6 +341,7 @@ struct DialogContent{
 			cancelButtonText: this.option.cancelButtonText,
 			buttonFontSize: this.option.buttonFontSize,
 			confirmButtonColor: this.option.confirmButtonColor,
+			confirmButtonFontWeight: this.option.confirmButtonFontWeight,
 			confirmButtonBgColor: this.option.confirmButtonBgColor,
 			cancelButtonColor: this.option.cancelButtonColor,
 			cancelButtonBgColor: this.option.cancelButtonBgColor,

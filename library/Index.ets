@@ -18,11 +18,11 @@ export {
 	setGlobalConfig as IBestSetGlobalConfig,
 	IBestToast,
 	IBestActionSheet,
+	IBestActionType,
+	IBestActionMultiLine,
 	IBestImagePreview,
 	IBestDialogUtil,
 	IBestNotify,
-	IBestActionType,
-	IBestActionMultiLine,
 	IBestGlobalConfigType,
 	IBestStringNumber
 }
@@ -43,7 +43,7 @@ export { IBestPopup } from './src/main/ets/components/popup/index'
 
 export { IBestCalendar } from './src/main/ets/components/calendar/index'
 export { IBestCalendarDialog } from './src/main/ets/components/calendar/calendarDialog'
-export { IBestCalendarConfirmResult } from './src/main/ets/components/calendar/index.type'
+export { IBestCalendarDayItem, IBestCalendarConfirmResult } from './src/main/ets/components/calendar/index.type'
 
 export { IBestCascader, IBestCascaderContent } from './src/main/ets/components/cascader/index'
 export { IBestCascaderOption } from './src/main/ets/components/cascader/index.type'

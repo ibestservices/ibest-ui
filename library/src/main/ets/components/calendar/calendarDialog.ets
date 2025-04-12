@@ -3,7 +3,9 @@ import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
 import { convertDimensionsWidthUnit } from '../../utils/utils'
 import { IBestPopup } from '../popup'
 import { IBestCalendar } from './index'
-import { IBestCalendarConfirmResult, SelectedStyleType, SelectType, WeekDayType } from './index.type'
+import { IBestCalendarConfirmResult,
+	IBestCalendarDayItem,
+	SelectedStyleType, SelectType, WeekDayType } from './index.type'
 
 @Component
 export struct IBestCalendarDialog {
@@ -56,7 +58,7 @@ export struct IBestCalendarDialog {
      */
     @Prop type: ColorType = COLOR_TYPE.PRIMARY
     /**
-     * 自定义选中颜色
+     * 自定义选中背景颜色
      */
     @Prop selectedColor: string = ""
     /**
@@ -83,10 +85,35 @@ export struct IBestCalendarDialog {
      * 确认按钮颜色，默认type主题色
      */
     @Prop confirmBtnColor: ResourceColor = ""
+	/**
+	 * 打卡模式
+	 * @since 2.0.1
+	 */
+	@Provide({allowOverride: "clock"}) clock: boolean = false
+	/**
+	 * 打卡成功提示
+	 * @since 2.0.1
+	 */
+	@Provide({allowOverride: "clockSuccessText"}) clockSuccessText: ResourceStr = $r("app.string.ibest_calendar_clocked")
+	/**
+	 * 是否显示未打卡
+	 * @since 2.0.1
+	 */
+	@Provide({allowOverride: "isShowUnClock"}) isShowUnClock: boolean = true
+	/**
+	 * 未打卡提示
+	 * @since 2.0.1
+	 */
+	@Provide({allowOverride: "unClockText"}) unClockText: ResourceStr = $r("app.string.ibest_calendar_unclock")
     /**
      * 确认按钮文案
      */
     @Prop confirmBtnText: ResourceStr = $r("app.string.ibest_text_confirm")
+	/**
+	 * 自定义日期项插槽
+	 * @since 2.0.9
+	 */
+	@BuilderParam dayItemBuilder: ($$: IBestCalendarDayItem) => void
     /**
      * 选择回调
      */
@@ -110,6 +137,11 @@ export struct IBestCalendarDialog {
             isShowHeader: this.isShowHeader,
             confirmBtnColor: this.confirmBtnColor,
             confirmBtnText: this.confirmBtnText,
+			clock: this.clock,
+			clockSuccessText: this.clockSuccessText,
+			isShowUnClock: this.isShowUnClock,
+			unClockText: this.unClockText,
+			dayItemBuilder: this.dayItemBuilder,
             onConfirm: (value): void => this.onGetCalendarResult(value)
         })
     }

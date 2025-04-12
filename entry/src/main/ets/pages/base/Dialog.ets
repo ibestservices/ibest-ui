@@ -113,7 +113,8 @@ struct DialogPage {
 								onCellClick: () => {
 									IBestDialogUtil.open({
 										title: textData.title,
-										message: textData.code
+										message: textData.code,
+										confirmButtonFontWeight: FontWeight.Bold
 									})
 								}
 							})

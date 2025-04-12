@@ -488,7 +488,7 @@ struct Index {
 		this.checkUpdate()
 		this.getUiVersion()
 		setTimeout(() => {
-			RouterUtil.push("ColorPicker", "颜色选取")
+			// RouterUtil.push("ColorPicker", "颜色选取")
 		}, 100)
 	}
 	getTitleOpacity(){

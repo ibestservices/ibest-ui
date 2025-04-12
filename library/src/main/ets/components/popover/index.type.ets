@@ -32,7 +32,7 @@ export interface IBestPopoverAction{
 /**
  * 遮罩颜色
  */
-export interface PopoverMask{
+export interface IBestPopoverMask{
     color: ResourceColor
 }
 /**

@@ -27,7 +27,7 @@ export interface IBestCalendarConfirmResult{
     lunarDay?: string
 }
 
-class DayItemObj{
+export class IBestCalendarDayItem{
     date: Dayjs = dayjs()
     dateStr: string = ""
     year: string = ""
@@ -42,8 +42,8 @@ class DayItemObj{
     isClock?: boolean = false
 }
 @Observed
-export class DayItemType extends DayItemObj{
-    constructor(value?: DayItemObj){
+export class IBestCalendarDay extends IBestCalendarDayItem{
+    constructor(value?: IBestCalendarDayItem){
         super()
         if(value){
             this.date = value.date

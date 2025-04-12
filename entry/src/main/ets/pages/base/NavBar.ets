@@ -1,5 +1,5 @@
 import { IBestNavBar } from '@ibestservices/ibest-ui';
-import { COLOR_BLUE, CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import { COLOR_BLUE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import CustomNavBar from '../../components/CustomNavBar';
 import { getRandomColor } from '../../utils/utils';
@@ -152,7 +152,7 @@ struct NavBarPage {
 			}
 			.layoutWeight(1)
 		}
-		.height(CONTAINER_SIZE.FULL)
+		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
 	}
 }
