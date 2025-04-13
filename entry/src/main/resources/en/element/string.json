@@ -113,6 +113,10 @@
 			"value": "DatePicker"
 		},
 		{
+			"name": "component_dateTimePicker",
+			"value": "DateTimePicker"
+		},
+		{
 			"name": "component_field",
 			"value": "Field"
 		},

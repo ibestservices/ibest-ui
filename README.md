@@ -1,27 +1,24 @@
 <p align="center">
-    <img alt="logo" src="https://ibestservices.github.io/ibest-ui/AppScope/resources/base/media/app_logo_trans.png" 
-width="100">
+    <img src="https://ibestservices.github.io/ibest-ui/AppScope/resources/base/media/app_logo_trans.png" width="100">
 </p>
 
-<p align="center" style="font-size: 40px;font-weight: bold;">IBest-UI</p>
+<h1 align="center">IBest-UI</h1>
 
 <p align="center">轻量、可定制的 HarmonyOS NEXT 组件库</p>
 
 <p align="center">
-    <a href="https://ibestui.ibestservices.com/">文档网站</a>
+    <a href="https://ibestui.ibestservices.com/" target="_blank">文档</a>
     &nbsp;
     ·
     &nbsp;
-    <a href="https://github.com/ibestservices/ibest-ui">Github</a>
+    <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui" target="_blank">三方库中心仓</a>
 </p>
 
 ---
 
 ## 介绍
 
-IBest-UI是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库, 包含 
-Button、Calendar、Form、Field、Picker、Popup、Toast、Dialog、ImageCropper 
-等50+个优质组件。
+IBest-UI是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库, 包含 Button、Calendar、Form、Field、Picker、Popup、Toast、Dialog、ImageCropper 等50+个优质组件。
 
 目前 ibestservices 官方提供了 <a href="https://ibestui.ibestservices.com/guide/home/" target="_blank">V1</a> 和 <a href="https://ibestui-v2.ibestservices.com/guide/home/" target="_blank">V2</a> 版本, 当前为状态管理 **V1** 版本，请根据自己项目使用的**状态管理版本**选择对应的版本使用。
 
@@ -171,5 +168,5 @@ Non-Bundled Plugins:
 感谢以下同学对IBest-UI做的贡献:
 
 <a href="https://github.com/ibestservices/ibest-ui/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=ibestservices/ibest-ui" />
+  <img src="https://ibestservices.github.io/ibest-ui/screenshot/Contributors.png" />
 </a>

@@ -113,6 +113,10 @@
 			"value": "DatePicker 日期选择"
 		},
 		{
+			"name": "component_dateTimePicker",
+			"value": "DateTimePicker 日期时间选择"
+		},
+		{
 			"name": "component_field",
 			"value": "Field 输入框"
 		},

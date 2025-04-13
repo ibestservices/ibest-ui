@@ -69,6 +69,18 @@
 			"value": " Day"
 		},
 		{
+			"name": "ibest_hour",
+			"value": " Hour"
+		},
+		{
+			"name": "ibest_minute",
+			"value": " Minute"
+		},
+		{
+			"name": "ibest_second",
+			"value": " Second"
+		},
+		{
 			"name": "ibest_text_complete",
 			"value": "Close"
 		},

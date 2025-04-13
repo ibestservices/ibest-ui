@@ -61,6 +61,11 @@
 			"buildFunction": "DatePickerBuilder"
 		},
 		{
+			"name": "DateTimePicker",
+			"pageSourceFile": "src/main/ets/pages/base/DateTimePicker.ets",
+			"buildFunction": "DateTimePickerBuilder"
+		},
+		{
 			"name": "Field",
 			"pageSourceFile": "src/main/ets/pages/base/Field.ets",
 			"buildFunction": "FieldBuilder"

@@ -83,6 +83,10 @@ struct Index {
 					path: "DatePicker"
 				},
 				{
+					name: $r("app.string.component_dateTimePicker"),
+					path: "DateTimePicker"
+				},
+				{
 					name: $r("app.string.component_field"),
 					path: "Field"
 				},

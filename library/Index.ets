@@ -55,6 +55,9 @@ export { IBestCheckboxGroupController } from './src/main/ets/components/checkbox
 export { IBestDatePicker } from './src/main/ets/components/datePicker/index'
 export { IBestDatePickerResultType, IBestDatePickerResult } from './src/main/ets/components/datePicker/index.type'
 
+export { IBestDateTimePicker } from './src/main/ets/components/dateTimePicker/index'
+export { IBestDateTimePickerResult } from './src/main/ets/components/dateTimePicker/index.type'
+
 export { IBestField } from './src/main/ets/components/field/index'
 export { IBestFieldValueType } from './src/main/ets/components/field/index.type'
 
