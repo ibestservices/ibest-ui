@@ -12,9 +12,8 @@
 8. IBestTextEllipsis 增加 onActionClick.
 
 #### Bug修复:
-1. IBestPullRefresh loading 变更太快导致关不上问题;
-2. IBestDialog 组件宽度为百分比时在宽屏设备不生效问题;
-3. IBestPopup 组件在横屏时位置错误问题.
+1. IBestDialog 组件宽度为百分比时在宽屏设备不生效问题;
+2. IBestPopup 组件在横屏时位置错误问题.
 
 ## 2.0.8
 #### 新增:
