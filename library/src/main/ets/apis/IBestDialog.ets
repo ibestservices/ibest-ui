@@ -256,7 +256,7 @@ class IBestDialogParams extends IBestDialogOption {
 		this.messageMaxHeight = option.messageMaxHeight
 		this.theme = option.theme
 		this.buttonSpace = option.buttonSpace
-		this.showConfirmButton = option.showConfirmButton !== undefined ? option.showConfirmButton : true
+		this.showConfirmButton = option.showConfirmButton ?? true
 		this.showCancelButton = option.showCancelButton
 		this.confirmButtonText = option.confirmButtonText
 		this.cancelButtonText = option.cancelButtonText
@@ -268,6 +268,7 @@ class IBestDialogParams extends IBestDialogOption {
 		this.buttonFontSize = option.buttonFontSize
 		this.confirmButtonLoading = option.confirmButtonLoading
 		this.cancelButtonLoading = option.cancelButtonLoading
+		this.closeOnClickOverlay = option.closeOnClickOverlay
 		this.titleBuilder = option.titleBuilder
 		this.defaultBuilder = option.defaultBuilder
 		this.footerBuilder = option.footerBuilder
@@ -419,9 +420,9 @@ class Dialog{
 			maskColor: option.overlayColor,
 			showInSubWindow: option.showInSubWindow,
 			keyboardAvoidDistance: option.keyboardAvoidDistance ?? LengthMetrics.vp(16),
-			// immersiveMode: ImmersiveMode.EXTEND,
 			levelMode: option.levelMode ?? 0,
 			levelUniqueId: option.levelUniqueId,
+			// immersiveMode: ImmersiveMode.EXTEND,
 			onDidAppear: () => {
 				option.onOpen?.()
 			},
@@ -431,14 +432,14 @@ class Dialog{
 			onWillDismiss: async(dismissDialogAction: DismissDialogAction)=> {
 				// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
 				let reason = dismissDialogAction.reason
-				if (reason == DismissReason.PRESS_BACK && !(params.closeOnBackPress ?? true) || reason == DismissReason.TOUCH_OUTSIDE && !params.closeOnClickOverlay) {
+				if (reason == DismissReason.PRESS_BACK && !(option.closeOnBackPress ?? true) || reason == DismissReason.TOUCH_OUTSIDE && !option.closeOnClickOverlay) {
 					return
 				}
 				let status = await handleBeforeClose(params, "cancel")
 				if (!status) {
 					return
 				}
-				dismissDialogAction.dismiss()
+				this.close(key)
 			}
 		})
 		return key

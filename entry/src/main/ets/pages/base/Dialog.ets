@@ -114,7 +114,8 @@ struct DialogPage {
 									IBestDialogUtil.open({
 										title: textData.title,
 										message: textData.code,
-										confirmButtonFontWeight: FontWeight.Bold
+										confirmButtonFontWeight: FontWeight.Bold,
+										dialogWidth: "90%"
 									})
 								}
 							})

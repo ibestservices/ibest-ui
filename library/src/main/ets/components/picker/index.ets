@@ -33,7 +33,7 @@ import { IBestStringNumber } from '../../model/Global.type';
 // 距离大于 `MOMENTUM_DISTANCE` 时，执行惯性滑动
 const MOMENTUM_TIME = 300
 const MOMENTUM_DISTANCE = 30
-const swipeDuration = 500
+const swipeDuration = 150
 
 
 @Component

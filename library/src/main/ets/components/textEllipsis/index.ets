@@ -60,6 +60,11 @@ export struct IBestTextEllipsis{
      * 省略位置
      */
     @Prop @Watch("formatText") omitPosition: "start" | "middle" | "end" = "end"
+	/**
+	 * 操作点击事件
+	 * @since 2.0.9
+     */
+	onActionClick: (isExpand: boolean) => void = () => {}
 
     @State uniId: number = 0
     @State showText: string = ""
@@ -154,6 +159,7 @@ export struct IBestTextEllipsis{
                     .fontSize(getSizeByUnit(this.textFontSize, true))
                     .onClick(() => {
                         this.isExpand = !this.isExpand
+						this.onActionClick(this.isExpand)
                     })
             }
         }

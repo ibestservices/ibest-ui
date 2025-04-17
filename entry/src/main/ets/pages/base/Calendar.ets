@@ -7,7 +7,6 @@ import {
     IBestCell,
     IBestCellGroup
 } from '@ibestservices/ibest-ui'
-import promptAction from '@ohos.promptAction'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
 import dayjs from '@hview/dayjs'
@@ -183,12 +182,10 @@ struct CalendarPage {
                     ComponentShowContainer({ title: '平铺展示', titlePaddingLeft: SPACE.XS }) {
                         IBestCalendar({
                             isShowLunar: true,
-                            weekFirstDay: 0,
                             selectType: "multiple",
-                            selectedColor: "#ed4040",
                             isShowMark: true,
                             defaultSelectedDate: this.defaultSelectedDate,
-							dayItemBuilder: ($$: IBestCalendarDayItem): void => this.itemBuilder($$)
+							dayItemBuilder: this.itemBuilder
                         })
                     }
                 }

@@ -4,6 +4,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { convertDimensionsWidthUnit, sleep } from '../../utils/utils';
 import { IBestStringNumber } from '../../model/Global.type';
 import { ImmersiveMode, LengthMetrics, LevelMode } from '@kit.ArkUI';
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 @Component
 export struct IBestDialog {
 	/**
@@ -383,6 +384,7 @@ export struct IBestDialog {
 			builder: () => {
 				this.dialogBuilder()
 			},
+			width: CONTAINER_SIZE.FULL,
 			backgroundBlurStyle: BlurStyle.NONE,
 			cornerRadius: 0,
 			alignment: this.getAlignment(),
@@ -407,7 +409,7 @@ export struct IBestDialog {
 				// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
 				let reason = dismissDialogAction.reason
 				if (reason == DismissReason.PRESS_BACK && this.closeOnBackPress || reason == DismissReason.TOUCH_OUTSIDE && this.closeOnClickOverlay) {
-					this.close()
+					this.handleCancel()
 				}
 			}
 		})

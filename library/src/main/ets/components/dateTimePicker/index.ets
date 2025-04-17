@@ -58,6 +58,10 @@ export struct IBestDateTimePicker {
 	 */
 	@Prop optionFontSize: IBestStringNumber
 	/**
+	 * 是否显示秒
+     */
+	@Prop showSecond: boolean = true
+	/**
 	 * 确认按钮点击事件
 	 */
 	onConfirm: (value: IBestDateTimePickerResult) => void = () => {}
@@ -74,7 +78,7 @@ export struct IBestDateTimePicker {
 	@State uniId: number = 0
 	// 选项列表
 	@State options: IBestPickerOption[][] = []
-	@State listType: string[] = ["year", "month", "day", "hour", "minute", "second"]
+	@State listType: string[] = []
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
@@ -91,6 +95,11 @@ export struct IBestDateTimePicker {
 	}
 	// 初始化
 	init(){
+		let list =  ["year", "month", "day", "hour", "minute"]
+		if(this.showSecond){
+			list.push("second")
+		}
+		this.listType = list
 		this.options = []
 		this.listType.forEach((item,index) => {
 			let list = this.getListByType(item)
@@ -294,9 +303,9 @@ export struct IBestDateTimePicker {
 	// 处理同组日期变化
 	handleGroupChange(uniId: number, selectedValues: string[]) {
 		if(this.uniId > uniId){
-			let selectDate = dayjs(selectedValues.join("-")).toDate()
-			this.minDate = dayjs(selectedValues.join("-")).toDate()
-			if(selectDate > dayjs(this.maxDate).toDate() || selectDate < dayjs(this.minDate).toDate()){
+			let selectDate = dayjs(selectedValues.slice(0, 3).join('-') + ' ' + selectedValues.slice(3).join(":")).toDate()
+			this.minDate = selectDate
+			if(selectDate > this.maxDate || selectDate < this.minDate){
 				this.value = selectedValues
 			}
 			this.init()

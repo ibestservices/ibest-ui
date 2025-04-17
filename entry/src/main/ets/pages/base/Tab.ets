@@ -133,17 +133,19 @@ struct TabPage {
     @State curTabName3: string = "1"
     @State curTabName4: string = "1"
     @State curTabName5: string = "1"
-    @State curTabName6: string = "1"
 
-    // @Builder tabContent(){
-    //     ForEach([1,2,3], (item: number) => {
-    //         Row(){
-    //             Text(item.toString())
-    //         }
-    //         .width("100%")
-    //         .height(100)
-    //     })
-    // }
+    @Builder tabContent(){
+        ForEach([1,2,3,4,5], (item: number) => {
+            Row(){
+                Text(item.toString())
+					.fontColor("#fff")
+            }
+            .width("100%")
+            .height(200)
+			.justifyContent(FlexAlign.Center)
+			.backgroundColor("#ccc")
+        })
+    }
 
     build() {
 		NavDestination(){
@@ -260,6 +262,16 @@ struct TabPage {
                         }
                     }
                 }
+				ListItem() {
+					ComponentShowContainer({ title: '内容联动', titlePaddingLeft: SPACE.MD }) {
+						IBestTabs({
+							tabsList: this.tabsList,
+							currentName: $curTabName
+						}){
+							this.tabContent()
+						}
+					}
+				}
 				ListItem().height(50)
             }
             .layoutWeight(1)

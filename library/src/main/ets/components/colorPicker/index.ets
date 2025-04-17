@@ -17,13 +17,17 @@ export struct IBestColorPicker{
      */
 	@Link @Watch("valueChange") value: string
 	/**
-	 *  颜色格式
+	 * 指定传入的颜色格式
      */
 	@Prop colorFormat: IBestColorFormat = "hex"
 	/**
 	 * 是否支持透明度选择
 	 */
 	@Prop enableAlpha: boolean = false
+	/**
+	 * 背景色
+     */
+	@Prop bgColor: ResourceColor = ""
 	/**
 	 * 面板高度
      */
@@ -49,7 +53,7 @@ export struct IBestColorPicker{
      */
 	@Prop alphaSliderHeight: IBestStringNumber = convertDimensionsWidthUnit(16)
 	/**
-	 * 颜色面板与色相滑块之间的距离
+	 * 颜色面板与色彩滑块之间的距离
      */
 	@Prop panelHueSpace: IBestStringNumber = this.baseStyle.spaceSm as string
 	/**
@@ -378,5 +382,6 @@ export struct IBestColorPicker{
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.alignItems(HorizontalAlign.Start)
+		.backgroundColor(this.bgColor)
 	}
 }

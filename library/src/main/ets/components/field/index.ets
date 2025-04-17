@@ -31,7 +31,6 @@ export struct IBestField{
      * 全局公共样式
      */
     @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
-    @State uniId: number = 0
     /**
      * form id 用于验证
      */
@@ -63,7 +62,7 @@ export struct IBestField{
     /**
      * 文本位置
      */
-    @Provide({allowOverride: "labelPosition"}) labelPosition: LabelPositionType = ''
+    @Prop labelPosition: LabelPositionType = ''
     /**
      * 文本对齐方式
      */
@@ -71,84 +70,84 @@ export struct IBestField{
     /**
      * 输入框占位提示文字
      */
-    @Provide({allowOverride: "placeholder"}) placeholder: ResourceStr = ""
+    @Prop placeholder: ResourceStr = ""
     /**
      * 占位文字颜色
      * @since 2.0.1
      */
-    @Provide({allowOverride: "placeholderColor"}) placeholderColor: ResourceColor = IBestFieldColor.placeholderColor
+    @Prop placeholderColor: ResourceColor = IBestFieldColor.placeholderColor
     /**
      * 输入框类型
      */
-    @Provide({allowOverride: "type"}) type: IBestFieldType = "normal"
+    @Prop type: IBestFieldType = "normal"
     /**
      * 小数点位数
      */
-    @Provide({allowOverride: "decimalLength"}) decimalLength: number = -1
+    @Prop decimalLength: number = -1
     /**
      * 是否显示密码框末尾图标
      */
-    @Provide({allowOverride: "showPasswordIcon"}) showPasswordIcon: boolean = true
+    @Prop showPasswordIcon: boolean = true
     /**
      * 输入框自适应高度
      */
-    @Provide({allowOverride: "autosize"}) autosize: boolean = false
+    @Prop autosize: boolean = false
     /**
      * 自适应高度时默认行数
      */
-    @Provide({allowOverride: "rows"}) rows: number = 1
+    @Prop rows: number = 1
     /**
      * 最大输入字符数
      */
-    @Provide({allowOverride: "maxlength"}) maxlength: number = -1
+    @Prop maxlength: number = -1
     /**
      * 是否显示字数统计
      */
-    @Provide({allowOverride: "showWordLimit"}) showWordLimit: boolean = false
+    @Prop showWordLimit: boolean = false
     /**
      * 输入框文字对齐方式
      */
-    @Provide({allowOverride: "inputAlign"}) inputAlign: FieldTextAlign = "left"
+    @Prop inputAlign: FieldTextAlign = "left"
     /**
      * 是否必填, 仅控制*显隐
      */
-    @Provide({allowOverride: "required"}) required?: boolean = undefined
+    @Prop required?: boolean = undefined
     /**
      * 星号的位置
      */
-    @Provide({allowOverride: "requireAsteriskPosition"}) requireAsteriskPosition: RequireAsteriskPositionType = ''
+    @Prop requireAsteriskPosition: RequireAsteriskPositionType = ''
     /**
      * 是否禁用
      */
-    @Provide({allowOverride: "disabled"}) disabled?: boolean = undefined
+    @Prop disabled?: boolean = undefined
     /**
      * 是否只读
      */
-    @Provide({allowOverride: "readOnly"}) readOnly: boolean = false
+    @Prop readOnly: boolean = false
     /**
      * 是否开启点击反馈
      */
-    @Provide({allowOverride: "clickable"}) clickable: boolean = false
+    @Prop clickable: boolean = false
     /**
      * 是否展示右侧箭头并开启点击反馈
      */
-    @Provide({allowOverride: "isLink"}) isLink: boolean = false
+    @Prop isLink: boolean = false
     /**
      * 左侧图标
      */
-    @Provide({allowOverride: "leftIcon"}) leftIcon: ResourceStr = ""
+    @Prop leftIcon: ResourceStr = ""
     /**
      * 左侧图标颜色
      */
-    @Provide({allowOverride: "leftIconColor"}) leftIconColor: ResourceColor = IBestFieldColor.labelColor
+    @Prop leftIconColor: ResourceColor = IBestFieldColor.labelColor
     /**
      * 右侧图标
      */
-    @Provide({allowOverride: "rightIcon"}) rightIcon: ResourceStr = ""
+    @Prop rightIcon: ResourceStr = ""
     /**
      * 右侧图标颜色
      */
-    @Provide({allowOverride: "rightIconColor"}) rightIconColor: ResourceColor = IBestFieldColor.rightIconColor
+    @Prop rightIconColor: ResourceColor = IBestFieldColor.rightIconColor
     /**
      * 底部线条
      */
@@ -156,31 +155,28 @@ export struct IBestField{
     /**
      * 是否启用清除图标，点击清除图标后会清空输入框
      */
-    @Provide({allowOverride: "clearable"}) clearable: boolean = false
+    @Prop clearable: boolean = false
     /**
      * 自定义清除图标
      */
-    @Provide({allowOverride: "clearIcon"}) clearIcon: ResourceStr = ""
+    @Prop clearIcon: ResourceStr = ""
     /**
      * 显示清除图标的时机
      */
-    @Provide({allowOverride: "clearTrigger"}) clearTrigger: ClearTriggerType = 'focus'
-    /**
-     * 验证状态
-     */
-    @Provide status: 'passed' | 'failed' | 'unvalidated' = 'unvalidated'
+    @Prop clearTrigger: ClearTriggerType = 'focus'
     /**
      * 是否显示验证信息
      */
-    @Provide({allowOverride: "showMessage"}) showMessage?: boolean = undefined
-    /**
-     * 验证信息
-     */
-    @Provide({allowOverride: "validateMessage"}) validateMessage: ResourceStr = ""
+    @Prop showMessage?: boolean = undefined
+	/**
+	 * 验证信息对齐方式, 默认同输入框文字对齐方式一致
+	 * @since 2.0.9
+	 */
+	@Prop messageTextAlign: FieldTextAlign = this.inputAlign
     /**
      * 执行格式化函数触发时机
      */
-    @Provide({allowOverride: "formatTrigger"}) formatTrigger: FormatTriggerType = 'onchange'
+    @Prop formatTrigger: FormatTriggerType = 'onchange'
     /**
      * label字体大小
      * @since 1.19.0
@@ -200,7 +196,7 @@ export struct IBestField{
      * 右侧图标大小
      * @since 1.19.0
      */
-    @Provide({allowOverride: "rightIconSize"}) rightIconSize: IBestStringNumber = convertDimensionsWidthUnit(18)
+    @Prop rightIconSize: IBestStringNumber = convertDimensionsWidthUnit(18)
     /**
      * 是否显示label
      * @since 2.0.0
@@ -215,22 +211,22 @@ export struct IBestField{
      * 输入框文字大小
      * @since 2.0.4
      */
-    @Provide({allowOverride: "inputFontSize"}) inputFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
+    @Prop inputFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
     /**
      * 光标颜色
      * @since 2.0.5
      */
-    @Provide({allowOverride: "caretColor"}) caretColor: ResourceColor = ""
+    @Prop caretColor: ResourceColor = ""
     /**
      * 最小值, type 为 number、decimal 有效
      * @since 2.0.5
      */
-    @Provide({allowOverride: "min"}) min: number = -1
+    @Prop min: number = -1
     /**
      * 最大值, type 为 number、decimal 有效
      * @since 2.0.5
      */
-    @Provide({allowOverride: "max"}) max: number = -1
+    @Prop max: number = -1
     /**
      * 垂直方向对齐方式, 仅labelPosition为left时有效
      * @since 2.0.6
@@ -240,27 +236,27 @@ export struct IBestField{
      * 外部圆角
      * @since 2.0.6
      */
-    @Provide({allowOverride: "radius"}) radius: IBestStringNumber = 0
+    @Prop radius: IBestStringNumber = 0
     /**
      * 前缀内容
      * @since 2.0.7
      */
-    @Provide({allowOverride: "prefix"}) prefix: ResourceStr = ""
+    @Prop prefix: ResourceStr = ""
     /**
      * 前缀内容颜色
      * @since 2.0.7
      */
-    @Provide({allowOverride: "prefixFontColor"}) prefixFontColor: ResourceColor = IBestFieldColor.prefixFontColor
+    @Prop prefixFontColor: ResourceColor = IBestFieldColor.prefixFontColor
     /**
      * 后缀内容
      * @since 2.0.7
      */
-    @Provide({allowOverride: "suffix"}) suffix: ResourceStr = ""
+    @Prop suffix: ResourceStr = ""
     /**
      * 后缀内容颜色
      * @since 2.0.7
      */
-    @Provide({allowOverride: "suffixFontColor"}) suffixFontColor: ResourceColor = IBestFieldColor.suffixFontColor
+    @Prop suffixFontColor: ResourceColor = IBestFieldColor.suffixFontColor
     /**
      * 右侧按钮builder
      */
@@ -302,6 +298,11 @@ export struct IBestField{
      */
     onRightIconClick: () => void = () => {}
 
+	@State uniId: number = 0
+	// 验证状态
+	@State status: 'passed' | 'failed' | 'unvalidated' = 'unvalidated'
+	// 验证信息
+	@State validateMessage: ResourceStr = ""
 	@State isFocus: boolean = false
     private uiContext = this.getUIContext()
 
@@ -419,8 +420,7 @@ export struct IBestField{
 							.showPasswordIcon(this.showPasswordIcon)
 							.height(this.baseStyle.lineHeightMd)
 							.lineHeight(this.baseStyle.lineHeightMd)
-							.textAlign(this.inputAlign == 'center' ? TextAlign.Center :
-								this.inputAlign == 'right' ? TextAlign.End : TextAlign.Start)
+							.textAlign(this.getInputAlign())
 							.maxLength(this.maxlength)
 								// .showCounter(this.showWordLimit, {
 								//     thresholdPercentage: 1,
@@ -505,9 +505,11 @@ export struct IBestField{
 			// 验证信息
 			if(this.showMessage && this.validateMessage){
 				Text(this.validateMessage)
+					.width(CONTAINER_SIZE.FULL)
 					.fontSize(this.baseStyle.fontSizeSm)
 					.fontColor(this.baseStyle.danger)
 					.margin({top: this.baseStyle.spaceBase})
+					.textAlign(this.getMessageAlign())
 			}
 		}
 		.width(this.labelPosition == "top" ? CONTAINER_SIZE.FULL : "auto")
@@ -602,14 +604,14 @@ export struct IBestField{
         if(results){
             this.rules = this.rules || (results?.rules || [])
         }
-        this.required = typeof this.required != "undefined" ? this.required : this.rules?.length > 0 && this.rules.some((item: IBestFormRuleItem) => item.required)
+        this.required = this.required ?? (this.rules?.length > 0 && this.rules.some((item: IBestFormRuleItem) => item.required))
         this.labelWidth = this.labelWidth || results?.labelWidth || convertDimensionsWidthUnit(80)
         this.labelPosition = this.labelPosition || results?.labelPosition || 'left'
         this.labelAlign = this.labelAlign || results?.labelAlign || 'left'
-        this.colon = typeof this.colon != "undefined" ? this.colon : results ? results.colon : false
+        this.colon = this.colon ?? (results ? results.colon : false)
         this.requireAsteriskPosition = this.requireAsteriskPosition || results?.requireAsteriskPosition || 'left'
-        this.showMessage = typeof this.showMessage != "undefined" ? this.showMessage : results ? results.showMessage : true
-        this.disabled = typeof this.disabled != "undefined" ? this.disabled : results ? results.disabled : false
+        this.showMessage = this.showMessage ?? (results ? results.showMessage : true)
+        this.disabled = this.disabled ?? (results ? results.disabled : false)
     }
     // 重置验证
     resetValidation(){
@@ -716,6 +718,12 @@ export struct IBestField{
             return (this.showWordLimit || this.autosize || this.validateMessage) ? VerticalAlign.Top : VerticalAlign.Center
         }
     }
+	getInputAlign(){
+		return this.inputAlign == 'center' ? TextAlign.Center : this.inputAlign == 'right' ? TextAlign.End : TextAlign.Start
+	}
+	getMessageAlign(){
+		return this.messageTextAlign == 'center' ? TextAlign.Center : this.messageTextAlign == 'right' ? TextAlign.End : TextAlign.Start
+	}
 	// 获取输入框类型
 	getInputType(): InputType{
 		switch(this.type){

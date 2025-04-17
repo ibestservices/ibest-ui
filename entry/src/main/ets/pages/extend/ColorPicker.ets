@@ -46,7 +46,7 @@ struct ColorPickerPage {
 			List() {
 				ListItem() {
 					ComponentShowContainer({ title: '基础用法' }) {
-						Text(this.color).fontColor(this.color)
+						Text(this.color).fontColor(this.color).margin({bottom: 10})
 						IBestColorPicker({
 							value: $color
 						})
@@ -69,7 +69,7 @@ struct ColorPickerPage {
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '透明度' }) {
-						Text(this.color2).fontColor(this.color2)
+						Text(this.color2).fontColor(this.color2).margin({bottom: 10})
 						IBestColorPicker({
 							value: $color2,
 							enableAlpha: true
@@ -78,7 +78,7 @@ struct ColorPickerPage {
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '预定颜色' }) {
-						Text(this.color3).fontColor(this.color3)
+						Text(this.color3).fontColor(this.color3).margin({bottom: 10})
 						IBestColorPicker({
 							value: $color3,
 							enableAlpha: true,
@@ -104,7 +104,7 @@ struct ColorPickerPage {
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '自定义尺寸' }) {
-						Text(this.color4).fontColor(this.color4)
+						Text(this.color4).fontColor(this.color4).margin({bottom: 10})
 						IBestColorPicker({
 							value: $color4,
 							panelHeight: 120,
@@ -126,7 +126,7 @@ struct ColorPickerPage {
 			// 弹出层
 			IBestPopup({
 				visible: $visible,
-				popupWidth: 300,
+				popupWidth: 320,
 				contentBuilder: (): void => this.pickerBuilder()
 			})
 		}

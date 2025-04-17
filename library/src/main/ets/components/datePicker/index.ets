@@ -241,8 +241,8 @@ export struct IBestDatePicker {
 	handleGroupChange(uniId: number, selectedValues: string[]) {
 		if(this.uniId > uniId){
 			let selectDate = dayjs(selectedValues.join("-")).toDate()
-			this.minDate = dayjs(selectedValues.join("-")).toDate()
-			if(selectDate > dayjs(this.maxDate).toDate() || selectDate < dayjs(this.minDate).toDate()){
+			this.minDate = selectDate
+			if(selectDate > this.maxDate || selectDate < this.minDate){
 				this.value = selectedValues
 			}
 			this.init()

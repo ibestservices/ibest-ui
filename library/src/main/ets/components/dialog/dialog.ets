@@ -396,15 +396,15 @@ export struct IBestDialogView {
 					} : "")
 				}
 			}
-			.width(CONTAINER_SIZE.FULL)
+			.width(getSizeByUnit(this.dialogWidth))
 			.backgroundColor(this.contentBg)
 			.backgroundImage(this.bgImage)
 			.backgroundImageSize(ImageSize.FILL)
 			.borderRadius(getSizeByUnit(this.dialogBorderRadius))
+			.animation({ duration: 200, curve: Curve.EaseInOut })
 			.clip(true)
 			this.placeRow()
 		}
-		.width(getSizeByUnit(this.dialogWidth))
-		.animation({ duration: 200, curve: Curve.EaseInOut })
+		.width(CONTAINER_SIZE.FULL)
 	}
 }
