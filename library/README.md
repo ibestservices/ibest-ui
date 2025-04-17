@@ -2,9 +2,13 @@
 
 ## 简介
 
+<p align="center">
+    <img src="https://ibestservices.github.io/ibest-ui/AppScope/resources/base/media/app_logo_trans.png" width="100">
+</p>
+
 IBest-UI是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库, 包含 Button、Calendar、Form、Field、Picker、Popup、Toast、Dialog、ImageCropper 等50+个优质组件。
 
-目前 ibestservices 官方提供了 <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui')">V1</a> 和 <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2')">V2</a> 版本, 当前为状态管理 **V1** 版本，请根据自己项目使用的**状态管理版本**选择对应的版本使用。
+目前 <a style="color:#0366d6;" onclick="openPage('https://www.ibestservices.com)" title="安徽百得思维信息科技有限公司">ibestservices 官方</a> 提供了 <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui')">V1</a> 和 <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2')">V2</a> 版本, 当前为状态管理 **V1** 版本，请根据自己项目使用的**状态管理版本**选择对应的版本使用。
 
 ![IBest-UI-Light](https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI-Light.png)
 
@@ -53,7 +57,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | Cascader 级联选择器        | 级联选择框，用于多层级数据的选择，典型场景为省市区选择。                                                   | <a href="https://ibestui.ibestservices.com/components/cascader/" target="_blank">文档</a>       |
 | Checkbox 复选框          | 在一组备选项中进行多选。                                                                   | <a href="https://ibestui.ibestservices.com/components/checkbox/" target="_blank">文档</a>       |
 | DatePicker 日期选择       | 日期选择器，用于选择年、月、日，通常与弹出层组件配合使用。                                                  | <a href="https://ibestui.ibestservices.com/components/datepicker/" target="_blank">文档</a>     |
-| DateTimePicker 日期时间选择 | 日期选择器，用于选择年、月、日、时、分、秒，通常与弹出层组件配合使用。                                            | <a href="https://ibestui.ibestservices.com/components/datetimepicker/" target="_blank">文档</a> |
+| DateTimePicker 日期时间选择 | 日期时间选择器，用于选择年、月、日、时、分、秒，通常与弹出层组件配合使用。                                          | <a href="https://ibestui.ibestservices.com/components/datetimepicker/" target="_blank">文档</a> |
 | Field 输入框             | 用户可以在文本框内输入或编辑文字。                                                              | <a href="https://ibestui.ibestservices.com/components/field/" target="_blank">文档</a>          |
 | Form 表单               | 用于数据录入、校验，支持输入框、单选框、复选框、文件上传等类型，需要与 Field 输入框 组件搭配使用。                          | <a href="https://ibestui.ibestservices.com/components/form/" target="_blank">文档</a>           |
 | NumberKeyboard 数字键盘   | 虚拟数字键盘，可以配合密码输入框组件或自定义的输入框组件使用。                                                | <a href="https://ibestui.ibestservices.com/components/numberkeyboard/" target="_blank">文档</a> |
