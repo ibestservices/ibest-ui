@@ -23,6 +23,11 @@ IBest-UI由 <a href="https://www.ibestservices.com/" target="_blank">安徽百�
 
 目前 <a href="https://www.ibestservices.com/" target="_blank">ibestservices 官方</a> 提供了 <a href="https://ibestui.ibestservices.com/guide/home/" target="_blank">V1</a> 和 <a href="https://ibestui-v2.ibestservices.com/guide/home/" target="_blank">V2</a> 版本, 当前为状态管理 **V1** 版本，开发者可根据自己项目使用的**状态管理版本**选择对应的版本进行开发。
 
+<div>
+	<img src="https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI-Light.png" width="48%">
+	<img src="https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI-Dark.png" width="48%">
+</div>
+
 ## 特性
 - 🚀 50+ 个高质量组件，覆盖移动端主流场景
 - 💪 单元测试覆盖率超过 90%，提供稳定性保障
