@@ -485,11 +485,7 @@ export struct IBestField{
 						name: "arrow",
 						iconSize: this.rightIconSize,
 						color: this.rightIconColor
-					})
-						.onClick(() => {
-							this.onFieldClick()
-						})
-						.margin({left: this.baseStyle.spaceBase})
+					}).margin({left: this.baseStyle.spaceBase})
 				}
 			}
 			.width(CONTAINER_SIZE.FULL)
@@ -553,9 +549,6 @@ export struct IBestField{
 		.borderRadius(0)
 		.backgroundColor("transparent")
 		.focusable(!(this.disabled || this.readOnly || this.isLink))
-		.onClick(() => {
-			this.onFieldClick()
-		})
 	}
 
     aboutToAppear(): void {

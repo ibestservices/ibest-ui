@@ -3,7 +3,6 @@ import {
     IBestCascaderContent,
     IBestCascaderOption,
     IBestCell,
-    IBestNavBar,
     IBestToast
 } from '@ibestservices/ibest-ui'
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
