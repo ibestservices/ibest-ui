@@ -13,7 +13,8 @@
 
 #### Bug修复:
 1. IBestDialog 组件宽度为百分比时在宽屏设备不生效问题;
-2. IBestPopup 组件在横屏时位置错误问题.
+2. IBestPopup 组件在横屏时位置错误问题;
+3. IBestTextEllipsis 在文字较少时也显示操作文字问题;
 
 ## 2.0.8
 #### 新增:
