@@ -10,6 +10,11 @@ import fs from '@ohos.file.fs'
 import { updateManager } from '@kit.StoreKit'
 import RouterUtil from '../utils/routerUtil'
 
+import { authentication } from '@kit.AccountKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
+import { util } from '@kit.ArkTS';
+import { BusinessError } from '@kit.BasicServicesKit';
+
 interface ComponentPart {
 	title: Resource
 	list: ComponentItem[]
@@ -384,6 +389,9 @@ struct Index {
 				Scroll(){
 					Column({ space: SPACE.MD }) {
 						Image($r("app.media.app_icon")).width(100).borderRadius(BORDER_RADIUS.BASE)
+							// .onClick(() => {
+							// 	this.getUserInfo()
+							// })
 						Text($r("app.string.app_name"))
 							.fontSize(32)
 							.fontColor(modeColor.textColor2)
@@ -556,6 +564,43 @@ struct Index {
 				updateManager.showUpdateDialog(this.context)
 			}
 		})
+	}
+	// 获取头像昵称
+	getUserInfo(){
+		// 创建授权请求，并设置参数
+		const authRequest = new authentication.HuaweiIDProvider().createAuthorizationWithHuaweiIDRequest();
+		// 获取头像昵称需要传如下scope
+		authRequest.scopes = ['profile'];
+		// 若开发者需要进行服务端开发，则需传如下permission获取authorizationCode
+		authRequest.permissions = ['serviceauthcode'];
+		// 用户是否需要登录授权，该值为true且用户未登录或未授权时，会拉起用户登录或授权页面
+		authRequest.forceAuthorization = false;
+		// 用于防跨站点请求伪造
+		authRequest.state = util.generateRandomUUID()
+		try {
+			const controller = new authentication.AuthenticationController(getContext(this));
+			controller.executeRequest(authRequest).then((data) => {
+				const authorizationWithHuaweiIDResponse = data as authentication.AuthorizationWithHuaweiIDResponse;
+				const state = authorizationWithHuaweiIDResponse.state;
+				if (state && authRequest.state !== state) {
+					hilog.error(0x0000, 'testTag', `Failed to authorize. The state is different, response state: ${state}`);
+					return;
+				}
+				hilog.info(0x0000, 'testTag', 'Succeeded in authentication.');
+				const authorizationWithHuaweiIDCredential = authorizationWithHuaweiIDResponse.data!;
+				const avatarUri = authorizationWithHuaweiIDCredential.avatarUri;
+				const nickName = authorizationWithHuaweiIDCredential.nickName;
+				const unionID = authorizationWithHuaweiIDCredential.unionID;
+				const openID = authorizationWithHuaweiIDCredential.openID;
+				const authorizationCode = authorizationWithHuaweiIDCredential.authorizationCode;
+				// 开发者处理avatarUri, nickName, unionID，openID，authorizationCode
+				console.log(avatarUri, nickName, unionID, openID, authorizationCode)
+			}).catch((err: BusinessError) => {
+				console.log(`Failed to auth. Code: ${err.code}, message: ${err.message}`);
+			});
+		} catch (err) {
+			console.log(`Failed to auth. Code: ${err.code}, message: ${err.message}`);
+		}
 	}
 	build() {
 		Navigation(this.navPathStack){
