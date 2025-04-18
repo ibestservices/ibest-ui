@@ -101,6 +101,11 @@ export struct IBestNoticeBar{
      */
 	@Prop verticalInterval: number = 3
 	/**
+	 * 圆角
+	 * @since 2.0.9
+     */
+	@Prop radius: IBestStringNumber = 0
+	/**
 	 * 点击通知栏回调
      */
 	onBarClick: () => void = () => {}
@@ -234,6 +239,7 @@ export struct IBestNoticeBar{
 		.height(this.wrapable ? "auto" : getSizeByUnit(this.barHeight))
 		.constraintSize({minHeight: this.wrapable ? getSizeByUnit(this.barHeight) : ""})
 		.backgroundColor(this.bgColor)
+		.borderRadius(getSizeByUnit(this.radius))
 		.padding({
 			left: getSizeByUnit(this.leftRightPadding),
 			right: getSizeByUnit(this.leftRightPadding),
@@ -241,6 +247,7 @@ export struct IBestNoticeBar{
 			bottom: this.wrapable ? convertDimensionsWidthUnit(8) : 0
 		})
 		.visibility(this.isShow ? Visibility.Visible : Visibility.None)
+		.clip(true)
 		.onClick(() => {
 			this.onBarClick()
 		})

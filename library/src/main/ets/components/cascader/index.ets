@@ -2,14 +2,13 @@ import { convertDimensionsWidthUnit, getResourceStr, getSizeByUnit, sleep } from
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestTabs } from '../tab'
-import { IBestTabController, IBestTabItem } from '../tab/index.type'
+import { IBestTabItem } from '../tab/index.type'
 import { IBestCascaderOption, IBestCascaderOptionInstance, IBestCascaderOptionInstanceType } from './index.type'
 import { IBestPopup } from '../popup/index'
 import { IBestCascaderColor } from './color'
 import { IBestIcon } from '../icon'
 import { IBestStringNumber } from '../../model/Global.type'
-
-@CustomDialog
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 @Component
 export struct IBestCascaderContent{
 	/**
@@ -24,7 +23,7 @@ export struct IBestCascaderContent{
 	@State tabList: IBestTabItem[] = [
 		new IBestTabItem({
 			label: $r("app.string.ibest_please_select"),
-			name: "0"
+			name: 0
 		})
 	]
 	/**
@@ -68,8 +67,6 @@ export struct IBestCascaderContent{
 	 */
 	lazyLoad: ((value: IBestStringNumber, level: number, cb: (arr: IBestCascaderOption[]) => void) => void) | null = null
 
-	controller?: CustomDialogController
-	private tabController: IBestTabController = new IBestTabController()
 	private swiperController: SwiperController = new SwiperController()
 	/**
 	 * 选中项变化时回调函数
@@ -186,7 +183,7 @@ export struct IBestCascaderContent{
 	}
 	// 创建下一个选项的数据实例
 	async createNextSwiperData(children: IBestCascaderOption[], index: number){
-		let name = `${Number(this.tabList[this.tabList.length - 1].name) + 1}`
+		let name = Number(this.tabList[this.tabList.length - 1].name) + 1
 		await sleep(50)
 		this.tabList.push(new IBestTabItem({
 			label: $r("app.string.ibest_please_select"),
@@ -194,7 +191,7 @@ export struct IBestCascaderContent{
 		}))
 		this.optionsInstance.push(this.createOptionsInstance(children))
 		await sleep(30)
-		this.tabController.changeTab(name)
+		this.currentTabName = name
 		this.tabChange(index + 1)
 	}
 	// 获取当前已选中的选项
@@ -216,7 +213,6 @@ export struct IBestCascaderContent{
 		Column({space: 10}){
 			Row(){
 				IBestTabs({
-					tabController: this.tabController,
 					tabsList: this.tabList,
 					tabWidthType: "auto",
 					tabLineColor: this.activeColor,
@@ -249,17 +245,17 @@ export struct IBestCascaderContent{
 					.padding({ bottom: this.baseStyle.spaceMd })
 				}, (item: IBestCascaderOptionInstance[], index: number) => index + "")
 			}
-			.width("100%")
+			.width(CONTAINER_SIZE.FULL)
 			.height(this.getListHeight())
 			.indicator(false)
 			.loop(false)
 			.duration(100)
 			.index(this.swiperDefaultIndex)
 			.onChange(index => {
-				this.tabController.changeTab(`${index}`)
+				this.currentTabName = index
 			})
 		}
-		.width("100%")
+		.width(CONTAINER_SIZE.FULL)
 		.alignItems(HorizontalAlign.Start)
 		.backgroundColor(IBestCascaderColor.bgColor)
 	}

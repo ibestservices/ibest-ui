@@ -14,10 +14,10 @@ export struct IBestTabs{
      */
     @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
     @StorageProp("IBestIsLandscape") @Watch("onDidBuild") IBestIsLandscape: boolean = false
-    /**
-     * 唯一id
-     */
-    @Provide uniId: number = 0
+	/**
+	 * 当前激活的tab的name
+	 */
+	@Link @Watch("currentNameChange") currentName: IBestStringNumber
     /**
      * 样式类型
      */
@@ -38,22 +38,11 @@ export struct IBestTabs{
      * 单个tab内边距
      */
     @Provide({allowOverride: "tabPadding"}) tabPadding: IBestStringNumber = this.baseStyle.spaceXs as string
-    /**
-     * tab盒子宽度
-     */
-    @State tabContentWidth: number = 0
-    /**
-     * tab宽度列表
-     */
-    @State tabsWidthList: TabWidthType[] = []
-    /**
-     * 标记线位移列表
-     */
-    @State translateXList: number[] = []
-    /**
-     * 当前激活的tab的name
-     */
-    @Link @Watch("currentNameChange") currentName: IBestStringNumber
+	/**
+	 * 是否显示标记线, 仅type为 `line` 时有效
+	 * @since 2.0.9
+	 */
+	@Prop showActiveLine: boolean = true
     /**
      * 标记线宽度是否固定
      */
@@ -61,23 +50,16 @@ export struct IBestTabs{
     /**
      * 标记线宽度, isTabLineWidthFixed 为true时有效
      */
-    @Provide({allowOverride: "tabLineWidth"}) tabLineWidth: IBestStringNumber = 0
+    @Prop tabLineWidth: IBestStringNumber = 0
     /**
      * 标记线高度
      */
-    @Provide({allowOverride: "tabLineHeight"}) tabLineHeight: IBestStringNumber = convertDimensionsWidthUnit(2)
-    /**
-     * 标记块宽度
+    @Prop tabLineHeight: IBestStringNumber = convertDimensionsWidthUnit(2)
+	/**
+	 * 标记线圆角
+	 * @since 2.0.9
      */
-    @State tabBoxWidth: number = 0
-    /**
-     * 标记线X偏移量
-     */
-    @State translateX: number = 0
-    /**
-     * 标记块X偏移量
-     */
-    @State tabBoxTranslateX: number = 0
+	@Prop tabLineRadius: IBestStringNumber = 0
     /**
      * 未激活的tab文字颜色
      */
@@ -99,7 +81,7 @@ export struct IBestTabs{
      */
     @Provide({allowOverride: "tabBgColor"}) tabBgColor: ResourceColor = IBestTabColor.bgColor
     /**
-     * 字体大小
+     * 默认字体大小
      * @since 1.15.0
      */
     @Provide({allowOverride: "fontSize"}) fontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
@@ -123,7 +105,22 @@ export struct IBestTabs{
      * @since 2.0.5
      */
     @Provide({allowOverride: "radius"}) radius: IBestStringNumber = 0
-    /**
+	/**
+	 * 激活文字字重
+	 * @since 2.0.9
+     */
+	@Provide({allowOverride: "activeFontWeight"}) activeFontWeight: FontWeight = FontWeight.Normal
+	/**
+	 * 激活文字大小
+	 * @since 2.0.9
+     */
+	@Provide({allowOverride: "activeFontSize"}) activeFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
+	/**
+	 * tabContent 内容
+	 * @since 2.0.9
+	 */
+	@BuilderParam tabContentBuilder: CustomBuilder
+	/**
      * onChange事件回调
      */
     onChange: (name: IBestStringNumber) => void = () => {}
@@ -133,22 +130,34 @@ export struct IBestTabs{
      */
     onTabClick: (name: IBestStringNumber) => void = () => {}
     /**
-     * tabContent 内容列表
-     */
-    // @BuilderParam tabContent?: CustomBuilder
-    /**
      * controller 控制器
+	 * @deprecated
      */
 	private tabController: IBestTabController = new IBestTabController()
-    private scroller: Scroller = new Scroller()
-    private context: UIContext = this.getUIContext()
-    private swiperController: SwiperController = new SwiperController()
+
+	// 唯一id
+	@Provide uniId: number = 0
     @Provide isReady: boolean = false
+	// tab盒子宽度
+	@State tabContentWidth: number = 0
+	// tab宽度列表
+	@State tabsWidthList: TabWidthType[] = []
+	// 标记线位移列表
+	@State translateXList: number[] = []
+	// 标记块宽度
+	@State tabBoxWidth: number = 0
+	// 标记线X偏移量
+	@State translateX: number = 0
+	// 标记块X偏移量
+	@State tabBoxTranslateX: number = 0
     @State swiperIndex: number = 0
     @State startTransX: number = 0
     @State startX: number = 0
     @State touchOffsetX: number = 0
     @State startTime: number = 0
+    private scroller: Scroller = new Scroller()
+    private context: UIContext = this.getUIContext()
+    private swiperController: SwiperController = new SwiperController()
 
 	@Builder tabBoxBuilder(showId: boolean = false){
 		Stack({alignContent: Alignment.BottomStart}){
@@ -181,11 +190,12 @@ export struct IBestTabs{
 			.borderRadius(this.baseStyle.borderRadiusSm)
 			.border({ width: this.type == "card" ? 1 : 0, color: this.getLineColor() })
 			// 标记线
-			if(this.type == "line"){
+			if(this.type == "line" && this.showActiveLine){
 				Row()
 					.width(this.isTabLineWidthFixed ? getSizeByUnit(this.tabLineWidth) : this.tabLineWidth)
 					.height(getSizeByUnit(this.tabLineHeight))
 					.backgroundColor(this.getLineColor())
+					.borderRadius(getSizeByUnit(this.tabLineRadius))
 					.translate({ x: this.translateX })
 					.animation({
 						duration: this.isReady ? 100 : 0,
@@ -196,7 +206,7 @@ export struct IBestTabs{
 			}
 		}
 		.backgroundColor(this.tabBgColor)
-		.id(showId ? `ibest_tab_box_${this.uniId}` : "")
+		.id(showId ? `ibest_tabContent_${this.uniId}` : "")
 	}
 
     aboutToAppear(): void {
@@ -239,7 +249,7 @@ export struct IBestTabs{
     }
     // 切换swiper
     swiperChange(index: number, animated: boolean){
-        // this.swiperController.changeIndex(index, animated)
+        this.swiperController.changeIndex(index, animated)
     }
     // 切换name
     changeTab(name: IBestStringNumber){
@@ -302,30 +312,8 @@ export struct IBestTabs{
             })
         }
     }
-    // 触摸
-    onFingerTouch(event: TouchEvent){
-        switch (event.type){
-            case TouchType.Down:
-                this.startX = event.touches[0].x
-                this.startTime = Date.now()
-                break
-            case TouchType.Move:
-                let newOffset = event.touches[0].x - this.startX
-                this.touchOffsetX = newOffset
-                break
-            case TouchType.Up:
-                if(Math.abs(this.touchOffsetX) >= this.tabContentWidth/2){
-                    let index = this.touchOffsetX > 0 ? this.swiperIndex - 1 : this.swiperIndex + 1
-                    this.currentName = this.tabsList[index].name
-                }else{
-                    this.translateX = this.tabBoxTranslateX = this.startTransX
-                }
-                this.touchOffsetX = 0
-                break
-        }
-    }
     build() {
-        Column({ space: convertDimensionsWidthUnit(15) }){
+        Column(){
             if(this.tabWidthType == "auto"){
                 Scroll(this.scroller){
 					this.tabBoxBuilder()
@@ -338,30 +326,37 @@ export struct IBestTabs{
             }else{
 				this.tabBoxBuilder(true)
             }
-            // if(this.tabContent){
-            //     Swiper(this.swiperController){
-            //         this.tabContent()
-            //     }
-            //     .width(CONTAINER_SIZE.FULL)
-            //     .indicator(false)
-            //     .loop(false)
-            //     .duration(200)
-            //     .effectMode(EdgeEffect.None)
-            //     .index($$this.swiperIndex)
-            //     .monopolizeEvents(true)
-            //     .onGestureSwipe((index: number, extraInfo: SwiperAnimationEvent) => {
-            //         let curOffset = extraInfo.currentOffset
-            //         let transX = curOffset > 0 ? this.translateXList[index] - this.translateXList[index-1] : this.translateXList[index+1] - this.translateXList[index]
-            //         let x = - curOffset*transX/this.tabContentWidth
-            //         this.translateX = this.startTransX + x
-            //     })
-            //     .onTouch((event: TouchEvent) => {
-            //         this.onFingerTouch(event)
-            //     })
-            //     .onChange((index: number) => {
-            //         this.currentName = this.tabsList[index].name
-            //     })
-            // }
+            if(this.tabContentBuilder){
+                Swiper(this.swiperController){
+                    this.tabContentBuilder()
+                }
+                .width(CONTAINER_SIZE.FULL)
+                .indicator(false)
+                .loop(false)
+                .duration(200)
+                .effectMode(EdgeEffect.None)
+                .index($$this.swiperIndex)
+				.onGestureSwipe((index: number, extraInfo: SwiperAnimationEvent) => {
+					let curOffset = extraInfo.currentOffset
+					let transX = curOffset > 0 ? this.translateXList[index] - this.translateXList[index-1] : this.translateXList[index+1] - this.translateXList[index]
+					let x = - curOffset * transX / this.tabContentWidth
+					this.translateX = this.startTransX + x
+				})
+				.onAnimationStart((index, target, extraInfo) => {
+					// 获取速度
+					let speed = extraInfo.velocity * -1;
+					let transX = extraInfo.currentOffset > 0 ? this.translateXList[index] - this.translateXList[index-1] : this.translateXList[index+1] - this.translateXList[index];
+					let x = - extraInfo.currentOffset * transX / this.tabContentWidth
+					// 获取剩余时间
+					let duration = x / speed;
+					if(index != target){
+						this.currentName = this.tabsList[target].name
+					}
+					animateTo({duration: duration}, () => {
+						this.translateX = this.translateXList[target]
+					})
+				})
+            }
         }
         .width(CONTAINER_SIZE.FULL)
         .alignItems(HorizontalAlign.Start)
@@ -389,16 +384,21 @@ struct IBestTab{
     @Consume activeBgColor: ResourceColor
     @Consume inactiveBgColor: ResourceColor
     @Consume radius: IBestStringNumber
+	@Consume activeFontWeight: FontWeight
+	@Consume activeFontSize: IBestStringNumber
     initSize: () => void = () => {}
     onTabClick: (name: IBestStringNumber) => void = () => {}
     itemChange(){
         this.initSize()
     }
+	getIsActive(){
+		return this.currentName == this.item.name
+	}
     getLineColor(){
         return this.tabLineColor || this.baseStyle.primary
     }
     getFontColor(){
-        return this.currentName == this.item.name ? this.type == "card" ? "#fff" : this.activeTextColor : this.type == "card" ? this.getLineColor() : this.inactiveTextColor
+        return this.getIsActive() ? this.type == "card" ? "#fff" : this.activeTextColor : this.type == "card" ? this.getLineColor() : this.inactiveTextColor
     }
     build() {
         Row() {
@@ -417,14 +417,15 @@ struct IBestTab{
                     }
                 }
                 .height(CONTAINER_SIZE.FULL)
-                .fontSize(getSizeByUnit(this.fontSize, true))
+                .fontSize(getSizeByUnit(this.getIsActive() ? this.activeFontSize : this.fontSize, true))
                 .fontColor(this.getFontColor())
                 .maxLines(1)
                 .textOverflow({overflow: TextOverflow.Ellipsis})
+				.fontWeight(this.getIsActive() ? this.activeFontWeight : FontWeight.Normal)
             }
             .id(`ibestTab_${this.uniId}_text_${this.item.name}`)
         }
-        .backgroundColor(this.type == "line" && this.isShowActiveBg ? this.currentName == this.item.name ? this.activeBgColor : this.inactiveBgColor : "")
+        .backgroundColor(this.type == "line" && this.isShowActiveBg ? this.getIsActive() ? this.activeBgColor : this.inactiveBgColor : "")
         .justifyContent(FlexAlign.Center)
         .padding({left: getSizeByUnit(this.tabPadding), right: getSizeByUnit(this.tabPadding)})
         .layoutWeight(this.tabWidthType == "flex" ? 1 : 0)

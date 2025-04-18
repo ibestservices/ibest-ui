@@ -83,6 +83,10 @@ struct Index {
 					path: "DatePicker"
 				},
 				{
+					name: $r("app.string.component_dateTimePicker"),
+					path: "DateTimePicker"
+				},
+				{
 					name: $r("app.string.component_field"),
 					path: "Field"
 				},
@@ -264,6 +268,10 @@ struct Index {
 		{
 			name: $r("app.string.component_canvasDrawer"),
 			path: "CanvasDrawer"
+		},
+		{
+			name: $r("app.string.component_colorPicker"),
+			path: "ColorPicker"
 		},
 		{
 			name: $r("app.string.component_imageCropper"),
@@ -483,9 +491,9 @@ struct Index {
 		RouterUtil.navPathStackList.push(this.navPathStack)
 		this.checkUpdate()
 		this.getUiVersion()
-		// setTimeout(() => {
-		// 	RouterUtil.push("MakePoster")
-		// }, 100)
+		setTimeout(() => {
+			// RouterUtil.push("ColorPicker", "颜色选取")
+		}, 100)
 	}
 	getTitleOpacity(){
 		// let scrollY = this.scrollTop < 50 ? this.scrollTop : 50

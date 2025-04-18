@@ -69,6 +69,18 @@
 			"value": "日"
 		},
 		{
+			"name": "ibest_hour",
+			"value": "时"
+		},
+		{
+			"name": "ibest_minute",
+			"value": "分"
+		},
+		{
+			"name": "ibest_second",
+			"value": "秒"
+		},
+		{
 			"name": "ibest_text_complete",
 			"value": "完成"
 		},

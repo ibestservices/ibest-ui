@@ -61,6 +61,11 @@
 			"buildFunction": "DatePickerBuilder"
 		},
 		{
+			"name": "DateTimePicker",
+			"pageSourceFile": "src/main/ets/pages/base/DateTimePicker.ets",
+			"buildFunction": "DateTimePickerBuilder"
+		},
+		{
 			"name": "Field",
 			"pageSourceFile": "src/main/ets/pages/base/Field.ets",
 			"buildFunction": "FieldBuilder"
@@ -264,6 +269,11 @@
 			"name": "CanvasDrawer",
 			"pageSourceFile": "src/main/ets/pages/extend/CanvasDrawer.ets",
 			"buildFunction": "CanvasDrawerBuilder"
+		},
+		{
+			"name": "ColorPicker",
+			"pageSourceFile": "src/main/ets/pages/extend/ColorPicker.ets",
+			"buildFunction": "ColorPickerBuilder"
 		},
 		{
 			"name": "ImageCropper",

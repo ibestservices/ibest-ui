@@ -26,8 +26,7 @@ struct ImageCropperPage {
 	@State previewUrl: PixelMap | null = null
 	private context = getContext(this) as common.UIAbilityContext
 
-	@Builder
-	imgBuilder() {
+	@Builder imgBuilder() {
 		Column({space: SPACE.MD}) {
 			Image(this.previewUrl)
 				.width(260)

@@ -4,6 +4,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { convertDimensionsWidthUnit, sleep } from '../../utils/utils';
 import { IBestStringNumber } from '../../model/Global.type';
 import { ImmersiveMode, LengthMetrics, LevelMode } from '@kit.ArkUI';
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 @Component
 export struct IBestDialog {
 	/**
@@ -131,6 +132,11 @@ export struct IBestDialog {
 	 * 确认按钮的字体颜色
 	 */
 	@Prop confirmButtonColor: ResourceColor = ''
+	/**
+	 * 确认按钮字重
+	 * @since 2.0.9
+	 */
+	@Prop confirmButtonFontWeight: FontWeight = FontWeight.Normal
 	/**
 	 * 确认按钮的背景颜色
 	 * @since 1.16.0
@@ -275,6 +281,7 @@ export struct IBestDialog {
 			cancelButtonText: this.cancelButtonText,
 			buttonFontSize: this.buttonFontSize,
 			confirmButtonColor: this.confirmButtonColor,
+			confirmButtonFontWeight: this.confirmButtonFontWeight,
 			confirmButtonBgColor: this.confirmButtonBgColor,
 			cancelButtonColor: this.cancelButtonColor,
 			cancelButtonBgColor: this.cancelButtonBgColor,
@@ -377,6 +384,7 @@ export struct IBestDialog {
 			builder: () => {
 				this.dialogBuilder()
 			},
+			width: CONTAINER_SIZE.FULL,
 			backgroundBlurStyle: BlurStyle.NONE,
 			cornerRadius: 0,
 			alignment: this.getAlignment(),
@@ -401,7 +409,7 @@ export struct IBestDialog {
 				// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
 				let reason = dismissDialogAction.reason
 				if (reason == DismissReason.PRESS_BACK && this.closeOnBackPress || reason == DismissReason.TOUCH_OUTSIDE && this.closeOnClickOverlay) {
-					this.close()
+					this.handleCancel()
 				}
 			}
 		})

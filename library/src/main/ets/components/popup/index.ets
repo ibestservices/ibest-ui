@@ -78,7 +78,7 @@ struct IBestPopupBaseContent {
 	 */
 	onClickOverlay: () => void = () => {}
 	close: () => void = () => {}
-	controller?: CustomDialogController
+
 	baseController: PopupBaseController = new PopupBaseController()
 	@Builder placeRow(){
 		Blank()
@@ -207,6 +207,7 @@ struct IBestPopupBaseContent {
 
 @Component
 export struct IBestPopup{
+	@StorageProp("IBestIsLandscape") @Watch("landScapeChange") isLandscape: boolean = false
 	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
 	/**
 	 * 弹框展示状态
@@ -340,6 +341,15 @@ export struct IBestPopup{
 			}, hideDuration)
 		}
 	}
+	// 弹框打开时, 屏幕转向, 内容会错位, 暂时这样处理, 后续在再优化
+	landScapeChange(){
+		if(this.visible){
+			this.visible = false
+			setTimeout(() => {
+				this.visible = true
+			}, hideDuration * 2)
+		}
+	}
 	getAlignment() {
 		switch (this.popupAlign) {
 			case 'left':
@@ -364,17 +374,16 @@ export struct IBestPopup{
 			backgroundBlurStyle: BlurStyle.NONE,
 			cornerRadius: 0,
 			alignment: this.getAlignment(),
-			offset: { dx: 0, dy: -(this.topAvoidHeight) },
+			offset: { dx: 0, dy: -this.topAvoidHeight },
 			isModal: this.isModal,
 			maskColor: this.maskColor,
-			// immersiveMode: ImmersiveMode.EXTEND,
 			onDidAppear: () => {
 				this.onOpen()
 			},
 			onDidDisappear: () => {
 				this.onClose()
 			},
-			onWillDismiss:(dismissDialogAction: DismissDialogAction)=> {
+			onWillDismiss: (dismissDialogAction: DismissDialogAction) => {
 				// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
 				let reason = dismissDialogAction.reason
 				if (reason == DismissReason.PRESS_BACK && this.closeOnBackPress || reason == DismissReason.TOUCH_OUTSIDE && this.closeOnClickOverlay) {

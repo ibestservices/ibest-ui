@@ -4,7 +4,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { IBestIcon } from '../icon'
 import { IBestPopoverColor } from './color'
-import { BorderSizeType, IBestPopoverAction, IBestPopoverController, PopoverMask } from './index.type'
+import { BorderSizeType, IBestPopoverAction, IBestPopoverController, IBestPopoverMask } from './index.type'
 
 @Component
 export struct IBestPopover{
@@ -73,9 +73,9 @@ export struct IBestPopover{
      */
     @Prop arrowHeight: IBestStringNumber = convertDimensionsWidthUnit(6)
     /**
-     * 是否显示遮罩
+     * 设置气泡是否有遮罩层及遮罩颜色。如果设置为false，则没有遮罩层；如果设置为true，则设置有遮罩层并且颜色为透明色；如果设置为Color，则为遮罩层的颜色。
      */
-    @Prop popoverMask: boolean | PopoverMask = true
+    @Prop popoverMask: boolean | IBestPopoverMask = true
     /**
      * 气泡与目标的间隙
      */

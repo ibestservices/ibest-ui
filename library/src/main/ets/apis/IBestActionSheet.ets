@@ -10,7 +10,7 @@ import { IBestIcon } from '../components/icon';
 import { IBestStringNumber } from '../model/Global.type';
 
 // 选项类型
-class IBestActionType {
+export class IBestActionType {
 	name: ResourceStr = ""
 	value?: IBestStringNumber
 	subName?: ResourceStr
@@ -20,7 +20,7 @@ class IBestActionType {
 	readonly?: boolean
 }
 
-class IBestActionMultiLine extends IBestActionType {
+export class IBestActionMultiLine extends IBestActionType {
 	icon: ResourceStr = ""
 }
 

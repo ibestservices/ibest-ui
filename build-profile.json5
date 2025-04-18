@@ -32,12 +32,12 @@
 //				"type": "HarmonyOS",
 //				"material": {
 //					"certpath": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.cer",
-//					"storePassword": "0000001AA2CCDB445CC193E151F4703CD3803FA736742749C5493A4EDC65AF3A01206AAE5CA6847BAF9B",
 //					"keyAlias": "debugKey",
-//					"keyPassword": "0000001ACF8CFE2A4EEEFE5646170C6C1AD9B356B5D2F48E339B49218B10FAFE6570D923CDE1B2BCA084",
+//					"keyPassword": "0000001B5AEF4C7604B9034FF0265111E6919C3B1BB9CE9513381588E542A6F4F2512BA6387EAB99E805B4",
 //					"profile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p7b",
 //					"signAlg": "SHA256withECDSA",
-//					"storeFile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p12"
+//					"storeFile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p12",
+//					"storePassword": "0000001BB96A19F44A5AE323929A73BCA1445BBE7C409DFBAFD91F81544C70357DF24E1527006B88470E9B"
 //				}
 //			}
 		],

@@ -134,6 +134,11 @@ export struct IBestDialogView {
 	 */
 	@Prop confirmButtonColor: ResourceColor = ''
 	/**
+	 * 确认按钮字重
+	 * @since 2.0.9
+     */
+	@Prop confirmButtonFontWeight: FontWeight = FontWeight.Normal
+	/**
 	 * 确认按钮的背景颜色
 	 * @since 1.16.0
 	 */
@@ -362,6 +367,7 @@ export struct IBestDialogView {
 										Text(this.confirmButtonText)
 											.fontColor(this.getConfirmBtnFontColor())
 											.fontSize(getSizeByUnit(this.buttonFontSize, true))
+											.fontWeight(this.confirmButtonFontWeight)
 											.transition({ type: TransitionType.Insert, opacity: 1 })
 											.transition({ type: TransitionType.Delete, opacity: 0 })
 									}
@@ -390,15 +396,15 @@ export struct IBestDialogView {
 					} : "")
 				}
 			}
-			.width(CONTAINER_SIZE.FULL)
+			.width(getSizeByUnit(this.dialogWidth))
 			.backgroundColor(this.contentBg)
 			.backgroundImage(this.bgImage)
 			.backgroundImageSize(ImageSize.FILL)
 			.borderRadius(getSizeByUnit(this.dialogBorderRadius))
+			.animation({ duration: 200, curve: Curve.EaseInOut })
 			.clip(true)
 			this.placeRow()
 		}
-		.width(getSizeByUnit(this.dialogWidth))
-		.animation({ duration: 200, curve: Curve.EaseInOut })
+		.width(CONTAINER_SIZE.FULL)
 	}
 }

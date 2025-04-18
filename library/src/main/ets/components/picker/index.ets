@@ -33,7 +33,7 @@ import { IBestStringNumber } from '../../model/Global.type';
 // 距离大于 `MOMENTUM_DISTANCE` 时，执行惯性滑动
 const MOMENTUM_TIME = 300
 const MOMENTUM_DISTANCE = 30
-const swipeDuration = 500
+const swipeDuration = 150
 
 
 @Component
@@ -140,6 +140,38 @@ export struct IBestPicker{
 		.width(CONTAINER_SIZE.FULL)
 		.layoutWeight(1)
 		.monopolizeEvents(true)
+	}
+	@Builder pickerHeader(){
+		Stack({alignContent: Alignment.Center}) {
+			Row(){
+				Text(this.cancelText)
+					.height(CONTAINER_SIZE.FULL)
+					.fontSize(this.baseStyle.fontSizeMd)
+					.fontColor(IBestPickerColor.cancelTextColor)
+					.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
+					.onClick(() => {
+						this.onCancel()
+					})
+				Text(this.confirmText)
+					.height(CONTAINER_SIZE.FULL)
+					.fontSize(this.baseStyle.fontSizeMd)
+					.fontColor(this.baseStyle.primary)
+					.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
+					.onClick(() => {
+						this.onConfirm(this.getValueByIndex(), this.getTextByIndex())
+					})
+			}
+			.width(CONTAINER_SIZE.FULL)
+			.height(convertDimensionsWidthUnit(44))
+			.justifyContent(FlexAlign.SpaceBetween)
+			Text(this.title)
+				.constraintSize({ maxWidth: "50%" })
+				.fontWeight(600)
+				.fontSize(this.baseStyle.fontSizeLg)
+				.fontColor(IBestPickerColor.textColor)
+				.maxLines(1)
+				.textOverflow({ overflow: TextOverflow.Ellipsis })
+		}
 	}
 	@Builder verticalBuilder(){
 		Stack() {
@@ -492,7 +524,7 @@ export struct IBestPicker{
 			}
 			this.setValueByIndex()
 			setTimeout(() => {
-				this.onChange(this.value, this.getTextByIndex(), columnIndex)
+				this.onChange(this.getValueByIndex(), this.getTextByIndex(), columnIndex)
 			}, swipeDuration)
 		}
 	}
@@ -504,16 +536,15 @@ export struct IBestPicker{
 	getTextByIndex(): string[]{
 		return this.getColumns().map((item, index) => getResourceStr(item[this.indexArr[index]]?.text || ""))
 	}
+	// 根据索引获取值
+	getValueByIndex(): IBestStringNumber[]{
+		return this.getColumns().map((item, index) => item[this.indexArr[index]]?.value || "")
+	}
 
 	build() {
 		Column() {
 			if(!this.groupId && this.showToolBar) {
-				PickerHeader({
-					value: this.value,
-					onConfirm: this.onConfirm,
-					onCancel: this.onCancel,
-					getTextByIndex: (): string[] => this.getTextByIndex()
-				})
+				this.pickerHeader()
 			}
 			if(this.horizontal){
 				this.horizontalBuilder()
@@ -529,49 +560,5 @@ export struct IBestPicker{
 				this.initSize()
 			}
 		})
-	}
-}
-
-@Component
-struct PickerHeader{
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@Consume cancelText: ResourceStr
-	@Consume confirmText: ResourceStr
-	@Consume title: ResourceStr
-	@Prop value: IBestStringNumber[]
-	onConfirm: (value: IBestStringNumber[], text: string[]) => void = () => {}
-	onCancel: () => void = () => {}
-	getTextByIndex: () => string[] = () => []
-	build() {
-		Stack({alignContent: Alignment.Center}) {
-			Row(){
-				Text(this.cancelText)
-					.height(CONTAINER_SIZE.FULL)
-					.fontSize(this.baseStyle.fontSizeMd)
-					.fontColor(IBestPickerColor.cancelTextColor)
-					.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
-					.onClick(() => {
-						this.onCancel()
-					})
-				Text(this.confirmText)
-					.height(CONTAINER_SIZE.FULL)
-					.fontSize(this.baseStyle.fontSizeMd)
-					.fontColor(this.baseStyle.primary)
-					.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
-					.onClick(() => {
-						this.onConfirm(this.value, this.getTextByIndex())
-					})
-			}
-			.width(CONTAINER_SIZE.FULL)
-			.height(convertDimensionsWidthUnit(44))
-			.justifyContent(FlexAlign.SpaceBetween)
-			Text(this.title)
-				.constraintSize({ maxWidth: "50%" })
-				.fontWeight(600)
-				.fontSize(this.baseStyle.fontSizeLg)
-				.fontColor(IBestPickerColor.textColor)
-				.maxLines(1)
-				.textOverflow({ overflow: TextOverflow.Ellipsis })
-		}
 	}
 }

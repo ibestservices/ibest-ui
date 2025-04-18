@@ -3,7 +3,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { RateOption } from './index.type'
+import { IBestRateOption } from './index.type'
 import { IBestStringNumber } from '../../model/Global.type'
 
 @Component
@@ -15,7 +15,7 @@ export struct IBestRate {
 	// 唯一id
 	@Provide uniId: number = 0
 	// 选项列表
-	@State optionsList: RateOption[] = []
+	@State optionsList: IBestRateOption[] = []
 	// 容器宽度
 	@State containerWidth: number = 0
 	// 单个图标宽度
@@ -103,7 +103,7 @@ export struct IBestRate {
 		}
 		this.optionsList = Array(this.count).fill(0).map((_: number, i: number) => {
 			let val = value - i
-			return new RateOption(val > 1 ? 1 : val > 0 ? val : 0)
+			return new IBestRateOption(val > 1 ? 1 : val > 0 ? val : 0)
 		})
 		setTimeout(() => {
 			this.getContentWidth()
@@ -111,8 +111,8 @@ export struct IBestRate {
 	}
 	// 获取组件容器宽度
 	getContentWidth(){
-		this.containerWidth = getComponentsInfo(this.context, `IBestRate_${this.uniId}`).width
-		this.iconWidth = getComponentsInfo(this.context, `IBestRate_${this.uniId}_0`).width
+		this.containerWidth = getComponentsInfo(this.context, `ibest_rate_${this.uniId}`).width
+		this.iconWidth = getComponentsInfo(this.context, `ibest_rate_${this.uniId}_0`).width
 		this.iconSpace = (this.containerWidth - this.iconWidth*this.count)/(this.count - 1)
 	}
 	// 点击
@@ -130,7 +130,7 @@ export struct IBestRate {
 	// 刷新optionsList
 	refreshList(){
 		let value = this.value
-		this.optionsList.forEach((item: RateOption, i: number) => {
+		this.optionsList.forEach((item: IBestRateOption, i: number) => {
 			let val = value - i
 			item.value = val > 1 ? 1 : val > 0 ? val : 0
 		})
@@ -142,14 +142,14 @@ export struct IBestRate {
 	}
 	build() {
 		Row({ space: getSizeByUnit(this.space) }){
-			ForEach(this.optionsList, (item: RateOption, index: number) => {
+			ForEach(this.optionsList, (item: IBestRateOption, index: number) => {
 				RateItem({ item: item, index })
 				.onClick((event: ClickEvent) => {
 					this.rateClick(event, index)
 				})
-			}, (item: RateOption, index) => index + "")
+			}, (_: IBestRateOption, index) => index + "")
 		}
-		.id(`IBestRate_${this.uniId}`)
+		.id(`ibest_rate_${this.uniId}`)
 		.enabled(!(this.disabled || this.readOnly))
 		.gesture(
 			PanGesture(this.panOption)
@@ -169,7 +169,7 @@ export struct IBestRate {
 
 @Component
 struct RateItem {
-	@ObjectLink item: RateOption
+	@ObjectLink item: IBestRateOption
 	@Prop index: number
 	@Consume uniId: number
 	@Consume inactiveIcon: ResourceStr
@@ -200,6 +200,6 @@ struct RateItem {
 		}
 		.width(getSizeByUnit(this.iconSize))
 		.aspectRatio(1)
-		.id(`IBestRate_${this.uniId}_${this.index}`)
+		.id(`ibest_rate_${this.uniId}_${this.index}`)
 	}
 }
