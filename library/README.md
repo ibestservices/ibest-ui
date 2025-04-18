@@ -1,10 +1,22 @@
-# IBest-UI
-
-## 简介
-
 <p align="center">
     <img src="https://ibestservices.github.io/ibest-ui/AppScope/resources/base/media/app_logo_trans.png" width="100">
 </p>
+
+<h1 align="center">IBest-UI</h1>
+
+<p align="center">轻量、可定制的 HarmonyOS NEXT 组件库</p>
+
+<p align="center">
+    <a style="color:#0366d6;" onclick="openPage('https://ibestui.ibestservices.com')">文档</a>
+    &nbsp;
+    ·
+    &nbsp;
+    <a style="color:#0366d6;" onclick="openPage('https://github.com/ibestservices/ibest-ui')">Github</a>
+</p>
+
+---
+
+## 介绍
 
 IBest-UI由 <a style="color:#0366d6;" href="https://www.ibestservices.com/" target="_blank">安徽百得思维信息科技有限公司</a> 
 开源，是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库, 包含 Button、Calendar、Form、Field、Picker、Popup、Toast、Dialog、ImageCropper 等50+个优质组件，上手简单，使用方便，可大大提高鸿蒙开发者的开发效率。
@@ -15,10 +27,6 @@ IBest-UI由 <a style="color:#0366d6;" href="https://www.ibestservices.com/" targ
 	<img src="https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI-Light.png" width="48%">
 	<img src="https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI-Dark.png" width="48%">
 </div>
-
-## 文档地址
-
-https://ibestui.ibestservices.com
 
 ## 特性
 - 🚀 50+ 个高质量组件，覆盖移动端主流场景

@@ -1,6 +1,9 @@
 {
 	"apiType": "stageMode",
 	"buildOption": {
+		"arkOptions": {
+			"byteCodeHar": true
+		}
 	},
 	"targets": [
 		{
