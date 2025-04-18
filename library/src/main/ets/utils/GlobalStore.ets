@@ -49,21 +49,25 @@ export default class GlobalStore {
 	 * 获取屏幕尺寸
      */
 	private static getScreenSize(){
-		let mainWindow = GlobalStore.windowStage.getMainWindowSync()
-		let screenInfo: window.WindowProperties = mainWindow.getWindowProperties()
-		let o = display.getDefaultDisplaySync().orientation
-		let screenWidth = screenInfo.windowRect.width
-		let screenHeight = screenInfo.windowRect.height
-		GlobalStore.screenWidth = screenInfo.windowRect.width
-		GlobalStore.screenHeight = screenInfo.windowRect.height
-		AppStorage.setOrCreate("IBestIsLandscape", o == 1 || o == 3)
-		AppStorage.setOrCreate("IBestScreenWidth", px2vp(screenWidth))
-		AppStorage.setOrCreate("IBestScreenHeight", px2vp(screenHeight))
-		mainWindow.on("avoidAreaChange", data => {
-			if (data.type == window.AvoidAreaType.TYPE_KEYBOARD) {
-				AppStorage.setOrCreate("IBestKeyBoardHeight", px2vp(data.area.bottomRect.height))
-			}
-		})
+		try {
+			let mainWindow = GlobalStore.windowStage.getMainWindowSync()
+			let screenInfo: window.WindowProperties = mainWindow.getWindowProperties()
+			let o = display.getDefaultDisplaySync().orientation
+			let screenWidth = screenInfo.windowRect.width
+			let screenHeight = screenInfo.windowRect.height
+			GlobalStore.screenWidth = screenInfo.windowRect.width
+			GlobalStore.screenHeight = screenInfo.windowRect.height
+			AppStorage.setOrCreate("IBestIsLandscape", o == 1 || o == 3)
+			AppStorage.setOrCreate("IBestScreenWidth", px2vp(screenWidth))
+			AppStorage.setOrCreate("IBestScreenHeight", px2vp(screenHeight))
+			mainWindow.on("avoidAreaChange", data => {
+				if (data.type == window.AvoidAreaType.TYPE_KEYBOARD) {
+					AppStorage.setOrCreate("IBestKeyBoardHeight", px2vp(data.area.bottomRect.height))
+				}
+			})
+		}catch (e) {
+			throw new Error(e)
+		}
 	}
 	/**
 	 * 监听屏幕旋转
