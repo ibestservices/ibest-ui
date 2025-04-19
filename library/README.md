@@ -2,7 +2,7 @@
     <img src="https://ibestservices.github.io/ibest-ui/AppScope/resources/base/media/app_logo_trans.png" width="100">
 </p>
 
-<h1 align="center">IBest-UI</h1>
+<p align="center"><strong style="font-size: 40px;">IBest-UI</strong></p>
 
 <p align="center">轻量、可定制的 HarmonyOS NEXT 组件库</p>
 

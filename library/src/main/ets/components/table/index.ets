@@ -162,6 +162,7 @@ export struct IBestTable {
     }
     aboutToDisappear(): void {
         emitter.off(getEventName(COMPONENT_NAME, TABLE_EVENT_NAME.SEND_COLUMN_ITEM, this.tableId), this.uniId)
+		emitter.off(getEventName(COMPONENT_NAME, TABLE_EVENT_NAME.COLUMN_ITEM_CHANGE, this.tableId), this.uniId)
     }
     getColumn(column: IBestTableColumnInfo){
         this.columnList.push(new IBestTableColumnInfo(column))
