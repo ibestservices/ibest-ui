@@ -202,6 +202,10 @@ struct Index {
 					path: "CountDown"
 				},
 				{
+					name: $r("app.string.component_countTo"),
+					path: "CountTo"
+				},
+				{
 					name: $r("app.string.component_divider"),
 					path: "Divider"
 				},

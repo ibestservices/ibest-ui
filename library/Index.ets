@@ -115,6 +115,9 @@ export { IBestCollapseItem } from './src/main/ets/components/collapseItem/index'
 export { IBestCountDown } from './src/main/ets/components/countDown/index'
 export { IBestCountDownController } from './src/main/ets/components/countDown/index.type'
 
+export { IBestCountTo } from './src/main/ets/components/countTo/index'
+export { IBestCountToController } from './src/main/ets/components/countTo/index.type'
+
 export { IBestDivider } from './src/main/ets/components/divider/index'
 
 export { IBestEmpty } from './src/main/ets/components/empty/index'

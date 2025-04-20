@@ -217,6 +217,10 @@
 			"value": "CountDown 倒计时"
 		},
 		{
+			"name": "component_countTo",
+			"value": "CountTo 数字滚动"
+		},
+		{
 			"name": "component_divider",
 			"value": "Divider 分割线"
 		},

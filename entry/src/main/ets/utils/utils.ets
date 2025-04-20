@@ -1,7 +1,7 @@
 import GlobalStore from './global'
 import { window } from '@kit.ArkUI'
 import { bundleManager, common } from '@kit.AbilityKit'
-import { ComAvoidAreaSize } from '../assets/global.type'
+import { ComAvoidAreaSize } from '../model/global.type'
 import { image } from '@kit.ImageKit'
 import fs from '@ohos.file.fs'
 import { photoAccessHelper } from '@kit.MediaLibraryKit'

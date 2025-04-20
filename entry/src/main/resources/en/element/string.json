@@ -217,6 +217,10 @@
 			"value": "CountDown"
 		},
 		{
+			"name": "component_countTo",
+			"value": "CountTo"
+		},
+		{
 			"name": "component_divider",
 			"value": "Divider"
 		},

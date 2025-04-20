@@ -191,6 +191,11 @@
 			"buildFunction": "CountDownBuilder"
 		},
 		{
+			"name": "CountTo",
+			"pageSourceFile": "src/main/ets/pages/base/CountTo.ets",
+			"buildFunction": "CountToBuilder"
+		},
+		{
 			"name": "Divider",
 			"pageSourceFile": "src/main/ets/pages/base/Divider.ets",
 			"buildFunction": "DividerBuilder"
