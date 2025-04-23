@@ -396,7 +396,9 @@ function defaultBuilder(option: IBestActionSheetParams) {
 	defaultContent({ option })
 }
 
-interface contentNodeMapVal{
+interface contentNodeVal{
+	key: string
+	uiContext: UIContext
 	content: ComponentContent<IBestActionSheetParams>
 	params: IBestActionSheetParams
 }
@@ -413,21 +415,18 @@ async function handleBeforeClose(params: IBestActionSheetParams) {
 }
 
 class ActionSheet{
-	private uiContext: UIContext | null = null
-	private contentNodeMap: Map<string, contentNodeMapVal> = new Map()
+	private contentNodeArr: contentNodeVal[] = []
 	/**
 	 * 展示actionSheet
   	 */
 	public async show(option: IBestActionSheetOption): Promise<string> {
 		let key = this.getUniKey()
-		if(!this.uiContext){
-			let windowClass: window.Window = await window.getLastWindow(getContext())
-			this.uiContext = windowClass.getUIContext()
-		}
+		let windowClass: window.Window = await window.getLastWindow(getContext())
+		let uiContext = windowClass.getUIContext()
 		let params = new IBestActionSheetParams(option)
 		params.id = key
 		params.close = (id: string): Promise<void> => this.close(id)
-		let contentNode = new ComponentContent(this.uiContext, wrapBuilder(defaultBuilder), params)
+		let contentNode = new ComponentContent(uiContext, wrapBuilder(defaultBuilder), params)
 		let sheetOption: SheetOptions = {
 			width: params.width,
 			height: params.height,
@@ -443,11 +442,7 @@ class ActionSheet{
 				if (DismissSheetAction.reason == DismissReason.PRESS_BACK && !params.closeOnBackPress || DismissSheetAction.reason == DismissReason.TOUCH_OUTSIDE && !params.closeOnClickOverlay) {
 					return
 				}
-				let state = await handleBeforeClose(params)
-				if(!state){
-					return
-				}
-				DismissSheetAction.dismiss()
+				this.close(key)
 			},
 			onDisappear: () => {
 				params.onClose?.()
@@ -465,11 +460,13 @@ class ActionSheet{
 		if(params.title){
 			sheetOption.title = params.title
 		}
-		this.contentNodeMap.set(key, {
+		this.contentNodeArr.push({
+			key,
+			uiContext: uiContext,
 			content: contentNode,
 			params: params
 		})
-		await this.uiContext.openBindSheet(contentNode, sheetOption)
+		await uiContext.openBindSheet(contentNode, sheetOption)
 		return key
 	}
 	/**
@@ -477,32 +474,30 @@ class ActionSheet{
 	 */
 	public async close(id?: string){
 		let key = id || this.getLastKey()
-		if(this.contentNodeMap.has(key)){
-			let val = this.contentNodeMap.get(key) as contentNodeMapVal
+		if(this.contentNodeArr.some(e => e.key == key)){
+			let index = this.contentNodeArr.findIndex(e => e.key == key)
+			let val = this.contentNodeArr[index]
 			if(val.params.beforeClose){
-				let status = await val.params.beforeClose?.()
+				let status = await handleBeforeClose(val.params)
 				if(!status){
 					return
 				}
 			}
-			this.uiContext?.closeBindSheet(val?.content).then(() => {
-				val?.params.onClose?.()
-				this.contentNodeMap.delete(key)
-				if(this.contentNodeMap.size == 0){
-					this.uiContext = null
-				}
+			val.uiContext.closeBindSheet(val.content).then(() => {
+				val.content.dispose()
+				this.contentNodeArr.splice(index, 1)
 			})
 		}
 	}
 	private getUniKey(): string{
 		let key = generateId()
-		if(this.contentNodeMap.has(key)){
+		if(this.contentNodeArr.some(e => e.key == key)){
 			return this.getUniKey()
 		}
 		return key
 	}
 	private getLastKey(): string{
-		return Array.from(this.contentNodeMap.keys()).pop() || ""
+		return this.contentNodeArr[this.contentNodeArr.length - 1].key
 	}
 }
 

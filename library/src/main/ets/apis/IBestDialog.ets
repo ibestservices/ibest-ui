@@ -373,6 +373,7 @@ struct DialogContent{
 }
 
 interface DialogMapValue{
+	key: string
 	contentNode: ComponentContent<IBestDialogParams>
 	promptAction: PromptAction
 	params: IBestDialogParams
@@ -391,7 +392,7 @@ function getAlignment(type: string) {
  * 弹窗管理器
  */
 class Dialog{
-	private contentNodeMap: Map<string, DialogMapValue> = new Map()
+	private contentNodeArr: DialogMapValue[] = []
 	/**
 	 * 打开弹框
 	 */
@@ -405,10 +406,11 @@ class Dialog{
 		params.close = (id: string): void => this.close(id)
 		let contentNode = new ComponentContent(uiContext, wrapBuilder(defaultContentBuilder), params)
 		params.contentNode = contentNode
-		this.contentNodeMap.set(key, {
-			contentNode: contentNode,
-			promptAction: promptAction,
-			params: params
+		this.contentNodeArr.push({
+			key,
+			contentNode,
+			promptAction,
+			params
 		})
 		await promptAction.openCustomDialog(contentNode, {
 			alignment: getAlignment(option.alignment),
@@ -429,7 +431,7 @@ class Dialog{
 			onDidDisappear: () => {
 				option.onClose?.()
 			},
-			onWillDismiss: async(dismissDialogAction: DismissDialogAction)=> {
+			onWillDismiss: async (dismissDialogAction: DismissDialogAction) => {
 				// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
 				let reason = dismissDialogAction.reason
 				if (reason == DismissReason.PRESS_BACK && !(option.closeOnBackPress ?? true) || reason == DismissReason.TOUCH_OUTSIDE && !option.closeOnClickOverlay) {
@@ -449,22 +451,24 @@ class Dialog{
 	 */
 	public close(id?: string){
 		let key = id || this.getLastKey()
-		if(this.contentNodeMap.has(key)){
-			let dialog = this.contentNodeMap.get(key)
-			dialog?.promptAction?.closeCustomDialog(dialog?.contentNode).then(() => {
-				dialog?.contentNode?.dispose()
+		if(this.contentNodeArr.some(e => e.key == key)){
+			let index = this.contentNodeArr.findIndex(e => e.key == key)
+			let dialog = this.contentNodeArr[index]
+			dialog.promptAction.closeCustomDialog(dialog.contentNode).then(() => {
+				dialog.contentNode.dispose()
+				this.contentNodeArr.splice(index, 1)
 			})
 		}
 	}
 	private getUniKey(): string{
 		let key = generateId()
-		if(this.contentNodeMap.has(key)){
+		if(this.contentNodeArr.some(e => e.key == key)){
 			return this.getUniKey()
 		}
 		return key
 	}
 	private getLastKey(): string{
-		return Array.from(this.contentNodeMap.keys()).pop() || ""
+		return this.contentNodeArr[this.contentNodeArr.length - 1].key
 	}
 }
 
