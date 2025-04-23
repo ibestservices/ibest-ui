@@ -249,6 +249,10 @@
 			"value": "Progress"
 		},
 		{
+			"name": "component_skeleton",
+			"value": "Skeleton"
+		},
+		{
 			"name": "component_table",
 			"value": "Table"
 		},

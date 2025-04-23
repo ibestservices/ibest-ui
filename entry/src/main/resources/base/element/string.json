@@ -249,6 +249,10 @@
 			"value": "Progress 进度条"
 		},
 		{
+			"name": "component_skeleton",
+			"value": "Skeleton 骨架屏"
+		},
+		{
 			"name": "component_table",
 			"value": "Table 表格"
 		},

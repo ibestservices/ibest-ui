@@ -231,6 +231,11 @@
 			"buildFunction": "ProgressBuilder"
 		},
 		{
+			"name": "Skeleton",
+			"pageSourceFile": "src/main/ets/pages/base/Skeleton.ets",
+			"buildFunction": "SkeletonBuilder"
+		},
+		{
 			"name": "Table",
 			"pageSourceFile": "src/main/ets/pages/base/Table.ets",
 			"buildFunction": "TableBuilder"

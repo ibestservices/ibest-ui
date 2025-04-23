@@ -131,6 +131,8 @@ export { IBestPopoverAction, IBestPopoverController } from './src/main/ets/compo
 
 export { IBestProgress } from './src/main/ets/components/progress/index'
 
+export { IBestSkeleton } from './src/main/ets/components/skeleton/index'
+
 export { IBestTable, IBestTableColumn } from './src/main/ets/components/table/index'
 export { IBestTableColumnData } from './src/main/ets/components/table/index.type'
 

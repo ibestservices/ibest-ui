@@ -234,6 +234,10 @@ struct Index {
 					path: "Progress"
 				},
 				{
+					name: $r("app.string.component_skeleton"),
+					path: "Skeleton"
+				},
+				{
 					name: $r("app.string.component_table"),
 					path: "Table"
 				},
@@ -504,7 +508,7 @@ struct Index {
 		this.checkUpdate()
 		this.getUiVersion()
 		setTimeout(() => {
-			// RouterUtil.push("ColorPicker", "颜色选取")
+			RouterUtil.push("Skeleton", "骨架屏")
 		}, 100)
 	}
 	getTitleOpacity(){
