@@ -11,6 +11,13 @@ export type WordBreakType = 'normal' | 'break-all' | 'break-word'
  */
 export type IBestStringNumber = string | number
 /**
+ * 宽高尺寸
+ */
+export interface IBestSize{
+	width: IBestStringNumber
+	height: IBestStringNumber
+}
+/**
  * 组件信息类型
  */
 export interface ComInfoType {

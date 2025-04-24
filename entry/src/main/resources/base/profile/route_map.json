@@ -236,6 +236,11 @@
 			"buildFunction": "SkeletonBuilder"
 		},
 		{
+			"name": "Steps",
+			"pageSourceFile": "src/main/ets/pages/base/Steps.ets",
+			"buildFunction": "StepsBuilder"
+		},
+		{
 			"name": "Table",
 			"pageSourceFile": "src/main/ets/pages/base/Table.ets",
 			"buildFunction": "TableBuilder"

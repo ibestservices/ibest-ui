@@ -114,7 +114,7 @@ export struct IBestTabs{
 	 * 激活文字大小
 	 * @since 2.0.9
      */
-	@Provide({allowOverride: "activeFontSize"}) activeFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
+	@Provide({allowOverride: "activeFontSize"}) activeFontSize: IBestStringNumber = this.fontSize
 	/**
 	 * tabContent 内容
 	 * @since 2.0.9

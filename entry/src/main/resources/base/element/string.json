@@ -253,6 +253,10 @@
 			"value": "Skeleton 骨架屏"
 		},
 		{
+			"name": "component_steps",
+			"value": "Steps 步骤条"
+		},
+		{
 			"name": "component_table",
 			"value": "Table 表格"
 		},

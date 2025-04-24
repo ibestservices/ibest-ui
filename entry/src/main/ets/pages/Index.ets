@@ -238,6 +238,10 @@ struct Index {
 					path: "Skeleton"
 				},
 				{
+					name: $r("app.string.component_steps"),
+					path: "Steps"
+				},
+				{
 					name: $r("app.string.component_table"),
 					path: "Table"
 				},
@@ -508,7 +512,7 @@ struct Index {
 		this.checkUpdate()
 		this.getUiVersion()
 		setTimeout(() => {
-			RouterUtil.push("Skeleton", "骨架屏")
+			RouterUtil.push("Steps", "步骤条")
 		}, 100)
 	}
 	getTitleOpacity(){

@@ -253,6 +253,10 @@
 			"value": "Skeleton"
 		},
 		{
+			"name": "component_steps",
+			"value": "Steps"
+		},
+		{
 			"name": "component_table",
 			"value": "Table"
 		},
