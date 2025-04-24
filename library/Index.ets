@@ -134,7 +134,7 @@ export { IBestProgress } from './src/main/ets/components/progress/index'
 export { IBestSkeleton, IBestSkeletonParagraph } from './src/main/ets/components/skeleton/index'
 export { IBestSkeletonType } from './src/main/ets/components/skeleton/index.type'
 
-export { IBestSteps } from './src/main/ets/components/steps/index'
+export { IBestSteps, IBestStep } from './src/main/ets/components/steps/index'
 
 export { IBestTable, IBestTableColumn } from './src/main/ets/components/table/index'
 export { IBestTableColumnData } from './src/main/ets/components/table/index.type'
