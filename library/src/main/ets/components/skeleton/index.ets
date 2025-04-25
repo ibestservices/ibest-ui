@@ -71,6 +71,7 @@ export struct IBestSkeletonParagraph{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp("IBestColorMode") colorMode: ColorMode = ColorMode.LIGHT
 	/**
 	 * 占位图类型
 	 */
@@ -92,7 +93,7 @@ export struct IBestSkeletonParagraph{
 	 */
 	@Prop animated: boolean = true
 
-	@State positionX: string = "-100%"
+	@State positionX: string = "0"
 
 	getSize(): IBestSize{
 		switch (this.type){
@@ -132,11 +133,10 @@ export struct IBestSkeletonParagraph{
 					.width(CONTAINER_SIZE.FULL)
 					.height(CONTAINER_SIZE.FULL)
 					.linearGradient({
-						direction: GradientDirection.Right,
-						// colors: [['#303030', 0.25], ['#424243', 0.37], ['#303030', 0.63]]
-						colors: [['#f0f2f5', 0], ['#e6e8eb', 0.5], ['#f0f2f5', 1]]
+						angle: 90,
+						colors: this.colorMode == 0 ? [['#303030', 0], ['#424243', 0.5], ['#303030', 1]] : [['#f0f2f5', 0], ['#e6e8eb', 0.5], ['#f0f2f5', 1]]
 					})
-					.position({x: this.positionX})
+					.translate({x: this.positionX})
 					.animation({
 						duration: 1400,
 						iterations: -1,
@@ -154,6 +154,6 @@ export struct IBestSkeletonParagraph{
 		.height(getSizeByUnit(this.getSize().height))
 		.clip(true)
 		.borderRadius(this.type == 'circle' ? this.baseStyle.borderRadiusMax : getSizeByUnit(this.radius))
-		.backgroundColor('#f0f2f5')
+		.backgroundColor(this.colorMode == 0 ? "#303030" : "#f0f2f5")
 	}
 }
