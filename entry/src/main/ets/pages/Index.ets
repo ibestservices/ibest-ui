@@ -512,7 +512,7 @@ struct Index {
 		this.checkUpdate()
 		this.getUiVersion()
 		setTimeout(() => {
-			RouterUtil.push("Steps", "步骤条")
+			// RouterUtil.push("Skeleton")
 		}, 100)
 	}
 	getTitleOpacity(){

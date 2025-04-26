@@ -7,7 +7,8 @@ import { IBestIcon } from '../icon'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestStringNumber } from '../../model/Global.type'
 import GlobalStore from '../../utils/GlobalStore'
-import { ImmersiveMode } from '@kit.ArkUI'
+import { LengthMetrics } from '@kit.ArkUI'
+
 const popupDuration = 200
 const hideDuration = 220
 
@@ -18,12 +19,13 @@ interface PopupSize{
 
 @Component
 struct IBestPopupBaseContent {
-	// 是否横屏
+	/**
+	 * 全局公共样式
+	 */
+	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@StorageProp("IBestIsLandscape") @Watch("initSize") IBestIsLandscape: boolean = false
 	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
 	@StorageProp("IBestBottomBarHeight") bottomBarHeight: number = 0
-	@State transX: IBestStringNumber = ""
-	@State transY: IBestStringNumber = ""
 	/**
 	 * 弹框显示位置
 	 */
@@ -48,6 +50,11 @@ struct IBestPopupBaseContent {
 	 * 是否显示头部
 	 */
 	@Consume isShowHeader: boolean
+	@Consume title: ResourceStr
+	@Consume titleColor: ResourceColor
+	@Consume isShowClose: boolean
+	@Consume closeIcon: ResourceStr
+	@Consume closeIconColor: ResourceColor
 	/**
 	 * 背板的圆角半径
 	 */
@@ -79,7 +86,31 @@ struct IBestPopupBaseContent {
 	onClickOverlay: () => void = () => {}
 	close: () => void = () => {}
 
+	@State transX: IBestStringNumber = ""
+	@State transY: IBestStringNumber = ""
 	baseController: PopupBaseController = new PopupBaseController()
+
+	@Builder popupTitle(){
+		Row(){
+			Text(this.title)
+				.fontSize(this.baseStyle.fontSizeLg)
+				.fontColor(this.titleColor)
+			IBestIcon({
+				name: this.closeIcon,
+				iconSize: convertDimensionsWidthUnit(20),
+				color: this.closeIconColor
+			})
+				.onClick(() => {
+					this.close()
+				})
+				.visibility(this.isShowClose ? Visibility.Visible : Visibility.None)
+		}
+		.width(CONTAINER_SIZE.FULL)
+		.height(convertDimensionsWidthUnit(40))
+		.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
+		.justifyContent(FlexAlign.SpaceBetween)
+		.alignItems(VerticalAlign.Center)
+	}
 	@Builder placeRow(){
 		Blank()
 			.onClick(() => {
@@ -158,9 +189,7 @@ struct IBestPopupBaseContent {
 						if(this.headerBuilder){
 							this.headerBuilder()
 						}else{
-							PopupTitle({
-								close: (): void => this.close()
-							})
+							this.popupTitle()
 						}
 					}
 					if(this.contentBuilder){
@@ -295,6 +324,26 @@ export struct IBestPopup{
 	 */
 	@Provide({allowOverride: "safeAreaInsetBottom"}) safeAreaInsetBottom: boolean = false
 	/**
+	 * 设置弹窗是否在拉起软键盘时进行自动避让
+	 * @since 2.1.0
+	 */
+	@Prop keyboardAvoidMode: KeyboardAvoidMode = KeyboardAvoidMode.DEFAULT
+	/**
+	 * 弹窗避让键盘后，和键盘之间的距离
+	 * @since 2.1.0
+	 */
+	@Prop keyboardAvoidDistance: LengthMetrics = LengthMetrics.vp(16)
+	/**
+	 * 弹窗显示层级
+	 * @since 2.1.0
+	 */
+	@Prop levelMode: LevelMode = 0
+	/**
+	 * 页面级弹窗需要显示的层级下的节点 uniqueId, 仅当levelMode属性设置为LevelMode.EMBEDDED时生效
+	 * @since 2.1.0
+	 */
+	@Prop levelUniqueId: number = 0
+	/**
 	 * 自定义头部 优先级大于title
 	 * @since 1.18.0
 	 */
@@ -377,6 +426,11 @@ export struct IBestPopup{
 			offset: { dx: 0, dy: -this.topAvoidHeight },
 			isModal: this.isModal,
 			maskColor: this.maskColor,
+			keyboardAvoidMode: this.keyboardAvoidMode,
+			keyboardAvoidDistance: this.keyboardAvoidDistance,
+			levelMode: this.levelMode,
+			levelUniqueId: this.levelUniqueId,
+			// immersiveMode: ImmersiveMode.EXTEND,
 			onDidAppear: () => {
 				this.onOpen()
 			},
@@ -397,39 +451,4 @@ export struct IBestPopup{
 		this.visible = false
 	}
 	build() {}
-}
-
-@Component
-struct PopupTitle {
-	/**
-	 * 全局公共样式
-	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@Consume title: ResourceStr
-	@Consume titleColor: ResourceColor
-	@Consume isShowClose: boolean
-	@Consume closeIcon: ResourceStr
-	@Consume closeIconColor: ResourceColor
-	close: () => void = () => {}
-	build() {
-		Row(){
-			Text(this.title)
-				.fontSize(this.baseStyle.fontSizeLg)
-				.fontColor(this.titleColor)
-			IBestIcon({
-				name: this.closeIcon,
-				iconSize: convertDimensionsWidthUnit(20),
-				color: this.closeIconColor
-			})
-				.onClick(() => {
-					this.close()
-				})
-				.visibility(this.isShowClose ? Visibility.Visible : Visibility.None)
-		}
-		.width(CONTAINER_SIZE.FULL)
-		.height(convertDimensionsWidthUnit(40))
-		.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
-		.justifyContent(FlexAlign.SpaceBetween)
-		.alignItems(VerticalAlign.Center)
-	}
 }

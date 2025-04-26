@@ -471,6 +471,14 @@
 		{
 			"name": "ibest_skeleton_bg_color_darker",
 			"value": "#e6e8eb"
+		},
+		{
+			"name": "ibest_step_text_color",
+			"value": "$color:ibest_text_color_2"
+		},
+		{
+			"name": "ibest_step_active_color",
+			"value": "$color:ibest_primary_color"
 		}
 	]
 }

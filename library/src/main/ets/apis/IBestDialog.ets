@@ -178,6 +178,11 @@ class IBestDialogOption {
 	 */
 	offsetY?: IBestStringNumber
 	/**
+	 * 设置弹窗是否在拉起软键盘时进行自动避让
+	 * @since 2.1.0
+	 */
+	keyboardAvoidMode?: KeyboardAvoidMode
+	/**
 	 * 弹窗避让键盘后，和键盘之间的距离
 	 * @since 2.0.8
      */
@@ -421,6 +426,7 @@ class Dialog{
 			isModal: option.showOverlay ?? true,
 			maskColor: option.overlayColor,
 			showInSubWindow: option.showInSubWindow,
+			keyboardAvoidMode: option.keyboardAvoidMode ?? KeyboardAvoidMode.DEFAULT,
 			keyboardAvoidDistance: option.keyboardAvoidDistance ?? LengthMetrics.vp(16),
 			levelMode: option.levelMode ?? 0,
 			levelUniqueId: option.levelUniqueId,

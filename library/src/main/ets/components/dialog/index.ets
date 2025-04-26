@@ -201,6 +201,11 @@ export struct IBestDialog {
 	 */
 	@Prop offsetY: IBestStringNumber = 0
 	/**
+	 * 设置弹窗是否在拉起软键盘时进行自动避让
+	 * @since 2.1.0
+	 */
+	@Prop keyboardAvoidMode: KeyboardAvoidMode = KeyboardAvoidMode.DEFAULT
+	/**
 	 * 弹窗避让键盘后，和键盘之间的距离
 	 * @since 2.0.8
 	 */
@@ -395,10 +400,11 @@ export struct IBestDialog {
 			isModal: this.showOverlay,
 			maskColor: this.overlayColor,
 			showInSubWindow: this.showInSubWindow,
+			keyboardAvoidMode: this.keyboardAvoidMode,
 			keyboardAvoidDistance: this.keyboardAvoidDistance,
-			// immersiveMode: ImmersiveMode.EXTEND,
 			levelMode: this.levelMode,
 			levelUniqueId: this.levelUniqueId,
+			// immersiveMode: ImmersiveMode.EXTEND,
 			onDidAppear: () => {
 				this.onOpen()
 			},

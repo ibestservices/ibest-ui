@@ -93,7 +93,7 @@ export struct IBestSkeletonParagraph{
 	 */
 	@Prop animated: boolean = true
 
-	@State positionX: string = "0"
+	@State positionX: string = "-100%"
 
 	getSize(): IBestSize{
 		switch (this.type){
