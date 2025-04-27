@@ -101,6 +101,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | CircleProgress 环形进度条 | 圆环形的进度条组件。                         | <a href="https://ibestui.ibestservices.com/components/circleProgress/" target="_blank">文档</a> |
 | Collapse 折叠面板        | 将一组内容放置在多个折叠面板中，点击面板的标题可以展开或收缩其内容。 | <a href="https://ibestui.ibestservices.com/components/collapse/" target="_blank">文档</a>       |
 | CountDown 倒计时        | 用于实时展示倒计时数值，支持毫秒精度。                | <a href="https://ibestui.ibestservices.com/components/countDown/" target="_blank">文档</a>      |
+| CountTo 数字滚动         | 用于需要滚动数字到某一个值的场景，目标要求是一个递增的值。      | <a href="https://ibestui.ibestservices.com/components/countTo/" target="_blank">文档</a>        |
 | Divider 分割线          | 用于将内容分隔为多个区域。                      | <a href="https://ibestui.ibestservices.com/components/divider/" target="_blank">文档</a>        |
 | Empty 空状态            | 空状态时的占位提示。                         | <a href="https://ibestui.ibestservices.com/components/empty/" target="_blank">文档</a>          |
 | Highlight 高亮文本       | 高亮指定文本内容。                          | <a href="https://ibestui.ibestservices.com/components/highlight/" target="_blank">文档</a>      |
@@ -108,6 +109,8 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | NoticeBar 通知栏        | 用于循环播放展示一组消息通知。                    | <a href="https://ibestui.ibestservices.com/components/noticeBar/" target="_blank">文档</a>      |
 | Popover 气泡弹出框        | 弹出式的气泡菜单。                          | <a href="https://ibestui.ibestservices.com/components/popover/" target="_blank">文档</a>        |
 | Progress 进度条         | 用于展示操作的当前进度。                       | <a href="https://ibestui.ibestservices.com/components/progress/" target="_blank">文档</a>       |
+| Skeleton 骨架屏         | 用于在内容加载过程中展示一组占位图形。                | <a href="https://ibestui.ibestservices.com/components/skeleton/" target="_blank">文档</a>       |
+| Steps 步骤条            | 用于展示操作流程的各个环节，让用户了解当前的操作在整体流程中的位置。 | <a href="https://ibestui.ibestservices.com/components/steps/" target="_blank">文档</a>          |
 | Table 表格             | 用于展示多条结构类似的数据。                     | <a href="https://ibestui.ibestservices.com/components/table/" target="_blank">文档</a>          |
 | Tag 标签               | 用于标记关键词和概括主要内容。                    | <a href="https://ibestui.ibestservices.com/components/tag/" target="_blank">文档</a>            |
 | TextEllipsis 文本省略    | 对长文本进行省略，支持展开/收起。                  | <a href="https://ibestui.ibestservices.com/components/textEllipsis/" target="_blank">文档</a>   |

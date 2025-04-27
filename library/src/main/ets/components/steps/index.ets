@@ -126,7 +126,7 @@ export struct IBestSteps{
 						})
 					}
 					.width(this.percentContentHeight)
-					.translate({x: "50%"})
+					.position({x: this.percentContentSize / 2, y: 0})
 					.rotate({z: 1, angle: 90, centerX: 0, centerY: 1})
 				}
 				.width(this.percentContentSize)
@@ -164,6 +164,7 @@ export struct IBestSteps{
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.backgroundColor(IBestStepsColor.bgColor)
+			.opacity(this.percentContentSize ? 1 : 0)
 		}
 	}
 }

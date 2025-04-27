@@ -75,6 +75,7 @@ struct SkeletonPage {
 						.alignItems(VerticalAlign.Top)
 					}
 				}
+				ListItem().height(50)
             }
             .layoutWeight(1)
             .padding({ left: SPACE.SM, right: SPACE.SM })
