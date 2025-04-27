@@ -108,8 +108,7 @@ export struct IBestSwitch {
 				} else if (this.loading && this.switchBarSize) {
 					IBestLoading({
 						loadingSize: this.switchBarSize / 1.5,
-						loadingColor: this.value ? this.loadingActiveColor || this.getActiveColor() :
-							this.loadingInactiveColor || this.activeColor
+						loadingColor: this.value ? this.loadingActiveColor || this.getActiveColor() : this.loadingInactiveColor || this.activeColor
 					})
 				}
 			}

@@ -1,6 +1,7 @@
+import { IBestStringNumber } from "../../../../../Index"
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
 import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { getSizeByUnit } from "../../utils/utils"
+import { convertDimensionsWidthUnit, getSizeByUnit } from "../../utils/utils"
 import { IBestCountToColor } from "./color"
 import { IBestCountToController } from "./index.type"
 
@@ -41,7 +42,7 @@ export struct IBestCountTo{
     /**
      * 字体大小
      */
-    @Prop fontSize: number = 30
+    @Prop fontSize: IBestStringNumber = convertDimensionsWidthUnit(30, true)
     /**
      * 字体色
      */

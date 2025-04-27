@@ -55,11 +55,10 @@ export struct IBestSteps{
 	@BuilderParam defaultBuilder: CustomBuilder
 
 	@State uniId: number = 0
-	@State allSteps: number[] = []
 	@State percentContentSize: number = 0
-	@State stepHeightArr: number[] = []
 	@State percentContentHeight: number = 0
 	@State percent: number = 0
+	allSteps: number[] = []
 	private uiContext = this.getUIContext()
 
 	aboutToAppear(): void {
@@ -84,10 +83,11 @@ export struct IBestSteps{
 					let size = getComponentsInfo(this.uiContext, `ibest_steps_mark_${this.groupId}`)
 					this.percentContentSize = this.placeDirection == Axis.Vertical ? size.width : size.height
 					if(this.placeDirection == Axis.Vertical){
+						let stepHeightArr: number[] = []
 						for (let i = 0; i < this.allSteps.length - 1; i++) {
-							this.stepHeightArr.push(getComponentsInfo(this.uiContext, `ibest_step_item_${this.groupId}_${i}`).height)
+							stepHeightArr.push(getComponentsInfo(this.uiContext, `ibest_step_item_${this.groupId}_${i}`).height)
 						}
-						this.percentContentHeight = this.stepHeightArr.reduce((a, b) => a + b, 0)
+						this.percentContentHeight = stepHeightArr.reduce((a, b) => a + b, 0)
 					}
 				}, 50)
 			}

@@ -639,6 +639,10 @@
 		{
 			"name": "size",
 			"value": "Size"
+		},
+		{
+			"name": "inner_jump",
+			"value": "Inner Jump"
 		}
 	]
 }

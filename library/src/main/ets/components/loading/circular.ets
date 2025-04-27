@@ -51,13 +51,13 @@ export struct IBestLoadingCircular {
 	@State maxPerimeter: number = 0
 	@State strokeDashArray: Point = new Point(0, 0)
 	@State strokeDashOffset: number = 0
-	@StorageProp("IBestGlobalConfig") IBestGlobalConfig: IBestGlobalConfig = new IBestGlobalConfig()
+	@StorageProp("IBestGlobalConfig") ibestGlobalConfig: IBestGlobalConfig = new IBestGlobalConfig()
 	private uiContext: UIContext = this.getUIContext()
 	aboutToAppear() {
 		this.uniId = this.getUniqueId()
 		setTimeout(() => {
 			let width = getComponentsInfo(this.uiContext, `ibest_circle_${this.uniId}`).width
-			this.maxPerimeter = Math.floor(Math.PI * (width + (this.IBestGlobalConfig.unit == "vp" ? 20 : 0)))
+			this.maxPerimeter = Math.floor(Math.PI * (width + (this.ibestGlobalConfig.unit == "vp" ? 20 : 0)))
 			this.strokeDashArray = new Point(0, this.maxPerimeter)
 		}, 50)
 	}

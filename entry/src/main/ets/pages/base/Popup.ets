@@ -254,7 +254,7 @@ struct PopupPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '内部跳转', titlePaddingLeft: SPACE.MD }) {
+					ComponentShowContainer({ title: $r("app.string.inner_jump"), titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							IBestCell({
 								title: '内部跳转',

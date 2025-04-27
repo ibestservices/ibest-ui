@@ -639,6 +639,10 @@
 		{
 			"name": "size",
 			"value": "尺寸"
+		},
+		{
+			"name": "inner_jump",
+			"value": "内部跳转"
 		}
 	]
 }
