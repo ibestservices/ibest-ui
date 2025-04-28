@@ -17,6 +17,10 @@ export enum STEPS_EVENT_NAME {
      * 获取配置信息
      */
     GET_CONFIG = "GET_CONFIG",
+  	/**
+	 * 获取最大标记宽度
+     */
+	GET_MAX_MARK_SIZE= "GET_MAX_MARK_SIZE",
     /**
      * 激活索引变化
      */

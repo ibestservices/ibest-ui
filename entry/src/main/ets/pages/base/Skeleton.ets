@@ -48,7 +48,7 @@ struct SkeletonPage {
 								Row({space: SPACE.SM}){
 									Image($r("app.media.app_icon")).width(32).aspectRatio(1)
 									Column({space: SPACE.SM}){
-										Text("关于IBest-UI" )
+										Text("关于IBest-UI")
 										Text($r("app.string.app_desc"))
 									}
 									.layoutWeight(1)

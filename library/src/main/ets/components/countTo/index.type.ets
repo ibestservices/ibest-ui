@@ -17,5 +17,5 @@ export class IBestCountToController {
     /**
      * 重置滚动
      */
-    reset: (time?: number) => void = () => {}
+    reset: () => void = () => {}
 }

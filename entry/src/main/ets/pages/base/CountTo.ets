@@ -12,7 +12,7 @@ export function CountToBuilder(_: string, title: string){
 @Component
 struct CountToPage {
     @State title: string = ''
-    @State controller: IBestCountToController = new IBestCountToController()
+    controller: IBestCountToController = new IBestCountToController()
 
     build() {
         NavDestination() {
@@ -54,7 +54,7 @@ struct CountToPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '自定义样式' }){
+                    ComponentShowContainer({ title: '手动控制' }){
                         IBestCountTo({
                             start: 0,
                             end: 6666,

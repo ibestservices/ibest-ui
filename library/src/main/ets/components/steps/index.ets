@@ -38,7 +38,7 @@ export struct IBestSteps{
      */
 	@Prop activeIcon: ResourceStr = ""
 	/**
-	 * 图标大小
+	 * 图标大小, 仅type为 icon 时有效
      */
 	@Prop iconSize: IBestStringNumber = convertDimensionsWidthUnit(14)
 	/**
@@ -80,8 +80,12 @@ export struct IBestSteps{
 				})
 				this.percent = this.active / (this.allSteps.length - 1) * 100
 				setTimeout(() => {
-					let size = getComponentsInfo(this.uiContext, `ibest_steps_mark_${this.groupId}`)
-					this.percentContentSize = this.placeDirection == Axis.Vertical ? size.width : size.height
+					let arr: number[] = []
+					this.allSteps.forEach((_, index) => {
+						arr.push(getComponentsInfo(this.uiContext, `ibest_steps_mark_${this.groupId}_${index}`).width)
+					})
+					this.percentContentSize = Math.max(...arr)
+					emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_MAX_MARK_SIZE, this.groupId), this.percentContentSize)
 					if(this.placeDirection == Axis.Vertical){
 						let stepHeightArr: number[] = []
 						for (let i = 0; i < this.allSteps.length - 1; i++) {
@@ -89,7 +93,7 @@ export struct IBestSteps{
 						}
 						this.percentContentHeight = stepHeightArr.reduce((a, b) => a + b, 0)
 					}
-				}, 50)
+				}, 80)
 			}
 		}, 50)
 	}
@@ -188,6 +192,34 @@ export struct IBestStep{
      */
 	@Prop description: ResourceStr
 	/**
+	 * 步骤标记类型
+	 */
+	@Prop type: IBestStepMarkType
+	/**
+	 * 点大小
+	 */
+	@Prop dotSize: IBestStringNumber
+	/**
+	 * 非激活底部图标, 仅type为 icon 时有效
+	 */
+	@Prop inactiveIcon: ResourceStr
+	/**
+	 * 激活底部图标, 仅type为 icon 时有效
+	 */
+	@Prop activeIcon: ResourceStr
+	/**
+	 * 图标大小, 仅type为 icon 时有效
+	 */
+	@Prop iconSize: IBestStringNumber
+	/**
+	 * 未激活颜色
+	 */
+	@Prop inactiveColor: ResourceColor
+	/**
+	 * 激活颜色
+	 */
+	@Prop activeColor: ResourceColor
+	/**
 	 * 自定义内容
 	 */
 	@BuilderParam defaultBuilder: CustomBuilder
@@ -197,39 +229,46 @@ export struct IBestStep{
 	@State index: number = 0
 	@State active: number = 0
 	@State config: IBestStepConfig = {} as IBestStepConfig
+	@State maxMarkWidth: number = 0
 
 	@Builder stepContent(){
-		if(this.config.type == 'dot'){
-			Row()
-				.width(getSizeByUnit(this.config.dotSize))
+		Row(){
+			if(this.config.type == 'dot'){
+				Row()
+					.width(getSizeByUnit(this.config.dotSize))
+					.aspectRatio(1)
+					.borderRadius(this.baseStyle.borderRadiusMax)
+					.backgroundColor(this.getActiveColor())
+					.id(this.getMarkId())
+			}else if(this.config.type == 'icon'){
+				Row(){
+					IBestIcon({
+						name: this.isActive() ? this.config.activeIcon : this.config.inactiveIcon,
+						iconSize: this.config.iconSize,
+						color: this.getActiveColor()
+					})
+				}
+				.backgroundColor(IBestStepsColor.bgColor)
+				.id(this.getMarkId())
+			}else if(this.config.type == 'num') {
+				Row(){
+					Text((this.index+1).toString())
+						.fontSize(this.baseStyle.fontSizeSm)
+						.fontColor(this.getActiveColor())
+				}
+				.padding({left: 4, right: 4})
 				.aspectRatio(1)
 				.borderRadius(this.baseStyle.borderRadiusMax)
-				.backgroundColor(this.getActiveColor())
+				.border({width: 2, color: this.isActive() ? this.baseStyle.primary : IBestStepsColor.borderColor})
+				.justifyContent(FlexAlign.Center)
+				.backgroundColor(IBestStepsColor.bgColor)
 				.id(this.getMarkId())
-		}else if(this.config.type == 'icon'){
-			Row(){
-				IBestIcon({
-					name: this.isActive() ? this.config.activeIcon : this.config.inactiveIcon,
-					iconSize: this.config.iconSize,
-					color: this.getActiveColor()
-				})
 			}
-			.backgroundColor(IBestStepsColor.bgColor)
-			.id(this.getMarkId())
-		}else if(this.config.type == 'num') {
-			Row(){
-				Text((this.index+1).toString())
-					.fontSize(this.baseStyle.fontSizeSm)
-					.fontColor(this.getActiveColor())
-			}
-			.padding(4)
-			.aspectRatio(1)
-			.borderRadius(this.baseStyle.borderRadiusMax)
-			.border({width: 2, color: this.isActive() ? this.baseStyle.primary : IBestStepsColor.borderColor})
-			.justifyContent(FlexAlign.Center)
-			.backgroundColor(IBestStepsColor.bgColor)
-			.id(this.getMarkId())
 		}
+		.width(this.maxMarkWidth || "auto")
+		.aspectRatio(1)
+		.justifyContent(FlexAlign.Center)
+		.alignItems(VerticalAlign.Top)
 		if(this.defaultBuilder){
 			this.defaultBuilder()
 		}else {
@@ -252,18 +291,31 @@ export struct IBestStep{
 		emitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.ACTIVE_CHANGE, this.groupId), this.uniId, (active: number): void => {
 			this.active = active
 		})
+		emitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_MAX_MARK_SIZE, this.groupId), this.uniId, (size: number): void => {
+			this.maxMarkWidth = size
+		})
 		emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_ALL_STEPS, this.groupId), this.uniId)
 	}
 	aboutToDisappear(): void {
 		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_CONFIG, this.groupId), this.uniId)
 		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.ACTIVE_CHANGE, this.groupId), this.uniId)
+		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_MAX_MARK_SIZE, this.groupId), this.uniId)
 	}
 	// 保存配置信息
 	saveConfig(steps: number[], active: number, data: IBestStepConfig){
 		this.allSteps = steps
 		this.active = active
 		this.index = steps.indexOf(this.uniId)
-		this.config = data
+		this.config = {
+			placeDirection: data.placeDirection,
+			type: this.type || data.type,
+			dotSize: this.dotSize || data.dotSize,
+			inactiveIcon: this.inactiveIcon || data.inactiveIcon,
+			activeIcon: this.activeIcon || data.activeIcon,
+			iconSize: this.iconSize || data.iconSize,
+			inactiveColor: this.inactiveColor || data.inactiveColor,
+			activeColor: this.activeColor || data.activeColor
+		}
 	}
 	// 获取是否是第一个
 	isFirstStep(): boolean{
@@ -287,7 +339,7 @@ export struct IBestStep{
 	}
 	// 生成id
 	getMarkId(){
-		return `ibest_steps_mark_${this.groupId}`
+		return `ibest_steps_mark_${this.groupId}_${this.index}`
 	}
 	build() {
 		if(this.isVertical()){
