@@ -1,11 +1,11 @@
 import {
-    addNumber,
-    clamp,
-    convertDimensions,
-    convertDimensionsWidthUnit,
-    getComponentsInfo,
-    getLengthUnit,
-    getSizeByUnit
+	addNumber,
+	clamp,
+	convertDimensions,
+	convertDimensionsWidthUnit,
+	getComponentsInfo,
+	getLengthUnit,
+	getSizeByUnit
 } from '../../utils/utils'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'

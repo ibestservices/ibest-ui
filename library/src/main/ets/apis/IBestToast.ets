@@ -1,4 +1,4 @@
-import { ComponentContent, LevelMode, PromptAction, window } from '@kit.ArkUI'
+import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
 import { IBestIcon } from '../components/icon'
 import { IBestLoading } from '../components/loading'
 import { IBestStringNumber, LoadingIconType, WordBreakType } from '../model/Global.type'

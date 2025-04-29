@@ -1,4 +1,4 @@
-import { ComponentContent, ImmersiveMode, LengthMetrics, LevelMode, PromptAction, window } from '@kit.ArkUI'
+import { ComponentContent, LengthMetrics, LevelMode, PromptAction, window } from '@kit.ArkUI'
 import { generateId } from '../utils/utils'
 import { IBestDialogView } from '../components/dialog/dialog'
 import { IBestStringNumber } from '../model/Global.type'

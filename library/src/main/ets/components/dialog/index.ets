@@ -3,7 +3,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { convertDimensionsWidthUnit, sleep } from '../../utils/utils';
 import { IBestStringNumber } from '../../model/Global.type';
-import { ImmersiveMode, LengthMetrics, LevelMode } from '@kit.ArkUI';
+import { LengthMetrics, LevelMode } from '@kit.ArkUI';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 @Component
 export struct IBestDialog {

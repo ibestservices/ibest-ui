@@ -5,13 +5,13 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import {
-    IBestCalendarDay,
-    HeaderItemType,
-    IBestCalendarConfirmResult,
-    SelectedStyleType,
-    SelectType,
-    WeekDayType,
-	IBestCalendarDayItem
+	HeaderItemType,
+	IBestCalendarConfirmResult,
+	IBestCalendarDay,
+	IBestCalendarDayItem,
+	SelectedStyleType,
+	SelectType,
+	WeekDayType
 } from './index.type'
 import promptAction from '@ohos.promptAction'
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'

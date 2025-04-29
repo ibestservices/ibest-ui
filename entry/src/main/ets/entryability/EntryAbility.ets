@@ -5,7 +5,6 @@ import window from '@ohos.window';
 import { IBestInit } from '@ibestservices/ibest-ui';
 import { ConfigurationConstant } from '@kit.AbilityKit';
 import GlobalStore from '../utils/global';
-import { i18n } from '@kit.LocalizationKit'
 
 export default class EntryAbility extends UIAbility {
 	onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {

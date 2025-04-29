@@ -6,7 +6,7 @@ import { image } from '@kit.ImageKit'
 import fs from '@ohos.file.fs'
 import { photoAccessHelper } from '@kit.MediaLibraryKit'
 import { systemShare } from '@kit.ShareKit'
-import { fileUri } from '@kit.CoreFileKit';
+import { fileUri } from '@kit.CoreFileKit'
 import { uniformTypeDescriptor as utd } from '@kit.ArkData'
 /**
  * 获取随机色

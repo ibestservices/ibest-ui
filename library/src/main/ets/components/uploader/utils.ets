@@ -1,4 +1,4 @@
-import { IBestUploaderFile } from "./index.type";
+import { IBestUploaderFile } from './index.type';
 
 /**
  * 判断是否是图片

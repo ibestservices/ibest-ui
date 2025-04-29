@@ -1,6 +1,6 @@
 import { setIBestUIBaseStyle } from './src/main/ets/theme-chalk/src'
 import IBestToast from './src/main/ets/apis/IBestToast'
-import IBestActionSheet, { IBestActionType, IBestActionMultiLine } from './src/main/ets/apis/IBestActionSheet'
+import IBestActionSheet, { IBestActionMultiLine, IBestActionType } from './src/main/ets/apis/IBestActionSheet'
 import IBestImagePreview from './src/main/ets/apis/IBestImagePreview'
 import IBestDialogUtil from './src/main/ets/apis/IBestDialog'
 import IBestNotify from './src/main/ets/apis/IBestNotify'
@@ -49,7 +49,7 @@ export { IBestCascader, IBestCascaderContent } from './src/main/ets/components/c
 export { IBestCascaderOption } from './src/main/ets/components/cascader/index.type'
 
 export { IBestCheckbox } from './src/main/ets/components/checkbox/index'
-export { IBestCheckboxGroup, CheckboxGroupContext } from './src/main/ets/components/checkboxGroup/index'
+export { IBestCheckboxGroup } from './src/main/ets/components/checkboxGroup/index'
 export { IBestCheckboxGroupController } from './src/main/ets/components/checkboxGroup/index.type'
 
 export { IBestDatePicker } from './src/main/ets/components/datePicker/index'

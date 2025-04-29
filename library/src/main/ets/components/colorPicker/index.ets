@@ -1,11 +1,11 @@
-import { IBestStringNumber } from "../../model/Global.type"
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
-import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from "../../utils/utils"
-import { IBestHsva, IBestColorFormat, IBestFormatPredefineColor } from "./index.type"
-import { color2Hsva, getRgbaStr, hsva2HexColor, hsva2RgbColor } from "./util"
-import { LengthMetrics } from "@kit.ArkUI"
+import { IBestStringNumber } from '../../model/Global.type'
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
+import { IBestColorFormat, IBestFormatPredefineColor, IBestHsva } from './index.type'
+import { color2Hsva, getRgbaStr, hsva2HexColor, hsva2RgbColor } from './util'
+import { LengthMetrics } from '@kit.ArkUI'
 @Component
 export struct IBestColorPicker{
 	/**

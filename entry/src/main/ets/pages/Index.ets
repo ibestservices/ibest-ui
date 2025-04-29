@@ -9,11 +9,10 @@ import { rcp } from '@kit.RemoteCommunicationKit'
 import fs from '@ohos.file.fs'
 import { updateManager } from '@kit.StoreKit'
 import RouterUtil from '../utils/routerUtil'
-
-import { authentication } from '@kit.AccountKit';
-import { hilog } from '@kit.PerformanceAnalysisKit';
-import { util } from '@kit.ArkTS';
-import { BusinessError } from '@kit.BasicServicesKit';
+import { authentication } from '@kit.AccountKit'
+import { hilog } from '@kit.PerformanceAnalysisKit'
+import { util } from '@kit.ArkTS'
+import { BusinessError } from '@kit.BasicServicesKit'
 
 interface ComponentPart {
 	title: Resource

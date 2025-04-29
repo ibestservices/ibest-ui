@@ -1,4 +1,4 @@
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import { IBestStepper } from '@ibestservices/ibest-ui';
 import CustomNavBar from '../../components/CustomNavBar';

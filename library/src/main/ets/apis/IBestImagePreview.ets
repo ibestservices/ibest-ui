@@ -1,4 +1,4 @@
-import { ComponentContent, ImmersiveMode, PromptAction, window } from '@kit.ArkUI'
+import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
 import { CONTAINER_SIZE } from '../theme-chalk/src/container'
 import { clamp, convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../utils/utils'
 import { IBestActionSheetColor } from './color'

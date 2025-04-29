@@ -1,7 +1,7 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { getResourceStr, getSizeByUnit } from '../../utils/utils'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { Chunks, Chunk } from './index.type'
+import { Chunk, Chunks } from './index.type'
 import { IBestStringNumber } from '../../model/Global.type'
 import { IBestHighlightColor } from './color'
 @Component

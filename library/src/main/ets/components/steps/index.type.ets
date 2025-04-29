@@ -1,4 +1,4 @@
-import { IBestStringNumber } from "../../../../../Index"
+import { IBestStringNumber } from '../../../../../Index'
 
 /**
  * 组件名称

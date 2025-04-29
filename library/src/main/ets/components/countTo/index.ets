@@ -1,9 +1,9 @@
-import { IBestStringNumber } from "../../../../../Index"
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { convertDimensionsWidthUnit, getSizeByUnit } from "../../utils/utils"
-import { IBestCountToColor } from "./color"
-import { IBestCountToController } from "./index.type"
+import { IBestStringNumber } from '../../../../../Index'
+import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
+import { IBestCountToColor } from './color'
+import { IBestCountToController } from './index.type'
 
 @Component
 export struct IBestCountTo{

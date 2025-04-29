@@ -1,6 +1,6 @@
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import { IBestCell, IBestCellGroup, IBestImagePreview, IBestToast } from '@ibestservices/ibest-ui';
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import CustomNavBar from '../../components/CustomNavBar';
 
 @Builder

@@ -257,7 +257,7 @@ struct PopupPage {
 					ComponentShowContainer({ title: $r("app.string.inner_jump"), titlePaddingLeft: SPACE.MD }) {
 						IBestCellGroup({ inset: true }) {
 							IBestCell({
-								title: '内部跳转',
+								title: $r("app.string.inner_jump"),
 								isLink: true,
 								hasBorder: false,
 								onCellClick: () => {

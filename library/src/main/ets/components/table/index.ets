@@ -6,7 +6,13 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { emitter } from '../../utils/EventEmitter'
 import { IBestTableColor } from './color'
-import { IBestTableColumnInfo, COMPONENT_NAME, TABLE_EVENT_NAME, IBestTableColumnData, IBestCellPosition } from './index.type'
+import {
+	COMPONENT_NAME,
+	IBestCellPosition,
+	IBestTableColumnData,
+	IBestTableColumnInfo,
+	TABLE_EVENT_NAME
+} from './index.type'
 
 @Extend(Scroll) function ibestTableFixScrollStyle(position: string){
     .scrollBar(BarState.Off)
@@ -24,7 +30,7 @@ export struct IBestTable {
     /**
      * 表格id
      */
-    @Prop tableId: string = ""
+    @Prop @Require tableId: string
     /**
      * 表格数据
      */
@@ -339,7 +345,7 @@ export struct IBestTableColumn{
     /**
      * 表格id
      */
-    @Prop tableId: string = ""
+    @Prop @Require tableId: string
     /**
      * 列标题
      */

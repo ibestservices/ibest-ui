@@ -14,7 +14,7 @@ export struct IBestSideBarItem{
 	/**
 	 * 分组id
 	 */
-	@Prop groupId: IBestStringNumber = ""
+	@Prop @Require groupId: IBestStringNumber
 	/**
 	 * 索引
      */

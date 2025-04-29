@@ -9,7 +9,7 @@ export struct IBestRadioGroup {
 	/**
 	 * 分组标识
 	 */
-	@Prop group: IBestStringNumber = ''
+	@Prop @Require group: IBestStringNumber
 	/**
 	 * 激活的标识列表
 	 * @since 2.0.1
@@ -25,6 +25,11 @@ export struct IBestRadioGroup {
 	 * @since 2.0.1
 	 */
 	@Prop space: IBestStringNumber = convertDimensionsWidthUnit(12)
+	/**
+	 * 是否禁用
+	 * @since 2.1.0
+	 */
+	@Prop @Watch("initRadio") disabled: boolean = false
 	/**
 	 * 默认内容
 	 * @since 2.0.1
@@ -56,7 +61,7 @@ export struct IBestRadioGroup {
 		}
 	}
 	initRadio() {
-		emitter.emit(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.active)
+		emitter.emit(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.active, this.disabled)
 	}
 	async handleBeforeClose(name: IBestStringNumber | boolean) {
 		let status = true

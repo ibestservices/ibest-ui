@@ -1,4 +1,4 @@
-import { generateId } from "../../utils/utils"
+import { generateId } from '../../utils/utils'
 /**
  * 输入框model
  */
