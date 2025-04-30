@@ -65,6 +65,11 @@ export struct IBestProgress{
      */
 	@Prop duration: number = 3
 	/**
+	 * 方向
+	 * @since 2.1.0
+     */
+	@Prop placeDirection: Axis = Axis.Horizontal
+	/**
 	 * 格式化文本函数
      */
 	format?: (value: number) => string
@@ -146,5 +151,6 @@ export struct IBestProgress{
 					.constraintSize({minWidth: convertDimensionsWidthUnit(40)})
 			}
 		}
+		.width(CONTAINER_SIZE.FULL)
 	}
 }

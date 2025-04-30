@@ -16,9 +16,9 @@ export struct IBestRadio {
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
-	 * 组名
+	 * 分组id
 	 */
-	@Prop group: IBestStringNumber = ''
+	@Prop @Require group: IBestStringNumber
 	/**
 	 * 标识符，通常为一个唯一的字符串
 	 */
@@ -81,12 +81,13 @@ export struct IBestRadio {
 	onChange: (checked: IBestStringNumber | boolean) => void = () => {}
 
 	@State uniId: number = 0
+	@State groupDisabled: boolean = false
 	@State isChecked: boolean = false
 
 	@Builder LabelContain() {
 		Row() {
 			if (this.defaultBuilder) {
-				this.defaultBuilder({ checked: this.isChecked, disabled: this.disabled })
+				this.defaultBuilder({ checked: this.isChecked, disabled: this.getIsDisabled() })
 			} else {
 				Text(this.label)
 					.fontColor(this.getLabelColor())
@@ -105,7 +106,7 @@ export struct IBestRadio {
 	aboutToAppear() {
 		this.uniId = this.getUniqueId()
 		if (this.group) {
-			emitter.on(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId, (name: IBestStringNumber | boolean): void => this.handleRadioGroupInit(name))
+			emitter.on(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId, (name: IBestStringNumber | boolean, disabled: boolean): void => this.handleRadioGroupInit(name, disabled))
 		}
 	}
 	aboutToDisappear() {
@@ -114,12 +115,17 @@ export struct IBestRadio {
 		}
 	}
 	// 初始化
-	handleRadioGroupInit(name: IBestStringNumber | boolean) {
+	handleRadioGroupInit(name: IBestStringNumber | boolean, disabled: boolean) {
 		this.isChecked = name === this.name
+		this.groupDisabled = disabled
+	}
+	// 获取是否禁用
+	getIsDisabled(){
+		return this.groupDisabled || this.disabled
 	}
 	// 获取背景色
 	getBackgroundColor() {
-		if (this.disabled) {
+		if (this.getIsDisabled()) {
 			return IBestRadioColor.borderColor
 		} else {
 			return this.isChecked && this.shape != 'dot' ? (this.checkedColor || this.baseStyle.primary as string) : this.bgColor
@@ -127,7 +133,7 @@ export struct IBestRadio {
 	}
 	// 获取边框色
 	getBorderColor() {
-		if (this.disabled) {
+		if (this.getIsDisabled()) {
 			return GRAY_COLOR.GRAY_5
 		} else {
 			return this.isChecked ? (this.checkedColor || this.baseStyle.primary as string) : this.bdColor
@@ -135,11 +141,11 @@ export struct IBestRadio {
 	}
 	// 获取label的颜色
 	getLabelColor() {
-		return this.disabled ? IBestRadioColor.disabledLabelColor : IBestRadioColor.labelColor
+		return this.getIsDisabled() ? IBestRadioColor.disabledLabelColor : IBestRadioColor.labelColor
 	}
 	// 获取图标的颜色
 	getIconColor() {
-		if (this.disabled) {
+		if (this.getIsDisabled()) {
 			return IBestRadioColor.disabledIconColor
 		} else {
 			return this.shape === 'dot' ? this.checkedColor : IBestRadioColor.whiteColor
@@ -156,7 +162,7 @@ export struct IBestRadio {
 	}
 	// 改变选中状态的回调
 	handleCheckedChange() {
-		if (this.disabled || this.isChecked) {
+		if (this.getIsDisabled() || this.isChecked) {
 			return
 		}
 		this.updateGroup()
@@ -169,7 +175,7 @@ export struct IBestRadio {
 			}
 			Column() {
 				if (this.iconBuilder) {
-					this.iconBuilder({ checked: this.isChecked, disabled: this.disabled })
+					this.iconBuilder({ checked: this.isChecked, disabled: this.getIsDisabled() })
 				} else {
 					if (this.shape === 'dot') {
 						Column()
@@ -214,6 +220,6 @@ export struct IBestRadio {
 			if (this.labelPosition === 'right') {
 				this.LabelContain()
 			}
-		}.enabled(!this.disabled)
+		}.enabled(!this.getIsDisabled())
 	}
 }

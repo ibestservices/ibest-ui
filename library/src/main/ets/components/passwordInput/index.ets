@@ -17,7 +17,7 @@ import { IBestStringNumber } from '../../model/Global.type';
 	.selectionMenuHidden(true)
 	.enableAutoFill(false)
 	.opacity(0)
-	.id(`IBestPasswordInput_${id}`)
+	.id(`ibest_passwordInput_${id}`)
 }
 
 @Component
@@ -164,11 +164,12 @@ export struct IBestPasswordInput {
 			this.value = value.replace(/\s/g, "")
 		}else if(value.length > this.inputLength){
 			this.value = value.slice(0, this.inputLength)
-		}else if(value.length == this.inputLength){
-			this.onFinish()
 		}else{
 			this.inputList = Array(this.inputLength).fill("").map((_: string, index: number) => new IBestPasswordInputModel(value[index] || ""))
 			this.currentFocusIndex = value.length
+		}
+		if(this.value.length == this.inputLength){
+			this.onFinish()
 		}
 	}
 	// 输入框结束编辑
@@ -215,7 +216,7 @@ export struct IBestPasswordInput {
 				.justifyContent(FlexAlign.SpaceBetween)
 				.onClick(() => {
 					this.onFieldClick()
-					this.focusController.requestFocus(`IBestPasswordInput_${this.uniId}`)
+					this.focusController.requestFocus(`ibest_passwordInput_${this.uniId}`)
 				})
 			}
 			.width(CONTAINER_SIZE.FULL)

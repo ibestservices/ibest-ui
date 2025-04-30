@@ -191,6 +191,11 @@
 			"buildFunction": "CountDownBuilder"
 		},
 		{
+			"name": "CountTo",
+			"pageSourceFile": "src/main/ets/pages/base/CountTo.ets",
+			"buildFunction": "CountToBuilder"
+		},
+		{
 			"name": "Divider",
 			"pageSourceFile": "src/main/ets/pages/base/Divider.ets",
 			"buildFunction": "DividerBuilder"
@@ -224,6 +229,16 @@
 			"name": "Progress",
 			"pageSourceFile": "src/main/ets/pages/base/Progress.ets",
 			"buildFunction": "ProgressBuilder"
+		},
+		{
+			"name": "Skeleton",
+			"pageSourceFile": "src/main/ets/pages/base/Skeleton.ets",
+			"buildFunction": "SkeletonBuilder"
+		},
+		{
+			"name": "Steps",
+			"pageSourceFile": "src/main/ets/pages/base/Steps.ets",
+			"buildFunction": "StepsBuilder"
 		},
 		{
 			"name": "Table",

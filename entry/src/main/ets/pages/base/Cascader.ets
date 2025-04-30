@@ -1,11 +1,11 @@
 import {
-    IBestCascader,
-    IBestCascaderContent,
-    IBestCascaderOption,
-    IBestCell,
-    IBestToast
+	IBestCascader,
+	IBestCascaderContent,
+	IBestCascaderOption,
+	IBestCell,
+	IBestToast
 } from '@ibestservices/ibest-ui'
-import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
 import { regionData } from '@ibestservices/area-data'
 import CustomNavBar from '../../components/CustomNavBar'

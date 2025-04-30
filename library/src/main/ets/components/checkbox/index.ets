@@ -93,9 +93,9 @@ export struct IBestCheckbox {
 	 */
 	beforeChange?: (value: boolean) => Promise<boolean> | boolean
 	// 受checkboxgroup的最大可选数量禁用的
-	@State @Watch('getIsDisabled') checkboxGroupMaxDisabled: boolean = false
-	// 合并disabled与checkboxGroupMaxDisabled的最终结果
-	@State mergeDisabled: boolean = false
+	@State checkboxGroupMaxDisabled: boolean = false
+	// 分组禁用
+	@State groupDisabled: boolean = false
 	// 是否展示不确定状态的按钮
 	@State isShowIndeterminateImg: boolean = false
 	@State uniId: number = 0
@@ -105,7 +105,7 @@ export struct IBestCheckbox {
 	@Builder LabelContain() {
 		Row() {
 			if (this.defaultBuilder) {
-				this.defaultBuilder({ checked: this.value, disabled: this.mergeDisabled })
+				this.defaultBuilder({ checked: this.value, disabled: this.getIsDisabled() })
 			} else {
 				Text(this.label)
 					.fontColor(this.getLabelColor())
@@ -124,11 +124,9 @@ export struct IBestCheckbox {
 	aboutToAppear() {
 		this.uniId = this.getUniqueId()
 		if (this.group) {
-			emitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId, (actives: IBestStringNumber[]): void => this.init(actives))
+			emitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId, (actives: IBestStringNumber[], disabled: boolean): void => this.init(actives, disabled))
 			emitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE, this.group), this.uniId, (data: IBestCheckboxMaxChangeParams): void => this.handleMaxChange(data))
 			emitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.GET_ALL_NAME, this.group), this.name)
-		} else {
-			this.getIsDisabled()
 		}
 		this.handleIndeterminateChange()
 	}
@@ -139,8 +137,9 @@ export struct IBestCheckbox {
 		}
 		clearTimeout(this.isShowIndeterminateTimeId)
 	}
-	init(actives: IBestStringNumber[]) {
+	init(actives: IBestStringNumber[], disabled: boolean) {
 		this.value = actives.includes(this.name)
+		this.groupDisabled = disabled
 	}
 	// 是否展示背景色
 	isShowBackground() {
@@ -148,7 +147,7 @@ export struct IBestCheckbox {
 	}
 	// 获取背景色
 	getBackgroundColor() {
-		if (this.mergeDisabled) {
+		if (this.getIsDisabled()) {
 			return IBestCheckboxColor.borderColor
 		} else {
 			return this.isShowBackground() ? (this.checkedColor || this.baseStyle.primary as string) : this.bgColor
@@ -156,7 +155,7 @@ export struct IBestCheckbox {
 	}
 	// 获取边框色
 	getBorderColor() {
-		if (this.mergeDisabled) {
+		if (this.getIsDisabled()) {
 			return GRAY_COLOR.GRAY_5
 		} else {
 			return this.isShowBackground() ? (this.checkedColor || this.baseStyle.primary as string) : this.bdColor
@@ -164,11 +163,11 @@ export struct IBestCheckbox {
 	}
 	// 获取label的颜色
 	getLabelColor() {
-		return this.mergeDisabled ? IBestCheckboxColor.disabledLabelColor : IBestCheckboxColor.labelColor
+		return this.getIsDisabled() ? IBestCheckboxColor.disabledLabelColor : IBestCheckboxColor.labelColor
 	}
 	// 获取图标的颜色
 	getIconColor() {
-		return this.mergeDisabled ? IBestCheckboxColor.disabledIconColor : IBestCheckboxColor.whiteColor
+		return this.getIsDisabled() ? IBestCheckboxColor.disabledIconColor : IBestCheckboxColor.whiteColor
 	}
 	// 是否是在左边的label
 	isLeftLabel() {
@@ -192,7 +191,7 @@ export struct IBestCheckbox {
 	}
 	// 改变选中状态的回调
 	async handleCheckedChange(status = !this.value) {
-		if (this.mergeDisabled) {
+		if (this.getIsDisabled()) {
 			return
 		}
 		let state = await this.handleBeforeClose(status)
@@ -218,7 +217,7 @@ export struct IBestCheckbox {
 	}
 	// 获取是否禁用
 	getIsDisabled() {
-		this.mergeDisabled = this.disabled || this.checkboxGroupMaxDisabled
+		return this.groupDisabled || this.disabled || this.checkboxGroupMaxDisabled
 	}
 	// 当不确定状态发生改变时 响应按钮UI状态图标变化
 	handleIndeterminateChange() {
@@ -237,8 +236,8 @@ export struct IBestCheckbox {
 				this.LabelContain()
 			}
 			Column() {
-				if (typeof this.iconBuilder === 'function') {
-					this.iconBuilder({ checked: this.value, disabled: this.mergeDisabled })
+				if (this.iconBuilder) {
+					this.iconBuilder({ checked: this.value, disabled: this.getIsDisabled() })
 				} else {
 					IBestIcon({
 						name: this.isShowIndeterminateImg ? "minus" : "success",
@@ -269,6 +268,6 @@ export struct IBestCheckbox {
 			if (this.labelPosition === 'right') {
 				this.LabelContain()
 			}
-		}.enabled(!this.mergeDisabled)
+		}.enabled(!this.getIsDisabled())
 	}
 }

@@ -1,4 +1,4 @@
-import { image } from "@kit.ImageKit";
+import { image } from '@kit.ImageKit';
 /**
  * IBestImageCropper 控制器
  */

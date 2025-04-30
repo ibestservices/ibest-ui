@@ -63,6 +63,14 @@
 		{
 			"name": "ibest_table_footer_background",
 			"value": "#262727"
+		},
+		{
+			"name": "ibest_skeleton_bg_color",
+			"value": "#303030"
+		},
+		{
+			"name": "ibest_skeleton_bg_color_darker",
+			"value": "#424243"
 		}
 	]
 }

@@ -217,6 +217,10 @@
 			"value": "CountDown 倒计时"
 		},
 		{
+			"name": "component_countTo",
+			"value": "CountTo 数字滚动"
+		},
+		{
 			"name": "component_divider",
 			"value": "Divider 分割线"
 		},
@@ -243,6 +247,14 @@
 		{
 			"name": "component_progress",
 			"value": "Progress 进度条"
+		},
+		{
+			"name": "component_skeleton",
+			"value": "Skeleton 骨架屏"
+		},
+		{
+			"name": "component_steps",
+			"value": "Steps 步骤条"
 		},
 		{
 			"name": "component_table",
@@ -627,6 +639,10 @@
 		{
 			"name": "size",
 			"value": "尺寸"
+		},
+		{
+			"name": "inner_jump",
+			"value": "内部跳转"
 		}
 	]
 }

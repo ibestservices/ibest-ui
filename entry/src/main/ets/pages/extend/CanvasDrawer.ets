@@ -1,11 +1,11 @@
 import {
-    IBestButton,
-    IBestCanvasContent,
-    IBestCanvasDrawer,
+	IBestButton,
+	IBestCanvasContent,
+	IBestCanvasDrawer,
 	IBestCell,
 	IBestToast,
 	IBestUploader,
-    IBestUploaderFile
+	IBestUploaderFile
 } from '@ibestservices/ibest-ui';
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';

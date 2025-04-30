@@ -1,4 +1,4 @@
-import { ComponentContent, ImmersiveMode, LengthMetrics, LevelMode, PromptAction, window } from '@kit.ArkUI'
+import { ComponentContent, LengthMetrics, LevelMode, PromptAction, window } from '@kit.ArkUI'
 import { generateId } from '../utils/utils'
 import { IBestDialogView } from '../components/dialog/dialog'
 import { IBestStringNumber } from '../model/Global.type'
@@ -177,6 +177,11 @@ class IBestDialogOption {
 	 * 弹窗相对alignment所在位置的纵向偏移量。
 	 */
 	offsetY?: IBestStringNumber
+	/**
+	 * 设置弹窗是否在拉起软键盘时进行自动避让
+	 * @since 2.1.0
+	 */
+	keyboardAvoidMode?: KeyboardAvoidMode
 	/**
 	 * 弹窗避让键盘后，和键盘之间的距离
 	 * @since 2.0.8
@@ -373,6 +378,7 @@ struct DialogContent{
 }
 
 interface DialogMapValue{
+	key: string
 	contentNode: ComponentContent<IBestDialogParams>
 	promptAction: PromptAction
 	params: IBestDialogParams
@@ -391,7 +397,7 @@ function getAlignment(type: string) {
  * 弹窗管理器
  */
 class Dialog{
-	private contentNodeMap: Map<string, DialogMapValue> = new Map()
+	private contentNodeArr: DialogMapValue[] = []
 	/**
 	 * 打开弹框
 	 */
@@ -405,10 +411,11 @@ class Dialog{
 		params.close = (id: string): void => this.close(id)
 		let contentNode = new ComponentContent(uiContext, wrapBuilder(defaultContentBuilder), params)
 		params.contentNode = contentNode
-		this.contentNodeMap.set(key, {
-			contentNode: contentNode,
-			promptAction: promptAction,
-			params: params
+		this.contentNodeArr.push({
+			key,
+			contentNode,
+			promptAction,
+			params
 		})
 		await promptAction.openCustomDialog(contentNode, {
 			alignment: getAlignment(option.alignment),
@@ -419,6 +426,7 @@ class Dialog{
 			isModal: option.showOverlay ?? true,
 			maskColor: option.overlayColor,
 			showInSubWindow: option.showInSubWindow,
+			keyboardAvoidMode: option.keyboardAvoidMode ?? KeyboardAvoidMode.DEFAULT,
 			keyboardAvoidDistance: option.keyboardAvoidDistance ?? LengthMetrics.vp(16),
 			levelMode: option.levelMode ?? 0,
 			levelUniqueId: option.levelUniqueId,
@@ -429,7 +437,7 @@ class Dialog{
 			onDidDisappear: () => {
 				option.onClose?.()
 			},
-			onWillDismiss: async(dismissDialogAction: DismissDialogAction)=> {
+			onWillDismiss: async (dismissDialogAction: DismissDialogAction) => {
 				// 1 点击遮罩返回  0 物理返回(左滑右滑、返回键)
 				let reason = dismissDialogAction.reason
 				if (reason == DismissReason.PRESS_BACK && !(option.closeOnBackPress ?? true) || reason == DismissReason.TOUCH_OUTSIDE && !option.closeOnClickOverlay) {
@@ -449,22 +457,24 @@ class Dialog{
 	 */
 	public close(id?: string){
 		let key = id || this.getLastKey()
-		if(this.contentNodeMap.has(key)){
-			let dialog = this.contentNodeMap.get(key)
-			dialog?.promptAction?.closeCustomDialog(dialog?.contentNode).then(() => {
-				dialog?.contentNode?.dispose()
+		if(this.contentNodeArr.some(e => e.key == key)){
+			let index = this.contentNodeArr.findIndex(e => e.key == key)
+			let dialog = this.contentNodeArr[index]
+			dialog.promptAction.closeCustomDialog(dialog.contentNode).then(() => {
+				dialog.contentNode.dispose()
+				this.contentNodeArr.splice(index, 1)
 			})
 		}
 	}
 	private getUniKey(): string{
 		let key = generateId()
-		if(this.contentNodeMap.has(key)){
+		if(this.contentNodeArr.some(e => e.key == key)){
 			return this.getUniKey()
 		}
 		return key
 	}
 	private getLastKey(): string{
-		return Array.from(this.contentNodeMap.keys()).pop() || ""
+		return this.contentNodeArr[this.contentNodeArr.length - 1].key
 	}
 }
 

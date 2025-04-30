@@ -17,7 +17,7 @@ export struct IBestCollapseItem {
     /**
      * 分组id
      */
-    @Prop groupId: IBestStringNumber = ""
+    @Prop @Require groupId: IBestStringNumber
     /**
      * 唯一标识符
      */

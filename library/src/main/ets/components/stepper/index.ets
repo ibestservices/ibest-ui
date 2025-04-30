@@ -1,9 +1,9 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { IBestStepperBtn } from './stepperBtn'
 import { accAdd, accSub, convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { IBestStepperColor } from './color'
 import { IBestStringNumber } from '../../model/Global.type'
+import { IBestIcon } from '../icon'
 
 enum STEPPER_BTN_TYPE {
 	PLUS = 'PLUS',
@@ -40,7 +40,7 @@ export struct IBestStepper {
 	 * 默认值
 	 * @deprecated since 2.0.1 请使用 value
 	 */
-	@Prop @Watch('handleInputNumChange') defaultValue: number = 1;
+	@Prop defaultValue: number = 1;
 	/**
 	 * 最小值
 	 */
@@ -102,10 +102,6 @@ export struct IBestStepper {
 	 */
 	@Prop longPress: boolean = true;
 	/**
-	 * TODO 输入值变化前的回调函数，返回 false 可阻止输入，支持返回 Promise
-	 */
-	// beforeChange?: (val: IBestStringNumber) => boolean | Promise<boolean>;
-	/**
 	 * 改变的回调
 	 */
 	onChange: (val: number) => void = () => {}
@@ -117,99 +113,111 @@ export struct IBestStepper {
 	 * 点击减少按钮的回调
 	 */
 	onMinus: () => void = () => {}
-	/**
-	 * 输入框的值
-	 * inputNumValue改变会触发绑定的TextInput的change事件
-	 */
-	@State @Watch("inputValueChange") inputNumValue: string = this.value.toString()
-	/**
-	 * 减少按钮是否禁用
-	 */
+	// 输入框的值
+	@State inputNumValue: string = this.value.toString()
+	// 减少按钮是否禁用
 	@State reduceBtnDisabled: boolean = false;
-	/**
-	 * 增加按钮是否禁用
-	 */
+	// 增加按钮是否禁用
 	@State plusBtnDisabled: boolean = false;
-	/**
-	 * 上一次输入正确的值
-	 */
+	// 上一次输入正确的值
 	preValue: string = this.inputNumValue
-	/**
-	 * 自动纠正的时间id
-	 */
+	// 自动纠正的时间id
 	validateTimeId: number | null = null
-	/**
-	 * TextInput变化时赋值
-	 * @param val
-	 * @param {boolean} validateSameValue 是否触发相同数值的校验 自动修正时 不触发 换句话说 用户手动触发的改变 才触发
-	 */
-	async handleInputNumChange(val: string, validateSameValue = false) {
+
+	@Builder stepperBtn(type: 'plus' | 'minus'){
+		Button() {
+			IBestIcon({
+				name: type,
+				iconSize: this.iconSize,
+				color: IBestStepperColor.textColor
+			})
+		}
+		.type(ButtonType.Normal)
+		.backgroundColor(this.disabled ? IBestStepperColor.disabledBg : IBestStepperColor.bg)
+		.width(getSizeByUnit(this.buttonSize))
+		.height(getSizeByUnit(this.buttonSize))
+		.borderRadius({
+			topLeft: getSizeByUnit(this.buttonRadius),
+			topRight: getSizeByUnit(this.buttonRadius),
+			bottomLeft: getSizeByUnit(this.buttonRadius),
+			bottomRight: getSizeByUnit(this.buttonRadius)
+		})
+		.enabled(!this.getBtnDisabled(type))
+		.onClick(() => {
+			this.handleClickStepperBtn(type == 'plus' ? STEPPER_BTN_TYPE.PLUS : STEPPER_BTN_TYPE.REDUCE)
+		})
+		.gesture(
+			LongPressGesture({ repeat: true, duration: 200 })
+				.onAction((event: GestureEvent) => {
+					if (event && event.repeat) {
+						this.handleClickStepperBtn(type == 'plus' ? STEPPER_BTN_TYPE.PLUS : STEPPER_BTN_TYPE.REDUCE)
+					}
+				})
+		)
+	}
+
+	aboutToAppear() {
+		this.handleInputNumChange('change', this.inputNumValue, 'init')
+	}
+	aboutToDisappear() {
 		clearTimeout(this.validateTimeId)
-		// 避免inputNum变化一致情况 当不触发beforechange时说明是修正 修正时不需要判定是否一致 不然可能会导致不更新
-		if (validateSameValue && val === this.inputNumValue) {
+	}
+	// value变化
+	handleInputNumChange(trigger: string, val: string, type: string = '') {
+		if (val == '') {
+			this.validateTimeId = setTimeout(() => {
+				if (this.validateTime !== 0) {
+					this.inputNumValue = this.preValue
+					this.inputValueChange()
+					if(type != 'init'){
+						this.onChange(this.value)
+					}
+				}
+				this.handleSetStepperBtnStatus()
+				clearTimeout(this.validateTimeId)
+			}, this.validateTime)
 			return
 		}
 		// 超过范围是否自动纠正
-		if (this.autoFixed && val !== '') {
+		if (this.autoFixed) {
 			if (parseFloat(val) > this.max) {
-				// console.log('触发自动修正')
-				this.handleInputNumChange(String(this.max))
-				return
+				val = String(this.max)
 			}
 			if (parseFloat(val) < this.min) {
-				this.handleInputNumChange(String(this.min))
-				return
+				val = String(this.min)
 			}
 		}
 		// 数据限制展示多少位
-		if (this.decimalLength >= 1) {
-			// console.log('触发decimalLength限制')
-			val = Number(val).toFixed(Number(this.decimalLength))
-		}
-		// 限制整数 如果匹配不到正确的整数
-		if (this.integer && !/^-?\d+$/.test(val)) {
-			const numberArr = val.match(/^(-?\d+)/);
-			if (Array.isArray(numberArr) && numberArr[0]) {
-				val = String(Math.trunc(Number(numberArr[0])))
-			} else {
-				val = String(this.preValue || this.min)
+		if (this.decimalLength > 0) {
+			let index = val.indexOf(".")
+			if(index > -1){
+				let decimal = val.substring(index + 1)
+				if(trigger == 'change' && !decimal){
+					return
+				}
+				if(trigger == 'blur' && !decimal){
+					val = this.preValue
+				}else if(decimal.length > this.decimalLength){
+					val = Number(val).toFixed(this.decimalLength)
+				}
+			}else {
+				val = Number(this.preValue).toFixed(this.decimalLength)
 			}
 		}
-		this.inputNumValue = String(val)
+		this.preValue = this.inputNumValue = String(val)
 		this.handleSetStepperBtnStatus()
-		// 判定输入是否合法
-		if (/^-?\d+(\.\d+)?$/.test(val)) {
-			this.preValue = val
+		this.inputValueChange()
+		if(type != 'init'){
 			this.onChange(this.value)
-		} else {
-			this.handleValidateInputNum()
 		}
 	}
-	/**
-	 * 输入值变化时如果不合法使用上一个有效值
-	 */
-	handleValidateInputNum() {
-		this.validateTimeId = setTimeout(() => {
-			// 校验延迟时间为0时不自动修复
-			if (this.validateTime !== 0) {
-				this.inputNumValue = this.preValue
-				this.onChange(this.value)
-			}
-			this.handleSetStepperBtnStatus()
-		}, this.validateTime)
-	}
-	/**
-	 * 监听inputNumChange改变按钮状态
-	 */
+	// 监听inputNumChange改变按钮状态
 	handleSetStepperBtnStatus() {
 		const val = parseFloat(this.inputNumValue);
 		this.reduceBtnDisabled = val <= this.min;
 		this.plusBtnDisabled = val >= this.max;
 	}
-	/**
-	 * 当点击加减按钮时
-	 * @param { STEPPER_BTN_TYPE } btnType
-	 */
+	// 当点击加减按钮时
 	handleClickStepperBtn(btnType: STEPPER_BTN_TYPE) {
 		if (this.disabled) {
 			return
@@ -229,35 +237,23 @@ export struct IBestStepper {
 			nextValue = String(accSub(Number(this.inputNumValue), this.step));
 			typeof this.onMinus === 'function' && this.onMinus()
 		}
-		this.handleInputNumChange(nextValue, true)
+		this.handleInputNumChange('change', nextValue)
 	}
 	inputValueChange(){
 		this.value = parseFloat(this.inputNumValue)
 	}
-	aboutToAppear() {
-		this.handleInputNumChange(this.inputNumValue)
-	}
-	aboutToDisappear() {
-		clearTimeout(this.validateTimeId)
+	getBtnDisabled(type: 'plus' | 'minus'){
+		return this.disabled || (type == 'minus' ? this.reduceBtnDisabled || this.disableMinus : this.plusBtnDisabled || this.disablePlus)
 	}
 	build() {
 		Row() {
 			if (this.showMinus) {
-				// 减少按钮
-				IBestStepperBtn({
-					type: 'minus',
-					buttonSize: this.buttonSize,
-					iconSize: this.iconSize,
-					radiusLeftTop: this.buttonRadius,
-					radiusLeftBottom: this.buttonRadius,
-					disabled: this.reduceBtnDisabled || this.disabled || this.disableMinus,
-					onClickBtn: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.REDUCE),
-					onLongPress: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.REDUCE)
-				})
+				this.stepperBtn("minus")
 			}
 			// 输入框
 			if (this.showInput) {
-				TextInput({ text: this.inputNumValue })
+				TextInput({ text: $$this.inputNumValue })
+					.type(this.decimalLength > 0 ? InputType.NUMBER_DECIMAL : InputType.Number)
 					.width(getSizeByUnit(this.inputWidth))
 					.height(getSizeByUnit(this.buttonSize))
 					.padding(0)
@@ -272,21 +268,12 @@ export struct IBestStepper {
 					.backgroundColor(IBestStepperColor.bg)
 					.borderRadius(0)
 					.textAlign(TextAlign.Center)
-					.inputFilter(this.integer ? '[0-9-]' : '[0-9\.-]')
-					.onChange((val) => this.handleInputNumChange(val, true))
+					.onChange((val) => this.handleInputNumChange('change', val))
+					.onBlur(() => this.handleInputNumChange('blur', this.inputNumValue))
 					.focusable(!(this.disabled || this.disableInput))
 			}
 			if (this.showPlus) {
-				// 增加按钮
-				IBestStepperBtn({
-					type: 'plus',
-					buttonSize: this.buttonSize,
-					radiusRightTop: this.buttonRadius,
-					radiusRightBottom: this.buttonRadius,
-					disabled: this.plusBtnDisabled || this.disabled || this.disablePlus,
-					onClickBtn: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.PLUS),
-					onLongPress: (): void => this.handleClickStepperBtn(STEPPER_BTN_TYPE.PLUS)
-				})
+				this.stepperBtn("plus")
 			}
 		}
 	}

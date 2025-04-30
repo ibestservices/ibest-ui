@@ -72,7 +72,7 @@ export struct IBestSwitch {
 		this.uniId = this.getUniqueId()
 		setTimeout(() => {
 			this.switchBarSize = getComponentsInfo(this.uiContext, `ibest_switch_${this.uniId}`).width
-		}, 10)
+		}, 20)
 	}
 	// 结束前的动画
 	async handleBeforeClose(value: boolean) {
@@ -100,22 +100,16 @@ export struct IBestSwitch {
 	getActiveColor() {
 		return this.activeColor || this.baseStyle.primary as string
 	}
-	getSwitchSize() {
-		return typeof this.switchSize === 'number' ? this.switchSize : parseFloat(this.switchSize)
-	}
 	build() {
 		Column() {
 			Column() {
 				if (this.nodeBuilder) {
 					this.nodeBuilder()
-				} else {
-					if (this.loading) {
-						IBestLoading({
-							loadingSize: getSizeByUnit(this.getSwitchSize() / 1.5),
-							loadingColor: this.value ? this.loadingActiveColor || this.getActiveColor() :
-								this.loadingInactiveColor || this.activeColor
-						})
-					}
+				} else if (this.loading && this.switchBarSize) {
+					IBestLoading({
+						loadingSize: this.switchBarSize / 1.5,
+						loadingColor: this.value ? this.loadingActiveColor || this.getActiveColor() : this.loadingInactiveColor || this.activeColor
+					})
 				}
 			}
 			.width(getSizeByUnit(this.switchSize))

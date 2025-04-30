@@ -1,4 +1,4 @@
-import { IBestHsv, IBestHsva, IBestRgba } from "./index.type"
+import { IBestHsv, IBestHsva, IBestRgba } from './index.type'
 
 /**
  * 通过color获取h s v a

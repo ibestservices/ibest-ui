@@ -1,4 +1,4 @@
-import { AnyType } from "../../model/AnyType"
+import { AnyType } from '../../model/AnyType'
 /**
  * 组件名称
  */

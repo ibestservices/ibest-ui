@@ -3,7 +3,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { convertDimensionsWidthUnit, sleep } from '../../utils/utils';
 import { IBestStringNumber } from '../../model/Global.type';
-import { ImmersiveMode, LengthMetrics, LevelMode } from '@kit.ArkUI';
+import { LengthMetrics, LevelMode } from '@kit.ArkUI';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 @Component
 export struct IBestDialog {
@@ -201,6 +201,11 @@ export struct IBestDialog {
 	 */
 	@Prop offsetY: IBestStringNumber = 0
 	/**
+	 * 设置弹窗是否在拉起软键盘时进行自动避让
+	 * @since 2.1.0
+	 */
+	@Prop keyboardAvoidMode: KeyboardAvoidMode = KeyboardAvoidMode.DEFAULT
+	/**
 	 * 弹窗避让键盘后，和键盘之间的距离
 	 * @since 2.0.8
 	 */
@@ -395,10 +400,11 @@ export struct IBestDialog {
 			isModal: this.showOverlay,
 			maskColor: this.overlayColor,
 			showInSubWindow: this.showInSubWindow,
+			keyboardAvoidMode: this.keyboardAvoidMode,
 			keyboardAvoidDistance: this.keyboardAvoidDistance,
-			// immersiveMode: ImmersiveMode.EXTEND,
 			levelMode: this.levelMode,
 			levelUniqueId: this.levelUniqueId,
+			// immersiveMode: ImmersiveMode.EXTEND,
 			onDidAppear: () => {
 				this.onOpen()
 			},

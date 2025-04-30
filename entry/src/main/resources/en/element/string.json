@@ -217,6 +217,10 @@
 			"value": "CountDown"
 		},
 		{
+			"name": "component_countTo",
+			"value": "CountTo"
+		},
+		{
 			"name": "component_divider",
 			"value": "Divider"
 		},
@@ -243,6 +247,14 @@
 		{
 			"name": "component_progress",
 			"value": "Progress"
+		},
+		{
+			"name": "component_skeleton",
+			"value": "Skeleton"
+		},
+		{
+			"name": "component_steps",
+			"value": "Steps"
 		},
 		{
 			"name": "component_table",
@@ -627,6 +639,10 @@
 		{
 			"name": "size",
 			"value": "Size"
+		},
+		{
+			"name": "inner_jump",
+			"value": "Inner Jump"
 		}
 	]
 }

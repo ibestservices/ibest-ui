@@ -1,6 +1,6 @@
 import { setIBestUIBaseStyle } from './src/main/ets/theme-chalk/src'
 import IBestToast from './src/main/ets/apis/IBestToast'
-import IBestActionSheet, { IBestActionType, IBestActionMultiLine } from './src/main/ets/apis/IBestActionSheet'
+import IBestActionSheet, { IBestActionMultiLine, IBestActionType } from './src/main/ets/apis/IBestActionSheet'
 import IBestImagePreview from './src/main/ets/apis/IBestImagePreview'
 import IBestDialogUtil from './src/main/ets/apis/IBestDialog'
 import IBestNotify from './src/main/ets/apis/IBestNotify'
@@ -49,7 +49,7 @@ export { IBestCascader, IBestCascaderContent } from './src/main/ets/components/c
 export { IBestCascaderOption } from './src/main/ets/components/cascader/index.type'
 
 export { IBestCheckbox } from './src/main/ets/components/checkbox/index'
-export { IBestCheckboxGroup, CheckboxGroupContext } from './src/main/ets/components/checkboxGroup/index'
+export { IBestCheckboxGroup } from './src/main/ets/components/checkboxGroup/index'
 export { IBestCheckboxGroupController } from './src/main/ets/components/checkboxGroup/index.type'
 
 export { IBestDatePicker } from './src/main/ets/components/datePicker/index'
@@ -115,6 +115,9 @@ export { IBestCollapseItem } from './src/main/ets/components/collapseItem/index'
 export { IBestCountDown } from './src/main/ets/components/countDown/index'
 export { IBestCountDownController } from './src/main/ets/components/countDown/index.type'
 
+export { IBestCountTo } from './src/main/ets/components/countTo/index'
+export { IBestCountToController } from './src/main/ets/components/countTo/index.type'
+
 export { IBestDivider } from './src/main/ets/components/divider/index'
 
 export { IBestEmpty } from './src/main/ets/components/empty/index'
@@ -127,6 +130,11 @@ export { IBestPopover } from './src/main/ets/components/popover/index'
 export { IBestPopoverAction, IBestPopoverController } from './src/main/ets/components/popover/index.type'
 
 export { IBestProgress } from './src/main/ets/components/progress/index'
+
+export { IBestSkeleton, IBestSkeletonParagraph } from './src/main/ets/components/skeleton/index'
+export { IBestSkeletonType } from './src/main/ets/components/skeleton/index.type'
+
+export { IBestSteps, IBestStep } from './src/main/ets/components/steps/index'
 
 export { IBestTable, IBestTableColumn } from './src/main/ets/components/table/index'
 export { IBestTableColumnData } from './src/main/ets/components/table/index.type'

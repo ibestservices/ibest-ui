@@ -39,7 +39,7 @@ export struct IBestSwipeCell{
 		setTimeout(() => {
 			this.getContentWidth()
 		}, 0)
-		emitter.on(getEventName(COMPONENT_NAME, SWIPECELL_EVENT_NAME.SWIPECELL_TOUCH,), this.uniId, (uniId: number): void => this.onSwipeCellTouch(uniId))
+		emitter.on(getEventName(COMPONENT_NAME, SWIPECELL_EVENT_NAME.SWIPECELL_TOUCH), this.uniId, (uniId: number): void => this.onSwipeCellTouch(uniId))
 	}
 	aboutToDisappear(): void {
 		emitter.off(getEventName(COMPONENT_NAME, SWIPECELL_EVENT_NAME.SWIPECELL_TOUCH), this.uniId)

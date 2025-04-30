@@ -2,14 +2,20 @@ import { IBestStringNumber } from '../../model/Global.type'
 import { emitter } from '../../utils/EventEmitter'
 import { getEventName } from '../../utils/utils'
 import { IBestCollapseColor } from './color'
-import { COLLAPSE_EVENT_NAME, IBestCollapseItemData, COMPONENT_NAME, IBestCollapseController, ToggleOption } from './index.type'
+import {
+	COLLAPSE_EVENT_NAME,
+	COMPONENT_NAME,
+	IBestCollapseController,
+	IBestCollapseItemData,
+	ToggleOption
+} from './index.type'
 @Component
 export struct IBestCollapse {
     @State uniId: number = 0
     /**
      * 分组id
      */
-    @Prop groupId: IBestStringNumber = ""
+    @Prop @Require groupId: IBestStringNumber
     /**
      * 当前展开面板的name
      */

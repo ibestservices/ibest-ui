@@ -1,8 +1,8 @@
 import {
-    IBestButton,
-    IBestCollapse,
-    IBestCollapseController,
-    IBestCollapseItem
+	IBestButton,
+	IBestCollapse,
+	IBestCollapseController,
+	IBestCollapseItem
 } from '@ibestservices/ibest-ui';
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
