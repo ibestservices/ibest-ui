@@ -48,8 +48,7 @@ export struct NumberKeyboard{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
-	@StorageProp("IBestBottomBarHeight") bottomBarHeight: number = 0
+	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 值
 	 */
@@ -265,7 +264,6 @@ export struct NumberKeyboard{
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.backgroundColor(IBestNumberKeyboardColor.bg)
-		.padding({ bottom: convertDimensionsWidthUnit(this.bottomBarHeight) })
 	}
 }
 
@@ -347,9 +345,10 @@ export struct IBestNumberKeyboard{
 			visible: $visible,
 			popupAlign: "bottom",
 			popupHeight: "auto",
+			bgColor: IBestNumberKeyboardColor.bg,
 			maskColor: "transparent",
 			closeOnBackPress: true,
-			safeAreaInsetBottom: false,
+			safeAreaInsetBottom: true,
 			contentBuilder: ():void => this.baseBuilder()
 		})
 	}

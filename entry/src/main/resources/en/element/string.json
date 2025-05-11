@@ -185,6 +185,10 @@
 			"value": "Dialog"
 		},
 		{
+			"name": "component_float_bubble",
+			"value": "FloatBubble"
+		},
+		{
 			"name": "component_loading",
 			"value": "Loading"
 		},

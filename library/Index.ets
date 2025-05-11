@@ -97,6 +97,8 @@ export { IBestUploaderFile } from './src/main/ets/components/uploader/index.type
 
 export { IBestDialog } from './src/main/ets/components/dialog/index'
 
+export { IBestFloatBubble } from './src/main/ets/components/floatBubble/index'
+
 export { IBestLoading } from './src/main/ets/components/loading/index'
 
 export { IBestPullRefresh } from './src/main/ets/components/pullRefresh'

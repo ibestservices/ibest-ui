@@ -25,7 +25,7 @@ export function ThemeBuilder(_: string, title: string){
 struct ThemePage {
 	@State title: string = ''
 	@State curTabName: string = "1"
-	@State colorText: string = '#07c160';
+	@State colorText: string = '#07c160'
 	@State group: string = "themeGroup"
 	@State active: string = "1"
 	@State switchValue: boolean = true

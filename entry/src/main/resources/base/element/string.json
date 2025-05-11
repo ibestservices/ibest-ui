@@ -185,6 +185,10 @@
 			"value": "Dialog 对话框"
 		},
 		{
+			"name": "component_float_bubble",
+			"value": "FloatBubble 浮动气泡"
+		},
+		{
 			"name": "component_loading",
 			"value": "Loading 加载"
 		},
