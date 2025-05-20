@@ -129,7 +129,6 @@ export struct IBestCanvasDrawer{
 			this.ctx.drawImage(imgModel, left, top, width, height)
 		}
 		this.ctx.restore()
-		// console.log("图片绘制完毕")
 	}
 	// 画文字
 	drawText(params: IBestCanvasContent) {
@@ -198,7 +197,6 @@ export struct IBestCanvasDrawer{
 			}
 		}
 		this.ctx.restore()
-		// console.log("文字绘制完毕")
 	}
 	getLimitStr(originStr: string, str: string, maxWidth: number): string{
 		let originWidth = this.ctx.measureText(originStr).width

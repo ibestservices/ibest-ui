@@ -3,7 +3,7 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { NumberKeyboard } from '../numberKeyboard';
-import { IBestPasswordInputModel, NumberKeyboardConfig } from './index.type';
+import { IBestInputHighlightType, IBestPasswordInputModel, NumberKeyboardConfig } from './index.type';
 import { FocusController } from '@ohos.arkui.UIContext';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { IBestPasInputColor } from './color';
@@ -27,10 +27,6 @@ export struct IBestPasswordInput {
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
-	 * 唯一id
-	 */
-	@State uniId: number = 0
-	/**
 	 * 值
 	 */
 	@Link @Watch("formatInputList") value: string
@@ -38,18 +34,6 @@ export struct IBestPasswordInput {
 	 * 长度
 	 */
 	@Prop inputLength: number = 6
-	/**
-	 * 输入框列表
-	 */
-	@State inputList: IBestPasswordInputModel[] = []
-	/**
-	 * 当前聚焦的输入框下标
-	 */
-	@State currentFocusIndex: number = 0
-	/**
-	 * 输入框是否聚焦
-	 */
-	@State focused: boolean = false
 	/**
 	 * 输入框高度
 	 */
@@ -63,7 +47,7 @@ export struct IBestPasswordInput {
 	 */
 	@Provide({allowOverride: "radius"}) radius: IBestStringNumber = convertDimensionsWidthUnit(5)
 	/**
-	 * 是否高亮当前正在输入的格子
+	 * 是否高亮当前正在输入的格子, 仅存在间距时有效
 	 */
 	@Provide({allowOverride: "isHighlightCurrent"}) isHighlightCurrent: boolean = true
 	/**
@@ -126,6 +110,21 @@ export struct IBestPasswordInput {
 	 */
 	@Prop tipFontSize: IBestStringNumber = this.baseStyle.fontSizeLg as string
 	/**
+	 * 自动获取焦点
+	 * @since 2.1.1
+     */
+	@Prop autoFocus: boolean = false
+	/**
+	 * 是否显示闪烁光标
+	 * @since 2.1.1
+     */
+	@Provide({allowOverride: "showCursor"}) showCursor: boolean = true
+	/**
+	 * 高亮类型
+	 * @since 2.1.1
+     */
+	@Provide({allowOverride: "highlightType"}) highlightType: IBestInputHighlightType = "border"
+	/**
 	 * 区域点击
 	 */
 	onFieldClick: () => void = () => {}
@@ -135,6 +134,12 @@ export struct IBestPasswordInput {
      */
 	onFinish: () => void = () => {}
 
+	@State uniId: number = 0
+	@State inputList: IBestPasswordInputModel[] = []
+	// 当前聚焦的输入框下标
+	@State currentFocusIndex: number = 0
+	// 输入框是否聚焦
+	@State focused: boolean = false
 	private textInputController: TextInputController = new TextInputController()
 	private focusController: FocusController = this.getUIContext().getFocusController()
 	@Builder numberKeyboardBuilder(){
@@ -181,6 +186,7 @@ export struct IBestPasswordInput {
 			Stack(){
 				if(this.useSystemKeyboard){
 					TextInput({ text: $$this.value, controller: this.textInputController })
+						.defaultFocus(this.autoFocus)
 						.ibestPasswordInputStyle(this.uniId, this.inputLength)
 						.onFocus(() => {
 							this.focused = true
@@ -190,6 +196,7 @@ export struct IBestPasswordInput {
 						})
 				}else{
 					TextInput({ text: $$this.value, controller: this.textInputController })
+						.defaultFocus(this.autoFocus)
 						.ibestPasswordInputStyle(this.uniId, this.inputLength)
 						.customKeyboard(this.numberKeyboardBuilder, { supportAvoidance: true })
 						.onFocus(() => {
@@ -241,6 +248,7 @@ struct InputField {
 	@Consume space: number
 	@Consume radius: number
 	@Consume isHighlightCurrent: boolean
+	@Consume highlightType: IBestInputHighlightType
 	@Consume highlightColor: ResourceColor
 	@Consume isShowBorder: boolean
 	@Consume bdColor: ResourceColor
@@ -248,6 +256,7 @@ struct InputField {
 	@Consume cellTextColor: ResourceColor
 	@Consume dotFontSize: IBestStringNumber
 	@Consume textFontSize: IBestStringNumber
+	@Consume showCursor: boolean
 	@Prop focused: boolean
 	@Prop currentFocusIndex: number
 	@Prop index: number = 0
@@ -257,8 +266,12 @@ struct InputField {
 	// 光标闪烁时长
 	@State cursorBlinkDuration: number = 500
 	private uiContext = this.getUIContext()
+	// 当前输入框是否聚焦
+	getIsFocus(){
+		return this.isHighlightCurrent && this.focused && this.space && this.currentFocusIndex == this.index
+	}
 	// 光标闪烁
-	cursorBlink(): void{
+	cursorBlink(){
 		this.uiContext.keyframeAnimateTo({ iterations: -1 }, [
 			{
 				duration: this.cursorBlinkDuration,
@@ -280,7 +293,7 @@ struct InputField {
 				.fontSize(getSizeByUnit(this.isHidden ? this.dotFontSize : this.textFontSize, true))
 				.fontColor(this.cellTextColor)
 				.visibility(this.item.value ? Visibility.Visible : Visibility.None)
-			if(this.focused && this.currentFocusIndex == this.index){
+			if(this.showCursor && this.focused && this.currentFocusIndex == this.index){
 				Divider()
 					.strokeWidth(1)
 					.height("50%")
@@ -298,14 +311,14 @@ struct InputField {
 		.backgroundColor(this.cellBgColor)
 		.border(this.space ? {
 			width: this.isShowBorder ? 1 : 0,
-			color: this.bdColor
+			color: this.getIsFocus() ? this.highlightType == 'border' ? this.highlightColor : '' : this.bdColor
 		} : {
 			width: { left: this.index > 0 && this.isShowBorder ? 1 : 0 },
 			color: this.bdColor
 		})
 		.borderRadius(this.space ? getSizeByUnit(this.radius) : 0)
 		.shadow({
-			radius: this.isHighlightCurrent && this.focused && this.space && this.currentFocusIndex == this.index ? 20 : 0,
+			radius: this.highlightType == 'shadow' && this.getIsFocus() ? 20 : 0,
 			color: this.highlightColor,
 			type: ShadowType.COLOR
 		})

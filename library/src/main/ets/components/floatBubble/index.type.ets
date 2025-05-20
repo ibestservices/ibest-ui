@@ -6,7 +6,7 @@ export type IBestFloatBubbleDragAxis = 'x' | 'y' | 'xy' | 'lock'
 
 export class IBestFloatBubbleOption{
 	bubbleSize: IBestStringNumber = ""
-	shape: "rect" | "circle" = "rect"
+	shape: "square" | "circle" = "circle"
 	icon: ResourceStr = ""
 	iconSize: IBestStringNumber = ""
 	iconColor: ResourceColor = ""

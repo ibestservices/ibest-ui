@@ -159,9 +159,7 @@ class Toast{
 			onDidAppear: () => {
 				params.onOpened?.()
 			},
-            onWillDismiss: (dismissDialogAction: DismissDialogAction) => {
-                // console.log("原因", JSON.stringify(dismissDialogAction.reason))
-            }
+            onWillDismiss: () => {}
         })
 		if(params.type!="loading"){
 			this.isLock = false

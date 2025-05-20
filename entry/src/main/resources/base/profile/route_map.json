@@ -46,6 +46,16 @@
 			"buildFunction": "CalendarBuilder"
 		},
 		{
+			"name": "CarInput",
+			"pageSourceFile": "src/main/ets/pages/base/CarInput.ets",
+			"buildFunction": "CarInputBuilder"
+		},
+		{
+			"name": "CarKeyboard",
+			"pageSourceFile": "src/main/ets/pages/base/CarKeyboard.ets",
+			"buildFunction": "CarKeyboardBuilder"
+		},
+		{
 			"name": "Cascader",
 			"pageSourceFile": "src/main/ets/pages/base/Cascader.ets",
 			"buildFunction": "CascaderBuilder"

@@ -2,7 +2,7 @@
     <img src="https://ibestservices.github.io/ibest-ui/AppScope/resources/base/media/app_logo_trans.png" width="100">
 </p>
 
-<p align="center"><strong style="font-size: 40px;">IBest-UI</strong></p>
+<p align="center">IBest-UI</p>
 
 <p align="center">轻量、可定制的 HarmonyOS NEXT 组件库</p>
 
@@ -64,6 +64,8 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | 组件                    | 介绍                                                                             |                                                                                               |
 |:----------------------|:-------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
 | Calendar 日历           | 日历用于选择单个、多个日期或日期范围。                                                            | <a href="https://ibestui.ibestservices.com/components/calendar/" target="_blank">文档</a>       |
+| CarInput 车牌输入框        | 用于输入车牌号码。                                                                      | <a href="https://ibestui.ibestservices.com/components/carInput/" target="_blank">文档</a>       |
+| CarKeyboard 车牌键盘      | 带网格的输入框组件，通常与车牌输入框组件或其它自定义输入框配合使用。                                             | <a href="https://ibestui.ibestservices.com/components/carkeyboard/" target="_blank">文档</a>    |
 | Cascader 级联选择器        | 级联选择框，用于多层级数据的选择，典型场景为省市区选择。                                                   | <a href="https://ibestui.ibestservices.com/components/cascader/" target="_blank">文档</a>       |
 | Checkbox 复选框          | 在一组备选项中进行多选。                                                                   | <a href="https://ibestui.ibestservices.com/components/checkbox/" target="_blank">文档</a>       |
 | DatePicker 日期选择       | 日期选择器，用于选择年、月、日，通常与弹出层组件配合使用。                                                  | <a href="https://ibestui.ibestservices.com/components/datepicker/" target="_blank">文档</a>     |
@@ -89,6 +91,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 |:-----------------|:-----------------------------------------------------|--------------------------------------------------------------------------------------------|
 | ActionSheet 动作面板 | 底部弹起的模态面板，包含与当前情境相关的多个选项。                            | <a href="https://ibestui.ibestservices.com/components/actionsheet/" target="_blank">文档</a> |
 | Dialog 弹出框       | 弹出模态框，常用于消息提示、消息确认，或在当前页面内完成特定的交互操作。支持组件调用和函数调用两种方式。 | <a href="https://ibestui.ibestservices.com/components/dialog/" target="_blank">文档</a>      |
+| FloatBubble 浮动气泡 | 悬浮在页面边缘的可点击气泡。                                       | <a href="https://ibestui.ibestservices.com/components/floatbubble/" target="_blank">文档</a> |
 | Loading 加载       | 加载图标，用于表示加载中的过渡状态。                                   | <a href="https://ibestui.ibestservices.com/components/loading/" target="_blank">文档</a>     |
 | Notify 消息提示      | 在页面顶部展示消息提示。                                         | <a href="https://ibestui.ibestservices.com/components/notify/" target="_blank">文档</a>      |
 | PullRefresh 下拉刷新 | 轻量级, 用于提供下拉刷新的交互操作。                                  | <a href="https://ibestui.ibestservices.com/components/pullrefresh/" target="_blank">文档</a> |
@@ -136,9 +139,9 @@ ohos.permission.INTERNET
 
 ## 官方生态
 
-| 项目                       | 描述                                                               |                                                                                                                           |
-|:-------------------------|:-----------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------|
-| @ibestservices/area-data | 中国省市区数据，适用于鸿蒙 ArkUI 的 TextPicker 和 IBest-UI 的 IBestCascader 等组件。 | <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Farea-data')">地址</a> |
+| 项目                       | 描述                                                               |                                                                                                     |
+|:-------------------------|:-----------------------------------------------------------------|:----------------------------------------------------------------------------------------------------|
+| @ibestservices/area-data | 中国省市区数据，适用于鸿蒙 ArkUI 的 TextPicker 和 IBest-UI 的 IBestCascader 等组件。 | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Farea-data" target="_blank">地址</a> |
 
 ## 链接
 - [Github](https://github.com/ibestservices/ibest-ui)
@@ -151,17 +154,18 @@ ohos.permission.INTERNET
 ![QQ1群](https://ibestservices.github.io/ibest-ui/screenshot/QQ%E7%BE%A4.jpg)
 
 ## 微信群
-先进QQ群，拉你进微信群
+添加IBest-UI助手, 备注 "鸿蒙开发"
+![微信群](https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI助手.jpg)
 
 ## 约束与限制
 在下述版本验证通过：
 ```text
-DevEco Studio 5.0.4 Release
-Build #DS-233.14475.28.36.5011100
-构建版本：5.0.11.100, built on March 28, 2025
+DevEco Studio 5.0.5 Release
+Build #DS-233.14475.28.36.5013200
+构建版本：5.0.13.200, built on May 13, 2025
 Runtime version: 17.0.12+1-b1087.25 x86_64
 VM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.
-macOS 15.3.2
+macOS 15.4.1
 GC: G1 Young Generation, G1 Old Generation
 Memory: 2048M
 Cores: 12
@@ -169,8 +173,17 @@ Metal Rendering is ON
 Registry:
   idea.plugins.compatible.build=IC-233.14475.28
 Non-Bundled Plugins:
-  com.alibabacloud.intellij.cosy (2.1.6)
+  com.alibabacloud.intellij.cosy (2.5.2)
+  com.huawei.agc.ecomarket.component.plugin (233.14475.28)
+  com.harmonyos.cases (1.0.10-Alpha)
 ```
 
 ## 开源协议
 本项目基于 Apache License 2.0，请自由地享受和参与开源。
+
+## 贡献者
+感谢以下同学对IBest-UI做的贡献:
+
+<a href="https://github.com/ibestservices/ibest-ui/graphs/contributors">
+  <img src="https://ibestservices.github.io/ibest-ui/screenshot/Contributors.png" />
+</a>

@@ -164,7 +164,7 @@ struct FloatBubbleComponent{
                 .justifyContent(FlexAlign.Center)
 				.backgroundColor(this.option.bgColor)
 				.position({x: this.offsetX, y: this.offsetY})
-				.borderRadius(this.baseStyle.borderRadiusMax)
+				.borderRadius(this.option.shape == 'circle' ? this.baseStyle.borderRadiusMax : getSizeByUnit(this.option.radius))
                 .shadow(this.option.bubbleShadow)
                 .visibility(this.isReady ? Visibility.Visible : Visibility.Hidden)
 				.id(`ibest_float_bubble_${this.uniId}`)
@@ -205,7 +205,7 @@ export struct IBestFloatBubble{
 	/**
 	 * 气泡样式类型
 	 */
-	@Prop shape: "rect" | "circle" = "circle"
+	@Prop shape: "square" | "circle" = "circle"
 	/**
 	 * 气泡图标
 	 */
@@ -223,7 +223,7 @@ export struct IBestFloatBubble{
 	 */
 	@Prop bgColor: ResourceColor = IBestFloatBubbleColor.bgColor
 	/**
-	 * 圆角, 仅shape为rect时有效
+	 * 圆角, 仅shape为square时有效
 	 */
 	@Prop radius: IBestStringNumber = 6
 	/**
@@ -306,14 +306,18 @@ export struct IBestFloatBubble{
 			})
 			let componentContent = new ComponentContent(this.uiContext, wrapBuilder(bubbleDefaultBuilder), params)
 			this.overlayContent = componentContent
-			this.overlayManager.addComponentContent(componentContent, 0)
+			this.overlayManager.addComponentContent(componentContent)
 		}
 	}
 	unmountBubble(){
-		this.overlayManager.removeComponentContent(this.overlayContent)
+		if(this.overlayContent){
+			this.overlayManager.removeComponentContent(this.overlayContent)
+		}
 	}
 	hideBubble(){
-		this.overlayManager.hideComponentContent(this.overlayContent)
+		if(this.overlayContent){
+			this.overlayManager.hideComponentContent(this.overlayContent)
+		}
 	}
 	build() {}
 }

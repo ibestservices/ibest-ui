@@ -2,7 +2,6 @@
 	"src": [
 		"pages/Splash",
 		"pages/Index",
-		"pages/PrivacyPolicy",
-		"pages/base/FloatBubble"
+		"pages/PrivacyPolicy"
 	]
 }

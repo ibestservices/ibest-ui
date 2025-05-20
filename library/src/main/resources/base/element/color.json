@@ -479,6 +479,30 @@
 		{
 			"name": "ibest_step_active_color",
 			"value": "$color:ibest_primary_color"
+		},
+		{
+			"name": "ibest_car_keyboard_background",
+			"value": "$color:ibest_gray_2"
+		},
+		{
+			"name": "ibest_car_keyboard_key_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_car_keyboard_key_active_color",
+			"value": "$color:ibest_gray_3"
+		},
+		{
+			"name": "ibest_car_input_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_car_input_text_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_car_input_border_color",
+			"value": "$color:ibest_border_color"
 		}
 	]
 }

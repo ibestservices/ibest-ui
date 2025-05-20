@@ -10,6 +10,8 @@ export struct IBestNoticeBar{
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	// 是否横屏
+	@StorageProp("IBestIsLandscape") @Watch("init") IBestIsLandscape: boolean = false
 	/**
 	 * 通知栏模式
      */
@@ -132,6 +134,7 @@ export struct IBestNoticeBar{
 		this.init()
 	}
 	init(){
+		clearTimeout(this.startTimer)
 		this.transX = 0
 		this.duration = 0
 		if(this.scrollable === false || this.wrapable){
@@ -143,10 +146,9 @@ export struct IBestNoticeBar{
 			this.contentWidth = contentWidth
 			this.textWidth = textWidth
 			this.reset()
-		}, 20)
+		}, 50)
 	}
 	reset(){
-		clearTimeout(this.startTimer)
 		this.startTimer = setTimeout(() => {
 			if (this.textWidth > this.contentWidth && this.scrollable === undefined) {
 				this.scrollable = true

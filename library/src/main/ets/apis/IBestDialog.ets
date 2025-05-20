@@ -265,12 +265,12 @@ class IBestDialogParams extends IBestDialogOption {
 		this.showCancelButton = option.showCancelButton
 		this.confirmButtonText = option.confirmButtonText
 		this.cancelButtonText = option.cancelButtonText
+		this.buttonFontSize = option.buttonFontSize
 		this.confirmButtonColor = option.confirmButtonColor
 		this.confirmButtonFontWeight = option.confirmButtonFontWeight
 		this.confirmButtonBgColor = option.confirmButtonBgColor
 		this.cancelButtonColor = option.cancelButtonColor
 		this.cancelButtonBgColor = option.cancelButtonBgColor
-		this.buttonFontSize = option.buttonFontSize
 		this.confirmButtonLoading = option.confirmButtonLoading
 		this.cancelButtonLoading = option.cancelButtonLoading
 		this.closeOnClickOverlay = option.closeOnClickOverlay

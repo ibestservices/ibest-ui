@@ -1,5 +1,19 @@
 # 版本记录
 
+## 2.1.1
+#### 新增:
+1. IBestFloatBubble 悬浮球 组件;
+2. IBestCarKeyboard 车牌键盘 组件;
+3. IBestCarInput 车牌输入框 组件;
+4. IBestPasswordInput 增加 autoFocus showCursor highlightType 属性;
+5. IBestWatermark 增加 contentInteractive 属性.
+
+#### 优化:
+1. 日历农历初一日显示为月份.
+
+#### Bug修复:
+1. IBestImagePreview 侧滑关闭后无法打开问题.
+
 ## 2.1.0
 #### 新增:
 1. IBestCountTo 数字滚动 组件;

@@ -101,6 +101,14 @@
 			"value": "Calendar"
 		},
 		{
+			"name": "component_carInput",
+			"value": "CarInput"
+		},
+		{
+			"name": "component_carKeyboard",
+			"value": "CarKeyboard"
+		},
+		{
 			"name": "component_cascader",
 			"value": "Cascader"
 		},

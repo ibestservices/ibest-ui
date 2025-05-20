@@ -132,18 +132,15 @@ export struct IBestSkeletonParagraph{
 				Row()
 					.width(CONTAINER_SIZE.FULL)
 					.height(CONTAINER_SIZE.FULL)
-					.linearGradient({
-						angle: 90,
-						colors: this.colorMode == 0 ? [['#303030', 0], ['#424243', 0.5], ['#303030', 1]] : [['#f0f2f5', 0], ['#e6e8eb', 0.5], ['#f0f2f5', 1]]
-					})
 					.translate({x: this.positionX})
 					.animation({
 						duration: 1400,
 						iterations: -1,
-						curve: Curve.Ease,
-						onFinish: () => {
-							this.positionX = "-100%"
-						}
+						curve: Curve.Ease
+					})
+					.linearGradient({
+						angle: 90,
+						colors: this.colorMode == 0 ? [['#303030', 0], ['#424243', 0.5], ['#303030', 1]] : [['#f0f2f5', 0], ['#e6e8eb', 0.5], ['#f0f2f5', 1]]
 					})
 					.onAppear(() => {
 						this.positionX = "100%"

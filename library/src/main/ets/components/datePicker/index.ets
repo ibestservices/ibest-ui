@@ -203,7 +203,6 @@ export struct IBestDatePicker {
 		let month = this.getValue("month")
 		let minDay = this.isMinYear(year) && this.isMinMonth(month) ? this.minDate.getDate() : 1
 		let maxDay = this.isMaxYear(year) && this.isMaxMonth(month) ? this.maxDate.getDate() : dayjs(year+"-"+month).daysInMonth()
-		// console.log("获取日期列表", year, month, minDay, maxDay)
 		for(let i = minDay; i <= maxDay; i++){
 			daysList.push({
 				value: this.formatValue(i),
