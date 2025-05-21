@@ -292,11 +292,9 @@ export struct IBestButton {
 		.hitTestBehavior(this.loading ? HitTestMode.None : HitTestMode.Default)
 		.enabled(!this.disabled)
 		.opacity(this.disabled && this.plain ? 0.5 : 1)
-		.onTouch(event => {
-			if(event.type == TouchType.Up){
-				this.onClickBtn()
-				this.onBtnClick()
-			}
+		.onClick(() => {
+			this.onClickBtn()
+			this.onBtnClick()
 		})
 		.animation({ duration: this.baseStyle.animationDuration as number })
 	}

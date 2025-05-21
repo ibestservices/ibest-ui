@@ -191,8 +191,7 @@ export struct IBestCascaderContent{
 		}))
 		this.optionsInstance.push(this.createOptionsInstance(children))
 		await sleep(30)
-		this.currentTabName = name
-		this.tabChange(index + 1)
+		this.tabChange(index)
 	}
 	// 获取当前已选中的选项
 	getSelectedOptions(): IBestCascaderOption[] {

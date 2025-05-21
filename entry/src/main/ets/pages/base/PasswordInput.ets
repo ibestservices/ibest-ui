@@ -78,7 +78,8 @@ struct PasswordInputPage {
 								value: $value3,
 								space: 12,
 								cellBgColor: "#1c1c1e",
-								cellTextColor: "#fff"
+								cellTextColor: "#fff",
+								highlightType: "shadow"
 							})
 						}
 					}

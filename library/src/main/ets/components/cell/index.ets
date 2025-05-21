@@ -326,11 +326,9 @@ export struct IBestCell {
 		})
 		.enabled(!this.disabled)
 		.opacity(this.disabled ? 0.6 : 1)
-		.onTouch(event => {
-			if(event.type == TouchType.Up){
-				this.onClickCell()
-				this.onCellClick()
-			}
+		.onClick(() => {
+			this.onClickCell()
+			this.onCellClick()
 		})
 	}
 }

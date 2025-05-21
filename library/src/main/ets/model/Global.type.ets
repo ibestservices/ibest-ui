@@ -11,6 +11,15 @@ export type WordBreakType = 'normal' | 'break-all' | 'break-word'
  */
 export type IBestStringNumber = string | number
 /**
+ * 位置类型
+ */
+export interface IBestEdges {
+    top?: number
+	left?: number
+    right?: number
+	bottom?: number
+}
+/**
  * 宽高尺寸
  */
 export interface IBestSize{

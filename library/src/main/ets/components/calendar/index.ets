@@ -460,29 +460,27 @@ export struct IBestCalendar{
         let list: IBestCalendarDay[] = []
         // 获取当前月份1号是周几
         let firstDayWeekNum = this.getWeekNum(dayjs(this.curYearMonth).date(1))
-        // console.log(`本月第一天周${firstDayWeekNum}`)
         // 获取本月多少天
         let curMonthDays = dayjs(this.curYearMonth).daysInMonth()
         // 需补上月多少天
         let preMonthDays: number = this.headerList.findIndex((item) => item.key == firstDayWeekNum)
-        // console.log(`需补上月preMonthDays ${preMonthDays}天`)
         // 需补下月多少天
         let nextMonthDays: number = 42 - preMonthDays - curMonthDays
-        // console.log(`需补下月nextMonthDays ${nextMonthDays}天`)
         if(preMonthDays){
             let day = dayjs(this.curYearMonth).subtract(1, 'month')
             // 获取上月多少天
             let preMonthDaysNum = day.daysInMonth()
-            // console.log(`上月${preMonthDaysNum}天`)
             for(let i = preMonthDaysNum - preMonthDays + 1; i <= preMonthDaysNum; i++){
                 let val = day.date(i)
                 let dateStr = val.format('YYYY-MM-DD')
+				let lunar = Lunar.fromDate(val.toDate())
+				let lunarMonth = lunar.getMonthInChinese() + '月'
                 let dayItem = new IBestCalendarDay({
                     date: val,
                     dateStr,
                     weekNum: this.getWeekNum(val),
-                    lunarMonth: Lunar.fromDate(val.toDate()).getMonthInChinese(),
-                    lunarDay: Lunar.fromDate(val.toDate()).getDayInChinese(),
+                    lunarMonth,
+                    lunarDay: lunar.getDay() == 1 ? lunarMonth : lunar.getDayInChinese(),
                     year: val.format('YYYY'),
                     month: val.format('MM'),
                     day: val.format('D'),
@@ -496,12 +494,14 @@ export struct IBestCalendar{
         for (let i = 1; i <= curMonthDays; i++) {
             let val = dayjs(this.curYearMonth).date(i)
             let dateStr = val.format('YYYY-MM-DD')
+			let lunar = Lunar.fromDate(val.toDate())
+			let lunarMonth = lunar.getMonthInChinese() + '月'
             let dayItem = new IBestCalendarDay({
                 date: val,
                 dateStr,
                 weekNum: this.getWeekNum(val),
-                lunarMonth: Lunar.fromDate(val.toDate()).getMonthInChinese(),
-                lunarDay: Lunar.fromDate(val.toDate()).getDayInChinese(),
+				lunarMonth,
+				lunarDay: lunar.getDay() == 1 ? lunarMonth : lunar.getDayInChinese(),
                 year: val.format('YYYY'),
                 month: val.format('MM'),
                 day: val.format('D'),
@@ -515,12 +515,14 @@ export struct IBestCalendar{
         for (let i = 1; i <= nextMonthDays; i++) {
             let val = dayjs(this.curYearMonth).add(1, 'month').date(i)
             let dateStr = val.format('YYYY-MM-DD')
+			let lunar = Lunar.fromDate(val.toDate())
+			let lunarMonth = lunar.getMonthInChinese() + '月'
             let dayItem = new IBestCalendarDay({
                 date: val,
                 dateStr,
                 weekNum: this.getWeekNum(val),
-                lunarMonth: Lunar.fromDate(val.toDate()).getMonthInChinese(),
-                lunarDay: Lunar.fromDate(val.toDate()).getDayInChinese(),
+				lunarMonth,
+				lunarDay: lunar.getDay() == 1 ? lunarMonth : lunar.getDayInChinese(),
                 year: val.format('YYYY'),
                 month: val.format('MM'),
                 day: val.format('D'),

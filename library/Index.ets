@@ -45,6 +45,10 @@ export { IBestCalendar } from './src/main/ets/components/calendar/index'
 export { IBestCalendarDialog } from './src/main/ets/components/calendar/calendarDialog'
 export { IBestCalendarDayItem, IBestCalendarConfirmResult } from './src/main/ets/components/calendar/index.type'
 
+export { IBestCarInput } from './src/main/ets/components/carInput/index'
+
+export { IBestCarKeyboard } from './src/main/ets/components/carKeyboard/index'
+
 export { IBestCascader, IBestCascaderContent } from './src/main/ets/components/cascader/index'
 export { IBestCascaderOption } from './src/main/ets/components/cascader/index.type'
 
@@ -96,6 +100,8 @@ export { IBestUploader } from './src/main/ets/components/uploader/index'
 export { IBestUploaderFile } from './src/main/ets/components/uploader/index.type'
 
 export { IBestDialog } from './src/main/ets/components/dialog/index'
+
+export { IBestFloatBubble } from './src/main/ets/components/floatBubble/index'
 
 export { IBestLoading } from './src/main/ets/components/loading/index'
 

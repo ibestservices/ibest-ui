@@ -457,7 +457,6 @@ export struct IBestPicker{
 	}
 	// 重置列表数据
 	resetColumnOptions(columnIndex: number, i: number){
-		// console.log("重置列表数据", columnIndex, i)
 		this.columns.forEach((_, index, arr) => {
 			if(index > columnIndex){
 				this.offsetList[index] = 0

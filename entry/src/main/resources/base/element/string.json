@@ -101,6 +101,14 @@
 			"value": "Calendar 日历"
 		},
 		{
+			"name": "component_carInput",
+			"value": "CarInput 车牌输入框"
+		},
+		{
+			"name": "component_carKeyboard",
+			"value": "CarKeyboard 车牌键盘"
+		},
+		{
 			"name": "component_cascader",
 			"value": "Cascader 级联选择"
 		},
@@ -183,6 +191,10 @@
 		{
 			"name": "component_dialog",
 			"value": "Dialog 对话框"
+		},
+		{
+			"name": "component_float_bubble",
+			"value": "FloatBubble 浮动气泡"
 		},
 		{
 			"name": "component_loading",

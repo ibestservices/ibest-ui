@@ -1,6 +1,5 @@
 import window from '@ohos.window';
 import font from '@ohos.font';
-import { getWindowAvoidSize } from './utils';
 import { bundleManager, common } from '@kit.AbilityKit';
 import { IBestGlobalConfig, IBestGlobalConfigType } from '../model/Global.type';
 import { setIBestUIBaseStyle } from '../theme-chalk/src';
@@ -21,10 +20,8 @@ export default class GlobalStore {
 	public static init(windowStage: window.WindowStage, context: common.UIAbilityContext){
 		GlobalStore.windowStage = windowStage
 		GlobalStore.context = context
-		// 获取顶部和底部规避尺寸
-		GlobalStore.getAvoidSize()
-		// 获取屏幕尺寸
-		GlobalStore.getScreenSize()
+		// 获取屏幕尺寸 顶部和底部规避尺寸
+		GlobalStore.getScreenAndAvoidSize()
 		// 获取是否是应用
 		GlobalStore.getBundleType()
 		// 设置旋转监听
@@ -34,24 +31,20 @@ export default class GlobalStore {
 		// 注册字体
 		font.registerFont({
 			familyName: 'ibestFont',
-			familySrc: $rawfile('vant_font.woff')
+			familySrc: $rawfile('ibest_font.woff')
 		})
 	}
 	/**
 	 * 获取规避尺寸
      */
-	private static getAvoidSize(){
-		let res = getWindowAvoidSize()
-		AppStorage.setOrCreate("IBestTopAvoidHeight", res.topSize)
-		AppStorage.setOrCreate("IBestBottomBarHeight", res.navigationSize)
-	}
-	/**
-	 * 获取屏幕尺寸
-     */
-	private static getScreenSize(){
+	private static getScreenAndAvoidSize(){
 		try {
-			let mainWindow = GlobalStore.windowStage.getMainWindowSync()
+			let mainWindow: window.Window = GlobalStore.windowStage.getMainWindowSync()
 			let screenInfo: window.WindowProperties = mainWindow.getWindowProperties()
+			let avoidArea = mainWindow.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
+			let systemDht = mainWindow.getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR)
+			let topSize = px2vp(avoidArea.topRect.height)
+			let navigationSize = px2vp(systemDht.bottomRect.height)
 			let o = display.getDefaultDisplaySync().orientation
 			let screenWidth = screenInfo.windowRect.width
 			let screenHeight = screenInfo.windowRect.height
@@ -60,13 +53,15 @@ export default class GlobalStore {
 			AppStorage.setOrCreate("IBestIsLandscape", o == 1 || o == 3)
 			AppStorage.setOrCreate("IBestScreenWidth", px2vp(screenWidth))
 			AppStorage.setOrCreate("IBestScreenHeight", px2vp(screenHeight))
+			AppStorage.setOrCreate("IBestTopAvoidHeight", topSize)
+			AppStorage.setOrCreate("IBestBottomBarHeight", navigationSize)
 			mainWindow.on("avoidAreaChange", data => {
 				if (data.type == window.AvoidAreaType.TYPE_KEYBOARD) {
 					AppStorage.setOrCreate("IBestKeyBoardHeight", px2vp(data.area.bottomRect.height))
 				}
 			})
 		}catch (e) {
-			throw new Error(e)
+			console.error(e.code, e.message)
 		}
 	}
 	/**
@@ -75,8 +70,7 @@ export default class GlobalStore {
 	private static screenRotateListener() {
 		display.on("change", () => {
 			setTimeout(() => {
-				GlobalStore.getScreenSize()
-				GlobalStore.getAvoidSize()
+				GlobalStore.getScreenAndAvoidSize()
 			}, 300)
 		})
 	}
@@ -89,8 +83,6 @@ export default class GlobalStore {
 		AppStorage.setOrCreate("IBestLanguage", GlobalStore.context.config.language)
 		appContext.on('environment', {
 			onConfigurationUpdated(config) {
-				// console.log("onConfigurationUpdated", config.language)
-				// 0 深色  1 浅色
 				AppStorage.setOrCreate("IBestColorMode", config.colorMode)
 				AppStorage.setOrCreate("IBestLanguage", config.language)
 			},

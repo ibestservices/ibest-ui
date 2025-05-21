@@ -2,7 +2,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { LengthMetrics } from '@kit.ArkUI';
-import { KeyboardType } from './index.type';
+import { IBestNumberKeyboardType } from './index.type';
 import { IBestPopup } from '../popup';
 import { convertDimensionsWidthUnit, getResourceStr } from '../../utils/utils';
 import { IBestNumberKeyboardColor } from './color';
@@ -48,7 +48,7 @@ export struct NumberKeyboard{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@StorageProp("IBestBottomBarHeight") bottomBarHeight: number = 0
 	/**
 	 * 值
@@ -65,7 +65,7 @@ export struct NumberKeyboard{
 	/**
 	 * 额外按键
 	 */
-	@Prop extraKey: string | string[] = ''
+	@Prop extraKey: ResourceStr | ResourceStr[] = ''
 	/**
 	 * 删除文字
 	 */
@@ -95,9 +95,9 @@ export struct NumberKeyboard{
 	 */
 	onClose: () => void = () => {}
 
-	@State keysList: KeyboardType[] = []
+	@State keysList: IBestNumberKeyboardType[] = []
 
-	@Builder extraButton(item: KeyboardType){
+	@Builder extraButton(item: IBestNumberKeyboardType){
 		if(item.type == "delete"){
 			if(item.text){
 				Text(item.text)
@@ -130,10 +130,10 @@ export struct NumberKeyboard{
 		}
 	}
 	genBasicKeys(){
-		const keys: KeyboardType[] = Array(9)
+		const keys: IBestNumberKeyboardType[] = Array(9)
 			.fill('')
 			.map((_: string, i) => {
-				let obj: KeyboardType = {
+				let obj: IBestNumberKeyboardType = {
 					text: i + 1 + ''
 				}
 				return obj
@@ -144,7 +144,7 @@ export struct NumberKeyboard{
 		return keys
 	}
 	// 获取默认keys
-	genDefaultKeys(): KeyboardType[] {
+	genDefaultKeys(): IBestNumberKeyboardType[] {
 		return [
 			...this.genBasicKeys(),
 			{ text: this.extraKey as string, type: 'extra' },
@@ -153,9 +153,9 @@ export struct NumberKeyboard{
 		]
 	}
 	// 获取自定义keys
-	genCustomKeys(): KeyboardType[] {
+	genCustomKeys(): IBestNumberKeyboardType[] {
 		const keys = this.genBasicKeys()
-		const extraKeys: string[] = Array.isArray(this.extraKey) ? this.extraKey : [this.extraKey]
+		const extraKeys: ResourceStr[] = Array.isArray(this.extraKey) ? this.extraKey : [this.extraKey]
 		if (extraKeys.length === 1) {
 			keys.push(
 				{ text: "0", fullWidth: true },
@@ -171,7 +171,7 @@ export struct NumberKeyboard{
 		return keys
 	}
 	// 打乱顺序
-	shuffle(array: KeyboardType[]): void {
+	shuffle(array: IBestNumberKeyboardType[]): void {
 		for (let i = array.length - 1; i > 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1))
 			const temp = array[i]
@@ -180,8 +180,7 @@ export struct NumberKeyboard{
 		}
 	}
 	// 按键点击
-	selectKey(key: KeyboardType): void {
-		// console.log("选中", key.text, key.type)
+	selectKey(key: IBestNumberKeyboardType): void {
 		switch (key.type){
 			case "close":
 				this.onClose()
@@ -227,7 +226,7 @@ export struct NumberKeyboard{
 			}
 			Row({ space:6 }){
 				Flex({ justifyContent: FlexAlign.SpaceBetween, wrap: FlexWrap.Wrap, space: { cross: new LengthMetrics(6) } }){
-					ForEach(this.keysList, (item: KeyboardType) => {
+					ForEach(this.keysList, (item: IBestNumberKeyboardType) => {
 						Row() {
 							this.extraButton(item)
 						}
@@ -235,7 +234,7 @@ export struct NumberKeyboard{
 						.onClick(() => {
 							this.selectKey(item)
 						})
-					}, (_: KeyboardType, index: number) => index + "")
+					}, (_: IBestNumberKeyboardType, index: number) => index + "")
 				}
 				.layoutWeight(1)
 				if(this.styleType == "custom"){
@@ -265,7 +264,7 @@ export struct NumberKeyboard{
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.backgroundColor(IBestNumberKeyboardColor.bg)
-		.padding({ bottom: convertDimensionsWidthUnit(this.bottomBarHeight) })
+		.padding({ bottom: this.bottomBarHeight })
 	}
 }
 
@@ -347,6 +346,7 @@ export struct IBestNumberKeyboard{
 			visible: $visible,
 			popupAlign: "bottom",
 			popupHeight: "auto",
+			bgColor: IBestNumberKeyboardColor.bg,
 			maskColor: "transparent",
 			closeOnBackPress: true,
 			safeAreaInsetBottom: false,
