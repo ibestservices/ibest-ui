@@ -12,7 +12,8 @@
 1. 日历农历初一日显示为月份.
 
 #### Bug修复:
-1. IBestImagePreview 侧滑关闭后无法打开问题.
+1. IBestImagePreview 侧滑关闭后无法打开问题;
+2. 修复 IBestDialog buttonSpace 不生效问题.
 
 ## 2.1.0
 #### 新增:

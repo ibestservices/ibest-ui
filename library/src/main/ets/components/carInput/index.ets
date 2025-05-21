@@ -86,11 +86,11 @@ export struct IBestCarInput {
 	/**
 	 * 文字颜色
 	 */
-	@Provide({allowOverride: "cellTextColor"}) textColor: ResourceColor = IBestCarInputColor.textColor
+	@Provide({allowOverride: "textColor"}) textColor: ResourceColor = IBestCarInputColor.textColor
 	/**
 	 * 文字大小
 	 */
-	@Provide({allowOverride: "textFontSize"}) fontSize: IBestStringNumber = this.baseStyle.fontSizeXl as string
+	@Provide({allowOverride: "fontSize"}) fontSize: IBestStringNumber = this.baseStyle.fontSizeXl as string
 	/**
 	 * 完成
 	 */
