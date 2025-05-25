@@ -161,6 +161,11 @@
 			"buildFunction": "DialogBuilder"
 		},
 		{
+			"name": "DropdownMenu",
+			"pageSourceFile": "src/main/ets/pages/base/DropdownMenu.ets",
+			"buildFunction": "DropdownMenuBuilder"
+		},
+		{
 			"name": "FloatBubble",
 			"pageSourceFile": "src/main/ets/pages/base/FloatBubble.ets",
 			"buildFunction": "FloatBubbleBuilder"

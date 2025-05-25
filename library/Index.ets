@@ -101,6 +101,8 @@ export { IBestUploaderFile } from './src/main/ets/components/uploader/index.type
 
 export { IBestDialog } from './src/main/ets/components/dialog/index'
 
+export { IBestDropdownMenu } from './src/main/ets/components/dropdownMenu/index'
+
 export { IBestFloatBubble } from './src/main/ets/components/floatBubble/index'
 
 export { IBestLoading } from './src/main/ets/components/loading/index'

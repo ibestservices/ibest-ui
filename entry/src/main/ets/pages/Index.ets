@@ -171,6 +171,10 @@ struct Index {
 					name: $r("app.string.component_dialog"),
 					path: "Dialog"
 				},
+				{
+					name: $r("app.string.component_dropdownMenu"),
+					path: "DropdownMenu"
+				},
                 {
                     name: $r("app.string.component_float_bubble"),
                     path: "FloatBubble"
@@ -520,7 +524,7 @@ struct Index {
 		this.checkUpdate()
 		this.getUiVersion()
 		setTimeout(() => {
-			// RouterUtil.push("CarInput", "车牌输入框")
+			RouterUtil.push("DropdownMenu")
 		}, 100)
 	}
 	getTitleOpacity(){

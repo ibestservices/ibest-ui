@@ -193,6 +193,10 @@
 			"value": "Dialog 对话框"
 		},
 		{
+			"name": "component_dropdownMenu",
+			"value": "DropdownMenu 下拉菜单"
+		},
+		{
 			"name": "component_float_bubble",
 			"value": "FloatBubble 浮动气泡"
 		},
