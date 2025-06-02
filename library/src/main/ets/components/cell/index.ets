@@ -15,28 +15,6 @@ export struct IBestCell {
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
-	 * title的插槽 优先级大于 title
-	 */
-	@BuilderParam titleBuilder: CustomBuilder
-	/**
-	 * value的插槽 优先级大于 value
-	 */
-	@BuilderParam valueBuilder: CustomBuilder
-	/**
-	 * value的插槽 优先级大于 label
-	 */
-	@BuilderParam labelBuilder: CustomBuilder
-	/**
-	 * 自定义title左侧icon的插槽
-	 * 使用titleBuilder时，该插槽不生效
-	 */
-	@BuilderParam iconBuilder: CustomBuilder
-	/**
-	 * 自定义value右侧icon的插槽
-	 * 使用valueBuilder时，该插槽不生效
-	 */
-	@BuilderParam rightIconBuilder: CustomBuilder
-	/**
 	 * 左侧标题
 	 */
 	@Prop title: ResourceStr = ''
@@ -158,13 +136,28 @@ export struct IBestCell {
 	 * @since 2.0.1
 	 */
 	@Prop disabled: boolean = false
-	// 根据arrow direction获取图标旋转角度
-	arrowDirection2RotateDegMap: Record<string, number> = {
-		[ARROW_DIRECTION.RIGHT]: 0,
-		[ARROW_DIRECTION.TOP]: -90,
-		[ARROW_DIRECTION.BOTTOM]: 90,
-		[ARROW_DIRECTION.LEFT]: 180,
-	}
+	/**
+	 * title的插槽 优先级大于 title
+	 */
+	@BuilderParam titleBuilder: CustomBuilder
+	/**
+	 * value的插槽 优先级大于 value
+	 */
+	@BuilderParam valueBuilder: CustomBuilder
+	/**
+	 * value的插槽 优先级大于 label
+	 */
+	@BuilderParam labelBuilder: CustomBuilder
+	/**
+	 * 自定义title左侧icon的插槽
+	 * 使用titleBuilder时，该插槽不生效
+	 */
+	@BuilderParam iconBuilder: CustomBuilder
+	/**
+	 * 自定义value右侧icon的插槽
+	 * 使用valueBuilder时，该插槽不生效
+	 */
+	@BuilderParam rightIconBuilder: CustomBuilder
 	/**
 	 * 点击单元格的回调
 	 * @deprecated since 2.0.8
@@ -172,6 +165,14 @@ export struct IBestCell {
 	 */
 	onClickCell: () => void = () => {}
 	onCellClick: () => void = () => {}
+
+	// 根据arrow direction获取图标旋转角度
+	arrowDirection2RotateDegMap: Record<string, number> = {
+		[ARROW_DIRECTION.RIGHT]: 0,
+		[ARROW_DIRECTION.TOP]: -90,
+		[ARROW_DIRECTION.BOTTOM]: 90,
+		[ARROW_DIRECTION.LEFT]: 180,
+	}
 
 	// 根据size获取单元格的尺寸
 	getCellSize() {
@@ -186,8 +187,7 @@ export struct IBestCell {
 		}
 	}
 	getArrowRotateAngle() {
-		return this.arrowDirection2RotateDegMap[this.arrowDirection] ||
-		this.arrowDirection2RotateDegMap[ARROW_DIRECTION.RIGHT]
+		return this.arrowDirection2RotateDegMap[this.arrowDirection] || this.arrowDirection2RotateDegMap[ARROW_DIRECTION.RIGHT]
 	}
 	getAlignItems() {
 		return this.center ? VerticalAlign.Center : VerticalAlign.Top
@@ -215,16 +215,11 @@ export struct IBestCell {
 									this.iconBuilder()
 								}.margin({ right: getSizeByUnit(this.leftIconMarginRight) })
 							} else if (this.leftIcon) {
-								if (this.leftIconColor) {
-									Image(this.leftIcon)
-										.height(getSizeByUnit(this.leftIconSize))
-										.fillColor(this.leftIconColor)
-										.margin({ right: getSizeByUnit(this.leftIconMarginRight) })
-								} else {
-									Image(this.leftIcon)
-										.height(getSizeByUnit(this.leftIconSize))
-										.margin({ right: getSizeByUnit(this.leftIconMarginRight) })
-								}
+								IBestIcon({
+									name: this.leftIcon,
+									iconSize: this.leftIconSize,
+									color: this.leftIconColor
+								}).margin({ right: getSizeByUnit(this.leftIconMarginRight) })
 							}
 							Text(this.title)
 								.layoutWeight(1)
@@ -271,10 +266,11 @@ export struct IBestCell {
 							}
 							.margin({ left: getSizeByUnit(this.rightIconMarginLeft) })
 						} else if (this.rightIcon) {
-							Image(this.rightIcon)
-								.width(getSizeByUnit(this.rightIconSize))
-								.fillColor(this.rightIconColor)
-								.margin({ left: getSizeByUnit(this.rightIconMarginLeft) })
+							IBestIcon({
+								name: this.rightIcon,
+								iconSize: this.rightIconSize,
+								color: this.rightIconColor
+							}).margin({ left: getSizeByUnit(this.rightIconMarginLeft) })
 						} else if (this.isLink) { // 如果是link箭头
 							Row() {
 								IBestIcon({

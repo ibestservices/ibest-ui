@@ -1,9 +1,27 @@
 import { IBestStringNumber } from "../../../../../Index"
 
 /**
+ * 组件名称
+ */
+export const COMPONENT_NAME = 'DROPDOWN_MENU';
+/**
+ * radio group的emitter的事件
+ */
+export enum DROPDOWN_MENU_EVENT_NAME {
+    /**
+     * 选择
+     */
+    OPTION_CLICK = 'OPTION_CLICK',
+    /**
+     * 配置变化
+     */
+    OPTION_CHANGE = 'OPTION_CHANGE'
+}
+
+/**
  * 下拉菜单选项
  */
-export interface IBestDropdownOption {
+export interface IBestDropdownMenuOption {
     /**
      * 文字
      */
@@ -25,19 +43,40 @@ export class MenuContentController{
     hide: () => void = () => {}
 }
 
-@ObservedV2
-class IBestDropdownMenuOptionType{
-    value: IBestStringNumber = ''
-    @Trace title: string = ''
-    option: IBestDropdownOption[] = []
-    disabled: boolean = false
+export class IBestDropdownMenuContentType{
+    index?: number = 0
+    value?: IBestStringNumber = ''
+    title?: ResourceStr = ''
+    options?: IBestDropdownMenuOption[] = []
+    disabled?: boolean = false
+    defaultBuilder?: CustomBuilder
+    onOpen?: () => void = () => {}
+    onClose?: () => void = () => {}
+    onChange?: (value: IBestStringNumber) => void = () => {}
 }
-export class IBestDropdownMenuOption extends IBestDropdownMenuOptionType{
-    constructor(val: IBestDropdownMenuOptionType) {
+@Observed
+export class IBestDropdownMenuContentParams extends IBestDropdownMenuContentType{
+    dialogId?: IBestStringNumber = ''
+    constructor(val?: IBestDropdownMenuContentType) {
         super()
-        this.value = val.value
-        this.title = val.title
-        this.option = val.option
-        this.disabled = val.disabled
+        if(val){
+            this.value = val.value
+            this.title = val.title
+            this.options = val.options
+            this.disabled = val.disabled
+            this.defaultBuilder = val.defaultBuilder
+            this.onOpen = val.onOpen
+            this.onClose = val.onClose
+            this.onChange = val.onChange
+        }
     }
+}
+/**
+ * 下拉菜单控制器
+ */
+export class IBestDropdownMenuController {
+    /**
+     * 关闭所有菜单
+     */
+    close: () => void = () => {}
 }

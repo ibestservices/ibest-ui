@@ -260,17 +260,17 @@ struct defaultContent{
 									ForEach(actionList, (action: IBestActionMultiLine, index) => {
 										Button({ type: ButtonType.Normal }) {
 											Column() {
-												Image(action.icon)
-													.width(convertDimensionsWidthUnit(48))
-													.fillColor(this.textColor)
-													.borderRadius(this.baseStyle.borderRadiusMax)
-													.aspectRatio(1)
+												IBestIcon({
+													name: action.icon,
+													iconSize: convertDimensionsWidthUnit(48),
+													color: this.textColor,
+													iconRadius: this.baseStyle.borderRadiusMax as number
+												})
 													.margin({
 														left: this.baseStyle.spaceMd,
 														right: this.baseStyle.spaceMd,
 														bottom: this.baseStyle.spaceXs
 													})
-													.draggable(false)
 												Text(action.name)
 													.padding({
 														left: this.baseStyle.spaceBase,
@@ -321,12 +321,11 @@ struct defaultContent{
 								Column() {
 									Row(){
 										if(typeof action == "object" && action.icon){
-											Image(action.icon)
-												.width(convertDimensionsWidthUnit(18))
-												.aspectRatio(1)
-												.fillColor(typeof action == "object" && action.isDisabled ? this.disabledTextColor : this.textColor)
-												.margin({ right: this.baseStyle.spaceXs })
-												.draggable(false)
+											 IBestIcon({
+												name: action.icon,
+												iconSize: convertDimensionsWidthUnit(18),
+												color: typeof action == "object" && action.isDisabled ? this.disabledTextColor : this.textColor
+											}).margin({ right: this.baseStyle.spaceXs })
 										}
 										Text(typeof action == "object" ? action.name : action)
 											.fontColor(typeof action == "object" && action.isDisabled ? this.disabledTextColor : (typeof action == "object" && action.color || this.textColor))
