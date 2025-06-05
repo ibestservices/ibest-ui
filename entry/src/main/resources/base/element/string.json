@@ -213,6 +213,10 @@
 			"value": "SwipeCell 滑动单元格"
 		},
 		{
+			"name": "component_guide",
+			"value": "Guide 引导"
+		},
+		{
 			"name": "component_badge",
 			"value": "Badge 徽标"
 		},

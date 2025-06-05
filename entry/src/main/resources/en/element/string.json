@@ -213,6 +213,10 @@
 			"value": "SwipeCell"
 		},
 		{
+			"name": "component_guide",
+			"value": "Guide"
+		},
+		{
 			"name": "component_badge",
 			"value": "Badge"
 		},
