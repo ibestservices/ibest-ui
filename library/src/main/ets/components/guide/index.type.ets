@@ -14,8 +14,13 @@ export class GuideRect {
     this.bottom = bottom
   }
 
+  public isEmpty() {
+    return !this.check(this.left, this.top, this.right, this.bottom, true)
+  }
+
   /**
    * 获取中心点X轴坐标
+   * @returns X坐标
    */
   public getCenterX(): number {
     return this.left + (this.right - this.left) / 2
@@ -23,6 +28,7 @@ export class GuideRect {
 
   /**
    * 获取中心点Y轴坐标
+   * @returns Y坐标
    */
   public getCenterY(): number {
     return this.top + (this.bottom - this.top) / 2
@@ -30,6 +36,7 @@ export class GuideRect {
 
   /**
    * 获取宽度
+   * @returns 矩形区域的宽
    */
   public getWidth(): number {
     return this.right - this.left
@@ -37,10 +44,36 @@ export class GuideRect {
 
   /**
    * 获取高度
+   * @returns 矩形区域的高
    */
   public getHeight(): number {
     return this.bottom - this.top
   }
+
+  /**
+   * 检测矩形区域坐标数据的有效性
+   * @param left 左上角的X坐标
+   * @param top 左上角的Y坐标
+   * @param right 右下角的X坐标
+   * @param bottom 右下角的Y坐标
+   */
+  private check(left: number | null | undefined, top: number | null | undefined, right: number | null | undefined,
+    bottom: number | null | undefined, isStrict: boolean): boolean {
+    if (left == null || left == undefined ||
+      top == null || top == undefined ||
+      right == null || right == undefined ||
+      bottom == null || bottom == undefined ||
+      right < left || bottom < top) {
+      throw new Error('Please check the rect params');
+    }
+    if(isStrict && (left < 0 || top < 0 || right < 0 || bottom < 0)) {
+      //throw new Error('Please check if the area is within the screen');
+      return false
+    }
+    return true
+  }
+
+
 }
 
 export interface IBestGuideItem {
@@ -76,11 +109,18 @@ export class IBestGuideController {
     maskColor: '#99000000',
     guideAreaRound: 4
   }
+  private isStrict: boolean = false
 
   constructor(ctx: CanvasRenderingContext2D, ctx_ui: UIContext, listener: OnGuideChangedListener) {
     this.context = ctx
     this.contextUi = ctx_ui
     this.guideChangedListener = listener
+  }
+  /**
+   * 严格模式,当引导的元素不在屏幕内时抛出异常
+   */
+  setStrictMode(isStrict: boolean) {
+    this.isStrict = isStrict
   }
   /**
    * 设置样式相关
@@ -96,10 +136,14 @@ export class IBestGuideController {
     let space = 8
     let item: IBestGuideItem = {
       value: option.content,
-      guideArea: new GuideRect(data.screenLeft-space, data.screenTop-space, data.width+data.screenLeft+space, data.height+data.screenTop+space),
+      guideArea: new GuideRect(data.windowLeft-space, data.windowTop-space, data.width+data.windowLeft+space, data.height+data.windowTop+space),
       placement: option.placement ? option.placement : Placement.Bottom
     }
+    if(this.isStrict && item.guideArea.isEmpty()) {
+      return false
+    }
     this.guideGather.set(label, item)
+    return true
   }
   /**
    * 设置引导路径
@@ -110,7 +154,9 @@ export class IBestGuideController {
     }
     for (let index = 0; index < guideWay.length; index++) {
       const element = guideWay[index];
-      this.guideWay.add(element)
+      if(this.guideGather.hasKey(element)) {
+        this.guideWay.add(element)
+      }
     }
 
     if(autoStart) {

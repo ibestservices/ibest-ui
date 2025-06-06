@@ -20,13 +20,21 @@ export struct IBestGuide {
   @BuilderParam defaultBuilder: CustomBuilder;
 
   /**
-   * 自定义气泡宽度
+   * 气泡框宽度
    */
   @Prop popupWidth: IBestStringNumber = convertDimensionsWidthUnit(300)
   /**
-   * 自定义气泡高度
+   * 气泡框高度
    */
-  @Prop popupHeight: IBestStringNumber = convertDimensionsWidthUnit(180)
+  @Prop popupHeight: IBestStringNumber = "auto"
+  /**
+   * 气泡框最大高度
+   */
+  @Prop popupMaxHeight: IBestStringNumber = "auto"
+  /**
+   * 气泡框背景色
+   */
+  @Provide({allowOverride: "bgColor"}) bgColor: ResourceColor = $r("app.color.ibest_popover_background")
   /**
    * 蒙层颜色
    */
@@ -39,18 +47,6 @@ export struct IBestGuide {
    * 弹出气泡的圆角半径
    */
   @Prop popupCornerRadius: number = 18
-  /**
-   * 是否显示关闭图标
-   */
-  @Prop isShowClose: boolean = true
-  /**
-   * 自定义关闭图标
-   */
-  @Prop closeIcon: string = "cross"
-  /**
-   * 关闭图标颜色
-   */
-  @Prop closeIconColor: string = "#c8c9cc"
   /**
    * 按钮间距
    */
@@ -102,17 +98,13 @@ export struct IBestGuide {
       }
       this.sortTag = sortTag
       this.guidePlacement = placement
-      animateTo({
-        delay: 0,
-        duration: isFirst ? 350 : 500
-      }, () => {
-        this.guideAreaWidth = item.guideArea.getWidth()
-        this.guideAreaHeight = item.guideArea.getHeight()
-        this.guideAreaTop = item.guideArea.top
-        this.guideAreaBottom = item.guideArea.bottom
-        this.guideAreaLeft = item.guideArea.left
-        this.guideAreaRight = item.guideArea.right
-      })
+
+      this.guideAreaWidth = item.guideArea.getWidth()
+      this.guideAreaHeight = item.guideArea.getHeight()
+      this.guideAreaTop = item.guideArea.top
+      this.guideAreaBottom = item.guideArea.bottom
+      this.guideAreaLeft = item.guideArea.left
+      this.guideAreaRight = item.guideArea.right
     },
     onClosed: () => {
       this.isShowGuide = false
@@ -132,32 +124,12 @@ export struct IBestGuide {
     })
   }
 
-  @Builder popupTitle(){
-    Row(){
-      Blank()
-      IBestIcon({
-        name: this.closeIcon,
-        iconSize: convertDimensionsWidthUnit(20),
-        color: this.closeIconColor,
-        onIconClick: ()=>{
-          this.controller.close()
-        }
-      })
-        .visibility(this.isShowClose ? Visibility.Visible : Visibility.None)
-    }
-    .width(CONTAINER_SIZE.FULL)
-    .height('15%')
-    .padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
-    .justifyContent(FlexAlign.SpaceBetween)
-    .alignItems(VerticalAlign.Bottom)
-  }
-
-  @Builder popupContent(){
-    Row() {
-      if(this.guideContentBuilder) {
-        this.guideContentBuilder.builder(this.currentLabel)
-      } else {
-        Scroll() {
+  @Builder popupBuilder() {
+    Scroll() {
+      Column() {
+        if(this.guideContentBuilder) {
+          this.guideContentBuilder.builder(this.currentLabel)
+        } else {
           Text(this.guideItemValue)
             .width(CONTAINER_SIZE.FULL)
             .padding(this.baseStyle.spaceSm)
@@ -166,66 +138,49 @@ export struct IBestGuide {
             .fontSize(getSizeByUnit(this.messageFontSize, true))
             .fontColor($r("app.color.ibest_dialog_message_color"))
         }
-        .scrollBarColor(this.baseStyle.scrollBarColor as string)
-        .edgeEffect(EdgeEffect.None)
-        .constraintSize({
-          maxHeight: getSizeByUnit('auto')
-        })
-      }
-    }
-    .width('100%')
-    .height('70%')
-  }
 
-  @Builder popupBuilder() {
-    Column() {
-      //this.popupTitle()
-      this.popupContent()
-
-      Row({space: SPACE.XL}) {
-        Row({space: SPACE.MD}) {
-          Text(this.sortTag)
-            .letterSpacing(this.baseStyle.spaceMini as string)
-            .fontSize(this.baseStyle.fontSizeMd)
-        }
-        Blank()
-        Row({ space: getSizeByUnit(this.buttonSpace) }) {
-          IBestButton({
-            text: '上一步',
-            type: 'default',
-            buttonSize: 'small',
-            fontWeight: FontWeight.Medium,
-            onBtnClick: ()=>{
-              if(!this.guideItemIsFirst){
-                this.controller.prev()
+        Row({space: SPACE.XL}) {
+          Row({space: SPACE.MD}) {
+            Text(this.sortTag)
+              .letterSpacing(this.baseStyle.spaceMini as string)
+              .fontSize(this.baseStyle.fontSizeMd)
+          }
+          Blank()
+          Row({ space: getSizeByUnit(this.buttonSpace) }) {
+            IBestButton({
+              text: '上一步',
+              type: 'default',
+              buttonSize: 'small',
+              fontWeight: FontWeight.Medium,
+              onBtnClick: ()=>{
+                if(!this.guideItemIsFirst){
+                  this.controller.prev()
+                }
+              },
+              disabled: this.guideItemIsFirst
+            })
+            IBestButton({
+              text: this.guideItemIsLast ? "结束导览" : "下一步",
+              type: 'primary',
+              buttonSize: 'small',
+              fontWeight: FontWeight.Medium,
+              onBtnClick: ()=>{
+                if(!this.guideItemIsLast){
+                  this.controller.next()
+                } else {
+                  this.controller.close()
+                }
               }
-            },
-            disabled: this.guideItemIsFirst
-          })
-          IBestButton({
-            text: this.guideItemIsLast ? "结束导览" : "下一步",
-            type: 'primary',
-            buttonSize: 'small',
-            fontWeight: FontWeight.Medium,
-            onBtnClick: ()=>{
-              if(!this.guideItemIsLast){
-                this.controller.next()
-              } else {
-                this.controller.close()
-              }
-            }
-          })
+            })
+          }
         }
+        .padding({ left: this.baseStyle.spaceSm, right: this.baseStyle.spaceSm })
       }
-      .padding({ left: this.baseStyle.spaceSm, right: this.baseStyle.spaceSm })
-      .height('15%')
+      .padding(this.baseStyle.spaceSm)
     }
-    .width(this.popupWidth)
-    .height(this.popupHeight)
-    .justifyContent(FlexAlign.Center)
-    .alignItems(HorizontalAlign.Center)
-    .backgroundColor($r("app.color.ibest_dialog_background"))
-    .padding(this.baseStyle.spaceSm)
+    .scrollBar(BarState.Auto)
+    .height(getSizeByUnit(this.popupHeight))
+    .constraintSize({maxHeight: getSizeByUnit(this.popupMaxHeight)})
   }
 
   build() {
@@ -236,9 +191,6 @@ export struct IBestGuide {
             this.defaultBuilder()
           }
         }
-        .id('ibest_guide_container_' + this.uniId)
-        .width(CONTAINER_SIZE.FULL)
-        .height(CONTAINER_SIZE.FULL)
         .zIndex(1)
 
         Stack({ alignContent: Alignment.TopStart }) {
@@ -256,11 +208,19 @@ export struct IBestGuide {
             .position({left: this.guideAreaLeft, right: this.guideAreaRight, top: this.guideAreaTop, bottom: this.guideAreaBottom})
             .bindPopup(this.isShowGuide, {
               builder: this.popupBuilder,
+              width: getSizeByUnit(this.popupWidth) as Dimension,
               placement: this.guidePlacement,
+              popupColor: this.bgColor,
+              backgroundBlurStyle: BlurStyle.NONE,
+              shadow: ShadowStyle.OUTER_DEFAULT_MD,
               showInSubWindow: false,
               autoCancel: false,
               radius: this.popupCornerRadius,
-              onWillDismiss: false
+              onWillDismiss: false,
+              transition: TransitionEffect.asymmetric(
+                TransitionEffect.translate({x: 20, y: 20}).animation({duration: 350, curve: Curve.Ease}),
+                TransitionEffect.IDENTITY
+              )
             })
 
         }
@@ -269,6 +229,5 @@ export struct IBestGuide {
       }
       .width(CONTAINER_SIZE.FULL)
     }
-    .height(CONTAINER_SIZE.FULL)
   }
 }
