@@ -73,23 +73,46 @@ export class GuideRect {
     return true
   }
 
+  /**
+   * 合并多个矩形区域，返回一个能完全覆盖所有输入矩形的最小矩形
+   * @param rects 要合并的矩形数组
+   * @returns 合并后的矩形
+   */
+  public static mergeRects(rects: GuideRect[], padding: number): GuideRect {
+    if (rects.length === 0) {
+      return new GuideRect(0, 0, 0, 0);
+    }
 
+    let minLeft = Infinity;
+    let minTop = Infinity;
+    let maxRight = -Infinity;
+    let maxBottom = -Infinity;
+
+    for (const rect of rects) {
+      minLeft = Math.min(minLeft, rect.left);
+      minTop = Math.min(minTop, rect.top);
+      maxRight = Math.max(maxRight, rect.right);
+      maxBottom = Math.max(maxBottom, rect.bottom);
+    }
+
+    return new GuideRect(minLeft-padding, minTop-padding, maxRight+padding, maxBottom+padding);
+  }
 }
 
 export interface IBestGuideItem {
-  value: string|WrappedBuilder<[string]>
+  value: string|WrappedBuilder<[sort: number, total: number, ctl: IBestGuideBaseController]>
   guideArea: GuideRect
   placement: Placement
 }
 
 export interface IBestGuideItemOption {
-  componentId: string
-  content: string|WrappedBuilder<[string]>
+  componentId: string|Array<string>
+  content: string|WrappedBuilder<[sort: number, total: number, ctl: IBestGuideBaseController]>
   placement?: Placement
 }
 
 export interface OnGuideChangedListener {
-  onShowed: (label: string, item: IBestGuideItem, isFirst: boolean, isLast: boolean, sortTag: string, placement: Placement) => void;
+  onShowed: (label: string, item: IBestGuideItem, isFirst: boolean, isLast: boolean, currentSort: number, total: number, placement: Placement) => void;
   onClosed: () => void
 }
 
@@ -98,7 +121,13 @@ export interface styleParamType {
   guideAreaRound: number
 }
 
-export class IBestGuideController {
+export interface IBestGuideBaseController {
+  next(): void;
+  prev(): void;
+  close(): void;
+}
+
+export class IBestGuideController implements IBestGuideBaseController {
   private contextUi: UIContext
   private context: CanvasRenderingContext2D
   private guideGather: HashMap<string, IBestGuideItem> = new HashMap();
@@ -132,13 +161,26 @@ export class IBestGuideController {
    * 设置引导节点
    */
   setGuideItem(label: string, option: IBestGuideItemOption) {
-    let data = getComponentsInfo(this.contextUi, option.componentId)
-    let space = 8
     let item: IBestGuideItem = {
       value: option.content,
-      guideArea: new GuideRect(data.windowLeft-space, data.windowTop-space, data.width+data.windowLeft+space, data.height+data.windowTop+space),
+      guideArea: new GuideRect(0, 0, 0, 0),
       placement: option.placement ? option.placement : Placement.Bottom
     }
+    const padding = 8
+
+    if(typeof option.componentId == "string") {
+      const data = getComponentsInfo(this.contextUi, option.componentId)
+      item.guideArea = new GuideRect(data.windowLeft-padding, data.windowTop-padding, data.width+data.windowLeft+padding, data.height+data.windowTop+padding)
+    } else {
+      let rectList: Array<GuideRect> = []
+      for (let index = 0; index < option.componentId.length; index++) {
+        const element = option.componentId[index]
+        const data = getComponentsInfo(this.contextUi, element)
+        rectList.push(new GuideRect(data.windowLeft, data.windowTop, data.width+data.windowLeft, data.height+data.windowTop))
+      }
+      item.guideArea = GuideRect.mergeRects(rectList, padding)
+    }
+
     if(this.isStrict && item.guideArea.isEmpty()) {
       return false
     }
@@ -161,8 +203,7 @@ export class IBestGuideController {
 
     if(autoStart) {
       this.currentLabelIndex = 0
-      const sortTag = "1 / " + this.guideWay.length
-      this._drawMask(this.guideWay.get(this.currentLabelIndex), true, false, sortTag)
+      this._drawMask(this.guideWay.get(this.currentLabelIndex), true, (this.guideWay.length > 1 ? false : true), 1, this.guideWay.length)
     }
   }
   /**
@@ -177,15 +218,13 @@ export class IBestGuideController {
     if(this.currentLabelIndex == -1) {
       currentLabel = this.guideWay.getFirst()
       this.currentLabelIndex = this.guideWay.getIndexOf(currentLabel)
-      const sortTag = "1 / " + this.guideWay.length
-      this._drawMask(currentLabel, true, false, sortTag)
+      this._drawMask(currentLabel, true, (this.guideWay.length > 1 ? false : true), 1, this.guideWay.length)
     }else{
       if(this.currentLabelIndex < this.guideWay.getIndexOf(this.guideWay.getLast())) {
         this.currentLabelIndex += 1
         currentLabel = this.guideWay.get(this.currentLabelIndex)
         const isEnd = (this.currentLabelIndex === this.guideWay.getIndexOf(this.guideWay.getLast()))
-        const sortTag = this.currentLabelIndex+1 + " / " + this.guideWay.length
-        this._drawMask(currentLabel, false, isEnd, sortTag)
+        this._drawMask(currentLabel, false, isEnd, this.currentLabelIndex+1, this.guideWay.length)
       }
     }
   }
@@ -196,8 +235,7 @@ export class IBestGuideController {
     if(this.currentLabelIndex > 0) {
       this.currentLabelIndex -= 1
       const currentLabel = this.guideWay.get(this.currentLabelIndex)
-      const sortTag = this.currentLabelIndex+1 + " / " + this.guideWay.length
-      this._drawMask(currentLabel, (this.currentLabelIndex === 0), false, sortTag)
+      this._drawMask(currentLabel, (this.currentLabelIndex === 0), false, this.currentLabelIndex+1, this.guideWay.length)
     }
   }
   /**
@@ -228,7 +266,7 @@ export class IBestGuideController {
   /**
    * 绘制蒙层
    */
-  private _drawMask(label: string, isFirst: boolean, isLast: boolean, sortTag: string): void {
+  private _drawMask(label: string, isFirst: boolean, isLast: boolean, currentSort: number, total: number): void {
     this.context.clearRect(0, 0, this.context.width, this.context.height);
 
     // 绘制全屏蒙版
@@ -248,7 +286,7 @@ export class IBestGuideController {
       round = 4;
     }
 
-    this.guideChangedListener?.onShowed(label, guideItem, isFirst, isLast, sortTag, guideItem.placement)
+    this.guideChangedListener?.onShowed(label, guideItem, isFirst, isLast, currentSort, total, guideItem.placement)
 
     this.context.beginPath();
     this.context.moveTo(rect.left + round, rect.top);

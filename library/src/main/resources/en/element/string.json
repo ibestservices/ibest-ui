@@ -123,6 +123,18 @@
 		{
 			"name": "ibest_text_sum",
 			"value": "Sum"
+		},
+		{
+			"name": "ibest_guide_previous",
+			"value": "Previous"
+		},
+		{
+			"name": "ibest_guide_next",
+			"value": "Next"
+		},
+		{
+			"name": "ibest_guide_complete",
+			"value": "Complete"
 		}
 	]
 }

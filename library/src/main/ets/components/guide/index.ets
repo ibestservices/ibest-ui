@@ -6,7 +6,7 @@ import { SPACE } from '../../theme-chalk/src/space';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { IBestButton } from '../button';
 import { IBestIcon } from '../icon';
-import { IBestGuideController, IBestGuideItem } from './index.type';
+import { IBestGuideBaseController, IBestGuideController, IBestGuideItem } from './index.type';
 
 @Component
 export struct IBestGuide {
@@ -75,17 +75,18 @@ export struct IBestGuide {
   @State guideItemIsFirst: boolean = true
   @State guideItemIsLast: boolean = false
   @State guideItemValue: string = ""
-  @State sortTag: string = ""
+  @State currentSort: number = 0
+  @State guideTotal: number = 0
   @State guidePlacement: Placement = Placement.Bottom
 
-  @State guideContentBuilder: WrappedBuilder<[string]>|null = null
+  @State guideContentBuilder: WrappedBuilder<[sort: number, total: number, ctl: IBestGuideBaseController]>|null = null
   @State currentLabel: string = ''
 
   private uiContext = this.getUIContext()
   private settings: RenderingContextSettings = new RenderingContextSettings(true)
   private ctx: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
   private controller: IBestGuideController = new IBestGuideController(this.ctx, this.uiContext, {
-    onShowed: (label: string, item: IBestGuideItem, isFirst: boolean, isLast: boolean, sortTag: string, placement: Placement) => {
+    onShowed: (label: string, item: IBestGuideItem, isFirst: boolean, isLast: boolean, currentSort: number, total: number, placement: Placement) => {
       this.isShowGuide = true
       this.currentLabel = label
       this.guideItemIsFirst = isFirst
@@ -96,7 +97,8 @@ export struct IBestGuide {
       } else {
         this.guideContentBuilder = item.value
       }
-      this.sortTag = sortTag
+      this.currentSort = currentSort
+      this.guideTotal = total
       this.guidePlacement = placement
 
       this.guideAreaWidth = item.guideArea.getWidth()
@@ -125,11 +127,11 @@ export struct IBestGuide {
   }
 
   @Builder popupBuilder() {
-    Scroll() {
-      Column() {
-        if(this.guideContentBuilder) {
-          this.guideContentBuilder.builder(this.currentLabel)
-        } else {
+    if(this.guideContentBuilder) {
+      this.guideContentBuilder.builder(this.currentSort, this.guideTotal, this.controller)
+    } else {
+      Scroll() {
+        Column() {
           Text(this.guideItemValue)
             .width(CONTAINER_SIZE.FULL)
             .padding(this.baseStyle.spaceSm)
@@ -137,50 +139,50 @@ export struct IBestGuide {
             .lineHeight(getSizeByUnit(this.messageLineHeight))
             .fontSize(getSizeByUnit(this.messageFontSize, true))
             .fontColor($r("app.color.ibest_dialog_message_color"))
-        }
 
-        Row({space: SPACE.XL}) {
-          Row({space: SPACE.MD}) {
-            Text(this.sortTag)
-              .letterSpacing(this.baseStyle.spaceMini as string)
-              .fontSize(this.baseStyle.fontSizeMd)
-          }
-          Blank()
-          Row({ space: getSizeByUnit(this.buttonSpace) }) {
-            IBestButton({
-              text: '上一步',
-              type: 'default',
-              buttonSize: 'small',
-              fontWeight: FontWeight.Medium,
-              onBtnClick: ()=>{
-                if(!this.guideItemIsFirst){
-                  this.controller.prev()
+          Row({space: SPACE.XL}) {
+            Row({space: SPACE.MD}) {
+              Text(this.currentSort.toString() + " / " + this.guideTotal.toString())
+                .letterSpacing(this.baseStyle.spaceMini as string)
+                .fontSize(this.baseStyle.fontSizeMd)
+            }
+            Blank()
+            Row({ space: getSizeByUnit(this.buttonSpace) }) {
+              IBestButton({
+                text: $r('app.string.ibest_guide_previous'),
+                type: 'default',
+                buttonSize: 'small',
+                fontWeight: FontWeight.Medium,
+                onBtnClick: ()=>{
+                  if(!this.guideItemIsFirst){
+                    this.controller.prev()
+                  }
+                },
+                disabled: this.guideItemIsFirst
+              }).visibility(this.guideTotal == 1 ? Visibility.Hidden : Visibility.Visible)
+              IBestButton({
+                text: this.guideItemIsLast ? $r('app.string.ibest_guide_complete') : $r('app.string.ibest_guide_next'),
+                type: 'primary',
+                buttonSize: 'small',
+                fontWeight: FontWeight.Medium,
+                onBtnClick: ()=>{
+                  if(!this.guideItemIsLast){
+                    this.controller.next()
+                  } else {
+                    this.controller.close()
+                  }
                 }
-              },
-              disabled: this.guideItemIsFirst
-            })
-            IBestButton({
-              text: this.guideItemIsLast ? "结束导览" : "下一步",
-              type: 'primary',
-              buttonSize: 'small',
-              fontWeight: FontWeight.Medium,
-              onBtnClick: ()=>{
-                if(!this.guideItemIsLast){
-                  this.controller.next()
-                } else {
-                  this.controller.close()
-                }
-              }
-            })
+              })
+            }
           }
+          .padding({ left: this.baseStyle.spaceSm, right: this.baseStyle.spaceSm })
         }
-        .padding({ left: this.baseStyle.spaceSm, right: this.baseStyle.spaceSm })
+        .padding(this.baseStyle.spaceSm)
       }
-      .padding(this.baseStyle.spaceSm)
+      .scrollBar(BarState.Auto)
+      .height(getSizeByUnit(this.popupHeight))
+      .constraintSize({maxHeight: getSizeByUnit(this.popupMaxHeight)})
     }
-    .scrollBar(BarState.Auto)
-    .height(getSizeByUnit(this.popupHeight))
-    .constraintSize({maxHeight: getSizeByUnit(this.popupMaxHeight)})
   }
 
   build() {

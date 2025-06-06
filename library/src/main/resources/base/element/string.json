@@ -123,6 +123,18 @@
 		{
 			"name": "ibest_text_sum",
 			"value": "合计"
+		},
+		{
+			"name": "ibest_guide_previous",
+			"value": "上一步"
+		},
+		{
+			"name": "ibest_guide_next",
+			"value": "下一步"
+		},
+		{
+			"name": "ibest_guide_complete",
+			"value": "结束导览"
 		}
 	]
 }

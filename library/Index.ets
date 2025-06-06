@@ -170,4 +170,4 @@ export { IBestImageCropper } from './src/main/ets/components/imageCropper/index'
 export { IBestImageCropperController } from './src/main/ets/components/imageCropper/index.type'
 
 export { IBestGuide } from './src/main/ets/components/guide/index'
-export { IBestGuideController, IBestGuideItem } from './src/main/ets/components/guide/index.type'
+export { IBestGuideController, IBestGuideBaseController } from './src/main/ets/components/guide/index.type'

@@ -1,5 +1,5 @@
-import { IBestButton, IBestGuide, IBestGuideController, IBestField, IBestSlider,
-	IBestToast, IBestEmpty, IBestDivider  } from '@ibestservices/ibest-ui';
+import { IBestButton, IBestGuide, IBestGuideController, IBestGuideBaseController,
+	IBestField, IBestSlider, IBestToast, IBestEmpty, IBestDivider} from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import { LengthMetrics } from '@ohos.arkui.node';
@@ -11,12 +11,58 @@ export function GuideBuilder(_: string, title: string){
 }
 
 @Builder
-function demo(label: string) {
-	Text("这是一个自定义插槽："+label)
-		.fontSize(20)
-		.padding(12)
-		.textAlign(TextAlign.Start)
-		.fontColor(Color.Pink)
+function demo(sort: number, total: number, ctl: IBestGuideBaseController) {
+	Scroll() {
+		Column() {
+			Text("这是一个自定义插槽，随便写点什么...")
+				.width(CONTAINER_SIZE.FULL)
+				.padding(SPACE.SM)
+				.textAlign(TextAlign.Start)
+				.fontColor(Color.Pink)
+
+			Row({space: SPACE.MD}) {
+				Row({space: SPACE.MD}) {
+					Text("第" + sort + "个，共" + total + "个")
+						.letterSpacing(SPACE.mini)
+						.fontSize(12)
+						.fontColor(Color.Green)
+				}
+				Blank()
+				Row({ space: SPACE.LG }) {
+					IBestButton({
+						text: '上一步',
+						type: 'warning',
+						buttonSize: 'small',
+						fontWeight: FontWeight.Medium,
+						onBtnClick: ()=>{
+							if(sort > 1){
+								ctl.prev()
+							}
+						},
+						disabled: sort==1
+					})
+					IBestButton({
+						text: sort==total ? "结束导览" : "下一步",
+						type: 'primary',
+						buttonSize: 'small',
+						fontWeight: FontWeight.Medium,
+						onBtnClick: ()=>{
+							if(sort==total) {
+								ctl.close()
+							} else {
+								ctl.next()
+							}
+						}
+					})
+				}
+			}
+			.padding({ left: SPACE.SM, right: SPACE.SM })
+		}
+		.padding(SPACE.SM)
+	}
+	.scrollBar(BarState.Auto)
+	.height("auto")
+	.constraintSize({maxHeight: "auto"})
 }
 
 @Entry
@@ -93,7 +139,11 @@ struct GuidePage {
 													componentId: 'ibest_guide_field_' + this.uniId,
 													content: "这是一个输入框的引导内容..."
 												})
-												this.controller.setGuideWay(['guide_label1', 'guide_label4', 'guide_label2', 'guide_label3'], true)
+												this.controller.setGuideItem('guide_label5', {
+													componentId: 'ibest_guide_slider_' + this.uniId,
+													content: "一个滑块??"
+												})
+												this.controller.setGuideWay(['guide_label1', 'guide_label4', 'guide_label2', 'guide_label3', 'guide_label5'], true)
 											}
 										}
 									})
@@ -120,7 +170,7 @@ struct GuidePage {
 									label: "密码",
 									placeholder: "请输入密码",
 									type: "password"
-								})
+								}).id('ibest_guide_form_1_' + this.uniId)
 								// 手机号
 								IBestField({
 									value: $value2,
@@ -143,7 +193,7 @@ struct GuidePage {
 									placeholder: "请输入小数",
 									type: "decimal",
 									decimalLength: 2
-								})
+								}).id('ibest_guide_form_2_' + this.uniId)
 							}
 						}
 
@@ -151,14 +201,40 @@ struct GuidePage {
 							ComponentShowContainer({ title: $r("app.string.custom_button", $r("app.string.plain")) }) {
 								Row({ space: SPACE.SM }) {
 									IBestButton({
-										text: $r("app.string.custom_button", $r("app.string.plain")),
+										text: "多区域合并引导",
 										type: 'primary',
-										plain: true
+										plain: true,
+										onClickBtn: () => {
+											if(this.controller) {
+												this.controller.cleanAll()
+												this.controller.setStrictMode(true)
+												this.controller.setGuideItem('guide_label1', {
+													componentId: ['ibest_guide_form_1_' + this.uniId, 'ibest_guide_form_2_' + this.uniId],
+													content: "多组件合并区域..."
+												})
+												this.controller.setGuideWay(['guide_label1'], true)
+											}
+										}
 									}).id('ibest_guide_button_2_' + this.uniId)
 									IBestButton({
-										text: $r("app.string.custom_button", $r("app.string.plain")),
+										text: "单个引导",
 										plain: true,
-										type: 'success'
+										type: 'success',
+										onClickBtn: () => {
+											if(this.controller) {
+												this.controller.cleanAll()
+												this.controller.setStrictMode(true)
+												const ok = this.controller.setGuideItem('guide_label1', {
+													componentId: 'ibest_guide_button_1_' + this.uniId,
+													content: "这是单个引导内容..."
+												})
+												if(!ok) {
+													IBestToast.show("请检查该区域是否在屏幕内!")
+													return
+												}
+												this.controller.setGuideWay(['guide_label1'], true)
+											}
+										}
 									}).id('ibest_guide_button_3_' + this.uniId)
 									IBestButton({
 										text: "基础引导",
@@ -192,7 +268,7 @@ struct GuidePage {
 									onChange: (val) => {
 										IBestToast.show(val.toString())
 									}
-								})
+								}).id('ibest_guide_slider_' + this.uniId)
 							}
 						}
 
@@ -223,12 +299,12 @@ struct GuidePage {
 											if(this.controller) {
 												this.controller.cleanAll()
 												this.controller.setStrictMode(true)
-												let ok = this.controller.setGuideItem('guide_label1', {
+												const ok = this.controller.setGuideItem('guide_label1', {
 													componentId: 'ibest_guide_button_1_' + this.uniId,
 													content: "这是一个按钮的引导内容..."
 												})
 												if(!ok) {
-													IBestToast.show("Please check if the area is within the screen")
+													IBestToast.show("请检查该区域是否在屏幕内!")
 													return
 												}
 												this.controller.setGuideItem('guide_label2', {
