@@ -18,7 +18,7 @@ function demo(sort: number, total: number, ctl: IBestGuideBaseController) {
 				.width(CONTAINER_SIZE.FULL)
 				.padding(SPACE.SM)
 				.textAlign(TextAlign.Start)
-				.fontColor(Color.Pink)
+				.fontColor(Color.Red)
 
 			Row({space: SPACE.MD}) {
 				Row({space: SPACE.MD}) {
@@ -116,7 +116,7 @@ struct GuidePage {
 										type: 'warning'
 									})
 									IBestButton({
-										text: "基础引导",
+										text: $r('app.string.guid_mixed_use_slots'),
 										plain: true,
 										type: 'warning',
 										onClickBtn: () => {
@@ -201,7 +201,7 @@ struct GuidePage {
 							ComponentShowContainer({ title: $r("app.string.custom_button", $r("app.string.plain")) }) {
 								Row({ space: SPACE.SM }) {
 									IBestButton({
-										text: "多区域合并引导",
+										text: $r('app.string.guid_merge_rects'),
 										type: 'primary',
 										plain: true,
 										onClickBtn: () => {
@@ -217,7 +217,7 @@ struct GuidePage {
 										}
 									}).id('ibest_guide_button_2_' + this.uniId)
 									IBestButton({
-										text: "单个引导",
+										text: $r('app.string.guid_use_single'),
 										plain: true,
 										type: 'success',
 										onClickBtn: () => {
@@ -237,7 +237,7 @@ struct GuidePage {
 										}
 									}).id('ibest_guide_button_3_' + this.uniId)
 									IBestButton({
-										text: "基础引导",
+										text: $r('app.string.guid_basic_usage'),
 										plain: true,
 										type: 'warning',
 										onClickBtn: () => {
@@ -287,13 +287,13 @@ struct GuidePage {
 						}
 
 						ListItem() {
-							ComponentShowContainer({ title: '测试屏幕外组件引导' }) {
+							ComponentShowContainer({ title: '测试屏幕外组件引导，严格模式不会弹出引导，宽松模式允许在屏幕边界弹出' }) {
 								Flex({
 									wrap: FlexWrap.Wrap,
 									space: { main: LengthMetrics.vp(SPACE.SM), cross: LengthMetrics.vp(SPACE.SM) }
 								}) {
 									IBestButton({
-										text: "严格模式",
+										text: $r('app.string.guid_is_strict_mode'),
 										type: 'warning',
 										onClickBtn: () => {
 											if(this.controller) {
@@ -317,7 +317,7 @@ struct GuidePage {
 									})
 
 									IBestButton({
-										text: "宽松模式",
+										text: $r('app.string.guid_is_loose_mode'),
 										type: 'primary',
 										onClickBtn: () => {
 											if(this.controller) {
