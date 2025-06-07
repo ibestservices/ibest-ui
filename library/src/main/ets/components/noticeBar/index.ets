@@ -153,8 +153,10 @@ export struct IBestNoticeBar{
 			if (this.textWidth > this.contentWidth && this.scrollable === undefined) {
 				this.scrollable = true
 			}
-			this.duration = this.textWidth / +this.speed
-			this.transX = -this.textWidth
+			if(this.scrollable){
+				this.duration = this.textWidth / +this.speed
+				this.transX = -this.textWidth
+			}
 		}, +this.delay * 1000)
 	}
 	onFinish(){

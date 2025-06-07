@@ -506,7 +506,7 @@
 		},
 		 {
 			"name": "ibest_dropdown_menu_bg_color",
-			"value": "$color:ibest_white"
+			"value": "$color:ibest_background_2"
 		},
 		{
 			"name": "ibest_dropdown_menu_text_color",

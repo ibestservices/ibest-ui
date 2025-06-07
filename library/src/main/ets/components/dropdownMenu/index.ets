@@ -36,22 +36,26 @@ export struct IBestDropdownMenu{
      */
     @Provide({ allowOverride: 'bgColor' }) bgColor: ResourceColor = IBestDropdownMenuColor.bgColor
     /**
-     * 菜单标题和选项的选中态颜色
-     */
-    @Provide({ allowOverride: 'activeColor' }) activeColor: ResourceColor = IBestDropdownMenuColor.activeColor
-    /**
      * 是否在点击遮罩层后关闭弹窗
      */
     @Prop closeOnClickOverlay: boolean = true
     /**
      * 菜单选项宽度类型
      */
-    @Provide({ allowOverride: 'optionWidthType' }) optionWidthType: 'auto' | 'flex' = 'flex'
+    @Provide({ allowOverride: 'menuWidthType' }) menuWidthType: 'auto' | 'flex' = 'flex'
     /**
      * 菜单选项字体大小
      */
-    @Provide({ allowOverride: 'optionFontSize' }) optionFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
+    @Provide({ allowOverride: 'menuFontSize' }) menuFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
     /**
+	 * 菜单选项字体色
+     */
+	@Provide({ allowOverride: 'menuFontColor' }) menuFontColor: ResourceColor = IBestDropdownMenuColor.textColor
+	/**
+	 * 菜单标题和选项的选中态颜色
+	 */
+	@Provide({ allowOverride: 'activeColor' }) activeColor: ResourceColor = IBestDropdownMenuColor.activeColor
+	/**
      * 选中图标
      */
     @Provide({ allowOverride: 'selectedIcon' }) selectedIcon: ResourceStr = 'success'
@@ -78,7 +82,7 @@ export struct IBestDropdownMenu{
     @Builder optionListBuilder(){
         ForEach(this.menuList, (option: IBestDropdownMenuContentParams, index: number) => {
             IBestDropdownMenuOptionItem({ option: option, index: index })
-                .layoutWeight(this.optionWidthType == 'flex' ? 1 : 0)
+                .layoutWeight(this.menuWidthType == 'flex' ? 1 : 0)
                 .id(`ibest_dropdown_menu_${this.uniId}`)
                 .enabled(!option.disabled)
                 .onClick(() => {
@@ -211,7 +215,7 @@ export struct IBestDropdownMenu{
         }
     }
     build() {
-        if(this.optionWidthType == 'flex'){
+        if(this.menuWidthType == 'flex'){
             Row() {
                 this.optionListBuilder()
             }
@@ -235,10 +239,11 @@ export struct IBestDropdownMenu{
 struct IBestDropdownMenuOptionItem{
     @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     @ObjectLink @Watch("getShowText") option: IBestDropdownMenuContentParams
+	@Consume menuFontColor: ResourceColor
     @Consume activeIndex: number
     @Consume activeColor: ResourceColor
-    @Consume optionWidthType: 'auto' | 'flex'
-    @Consume optionFontSize: IBestStringNumber
+    @Consume menuWidthType: 'auto' | 'flex'
+    @Consume menuFontSize: IBestStringNumber
     @Prop index: number
     isOpen(){
         return this.index == this.activeIndex && this.option.dialogId !== ''
@@ -255,8 +260,8 @@ struct IBestDropdownMenuOptionItem{
     build() {
         Row({space: this.baseStyle.spaceBase as string}){
             Text(this.getShowText())
-                .fontColor(this.option.disabled ? IBestDropdownMenuColor.disabledColor : this.isOpen() ? this.activeColor : IBestDropdownMenuColor.textColor)
-                .fontSize(this.optionFontSize)
+                .fontColor(this.option.disabled ? IBestDropdownMenuColor.disabledColor : this.isOpen() ? this.activeColor : this.menuFontColor)
+                .fontSize(this.menuFontSize)
                 .constraintSize({maxWidth: "80%"})
                 .textAlign(TextAlign.Center)
                 .maxLines(1)
@@ -268,7 +273,7 @@ struct IBestDropdownMenuOptionItem{
                 .rotate({ z: 1, angle: this.isOpen() ? 180 : 0 })
                 .animation({duration: 200})
         }
-        .width(this.optionWidthType == 'flex' ? CONTAINER_SIZE.FULL : "")
+        .width(this.menuWidthType == 'flex' ? CONTAINER_SIZE.FULL : "")
         .height(CONTAINER_SIZE.FULL)
         .justifyContent(FlexAlign.Center)
         .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})

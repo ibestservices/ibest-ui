@@ -1,4 +1,4 @@
-import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getSizeByUnit, sleep } from '../../utils/utils'
 import { PopupAlign, PopupBaseController } from './index.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
@@ -380,14 +380,15 @@ export struct IBestPopup{
 		})
 	}
 
-	visibleChange(){
+	async visibleChange(){
 		if(this.visible){
 			this.open()
 		}else{
-			this.baseController.hide()
-			setTimeout(() => {
-				this.promptAction.closeCustomDialog(this.dialogId)
-			}, hideDuration)
+			if(this.popupAlign != 'center'){
+				this.baseController.hide()
+				await sleep(hideDuration)
+			}
+			this.promptAction.closeCustomDialog(this.dialogId)
 		}
 	}
 	// 弹框打开时, 屏幕转向, 内容会错位, 暂时这样处理, 后续在再优化

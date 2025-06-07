@@ -147,7 +147,7 @@ struct DropdownMenuPage{
                 }
                 ListItem() {
                     ComponentShowContainer({ title: '横向滚动', titlePaddingLeft: SPACE.MD }){
-                        IBestDropdownMenu({ groupId: this.groupId3, optionWidthType: "auto" }){
+                        IBestDropdownMenu({ groupId: this.groupId3, menuWidthType: "auto" }){
                             IBestDropdownItem({
                                 groupId: this.groupId3,
                                 value: this.value,

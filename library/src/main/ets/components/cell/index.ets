@@ -247,50 +247,47 @@ export struct IBestCell {
 				.layoutWeight(this.leftContentWidth ? 0 : 1)
 				.width(getSizeByUnit(this.leftContentWidth))
 				.alignItems(this.center ? HorizontalAlign.Center : HorizontalAlign.Start)
-				if (this.valueBuilder) {
+				Row() {
 					Row() {
-						this.valueBuilder()
-					}
-					.layoutWeight(1)
-				} else {
-					Row() {
-						Row() {
+						if (this.valueBuilder) {
+							this.valueBuilder()
+						} else {
 							Text(this.value)
 								.textAlign(TextAlign.Start)
 								.fontSize(this.getCellSize().fontSize)
 								.fontColor(this.valueColor)
-						}.justifyContent(FlexAlign.End).layoutWeight(1)
-						if (this.rightIconBuilder) {
-							Row() {
-								this.rightIconBuilder()
-							}
-							.margin({ left: getSizeByUnit(this.rightIconMarginLeft) })
-						} else if (this.rightIcon) {
+						}
+					}.justifyContent(FlexAlign.End).layoutWeight(1)
+					if (this.rightIconBuilder) {
+						Row() {
+							this.rightIconBuilder()
+						}
+						.margin({ left: getSizeByUnit(this.rightIconMarginLeft) })
+					} else if (this.rightIcon) {
+						IBestIcon({
+							name: this.rightIcon,
+							iconSize: this.rightIconSize,
+							color: this.rightIconColor
+						}).margin({ left: getSizeByUnit(this.rightIconMarginLeft) })
+					} else if (this.isLink) { // 如果是link箭头
+						Row() {
 							IBestIcon({
-								name: this.rightIcon,
+								name: "arrow",
 								iconSize: this.rightIconSize,
 								color: this.rightIconColor
-							}).margin({ left: getSizeByUnit(this.rightIconMarginLeft) })
-						} else if (this.isLink) { // 如果是link箭头
-							Row() {
-								IBestIcon({
-									name: "arrow",
-									iconSize: this.rightIconSize,
-									color: this.rightIconColor
+							})
+								.margin({
+									left: getSizeByUnit(this.rightIconMarginLeft)
 								})
-									.margin({
-										left: getSizeByUnit(this.rightIconMarginLeft)
-									})
-									.rotate({ angle: this.getArrowRotateAngle() })
-									.animation({
-										duration: this.baseStyle.animationDuration as number
-									})
-							}.height(convertDimensionsWidthUnit(16))
-						}
+								.rotate({ angle: this.getArrowRotateAngle() })
+								.animation({
+									duration: this.baseStyle.animationDuration as number
+								})
+						}.height(convertDimensionsWidthUnit(16))
 					}
-					.layoutWeight(1)
-					.alignItems(this.getAlignItems())
 				}
+				.layoutWeight(1)
+				.alignItems(this.getAlignItems())
 				if (this.hasBorder && this.borderSizeType == "center") {
 					CellDivider({ bottom: "-" + this.getCellSize().padding as Dimension })
 				}

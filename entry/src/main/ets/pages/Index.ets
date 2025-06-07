@@ -524,7 +524,7 @@ struct Index {
 		this.checkUpdate()
 		this.getUiVersion()
 		setTimeout(() => {
-			RouterUtil.push("DropdownMenu")
+			// RouterUtil.push("DropdownMenu")
 		}, 100)
 	}
 	getTitleOpacity(){
