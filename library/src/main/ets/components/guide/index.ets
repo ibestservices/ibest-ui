@@ -5,7 +5,7 @@ import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SPACE } from '../../theme-chalk/src/space';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { IBestButton } from '../button';
-import { IBestIcon } from '../icon';
+import { IBestGuideColor } from './color';
 import { IBestGuideBaseController, IBestGuideController, IBestGuideItem } from './index.type';
 
 @Component
@@ -18,7 +18,6 @@ export struct IBestGuide {
    * 默认插槽
    */
   @BuilderParam defaultBuilder: CustomBuilder;
-
   /**
    * 气泡框宽度
    */
@@ -34,23 +33,15 @@ export struct IBestGuide {
   /**
    * 气泡框背景色
    */
-  @Provide({allowOverride: "bgColor"}) bgColor: ResourceColor = $r("app.color.ibest_popover_background")
+  @Provide({allowOverride: "bgColor"}) bgColor: ResourceColor = IBestGuideColor.bgColor
   /**
-   * 蒙层颜色
+   * 气泡框的圆角半径
    */
-  @Prop maskColor: string= "#99000000"
-  /**
-   * 引导区域的圆角半径
-   */
-  @Prop guideCornerRadius: number = 4
-  /**
-   * 弹出气泡的圆角半径
-   */
-  @Prop popupCornerRadius: number = 18
+  @Prop popupCornerRadius: IBestStringNumber = convertDimensionsWidthUnit(8)
   /**
    * 按钮间距
    */
-  @Prop buttonSpace: number = 20
+  @Prop buttonSpace: IBestStringNumber = this.baseStyle.spaceMd as string
   /**
    * 内容区域的行高 lineHeight
    */
@@ -120,10 +111,6 @@ export struct IBestGuide {
 
   aboutToAppear(): void {
     this.uniId = this.getUniqueId()
-    this.controller.setStyle({
-      maskColor: this.maskColor,
-      guideAreaRound: this.guideCornerRadius
-    })
   }
 
   @Builder popupBuilder() {
@@ -217,14 +204,13 @@ export struct IBestGuide {
               shadow: ShadowStyle.OUTER_DEFAULT_MD,
               showInSubWindow: false,
               autoCancel: false,
-              radius: this.popupCornerRadius,
+              radius: getSizeByUnit(this.popupCornerRadius) as Dimension,
               onWillDismiss: false,
               transition: TransitionEffect.asymmetric(
-                TransitionEffect.translate({x: 20, y: 20}).animation({duration: 350, curve: Curve.Ease}),
+                TransitionEffect.opacity(0).animation({duration: 20, delay: 50}),
                 TransitionEffect.IDENTITY
               )
             })
-
         }
         .visibility(this.isShowGuide ? Visibility.Visible : Visibility.None)
         .zIndex(this.isShowGuide ? 99 : 0)

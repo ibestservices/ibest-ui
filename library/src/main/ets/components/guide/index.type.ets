@@ -106,6 +106,7 @@ export interface IBestGuideItem {
 }
 
 export interface IBestGuideItemOption {
+  label: string
   componentId: string|Array<string>
   content: string|WrappedBuilder<[sort: number, total: number, ctl: IBestGuideBaseController]>
   placement?: Placement
@@ -117,7 +118,7 @@ export interface OnGuideChangedListener {
 }
 
 export interface styleParamType {
-  maskColor: string
+  maskColor: string | number | CanvasGradient | CanvasPattern
   guideAreaRound: number
 }
 
@@ -160,7 +161,7 @@ export class IBestGuideController implements IBestGuideBaseController {
   /**
    * 设置引导节点
    */
-  setGuideItem(label: string, option: IBestGuideItemOption) {
+  setGuideItem(option: IBestGuideItemOption) {
     let item: IBestGuideItem = {
       value: option.content,
       guideArea: new GuideRect(0, 0, 0, 0),
@@ -184,7 +185,7 @@ export class IBestGuideController implements IBestGuideBaseController {
     if(this.isStrict && item.guideArea.isEmpty()) {
       return false
     }
-    this.guideGather.set(label, item)
+    this.guideGather.set(option.label, item)
     return true
   }
   /**

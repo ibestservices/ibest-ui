@@ -122,24 +122,29 @@ struct GuidePage {
 										onClickBtn: () => {
 											if(this.controller) {
 												this.controller.cleanAll()
-												this.controller.setGuideItem('guide_label1', {
+												this.controller.setGuideItem({
+													label: 'guide_label1',
 													componentId: 'ibest_guide_button_1_' + this.uniId,
 													content: "这是一个按钮的引导内容..."
 												})
-												this.controller.setGuideItem('guide_label2', {
+												this.controller.setGuideItem({
+													label: 'guide_label2',
 													componentId: 'ibest_guide_button_2_' + this.uniId,
 													content: "这是一个按钮的引导内容..."
 												})
-												this.controller.setGuideItem('guide_label3', {
+												this.controller.setGuideItem({
+													label: 'guide_label3',
 													componentId: 'ibest_guide_button_3_' + this.uniId,
 													content: wrapBuilder(demo),
 													placement: Placement.Top
 												})
-												this.controller.setGuideItem('guide_label4', {
+												this.controller.setGuideItem({
+													label: 'guide_label4',
 													componentId: 'ibest_guide_field_' + this.uniId,
 													content: "这是一个输入框的引导内容..."
 												})
-												this.controller.setGuideItem('guide_label5', {
+												this.controller.setGuideItem({
+													label: 'guide_label5',
 													componentId: 'ibest_guide_slider_' + this.uniId,
 													content: "一个滑块??"
 												})
@@ -208,7 +213,8 @@ struct GuidePage {
 											if(this.controller) {
 												this.controller.cleanAll()
 												this.controller.setStrictMode(true)
-												this.controller.setGuideItem('guide_label1', {
+												this.controller.setGuideItem({
+													label: 'guide_label1',
 													componentId: ['ibest_guide_form_1_' + this.uniId, 'ibest_guide_form_2_' + this.uniId],
 													content: "多组件合并区域..."
 												})
@@ -224,7 +230,8 @@ struct GuidePage {
 											if(this.controller) {
 												this.controller.cleanAll()
 												this.controller.setStrictMode(true)
-												const ok = this.controller.setGuideItem('guide_label1', {
+												const ok = this.controller.setGuideItem({
+													label: 'guide_label1',
 													componentId: 'ibest_guide_button_1_' + this.uniId,
 													content: "这是单个引导内容..."
 												})
@@ -243,11 +250,13 @@ struct GuidePage {
 										onClickBtn: () => {
 											if(this.controller) {
 												this.controller.cleanAll()
-												this.controller.setGuideItem('guide_label2', {
+												this.controller.setGuideItem({
+													label: 'guide_label2',
 													componentId: 'ibest_guide_button_2_' + this.uniId,
 													content: "这是一个按钮的引导内容..."
 												})
-												this.controller.setGuideItem('guide_label3', {
+												this.controller.setGuideItem({
+													label: 'guide_label3',
 													componentId: 'ibest_guide_button_3_' + this.uniId,
 													content: "这是另一个按钮的引导内容..."
 												})
@@ -299,7 +308,8 @@ struct GuidePage {
 											if(this.controller) {
 												this.controller.cleanAll()
 												this.controller.setStrictMode(true)
-												const ok = this.controller.setGuideItem('guide_label1', {
+												const ok = this.controller.setGuideItem({
+													label: 'guide_label1',
 													componentId: 'ibest_guide_button_1_' + this.uniId,
 													content: "这是一个按钮的引导内容..."
 												})
@@ -307,7 +317,8 @@ struct GuidePage {
 													IBestToast.show("请检查该区域是否在屏幕内!")
 													return
 												}
-												this.controller.setGuideItem('guide_label2', {
+												this.controller.setGuideItem({
+													label: 'guide_label2',
 													componentId: 'ibest_guide_button_2_' + this.uniId,
 													content: "这是另一个按钮的引导内容..."
 												})
@@ -323,11 +334,13 @@ struct GuidePage {
 											if(this.controller) {
 												this.controller.cleanAll()
 												this.controller.setStrictMode(false)
-												this.controller.setGuideItem('guide_label1', {
+												this.controller.setGuideItem({
+													label: 'guide_label1',
 													componentId: 'ibest_guide_button_1_' + this.uniId,
 													content: "这是一个按钮的引导内容..."
 												})
-												this.controller.setGuideItem('guide_label2', {
+												this.controller.setGuideItem({
+													label: 'guide_label2',
 													componentId: 'ibest_guide_button_2_' + this.uniId,
 													content: "这是另一个按钮的引导内容..."
 												})
@@ -338,7 +351,6 @@ struct GuidePage {
 								}
 							}
 						}
-
 						ListItem().height(50)
 					}
 					.layoutWeight(1)
