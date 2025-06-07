@@ -191,6 +191,11 @@
 			"buildFunction": "SwipeCellBuilder"
 		},
 		{
+			"name": "Guide",
+			"pageSourceFile": "src/main/ets/pages/base/Guide.ets",
+			"buildFunction": "GuideBuilder"
+		},
+		{
 			"name": "Badge",
 			"pageSourceFile": "src/main/ets/pages/base/Badge.ets",
 			"buildFunction": "BadgeBuilder"

@@ -194,6 +194,10 @@ struct Index {
 				{
 					name: $r("app.string.component_swipeCell"),
 					path: "SwipeCell"
+				},
+				{
+					name: $r("app.string.component_guide"),
+					path: "Guide"
 				}
 			]
 		},

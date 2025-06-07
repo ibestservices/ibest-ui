@@ -217,6 +217,10 @@
 			"value": "SwipeCell"
 		},
 		{
+			"name": "component_guide",
+			"value": "Guide"
+		},
+		{
 			"name": "component_badge",
 			"value": "Badge"
 		},
@@ -659,6 +663,30 @@
 		{
 			"name": "inner_jump",
 			"value": "Inner Jump"
+		},
+		{
+			"name": "guid_mixed_use_slots",
+			"value": "Mixed Use Slots"
+		},
+		{
+			"name": "guid_basic_usage",
+			"value": "Basic Usage"
+		},
+		{
+			"name": "guid_use_single",
+			"value": "Single"
+		},
+		{
+			"name": "guid_merge_rects",
+			"value": "Merge Rects"
+		},
+		{
+			"name": "guid_is_strict_mode",
+			"value": "Strict Mode"
+		},
+		{
+			"name": "guid_is_loose_mode",
+			"value": "Loose Mode"
 		}
 	]
 }

@@ -217,6 +217,10 @@
 			"value": "SwipeCell 滑动单元格"
 		},
 		{
+			"name": "component_guide",
+			"value": "Guide 引导"
+		},
+		{
 			"name": "component_badge",
 			"value": "Badge 徽标"
 		},
@@ -659,6 +663,30 @@
 		{
 			"name": "inner_jump",
 			"value": "内部跳转"
+		},
+		{
+			"name": "guid_mixed_use_slots",
+			"value": "使用插槽"
+		},
+		{
+			"name": "guid_basic_usage",
+			"value": "基础引导"
+		},
+		{
+			"name": "guid_use_single",
+			"value": "单个引导"
+		},
+		{
+			"name": "guid_merge_rects",
+			"value": "多区域合并引导"
+		},
+		{
+			"name": "guid_is_strict_mode",
+			"value": "严格模式"
+		},
+		{
+			"name": "guid_is_loose_mode",
+			"value": "宽松模式"
 		}
 	]
 }

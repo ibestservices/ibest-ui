@@ -171,3 +171,6 @@ export { IBestColorPicker } from './src/main/ets/components/colorPicker/index'
 
 export { IBestImageCropper } from './src/main/ets/components/imageCropper/index'
 export { IBestImageCropperController } from './src/main/ets/components/imageCropper/index.type'
+
+export { IBestGuide } from './src/main/ets/components/guide/index'
+export { IBestGuideController, IBestGuideBaseController, IBestGuideItemOption } from './src/main/ets/components/guide/index.type'
