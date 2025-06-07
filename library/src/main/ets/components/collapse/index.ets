@@ -19,7 +19,7 @@ export struct IBestCollapse {
     /**
      * 当前展开面板的name
      */
-    @Link activeName: IBestStringNumber | IBestStringNumber[]
+    @Link @Watch("initItem") activeName: IBestStringNumber | IBestStringNumber[]
     /**
      * 是否开启手风琴模式
      */

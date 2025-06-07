@@ -6,6 +6,7 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { debounce } from '../../utils/DebounceThrottle';
 import { IBestTabColor } from './color';
 import { IBestStringNumber } from '../../model/Global.type';
+import { IBestIcon } from '../../../../../Index';
 
 @Component
 export struct IBestTabs{
@@ -404,11 +405,11 @@ struct IBestTab{
         Row() {
             Row(){
                 if(this.item.icon) {
-                    Image(this.item.icon)
-                        .width(getSizeByUnit(this.fontSize))
-                        .aspectRatio(1)
-                        .margin({right: this.baseStyle.spaceBase})
-                        .fillColor(this.getFontColor())
+                    IBestIcon({
+                        name: this.item.icon,
+                        iconSize: this.fontSize,
+                        color: this.getFontColor()
+                    }).margin({right: this.baseStyle.spaceBase})
                 }
                 Text(){
                     Span(this.item.label)
