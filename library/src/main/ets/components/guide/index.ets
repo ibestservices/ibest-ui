@@ -6,7 +6,7 @@ import { SPACE } from '../../theme-chalk/src/space';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { IBestButton } from '../button';
 import { IBestGuideColor } from './color';
-import { IBestGuideBaseController, IBestGuideController, IBestGuideItem } from './index.type';
+import { GuideRect, IBestGuideBaseController, IBestGuideController, IBestGuideItemType } from './index.type';
 
 @Component
 export struct IBestGuide {
@@ -17,7 +17,19 @@ export struct IBestGuide {
   /**
    * 默认插槽
    */
-  @BuilderParam defaultBuilder: CustomBuilder;
+  @BuilderParam defaultBuilder: CustomBuilder
+  /**
+   * 引导路径数据
+   */
+  @Link @Watch("updateAttributeCache") data: Array<IBestGuideItemType>
+  /**
+   * 严格模式,当引导的元素不在屏幕内时抛出异常
+   */
+  @Prop strictMode: boolean = true
+  /**
+   * 引导控制器
+   */
+  @ObjectLink controller: IBestGuideController
   /**
    * 气泡框宽度
    */
@@ -51,75 +63,26 @@ export struct IBestGuide {
    */
   @Prop messageFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
 
-  ////////////////////////////////////
-  /**
-   * 是否显示蒙版引导层
-   */
-  @State isShowGuide: boolean = false;
-  @State guideAreaWidth: number = 0;
-  @State guideAreaHeight: number = 0;
-  @State guideAreaTop: number = 0;
-  @State guideAreaBottom: number = 0;
-  @State guideAreaLeft: number = 0;
-  @State guideAreaRight: number = 0;
-
-  @State guideItemIsFirst: boolean = true
-  @State guideItemIsLast: boolean = false
-  @State guideItemValue: string = ""
-  @State currentSort: number = 0
-  @State guideTotal: number = 0
-  @State guidePlacement: Placement = Placement.Bottom
-
   @State guideContentBuilder: WrappedBuilder<[sort: number, total: number, ctl: IBestGuideBaseController]>|null = null
-  @State currentLabel: string = ''
+  @State guideAreaWidth: number = 0
+  @State guideAreaHeight: number = 0
+  @State guideAreaTop: number = 0
+  @State guideAreaBottom: number = 0
+  @State guideAreaLeft: number = 0
+  @State guideAreaRight: number = 0
 
-  private uiContext = this.getUIContext()
-  private settings: RenderingContextSettings = new RenderingContextSettings(true)
-  private ctx: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
-  private controller: IBestGuideController = new IBestGuideController(this.ctx, this.uiContext, {
-    onShowed: (label: string, item: IBestGuideItem, isFirst: boolean, isLast: boolean, currentSort: number, total: number, placement: Placement) => {
-      this.isShowGuide = true
-      this.currentLabel = label
-      this.guideItemIsFirst = isFirst
-      this.guideItemIsLast = isLast
-      if(typeof item.value == "string") {
-        this.guideItemValue = item.value
-        this.guideContentBuilder = null
-      } else {
-        this.guideContentBuilder = item.value
-      }
-      this.currentSort = currentSort
-      this.guideTotal = total
-      this.guidePlacement = placement
-
-      this.guideAreaWidth = item.guideArea.getWidth()
-      this.guideAreaHeight = item.guideArea.getHeight()
-      this.guideAreaTop = item.guideArea.top
-      this.guideAreaBottom = item.guideArea.bottom
-      this.guideAreaLeft = item.guideArea.left
-      this.guideAreaRight = item.guideArea.right
-    },
-    onClosed: () => {
-      this.isShowGuide = false
-      this.guideContentBuilder = null
-    }
-  });
-
-  onReady: (controller: IBestGuideController) => void = (controller: IBestGuideController) => {};
-
-  @State uniId: number = 0
-
-  aboutToAppear(): void {
-    this.uniId = this.getUniqueId()
+  updateAttributeCache() {
+    this.controller.__cache.__data = this.data
   }
 
   @Builder popupBuilder() {
     if(this.guideContentBuilder) {
-      this.guideContentBuilder.builder(this.currentSort, this.guideTotal, this.controller)
+      this.guideContentBuilder.builder(this.controller.__cache.__currentSort, this.controller.__cache.__guideTotal, this.controller)
     } else {
       Scroll() {
         Column() {
-          Text(this.guideItemValue)
+          Text(this.controller.__cache.__guideItemValue)
+
             .width(CONTAINER_SIZE.FULL)
             .padding(this.baseStyle.spaceSm)
             .textAlign(TextAlign.Start)
@@ -129,7 +92,7 @@ export struct IBestGuide {
 
           Row({space: SPACE.XL}) {
             Row({space: SPACE.MD}) {
-              Text(this.currentSort.toString() + " / " + this.guideTotal.toString())
+              Text(this.controller.__cache.__currentSort.toString() + " / " + this.controller.__cache.__guideTotal.toString())
                 .letterSpacing(this.baseStyle.spaceMini as string)
                 .fontSize(this.baseStyle.fontSizeMd)
             }
@@ -141,19 +104,19 @@ export struct IBestGuide {
                 buttonSize: 'small',
                 fontWeight: FontWeight.Medium,
                 onBtnClick: ()=>{
-                  if(!this.guideItemIsFirst){
+                  if(!this.controller.__cache.__guideItemIsFirst){
                     this.controller.prev()
                   }
                 },
-                disabled: this.guideItemIsFirst
-              }).visibility(this.guideTotal == 1 ? Visibility.Hidden : Visibility.Visible)
+                disabled: this.controller.__cache.__guideItemIsFirst
+              }).visibility(this.controller.__cache.__guideTotal == 1 ? Visibility.Hidden : Visibility.Visible)
               IBestButton({
-                text: this.guideItemIsLast ? $r('app.string.ibest_guide_complete') : $r('app.string.ibest_guide_next'),
+                text: this.controller.__cache.__guideItemIsLast ? $r('app.string.ibest_guide_complete') : $r('app.string.ibest_guide_next'),
                 type: 'primary',
                 buttonSize: 'small',
                 fontWeight: FontWeight.Medium,
                 onBtnClick: ()=>{
-                  if(!this.guideItemIsLast){
+                  if(!this.controller.__cache.__guideItemIsLast){
                     this.controller.next()
                   } else {
                     this.controller.close()
@@ -172,6 +135,22 @@ export struct IBestGuide {
     }
   }
 
+  aboutToAppear(): void {
+    this.controller.__cache.__data = this.data
+    this.controller.__cache.__strictMode = this.strictMode
+    this.controller.__cache.__guideContentBuilderEvent = (builder: WrappedBuilder<[sort: number, total: number, ctl: IBestGuideBaseController]>|null)=>{
+      this.guideContentBuilder = builder
+    }
+    this.controller.__cache.__guideAreaChangeEvent = (rect: GuideRect) => {
+      this.guideAreaWidth = rect.getWidth()
+      this.guideAreaHeight = rect.getHeight()
+      this.guideAreaTop = rect.top
+      this.guideAreaBottom = rect.bottom
+      this.guideAreaLeft = rect.left
+      this.guideAreaRight = rect.right
+    }
+  }
+
   build() {
     Column() {
       Stack() {
@@ -183,22 +162,16 @@ export struct IBestGuide {
         .zIndex(1)
 
         Stack({ alignContent: Alignment.TopStart }) {
-          Canvas(this.ctx)
-            .onReady(() => {
-              this.onReady(this.controller)
-            })
-            .width(CONTAINER_SIZE.FULL)
-            .height(CONTAINER_SIZE.FULL)
-
+          Canvas(this.controller.__cache.__context).width(CONTAINER_SIZE.FULL).height(CONTAINER_SIZE.FULL)
           Button({ type: ButtonType.Normal, stateEffect: false })
             .width(this.guideAreaWidth)
             .height(this.guideAreaHeight)
             .backgroundColor(Color.Transparent)
             .position({left: this.guideAreaLeft, right: this.guideAreaRight, top: this.guideAreaTop, bottom: this.guideAreaBottom})
-            .bindPopup(this.isShowGuide, {
+            .bindPopup(this.controller.__cache.__isShowGuide, {
               builder: this.popupBuilder,
               width: getSizeByUnit(this.popupWidth) as Dimension,
-              placement: this.guidePlacement,
+              placement: this.controller.__cache.__guidePlacement,
               popupColor: this.bgColor,
               backgroundBlurStyle: BlurStyle.NONE,
               shadow: ShadowStyle.OUTER_DEFAULT_MD,
@@ -212,8 +185,8 @@ export struct IBestGuide {
               )
             })
         }
-        .visibility(this.isShowGuide ? Visibility.Visible : Visibility.None)
-        .zIndex(this.isShowGuide ? 99 : 0)
+        .visibility(this.controller.__cache.__isShowGuide ? Visibility.Visible : Visibility.None)
+        .zIndex(this.controller.__cache.__isShowGuide ? 99 : 0)
       }
       .width(CONTAINER_SIZE.FULL)
     }

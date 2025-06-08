@@ -1,5 +1,4 @@
-import { IBestButton, IBestGuide, IBestGuideController, IBestGuideBaseController,
-	IBestField, IBestSlider, IBestToast, IBestEmpty, IBestDivider} from '@ibestservices/ibest-ui';
+import { IBestButton, IBestGuide, IBestGuideController, IBestGuideBaseController, IBestField, IBestSlider, IBestToast, IBestEmpty, IBestDivider, IBestGuideItemType } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import { LengthMetrics } from '@ohos.arkui.node';
@@ -69,8 +68,7 @@ function demo(sort: number, total: number, ctl: IBestGuideBaseController) {
 @Component
 struct GuidePage {
 	@State title: string = ''
-	private controller: IBestGuideController | null = null
-	@State uniId: number = 0
+  @State controller: IBestGuideController = new IBestGuideController(this.getUIContext())
 	@State value: string = ""
 	@State value1: string = ""
 	@State value2: string = ""
@@ -78,15 +76,12 @@ struct GuidePage {
 	@State value4: string = ""
 	@State value5: number = 30
 
-	aboutToAppear(): void {
-		this.uniId = this.getUniqueId()
-	}
-
 	build() {
 			NavDestination() {
-				IBestGuide({onReady: (controller: IBestGuideController) => {
-						this.controller = controller
-				}}) {
+				IBestGuide({
+					data: this.guideData,
+					controller: this.controller
+				}) {
 					CustomNavBar({ title: this.title })
 					List() {
 						ListItem() {
@@ -97,59 +92,58 @@ struct GuidePage {
 								}) {
 									IBestButton({
 										text: $r("app.string.custom_button", $r("app.string.primary")),
-										type: 'primary'
-									}).id('ibest_guide_button_1_' + this.uniId)
+										type: 'primary',
+										disabled: true
+									}).id('ibest_guide_button_1')
 									IBestButton({
 										text: $r("app.string.custom_button", $r("app.string.success")),
-										type: 'success'
+										type: 'success',
+										disabled: true
 									})
 									IBestButton({
 										text: $r("app.string.custom_button", $r("app.string.default")),
-										type: 'default'
+										type: 'default',
+										disabled: true
 									})
 									IBestButton({
 										text: $r("app.string.custom_button", $r("app.string.danger")),
-										type: 'danger'
+										type: 'danger',
+										disabled: true
 									})
 									IBestButton({
 										text: $r("app.string.custom_button", $r("app.string.warning")),
-										type: 'warning'
+										type: 'warning',
+										disabled: true
 									})
 									IBestButton({
 										text: $r('app.string.guid_mixed_use_slots'),
 										plain: true,
 										type: 'warning',
 										onClickBtn: () => {
-											if(this.controller) {
-												this.controller.cleanAll()
-												this.controller.setGuideItem({
-													label: 'guide_label1',
-													componentId: 'ibest_guide_button_1_' + this.uniId,
+											this.guideData = [
+												{
+													componentId: 'ibest_guide_button_1',
 													content: "这是一个按钮的引导内容..."
-												})
-												this.controller.setGuideItem({
-													label: 'guide_label2',
-													componentId: 'ibest_guide_button_2_' + this.uniId,
+												},
+												{
+													componentId: 'ibest_guide_field',
+													content: "这是一个输入框的引导内容..."
+												},
+												{
+													componentId: 'ibest_guide_button_2',
 													content: "这是一个按钮的引导内容..."
-												})
-												this.controller.setGuideItem({
-													label: 'guide_label3',
-													componentId: 'ibest_guide_button_3_' + this.uniId,
+												},
+												{
+													componentId: 'ibest_guide_button_3',
 													content: wrapBuilder(demo),
 													placement: Placement.Top
-												})
-												this.controller.setGuideItem({
-													label: 'guide_label4',
-													componentId: 'ibest_guide_field_' + this.uniId,
-													content: "这是一个输入框的引导内容..."
-												})
-												this.controller.setGuideItem({
-													label: 'guide_label5',
-													componentId: 'ibest_guide_slider_' + this.uniId,
+												},
+												{
+													componentId: 'ibest_guide_slider',
 													content: "一个滑块??"
-												})
-												this.controller.setGuideWay(['guide_label1', 'guide_label4', 'guide_label2', 'guide_label3', 'guide_label5'], true)
-											}
+												}
+											]
+											this.controller.start()
 										}
 									})
 								}
@@ -163,7 +157,7 @@ struct GuidePage {
 									label: "文本",
 									placeholder: "请输入文本",
 									hasBorder: false
-								}).id('ibest_guide_field_' + this.uniId)
+								}).id('ibest_guide_field')
 							}
 						}
 
@@ -175,7 +169,7 @@ struct GuidePage {
 									label: "密码",
 									placeholder: "请输入密码",
 									type: "password"
-								}).id('ibest_guide_form_1_' + this.uniId)
+								}).id('ibest_guide_form_1')
 								// 手机号
 								IBestField({
 									value: $value2,
@@ -198,7 +192,7 @@ struct GuidePage {
 									placeholder: "请输入小数",
 									type: "decimal",
 									decimalLength: 2
-								}).id('ibest_guide_form_2_' + this.uniId)
+								}).id('ibest_guide_form_2')
 							}
 						}
 
@@ -210,58 +204,45 @@ struct GuidePage {
 										type: 'primary',
 										plain: true,
 										onClickBtn: () => {
-											if(this.controller) {
-												this.controller.cleanAll()
-												this.controller.setStrictMode(true)
-												this.controller.setGuideItem({
-													label: 'guide_label1',
-													componentId: ['ibest_guide_form_1_' + this.uniId, 'ibest_guide_form_2_' + this.uniId],
+											this.guideData = [
+												{
+													componentId: ['ibest_guide_form_1', 'ibest_guide_form_2'],
 													content: "多组件合并区域..."
-												})
-												this.controller.setGuideWay(['guide_label1'], true)
-											}
+												}
+											]
+											this.controller.start()
 										}
-									}).id('ibest_guide_button_2_' + this.uniId)
+									}).id('ibest_guide_button_2')
 									IBestButton({
 										text: $r('app.string.guid_use_single'),
 										plain: true,
 										type: 'success',
 										onClickBtn: () => {
-											if(this.controller) {
-												this.controller.cleanAll()
-												this.controller.setStrictMode(true)
-												const ok = this.controller.setGuideItem({
-													label: 'guide_label1',
-													componentId: 'ibest_guide_button_1_' + this.uniId,
+											this.guideData = [
+												{
+													componentId: 'ibest_guide_button_1',
 													content: "这是单个引导内容..."
-												})
-												if(!ok) {
-													IBestToast.show("请检查该区域是否在屏幕内!")
-													return
 												}
-												this.controller.setGuideWay(['guide_label1'], true)
-											}
+											]
+											this.controller.start()
 										}
-									}).id('ibest_guide_button_3_' + this.uniId)
+									}).id('ibest_guide_button_3')
 									IBestButton({
 										text: $r('app.string.guid_basic_usage'),
 										plain: true,
 										type: 'warning',
 										onClickBtn: () => {
-											if(this.controller) {
-												this.controller.cleanAll()
-												this.controller.setGuideItem({
-													label: 'guide_label2',
-													componentId: 'ibest_guide_button_2_' + this.uniId,
+											this.guideData = [
+												{
+													componentId: 'ibest_guide_button_2',
 													content: "这是一个按钮的引导内容..."
-												})
-												this.controller.setGuideItem({
-													label: 'guide_label3',
-													componentId: 'ibest_guide_button_3_' + this.uniId,
+												},
+												{
+													componentId: 'ibest_guide_button_3',
 													content: "这是另一个按钮的引导内容..."
-												})
-												this.controller.setGuideWay(['guide_label2', 'guide_label3'], true)
-											}
+												}
+											]
+											this.controller.start()
 										}
 									})
 								}
@@ -277,7 +258,7 @@ struct GuidePage {
 									onChange: (val) => {
 										IBestToast.show(val.toString())
 									}
-								}).id('ibest_guide_slider_' + this.uniId)
+								}).id('ibest_guide_slider')
 							}
 						}
 
@@ -293,63 +274,6 @@ struct GuidePage {
 							Column() {
 								IBestDivider()
 							}.padding({ top: SPACE.MD })
-						}
-
-						ListItem() {
-							ComponentShowContainer({ title: '测试屏幕外组件引导，严格模式不会弹出引导，宽松模式允许在屏幕边界弹出' }) {
-								Flex({
-									wrap: FlexWrap.Wrap,
-									space: { main: LengthMetrics.vp(SPACE.SM), cross: LengthMetrics.vp(SPACE.SM) }
-								}) {
-									IBestButton({
-										text: $r('app.string.guid_is_strict_mode'),
-										type: 'warning',
-										onClickBtn: () => {
-											if(this.controller) {
-												this.controller.cleanAll()
-												this.controller.setStrictMode(true)
-												const ok = this.controller.setGuideItem({
-													label: 'guide_label1',
-													componentId: 'ibest_guide_button_1_' + this.uniId,
-													content: "这是一个按钮的引导内容..."
-												})
-												if(!ok) {
-													IBestToast.show("请检查该区域是否在屏幕内!")
-													return
-												}
-												this.controller.setGuideItem({
-													label: 'guide_label2',
-													componentId: 'ibest_guide_button_2_' + this.uniId,
-													content: "这是另一个按钮的引导内容..."
-												})
-												this.controller.setGuideWay(['guide_label1', 'guide_label2'], true)
-											}
-										}
-									})
-
-									IBestButton({
-										text: $r('app.string.guid_is_loose_mode'),
-										type: 'primary',
-										onClickBtn: () => {
-											if(this.controller) {
-												this.controller.cleanAll()
-												this.controller.setStrictMode(false)
-												this.controller.setGuideItem({
-													label: 'guide_label1',
-													componentId: 'ibest_guide_button_1_' + this.uniId,
-													content: "这是一个按钮的引导内容..."
-												})
-												this.controller.setGuideItem({
-													label: 'guide_label2',
-													componentId: 'ibest_guide_button_2_' + this.uniId,
-													content: "这是另一个按钮的引导内容..."
-												})
-												this.controller.setGuideWay(['guide_label1', 'guide_label2'], true)
-											}
-										}
-									})
-								}
-							}
 						}
 						ListItem().height(50)
 					}
