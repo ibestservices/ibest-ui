@@ -1,4 +1,4 @@
-import { HashMap, List } from '@kit.ArkTS';
+import IBestToast from '../../apis/IBestToast';
 import { getComponentsInfo } from '../../utils/utils';
 
 export class GuideRect {
@@ -99,24 +99,6 @@ export class GuideRect {
   }
 }
 
-export interface IBestGuideItem {
-  value: string|WrappedBuilder<[sort: number, total: number, ctl: IBestGuideBaseController]>
-  guideArea: GuideRect
-  placement: Placement
-}
-
-export interface IBestGuideItemOption {
-  label: string
-  componentId: string|Array<string>
-  content: string|WrappedBuilder<[sort: number, total: number, ctl: IBestGuideBaseController]>
-  placement?: Placement
-}
-
-export interface OnGuideChangedListener {
-  onShowed: (label: string, item: IBestGuideItem, isFirst: boolean, isLast: boolean, currentSort: number, total: number, placement: Placement) => void;
-  onClosed: () => void
-}
-
 export interface styleParamType {
   maskColor: string | number | CanvasGradient | CanvasPattern
   guideAreaRound: number
@@ -128,157 +110,144 @@ export interface IBestGuideBaseController {
   close(): void;
 }
 
-export class IBestGuideController implements IBestGuideBaseController {
-  private contextUi: UIContext
-  private context: CanvasRenderingContext2D
-  private guideGather: HashMap<string, IBestGuideItem> = new HashMap();
-  private guideChangedListener: OnGuideChangedListener | null = null;
-  private guideWay: List<string> = new List();
-  private currentLabelIndex: number = -1
-  private styleParam: styleParamType = {
+export interface IBestGuideItemType {
+  componentId: string|Array<string>
+  content: string|WrappedBuilder<[sort: number, total: number, ctl: IBestGuideBaseController]>
+  placement?: Placement
+}
+
+@Observed
+class IBestGuideAttributeCache {
+  __context: CanvasRenderingContext2D = new CanvasRenderingContext2D(new RenderingContextSettings(true))
+  __data: Array<IBestGuideItemType> = []
+  __isShowGuide: boolean = false
+  __guideAreaChangeEvent: (rect: GuideRect) => void = (rect: GuideRect) => {}
+  __guidePlacement: Placement = Placement.Bottom
+  __currentSort: number = 0
+  __guideTotal: number = 0
+  /**
+   * @Observed 无法收到WrappedBuilder属性的变更??
+   */
+  //__guideContentBuilder: WrappedBuilder<[sort: number, total: number, ctl: IBestGuideBaseController]>|null = null
+  __guideContentBuilderEvent: (_: WrappedBuilder<[sort: number, total: number, ctl: IBestGuideBaseController]>|null) => void = (_: WrappedBuilder<[sort: number, total: number, ctl: IBestGuideBaseController]>|null) => {}
+  __guideItemValue: string = ""
+  __guideItemIsFirst: boolean = false
+  __guideItemIsLast: boolean = false
+  __strictMode: boolean = true
+  __styleParam: styleParamType = {
     maskColor: '#99000000',
     guideAreaRound: 4
   }
-  private isStrict: boolean = false
+}
 
-  constructor(ctx: CanvasRenderingContext2D, ctx_ui: UIContext, listener: OnGuideChangedListener) {
-    this.context = ctx
-    this.contextUi = ctx_ui
-    this.guideChangedListener = listener
+@Observed
+export class IBestGuideController implements IBestGuideBaseController {
+  private context: UIContext
+  private currentIndex: number = -1
+  __cache: IBestGuideAttributeCache = new IBestGuideAttributeCache()
+
+  constructor(context: UIContext) {
+    this.context = context
   }
-  /**
-   * 严格模式,当引导的元素不在屏幕内时抛出异常
-   */
-  setStrictMode(isStrict: boolean) {
-    this.isStrict = isStrict
-  }
-  /**
-   * 设置样式相关
-   */
-  setStyle(style: styleParamType) {
-    this.styleParam = style
-  }
-  /**
-   * 设置引导节点
-   */
-  setGuideItem(option: IBestGuideItemOption) {
-    let item: IBestGuideItem = {
-      value: option.content,
-      guideArea: new GuideRect(0, 0, 0, 0),
-      placement: option.placement ? option.placement : Placement.Bottom
+
+  start() {
+    // 做一些必要检查
+    if(this.__cache.__data.length == 0 || this.currentIndex != -1) {
+      return
     }
-    const padding = 8
+    for (let index = 0; index < this.__cache.__data.length; index++) {
+      const guideArea = this.getGuideRect(index)
+      if(this.__cache.__strictMode && guideArea.isEmpty()) {
+        IBestToast.show("请检查第"+(index+1)+"个引导区域是否在屏幕内!")
+        return
+      }
+    }
 
-    if(typeof option.componentId == "string") {
-      const data = getComponentsInfo(this.contextUi, option.componentId)
-      item.guideArea = new GuideRect(data.windowLeft-padding, data.windowTop-padding, data.width+data.windowLeft+padding, data.height+data.windowTop+padding)
+    // 引导第一个
+    this.currentIndex = 0
+    this.draw()
+  }
+
+  next() {
+    if(this.currentIndex < this.__cache.__data.length - 1) {
+      this.currentIndex +=1
+      this.draw()
+    }
+  }
+
+  prev() {
+    if(this.currentIndex > 0) {
+      this.currentIndex -=1
+      this.draw()
+    }
+  }
+
+  close() {
+    this.__cache.__isShowGuide = false
+    //this.__guideContentBuilder = null
+    this.__cache.__guideContentBuilderEvent(null)
+    this.currentIndex = -1
+    this.__cache.__context.clearRect(0, 0, this.__cache.__context.width, this.__cache.__context.height)
+  }
+
+  private draw() {
+    const item = this.__cache.__data[this.currentIndex]
+    const guideArea = this.getGuideRect(this.currentIndex)
+
+    this.__cache.__isShowGuide = true
+
+    if(typeof item.content == "string") {
+      this.__cache.__guideItemValue = item.content
+      //this.__guideContentBuilder = null
+      this.__cache.__guideContentBuilderEvent(null)
+    } else {
+      //this.__guideContentBuilder = item.content
+      this.__cache.__guideContentBuilderEvent(item.content)
+    }
+
+    this.__cache.__guideAreaChangeEvent(guideArea)
+
+    this.drawMask(guideArea)
+
+    this.__cache.__guideItemIsFirst = this.currentIndex > 0 ? false : true
+    this.__cache.__guideItemIsLast = (this.currentIndex == this.__cache.__data.length - 1 ? true : false)
+    this.__cache.__currentSort = this.currentIndex+1
+    this.__cache.__guideTotal = this.__cache.__data.length
+    this.__cache.__guidePlacement = item.placement ? item.placement : Placement.Bottom
+  }
+
+  private getGuideRect(index: number) {
+    let guideArea = new GuideRect(0, 0, 0, 0)
+    const padding = 8
+    const element = this.__cache.__data[index]
+    if(typeof element.componentId == "string") {
+      const data = getComponentsInfo(this.context, element.componentId)
+      guideArea = new GuideRect(data.windowLeft-padding, data.windowTop-padding, data.width+data.windowLeft+padding, data.height+data.windowTop+padding)
     } else {
       let rectList: Array<GuideRect> = []
-      for (let index = 0; index < option.componentId.length; index++) {
-        const element = option.componentId[index]
-        const data = getComponentsInfo(this.contextUi, element)
+      for (let j = 0; j < element.componentId.length; j++) {
+        const item = element.componentId[j]
+        const data = getComponentsInfo(this.context, item)
         rectList.push(new GuideRect(data.windowLeft, data.windowTop, data.width+data.windowLeft, data.height+data.windowTop))
       }
-      item.guideArea = GuideRect.mergeRects(rectList, padding)
+      guideArea = GuideRect.mergeRects(rectList, padding)
     }
-
-    if(this.isStrict && item.guideArea.isEmpty()) {
-      return false
-    }
-    this.guideGather.set(option.label, item)
-    return true
-  }
-  /**
-   * 设置引导路径
-   */
-  setGuideWay(guideWay: Array<string>, autoStart?: boolean) {
-    if(this.guideGather.isEmpty() || !guideWay.length){
-      return
-    }
-    for (let index = 0; index < guideWay.length; index++) {
-      const element = guideWay[index];
-      if(this.guideGather.hasKey(element)) {
-        this.guideWay.add(element)
-      }
-    }
-
-    if(autoStart) {
-      this.currentLabelIndex = 0
-      this._drawMask(this.guideWay.get(this.currentLabelIndex), true, (this.guideWay.length > 1 ? false : true), 1, this.guideWay.length)
-    }
-  }
-  /**
-   * 下一个引导节点
-   */
-  next() {
-    if(this.guideGather.isEmpty() || this.guideWay.isEmpty()){
-      return
-    }
-
-    let currentLabel: string = ""
-    if(this.currentLabelIndex == -1) {
-      currentLabel = this.guideWay.getFirst()
-      this.currentLabelIndex = this.guideWay.getIndexOf(currentLabel)
-      this._drawMask(currentLabel, true, (this.guideWay.length > 1 ? false : true), 1, this.guideWay.length)
-    }else{
-      if(this.currentLabelIndex < this.guideWay.getIndexOf(this.guideWay.getLast())) {
-        this.currentLabelIndex += 1
-        currentLabel = this.guideWay.get(this.currentLabelIndex)
-        const isEnd = (this.currentLabelIndex === this.guideWay.getIndexOf(this.guideWay.getLast()))
-        this._drawMask(currentLabel, false, isEnd, this.currentLabelIndex+1, this.guideWay.length)
-      }
-    }
-  }
-  /**
-   * 上一个引导节点
-   */
-  prev() {
-    if(this.currentLabelIndex > 0) {
-      this.currentLabelIndex -= 1
-      const currentLabel = this.guideWay.get(this.currentLabelIndex)
-      this._drawMask(currentLabel, (this.currentLabelIndex === 0), false, this.currentLabelIndex+1, this.guideWay.length)
-    }
-  }
-  /**
-   * 清除所有引导节点和路径
-   */
-  cleanAll() {
-    this.cleanGuideWay()
-    this.guideGather.clear()
-  }
-  /**
-   * 清除引导路径
-   */
-  cleanGuideWay() {
-    this.guideWay.clear()
-  }
-  /**
-   * 关闭引导
-   */
-  close() {
-    if(this.guideGather.isEmpty()){
-      return
-    }
-    this.guideChangedListener?.onClosed()
-    this.currentLabelIndex = -1
-    this.context.clearRect(0, 0, this.context.width, this.context.height);
+    return guideArea
   }
 
   /**
    * 绘制蒙层
    */
-  private _drawMask(label: string, isFirst: boolean, isLast: boolean, currentSort: number, total: number): void {
-    this.context.clearRect(0, 0, this.context.width, this.context.height);
+  private drawMask(rect: GuideRect): void {
+    this.__cache.__context.clearRect(0, 0, this.__cache.__context.width, this.__cache.__context.height);
 
     // 绘制全屏蒙版
-    this.context.fillStyle = this.styleParam.maskColor;
-    this.context.fillRect(0, 0, this.context.width, this.context.height);
-    this.context.globalCompositeOperation = "destination-out";
-    this.context.fillStyle = '#ff0000'
+    this.__cache.__context.fillStyle = this.__cache.__styleParam.maskColor;
+    this.__cache.__context.fillRect(0, 0, this.__cache.__context.width, this.__cache.__context.height);
+    this.__cache.__context.globalCompositeOperation = "destination-out";
+    this.__cache.__context.fillStyle = '#ff0000'
 
-    let guideItem = this.guideGather.get(label)
-    let rect = guideItem.guideArea
-    let round = this.styleParam.guideAreaRound
+    let round = this.__cache.__styleParam.guideAreaRound
     let minLength = Math.min(rect.getWidth(), rect.getHeight());
     if (round > minLength / 2) {
       round = minLength / 2;
@@ -287,22 +256,20 @@ export class IBestGuideController implements IBestGuideBaseController {
       round = 4;
     }
 
-    this.guideChangedListener?.onShowed(label, guideItem, isFirst, isLast, currentSort, total, guideItem.placement)
-
-    this.context.beginPath();
-    this.context.moveTo(rect.left + round, rect.top);
-    this.context.lineTo(rect.right - round, rect.top);
-    this.context.arc(rect.right - round, rect.top + round, round, 3 / 2 * Math.PI, 0);
-    this.context.lineTo(rect.right, rect.bottom - round);
-    this.context.arc(rect.right - round, rect.bottom - round, round, 0, Math.PI / 2);
-    this.context.lineTo(rect.left + round, rect.bottom);
-    this.context.arc(rect.left + round, rect.bottom - round, round, Math.PI / 2, Math.PI);
-    this.context.lineTo(rect.left, rect.top + round);
-    this.context.arc(rect.left + round, rect.top + round, round, Math.PI, 3 / 2 * Math.PI);
-    this.context.closePath();
-    this.context.fill();
+    this.__cache.__context.beginPath();
+    this.__cache.__context.moveTo(rect.left + round, rect.top);
+    this.__cache.__context.lineTo(rect.right - round, rect.top);
+    this.__cache.__context.arc(rect.right - round, rect.top + round, round, 3 / 2 * Math.PI, 0);
+    this.__cache.__context.lineTo(rect.right, rect.bottom - round);
+    this.__cache.__context.arc(rect.right - round, rect.bottom - round, round, 0, Math.PI / 2);
+    this.__cache.__context.lineTo(rect.left + round, rect.bottom);
+    this.__cache.__context.arc(rect.left + round, rect.bottom - round, round, Math.PI / 2, Math.PI);
+    this.__cache.__context.lineTo(rect.left, rect.top + round);
+    this.__cache.__context.arc(rect.left + round, rect.top + round, round, Math.PI, 3 / 2 * Math.PI);
+    this.__cache.__context.closePath();
+    this.__cache.__context.fill();
 
     // 还原混合模式：叠加绘制
-    this.context.globalCompositeOperation = "source-over";
+    this.__cache.__context.globalCompositeOperation = "source-over";
   }
 }
