@@ -82,6 +82,7 @@ export struct IBestGuide {
       Scroll() {
         Column() {
           Text(this.controller.__cache.__guideItemValue)
+
             .width(CONTAINER_SIZE.FULL)
             .padding(this.baseStyle.spaceSm)
             .textAlign(TextAlign.Start)

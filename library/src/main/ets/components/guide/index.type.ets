@@ -255,7 +255,6 @@ export class IBestGuideController implements IBestGuideBaseController {
     if (round <= 0) {
       round = 4;
     }
-
     this.__cache.__context.beginPath();
     this.__cache.__context.moveTo(rect.left + round, rect.top);
     this.__cache.__context.lineTo(rect.right - round, rect.top);

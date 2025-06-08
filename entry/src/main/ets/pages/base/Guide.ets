@@ -1,5 +1,4 @@
-import { IBestButton, IBestGuide, IBestGuideController, IBestGuideBaseController,
-	IBestField, IBestSlider, IBestToast, IBestEmpty, IBestDivider, IBestGuideItemType } from '@ibestservices/ibest-ui';
+import { IBestButton, IBestGuide, IBestGuideController, IBestGuideBaseController, IBestField, IBestSlider, IBestToast, IBestEmpty, IBestDivider, IBestGuideItemType } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import { LengthMetrics } from '@ohos.arkui.node';
@@ -69,15 +68,13 @@ function demo(sort: number, total: number, ctl: IBestGuideBaseController) {
 @Component
 struct GuidePage {
 	@State title: string = ''
-	@State controller: IBestGuideController = new IBestGuideController(this.getUIContext())
+  @State controller: IBestGuideController = new IBestGuideController(this.getUIContext())
 	@State value: string = ""
 	@State value1: string = ""
 	@State value2: string = ""
 	@State value3: string = ""
 	@State value4: string = ""
 	@State value5: number = 30
-
-	@State guideData: Array<IBestGuideItemType> = []
 
 	build() {
 			NavDestination() {
@@ -86,7 +83,6 @@ struct GuidePage {
 					controller: this.controller
 				}) {
 					CustomNavBar({ title: this.title })
-
 					List() {
 						ListItem() {
 							ComponentShowContainer({ title: $r("app.string.custom_type", $r("app.string.button")) }) {
@@ -279,7 +275,6 @@ struct GuidePage {
 								IBestDivider()
 							}.padding({ top: SPACE.MD })
 						}
-
 						ListItem().height(50)
 					}
 					.layoutWeight(1)
