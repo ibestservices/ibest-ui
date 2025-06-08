@@ -46,6 +46,7 @@ export struct IBestIcon {
 				.aspectRatio(1)
 				.fillColor(this.color)
 				.borderRadius(getSizeByUnit(this.iconRadius))
+				.draggable(false)
 				.onTouch(event => {
 					event.type == TouchType.Up && this.onIconClick(event)
 				})

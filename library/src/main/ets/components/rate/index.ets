@@ -5,6 +5,7 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestRateOption } from './index.type'
 import { IBestStringNumber } from '../../model/Global.type'
+import { IBestIcon } from '../../../../../Index'
 
 @Component
 export struct IBestRate {
@@ -181,18 +182,22 @@ struct RateItem {
 	@Consume disabledColor: ResourceColor
 	build() {
 		Stack({ alignContent: Alignment.Start }) {
-			Image(this.inactiveIcon)
+			IBestIcon({
+				name: this.inactiveIcon,
+				iconSize: CONTAINER_SIZE.FULL,
+				color: this.inactiveColor
+			})
 				.width(CONTAINER_SIZE.FULL)
 				.height(CONTAINER_SIZE.FULL)
-				.fillColor(this.inactiveColor)
-				.draggable(false)
 				.visibility(this.item.value == 1 ? Visibility.None : Visibility.Visible)
 			Row() {
-				Image(this.activeIcon)
+				IBestIcon({
+					name: this.activeIcon,
+					iconSize: CONTAINER_SIZE.FULL,
+					color: this.disabled ? this.disabledColor : this.activeColor
+				})
 					.width(getSizeByUnit(this.iconSize))
 					.height(getSizeByUnit(this.iconSize))
-					.draggable(false)
-					.fillColor(this.disabled ? this.disabledColor : this.activeColor)
 			}
 			.width(this.item.value*100 + "%")
 			.height(CONTAINER_SIZE.FULL)

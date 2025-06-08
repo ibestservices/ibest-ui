@@ -193,6 +193,10 @@
 			"value": "Dialog"
 		},
 		{
+			"name": "component_dropdownMenu",
+			"value": "DropdownMenu"
+		},
+		{
 			"name": "component_float_bubble",
 			"value": "FloatBubble"
 		},

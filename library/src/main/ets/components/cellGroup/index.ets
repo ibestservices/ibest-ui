@@ -31,6 +31,11 @@ export struct IBestCellGroup {
 	 * @since 2.0.6
      */
 	@Prop radius: IBestStringNumber = this.baseStyle.borderRadiusLg as string
+	/**
+	 * 标题内边距
+	 * @since 2.1.2
+     */
+	@Prop titlePadding: IBestStringNumber | Padding = this.baseStyle.spaceMd as string
 	// 获取边框宽度
 	getBorderWidth() {
 		return this.hasBorder && !this.inset ? 1 : 0
@@ -38,6 +43,10 @@ export struct IBestCellGroup {
 	// 获取margin
 	getMargin() {
 		return this.inset ? { left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd } as Padding : 0
+	}
+	// 获取内边距
+	getPadding() {
+		return ['string', 'number'].includes(typeof this.titlePadding) ? getSizeByUnit(this.titlePadding as IBestStringNumber) : this.titlePadding
 	}
 	build() {
 		Column() {
@@ -49,7 +58,7 @@ export struct IBestCellGroup {
 						width: { bottom: this.getBorderWidth() },
 						color: IBestCellGroupColor.borderColor
 					})
-					.padding(this.baseStyle.spaceMd)
+					.padding(this.getPadding())
 					.lineHeight(convertDimensionsWidthUnit(16))
 					.fontSize(this.baseStyle.fontSizeMd)
 					.fontColor(IBestCellGroupColor.textColor)

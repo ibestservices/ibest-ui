@@ -136,6 +136,7 @@ struct FloatBubbleComponent{
 	}
 	// 气泡点击
 	onBubbleClick(){
+		clearTimeout(this.timer)
 		if(this.isHide){
             this.isHide = false
 			this.offsetX = this.preX
@@ -179,11 +180,10 @@ struct FloatBubbleComponent{
                     })
 					.onActionUpdate((event: GestureEvent) => this.onActionUpdate(event))
 					.onActionEnd(() => this.onActionEnd()))
-				.onTouch(event => {
-					if(event.type == TouchType.Up && !this.isDragging){
-						this.onBubbleClick()
-					}
+				.onClick(() => {
+					this.onBubbleClick()
 				})
+				.monopolizeEvents(true)
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
