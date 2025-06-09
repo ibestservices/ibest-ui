@@ -171,15 +171,24 @@ export struct IBestGuide {
         }
         .zIndex(1)
 
-        Stack({alignContent: Alignment.Top}){
+        Column() {
           Column()
-            .width(CONTAINER_SIZE.FULL).height(this.avoidTopRectHeight)
+            .width(CONTAINER_SIZE.FULL)
+            .height(this.avoidTopRectHeight)
+            .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.START])
             .backgroundColor(this.controller.__cache.__styleParam.maskColor as string)
-            .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP])
+          Blank().height(CONTAINER_SIZE.FULL).layoutWeight(1)
+            .borderWidth({top: 0, left: 0, right:0, bottom: 0.5})
+            .borderColor(this.controller.__cache.__styleParam.maskColor as string)
+          Column()
+            .width(CONTAINER_SIZE.FULL)
+            .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.BOTTOM, SafeAreaEdge.END])
+            .backgroundColor(this.controller.__cache.__styleParam.maskColor as string)
         }
-        .width(CONTAINER_SIZE.FULL).height(CONTAINER_SIZE.FULL)
-        .visibility((this.controller.__cache.__isShowGuide && !this.isLayoutFullScreen) ? Visibility.Visible : Visibility.None)
-        .zIndex(this.controller.__cache.__isShowGuide ? 99 : 0)
+          .width(CONTAINER_SIZE.FULL)
+          .height(CONTAINER_SIZE.FULL)
+          .visibility((this.controller.__cache.__isShowGuide && !this.isLayoutFullScreen) ? Visibility.Visible : Visibility.None)
+          .zIndex(this.controller.__cache.__isShowGuide ? 100 : 0)
 
         Stack({ alignContent: Alignment.TopStart }) {
           Canvas(this.controller.__cache.__context).width(CONTAINER_SIZE.FULL).height(CONTAINER_SIZE.FULL)
