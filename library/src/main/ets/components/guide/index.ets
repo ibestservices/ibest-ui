@@ -3,10 +3,12 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { SPACE } from '../../theme-chalk/src/space';
+import GlobalStore from '../../utils/GlobalStore';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { IBestButton } from '../button';
 import { IBestGuideColor } from './color';
 import { GuideRect, IBestGuideBaseController, IBestGuideController, IBestGuideItemType } from './index.type';
+import { window } from '@kit.ArkUI';
 
 @Component
 export struct IBestGuide {
@@ -71,6 +73,9 @@ export struct IBestGuide {
   @State guideAreaLeft: number = 0
   @State guideAreaRight: number = 0
 
+  @State isLayoutFullScreen: boolean = GlobalStore.windowStage.getMainWindowSync().getWindowProperties().isLayoutFullScreen
+  @State avoidTopRectHeight: number = 0
+  @State avoidNavRectHeight: number = 0
   updateAttributeCache() {
     this.controller.__cache.__data = this.data
   }
@@ -148,6 +153,10 @@ export struct IBestGuide {
       this.guideAreaBottom = rect.bottom
       this.guideAreaLeft = rect.left
       this.guideAreaRight = rect.right
+      this.isLayoutFullScreen = GlobalStore.windowStage.getMainWindowSync().getWindowProperties().isLayoutFullScreen
+      this.avoidTopRectHeight = px2vp(GlobalStore.windowStage.getMainWindowSync().getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM).topRect.height)
+      this.avoidNavRectHeight = px2vp(GlobalStore.windowStage.getMainWindowSync().getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR).bottomRect.height)
+
     }
   }
 
@@ -161,6 +170,24 @@ export struct IBestGuide {
         }
         .zIndex(1)
 
+        Column() {
+          Column()
+            .width(CONTAINER_SIZE.FULL)
+            .height(this.avoidTopRectHeight)
+            .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.START])
+            .backgroundColor(this.controller.__cache.__styleParam.maskColor as string)
+          Blank().height(CONTAINER_SIZE.FULL).layoutWeight(1)
+            .borderWidth({top: 0, left: 0, right:0, bottom: 0.5})
+            .borderColor(this.controller.__cache.__styleParam.maskColor as string)
+          Column()
+            .width(CONTAINER_SIZE.FULL)
+            .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.BOTTOM, SafeAreaEdge.END])
+            .backgroundColor(this.controller.__cache.__styleParam.maskColor as string)
+        }
+          .width(CONTAINER_SIZE.FULL)
+          .height(CONTAINER_SIZE.FULL)
+          .visibility((this.controller.__cache.__isShowGuide && !this.isLayoutFullScreen) ? Visibility.Visible : Visibility.None)
+          .zIndex(this.controller.__cache.__isShowGuide ? 100 : 0)
         Stack({ alignContent: Alignment.TopStart }) {
           Canvas(this.controller.__cache.__context).width(CONTAINER_SIZE.FULL).height(CONTAINER_SIZE.FULL)
           Button({ type: ButtonType.Normal, stateEffect: false })

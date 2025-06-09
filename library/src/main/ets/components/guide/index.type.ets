@@ -1,5 +1,7 @@
 import IBestToast from '../../apis/IBestToast';
 import { getComponentsInfo } from '../../utils/utils';
+import GlobalStore from '../../utils/GlobalStore';
+import { window } from '@kit.ArkUI';
 
 export class GuideRect {
   public left: number = 0
@@ -232,6 +234,13 @@ export class IBestGuideController implements IBestGuideBaseController {
       }
       guideArea = GuideRect.mergeRects(rectList, padding)
     }
+
+    if(!GlobalStore.windowStage.getMainWindowSync().getWindowProperties().isLayoutFullScreen) {
+      const windowAvoidTopRectHeight = px2vp(GlobalStore.windowStage.getMainWindowSync().getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM).topRect.height)
+      guideArea.top -= windowAvoidTopRectHeight
+      guideArea.bottom -= windowAvoidTopRectHeight
+    }
+
     return guideArea
   }
 
