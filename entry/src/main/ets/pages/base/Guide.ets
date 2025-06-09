@@ -77,7 +77,6 @@ struct GuidePage {
 	@State value5: number = 30
 
 	@State guideData: Array<IBestGuideItemType> = []
-
 	build() {
 			NavDestination() {
 				IBestGuide({

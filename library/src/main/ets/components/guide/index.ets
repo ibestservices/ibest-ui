@@ -76,7 +76,6 @@ export struct IBestGuide {
   @State isLayoutFullScreen: boolean = GlobalStore.windowStage.getMainWindowSync().getWindowProperties().isLayoutFullScreen
   @State avoidTopRectHeight: number = 0
   @State avoidNavRectHeight: number = 0
-
   updateAttributeCache() {
     this.controller.__cache.__data = this.data
   }
@@ -154,10 +153,10 @@ export struct IBestGuide {
       this.guideAreaBottom = rect.bottom
       this.guideAreaLeft = rect.left
       this.guideAreaRight = rect.right
-
       this.isLayoutFullScreen = GlobalStore.windowStage.getMainWindowSync().getWindowProperties().isLayoutFullScreen
       this.avoidTopRectHeight = px2vp(GlobalStore.windowStage.getMainWindowSync().getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM).topRect.height)
       this.avoidNavRectHeight = px2vp(GlobalStore.windowStage.getMainWindowSync().getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR).bottomRect.height)
+
     }
   }
 
@@ -189,7 +188,6 @@ export struct IBestGuide {
           .height(CONTAINER_SIZE.FULL)
           .visibility((this.controller.__cache.__isShowGuide && !this.isLayoutFullScreen) ? Visibility.Visible : Visibility.None)
           .zIndex(this.controller.__cache.__isShowGuide ? 100 : 0)
-
         Stack({ alignContent: Alignment.TopStart }) {
           Canvas(this.controller.__cache.__context).width(CONTAINER_SIZE.FULL).height(CONTAINER_SIZE.FULL)
           Button({ type: ButtonType.Normal, stateEffect: false })
