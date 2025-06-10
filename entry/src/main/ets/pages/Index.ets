@@ -304,6 +304,10 @@ struct Index {
 		{
 			name: $r("app.string.component_imageCropper"),
 			path: "ImageCropper"
+		},
+		{
+			name: $r("app.string.component_contactAddress"),
+			path: "ContactAddress"
 		}
 	]
 	private tabsList: Tab[] = [

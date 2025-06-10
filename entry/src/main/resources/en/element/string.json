@@ -313,6 +313,10 @@
 			"value": "ImageCropper"
 		},
 		{
+			"name": "component_contactAddress",
+			"value": "ContactAddress"
+		},
+		{
 			"name": "primary",
 			"value": "Primary"
 		},

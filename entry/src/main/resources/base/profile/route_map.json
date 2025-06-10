@@ -309,6 +309,11 @@
 			"name": "ImageCropper",
 			"pageSourceFile": "src/main/ets/pages/extend/ImageCropper.ets",
 			"buildFunction": "ImageCropperBuilder"
+		},
+		{
+			"name": "ContactAddress",
+			"pageSourceFile": "src/main/ets/pages/extend/ContactAddress.ets",
+			"buildFunction": "ContactAddressBuilder"
 		}
 	]
 }
