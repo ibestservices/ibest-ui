@@ -1,17 +1,18 @@
 import {
   IBestButton,
   IBestCellGroup,
-  IBestColorPicker,
-  IBestContactAddressForm, IBestDivider, IBestField,
-  IBestPopup,
+  IBestContactAddressController,
+  IBestContactAddressForm,
+  IBestDialogUtil,
+  IBestDivider, IBestField,
   IBestStepper,
   IBestSwitch,
-  IBestToast} from '@ibestservices/ibest-ui';
-import { IBestContactAddressController } from '@ibestservices/ibest-ui/src/main/ets/components/contactAddress/types';
+  IBestToast } from '@ibestservices/ibest-ui';
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import CustomNavBar from '../../components/CustomNavBar';
 import { getRandomColor } from '../../utils/utils';
+import { pasteboard } from '@kit.BasicServicesKit';
 
 @Builder
 export function ContactAddressBuilder(_: string, title: string){
@@ -31,7 +32,7 @@ struct ContactAddressPage {
   @State identifyTagColor: string = '#7F007DFF'
   controller: IBestContactAddressController = new IBestContactAddressController()
 
-  private labelWidth: number = 100
+  private labelWidth: number = 120
 
   aboutToAppear() {}
 
@@ -76,6 +77,15 @@ struct ContactAddressPage {
     })
   }
 
+  private testList: Array<string> = [
+    "杨俊斌15915800000深圳市龙华区龙胜新村B区162栋510000",
+    "杨俊斌15915800000深圳市龙华区龙胜新村B区162栋402510000",
+    "广东省珠海市香洲区盘山路28号 陈景勇 13593464918",
+    "马云 河北省石家庄新华区中华北大街68号鹿城商务中心6号楼1413室",
+    "收货人:李节霁 | 手机:151-8023-1234 | 地址:浙江省金华市婺城区西关街道",
+    "雁塔区高新四路710061 刘国良"
+  ]
+
   build() {
     NavDestination() {
       CustomNavBar({title: this.title})
@@ -96,28 +106,72 @@ struct ContactAddressPage {
         }
         ListItem().height(15)
         ListItem() {
-          IBestDivider({text: "测试数据", hairline: false, lineColor: Color.Red})
+          IBestDivider({text: "操作表单", hairline: false, lineColor: Color.Red})
         }
         ListItem().height(10)
         ListItem() {
-          IBestButton({
-            text: "验证表单",
-            type: "primary",
-            onBtnClick: () => {
-              this.controller.validateForm().then(res => {
-                if(res.valid){
-                  IBestToast.show("验证成功")
-                } else {
-                  let labels: string[] = res.fields.map(item => item.label)
-                  IBestToast.show({
-                    message: `${labels.join(',')}验证失败`
-                  })
+          Row({space: 5}){
+            IBestButton({
+              text: "验证表单",
+              type: "primary",
+              onBtnClick: () => {
+                this.controller.validateForm().then(res => {
+                  if(res.valid){
+                    IBestToast.show("验证成功")
+                  } else {
+                    let labels: string[] = res.fields.map(item => item.label)
+                    IBestToast.show({
+                      message: `${labels.join(',')}验证失败`
+                    })
+                  }
+                })
+              }
+            })
+
+            IBestButton({
+              text: "获取数据",
+              type: "primary",
+              onBtnClick: () => {
+                IBestDialogUtil.open({
+                  message: JSON.stringify(this.controller.getFormValues(), null, 2),
+                  messageTextAlign: "left"
+                })
+              }
+            })
+
+            IBestButton({
+              text: "清空表单",
+              type: "primary",
+              onBtnClick: () => {
+                this.controller.cleanFormValues()
+              }
+            })
+
+            IBestButton({
+              text: "随机数据",
+              type: "primary",
+              onBtnClick: () => {
+                let getRandomItem: (arr: string[]) => string = (arr: string[]) => {
+                  const randomIndex = Math.floor(Math.random() * arr.length)
+                  return arr[randomIndex]
                 }
-              })
-            }
-          })
+
+                const text = getRandomItem(this.testList)
+                IBestDialogUtil.open({
+                  message: text,
+                  messageTextAlign: "left",
+                  confirmButtonText: "复制",
+                  onConfirm: () => {
+                    const pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, text)
+                    const systemPasteboard = pasteboard.getSystemPasteboard()
+                    systemPasteboard.setData(pasteData)
+                  }
+                })
+              }
+            })
+          }
         }
-        ListItem().height(15)
+        ListItem().height(10)
         ListItem() {
           IBestDivider({text: "测试属性", hairline: false, lineColor: Color.Red})
         }
@@ -126,7 +180,7 @@ struct ContactAddressPage {
           IBestCellGroup({inset: true}) {
             IBestField({
               value: this.showInputBox,
-              label: "自动识别框",
+              label: "识别输入框",
               labelWidth: this.labelWidth,
               customRightContent: () => this.showInputBoxBuilder()
             })

@@ -1,15 +1,20 @@
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { IBestStringNumber } from '../../model/Global.type';
-import { IBestForm, IBestFormRule, IBestField, IBestFormController, IBestCellGroup,
-  IBestButton, IBestCascader, IBestTextEllipsis,
-  IBestCascaderOption,
-  IBestLoading} from "@ibestservices/ibest-ui";
 import { regionData } from "@ibestservices/area-data"
 import { IBestContactAddressColor } from './color';
 import { convertDimensionsWidthUnit, getResourceStr, getSizeByUnit } from '../../utils/utils';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
-import { AddressParseResult, filterPhone, IBestContactAddressController, judgeIsName } from './types';
+import { AddressParseResult, IBestContactAddressController } from './index.type';
+import { IBestCascaderOption } from '../cascader/index.type';
+import { IBestFormController, IBestFormRule } from '../form/index.type';
+import { IBestCellGroup } from '../cellGroup';
+import { IBestTextEllipsis } from '../textEllipsis';
+import { IBestButton } from '../button';
+import { IBestForm } from '../form';
+import { IBestLoading } from '../loading';
+import { IBestField } from '../field';
+import { IBestCascader } from '../cascader';
 
 @Component
 export struct IBestContactAddressForm {
@@ -64,17 +69,18 @@ export struct IBestContactAddressForm {
   @State visible: boolean = false
   @State selectValue: string[] = []
   @State detail: string = ""
+  @State postalCode: string = ""
   @State addressText: string = ""
   @State showLoading: boolean = false
 
   private formId: string = ''
   private formController: IBestFormController = new IBestFormController()
 
-  private validatorName = (val: string) => {
-    return judgeIsName(val)
+  private validatorName = (val: string): boolean => {
+    return IBestContactAddressController.judgeName(val)
   }
   private validatorPhone = (val: string) => {
-    return filterPhone(val).target != ''
+    return IBestContactAddressController.judgePhone(val)
   }
   private rules: IBestFormRule = {
     "name": [
@@ -103,21 +109,48 @@ export struct IBestContactAddressForm {
       area: this.provinceCityDistrict.length > 2 ? getResourceStr(this.provinceCityDistrict[2].text) : '',
       detail: this.detail,
       name: this.name,
-      provinceCode: this.provinceCityDistrict[0].value,
-      cityCode: this.provinceCityDistrict[1].value,
-      areaCode: this.provinceCityDistrict[2].value,
+      provinceCode: this.provinceCityDistrict.length > 0 ? this.provinceCityDistrict[0].value : '',
+      cityCode: this.provinceCityDistrict.length > 1 ? this.provinceCityDistrict[1].value : '',
+      areaCode: this.provinceCityDistrict.length > 2 ? this.provinceCityDistrict[2].value : '',
+      postalCode: this.postalCode
     } as AddressParseResult
+  }
+
+  setFormValues(val: AddressParseResult) {
+    this.phone = val.phone
+    this.provinceCityDistrict = [
+      {text: val.province, value: val.provinceCode as string},
+      {text: val.city, value: val.cityCode as string},
+      {text: val.area, value: val.areaCode as string},
+    ]
+    this.provinceCityDistrictStr = this.provinceCityDistrict
+      .filter((item, index, arr) => index !== 1 || item.text !== arr[0].text)
+      .map(item => item.text)
+      .join(' ')
+    this.detail = val.detail
+    this.name = val.name
+    this.postalCode = val.postalCode || ''
   }
 
   aboutToAppear() {
     this.uniId = this.getUniqueId()
     this.formId = `ibest_contact_address_form_${this.uniId}`
     this.controller.validateForm = (callBack) => {
-      console.log("############new########")
       return this.formController.validate(callBack)
     }
     this.controller.getFormValues = (): AddressParseResult => {
       return this.getFormValues()
+    }
+    this.controller.setFormValues = (val: AddressParseResult): void => {
+      this.setFormValues(val)
+    }
+    this.controller.cleanFormValues = (): void => {
+      this.phone = ''
+      this.provinceCityDistrict = []
+      this.provinceCityDistrictStr = ''
+      this.detail = ''
+      this.name = ''
+      this.postalCode = ''
     }
   }
 
@@ -187,9 +220,10 @@ export struct IBestContactAddressForm {
                 btnBorderColor: this.identifyTagColor,
                 onBtnClick: () => {
                   this.showLoading = true
-                  setTimeout(()=>{
+                  IBestContactAddressController.parseText(this.addressText).then((res) => {
                     this.showLoading = false
-                  }, 3000)
+                    if(res) this.setFormValues(res)
+                  })
                 }
               })
             }.margin({bottom: this.baseStyle.spaceSm, left: this.baseStyle.spaceSm, right: this.baseStyle.spaceSm})
@@ -222,15 +256,13 @@ export struct IBestContactAddressForm {
               value: $name,
               label: "姓名",
               placeholder: "请输入姓名",
-              showMessage: false,
-              required: false,
               hasBorder: this.hasBorder,
               autosize: true,
               type: 'username',
               inputFontWeight: this.inputFontWeight,
               labelColor: this.labelColor,
               inputFontSize: this.inputFontSize,
-              placeholderColor: this.placeholderColor
+              placeholderColor: this.placeholderColor,
             })
             IBestField({
               formId: this.formId,
@@ -238,8 +270,6 @@ export struct IBestContactAddressForm {
               value: $phone,
               label: "手机号",
               placeholder: "请输入手机号",
-              showMessage: false,
-              required: false,
               hasBorder: this.hasBorder,
               autosize: true,
               type: 'phone',
@@ -270,12 +300,27 @@ export struct IBestContactAddressForm {
               value: $detail,
               label: "详细地址",
               placeholder: "输入小区/写字楼/门牌号等",
-              hasBorder: false,
+              hasBorder: this.hasBorder,
               inputFontWeight: this.inputFontWeight,
               labelColor: this.labelColor,
               inputFontSize: this.inputFontSize,
               placeholderColor: this.placeholderColor,
               autosize: true
+            })
+            IBestField({
+              formId: this.formId,
+              prop: 'postalCode',
+              value: $postalCode,
+              label: "邮政编码",
+              placeholder: "请输入邮政编码",
+              autosize: true,
+              type: 'number',
+              max: 6,
+              inputFontWeight: this.inputFontWeight,
+              labelColor: this.labelColor,
+              inputFontSize: this.inputFontSize,
+              placeholderColor: this.placeholderColor,
+              hasBorder: false,
             })
           }
         }

@@ -1,8 +1,5 @@
 import { provinceData, provinceAndCityData, regionData } from "@ibestservices/area-data"
-import { AnyType } from "../../model/AnyType"
-import { IBestStringNumber } from "../../model/Global.type"
-import { IBestFieldValueType } from "../field/index.type"
-import { FieldValidateResult, IBestFieldValidateResult, IBestFormValidateResult } from "../form/index.type"
+import { FieldValidateResult, IBestFormValidateResult } from "../form/index.type"
 import { surname } from './surname'
 
 export interface AddressParseResult {
@@ -93,7 +90,7 @@ interface AddressParseConfigType {
 }
 
 // 过滤器返回类型
-export interface filterResult {
+interface filterResult {
   /**
    * 过滤后其他内容
    */
@@ -225,7 +222,7 @@ const pretreatmentAddressText = (address: string, textFilter: Array<string> = []
  * @param address
  * @returns filterResult
  */
-export const filterPhone = (address: string): filterResult => {
+const filterPhone = (address: string): filterResult => {
   let phone = ''
   // 整理电话格式
   address = address.replace(/(\d{3})-(\d{4})-(\d{4})/g, '$1$2$3')
@@ -415,7 +412,7 @@ const judgeFragmentIsName = (fragment: string, nameMaxLength: number): string =>
   return ''
 }
 
-export const judgeIsName = (text: string): boolean => {
+const judgeIsName = (text: string): boolean => {
   const res = judgeFragmentIsName(text, parseConfig.nameMaxLength)
   return res != ''
 }
@@ -536,11 +533,22 @@ export class IBestContactAddressController {
   static parseText: (text: string) =>  Promise<AddressParseResult|null> = AddressParse
   static parseTextSync: (text: string) => AddressParseResult = AddressParseSync
   /**
+   * 判断名字
+   */
+  static judgeName: (val: string) => boolean = (val: string) => {
+    return judgeIsName(val)
+  }
+  /**
+   * 判断手机
+   */
+  static judgePhone: (val: string) => boolean = (val: string) => {
+    return filterPhone(val).target != ''
+  }
+  /**
    * 验证整个表单
    * @param callBack 回调函数
    */
   public validateForm: (callBack?: (valid: boolean, field: FieldValidateResult[]) => void) => Promise<IBestFormValidateResult> = () => {
-    console.log("####################")
     let res: IBestFormValidateResult = {
       valid: true,
       fields: []
@@ -563,4 +571,13 @@ export class IBestContactAddressController {
       areaCode: '',
     }
   }
+  /**
+   * 设置表单数据
+   */
+  public setFormValues: (val: AddressParseResult) => void = () => {}
+
+  /**
+   * 清除表单数据
+   */
+  public cleanFormValues: () => void = () => {}
 }
