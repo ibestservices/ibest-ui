@@ -201,6 +201,10 @@
 			"value": "FloatBubble 浮动气泡"
 		},
 		{
+			"name": "component_guide",
+			"value": "Guide 引导"
+		},
+		{
 			"name": "component_loading",
 			"value": "Loading 加载"
 		},
@@ -215,10 +219,6 @@
 		{
 			"name": "component_swipeCell",
 			"value": "SwipeCell 滑动单元格"
-		},
-		{
-			"name": "component_guide",
-			"value": "Guide 引导"
 		},
 		{
 			"name": "component_badge",
@@ -679,14 +679,6 @@
 		{
 			"name": "guid_merge_rects",
 			"value": "多区域合并引导"
-		},
-		{
-			"name": "guid_is_strict_mode",
-			"value": "严格模式"
-		},
-		{
-			"name": "guid_is_loose_mode",
-			"value": "宽松模式"
 		}
 	]
 }

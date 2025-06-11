@@ -11,7 +11,6 @@ import {
 } from './index.type'
 @Component
 export struct IBestCollapse {
-    @State uniId: number = 0
     /**
      * 分组id
      */
@@ -41,6 +40,7 @@ export struct IBestCollapse {
      */
     controller: IBestCollapseController = new IBestCollapseController()
 
+    @State uniId: number = 0
     @State allCollapseItem: IBestCollapseItemData[] = []
 
     aboutToAppear(): void {

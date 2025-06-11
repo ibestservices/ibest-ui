@@ -201,6 +201,10 @@
 			"value": "FloatBubble"
 		},
 		{
+			"name": "component_guide",
+			"value": "Guide"
+		},
+		{
 			"name": "component_loading",
 			"value": "Loading"
 		},
@@ -215,10 +219,6 @@
 		{
 			"name": "component_swipeCell",
 			"value": "SwipeCell"
-		},
-		{
-			"name": "component_guide",
-			"value": "Guide"
 		},
 		{
 			"name": "component_badge",
@@ -679,14 +679,6 @@
 		{
 			"name": "guid_merge_rects",
 			"value": "Merge Rects"
-		},
-		{
-			"name": "guid_is_strict_mode",
-			"value": "Strict Mode"
-		},
-		{
-			"name": "guid_is_loose_mode",
-			"value": "Loose Mode"
 		}
 	]
 }

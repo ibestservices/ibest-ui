@@ -141,10 +141,10 @@ struct FloatBubbleComponent{
             this.isHide = false
 			this.offsetX = this.preX
             this.setDirection()
-            this.autoHide()
 		}else {
 			this.option.onBubbleClick()
 		}
+		this.autoHide()
 	}
 
 	build() {

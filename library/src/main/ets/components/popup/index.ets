@@ -7,7 +7,7 @@ import { IBestIcon } from '../icon'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestStringNumber } from '../../model/Global.type'
 import GlobalStore from '../../utils/GlobalStore'
-import { LengthMetrics } from '@kit.ArkUI'
+import { ImmersiveMode, LengthMetrics } from '@kit.ArkUI'
 
 const popupDuration = 200
 const hideDuration = 220
@@ -431,7 +431,7 @@ export struct IBestPopup{
 			keyboardAvoidDistance: this.keyboardAvoidDistance,
 			levelMode: this.levelMode,
 			levelUniqueId: this.levelUniqueId,
-			// immersiveMode: ImmersiveMode.EXTEND,
+			immersiveMode: ImmersiveMode.EXTEND,
 			onDidAppear: () => {
 				this.onOpen()
 			},

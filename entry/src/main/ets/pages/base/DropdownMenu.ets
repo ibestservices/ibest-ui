@@ -3,7 +3,7 @@ import { IBestDropdownMenu, IBestDropdownItem, IBestDropdownMenuOption, IBestToa
     IBestSwitch,
     IBestDropdownMenuController,
     IBestButton} from '@ibestservices/ibest-ui';
-import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import CustomNavBar from '../../components/CustomNavBar';
 
@@ -17,17 +17,17 @@ export function DropdownMenuBuilder(_: string, title: string){
 struct DropdownMenuPage{
     @State title: string = ''
     groupId: string = 'dropdown_menu'
-    @State value: string = ""
+    @State value: number = 1
     @State options: IBestDropdownMenuOption[] = [
-        { text: '全部商品', value: '' },
-        { text: '新款商品', value: '1' },
-        { text: '活动商品', value: '2' }
+        { text: '全部商品', value: 1 },
+        { text: '新款商品', value: 2 },
+        { text: '活动商品', value: 3 }
     ]
     @State value1: string = ''
     @State options1: IBestDropdownMenuOption[] = [
         { text: '默认排序', value: '' },
         { text: '好评排序', value: 'a' },
-        { text: '销量排序', value: 'b' },
+        { text: '销量排序', value: 'b' }
     ]
 
     groupId1: string = 'dropdown_menu_1'
@@ -37,6 +37,21 @@ struct DropdownMenuPage{
     groupId2: string = 'dropdown_menu_2'
     groupId3: string = 'dropdown_menu_3'
     groupId4: string = 'dropdown_menu_4'
+    groupId5: string = 'dropdown_menu_5'
+    @State value2: string = ''
+    @State value3: string = ''
+    @State options2: IBestDropdownMenuOption[] = [
+        { text: '全部商品', icon: "star", value: '1' },
+        { text: '新款商品', icon: "fire", value: '2' },
+        { text: '活动商品', icon: "gem", value: '3', disabled: true }
+    ]
+    @State options3: IBestDropdownMenuOption[] = [
+        { text: '默认排序', value: '' },
+        { text: '好评排序', value: 'a' },
+        { text: '销量排序', value: 'b' }
+    ]
+    @State options4: IBestDropdownMenuOption[] = []
+    @State options5: IBestDropdownMenuOption[] = []
     private controller: IBestDropdownMenuController = new IBestDropdownMenuController()
 
     @Builder switchBuilder(){
@@ -62,7 +77,7 @@ struct DropdownMenuPage{
                                 value: this.value,
                                 options: this.options,
                                 onChange: value => {
-                                    this.value = value as string
+                                    this.value = value as number
                                     IBestToast.show("选项为：" + value)
                                 }
                             })
@@ -86,7 +101,7 @@ struct DropdownMenuPage{
                                 value: this.value,
                                 options: this.options,
                                 onChange: value => {
-                                    this.value = value as string
+                                    this.value = value as number
                                 }
                             })
                             IBestDropdownItem({
@@ -124,20 +139,24 @@ struct DropdownMenuPage{
                         IBestDropdownMenu({
                             groupId: this.groupId2,
                             activeColor: "#ee0a24",
-                            radius: 8
+                            radius: 8,
+                            menuHeight: 36,
+                            menuFontSize: 12,
+                            menuShadow: { color: 'rgba(100, 101, 102, 0.2)', radius: 12, offsetY: 2 },
+                            menuIcon: $r("app.media.icon_arrow_down_full")
                         }){
                             IBestDropdownItem({
                                 groupId: this.groupId2,
                                 value: this.value,
-                                options: this.options,
+                                options: this.options2,
                                 onChange: value => {
-                                    this.value = value as string
+                                    this.value = value as number
                                 }
                             })
                             IBestDropdownItem({
                                 groupId: this.groupId2,
                                 value: this.value1,
-                                options: this.options1,
+                                options: this.options3,
                                 onChange: value => {
                                     this.value1 = value as string
                                 }
@@ -153,7 +172,7 @@ struct DropdownMenuPage{
                                 value: this.value,
                                 options: this.options,
                                 onChange: value => {
-                                    this.value = value as string
+                                    this.value = value as number
                                     IBestToast.show("选项为：" + value)
                                 }
                             })
@@ -206,16 +225,68 @@ struct DropdownMenuPage{
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '禁用菜单', titlePaddingLeft: SPACE.MD }){
+                    ComponentShowContainer({ title: '异步选项', titlePaddingLeft: SPACE.MD }){
                         IBestDropdownMenu({ groupId: this.groupId4 }){
                             IBestDropdownItem({
                                 groupId: this.groupId4,
+                                title: "商品",
+                                value: this.value2,
+                                options: this.options4,
+                                onOpen: () => {
+                                    setTimeout(() => {
+                                        this.options4 = [
+                                            { text: '打折商品', value: '1' },
+                                            { text: '新款商品', value: '2' },
+                                            { text: '活动商品', value: '3' }
+                                        ]
+                                    }, 1500)
+                                },
+                                onChange: value => {
+                                    this.value2 = value as string
+                                }
+                            })
+                            IBestDropdownItem({
+                                groupId: this.groupId4,
+                                title: "排序",
+                                value: this.value3,
+                                options: this.options5,
+                                onOpen: () => {
+                                    setTimeout(() => {
+                                        this.options5 = [
+                                            { text: '默认排序', value: 'a' },
+                                            { text: '好评排序', value: 'b' },
+                                            { text: '销量排序', value: 'c' },
+                                        ]
+                                    }, 1500)
+                                },
+                                onChange: value => {
+                                    this.value3 = value as string
+                                }
+                            })
+                        }
+                        Row(){
+                            IBestButton({
+                                type: 'primary',
+                                text: '重置',
+                                onBtnClick: () => {
+                                    this.value2 = ''
+                                    this.value3 = ''
+                                }
+                            })
+                        }.width(CONTAINER_SIZE.FULL).justifyContent(FlexAlign.Center).margin({top: SPACE.MD})
+                    }
+                }
+                ListItem() {
+                    ComponentShowContainer({ title: '禁用菜单', titlePaddingLeft: SPACE.MD }){
+                        IBestDropdownMenu({ groupId: this.groupId5 }){
+                            IBestDropdownItem({
+                                groupId: this.groupId5,
                                 value: this.value,
                                 options: this.options,
                                 disabled: true
                             })
                             IBestDropdownItem({
-                                groupId: this.groupId4,
+                                groupId: this.groupId5,
                                 value: this.value1,
                                 options: this.options1,
                                 disabled: true

@@ -106,6 +106,9 @@ export { IBestDropdownMenuOption, IBestDropdownMenuController } from './src/main
 
 export { IBestFloatBubble } from './src/main/ets/components/floatBubble/index'
 
+export { IBestGuide } from './src/main/ets/components/guide/index'
+export { IBestGuideController, IBestGuideItemType } from './src/main/ets/components/guide/index.type'
+
 export { IBestLoading } from './src/main/ets/components/loading/index'
 
 export { IBestPullRefresh } from './src/main/ets/components/pullRefresh'
@@ -171,6 +174,3 @@ export { IBestColorPicker } from './src/main/ets/components/colorPicker/index'
 
 export { IBestImageCropper } from './src/main/ets/components/imageCropper/index'
 export { IBestImageCropperController } from './src/main/ets/components/imageCropper/index.type'
-
-export { IBestGuide } from './src/main/ets/components/guide/index'
-export { IBestGuideController, IBestGuideBaseController, IBestGuideItemType } from './src/main/ets/components/guide/index.type'

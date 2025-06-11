@@ -11,10 +11,6 @@ export struct IBestCellGroup {
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
-	 * 默认插槽
-	 */
-	@BuilderParam defaultBuilder: CustomBuilder;
-	/**
 	 * 分组标题
 	 */
 	@Prop title: ResourceStr = '';
@@ -36,6 +32,11 @@ export struct IBestCellGroup {
 	 * @since 2.1.2
      */
 	@Prop titlePadding: IBestStringNumber | Padding = this.baseStyle.spaceMd as string
+	/**
+	 * 默认插槽
+	 */
+	@BuilderParam defaultBuilder: CustomBuilder
+
 	// 获取边框宽度
 	getBorderWidth() {
 		return this.hasBorder && !this.inset ? 1 : 0
@@ -63,7 +64,7 @@ export struct IBestCellGroup {
 					.fontSize(this.baseStyle.fontSizeMd)
 					.fontColor(IBestCellGroupColor.textColor)
 			}
-			if (typeof this.defaultBuilder === 'function') {
+			if (this.defaultBuilder) {
 				this.defaultBuilder()
 			}
 		}

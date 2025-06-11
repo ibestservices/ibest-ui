@@ -3,7 +3,7 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { convertDimensionsWidthUnit, sleep } from '../../utils/utils';
 import { IBestStringNumber } from '../../model/Global.type';
-import { LengthMetrics, LevelMode } from '@kit.ArkUI';
+import { ImmersiveMode, LengthMetrics, LevelMode } from '@kit.ArkUI';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 @Component
 export struct IBestDialog {
@@ -405,7 +405,7 @@ export struct IBestDialog {
 			keyboardAvoidDistance: this.keyboardAvoidDistance,
 			levelMode: this.levelMode,
 			levelUniqueId: this.levelUniqueId,
-			// immersiveMode: ImmersiveMode.EXTEND,
+			immersiveMode: ImmersiveMode.EXTEND,
 			onDidAppear: () => {
 				this.onOpen()
 			},

@@ -137,6 +137,16 @@ export struct IBestCell {
 	 */
 	@Prop disabled: boolean = false
 	/**
+	 * 标题文字大小
+	 * @since 2.1.2
+     */
+	@Prop titleFontSize: IBestStringNumber = ""
+	/**
+	 * 标题下方的描述信息文字大小
+	 * @since 2.1.2
+     */
+	@Prop labelFontSize: IBestStringNumber = ""
+	/**
 	 * title的插槽 优先级大于 title
 	 */
 	@BuilderParam titleBuilder: CustomBuilder
@@ -150,12 +160,10 @@ export struct IBestCell {
 	@BuilderParam labelBuilder: CustomBuilder
 	/**
 	 * 自定义title左侧icon的插槽
-	 * 使用titleBuilder时，该插槽不生效
 	 */
 	@BuilderParam iconBuilder: CustomBuilder
 	/**
 	 * 自定义value右侧icon的插槽
-	 * 使用valueBuilder时，该插槽不生效
 	 */
 	@BuilderParam rightIconBuilder: CustomBuilder
 	/**
@@ -179,11 +187,9 @@ export struct IBestCell {
 		const cellSize = this.cellSize;
 		switch (cellSize) {
 			case SIZE.LARGE:
-				return new CellSizeData(convertDimensionsWidthUnit(14), this.baseStyle.fontSizeLg as string,
-					this.baseStyle.fontSizeMd as string)
+				return new CellSizeData(convertDimensionsWidthUnit(14), this.titleFontSize || this.baseStyle.fontSizeLg as string, this.labelFontSize || this.baseStyle.fontSizeMd as string)
 			default:
-				return new CellSizeData(convertDimensionsWidthUnit(12), this.baseStyle.fontSizeMd as string,
-					this.baseStyle.fontSizeSm as string)
+				return new CellSizeData(convertDimensionsWidthUnit(12), this.titleFontSize || this.baseStyle.fontSizeMd as string, this.labelFontSize || this.baseStyle.fontSizeSm as string)
 		}
 	}
 	getArrowRotateAngle() {
@@ -204,30 +210,30 @@ export struct IBestCell {
 						.fontColor(this.baseStyle.danger)
 				}
 				Column() {
-					if (this.titleBuilder) {
-						Row() {
-							this.titleBuilder()
+					Row() {
+						if (this.iconBuilder) {
+							Row() {
+								this.iconBuilder()
+							}.margin({ right: getSizeByUnit(this.leftIconMarginRight) })
+						} else if (this.leftIcon) {
+							IBestIcon({
+								name: this.leftIcon,
+								iconSize: this.leftIconSize,
+								color: this.leftIconColor
+							}).margin({ right: getSizeByUnit(this.leftIconMarginRight) })
 						}
-					} else {
-						Row() {
-							if (this.iconBuilder) {
-								Row() {
-									this.iconBuilder()
-								}.margin({ right: getSizeByUnit(this.leftIconMarginRight) })
-							} else if (this.leftIcon) {
-								IBestIcon({
-									name: this.leftIcon,
-									iconSize: this.leftIconSize,
-									color: this.leftIconColor
-								}).margin({ right: getSizeByUnit(this.leftIconMarginRight) })
+						if (this.titleBuilder) {
+							Row() {
+								this.titleBuilder()
 							}
+						} else {
 							Text(this.title)
 								.layoutWeight(1)
-								.fontSize(this.getCellSize().fontSize)
+								.fontSize(getSizeByUnit(this.getCellSize().fontSize, true))
 								.fontColor(this.titleColor)
-						}.width(CONTAINER_SIZE.FULL)
-						.alignItems(this.getAlignItems())
-					}
+						}
+					}.width(CONTAINER_SIZE.FULL)
+					.alignItems(this.getAlignItems())
 					if (this.labelBuilder) {
 						Row() {
 							this.labelBuilder()
@@ -236,7 +242,7 @@ export struct IBestCell {
 						if (this.label) {
 							Text(this.label)
 								.width(CONTAINER_SIZE.FULL)
-								.fontSize(this.getCellSize().labelFontSize)
+								.fontSize(getSizeByUnit(this.getCellSize().labelFontSize, true))
 								.margin({
 									top: this.baseStyle.spaceBase
 								})
@@ -254,7 +260,7 @@ export struct IBestCell {
 						} else {
 							Text(this.value)
 								.textAlign(TextAlign.Start)
-								.fontSize(this.getCellSize().fontSize)
+								.fontSize(getSizeByUnit(this.getCellSize().fontSize, true))
 								.fontColor(this.valueColor)
 						}
 					}.justifyContent(FlexAlign.End).layoutWeight(1)
@@ -269,7 +275,7 @@ export struct IBestCell {
 							iconSize: this.rightIconSize,
 							color: this.rightIconColor
 						}).margin({ left: getSizeByUnit(this.rightIconMarginLeft) })
-					} else if (this.isLink) { // 如果是link箭头
+					} else if (this.isLink) {
 						Row() {
 							IBestIcon({
 								name: "arrow",
@@ -289,7 +295,9 @@ export struct IBestCell {
 				.layoutWeight(1)
 				.alignItems(this.getAlignItems())
 				if (this.hasBorder && this.borderSizeType == "center") {
-					CellDivider({ bottom: "-" + this.getCellSize().padding as Dimension })
+					CellDivider({
+						bottom: "-" + this.getCellSize().padding as Dimension
+					})
 				}
 			}
 			.alignItems(this.getAlignItems())

@@ -80,7 +80,12 @@ export struct IBestSlider{
 	/**
 	 * 自定义滑块
 	 */
-	@BuilderParam customButton?: CustomBuilder
+	@BuilderParam customButton: CustomBuilder
+	/**
+	 * 自定义第二个滑块
+	 * @since 2.1.2
+     */
+	@BuilderParam customSecondButton: CustomBuilder
 	/**
 	 * 进度变化且拖动结束后触发
 	 */
@@ -243,7 +248,7 @@ export struct IBestSlider{
 							DragBar({
 								value: this.value,
 								buttonIndex: 1,
-								customButton: this.customButton
+								customButton: this.customSecondButton
 							})
 						}
 					}

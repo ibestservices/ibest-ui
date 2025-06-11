@@ -504,7 +504,7 @@
 			"name": "ibest_car_input_border_color",
 			"value": "$color:ibest_border_color"
 		},
-		 {
+		{
 			"name": "ibest_dropdown_menu_bg_color",
 			"value": "$color:ibest_background_2"
 		},
@@ -523,6 +523,10 @@
 		{
 			"name": "ibest_dropdown_menu_disabled_color",
 			"value": "$color:ibest_gray_6"
+		},
+		{
+			"name": "ibest_guide_text_color",
+			"value": "$color:ibest_text_color"
 		}
 	]
 }

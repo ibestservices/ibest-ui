@@ -20,7 +20,7 @@ export struct IBestDropdownMenu{
     /**
      * 全局公共样式
      */
-    @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+    @StorageProp(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     @StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
     @StorageProp("IBestScreenHeight") screenHeight: number = 0
     /**
@@ -36,31 +36,47 @@ export struct IBestDropdownMenu{
      */
     @Provide({ allowOverride: 'bgColor' }) bgColor: ResourceColor = IBestDropdownMenuColor.bgColor
     /**
-     * 是否在点击遮罩层后关闭弹窗
+     * 菜单阴影
+     */
+    @Provide({ allowOverride: 'menuShadow' }) menuShadow: ShadowOptions | ShadowStyle = {radius: 0}
+    /**
+     * 是否在点击遮罩层后关闭下拉菜单
      */
     @Prop closeOnClickOverlay: boolean = true
     /**
-     * 菜单选项宽度类型
+     * 菜单项宽度类型
      */
     @Provide({ allowOverride: 'menuWidthType' }) menuWidthType: 'auto' | 'flex' = 'flex'
     /**
-     * 菜单选项字体大小
+     * 菜单项图标
+     */
+    @Provide({ allowOverride: 'menuIcon' }) menuIcon: ResourceStr = 'arrow-down'
+    /**
+     * 菜单项图标大小
+     */
+    @Provide({ allowOverride: 'menuIconSize' }) menuIconSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
+    /**
+     * 菜单项字体大小
      */
     @Provide({ allowOverride: 'menuFontSize' }) menuFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
     /**
-	 * 菜单选项字体色
+	 * 菜单项字体色
      */
 	@Provide({ allowOverride: 'menuFontColor' }) menuFontColor: ResourceColor = IBestDropdownMenuColor.textColor
 	/**
-	 * 菜单标题和选项的选中态颜色
+	 * 菜单标题和下拉选项的选中态颜色
 	 */
 	@Provide({ allowOverride: 'activeColor' }) activeColor: ResourceColor = IBestDropdownMenuColor.activeColor
+    /**
+     * 下拉选项文字大小
+     */
+    @Provide({ allowOverride: 'dropDownFontSize' }) dropDownFontSize: IBestStringNumber = ""
 	/**
-     * 选中图标
+     * 下拉选项选中图标
      */
     @Provide({ allowOverride: 'selectedIcon' }) selectedIcon: ResourceStr = 'success'
     /**
-     * 菜单圆角
+     * 下拉菜单圆角
      */
     @Provide({ allowOverride: 'radius' }) radius: IBestStringNumber = 0
     /**
@@ -97,7 +113,7 @@ export struct IBestDropdownMenu{
         .width(CONTAINER_SIZE.FULL)
         .height(getSizeByUnit(this.menuHeight))
         .backgroundColor(this.bgColor)
-        .shadow({ color: 'rgba(100, 101, 102, 0.2)', radius: 12, offsetY: 2 })
+        .shadow(this.menuShadow)
     }
     @Builder menuContentBuilder(maxHeight: number) {
         IBestDropdownMenuContent({
@@ -237,12 +253,14 @@ export struct IBestDropdownMenu{
 
 @Component
 struct IBestDropdownMenuOptionItem{
-    @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+    @StorageProp(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     @ObjectLink @Watch("getShowText") option: IBestDropdownMenuContentParams
 	@Consume menuFontColor: ResourceColor
     @Consume activeIndex: number
     @Consume activeColor: ResourceColor
     @Consume menuWidthType: 'auto' | 'flex'
+    @Consume menuIcon: ResourceStr
+    @Consume menuIconSize: IBestStringNumber
     @Consume menuFontSize: IBestStringNumber
     @Prop index: number
     isOpen(){
@@ -267,7 +285,8 @@ struct IBestDropdownMenuOptionItem{
                 .maxLines(1)
                 .textOverflow({overflow: TextOverflow.Ellipsis})
             IBestIcon({
-                name: "arrow-down",
+                name: this.menuIcon,
+                iconSize: this.menuIconSize,
                 color: this.option.disabled ? IBestDropdownMenuColor.disabledColor : this.isOpen() ? this.activeColor : IBestDropdownMenuColor.textColor
             })
                 .rotate({ z: 1, angle: this.isOpen() ? 180 : 0 })
@@ -282,12 +301,13 @@ struct IBestDropdownMenuOptionItem{
 
 @Component
 struct IBestDropdownMenuContent{
-    @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+    @StorageProp(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     @Prop groupId: IBestStringNumber
     @Prop maxHeight: number
     @Prop option: IBestDropdownMenuContentParams
     @Consume bgColor: ResourceColor
     @Consume activeColor: ResourceColor
+    @Consume dropDownFontSize: IBestStringNumber
     @Consume selectedIcon: ResourceStr
     controller: MenuContentController = new MenuContentController()
     @BuilderParam defaultBuilder: CustomBuilder
@@ -310,11 +330,14 @@ struct IBestDropdownMenuContent{
                 }else {
                     ForEach(this.option.options, (option: IBestDropdownMenuOption, index: number) => {
                         IBestCell({
+                            leftIcon: option.icon,
+                            leftIconColor: this.option.value == option.value ? this.activeColor : IBestDropdownMenuColor.textColor,
                             title: option.text,
+                            titleFontSize: this.dropDownFontSize,
                             titleColor: this.option.value == option.value ? this.activeColor : IBestDropdownMenuColor.textColor,
                             rightIcon: this.option.value == option.value ? this.selectedIcon : "",
                             rightIconColor: this.activeColor,
-                            // rightIconSize: "",
+                            disabled: option.disabled,
                             clickable: true,
                             hasBorder: index < this.option.options!.length - 1,
                             onCellClick: () => {

@@ -171,6 +171,11 @@
 			"buildFunction": "FloatBubbleBuilder"
 		},
 		{
+			"name": "Guide",
+			"pageSourceFile": "src/main/ets/pages/base/Guide.ets",
+			"buildFunction": "GuideBuilder"
+		},
+		{
 			"name": "Loading",
 			"pageSourceFile": "src/main/ets/pages/base/Loading.ets",
 			"buildFunction": "LoadingBuilder"
@@ -189,11 +194,6 @@
 			"name": "SwipeCell",
 			"pageSourceFile": "src/main/ets/pages/base/SwipeCell.ets",
 			"buildFunction": "SwipeCellBuilder"
-		},
-		{
-			"name": "Guide",
-			"pageSourceFile": "src/main/ets/pages/base/Guide.ets",
-			"buildFunction": "GuideBuilder"
 		},
 		{
 			"name": "Badge",
