@@ -2,13 +2,14 @@ import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { IBestStringNumber } from '../../model/Global.type';
 import { IBestForm, IBestFormRule, IBestField, IBestFormController, IBestCellGroup,
-  IBestButton,
-  IBestToast,
-  IBestCascader} from "@ibestservices/ibest-ui";
+  IBestButton, IBestCascader, IBestTextEllipsis,
+  IBestCascaderOption,
+  IBestLoading} from "@ibestservices/ibest-ui";
 import { regionData } from "@ibestservices/area-data"
 import { IBestContactAddressColor } from './color';
-import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getResourceStr, getSizeByUnit } from '../../utils/utils';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
+import { AddressParseResult, filterPhone, IBestContactAddressController, judgeIsName } from './types';
 
 @Component
 export struct IBestContactAddressForm {
@@ -43,7 +44,7 @@ export struct IBestContactAddressForm {
   /**
    * 识别输入框顶部的提示文字
    */
-  @Prop identifyTagText: ResourceStr = "示例：菜小鸟，136xxxx0000，浙江省杭州市西湖区某小区"
+  @Prop @Watch("identifyTagTextChange") identifyTagText: ResourceStr = "示例：菜小鸟，136xxxx0000，浙江省杭州市西湖区某小区"
   /**
    * 识别输入框顶部标签的背景色
    */
@@ -53,164 +54,230 @@ export struct IBestContactAddressForm {
    */
   @Prop hasIdentifyInputBox: boolean = true
 
+  controller: IBestContactAddressController = new IBestContactAddressController()
+
   @State uniId: number = 0
-  @State name: string = "杨俊斌"
-  @State phone: string = "15915862747"
-  @State provinceCityDistrict: string = ""
+  @State name: string = ""
+  @State phone: string = ""
+  @State provinceCityDistrict: Array<IBestCascaderOption> = []
+  @State provinceCityDistrictStr: string = ""
   @State visible: boolean = false
   @State selectValue: string[] = []
   @State detail: string = ""
   @State addressText: string = ""
+  @State showLoading: boolean = false
 
   private formId: string = ''
-  private controller: IBestFormController = new IBestFormController()
+  private formController: IBestFormController = new IBestFormController()
+
+  private validatorName = (val: string) => {
+    return judgeIsName(val)
+  }
+  private validatorPhone = (val: string) => {
+    return filterPhone(val).target != ''
+  }
+  private rules: IBestFormRule = {
+    "name": [
+      { required: true, message: '请输入姓名' },
+      { validator: this.validatorName, message: '请输入正确的内容' }
+    ],
+    "phone": [
+      { required: true, message: '请输入手机号' },
+      { validator: this.validatorPhone, message: '请输入正确的内容' }
+    ],
+    "provinceCityDistrictStr": [
+      { required: true, message: '请选择区域位置' }
+    ]
+  }
+
+  @State identifyTagTextLength: number = 0
+  identifyTagTextChange() {
+    this.identifyTagTextLength = getResourceStr(this.identifyTagText).length
+  }
+
+  getFormValues() {
+    return {
+      phone: this.phone,
+      province: this.provinceCityDistrict.length > 0 ? getResourceStr(this.provinceCityDistrict[0].text) : '',
+      city: this.provinceCityDistrict.length > 1 ? getResourceStr(this.provinceCityDistrict[1].text) : '',
+      area: this.provinceCityDistrict.length > 2 ? getResourceStr(this.provinceCityDistrict[2].text) : '',
+      detail: this.detail,
+      name: this.name,
+      provinceCode: this.provinceCityDistrict[0].value,
+      cityCode: this.provinceCityDistrict[1].value,
+      areaCode: this.provinceCityDistrict[2].value,
+    } as AddressParseResult
+  }
 
   aboutToAppear() {
     this.uniId = this.getUniqueId()
     this.formId = `ibest_contact_address_form_${this.uniId}`
+    this.controller.validateForm = (callBack) => {
+      console.log("############new########")
+      return this.formController.validate(callBack)
+    }
+    this.controller.getFormValues = (): AddressParseResult => {
+      return this.getFormValues()
+    }
   }
 
   build() {
     Column({space: this.baseStyle.spaceMd as string}) {
       if(this.hasIdentifyInputBox) {
-        Stack({alignContent: Alignment.Top}) {
-          IBestCellGroup({inset: true, radius: 10}) {
-            Column(){
-              Column() {
-                Text(this.identifyTagText)
-                  .backgroundColor(Color.Transparent)
-                  .fontSize(getSizeByUnit(11, true))
-                  .fontColor(IBestContactAddressColor.inputColor)
+        IBestCellGroup({inset: true, radius: 10}) {
+          Column(){
+            Column() {
+              if(this.identifyTagTextLength > 30) {
+                IBestTextEllipsis({
+                  text: this.identifyTagText,
+                  textFontSize: getSizeByUnit(this.baseStyle.fontSizeSm as string, true),
+                  textColor: IBestContactAddressColor.inputColor
+                })
+              } else {
+               Text(this.identifyTagText)
+                 .fontSize(getSizeByUnit(this.baseStyle.fontSizeSm as string, true))
+                 .fontColor(IBestContactAddressColor.inputColor)
+                 .textAlign(TextAlign.Center)
               }
-              .margin(this.baseStyle.spaceXs)
-              .justifyContent(FlexAlign.Start)
+            }
+            .margin(this.baseStyle.spaceXs)
+            .justifyContent(FlexAlign.Center)
+            .backgroundColor(Color.Transparent)
+          }
+          .clip(true)
+          .backgroundColor(this.identifyTagColor)
+          .width(CONTAINER_SIZE.FULL)
+          Column({space: this.baseStyle.spaceXs as string}) {
+            TextArea({ text: $$this.addressText, placeholder: this.identifyPlaceholder })
               .backgroundColor(Color.Transparent)
-              Column().height(this.baseStyle.lineHeightLg)
-            }
-            .clip(true)
-            .backgroundColor(this.identifyTagColor)
-            .width(CONTAINER_SIZE.FULL)
-          }
+              .fontSize(getSizeByUnit(this.inputFontSize, true))
+              .fontColor(IBestContactAddressColor.inputColor)
+              .fontWeight(this.inputFontWeight)
+              .placeholderFont({
+                size: getSizeByUnit(this.inputFontSize, true)
+              })
+              .placeholderColor(this.placeholderColor)
+              .constraintSize({ minHeight: convertDimensionsWidthUnit(4 * 20), maxHeight: convertDimensionsWidthUnit(4 * 20) })
+              .lineHeight(this.baseStyle.lineHeightMd)
+              .enableAutoFill(false)
 
-          IBestCellGroup({inset: true, radius: 10}) {
-            Column({space: this.baseStyle.spaceXs as string}) {
-              TextArea({ text: $$this.addressText, placeholder: this.identifyPlaceholder })
-                .backgroundColor(Color.Transparent)
-                .fontSize(getSizeByUnit(this.inputFontSize, true))
-                .fontColor(IBestContactAddressColor.inputColor)
-                .fontWeight(this.inputFontWeight)
-                .placeholderFont({
-                  size: getSizeByUnit(this.inputFontSize, true)
-                })
-                .placeholderColor(this.placeholderColor)
-                .constraintSize({ minHeight: convertDimensionsWidthUnit(4 * 20), maxHeight: convertDimensionsWidthUnit(4 * 20) })
-                .lineHeight(this.baseStyle.lineHeightMd)
-                .enableAutoFill(false)
-                .onChange((value: string) => {
-                })
-
-              Row({space: this.baseStyle.spaceSm as string}) {
-                Blank().layoutWeight(1)
-                IBestButton({
-                  text: "清空",
-                  type: "primary",
-                  btnBorderRadius: 20,
-                  btnWidth: 60,
-                  btnHeight: 28,
-                  color: Color.Transparent,
-                  btnBorderColor: Color.Transparent,
-                  fontColor: Color.Black
-                })
-                IBestButton({
-                  text: "识别",
-                  type: "primary",
-                  btnBorderRadius: 20,
-                  btnWidth: 60,
-                  btnHeight: 28,
-                })
-              }.margin({bottom: this.baseStyle.spaceSm, left: this.baseStyle.spaceSm, right: this.baseStyle.spaceSm})
-            }
-            .width(CONTAINER_SIZE.FULL)
-            .backgroundColor($r("app.color.ibest_field_background"))
-            .clip(true)
-            .margin({top: 30})
+            Row({space: this.baseStyle.spaceSm as string}) {
+              Blank().layoutWeight(1)
+              IBestButton({
+                text: "清空",
+                type: "primary",
+                btnBorderRadius: 20,
+                btnWidth: 60,
+                btnHeight: 28,
+                color: Color.Transparent,
+                btnBorderColor: Color.Transparent,
+                fontColor: Color.Black,
+                onBtnClick: () => {
+                  this.addressText = ""
+                }
+              }).visibility(this.addressText.length > 0 ? Visibility.Visible : Visibility.Hidden)
+              IBestButton({
+                text: "识别",
+                type: "primary",
+                btnBorderRadius: 20,
+                btnWidth: 60,
+                btnHeight: 28,
+                disabled: this.addressText.length < 5,
+                color: this.identifyTagColor,
+                btnBorderColor: this.identifyTagColor,
+                onBtnClick: () => {
+                  this.showLoading = true
+                  setTimeout(()=>{
+                    this.showLoading = false
+                  }, 3000)
+                }
+              })
+            }.margin({bottom: this.baseStyle.spaceSm, left: this.baseStyle.spaceSm, right: this.baseStyle.spaceSm})
           }
+          .width(CONTAINER_SIZE.FULL)
+          .backgroundColor($r("app.color.ibest_field_background"))
+          .clip(true)
         }
       }
 
       IBestForm({
         formId: this.formId,
-        controller: this.controller,
-        requireAsteriskPosition: "right"
+        controller: this.formController,
+        requireAsteriskPosition: "right",
+        rules: this.rules
       }){
-        IBestCellGroup({inset: true, radius: 10}) {
-          IBestField({
-            formId: this.formId,
-            prop: 'name',
-            value: $name,
-            label: "姓名",
-            placeholder: "请输入姓名",
-            rules:[
-              { required: true, message: '请输入姓名' },
-              { min: 2, max: 5, message: '姓名长度在2-5个字符之间' }
-            ],
-            showMessage: false,
-            required: false,
-            hasBorder: this.hasBorder,
-            autosize: true,
-            type: 'username',
-            inputFontWeight: this.inputFontWeight,
-            labelColor: this.labelColor,
-            inputFontSize: this.inputFontSize,
-            placeholderColor: this.placeholderColor
-          })
-          IBestField({
-            formId: this.formId,
-            prop: 'phone',
-            value: $phone,
-            label: "手机号",
-            placeholder: "请输入手机号",
-            rules: [
-              { required: true, message: '请输入手机号' }
-            ],
-            showMessage: false,
-            required: false,
-            hasBorder: this.hasBorder,
-            autosize: true,
-            type: 'phone',
-            inputFontWeight: this.inputFontWeight,
-            labelColor: this.labelColor,
-            inputFontSize: this.inputFontSize,
-            placeholderColor: this.placeholderColor
-          })
-          IBestField({
-            formId: this.formId,
-            prop: 'provinceCityDistrict',
-            value: $provinceCityDistrict,
-            label: "省市区",
-            placeholder: "请选择省市区",
-            isLink: true,
-            onFieldClick: () => {
-              this.visible = true
-            },
-            hasBorder: this.hasBorder,
-            inputFontWeight: this.inputFontWeight,
-            labelColor: this.labelColor,
-            inputFontSize: this.inputFontSize,
-            placeholderColor: this.placeholderColor
-          })
-          IBestField({
-            formId: this.formId,
-            prop: 'detail',
-            value: $detail,
-            label: "详细地址",
-            placeholder: "输入小区/写字楼/门牌号等",
-            hasBorder: false,
-            inputFontWeight: this.inputFontWeight,
-            labelColor: this.labelColor,
-            inputFontSize: this.inputFontSize,
-            placeholderColor: this.placeholderColor
-          })
+        Stack() {
+          if(this.showLoading) {
+            Column(){
+              IBestLoading({
+                loadingSize: 64,
+                loadingColor: this.identifyTagColor
+              })
+            }.zIndex(99)
+          }
+          IBestCellGroup({inset: true, radius: 10}) {
+            IBestField({
+              formId: this.formId,
+              prop: 'name',
+              value: $name,
+              label: "姓名",
+              placeholder: "请输入姓名",
+              showMessage: false,
+              required: false,
+              hasBorder: this.hasBorder,
+              autosize: true,
+              type: 'username',
+              inputFontWeight: this.inputFontWeight,
+              labelColor: this.labelColor,
+              inputFontSize: this.inputFontSize,
+              placeholderColor: this.placeholderColor
+            })
+            IBestField({
+              formId: this.formId,
+              prop: 'phone',
+              value: $phone,
+              label: "手机号",
+              placeholder: "请输入手机号",
+              showMessage: false,
+              required: false,
+              hasBorder: this.hasBorder,
+              autosize: true,
+              type: 'phone',
+              inputFontWeight: this.inputFontWeight,
+              labelColor: this.labelColor,
+              inputFontSize: this.inputFontSize,
+              placeholderColor: this.placeholderColor
+            })
+            IBestField({
+              formId: this.formId,
+              prop: 'provinceCityDistrictStr',
+              value: $provinceCityDistrictStr,
+              label: "省市区",
+              placeholder: "请选择省市区",
+              isLink: true,
+              onFieldClick: () => {
+                this.visible = true
+              },
+              hasBorder: this.hasBorder,
+              inputFontWeight: this.inputFontWeight,
+              labelColor: this.labelColor,
+              inputFontSize: this.inputFontSize,
+              placeholderColor: this.placeholderColor
+            })
+            IBestField({
+              formId: this.formId,
+              prop: 'detail',
+              value: $detail,
+              label: "详细地址",
+              placeholder: "输入小区/写字楼/门牌号等",
+              hasBorder: false,
+              inputFontWeight: this.inputFontWeight,
+              labelColor: this.labelColor,
+              inputFontSize: this.inputFontSize,
+              placeholderColor: this.placeholderColor,
+              autosize: true
+            })
+          }
         }
       }
 
@@ -221,6 +288,7 @@ export struct IBestContactAddressForm {
         value: $selectValue,
         onConfirm: value => {
           this.provinceCityDistrict = value
+          this.provinceCityDistrictStr = value
             .filter((item, index, arr) => index !== 1 || item.text !== arr[0].text)
             .map(item => item.text)
             .join(' ');
