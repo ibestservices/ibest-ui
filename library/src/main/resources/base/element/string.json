@@ -123,6 +123,58 @@
 		{
 			"name": "ibest_text_sum",
 			"value": "合计"
+		},
+		{
+			"name": "ibest_text_input_correct_content",
+			"value": "请输入正确的内容"
+		},
+		{
+			"name": "ibest_text_input_name",
+			"value": "请输入姓名"
+		},
+		{
+			"name": "ibest_text_input_phone",
+			"value": "请输入手机号"
+		},
+		{
+			"name": "ibest_text_select_region",
+			"value": "请选择区域位置"
+		},
+		{
+			"name": "ibest_text_identify",
+			"value": "识别"
+		},
+		{
+			"name": "ibest_text_name",
+			"value": "姓名"
+		},
+		{
+			"name": "ibest_text_phone_number",
+			"value": "手机号"
+		},
+		{
+			"name": "ibest_text_province_city_district",
+			"value": "省市区"
+		},
+		{
+			"name": "ibest_text_select_region2",
+			"value": "请选择省市区"
+		},
+		{
+			"name": "ibest_text_detailed_address",
+			"value": "详细地址"
+		},
+		{
+			"name": "ibest_text_detailed_address_description",
+			"value": "输入小区/写字楼/门牌号等"
+		},
+		{
+			"name": "ibest_text_postal_code",
+			"value": "邮政编码"
+		},
+		{
+			"name": "ibest_text_input_postal_code",
+			"value": "请输入邮政编码"
 		}
 	]
 }

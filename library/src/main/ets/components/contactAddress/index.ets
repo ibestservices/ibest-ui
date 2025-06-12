@@ -84,15 +84,15 @@ export struct IBestContactAddressForm {
   }
   private rules: IBestFormRule = {
     "name": [
-      { required: true, message: '请输入姓名' },
-      { validator: this.validatorName, message: '请输入正确的内容' }
+      { required: true, message: $r('app.string.ibest_text_input_name') },
+      { validator: this.validatorName, message: $r('app.string.ibest_text_input_correct_content') }
     ],
     "phone": [
-      { required: true, message: '请输入手机号' },
-      { validator: this.validatorPhone, message: '请输入正确的内容' }
+      { required: true, message: $r('app.string.ibest_text_input_phone') },
+      { validator: this.validatorPhone, message: $r('app.string.ibest_text_input_correct_content')  }
     ],
     "provinceCityDistrictStr": [
-      { required: true, message: '请选择区域位置' }
+      { required: true, message: $r('app.string.ibest_text_select_region') }
     ]
   }
 
@@ -197,7 +197,7 @@ export struct IBestContactAddressForm {
             Row({space: this.baseStyle.spaceSm as string}) {
               Blank().layoutWeight(1)
               IBestButton({
-                text: "清空",
+                text: $r('app.string.ibest_text_clear'),
                 type: "primary",
                 btnBorderRadius: 20,
                 btnWidth: 60,
@@ -210,7 +210,7 @@ export struct IBestContactAddressForm {
                 }
               }).visibility(this.addressText.length > 0 ? Visibility.Visible : Visibility.Hidden)
               IBestButton({
-                text: "识别",
+                text: $r('app.string.ibest_text_identify'),
                 type: "primary",
                 btnBorderRadius: 20,
                 btnWidth: 60,
@@ -254,8 +254,8 @@ export struct IBestContactAddressForm {
               formId: this.formId,
               prop: 'name',
               value: $name,
-              label: "姓名",
-              placeholder: "请输入姓名",
+              label: $r('app.string.ibest_text_name'),
+              placeholder: $r('app.string.ibest_text_input_name'),
               hasBorder: this.hasBorder,
               autosize: true,
               type: 'username',
@@ -268,8 +268,8 @@ export struct IBestContactAddressForm {
               formId: this.formId,
               prop: 'phone',
               value: $phone,
-              label: "手机号",
-              placeholder: "请输入手机号",
+              label: $r('app.string.ibest_text_phone_number'),
+              placeholder: $r('app.string.ibest_text_input_phone'),
               hasBorder: this.hasBorder,
               autosize: true,
               type: 'phone',
@@ -282,8 +282,8 @@ export struct IBestContactAddressForm {
               formId: this.formId,
               prop: 'provinceCityDistrictStr',
               value: $provinceCityDistrictStr,
-              label: "省市区",
-              placeholder: "请选择省市区",
+              label: $r('app.string.ibest_text_province_city_district'),
+              placeholder: $r('app.string.ibest_text_select_region2'),
               isLink: true,
               onFieldClick: () => {
                 this.visible = true
@@ -298,8 +298,8 @@ export struct IBestContactAddressForm {
               formId: this.formId,
               prop: 'detail',
               value: $detail,
-              label: "详细地址",
-              placeholder: "输入小区/写字楼/门牌号等",
+              label: $r('app.string.ibest_text_detailed_address'),
+              placeholder: $r('app.string.ibest_text_detailed_address_description'),
               hasBorder: this.hasBorder,
               inputFontWeight: this.inputFontWeight,
               labelColor: this.labelColor,
@@ -311,8 +311,8 @@ export struct IBestContactAddressForm {
               formId: this.formId,
               prop: 'postalCode',
               value: $postalCode,
-              label: "邮政编码",
-              placeholder: "请输入邮政编码",
+              label: $r('app.string.ibest_text_postal_code'),
+              placeholder: $r('app.string.ibest_text_input_postal_code'),
               autosize: true,
               type: 'number',
               max: 6,
