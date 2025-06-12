@@ -193,8 +193,16 @@
 			"value": "Dialog"
 		},
 		{
+			"name": "component_dropdownMenu",
+			"value": "DropdownMenu"
+		},
+		{
 			"name": "component_float_bubble",
 			"value": "FloatBubble"
+		},
+		{
+			"name": "component_guide",
+			"value": "Guide"
 		},
 		{
 			"name": "component_loading",
@@ -655,6 +663,22 @@
 		{
 			"name": "inner_jump",
 			"value": "Inner Jump"
+		},
+		{
+			"name": "guid_mixed_use_slots",
+			"value": "Mixed Use Slots"
+		},
+		{
+			"name": "guid_basic_usage",
+			"value": "Basic Usage"
+		},
+		{
+			"name": "guid_use_single",
+			"value": "Single"
+		},
+		{
+			"name": "guid_merge_rects",
+			"value": "Merge Rects"
 		}
 	]
 }

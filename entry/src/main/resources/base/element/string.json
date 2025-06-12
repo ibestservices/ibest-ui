@@ -193,8 +193,16 @@
 			"value": "Dialog 对话框"
 		},
 		{
+			"name": "component_dropdownMenu",
+			"value": "DropdownMenu 下拉菜单"
+		},
+		{
 			"name": "component_float_bubble",
 			"value": "FloatBubble 浮动气泡"
+		},
+		{
+			"name": "component_guide",
+			"value": "Guide 引导"
 		},
 		{
 			"name": "component_loading",
@@ -655,6 +663,22 @@
 		{
 			"name": "inner_jump",
 			"value": "内部跳转"
+		},
+		{
+			"name": "guid_mixed_use_slots",
+			"value": "使用插槽"
+		},
+		{
+			"name": "guid_basic_usage",
+			"value": "基础引导"
+		},
+		{
+			"name": "guid_use_single",
+			"value": "单个引导"
+		},
+		{
+			"name": "guid_merge_rects",
+			"value": "多区域合并引导"
 		}
 	]
 }

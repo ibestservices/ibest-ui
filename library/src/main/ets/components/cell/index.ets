@@ -15,28 +15,6 @@ export struct IBestCell {
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
-	 * title的插槽 优先级大于 title
-	 */
-	@BuilderParam titleBuilder: CustomBuilder
-	/**
-	 * value的插槽 优先级大于 value
-	 */
-	@BuilderParam valueBuilder: CustomBuilder
-	/**
-	 * value的插槽 优先级大于 label
-	 */
-	@BuilderParam labelBuilder: CustomBuilder
-	/**
-	 * 自定义title左侧icon的插槽
-	 * 使用titleBuilder时，该插槽不生效
-	 */
-	@BuilderParam iconBuilder: CustomBuilder
-	/**
-	 * 自定义value右侧icon的插槽
-	 * 使用valueBuilder时，该插槽不生效
-	 */
-	@BuilderParam rightIconBuilder: CustomBuilder
-	/**
 	 * 左侧标题
 	 */
 	@Prop title: ResourceStr = ''
@@ -158,13 +136,36 @@ export struct IBestCell {
 	 * @since 2.0.1
 	 */
 	@Prop disabled: boolean = false
-	// 根据arrow direction获取图标旋转角度
-	arrowDirection2RotateDegMap: Record<string, number> = {
-		[ARROW_DIRECTION.RIGHT]: 0,
-		[ARROW_DIRECTION.TOP]: -90,
-		[ARROW_DIRECTION.BOTTOM]: 90,
-		[ARROW_DIRECTION.LEFT]: 180,
-	}
+	/**
+	 * 标题文字大小
+	 * @since 2.1.2
+     */
+	@Prop titleFontSize: IBestStringNumber = ""
+	/**
+	 * 标题下方的描述信息文字大小
+	 * @since 2.1.2
+     */
+	@Prop labelFontSize: IBestStringNumber = ""
+	/**
+	 * title的插槽 优先级大于 title
+	 */
+	@BuilderParam titleBuilder: CustomBuilder
+	/**
+	 * value的插槽 优先级大于 value
+	 */
+	@BuilderParam valueBuilder: CustomBuilder
+	/**
+	 * value的插槽 优先级大于 label
+	 */
+	@BuilderParam labelBuilder: CustomBuilder
+	/**
+	 * 自定义title左侧icon的插槽
+	 */
+	@BuilderParam iconBuilder: CustomBuilder
+	/**
+	 * 自定义value右侧icon的插槽
+	 */
+	@BuilderParam rightIconBuilder: CustomBuilder
 	/**
 	 * 点击单元格的回调
 	 * @deprecated since 2.0.8
@@ -173,21 +174,26 @@ export struct IBestCell {
 	onClickCell: () => void = () => {}
 	onCellClick: () => void = () => {}
 
+	// 根据arrow direction获取图标旋转角度
+	arrowDirection2RotateDegMap: Record<string, number> = {
+		[ARROW_DIRECTION.RIGHT]: 0,
+		[ARROW_DIRECTION.TOP]: -90,
+		[ARROW_DIRECTION.BOTTOM]: 90,
+		[ARROW_DIRECTION.LEFT]: 180,
+	}
+
 	// 根据size获取单元格的尺寸
 	getCellSize() {
 		const cellSize = this.cellSize;
 		switch (cellSize) {
 			case SIZE.LARGE:
-				return new CellSizeData(convertDimensionsWidthUnit(14), this.baseStyle.fontSizeLg as string,
-					this.baseStyle.fontSizeMd as string)
+				return new CellSizeData(convertDimensionsWidthUnit(14), this.titleFontSize || this.baseStyle.fontSizeLg as string, this.labelFontSize || this.baseStyle.fontSizeMd as string)
 			default:
-				return new CellSizeData(convertDimensionsWidthUnit(12), this.baseStyle.fontSizeMd as string,
-					this.baseStyle.fontSizeSm as string)
+				return new CellSizeData(convertDimensionsWidthUnit(12), this.titleFontSize || this.baseStyle.fontSizeMd as string, this.labelFontSize || this.baseStyle.fontSizeSm as string)
 		}
 	}
 	getArrowRotateAngle() {
-		return this.arrowDirection2RotateDegMap[this.arrowDirection] ||
-		this.arrowDirection2RotateDegMap[ARROW_DIRECTION.RIGHT]
+		return this.arrowDirection2RotateDegMap[this.arrowDirection] || this.arrowDirection2RotateDegMap[ARROW_DIRECTION.RIGHT]
 	}
 	getAlignItems() {
 		return this.center ? VerticalAlign.Center : VerticalAlign.Top
@@ -204,35 +210,30 @@ export struct IBestCell {
 						.fontColor(this.baseStyle.danger)
 				}
 				Column() {
-					if (this.titleBuilder) {
-						Row() {
-							this.titleBuilder()
+					Row() {
+						if (this.iconBuilder) {
+							Row() {
+								this.iconBuilder()
+							}.margin({ right: getSizeByUnit(this.leftIconMarginRight) })
+						} else if (this.leftIcon) {
+							IBestIcon({
+								name: this.leftIcon,
+								iconSize: this.leftIconSize,
+								color: this.leftIconColor
+							}).margin({ right: getSizeByUnit(this.leftIconMarginRight) })
 						}
-					} else {
-						Row() {
-							if (this.iconBuilder) {
-								Row() {
-									this.iconBuilder()
-								}.margin({ right: getSizeByUnit(this.leftIconMarginRight) })
-							} else if (this.leftIcon) {
-								if (this.leftIconColor) {
-									Image(this.leftIcon)
-										.height(getSizeByUnit(this.leftIconSize))
-										.fillColor(this.leftIconColor)
-										.margin({ right: getSizeByUnit(this.leftIconMarginRight) })
-								} else {
-									Image(this.leftIcon)
-										.height(getSizeByUnit(this.leftIconSize))
-										.margin({ right: getSizeByUnit(this.leftIconMarginRight) })
-								}
+						if (this.titleBuilder) {
+							Row() {
+								this.titleBuilder()
 							}
+						} else {
 							Text(this.title)
 								.layoutWeight(1)
-								.fontSize(this.getCellSize().fontSize)
+								.fontSize(getSizeByUnit(this.getCellSize().fontSize, true))
 								.fontColor(this.titleColor)
-						}.width(CONTAINER_SIZE.FULL)
-						.alignItems(this.getAlignItems())
-					}
+						}
+					}.width(CONTAINER_SIZE.FULL)
+					.alignItems(this.getAlignItems())
 					if (this.labelBuilder) {
 						Row() {
 							this.labelBuilder()
@@ -241,7 +242,7 @@ export struct IBestCell {
 						if (this.label) {
 							Text(this.label)
 								.width(CONTAINER_SIZE.FULL)
-								.fontSize(this.getCellSize().labelFontSize)
+								.fontSize(getSizeByUnit(this.getCellSize().labelFontSize, true))
 								.margin({
 									top: this.baseStyle.spaceBase
 								})
@@ -252,51 +253,51 @@ export struct IBestCell {
 				.layoutWeight(this.leftContentWidth ? 0 : 1)
 				.width(getSizeByUnit(this.leftContentWidth))
 				.alignItems(this.center ? HorizontalAlign.Center : HorizontalAlign.Start)
-				if (this.valueBuilder) {
+				Row() {
 					Row() {
-						this.valueBuilder()
-					}
-					.layoutWeight(1)
-				} else {
-					Row() {
-						Row() {
+						if (this.valueBuilder) {
+							this.valueBuilder()
+						} else {
 							Text(this.value)
 								.textAlign(TextAlign.Start)
-								.fontSize(this.getCellSize().fontSize)
+								.fontSize(getSizeByUnit(this.getCellSize().fontSize, true))
 								.fontColor(this.valueColor)
-						}.justifyContent(FlexAlign.End).layoutWeight(1)
-						if (this.rightIconBuilder) {
-							Row() {
-								this.rightIconBuilder()
-							}
-							.margin({ left: getSizeByUnit(this.rightIconMarginLeft) })
-						} else if (this.rightIcon) {
-							Image(this.rightIcon)
-								.width(getSizeByUnit(this.rightIconSize))
-								.fillColor(this.rightIconColor)
-								.margin({ left: getSizeByUnit(this.rightIconMarginLeft) })
-						} else if (this.isLink) { // 如果是link箭头
-							Row() {
-								IBestIcon({
-									name: "arrow",
-									iconSize: this.rightIconSize,
-									color: this.rightIconColor
-								})
-									.margin({
-										left: getSizeByUnit(this.rightIconMarginLeft)
-									})
-									.rotate({ angle: this.getArrowRotateAngle() })
-									.animation({
-										duration: this.baseStyle.animationDuration as number
-									})
-							}.height(convertDimensionsWidthUnit(16))
 						}
+					}.justifyContent(FlexAlign.End).layoutWeight(1)
+					if (this.rightIconBuilder) {
+						Row() {
+							this.rightIconBuilder()
+						}
+						.margin({ left: getSizeByUnit(this.rightIconMarginLeft) })
+					} else if (this.rightIcon) {
+						IBestIcon({
+							name: this.rightIcon,
+							iconSize: this.rightIconSize,
+							color: this.rightIconColor
+						}).margin({ left: getSizeByUnit(this.rightIconMarginLeft) })
+					} else if (this.isLink) {
+						Row() {
+							IBestIcon({
+								name: "arrow",
+								iconSize: this.rightIconSize,
+								color: this.rightIconColor
+							})
+								.margin({
+									left: getSizeByUnit(this.rightIconMarginLeft)
+								})
+								.rotate({ angle: this.getArrowRotateAngle() })
+								.animation({
+									duration: this.baseStyle.animationDuration as number
+								})
+						}.height(convertDimensionsWidthUnit(16))
 					}
-					.layoutWeight(1)
-					.alignItems(this.getAlignItems())
 				}
+				.layoutWeight(1)
+				.alignItems(this.getAlignItems())
 				if (this.hasBorder && this.borderSizeType == "center") {
-					CellDivider({ bottom: "-" + this.getCellSize().padding as Dimension })
+					CellDivider({
+						bottom: "-" + this.getCellSize().padding as Dimension
+					})
 				}
 			}
 			.alignItems(this.getAlignItems())

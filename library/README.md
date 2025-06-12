@@ -87,15 +87,17 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | Uploader 文件上传         | 用于将本地的图片或文件上传至服务器，并在上传过程中展示预览图和上传状态。目前 Uploader 组件不包含将文件上传至服务器的接口逻辑，该步骤需要自行实现。 | <a href="https://ibestui.ibestservices.com/components/uploader/" target="_blank">文档</a>       |
 
 ### 反馈组件
-| 组件               | 介绍                                                   |                                                                                            |
-|:-----------------|:-----------------------------------------------------|--------------------------------------------------------------------------------------------|
-| ActionSheet 动作面板 | 底部弹起的模态面板，包含与当前情境相关的多个选项。                            | <a href="https://ibestui.ibestservices.com/components/actionsheet/" target="_blank">文档</a> |
-| Dialog 弹出框       | 弹出模态框，常用于消息提示、消息确认，或在当前页面内完成特定的交互操作。支持组件调用和函数调用两种方式。 | <a href="https://ibestui.ibestservices.com/components/dialog/" target="_blank">文档</a>      |
-| FloatBubble 浮动气泡 | 悬浮在页面边缘的可点击气泡。                                       | <a href="https://ibestui.ibestservices.com/components/floatbubble/" target="_blank">文档</a> |
-| Loading 加载       | 加载图标，用于表示加载中的过渡状态。                                   | <a href="https://ibestui.ibestservices.com/components/loading/" target="_blank">文档</a>     |
-| Notify 消息提示      | 在页面顶部展示消息提示。                                         | <a href="https://ibestui.ibestservices.com/components/notify/" target="_blank">文档</a>      |
-| PullRefresh 下拉刷新 | 轻量级, 用于提供下拉刷新的交互操作。                                  | <a href="https://ibestui.ibestservices.com/components/pullrefresh/" target="_blank">文档</a> |
-| SwipeCell 滑动单元格  | 可以左右滑动来展示操作按钮的单元格组件。                                 | <a href="https://ibestui.ibestservices.com/components/swipecell/" target="_blank">文档</a>   |
+| 组件                | 介绍                                                   |                                                                                             |
+|:------------------|:-----------------------------------------------------|---------------------------------------------------------------------------------------------|
+| ActionSheet 动作面板  | 底部弹起的模态面板，包含与当前情境相关的多个选项。                            | <a href="https://ibestui.ibestservices.com/components/actionsheet/" target="_blank">文档</a>  |
+| Dialog 弹出框        | 弹出模态框，常用于消息提示、消息确认，或在当前页面内完成特定的交互操作。支持组件调用和函数调用两种方式。 | <a href="https://ibestui.ibestservices.com/components/dialog/" target="_blank">文档</a>       |
+| DropdownMenu 下拉菜单 | 向下弹出的菜单列表。                                           | <a href="https://ibestui.ibestservices.com/components/dropdownMenu/" target="_blank">文档</a> |
+| FloatBubble 浮动气泡  | 悬浮在页面边缘的可点击气泡。                                       | <a href="https://ibestui.ibestservices.com/components/floatbubble/" target="_blank">文档</a>  |
+| Guide 引导          | 分步引导用户了解产品功能的气泡组件，用来引导用户并介绍产品。                       | <a href="https://ibestui.ibestservices.com/components/guide/" target="_blank">文档</a>        |
+| Loading 加载        | 加载图标，用于表示加载中的过渡状态。                                   | <a href="https://ibestui.ibestservices.com/components/loading/" target="_blank">文档</a>      |
+| Notify 消息提示       | 在页面顶部展示消息提示。                                         | <a href="https://ibestui.ibestservices.com/components/notify/" target="_blank">文档</a>       |
+| PullRefresh 下拉刷新  | 轻量级, 用于提供下拉刷新的交互操作。                                  | <a href="https://ibestui.ibestservices.com/components/pullrefresh/" target="_blank">文档</a>  |
+| SwipeCell 滑动单元格   | 可以左右滑动来展示操作按钮的单元格组件。                                 | <a href="https://ibestui.ibestservices.com/components/swipecell/" target="_blank">文档</a>    |
 
 ### 展示组件
 | 组件                   | 介绍                                 |                                                                                               |

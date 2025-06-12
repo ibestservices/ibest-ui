@@ -89,15 +89,11 @@ export struct IBestCollapseItem {
     aboutToAppear(): void {
         this.uniId = this.getUniqueId()
         this.getContentHeight()
-        if(this.groupId){
-            emitter.emit(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME, this.groupId), this.name, this.disabled || this.readOnly)
-            emitter.on(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId, (activeNames: IBestStringNumber | IBestStringNumber[]): void => this.changeState(activeNames))
-        }
+        emitter.emit(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME, this.groupId), this.name, this.disabled || this.readOnly)
+        emitter.on(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId, (activeNames: IBestStringNumber | IBestStringNumber[]): void => this.changeState(activeNames))
     }
     aboutToDisappear(): void {
-        if(this.groupId){
-            emitter.off(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId)
-        }
+        emitter.off(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId)
     }
     getIsDisabled(){
         return this.disabled || this.readOnly
@@ -115,7 +111,7 @@ export struct IBestCollapseItem {
             setTimeout(() => {
                 this.isShow = true
             }, 250)
-        }, 0)
+        }, 50)
     }
     getHeight(){
         return this.isReady ? this.isExpand ? this.contentHeight : 0 : "auto"
@@ -130,10 +126,11 @@ export struct IBestCollapseItem {
         Column(){
             Row(){
                 if(this.icon){
-                    Image(this.icon)
-                        .width(getSizeByUnit(this.iconSize))
-                        .fillColor(this.iconColor)
-                        .margin({right: this.baseStyle.spaceBase})
+                    IBestIcon({
+                        name: this.icon,
+                        iconSize: this.iconSize,
+                        color: this.iconColor
+                    }).margin({right: this.baseStyle.spaceBase})
                 }
                 Text(this.title)
                     .layoutWeight(1)

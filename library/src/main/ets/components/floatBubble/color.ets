@@ -5,5 +5,5 @@ interface IBestFloatBubbleColorType {
 
 export const IBestFloatBubbleColor: IBestFloatBubbleColorType = {
 	bgColor: $r("app.color.ibest_primary_color"),
-	iconColor: $r("app.color.ibest_background_2")
+	iconColor: $r("app.color.ibest_white")
 }

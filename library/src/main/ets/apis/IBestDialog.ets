@@ -1,4 +1,4 @@
-import { ComponentContent, LengthMetrics, LevelMode, PromptAction, window } from '@kit.ArkUI'
+import { ComponentContent, ImmersiveMode, LengthMetrics, LevelMode, PromptAction, window } from '@kit.ArkUI'
 import { generateId } from '../utils/utils'
 import { IBestDialogView } from '../components/dialog/dialog'
 import { IBestStringNumber } from '../model/Global.type'
@@ -430,7 +430,7 @@ class Dialog{
 			keyboardAvoidDistance: option.keyboardAvoidDistance ?? LengthMetrics.vp(16),
 			levelMode: option.levelMode ?? 0,
 			levelUniqueId: option.levelUniqueId,
-			// immersiveMode: ImmersiveMode.EXTEND,
+			immersiveMode: ImmersiveMode.EXTEND,
 			onDidAppear: () => {
 				option.onOpen?.()
 			},
