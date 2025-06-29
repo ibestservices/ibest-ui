@@ -125,6 +125,7 @@
 			"value": "合计"
 		},
 		{
+<<<<<<< HEAD
 			"name": "ibest_text_input_correct_content",
 			"value": "请输入正确的内容"
 		},
@@ -175,6 +176,18 @@
 		{
 			"name": "ibest_text_input_postal_code",
 			"value": "请输入邮政编码"
+=======
+			"name": "ibest_guide_previous",
+			"value": "上一步"
+		},
+		{
+			"name": "ibest_guide_next",
+			"value": "下一步"
+		},
+		{
+			"name": "ibest_guide_complete",
+			"value": "结束导览"
+>>>>>>> master
 		}
 	]
 }

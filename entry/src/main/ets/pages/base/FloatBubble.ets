@@ -145,7 +145,10 @@ struct FloatBubblePage {
                 show: this.bubbleShow1,
                 icon: "chat",
                 dragAxis: "xy",
-                autoHide: true
+                autoHide: true,
+				onBubbleClick: () => {
+					IBestToast.show("点击了气泡")
+				}
             })
             IBestFloatBubble({
                 show: this.bubbleShow2,

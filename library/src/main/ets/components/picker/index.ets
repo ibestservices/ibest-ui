@@ -33,7 +33,7 @@ import { IBestStringNumber } from '../../model/Global.type';
 // 距离大于 `MOMENTUM_DISTANCE` 时，执行惯性滑动
 const MOMENTUM_TIME = 300
 const MOMENTUM_DISTANCE = 30
-const swipeDuration = 150
+const swipeDuration = 300
 
 
 @Component
@@ -332,20 +332,22 @@ export struct IBestPicker{
 	}
 	// 初始化数据
 	init(){
-		this.columnType = this.getColumnType()
-		this.columns = []
-		if(this.columnType == "cascade") {
-			if (this.value.length) {
-				this.indexArr = Array(this.value.length).fill(0)
-				this.offsetList = Array(this.value.length).fill(0)
-				this.initWithSelectValue(0, this.options as IBestPickerOption[])
-			} else {
-				this.initWithEmptyValue([], this.options as IBestPickerOption[])
+		if(this.options.length){
+			this.columnType = this.getColumnType()
+			this.columns = []
+			if(this.columnType == "cascade") {
+				if (this.value.length) {
+					this.indexArr = Array(this.value.length).fill(0)
+					this.offsetList = Array(this.value.length).fill(0)
+					this.initWithSelectValue(0, this.options as IBestPickerOption[])
+				} else {
+					this.initWithEmptyValue([], this.options as IBestPickerOption[])
+				}
+			}else{
+				this.initWidthMultiple()
 			}
-		}else{
-			this.initWidthMultiple()
+			this.initSize()
 		}
-		this.initSize()
 	}
 	initSize(){
 		this.isReady = false

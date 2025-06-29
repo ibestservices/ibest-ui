@@ -229,13 +229,13 @@ export struct IBestStepper {
 				return
 			}
 			nextValue = String(accAdd(Number(this.inputNumValue), this.step));
-			typeof this.onPlus === 'function' && this.onPlus()
+			this.onPlus()
 		} else {
 			if (this.disableMinus) {
 				return
 			}
 			nextValue = String(accSub(Number(this.inputNumValue), this.step));
-			typeof this.onMinus === 'function' && this.onMinus()
+			this.onMinus()
 		}
 		this.handleInputNumChange('change', nextValue)
 	}

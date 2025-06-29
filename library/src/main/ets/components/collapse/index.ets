@@ -11,7 +11,6 @@ import {
 } from './index.type'
 @Component
 export struct IBestCollapse {
-    @State uniId: number = 0
     /**
      * 分组id
      */
@@ -19,7 +18,7 @@ export struct IBestCollapse {
     /**
      * 当前展开面板的name
      */
-    @Link activeName: IBestStringNumber | IBestStringNumber[]
+    @Link @Watch("initItem") activeName: IBestStringNumber | IBestStringNumber[]
     /**
      * 是否开启手风琴模式
      */
@@ -41,6 +40,7 @@ export struct IBestCollapse {
      */
     controller: IBestCollapseController = new IBestCollapseController()
 
+    @State uniId: number = 0
     @State allCollapseItem: IBestCollapseItemData[] = []
 
     aboutToAppear(): void {

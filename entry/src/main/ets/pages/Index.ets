@@ -171,10 +171,18 @@ struct Index {
 					name: $r("app.string.component_dialog"),
 					path: "Dialog"
 				},
+				{
+					name: $r("app.string.component_dropdownMenu"),
+					path: "DropdownMenu"
+				},
                 {
                     name: $r("app.string.component_float_bubble"),
                     path: "FloatBubble"
                 },
+				{
+					name: $r("app.string.component_guide"),
+					path: "Guide"
+				},
 				{
 					name: $r("app.string.component_loading"),
 					path: "Loading"
@@ -372,6 +380,7 @@ struct Index {
 		.width(CONTAINER_SIZE.FULL)
 		.alignItems(HorizontalAlign.Start)
 		.padding({ left: 10, top: GlobalStore.topAvoidHeight })
+		.transition(TransitionEffect.OPACITY.animation({ duration: 2000, curve: Curve.Ease }))
 	}
 	@Builder tabContentBuilder(index: number) {
 		if (index == 0) {
@@ -379,17 +388,18 @@ struct Index {
 				ListItem() {
 					this.listTop(index)
 				}
-				ForEach(this.baseComponentList, (part: ComponentPart) => {
+				ForEach(this.baseComponentList, (part: ComponentPart, index: number) => {
 					ListItem() {
 						ComponentShowContainer({
 							title: `${getResourceStr(part.title)}(${part.list.length})`,
 							titlePaddingLeft: SPACE.XS
 						}) {
-							ForEach(part.list, (item: ComponentItem) => {
-								this.componentItem(item)
+							ForEach(part.list, (item: ComponentItem, i: number) => {
+								this.componentItem(item, i)
 							})
 						}
 					}
+					.transition(TransitionEffect.move(TransitionEdge.BOTTOM).animation({ duration: 1000, curve: Curve.Ease, delay: 500*index }))
 				})
 			}
 			.listStyle()
@@ -401,9 +411,9 @@ struct Index {
 				ListItem() {
 					this.listTop(index)
 				}
-				ForEach(this.extendComponentList, (item: ComponentItem) => {
+				ForEach(this.extendComponentList, (item: ComponentItem, i) => {
 					ListItem() {
-						this.componentItem(item)
+						this.componentItem(item, i)
 					}
 				})
 			}
@@ -416,48 +426,54 @@ struct Index {
 				Scroll(){
 					Column({ space: SPACE.MD }) {
 						Image($r("app.media.app_icon")).width(100).borderRadius(BORDER_RADIUS.BASE)
+							.transition(TransitionEffect.move(TransitionEdge.BOTTOM).animation({ duration: 1000, curve: Curve.Ease }))
 						Text($r("app.string.app_name"))
 							.fontSize(32)
 							.fontColor(modeColor.textColor2)
+							.transition(TransitionEffect.move(TransitionEdge.BOTTOM).animation({ duration: 1000, curve: Curve.Ease, delay: 100 }))
 						Text($r("app.string.ibest_ui_desc"))
 							.width("80%")
 							.textAlign(TextAlign.Center)
 							.fontSize(FONT_SIZE.MD)
 							.fontColor(modeColor.textColor4)
-						IBestCellGroup({inset: true}){
-							IBestCell({
-								title: $r("app.string.app_version"),
-								value: `v${getAppVersion()}`
-							})
-							IBestCell({
-								title: $r("app.string.ui_version"),
-								value: this.uiVersion ? `v${this.uiVersion}` : ""
-							})
-							IBestCell({
-								title: $r("app.string.ui_doc"),
-								isLink: true,
-								onCellClick: () => {
-									this.viewUrl("doc")
-								}
-							})
-							IBestCell({
-								title: $r("app.string.company_official_website"),
-								isLink: true,
-								onCellClick: () => {
-									this.viewUrl("company")
-								}
-							})
-							IBestCell({
-								title: $r("app.string.privacy_policy"),
-								isLink: true,
-								hasBorder: false,
-								onCellClick: () => {
-									router.pushUrl({
-										url: "pages/PrivacyPolicy"
-									})
-								}
-							})
+							.transition(TransitionEffect.move(TransitionEdge.BOTTOM).animation({ duration: 1000, curve: Curve.Ease, delay: 200 }))
+						Column(){
+							IBestCellGroup({inset: true}){
+								IBestCell({
+									title: $r("app.string.app_version"),
+									value: `v${getAppVersion()}`
+								})
+								IBestCell({
+									title: $r("app.string.ui_version"),
+									value: this.uiVersion ? `v${this.uiVersion}` : ""
+								})
+								IBestCell({
+									title: $r("app.string.ui_doc"),
+									isLink: true,
+									onCellClick: () => {
+										this.viewUrl("doc")
+									}
+								})
+								IBestCell({
+									title: $r("app.string.company_official_website"),
+									isLink: true,
+									onCellClick: () => {
+										this.viewUrl("company")
+									}
+								})
+								IBestCell({
+									title: $r("app.string.privacy_policy"),
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										router.pushUrl({
+											url: "pages/PrivacyPolicy"
+										})
+									}
+								})
+							}
 						}
+						.transition(TransitionEffect.move(TransitionEdge.BOTTOM).animation({ duration: 1000, curve: Curve.Ease, delay: 300 }))
 					}.padding({top: 80})
 				}
 				.layoutWeight(1)
@@ -471,7 +487,7 @@ struct Index {
 			.height(CONTAINER_SIZE.FULL)
 		}
 	}
-	@Builder componentItem(item: ComponentItem) {
+	@Builder componentItem(item: ComponentItem, index: number) {
 		Row() {
 			Text(item.name)
 				.fontSize(FONT_SIZE.MD)
@@ -493,27 +509,10 @@ struct Index {
 		.height(CONTAINER_SIZE.FORTY)
 		.borderRadius(99)
 		.padding({ left: SPACE.LG })
-		.margin({
-			top: SPACE.SM
-		})
+		.margin({ top: SPACE.SM })
 		.backgroundColor(modeColor.bg3)
-		.stateStyles({
-			normal: {
-				.scale({
-					x: 1,
-					y: 1
-				})
-			},
-			pressed: {
-				.scale({
-					x: .98,
-					y: .98
-				})
-			}
-		})
-		.animation({
-			duration: 200
-		})
+		.clickEffect({level:ClickEffectLevel.LIGHT, scale: 0.9})
+		.transition(TransitionEffect.move(TransitionEdge.BOTTOM).animation({ duration: 800, curve: Curve.Ease, delay: 100*index }))
 		.onClick(() => {
 			RouterUtil.push(item.path, item.name)
 		})
@@ -524,7 +523,7 @@ struct Index {
 		this.checkUpdate()
 		this.getUiVersion()
 		setTimeout(() => {
-			// RouterUtil.push("CarInput", "车牌输入框")
+			// RouterUtil.push("DropdownMenu")
 		}, 100)
 	}
 	getTitleOpacity(){

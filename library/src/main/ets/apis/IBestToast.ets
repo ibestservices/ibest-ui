@@ -54,6 +54,11 @@ class ToastOption extends LoadingOption {
      * toast打开后回调
      */
     onOpened?: () => void
+    /**
+     * toast关闭后回调
+     * @since 2.1.2
+     */
+    onClosed?: () => void
 }
 
 class ToastParams extends ToastOption{
@@ -70,6 +75,7 @@ class ToastParams extends ToastOption{
         this.position = value?.position || "center"
         this.offsetY = value?.offsetY || 0
         this.onOpened = value?.onOpened
+        this.onClosed = value?.onClosed
     }
 }
 
@@ -83,9 +89,10 @@ struct defaultContent{
     build() {
         Column({space: this.baseStyle.spaceXs as string}){
             if(this.option.icon){
-                Image(this.option.icon)
-                    .width(getSizeByUnit(this.option.iconWidth || ""))
-                    .aspectRatio(1)
+                IBestIcon({
+                    name: this.option.icon,
+                    iconSize: getSizeByUnit(this.option.iconWidth!)
+                })
             }else if(this.option.type){
                 if(this.option.type == "loading"){
                     IBestLoading({
@@ -106,8 +113,7 @@ struct defaultContent{
                 .fontSize(this.baseStyle.fontSizeMd)
                 .wordBreak(this.option.wordBreak == "normal" ? WordBreak.NORMAL : this.option.wordBreak == "break-all" ? WordBreak.BREAK_ALL : WordBreak.BREAK_WORD)
         }
-        .constraintSize({minWidth: convertDimensionsWidthUnit(96), maxWidth: "60%", minHeight: !this.option.type && !this.option.icon ? 0 :
-            convertDimensionsWidthUnit(98)})
+        .constraintSize({minWidth: convertDimensionsWidthUnit(96), maxWidth: "60%", minHeight: !this.option.type && !this.option.icon ? 0 : convertDimensionsWidthUnit(98)})
         .backgroundColor("rgba(0,0,0,0.7)")
         .borderRadius(convertDimensionsWidthUnit(6))
         .padding({left: this.baseStyle.spaceSm, right: this.baseStyle.spaceSm, top: this.baseStyle.spaceXs, bottom: this.baseStyle.spaceXs})
@@ -159,11 +165,13 @@ class Toast{
 			onDidAppear: () => {
 				params.onOpened?.()
 			},
+            onDidDisappear: () => {
+				params.onClosed?.()
+			},
             onWillDismiss: () => {}
         })
 		if(params.type!="loading"){
 			this.isLock = false
-			// 自动关闭
 			if(params.duration){
 				this.timer = setTimeout(()=>{
 					this.hide()

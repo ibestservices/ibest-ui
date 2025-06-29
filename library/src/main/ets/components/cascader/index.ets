@@ -18,30 +18,9 @@ export struct IBestCascaderContent{
 	// 是否横屏
 	@StorageProp("IBestIsLandscape") @Watch("getListHeight") IBestIsLandscape: boolean = false
 	/**
-	 * 顶部tab栏数据
-	 */
-	@State tabList: IBestTabItem[] = [
-		new IBestTabItem({
-			label: $r("app.string.ibest_please_select"),
-			name: 0
-		})
-	]
-	/**
-	 * 当前激活tab name
-	 */
-	@State currentTabName: number = 0
-	/**
-	 * swiper默认显示选项
-	 */
-	@State swiperDefaultIndex: number = 0
-	/**
 	 * 可选项数据源
 	 */
-	@Provide({allowOverride: "options"}) options: IBestCascaderOption[] = []
-	/**
-	 * 数据源实例
-	 */
-	@State optionsInstance: IBestCascaderOptionInstance[][] = []
+	@Prop @Watch("optionsChange") options: IBestCascaderOption[] = []
 	/**
 	 * 已选中数据
 	 */
@@ -66,8 +45,6 @@ export struct IBestCascaderContent{
 	 * 动态加载函数
 	 */
 	lazyLoad: ((value: IBestStringNumber, level: number, cb: (arr: IBestCascaderOption[]) => void) => void) | null = null
-
-	private swiperController: SwiperController = new SwiperController()
 	/**
 	 * 选中项变化时回调函数
 	 */
@@ -77,11 +54,28 @@ export struct IBestCascaderContent{
 	 */
 	onConfirm: (value: IBestCascaderOption[]) => void = () => {}
 
+	// 顶部tab栏数据
+	@State tabList: IBestTabItem[] = [
+		new IBestTabItem({
+			label: $r("app.string.ibest_please_select"),
+			name: 0
+		})
+	]
+	// 当前激活tab name
+	@State currentTabName: number = 0
+	//数据源实例
+	@State optionsInstance: IBestCascaderOptionInstance[][] = []
+	// swiper默认显示选项
+	@State swiperDefaultIndex: number = 0
+	private swiperController: SwiperController = new SwiperController()
+
 	aboutToAppear(): void {
-		if(this.value.length){
-			this.createAllOptionsInstance([], this.options, 0)
-		}else {
-			this.optionsInstance.push(this.createOptionsInstance(this.options))
+		if(this.options.length){
+			if(this.value.length){
+				this.createAllOptionsInstance([], this.options, 0)
+			}else {
+				this.optionsChange()
+			}
 		}
 	}
 	getListHeight(){
@@ -131,6 +125,13 @@ export struct IBestCascaderContent{
 			})
 			this.currentTabName = this.value.length - 1
 			this.swiperDefaultIndex = this.value.length - 1
+		}
+	}
+	// 选项变化
+	optionsChange(){
+		if(this.options.length) {
+			this.optionsInstance = []
+			this.optionsInstance.push(this.createOptionsInstance(this.options))
 		}
 	}
 	// 顶部tab切换
@@ -242,7 +243,7 @@ export struct IBestCascaderContent{
 					.height("100%")
 					.align(Alignment.Top)
 					.padding({ bottom: this.baseStyle.spaceMd })
-				}, (item: IBestCascaderOptionInstance[], index: number) => index + "")
+				}, (_: IBestCascaderOptionInstance[], index: number) => index + "")
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.height(this.getListHeight())
@@ -322,7 +323,7 @@ export struct IBestCascader{
 	/**
 	 * 可选项数据源
 	 */
-	@Provide({allowOverride: "options"}) options: IBestCascaderOption[] = []
+	@Prop options: IBestCascaderOption[] = []
 	/**
 	 * 选中颜色
 	 */

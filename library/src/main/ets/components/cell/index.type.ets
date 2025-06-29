@@ -1,3 +1,5 @@
+import { IBestStringNumber } from "../../../../../Index";
+
 export enum ARROW_DIRECTION {
 	TOP = 'top',
 	RIGHT = 'right',
@@ -6,10 +8,10 @@ export enum ARROW_DIRECTION {
 }
 export type BorderSizeType = "full" | "center" | "right"
 export class CellSizeData {
-	padding?: string
-	fontSize?: string
-	labelFontSize?: string
-	constructor(padding: string, fontSize: string, labelFontSize: string) {
+	padding: IBestStringNumber
+	fontSize: IBestStringNumber
+	labelFontSize: IBestStringNumber
+	constructor(padding: IBestStringNumber, fontSize: IBestStringNumber, labelFontSize: IBestStringNumber) {
 		this.padding = padding;
 		this.fontSize = fontSize;
 		this.labelFontSize = labelFontSize
