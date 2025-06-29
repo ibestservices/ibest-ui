@@ -125,7 +125,6 @@
 			"value": "Sum"
 		},
 		{
-<<<<<<< HEAD
 			"name": "ibest_text_input_correct_content",
 			"value": "Please enter the correct content"
 		},
@@ -176,7 +175,8 @@
 		{
 			"name": "ibest_text_input_postal_code",
 			"value": "Please enter postal code"
-=======
+		},
+		{
 			"name": "ibest_guide_previous",
 			"value": "Previous"
 		},
@@ -187,7 +187,6 @@
 		{
 			"name": "ibest_guide_complete",
 			"value": "Complete"
->>>>>>> master
 		}
 	]
 }
