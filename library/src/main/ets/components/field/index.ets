@@ -212,6 +212,10 @@ export struct IBestField{
      * @since 2.0.4
      */
     @Prop inputFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
+		/**
+	 	* 输入框文字粗细
+	 	*/
+	  @Prop inputFontWeight: string | number | FontWeight = FontWeight.Normal
     /**
      * 光标颜色
      * @since 2.0.5
@@ -368,6 +372,7 @@ export struct IBestField{
 					Text(this.prefix)
 						.fontSize(getSizeByUnit(this.inputFontSize, true))
 						.fontColor(this.prefixFontColor)
+						.fontWeight(this.inputFontWeight)
 						.margin({right: this.baseStyle.spaceBase})
 				}
 				if (this.customRightContent) {
@@ -379,6 +384,7 @@ export struct IBestField{
 							.caretColor(this.caretColor)
 							.fontSize(getSizeByUnit(this.inputFontSize, true))
 							.fontColor(IBestFieldColor.inputColor)
+							.fontWeight(this.inputFontWeight)
 							.placeholderFont({
 								size: getSizeByUnit(this.inputFontSize, true)
 							})
@@ -413,6 +419,7 @@ export struct IBestField{
 							.caretColor(this.caretColor)
 							.fontSize(getSizeByUnit(this.inputFontSize, true))
 							.fontColor(IBestFieldColor.inputColor)
+							.fontWeight(this.inputFontWeight)
 							.placeholderFont({
 								size: getSizeByUnit(this.inputFontSize, true)
 							})
@@ -477,6 +484,7 @@ export struct IBestField{
 					Text(this.suffix)
 						.fontSize(getSizeByUnit(this.inputFontSize, true))
 						.fontColor(this.suffixFontColor)
+						.fontWeight(this.inputFontWeight)
 						.margin({left: this.baseStyle.spaceBase})
 				}
 				// link箭头

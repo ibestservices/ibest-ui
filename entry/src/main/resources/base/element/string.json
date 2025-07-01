@@ -321,6 +321,10 @@
 			"value": "ImageCropper 图片裁剪"
 		},
 		{
+			"name": "component_contactAddress",
+			"value": "ContactAddress 联系人地址"
+		},
+		{
 			"name": "primary",
 			"value": "主要"
 		},

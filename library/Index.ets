@@ -174,3 +174,6 @@ export { IBestColorPicker } from './src/main/ets/components/colorPicker/index'
 
 export { IBestImageCropper } from './src/main/ets/components/imageCropper/index'
 export { IBestImageCropperController } from './src/main/ets/components/imageCropper/index.type'
+
+export { IBestContactAddressForm } from './src/main/ets/components/contactAddress/index'
+export { IBestContactAddressController, AddressParseResult } from './src/main/ets/components/contactAddress/index.type'
