@@ -66,7 +66,7 @@
 2. IBestPopup 组件在横屏时位置错误问题;
 3. IBestTextEllipsis 在文字较少时也显示操作文字问题;
 
-## 2.0.8
+## 2.0.8 - 5.0.3(15)
 #### 新增:
 1. IBestPagination 分页组件;
 2. IBestButton 增加 fontWeight 属性;

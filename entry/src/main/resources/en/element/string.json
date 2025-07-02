@@ -317,12 +317,12 @@
 			"value": "ColorPicker"
 		},
 		{
-			"name": "component_imageCropper",
-			"value": "ImageCropper"
-		},
-		{
 			"name": "component_contactAddress",
 			"value": "ContactAddress"
+		},
+		{
+			"name": "component_imageCropper",
+			"value": "ImageCropper"
 		},
 		{
 			"name": "primary",

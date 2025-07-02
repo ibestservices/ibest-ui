@@ -310,12 +310,12 @@ struct Index {
 			path: "ColorPicker"
 		},
 		{
-			name: $r("app.string.component_imageCropper"),
-			path: "ImageCropper"
-		},
-		{
 			name: $r("app.string.component_contactAddress"),
 			path: "ContactAddress"
+		},
+		{
+			name: $r("app.string.component_imageCropper"),
+			path: "ImageCropper"
 		}
 	]
 	private tabsList: Tab[] = [

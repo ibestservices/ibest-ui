@@ -172,8 +172,8 @@ export { IBestCanvasContent } from './src/main/ets/components/canvasDrawer/index
 
 export { IBestColorPicker } from './src/main/ets/components/colorPicker/index'
 
+export { IBestContactAddressForm } from './src/main/ets/components/contactAddress/index'
+export { IBestContactAddressController, IBestContactAddressFormResult } from './src/main/ets/components/contactAddress/index.type'
+
 export { IBestImageCropper } from './src/main/ets/components/imageCropper/index'
 export { IBestImageCropperController } from './src/main/ets/components/imageCropper/index.type'
-
-export { IBestContactAddressForm } from './src/main/ets/components/contactAddress/index'
-export { IBestContactAddressController, AddressParseResult } from './src/main/ets/components/contactAddress/index.type'
