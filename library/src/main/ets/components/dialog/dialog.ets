@@ -24,7 +24,7 @@ export struct IBestDialogView {
 	/**
 	 * 弹窗圆角
 	 */
-	@Prop dialogBorderRadius: IBestStringNumber = this.baseStyle.spaceMd as string
+	@Prop dialogBorderRadius: Length | BorderRadiuses | LocalizedBorderRadiuses = this.baseStyle.spaceMd as string
 	/**
 	 * 背景图片
 	 * @since 2.0.8

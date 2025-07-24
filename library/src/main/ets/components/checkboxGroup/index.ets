@@ -1,7 +1,7 @@
 import { emitter } from '../../utils/EventEmitter'
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit, sleep } from '../../utils/utils'
 import { CHECKBOX_GROUP_EVENT_NAME, COMPONENT_NAME, IBestCheckboxGroupController } from './index.type'
-import { IBestStringNumber } from '../../model/Global.type'
+import { IBestAwaitable, IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestCheckboxGroup {
@@ -51,7 +51,7 @@ export struct IBestCheckboxGroup {
 	 * 改变前的回调
 	 * @since 2.0.8
 	 */
-	beforeChange?: (checkedItemNames: IBestStringNumber[]) => Promise<boolean> | boolean
+	beforeChange?: (checkedItemNames: IBestStringNumber[]) => IBestAwaitable
 
 	@State uniId: number = 0
 	@State allCheckNames: IBestStringNumber[] = []

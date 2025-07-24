@@ -135,6 +135,7 @@ export { IBestDivider } from './src/main/ets/components/divider/index'
 export { IBestEmpty } from './src/main/ets/components/empty/index'
 
 export { IBestHighlight } from './src/main/ets/components/highlight/index'
+export { IBestHighlightKeywords } from './src/main/ets/components/highlight/index.type'
 
 export { IBestNoticeBar } from './src/main/ets/components/noticeBar/index'
 
@@ -171,6 +172,9 @@ export { IBestCanvasDrawer } from './src/main/ets/components/canvasDrawer/index'
 export { IBestCanvasContent } from './src/main/ets/components/canvasDrawer/index.type'
 
 export { IBestColorPicker } from './src/main/ets/components/colorPicker/index'
+
+export { IBestContactAddress } from './src/main/ets/components/contactAddress/index'
+export { IBestContactAddressController, IBestContactAddressFormResult } from './src/main/ets/components/contactAddress/index.type'
 
 export { IBestImageCropper } from './src/main/ets/components/imageCropper/index'
 export { IBestImageCropperController } from './src/main/ets/components/imageCropper/index.type'

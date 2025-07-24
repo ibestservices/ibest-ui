@@ -1,4 +1,4 @@
-import { IBestButton, IBestCountTo, IBestCountToController } from '@ibestservices/ibest-ui';
+import { IBestButton, IBestCountTo, IBestCountToController, IBestToast } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import CustomNavBar from '../../components/CustomNavBar';
@@ -22,7 +22,10 @@ struct CountToPage {
                     ComponentShowContainer({ title: '基础用法' }){
                         IBestCountTo({
                             start: 0,
-                            end: 666
+                            end: 666,
+							onFinish: () => {
+								IBestToast.show("已结束")
+							}
                         })
                     }
                 }

@@ -23,7 +23,7 @@ struct IBestPopupBaseContent {
 	 * 全局公共样式
 	 */
 	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp("IBestIsLandscape") @Watch("initSize") IBestIsLandscape: boolean = false
+	@StorageProp("IBestIsLandscape") @Watch("initSize") isLandscape: boolean = false
 	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
 	@StorageProp("IBestBottomBarHeight") bottomBarHeight: number = 0
 	/**
@@ -58,7 +58,7 @@ struct IBestPopupBaseContent {
 	/**
 	 * 背板的圆角半径
 	 */
-	@Consume cornerRadius: IBestStringNumber
+	@Consume cornerRadius: Length | BorderRadiuses | LocalizedBorderRadiuses
 	/**
 	 * 底部偏移
 	 */
@@ -128,14 +128,14 @@ struct IBestPopupBaseContent {
 			case "left":
 			case "right":
 				return {
-					width: this.popupWidth || (this.IBestIsLandscape ? "70%" : "60%"),
+					width: this.popupWidth || (this.isLandscape ? "70%" : "60%"),
 					height: this.popupHeight || "100%"
 				}
 			case "top":
 			case "bottom":
 				return {
 					width: this.popupWidth || "100%",
-					height: this.popupHeight || (this.IBestIsLandscape ? "70%" : "40%")
+					height: this.popupHeight || (this.isLandscape ? "70%" : "40%")
 				}
 			case "center":
 				return {
@@ -255,7 +255,7 @@ export struct IBestPopup{
 	 */
 	@Prop popupHeight: IBestStringNumber = ""
 	/**
-	 * 背景图片
+	 * 背景颜色
 	 * @since 2.0.8
 	 */
 	@Provide({allowOverride: "bgColor"}) bgColor: ResourceColor = IBestPopupColor.bgColor
@@ -293,7 +293,7 @@ export struct IBestPopup{
 	/**
 	 * 背板的圆角半径
 	 */
-	@Provide({allowOverride: "cornerRadius"}) cornerRadius: IBestStringNumber = 0
+	@Provide({allowOverride: "cornerRadius"}) cornerRadius: Length | BorderRadiuses | LocalizedBorderRadiuses = 0
 	/**
 	 * 是否允许点击遮罩关闭
 	 */
@@ -362,7 +362,8 @@ export struct IBestPopup{
 	onClose: () => void = () => {}
 
 	private baseController: PopupBaseController = new PopupBaseController()
-	private promptAction = this.getUIContext().getPromptAction()
+	private uiContext = this.getUIContext()
+	private promptAction = this.uiContext.getPromptAction()
 	private dialogId: number = 0
 	@Builder defaultContentBuilder() {
 		IBestPopupBaseContent({
@@ -420,7 +421,7 @@ export struct IBestPopup{
 				this.defaultContentBuilder()
 			},
 			width: CONTAINER_SIZE.FULL,
-			height: px2vp(GlobalStore.screenHeight),
+			height: this.uiContext.px2vp(GlobalStore.screenHeight),
 			backgroundBlurStyle: BlurStyle.NONE,
 			cornerRadius: 0,
 			alignment: this.getAlignment(),

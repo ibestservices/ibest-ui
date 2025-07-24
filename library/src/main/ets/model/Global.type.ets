@@ -11,6 +11,10 @@ export type WordBreakType = 'normal' | 'break-all' | 'break-word'
  */
 export type IBestStringNumber = string | number
 /**
+ * 等待
+ */
+export type IBestAwaitable = Promise<boolean> | boolean
+/**
  * 位置类型
  */
 export interface IBestEdges {

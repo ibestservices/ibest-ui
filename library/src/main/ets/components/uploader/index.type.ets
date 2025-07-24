@@ -6,22 +6,43 @@ export type IBestUploaderSelectType = "image" | "file"
  * 上传文件类型
  */
 class IBestUploaderFileType{
-	// 文件在线地址
+	/**
+	 * 文件在线地址
+     */
 	url?: string
-	// internal协议地址
+	/**
+	 * internal协议地址
+     */
 	internalUri?: string
-	// 预览文件地址
+	/**
+	 * 预览文件地址
+     */
 	previewUri?: string
-	// 缓存地址
+	/**
+	 * 缓存地址
+     */
 	cacheUri?: string
-	// 文件名称
+	/**
+	 * 文件名称
+     */
 	name?: string
-	// 文件大小 单位Byte
+	/**
+	 * 文件大小 单位Byte
+     */
 	size?: number
-	// 是否是图片
+	/**
+	 * 是否是图片
+     */
 	isImage?: boolean
-	// 上传状态
-	status?: 'uploading' | 'failed' | 'done'
+	/**
+	 * 上传状态
+     */
+	status?: 'ready' | 'uploading' | 'failed' | 'done'
+	/**
+	 * 上传后地址
+	 * @since 2.1.3
+     */
+	uploadUrl?: string
 }
 @Observed
 export class IBestUploaderFile extends IBestUploaderFileType{
@@ -35,6 +56,7 @@ export class IBestUploaderFile extends IBestUploaderFileType{
 		this.size = value.size || 0
 		this.isImage = value.isImage || false
 		this.status = value.status
+		this.uploadUrl = value.uploadUrl || ''
 	}
 }
 /**

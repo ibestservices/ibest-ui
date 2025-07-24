@@ -25,11 +25,11 @@ export const getWindowAvoidSize = async (context: common.BaseContext): Promise<C
     // console.log("avoidArea", JSON.stringify(avoidArea))
     // console.log("systemDht.bottomRect", JSON.stringify(systemDht))
     return {
-        topSize: px2vp(avoidArea.topRect.height),
-        bottomSize: px2vp(avoidArea.bottomRect.height),
-        leftSize: px2vp(avoidArea.leftRect.width),
-        rightSize: px2vp(avoidArea.rightRect.width),
-        navigationSize: px2vp(systemDht.bottomRect.height)
+        topSize: GlobalStore.px2vp(avoidArea.topRect.height),
+        bottomSize: GlobalStore.px2vp(avoidArea.bottomRect.height),
+        leftSize: GlobalStore.px2vp(avoidArea.leftRect.width),
+        rightSize: GlobalStore.px2vp(avoidArea.rightRect.width),
+        navigationSize: GlobalStore.px2vp(systemDht.bottomRect.height)
     }
 }
 /**
@@ -50,7 +50,7 @@ export function getAppVersion(){
 export async function pixelMap2Buffer(pixelMap: PixelMap) {
     const imagePackerApi: image.ImagePacker = image.createImagePacker()
     let packOpts: image.PackingOption = { format: "image/jpeg", quality: 98 }
-    return await imagePackerApi.packing(pixelMap, packOpts)
+    return await imagePackerApi.packToData(pixelMap, packOpts)
 }
 /**
  * 保存pixelMap 图片
@@ -80,7 +80,7 @@ export function getResourceStr(res: ResourceStr): string {
  */
 export function shareImage(context: common.UIAbilityContext, pixelMap: PixelMap){
 	const imagePackerApi: image.ImagePacker = image.createImagePacker()
-	imagePackerApi.packing(pixelMap, {
+	imagePackerApi.packToData(pixelMap, {
 		format: "image/jpeg",
 		quality: 70
 	}).then((data: ArrayBuffer) => {

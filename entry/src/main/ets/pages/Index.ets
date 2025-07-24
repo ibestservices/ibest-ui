@@ -1,5 +1,4 @@
 import { IBestCell, IBestCellGroup, IBestNavBar } from '@ibestservices/ibest-ui'
-import router from '@ohos.router'
 import { BORDER_RADIUS, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, modeColor, SPACE } from '../assets/styles/BaseStyle'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import GlobalStore from '../utils/global'
@@ -7,7 +6,7 @@ import { common, Want } from '@kit.AbilityKit'
 import { getAppVersion, getResourceStr } from '../utils/utils'
 import { rcp } from '@kit.RemoteCommunicationKit'
 import fs from '@ohos.file.fs'
-import { updateManager } from '@kit.StoreKit'
+import { updateManager } from '@kit.AppGalleryKit'
 import RouterUtil from '../utils/routerUtil'
 import { authentication } from '@kit.AccountKit'
 import { hilog } from '@kit.PerformanceAnalysisKit'
@@ -310,9 +309,19 @@ struct Index {
 			path: "ColorPicker"
 		},
 		{
+			name: $r("app.string.component_contactAddress"),
+			path: "ContactAddress"
+		},
+		{
 			name: $r("app.string.component_imageCropper"),
 			path: "ImageCropper"
 		}
+	]
+	chartsComponentList: ComponentItem[] = [
+		{
+			name: 'Column 柱状图',
+			path: "Column"
+		},
 	]
 	private tabsList: Tab[] = [
 		{
@@ -323,6 +332,10 @@ struct Index {
 			name: $r("app.string.tab_bar_extend"),
 			icon: $r("app.media.icon_yewu")
 		},
+		// {
+		// 	name: $r("app.string.tab_bar_chart"),
+		// 	icon: $r("app.media.icon_chart")
+		// },
 		{
 			name: $r("app.string.tab_bar_about"),
 			icon: $r("app.media.icon_about")
@@ -333,7 +346,9 @@ struct Index {
 	@State uiVersion: string = ""
 	private scrollerForList1: Scroller = new Scroller()
 	private scrollerForList2: Scroller = new Scroller()
-	private context = getContext(this) as common.UIAbilityContext
+	private scrollerForList3: Scroller = new Scroller()
+	private context = this.getUIContext().getHostContext() as common.UIAbilityContext
+	private router = this.getUIContext().getRouter()
 	private navPathStack: NavPathStack = new NavPathStack()
 
 	@Builder tabBuilder(index: number){
@@ -349,29 +364,41 @@ struct Index {
 	}
 	@Builder listTop(index: number){
 		Column({ space: SPACE.MD }) {
-			Row({ space: SPACE.XS }) {
-				Image($r("app.media.app_icon")).width(32).borderRadius(BORDER_RADIUS.BASE)
-				Text($r("app.string.app_name"))
-					.fontSize(32)
-					.fontColor(modeColor.textColor2)
-			}.justifyContent(FlexAlign.Center)
-			Text() {
-				if(index == 0){
-					Span($r("app.string.tab_bar_basic_desc"))
-				}else if(index == 1){
-					Span($r("app.string.tab_bar_extend_desc"))
+			// if(index == 2){
+			// 	Row({ space: SPACE.XS }) {
+			// 		Image($r("app.media.app_icon")).width(32).borderRadius(BORDER_RADIUS.BASE)
+			// 		Text("UCharts")
+			// 			.fontSize(32)
+			// 			.fontColor(modeColor.textColor2)
+			// 	}.justifyContent(FlexAlign.Center)
+			// 	Text("以下为UCharts图表组件")
+			// 		.fontSize(FONT_SIZE.MD)
+			// 		.fontColor(modeColor.textColor4)
+			// }else {
+				Row({ space: SPACE.XS }) {
+					Image($r("app.media.app_icon")).width(32).borderRadius(BORDER_RADIUS.BASE)
+					Text($r("app.string.app_name"))
+						.fontSize(32)
+						.fontColor(modeColor.textColor2)
+				}.justifyContent(FlexAlign.Center)
+				Text() {
+					if(index == 0){
+						Span($r("app.string.tab_bar_basic_desc"))
+					}else if(index == 1){
+						Span($r("app.string.tab_bar_extend_desc"))
+					}
+					Span("，")
+					Span($r("app.string.tab_view_doc"))
+					Span("：")
+					Span($r("app.string.app_doc_url"))
+						.decoration({ type: TextDecorationType.Underline, color: modeColor.textColor4 })
+						.onClick(() => {
+							this.viewUrl("doc")
+						})
 				}
-				Span("，")
-				Span($r("app.string.tab_view_doc"))
-				Span("：")
-				Span($r("app.string.app_doc_url"))
-					.decoration({ type: TextDecorationType.Underline, color: modeColor.textColor4 })
-					.onClick(() => {
-						this.viewUrl("doc")
-					})
-			}
-			.fontSize(FONT_SIZE.MD)
-			.fontColor(modeColor.textColor4)
+				.fontSize(FONT_SIZE.MD)
+				.fontColor(modeColor.textColor4)
+			// }
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.alignItems(HorizontalAlign.Start)
@@ -417,7 +444,24 @@ struct Index {
 			.onDidScroll(() => {
 				this.getScrollTop()
 			})
-		}else{
+		}
+		// else if (index == 2) {
+		// 	List({ scroller: this.scrollerForList3 }){
+		// 		ListItem() {
+		// 			this.listTop(index)
+		// 		}
+		// 		ForEach(this.chartsComponentList, (item: ComponentItem, i) => {
+		// 			ListItem() {
+		// 				this.componentItem(item, i)
+		// 			}
+		// 		})
+		// 	}
+		// 	.listStyle()
+		// 	.onDidScroll(() => {
+		// 		this.getScrollTop()
+		// 	})
+		// }
+		else{
 			Column() {
 				Scroll(){
 					Column({ space: SPACE.MD }) {
@@ -462,7 +506,7 @@ struct Index {
 									isLink: true,
 									hasBorder: false,
 									onCellClick: () => {
-										router.pushUrl({
+										this.router.pushUrl({
 											url: "pages/PrivacyPolicy"
 										})
 									}
@@ -534,6 +578,9 @@ struct Index {
 			case 1:
 				this.scrollerForList2.scrollTo({xOffset: 0, yOffset: 0, animation: true})
 				break
+			// case 2:
+			// 	this.scrollerForList3.scrollTo({xOffset: 0, yOffset: 0, animation: true})
+			// 	break
 		}
 	}
 	getScrollTop(){
@@ -545,6 +592,9 @@ struct Index {
 				this.scrollTop = this.scrollerForList2.currentOffset().yOffset
 				break
 			case 2:
+			// 	this.scrollTop = this.scrollerForList3.currentOffset().yOffset
+			// 	break
+			// case 3:
 				this.scrollTop = 0
 				break
 		}
@@ -563,7 +613,7 @@ struct Index {
 		}
 	}
 	async getUiVersion(){
-		let filePath = getContext(this).cacheDir + "/BuildProfile.ets"
+		let filePath = this.context.cacheDir + "/BuildProfile.ets"
 		try {
 			fs.unlinkSync(filePath)
 		} catch(err) {}
@@ -605,6 +655,9 @@ struct Index {
 				TabContent(){
 					this.tabContentBuilder(2)
 				}.tabBar(this.tabBuilder(2))
+				// TabContent(){
+				// 	this.tabContentBuilder(3)
+				// }.tabBar(this.tabBuilder(3))
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.barHeight(70)

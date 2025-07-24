@@ -2,7 +2,7 @@ import { IBestDialogView } from './dialog';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { convertDimensionsWidthUnit, sleep } from '../../utils/utils';
-import { IBestStringNumber } from '../../model/Global.type';
+import { IBestAwaitable, IBestStringNumber } from '../../model/Global.type';
 import { ImmersiveMode, LengthMetrics, LevelMode } from '@kit.ArkUI';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 @Component
@@ -23,7 +23,7 @@ export struct IBestDialog {
 	/**
 	 * 弹窗圆角
 	 */
-	@Prop dialogBorderRadius: IBestStringNumber = this.baseStyle.spaceMd as string
+	@Prop dialogBorderRadius: Length | BorderRadiuses | LocalizedBorderRadiuses = this.baseStyle.spaceMd as string
 	/**
 	 * 背景图片
 	 * @since 2.0.8
@@ -235,7 +235,7 @@ export struct IBestDialog {
 	/**
 	 * 关闭前的回调函数，返回 false 可阻止关闭，支持返回 Promise
 	 */
-	beforeClose?: (action: 'cancel' | 'confirm') => Promise<boolean> | boolean
+	beforeClose?: (action: 'cancel' | 'confirm') => IBestAwaitable
 	/**
 	 * 弹框打开回调
 	 * @since 1.16.0

@@ -26,9 +26,9 @@ export struct IBestCalendarDialog {
      */
     @Prop isModal: boolean = true
     /**
-     * 背板的圆角半径
+     * 弹框圆角半径
      */
-    @Prop cornerRadius: IBestStringNumber = convertDimensionsWidthUnit(10)
+    @Prop cornerRadius: Length | BorderRadiuses | LocalizedBorderRadiuses = convertDimensionsWidthUnit(10)
     /**
      * 弹框展示状态
      */
@@ -90,6 +90,10 @@ export struct IBestCalendarDialog {
      */
     @Prop confirmBtnColor: ResourceColor = ""
 	/**
+	 * 确认按钮文案
+	 */
+	@Prop confirmBtnText: ResourceStr = $r("app.string.ibest_text_confirm")
+	/**
 	 * 打卡模式
 	 * @since 2.0.1
 	 */
@@ -109,10 +113,11 @@ export struct IBestCalendarDialog {
 	 * @since 2.0.1
 	 */
 	@Provide({allowOverride: "unClockText"}) unClockText: ResourceStr = $r("app.string.ibest_calendar_unclock")
-    /**
-     * 确认按钮文案
-     */
-    @Prop confirmBtnText: ResourceStr = $r("app.string.ibest_text_confirm")
+	/**
+	 * 是否显示其他月份日期
+	 * @since 2.1.3
+	 */
+	@Prop showOtherMonthDate: boolean = true
 	/**
 	 * 自定义日期项插槽
 	 * @since 2.0.9
@@ -139,6 +144,7 @@ export struct IBestCalendarDialog {
             isShowMark: this.isShowMark,
             isShowConfirmBtn: this.selectType != "single",
             isShowHeader: this.isShowHeader,
+			showOtherMonthDate: this.showOtherMonthDate,
             confirmBtnColor: this.confirmBtnColor,
             confirmBtnText: this.confirmBtnText,
 			clock: this.clock,

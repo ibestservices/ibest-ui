@@ -2,7 +2,7 @@ import IBestToast from '../../apis/IBestToast';
 import { getComponentsInfo } from '../../utils/utils';
 import GlobalStore from '../../utils/GlobalStore';
 import { window } from '@kit.ArkUI';
-
+import { IBestStringNumber } from '../../model/Global.type';
 export class GuideRect {
     public left: number = 0
     public top: number = 0
@@ -102,7 +102,7 @@ export class GuideRect {
 }
 
 export interface styleParamType {
-    maskColor: string | number | CanvasGradient | CanvasPattern
+    maskColor: IBestStringNumber | CanvasGradient | CanvasPattern
     guideAreaRound: number
 }
 
@@ -227,8 +227,8 @@ export class IBestGuideController implements IBestGuideBaseController {
             }
             guideArea = GuideRect.mergeRects(rectList, padding)
         }
-        if (!GlobalStore.windowStage.getMainWindowSync().getWindowProperties().isLayoutFullScreen) {
-            const windowAvoidTopRectHeight = px2vp(GlobalStore.windowStage.getMainWindowSync()
+        if (!GlobalStore.getMainWindow().getWindowProperties().isLayoutFullScreen) {
+            const windowAvoidTopRectHeight = this.context!.px2vp(GlobalStore.getMainWindow()
                 .getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
                 .topRect
                 .height)

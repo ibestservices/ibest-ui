@@ -125,6 +125,58 @@
 			"value": "Sum"
 		},
 		{
+			"name": "ibest_text_input_correct_content",
+			"value": "Please enter the correct content"
+		},
+		{
+			"name": "ibest_text_input_name",
+			"value": "Please input your name"
+		},
+		{
+			"name": "ibest_text_input_phone",
+			"value": "Please enter your phone"
+		},
+		{
+			"name": "ibest_text_select_region",
+			"value": "Please select the regional location"
+		},
+		{
+			"name": "ibest_text_identify",
+			"value": "identify"
+		},
+		{
+			"name": "ibest_text_name",
+			"value": "name"
+		},
+		{
+			"name": "ibest_text_phone_number",
+			"value": "phone"
+		},
+		{
+			"name": "ibest_text_province_city_district",
+			"value": "ProvinceCityDistrict"
+		},
+		{
+			"name": "ibest_text_select_region2",
+			"value": "Please select province, city, or district"
+		},
+		{
+			"name": "ibest_text_detailed_address",
+			"value": "detailed address"
+		},
+		{
+			"name": "ibest_text_detailed_address_description",
+			"value": "Enter residential area/office building/house number, etc"
+		},
+		{
+			"name": "ibest_text_postal_code",
+			"value": "postal code"
+		},
+		{
+			"name": "ibest_text_input_postal_code",
+			"value": "Please enter postal code"
+		},
+		{
 			"name": "ibest_guide_previous",
 			"value": "Previous"
 		},

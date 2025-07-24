@@ -33,4 +33,19 @@ export default class GlobalStore {
             GlobalStore.bottomBarHeight = res.navigationSize
         })
     }
+	/**
+	 * 获取mainWindow
+	 */
+	public static getMainWindow(){
+		return GlobalStore.windowStage.getMainWindowSync()
+	}
+	/**
+	 * 尺寸转换
+	 */
+	public static px2vp(value: number){
+		return GlobalStore.getMainWindow().getUIContext().px2vp(value)
+	}
+	public static vp2px(value: number){
+		return GlobalStore.getMainWindow().getUIContext().vp2px(value)
+	}
 }

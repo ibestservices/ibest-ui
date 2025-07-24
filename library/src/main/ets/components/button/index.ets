@@ -96,7 +96,7 @@ export struct IBestButton {
 	 * 按钮圆角
 	 * @since 2.0.1
 	 */
-	@Prop btnBorderRadius: IBestStringNumber = ""
+	@Prop btnBorderRadius: Length | BorderRadiuses | LocalizedBorderRadiuses = ""
 	/**
 	 * 图标位置
 	 * @since 2.0.3
@@ -130,10 +130,6 @@ export struct IBestButton {
 	 * @useinstead onBtnClick
 	 */
 	onClickBtn: () => void = () => {}
-	/**
-	 * 点击按钮，且按钮状态不为加载或禁用时触发
-	 * @since 2.0.8
-	 */
 	onBtnClick: () => void = () => {}
 
 	@Builder iconContent() {
@@ -214,7 +210,7 @@ export struct IBestButton {
 	}
 	// 获取按钮的borderRadius
 	getBtnBorderRadius() {
-		return getSizeByUnit(this.btnBorderRadius) || (this.square ? 0 : this.baseStyle[`borderRadius${this.round ? 'Max' : 'Md'}`])
+		return this.btnBorderRadius !== '' ? getSizeByUnit(this.btnBorderRadius) : (this.square ? 0 : this.baseStyle[`borderRadius${this.round ? 'Max' : 'Md'}`])
 	}
 	// 获取按钮边框的颜色
 	getBorderColor() {

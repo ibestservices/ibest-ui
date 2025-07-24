@@ -1,4 +1,4 @@
-import { IBestStringNumber } from '../../model/Global.type'
+import { IBestAwaitable, IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
@@ -54,7 +54,7 @@ export struct IBestSwitch {
 	/**
 	 * 改变前的回调
 	 */
-	onBeforeChange?: (value: boolean) => Promise<boolean> | boolean
+	onBeforeChange?: (value: boolean) => IBestAwaitable
 	/**
 	 * 点击的回调
 	 * @deprecated since 2.0.8
@@ -119,8 +119,8 @@ export struct IBestSwitch {
 			.borderRadius(this.baseStyle.borderRadiusMax)
 			.shadow({
 				color: 'rgba(0, 0, 0, 0.1)',
-				offsetY: px2vp(3),
-				radius: px2vp(1)
+				offsetY: this.uiContext.px2vp(3),
+				radius: 1
 			})
 			.backgroundColor(IBestSwitchColor.white)
 			.translate({

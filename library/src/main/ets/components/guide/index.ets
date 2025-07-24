@@ -87,9 +87,10 @@ export struct IBestGuide {
     @State guideAreaBottom: number = 0
     @State guideAreaLeft: number = 0
     @State guideAreaRight: number = 0
-    @State isLayoutFullScreen: boolean = GlobalStore.windowStage.getMainWindowSync().getWindowProperties().isLayoutFullScreen
+    @State isLayoutFullScreen: boolean = GlobalStore.getMainWindow().getWindowProperties().isLayoutFullScreen
     @State avoidTopRectHeight: number = 0
     @State avoidNavRectHeight: number = 0
+	private uiContext = this.getUIContext()
 
     @Builder popupBuilder() {
         if (this.guideContentBuilder) {
@@ -163,12 +164,12 @@ export struct IBestGuide {
             this.guideAreaBottom = rect.bottom
             this.guideAreaLeft = rect.left
             this.guideAreaRight = rect.right
-            this.isLayoutFullScreen = GlobalStore.windowStage.getMainWindowSync().getWindowProperties().isLayoutFullScreen
-            this.avoidTopRectHeight = px2vp(GlobalStore.windowStage.getMainWindowSync()
+            this.isLayoutFullScreen = GlobalStore.getMainWindow().getWindowProperties().isLayoutFullScreen
+            this.avoidTopRectHeight = this.uiContext.px2vp(GlobalStore.getMainWindow()
                 .getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
                 .topRect
                 .height)
-            this.avoidNavRectHeight = px2vp(GlobalStore.windowStage.getMainWindowSync()
+            this.avoidNavRectHeight = this.uiContext.px2vp(GlobalStore.getMainWindow()
                 .getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR)
                 .bottomRect
                 .height)

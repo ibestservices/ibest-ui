@@ -21,6 +21,10 @@
 			"value": "文档详见"
 		},
 		{
+			"name": "tab_bar_chart",
+			"value": "图表组件"
+		},
+		{
 			"name": "tab_bar_about",
 			"value": "关于"
 		},
@@ -315,6 +319,10 @@
 		{
 			"name": "component_colorPicker",
 			"value": "ColorPicker 颜色选取"
+		},
+		{
+			"name": "component_contactAddress",
+			"value": "ContactAddress 联系人地址"
 		},
 		{
 			"name": "component_imageCropper",

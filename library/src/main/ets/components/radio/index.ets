@@ -85,22 +85,24 @@ export struct IBestRadio {
 	@State isChecked: boolean = false
 
 	@Builder LabelContain() {
-		Row() {
-			if (this.defaultBuilder) {
-				this.defaultBuilder({ checked: this.isChecked, disabled: this.getIsDisabled() })
-			} else {
-				Text(this.label)
-					.fontColor(this.getLabelColor())
-					.fontSize(getSizeByUnit(this.labelFontSize, true))
+		if(this.defaultBuilder || this.label) {
+			Row() {
+				if (this.defaultBuilder) {
+					this.defaultBuilder({ checked: this.isChecked, disabled: this.getIsDisabled() })
+				} else {
+					Text(this.label)
+						.fontColor(this.getLabelColor())
+						.fontSize(getSizeByUnit(this.labelFontSize, true))
+				}
 			}
+			.margin({
+				left: this.isLeftLabel() ? 0 : this.baseStyle.spaceXs,
+				right: this.isLeftLabel() ? this.baseStyle.spaceXs : 0
+			})
+			.onClick(() => {
+				!this.labelDisabled && this.handleCheckedChange()
+			})
 		}
-		.margin({
-			left: this.isLeftLabel() ? 0 : this.baseStyle.spaceXs,
-			right: this.isLeftLabel() ? this.baseStyle.spaceXs : 0
-		})
-		.onClick(() => {
-			!this.labelDisabled && this.handleCheckedChange()
-		})
 	}
 
 	aboutToAppear() {

@@ -32,7 +32,7 @@ struct ImageCropperPage {
 	private controller2: IBestImageCropperController = new IBestImageCropperController()
 
 	@State previewUrl: PixelMap | null = null
-	private context = getContext(this) as common.UIAbilityContext
+	private context = this.getUIContext().getHostContext() as common.UIAbilityContext
 
 	@Builder imgBuilder() {
 		Column({space: SPACE.MD}) {

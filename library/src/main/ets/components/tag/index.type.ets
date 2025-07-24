@@ -6,7 +6,7 @@ export class TagSizeData {
 	padding: IbestUIBaseStyleValue
 	height: IbestUIBaseStyleValue
 	fontSize: IbestUIBaseStyleValue
-	borderRadius: BorderRadiuses | Length
+	borderRadius: Length | BorderRadiuses | LocalizedBorderRadiuses
 	constructor(padding: IbestUIBaseStyleValue, height: IbestUIBaseStyleValue, fontSize: IbestUIBaseStyleValue,
 		borderRadius: BorderRadiuses | Length) {
 		this.padding = padding;

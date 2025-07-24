@@ -364,7 +364,7 @@ export struct IBestPicker{
 			setTimeout(() => {
 				this.isReady = true
 			}, swipeDuration)
-		}, 0)
+		}, 50)
 	}
 	// 根据已选值 初始化索引位置
 	initWithSelectValue(index: number, children: IBestPickerOption[]){
@@ -391,20 +391,19 @@ export struct IBestPicker{
 	// 初始化多列类型
 	initWidthMultiple(){
 		let options = this.options as IBestPickerOption[][]
-		if(!this.value.length){
-			this.value = Array(options.length).fill(0)
+		let value: IBestStringNumber[] = JSON.parse(JSON.stringify(this.value))
+		if(!value.length){
+			value = Array(options.length).fill('')
 		}
 		options.forEach((item, index) => {
-			if(item.length) {
-				let i = item.findIndex(e => e.value == this.value[index])
-				i = i > -1 ? i : 0
-				this.indexArr[index] = i
-				this.value[index] = item[i].value
-			}else{
-				this.indexArr[index] = 0
-				this.value[index] = ''
-			}
+			let i = item.findIndex(e => e.value == value[index])
+			i = i > -1 ? i : 0
+			this.indexArr[index] = i
+			value[index] = item.length ? item[i].value : ''
 		})
+		if(!this.value.length){
+			this.value = value
+		}
 	}
 	// 初始化多列位置
 	initOffset(){
@@ -419,10 +418,7 @@ export struct IBestPicker{
 				}
 				options.forEach((item, index) => {
 					let i = item.findIndex(e => e.value == this.value[index])
-					i = i > -1 ? i : 0
-					if (i > -1) {
-						this.updateOffsetByIndex(index, i)
-					}
+					this.updateOffsetByIndex(index, i > -1 ? i : 0)
 				})
 			}
 		}

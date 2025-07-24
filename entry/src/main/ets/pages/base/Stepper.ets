@@ -52,14 +52,6 @@ struct StepperPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '限制输入整数' }) {
-						IBestStepper({
-							value: $value3,
-							integer: true
-						})
-					}
-				}
-				ListItem() {
 					ComponentShowContainer({ title: '禁用状态' }) {
 						IBestStepper({
 							value: $value4,

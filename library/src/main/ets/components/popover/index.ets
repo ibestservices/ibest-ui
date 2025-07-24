@@ -111,11 +111,11 @@ export struct IBestPopover{
     /**
      * 默认内容
      */
-    @BuilderParam triggerBuilder?: CustomBuilder
+    @BuilderParam triggerBuilder: CustomBuilder
     /**
      * 自定义popover内容
      */
-    @BuilderParam popoverContentBuilder?: CustomBuilder
+    @BuilderParam popoverContentBuilder: CustomBuilder
     /**
      * 点击选项是触发
      */

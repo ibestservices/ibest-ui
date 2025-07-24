@@ -1,9 +1,9 @@
-import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
+import { ComponentContent, PromptAction } from '@kit.ArkUI'
 import { CONTAINER_SIZE } from '../theme-chalk/src/container'
 import { clamp, convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../utils/utils'
 import { IBestActionSheetColor } from './color'
 import { IBestStringNumber } from '../model/Global.type'
-
+import GlobalStore from '../utils/GlobalStore'
 type IBestPreviewImgType = PixelMap | ResourceStr | DrawableDescriptor
 
 interface CenterLocation {
@@ -184,8 +184,8 @@ struct SwiperItem{
 	init(width: number, height: number){
 		let comInfo = getComponentsInfo(this.getUIContext(), "ibestPreviewImgContent")
 		let rootRatio = comInfo.height / comInfo.width
-		this.imgWidth = px2vp(width)
-		this.imgHeight = px2vp(height)
+		this.imgWidth = GlobalStore.px2vp(width)
+		this.imgHeight = GlobalStore.px2vp(height)
 		this.imageRatio = height / width
 		this.rootWidth = comInfo.width
 		this.rootHeight = comInfo.height
@@ -385,7 +385,7 @@ class ImagePreview{
 		if(this.contentNode){
 			return
 		}
-		let windowClass = await window.getLastWindow(getContext())
+		let windowClass = GlobalStore.getMainWindow()
 		let uiContext = windowClass.getUIContext()
 		this.promptAction = uiContext.getPromptAction()
 		let opt: IBestImagePreviewParams = new IBestImagePreviewParams(list, option)

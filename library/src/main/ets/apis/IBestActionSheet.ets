@@ -1,4 +1,4 @@
-import { ComponentContent, LengthMetrics, UIContext, window } from '@kit.ArkUI';
+import { ComponentContent, LengthMetrics, UIContext } from '@kit.ArkUI';
 import { convertDimensionsWidthUnit, generateId, getLengthUnit, getSizeByUnit } from '../utils/utils';
 import CustomContent from '../common/components/CustomContent';
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src';
@@ -7,8 +7,8 @@ import { CONTAINER_SIZE } from '../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type';
 import { IBestActionSheetColor } from './color';
 import { IBestIcon } from '../components/icon';
-import { IBestStringNumber } from '../model/Global.type';
-
+import { IBestAwaitable, IBestStringNumber } from '../model/Global.type';
+import GlobalStore from '../utils/GlobalStore';
 // 选项类型
 export class IBestActionType {
 	name: ResourceStr = ""
@@ -133,7 +133,7 @@ class IBestActionSheetOption {
 	 * 关闭前的回调函数，返回 false 可阻止关闭，支持返回 Promise
 	 * @since 1.17.0
 	 */
-	beforeClose?: () => Promise<boolean> | boolean
+	beforeClose?: () => IBestAwaitable
 	/**
 	 * 选项高度
 	 * @since 2.0.0
@@ -143,7 +143,7 @@ class IBestActionSheetOption {
 	 * 圆角
 	 * @since 2.0.8
      */
-	radius?: number
+	radius?: number | BorderRadiuses | LocalizedBorderRadiuses
 }
 
 class IBestActionSheetParams extends IBestActionSheetOption {
@@ -420,7 +420,7 @@ class ActionSheet{
   	 */
 	public async show(option: IBestActionSheetOption): Promise<string> {
 		let key = this.getUniKey()
-		let windowClass: window.Window = await window.getLastWindow(getContext())
+		let windowClass = GlobalStore.getMainWindow()
 		let uiContext = windowClass.getUIContext()
 		let params = new IBestActionSheetParams(option)
 		params.id = key
@@ -429,7 +429,7 @@ class ActionSheet{
 		let sheetOption: SheetOptions = {
 			width: params.width,
 			height: params.height,
-			radius: new LengthMetrics(params.radius as number, getLengthUnit()),
+			radius: typeof params.radius === 'number' ? new LengthMetrics(params.radius, getLengthUnit()) : params.radius,
 			dragBar: params.dragBar,
 			preferType: params.preferType,
 			showClose: params.showClose,

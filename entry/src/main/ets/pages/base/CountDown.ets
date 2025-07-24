@@ -1,6 +1,6 @@
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { IBestButton, IBestCountDown, IBestCountDownController } from '@ibestservices/ibest-ui';
+import { IBestButton, IBestCountDown, IBestCountDownController, IBestToast } from '@ibestservices/ibest-ui';
 import CustomNavBar from '../../components/CustomNavBar';
 
 @Builder
@@ -51,7 +51,10 @@ struct CountDownPage {
 								time: this.time1,
 								format: 'ss:SSS',
 								autoStart: false,
-								controller: this.controller
+								controller: this.controller,
+								onFinish: () => {
+									IBestToast.show("已结束")
+								}
 							})
 							Row(){
 								IBestButton({

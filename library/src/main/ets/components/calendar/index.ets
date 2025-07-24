@@ -13,7 +13,6 @@ import {
 	SelectType,
 	WeekDayType
 } from './index.type'
-import promptAction from '@ohos.promptAction'
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
 import { UIContext } from '@kit.ArkUI'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
@@ -201,8 +200,6 @@ export struct IBestCalendar{
      * 全局公共样式
      */
     @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-    // 唯一id
-    @State uniId: number = 0
     // 是否横屏
     @StorageProp("IBestIsLandscape") IBestIsLandscape: boolean = false
     /**
@@ -276,7 +273,7 @@ export struct IBestCalendar{
     /**
      * 圆角
      */
-    @Prop cornerRadius: IBestStringNumber = convertDimensionsWidthUnit(10)
+    @Prop cornerRadius: Length | BorderRadiuses | LocalizedBorderRadiuses = convertDimensionsWidthUnit(10)
     /**
      * 打卡模式
      * @since 2.0.1
@@ -298,6 +295,11 @@ export struct IBestCalendar{
      */
     @Provide({allowOverride: "unClockText"}) unClockText: ResourceStr = $r("app.string.ibest_calendar_unclock")
 	/**
+	 * 是否显示其他月份日期
+	 * @since 2.1.3
+     */
+	@Prop showOtherMonthDate: boolean = true
+	/**
 	 * 自定义日期项插槽
 	 * @since 2.0.9
      */
@@ -306,21 +308,16 @@ export struct IBestCalendar{
      * 选择回调
      */
     onConfirm: (value: IBestCalendarConfirmResult[]) => void = () => {}
-    /**
-     * 当前点击选择的年月日
-     */
+
+	// 唯一id
+	@State uniId: number = 0
+    // 当前点击选择的年月日
     @State @Watch("selectDateChange") curSelectedDate: string = dayjs().format('YYYY-MM-DD')
-    /**
-     * 当前所在年月份
-     */
+    // 当前所在年月份
     @State @Watch("monthChange") curYearMonth: string = dayjs().format('YYYY-MM')
-    /**
-     * 当前月份
-     */
+    // 当前月份
     @State curMonth: string = ""
-    /**
-     * 日历头部
-     */
+    // 日历头部
     @State headerList: HeaderItemType[] = [
         {
             text: $r("app.string.ibest_calendar_monday"),
@@ -351,9 +348,7 @@ export struct IBestCalendar{
             key: 0
         }
     ]
-    /**
-     * 列表日期
-     */
+    // 列表日期
     @Provide daysList: IBestCalendarDay[] = []
     // 日期区域高度
     @State contentHeight: number = 0
@@ -369,15 +364,17 @@ export struct IBestCalendar{
             GridRow({ columns: 7, gutter: { x: 0, y: convertDimensionsWidthUnit(5) }}) {
                 ForEach(this.daysList, (item: IBestCalendarDay, index: number) => {
                     GridCol() {
-                        CalendarItem({
-							dayItem: item,
-							index: index,
-							dayItemBuilder: this.dayItemBuilder
-						})
-                            .enabled(!(this.clock || item.isDisabled))
-                            .onClick(() => {
-                                this.selectDate(item)
-                            })
+						if(item.isCurMonthDay || this.showOtherMonthDate){
+							CalendarItem({
+								dayItem: item,
+								index: index,
+								dayItemBuilder: this.dayItemBuilder
+							})
+								.enabled(!(this.clock || item.isDisabled))
+								.onClick(() => {
+									this.selectDate(item)
+								})
+						}
                     }
                 })
             }
@@ -652,7 +649,7 @@ export struct IBestCalendar{
                         }
                     }
                     if(isOutRange){
-                        promptAction.showToast({
+                        this.context.getPromptAction().showToast({
                             message: $r("app.string.ibest_maximum_limit", this.maxRange),
                             duration: 2000
                         })
@@ -791,9 +788,6 @@ export struct IBestCalendar{
         }
         .width(CONTAINER_SIZE.FULL)
         .backgroundColor(IBestCalendarColor.bgColor)
-        .borderRadius({
-            topLeft: this.cornerRadius,
-            topRight: this.cornerRadius
-        })
+        .borderRadius(getSizeByUnit(this.cornerRadius))
     }
 }

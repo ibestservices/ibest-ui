@@ -170,7 +170,7 @@ export struct IBestNavBar{
 	/**
 	 * 状态栏背景色
 	 */
-	@Prop statusBarBgColor: ResourceColor = this.navBarBgColor
+	@Prop statusBarBgColor: ResourceColor = ''
 	/**
 	 * 是否保持状态栏背景色与标题栏背景色一致
 	 */
@@ -181,17 +181,22 @@ export struct IBestNavBar{
 	 */
 	@Prop titleTextAlign: "left" | "center" = "center"
 	/**
+	 * 扩展安全区域的类型
+	 * @since 2.1.3
+     */
+	@Prop expandSafeAreaType: SafeAreaType[] = [SafeAreaType.SYSTEM, SafeAreaType.CUTOUT]
+	/**
 	 * 自定义左侧内容
      */
-	@BuilderParam leftBuilder?: CustomBuilder
+	@BuilderParam leftBuilder: CustomBuilder
 	/**
 	 * 自定义右侧内容
      */
-	@BuilderParam rightBuilder?: CustomBuilder
+	@BuilderParam rightBuilder: CustomBuilder
 	/**
 	 * 自定义标题内容
      */
-	@BuilderParam titleBuilder?: CustomBuilder
+	@BuilderParam titleBuilder: CustomBuilder
 	/**
 	 * 左侧点击回调
      */
@@ -357,9 +362,10 @@ export struct IBestNavBar{
 			.width(CONTAINER_SIZE.FULL)
 			.height(getSizeByUnit(this.navBarHeight))
 			.justifyContent(FlexAlign.Center)
-			.backgroundColor(this.navBarBgColor)
 			.linearGradient(this.bgLinearGradient)
 			.border({width:{bottom: this.isShowBorder ? 1 : 0}, color: IBestNavbarColor.borderColor})
 		}
+		.backgroundColor(this.navBarBgColor)
+		.expandSafeArea(this.expandSafeAreaType, [SafeAreaEdge.TOP])
 	}
 }

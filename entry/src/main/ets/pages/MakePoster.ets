@@ -98,7 +98,7 @@ struct MakePosterPage {
 		    { required: true, message: '请输入高度'}
 		]
 	}
-	private context = getContext(this) as common.UIAbilityContext
+	private context = this.getUIContext().getHostContext() as common.UIAbilityContext
 
 	@Builder bgTypeBuilder(){
 		IBestRadioGroup({group: "radioGroup", active: $canvasBgType, placeDirection: Axis.Horizontal}){
@@ -300,12 +300,12 @@ struct contentItem{
 	@Prop formId: string
 	@Prop index: number
 	@State groupId: string = "radioGroup" + this.index
-	@State @Watch("contentTypeChange") contentType: "image" | "text" | "" = ""
-	@State @Watch("textChange") text: string = ''
-	@State @Watch("imageChange") image: IBestUploaderFile[] = []
+	@State @Watch("contentTypeChange") conType: "image" | "text" | "" = ""
+	@State @Watch("textChange") itemText: string = ''
+	@State @Watch("imageChange") imgList: IBestUploaderFile[] = []
 	@State @Watch("topChange") top: number | string = ''
 	@State @Watch("leftChange") left: number | string = ''
-	@State @Watch("fontSizeChange") fontSize: number | string = ''
+	@State @Watch("fontSizeChange") textFontSize: number | string = ''
 	@State @Watch("fontColorChange") fontColor: string = ''
 	@State @Watch("radiusChange") radius: number | string = ''
 	@State @Watch("angleChange") angle: number | string = ''
@@ -313,7 +313,7 @@ struct contentItem{
 	@State @Watch("heightChange") imgHeight: number | string = ''
 	delete: (index: number) => void = () => {}
 	@Builder contentTypeBuilder(){
-		IBestRadioGroup({group: this.groupId, active: $contentType, placeDirection: Axis.Horizontal}){
+		IBestRadioGroup({group: this.groupId, active: $conType, placeDirection: Axis.Horizontal}){
 			IBestRadio({
 				group: this.groupId,
 				name: "text",
@@ -332,20 +332,20 @@ struct contentItem{
 	}
 	@Builder selectImgBuilder(){
 		IBestUploader({
-			fileList: $image,
+			fileList: $imgList,
 			max: 1
 		})
 	}
 	aboutToAppear(): void {
 		let item = this.item
 		if(item.type){
-			this.contentType = item.type
+			this.conType = item.type
 		}
 		if(item.text){
-			this.text = item.text as string
+			this.itemText = item.text as string
 		}
 		if(item.url){
-			this.image = [new IBestUploaderFile({previewUri: item.url as string, isImage: true})]
+			this.imgList = [new IBestUploaderFile({previewUri: item.url as string, isImage: true})]
 		}
 		if(item.top){
 			this.top = item.top as number
@@ -354,7 +354,7 @@ struct contentItem{
 			this.left = item.left as number
 		}
 		if(item.fontSize){
-			this.fontSize = item.fontSize as number
+			this.textFontSize = item.fontSize as number
 		}
 		if(item.fontColor){
 			this.fontColor = item.fontColor as string
@@ -373,15 +373,15 @@ struct contentItem{
 		}
 	}
 	contentTypeChange(){
-		if(this.contentType){
-			this.item.type = this.contentType
+		if(this.conType){
+			this.item.type = this.conType
 		}
 	}
 	textChange(){
-		this.item.text = this.text
+		this.item.text = this.itemText
 	}
 	imageChange(){
-		this.item.url = this.image[0].previewUri
+		this.item.url = this.imgList[0].previewUri
 	}
 	topChange(){
 		this.item.top = Number(this.top)
@@ -390,7 +390,7 @@ struct contentItem{
 		this.item.left = Number(this.left)
 	}
 	fontSizeChange(){
-		this.item.fontSize = Number(this.fontSize)
+		this.item.fontSize = Number(this.textFontSize)
 	}
 	fontColorChange(){
 		this.item.fontColor = this.fontColor
@@ -420,22 +420,22 @@ struct contentItem{
 				formId: this.formId,
 				prop: `contentType.${this.index}`,
 				label: "内容类型",
-				value: $contentType,
+				value: $conType,
 				customRightContent: (): void => this.contentTypeBuilder()
 			})
-			if(this.contentType === "text"){
+			if(this.conType === "text"){
 				IBestField({
 					formId: this.formId,
 					prop: `text.${this.index}`,
 					label: "文字内容",
-					value: $text,
+					value: $itemText,
 					placeholder: "请输入文字内容"
 				})
 				IBestField({
 					formId: this.formId,
 					prop: `fontSize.${this.index}`,
 					label: "文字大小",
-					value: $fontSize,
+					value: $textFontSize,
 					type: "number",
 					placeholder: "请输入文字大小"
 				})
@@ -446,12 +446,12 @@ struct contentItem{
 					value: $fontColor,
 					placeholder: "请输入文字颜色"
 				})
-			} else if(this.contentType === "image"){
+			} else if(this.conType === "image"){
 				IBestField({
 					formId: this.formId,
 					prop: `image.${this.index}`,
 					label: "图片",
-					value: $image,
+					value: $imgList,
 					customRightContent: (): void => this.selectImgBuilder()
 				})
 				IBestField({

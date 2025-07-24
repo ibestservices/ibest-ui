@@ -1,5 +1,5 @@
-import { componentUtils, ComponentUtils, LengthUnit, MeasureOptions, window } from '@kit.ArkUI'
-import { ComAvoidAreaSize, ComInfoType, IBestGlobalConfig, IBestStringNumber } from '../model/Global.type'
+import { componentUtils, ComponentUtils, LengthUnit, MeasureOptions } from '@kit.ArkUI'
+import { ComInfoType, IBestGlobalConfig, IBestStringNumber } from '../model/Global.type'
 import { AnyType } from '../model/AnyType'
 import GlobalStore from './GlobalStore'
 import { util } from '@kit.ArkTS'
@@ -113,14 +113,14 @@ export const getComponentsInfo = (context: UIContext, key: string): ComInfoType 
 	let comUtils: ComponentUtils = context.getComponentUtils()
 	let info: componentUtils.ComponentInfo = comUtils.getRectangleById(key)
 	return {
-		width: px2vp(info.size.width),
-		height: px2vp(info.size.height),
-		localLeft: px2vp(info.localOffset.x),
-		localTop: px2vp(info.localOffset.y),
-		screenLeft: px2vp(info.screenOffset.x),
-		screenTop: px2vp(info.screenOffset.y),
-		windowLeft: px2vp(info.windowOffset.x),
-		windowTop: px2vp(info.windowOffset.y)
+		width: context.px2vp(info.size.width),
+		height: context.px2vp(info.size.height),
+		localLeft: context.px2vp(info.localOffset.x),
+		localTop: context.px2vp(info.localOffset.y),
+		screenLeft: context.px2vp(info.screenOffset.x),
+		screenTop: context.px2vp(info.screenOffset.y),
+		windowLeft: context.px2vp(info.windowOffset.x),
+		windowTop: context.px2vp(info.windowOffset.y)
 	}
 }
 /**
@@ -138,8 +138,8 @@ export const getComponentSnapshot = (context: UIContext, key: string): PixelMap 
 export const measureTextSize = (context: UIContext, option: MeasureOptions): Size => {
 	let measureUtils = context.getMeasureUtils()
 	return {
-		width: px2vp(measureUtils.measureTextSize(option).width as number),
-		height: px2vp(measureUtils.measureTextSize(option).height as number)
+		width: context.px2vp(measureUtils.measureTextSize(option).width as number),
+		height: context.px2vp(measureUtils.measureTextSize(option).height as number)
 	}
 }
 /**
@@ -181,13 +181,13 @@ export function getEventName(componentName: string, eventName: string, groupId?:
 /**
  * 根据类型和单位拼接尺寸 用于组件尺寸类属性格式化
  */
-export function getSizeByUnit(val: IBestStringNumber, isFont?: boolean): string {
-	if (typeof val == "string") {
-		return val
+export function getSizeByUnit(val: AnyType, isFont?: boolean): string {
+	if (typeof val == "number") {
+		let config: IBestGlobalConfig = AppStorage.get("IBestGlobalConfig") as IBestGlobalConfig
+		let unit = isFont ? config.fontUnit : config.unit
+		return `${val}${unit}`
 	}
-	let config: IBestGlobalConfig = AppStorage.get("IBestGlobalConfig") as IBestGlobalConfig
-	let unit = isFont ? config.fontUnit : config.unit
-	return `${val}${unit}`
+	return val
 }
 /**
  * 根据配置获取LengthUnit
@@ -218,7 +218,7 @@ export function convertDimensions(val: number, isFont?: boolean): number {
 			case "lpx":
 				return val * GlobalStore.screenWidth / (config.designWidth as number)
 			case "px":
-				return vp2px(val)
+				return GlobalStore.vp2px(val)
 			default:
 				return val
 		}

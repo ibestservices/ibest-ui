@@ -66,7 +66,7 @@ export struct IBestSideBar{
 	/**
 	 * 默认内容
      */
-	@BuilderParam defaultBuilder?: CustomBuilder
+	@BuilderParam defaultBuilder: CustomBuilder
 	/**
 	 * 切换事件回调
      */

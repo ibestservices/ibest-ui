@@ -28,6 +28,11 @@ export struct IBestTextEllipsis{
      * 文字颜色
      */
     @Prop textColor: ResourceColor = IBestTextEllipsisColor.textColor
+	/**
+	 * 文字字重
+	 * @since 2.1.3
+     */
+	@Prop textFontWeight: IBestStringNumber | FontWeight = FontWeight.Normal
     /**
      * 行高
      */
@@ -56,6 +61,11 @@ export struct IBestTextEllipsis{
      * 操作文字颜色
      */
     @Prop actionColor: ResourceColor = this.baseStyle.primary
+	/**
+	 * 操作文字字重
+	 * @since 2.1.3
+     */
+	@Prop actionFontWeight: IBestStringNumber | FontWeight = FontWeight.Normal
     /**
      * 省略位置
      */
@@ -78,6 +88,7 @@ export struct IBestTextEllipsis{
         Span(this.omitContent)
             .fontColor(this.textColor)
             .fontSize(getSizeByUnit(this.textFontSize, true))
+			.fontWeight(this.textFontWeight)
     }
 
     aboutToAppear(): void {
@@ -95,7 +106,7 @@ export struct IBestTextEllipsis{
     }
     formatText(){
         setTimeout(() => {
-            this.textWidth = getComponentsInfo(this.uiContext, `ibest_text_${this.uniId}`).width
+            this.textWidth = getComponentsInfo(this.uiContext, `ibest_text_ellipsis_${this.uniId}`).width
             this.textHeight = this.measureText(this.getTextString())
             this.maxLineHeight = this.measureText(this.getTextString(), this.rows)
             if(this.textHeight > this.maxLineHeight){
@@ -150,6 +161,7 @@ export struct IBestTextEllipsis{
             Span(this.isExpand ? this.text : this.showText)
                 .fontColor(this.textColor)
                 .fontSize(getSizeByUnit(this.textFontSize, true))
+				.fontWeight(this.textFontWeight)
             if(this.textHeight > this.maxLineHeight && !this.isExpand && this.omitPosition == "end"){
                 this.OmitContent()
             }
@@ -157,6 +169,7 @@ export struct IBestTextEllipsis{
                 Span(this.isExpand ? this.collapseText : this.expandText)
                     .fontColor(this.actionColor)
                     .fontSize(getSizeByUnit(this.textFontSize, true))
+					.fontWeight(this.actionFontWeight)
                     .onClick(() => {
                         this.isExpand = !this.isExpand
 						this.onActionClick(this.isExpand)
@@ -165,7 +178,7 @@ export struct IBestTextEllipsis{
         }
         .width(CONTAINER_SIZE.FULL)
         .lineHeight(getSizeByUnit(this.lineHeight))
-        .id(`ibest_text_${this.uniId}`)
+        .id(`ibest_text_ellipsis_${this.uniId}`)
         .visibility(this.showText ? Visibility.Visible : Visibility.Hidden)
     }
 }

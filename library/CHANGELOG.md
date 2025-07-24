@@ -1,5 +1,30 @@
 # 版本记录
 
+## 2.1.3
+#### 新增:
+1. 新增 IBestContactAddress 联系人地址组件;
+2. IBestCell 新增 arrowSize arrowColor cellPadding 属性;
+3. IBestCalendar 新增 showOtherMonthDate 属性;
+4. IBestCountDown 新增 onFinish 事件;
+5. IBestCountTo 新增 onFinish 事件;
+6. IBestDatePicker 新增 lunar 属性, 支持显示农历;
+7. IBestNavbar 新增 expandSafeAreaType 属性;
+8. IBestUpload 新增 imageSelectOption fileSelectOption beforeRemove属性, onRemove onFileClick 事件; IBestUploaderFile 类型新增 uploadUrl 属性;
+9. IBestTextEllipsis 新增 textFontWeight actionFontWeight 属性;
+10. IBestHighLight keywords 新增 IBestHighlightKeywords 类型, 支持设置不同颜色、字体大小的高亮词;
+11. IBestSteps 新增 bgColor 属性.
+
+#### 优化:
+1. IBestCell 传入rightIcon时保留箭头, 左右图标支持内置图标名;
+2. 部分组件 radius 支持自定义设置位置.
+
+#### Bug修复:
+1. IBestTable 自定义表格内容时，边框线高度不一致问题;
+2. IBestButton btnBorderRadius 0未生效问题;
+3. IBestProgress 进度条宽度较宽时文字错位问题;
+4. IBestHighlight text动态修改时，文字未同步变化问题;
+5. IBestField autosize 为true时 inputAlign不生效问题.
+
 ## 2.1.2
 #### 新增:
 1. IBestDropdownMenu 下拉菜单组件;
@@ -66,7 +91,7 @@
 2. IBestPopup 组件在横屏时位置错误问题;
 3. IBestTextEllipsis 在文字较少时也显示操作文字问题;
 
-## 2.0.8
+## 2.0.8 - 5.0.3(15)
 #### 新增:
 1. IBestPagination 分页组件;
 2. IBestButton 增加 fontWeight 属性;

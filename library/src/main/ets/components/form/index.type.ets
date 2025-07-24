@@ -98,7 +98,7 @@ export interface IBestFieldValidateResult{
  */
 export class IBestFormController {
 	/**
-	 * 验证整个/某个表单
+	 * 验证整个表单
 	 * @param callBack 回调函数
 	 */
 	public validate: (callBack?: (valid: boolean, field: FieldValidateResult[]) => void) => Promise<IBestFormValidateResult> = () => {

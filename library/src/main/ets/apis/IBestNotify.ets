@@ -1,11 +1,11 @@
-import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
+import { ComponentContent, PromptAction } from '@kit.ArkUI'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src'
 import { CONTAINER_SIZE } from '../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type'
 import CustomContent from '../common/components/CustomContent'
 import { convertDimensionsWidthUnit, getSizeByUnit, sleep } from '../utils/utils'
 import { IBestStringNumber } from '../model/Global.type'
-
+import GlobalStore from '../utils/GlobalStore'
 class IBestNotifyOption{
 	/**
 	 * 展示类型
@@ -136,7 +136,7 @@ class Notify{
 		if(this.contentNode){
 			await this.close()
 		}
-		let windowClass = await window.getLastWindow(getContext())
+		let windowClass = GlobalStore.getMainWindow()
 		let uiContext = windowClass.getUIContext()
 		let params: IBestNotifyParams = new IBestNotifyParams(option)
 		this.promptAction = uiContext.getPromptAction()

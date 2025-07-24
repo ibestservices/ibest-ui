@@ -171,8 +171,8 @@ export struct IBestCircleProgress{
                     .fontSize(getSizeByUnit(this.textFontSize, true))
                     .fontColor(this.textColor)
                     .fontWeight(this.textFontWeight)
-                    .padding({left: this.strokeWidth/2, right: this.strokeWidth/2})
-                    .position({left: this.strokeWidth/2, top: "50%"})
+                    .padding({left: this.strokeWidth, right: this.strokeWidth})
+                    .position({left:0, top: "50%"})
                     .translate({ y: "-50%" })
             }
         }

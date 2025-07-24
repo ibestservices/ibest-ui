@@ -130,20 +130,22 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | Tab 标签页       | 选项卡组件，用于在不同的内容区域之间进行切换。        | <a href="https://ibestui.ibestservices.com/components/tab/" target="_blank">文档</a>        |
 
 ### 业务组件
-| 组件                | 介绍               |                                                                                             |
-|:------------------|:-----------------|:--------------------------------------------------------------------------------------------|
-| CanvasDrawer 画布绘制 | 用于绘制海报、图片加水印等场景。 | <a href="https://ibestui.ibestservices.com/components/canvasDrawer/" target="_blank">文档</a> |
-| ColorPicker 颜色选择  | 用于选择颜色。          | <a href="https://ibestui.ibestservices.com/components/colorPicker/" target="_blank">文档</a>  |
-| ImageCropper 图片裁剪 | 用于裁剪图片。          | <a href="https://ibestui.ibestservices.com/components/imageCropper/" target="_blank">文档</a> |
+| 组件                   | 介绍                |                                                                                               |
+|:---------------------|:------------------|:----------------------------------------------------------------------------------------------|
+| CanvasDrawer 画布绘制    | 用于绘制海报、图片加水印等场景。  | <a href="https://ibestui.ibestservices.com/components/canvasDrawer/" target="_blank">文档</a>   |
+| ColorPicker 颜色选择     | 用于选择颜色。           | <a href="https://ibestui.ibestservices.com/components/colorPicker/" target="_blank">文档</a>    |
+| ContactAddress 联系人地址 | 用于选择联系人地址, 可粘贴识别。 | <a href="https://ibestui.ibestservices.com/components/contactAddress/" target="_blank">文档</a> |
+| ImageCropper 图片裁剪    | 用于裁剪图片。           | <a href="https://ibestui.ibestservices.com/components/imageCropper/" target="_blank">文档</a>   |
 
 ## 需要权限
 ohos.permission.INTERNET
 
 ## 官方生态
 
-| 项目                       | 描述                                                               |                                                                                                     |
-|:-------------------------|:-----------------------------------------------------------------|:----------------------------------------------------------------------------------------------------|
-| @ibestservices/area-data | 中国省市区数据，适用于鸿蒙 ArkUI 的 TextPicker 和 IBest-UI 的 IBestCascader 等组件。 | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Farea-data" target="_blank">地址</a> |
+| 项目                       | 描述                                                               |                                                                                                                           |
+|:-------------------------|:-----------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------|
+| @ibestservices/area-data | 中国省市区数据，适用于鸿蒙 ArkUI 的 TextPicker 和 IBest-UI 的 IBestCascader 等组件。 | <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Farea-data')">地址</a> |
+| @ibestservices/ucharts   | 一个类型丰富、高性能、可扩展、支持主题定制的图表库。                                       | <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fucharts')">地址</a>   |
 
 ## 链接
 - [Github](https://github.com/ibestservices/ibest-ui)
@@ -162,12 +164,12 @@ ohos.permission.INTERNET
 ## 约束与限制
 在下述版本验证通过：
 ```text
-DevEco Studio 5.0.5 Release
-Build #DS-233.14475.28.36.5013200
-构建版本：5.0.13.200, built on May 13, 2025
+DevEco Studio 5.1.1 Release
+Build #DS-233.14475.28.36.511823
+构建版本：5.1.1.823, built on July 12, 2025
 Runtime version: 17.0.12+1-b1087.25 x86_64
 VM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.
-macOS 15.4.1
+macOS 15.5
 GC: G1 Young Generation, G1 Old Generation
 Memory: 2048M
 Cores: 12
@@ -175,9 +177,9 @@ Metal Rendering is ON
 Registry:
   idea.plugins.compatible.build=IC-233.14475.28
 Non-Bundled Plugins:
-  com.alibabacloud.intellij.cosy (2.5.2)
-  com.huawei.agc.ecomarket.component.plugin (233.14475.28)
   com.harmonyos.cases (1.0.10-Alpha)
+  com.huawei.agc.ecomarket.component.plugin (233.14475.28)
+  com.alibabacloud.intellij.cosy (2.5.15)
 ```
 
 ## 开源协议
