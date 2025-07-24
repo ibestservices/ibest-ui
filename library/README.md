@@ -164,12 +164,12 @@ ohos.permission.INTERNET
 ## 约束与限制
 在下述版本验证通过：
 ```text
-DevEco Studio 5.0.5 Release
-Build #DS-233.14475.28.36.5013200
-构建版本：5.0.13.200, built on May 13, 2025
+DevEco Studio 5.1.1 Release
+Build #DS-233.14475.28.36.511823
+构建版本：5.1.1.823, built on July 12, 2025
 Runtime version: 17.0.12+1-b1087.25 x86_64
 VM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.
-macOS 15.4.1
+macOS 15.5
 GC: G1 Young Generation, G1 Old Generation
 Memory: 2048M
 Cores: 12
@@ -177,9 +177,9 @@ Metal Rendering is ON
 Registry:
   idea.plugins.compatible.build=IC-233.14475.28
 Non-Bundled Plugins:
-  com.alibabacloud.intellij.cosy (2.5.2)
-  com.huawei.agc.ecomarket.component.plugin (233.14475.28)
   com.harmonyos.cases (1.0.10-Alpha)
+  com.huawei.agc.ecomarket.component.plugin (233.14475.28)
+  com.alibabacloud.intellij.cosy (2.5.15)
 ```
 
 ## 开源协议
