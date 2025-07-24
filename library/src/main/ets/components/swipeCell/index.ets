@@ -1,3 +1,4 @@
+import { IBestAwaitable } from '../../model/Global.type'
 import { emitter } from '../../utils/EventEmitter'
 import { clamp, getComponentsInfo, getEventName } from '../../utils/utils'
 import { COMPONENT_NAME, IBestSwipeCellSide, SWIPECELL_EVENT_NAME } from './index.type'
@@ -19,7 +20,7 @@ export struct IBestSwipeCell{
 	/**
 	 * 关闭前回调
      */
-	beforeClose?: (position: IBestSwipeCellSide) => boolean | Promise<boolean>
+	beforeClose?: (position: IBestSwipeCellSide) => IBestAwaitable
 	/**
 	 * 中间内容点击回调
   	 */

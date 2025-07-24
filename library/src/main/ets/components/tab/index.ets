@@ -105,7 +105,7 @@ export struct IBestTabs{
      * 选项圆角, 仅type为`line`时有效
      * @since 2.0.5
      */
-    @Provide({allowOverride: "radius"}) radius: IBestStringNumber = 0
+    @Provide({allowOverride: "radius"}) radius: Length | BorderRadiuses | LocalizedBorderRadiuses = 0
 	/**
 	 * 激活文字字重
 	 * @since 2.0.9
@@ -168,7 +168,7 @@ export struct IBestTabs{
 					.width(this.tabBoxWidth)
 					.height(getSizeByUnit(this.tabHeight))
 					.backgroundColor(this.getLineColor())
-					.borderRadius(this.type == "line" ? { topLeft: getSizeByUnit(this.radius), topRight: getSizeByUnit(this.radius) } : 0)
+					.borderRadius(this.type == "line" ? getSizeByUnit(this.radius) : 0)
 					.translate({ x: this.tabBoxTranslateX })
 					.animation({
 						duration: this.isReady ? 100 : 0,
@@ -353,7 +353,7 @@ export struct IBestTabs{
 					if(index != target){
 						this.currentName = this.tabsList[target].name
 					}
-					animateTo({duration: duration}, () => {
+					this.context.animateTo({duration: duration}, () => {
 						this.translateX = this.translateXList[target]
 					})
 				})
@@ -384,7 +384,7 @@ struct IBestTab{
     @Consume isShowActiveBg: boolean
     @Consume activeBgColor: ResourceColor
     @Consume inactiveBgColor: ResourceColor
-    @Consume radius: IBestStringNumber
+    @Consume radius: Length | BorderRadiuses | LocalizedBorderRadiuses
 	@Consume activeFontWeight: FontWeight
 	@Consume activeFontSize: IBestStringNumber
     initSize: () => void = () => {}
@@ -430,7 +430,7 @@ struct IBestTab{
         .justifyContent(FlexAlign.Center)
         .padding({left: getSizeByUnit(this.tabPadding), right: getSizeByUnit(this.tabPadding)})
         .layoutWeight(this.tabWidthType == "flex" ? 1 : 0)
-        .borderRadius(this.type == "line" ? { topLeft: getSizeByUnit(this.radius), topRight: getSizeByUnit(this.radius) } : 0)
+        .borderRadius(this.type == "line" ? getSizeByUnit(this.radius) : 0)
         .border({ width: { left: this.type == "card" && this.index > 0 ? 1 : 0 }, color: this.getLineColor() })
         .clip(true)
         .enabled(!this.item.isDisable)

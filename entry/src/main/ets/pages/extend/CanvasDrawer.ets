@@ -59,7 +59,7 @@ struct CanvasDrawerPage {
 	@State canvasShow6: boolean = false
 	@State pixelMap6: PixelMap | null = null
 
-	private context = getContext(this) as common.UIAbilityContext;
+	private context = this.getUIContext().getHostContext() as common.UIAbilityContext
 
 	aboutToAppear() {
 		this.canvasShow = true

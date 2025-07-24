@@ -22,7 +22,7 @@ export struct IBestIcon {
 	 * 图标圆角
 	 * @since 1.19.0
 	 */
-	@Prop iconRadius: IBestStringNumber = 0
+	@Prop iconRadius: Length | BorderRadiuses | LocalizedBorderRadiuses = 0
 	/**
 	 * 点击回调
 	 */

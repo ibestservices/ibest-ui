@@ -70,7 +70,7 @@ export struct IBestForm {
 	/**
 	 * 表单内容
 	 */
-	@BuilderParam defaultBuilder?: CustomBuilder
+	@BuilderParam defaultBuilder: CustomBuilder
 	/**
 	 * 表单控制器
 	 */

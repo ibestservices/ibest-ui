@@ -4,6 +4,7 @@ import { IBestLoading } from '../components/loading'
 import { IBestStringNumber, LoadingIconType, WordBreakType } from '../model/Global.type'
 import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src/index'
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type'
+import GlobalStore from '../utils/GlobalStore'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../utils/utils'
 class LoadingOption{
     /**
@@ -148,7 +149,7 @@ class Toast{
 			await this.hide()
 		}
 		this.isLock = true
-		let windowClass = await window.getLastWindow(getContext())
+		let windowClass = GlobalStore.getMainWindow()
 		let uiContext = windowClass.getUIContext()
 		this.promptAction = uiContext.getPromptAction()
 		let params: ToastParams = typeof option == "string" ? new ToastParams({ message: option }) : new ToastParams(option)

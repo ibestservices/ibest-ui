@@ -125,7 +125,7 @@ export struct IBestSearch {
 	/**
 	 * 自定义右侧按钮
 	 */
-	@BuilderParam customRightButton?: CustomBuilder
+	@BuilderParam customRightButton: CustomBuilder
 	/**
 	 * 输入回调
 	 */

@@ -1,5 +1,4 @@
 import { CONTAINER_SIZE, modeColor } from '../assets/styles/BaseStyle'
-import { router } from '@kit.ArkUI'
 import { process } from '@kit.ArkTS'
 PersistentStorage.persistProp("isAgree", false)
 
@@ -7,6 +6,7 @@ PersistentStorage.persistProp("isAgree", false)
 @Component
 struct Splash {
 	@StorageLink("isAgree") isAgree: boolean = false
+	private router = this.getUIContext().getRouter()
 
 	aboutToAppear(): void {
 		if(this.isAgree) {
@@ -21,12 +21,12 @@ struct Splash {
 		this.enterIndex()
 	}
 	enterIndex(){
-		router.replaceUrl({
+		this.router.replaceUrl({
 			url: 'pages/Index'
 		})
 	}
 	viewPrivacyPolicy(){
-		router.pushUrl({
+		this.router.pushUrl({
 			url: 'pages/PrivacyPolicy'
 		})
 	}

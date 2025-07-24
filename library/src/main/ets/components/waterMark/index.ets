@@ -84,6 +84,7 @@ export struct IBestWatermark {
 	private settings: RenderingContextSettings = new RenderingContextSettings(true)
 	private context: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
 	private resourceManager = GlobalStore.context.resourceManager
+	private uiContext = this.getUIContext()
 
 	@Builder watermarkContent() {
 		Image(this.url)
@@ -182,7 +183,7 @@ export struct IBestWatermark {
 	handleLayoutText(rotateDeg: number) {
 		let text = this.getText()
 		this.context.fillStyle = this.getFontColor()
-		this.context.font = `${vp2px(this.fontSize)}px ${this.fontFamily}`
+		this.context.font = `${this.uiContext.vp2px(this.fontSize)}px ${this.fontFamily}`
 		const data = this.context.measureText(text)
 		this.drawCanvasItem({
 			width: data.width,

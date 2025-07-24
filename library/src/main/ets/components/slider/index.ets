@@ -298,7 +298,7 @@ struct DragBar{
 	@Consume vertical: boolean
 	@Consume reverse: boolean
 	@Prop buttonIndex: 0 | 1 = 0
-	@BuilderParam customButton?: CustomBuilder
+	@BuilderParam customButton: CustomBuilder
 
 	getBarPosition(): LocalizedEdges{
 		let value: LengthMetrics = {

@@ -34,10 +34,6 @@ export struct IBestSignature{
 	 */
 	@Prop boardHeight: IBestStringNumber = convertDimensionsWidthUnit(200)
 	/**
-	 * 导出图片类型
-	 */
-	@Prop exportImgType: 'png' | 'jpeg' | 'webp' = 'png'
-	/**
 	 * 笔触颜色
 	 */
 	@Prop penColor: IBestStringNumber | CanvasGradient | CanvasPattern = '#000'

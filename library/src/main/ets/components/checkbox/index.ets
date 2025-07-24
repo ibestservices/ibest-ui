@@ -7,7 +7,7 @@ import { IBestCheckboxBuilderParams, IBestCheckboxMaxChangeParams } from './inde
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
 import { IBestCheckboxColor } from './color'
 import { IBestIcon } from '../icon'
-import { IBestStringNumber } from '../../model/Global.type'
+import { IBestAwaitable, IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestCheckbox {
@@ -91,7 +91,7 @@ export struct IBestCheckbox {
 	 * 改变前的回调
 	 * @since 2.0.8
 	 */
-	beforeChange?: (value: boolean) => Promise<boolean> | boolean
+	beforeChange?: (value: boolean) => IBestAwaitable
 	// 受checkboxgroup的最大可选数量禁用的
 	@State checkboxGroupMaxDisabled: boolean = false
 	// 分组禁用
@@ -103,22 +103,24 @@ export struct IBestCheckbox {
 	private isShowIndeterminateTimeId: number | null = null
 
 	@Builder LabelContain() {
-		Row() {
-			if (this.defaultBuilder) {
-				this.defaultBuilder({ checked: this.value, disabled: this.getIsDisabled() })
-			} else {
-				Text(this.label)
-					.fontColor(this.getLabelColor())
-					.fontSize(getSizeByUnit(this.labelFontSize, true))
+		if(this.defaultBuilder || this.label) {
+			Row() {
+				if (this.defaultBuilder) {
+					this.defaultBuilder({ checked: this.value, disabled: this.getIsDisabled() })
+				} else {
+					Text(this.label)
+						.fontColor(this.getLabelColor())
+						.fontSize(getSizeByUnit(this.labelFontSize, true))
+				}
 			}
+			.margin({
+				left: this.isLeftLabel() ? 0 : this.baseStyle.spaceXs,
+				right: this.isLeftLabel() ? this.baseStyle.spaceXs : 0
+			})
+			.onClick(() => {
+				!this.labelDisabled && this.handleCheckedChange()
+			})
 		}
-		.margin({
-			left: this.isLeftLabel() ? 0 : this.baseStyle.spaceXs,
-			right: this.isLeftLabel() ? this.baseStyle.spaceXs : 0
-		})
-		.onClick(() => {
-			!this.labelDisabled && this.handleCheckedChange()
-		})
 	}
 
 	aboutToAppear() {

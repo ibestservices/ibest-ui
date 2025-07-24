@@ -26,291 +26,296 @@ import { IBestIcon } from '../icon'
 import { IBestStringNumber } from '../../model/Global.type'
 
 @Component
-export struct IBestField{
-    /**
-     * 全局公共样式
-     */
-    @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
-    /**
-     * form id 用于验证
-     */
-    @Prop formId: IBestStringNumber = ""
-    /**
-     * 表单绑定属性名
-     */
-    @Prop prop: string = ""
-    /**
-     * 验证规则
-     */
-    @Prop @Watch("rulesChange") rules: IBestFormRuleItem[]
-    /**
-     * 组件绑定的值
-     */
-    @Link @Watch("valueChange") value: IBestFieldValueType
-    /**
-     * 左侧文本内容
-     */
-    @Prop label: ResourceStr = ""
-    /**
-     * 是否在label后加冒号
-     */
-    @Prop colon?: boolean = undefined
-    /**
-     * 文本宽度
-     */
-    @Prop labelWidth: IBestStringNumber = 0
-    /**
-     * 文本位置
-     */
-    @Prop labelPosition: LabelPositionType = ''
-    /**
-     * 文本对齐方式
-     */
-    @Prop labelAlign: FieldTextAlign = ''
-    /**
-     * 输入框占位提示文字
-     */
-    @Prop placeholder: ResourceStr = ""
-    /**
-     * 占位文字颜色
-     * @since 2.0.1
-     */
-    @Prop placeholderColor: ResourceColor = IBestFieldColor.placeholderColor
-    /**
-     * 输入框类型
-     */
-    @Prop type: IBestFieldType = "normal"
-    /**
-     * 小数点位数
-     */
-    @Prop decimalLength: number = -1
-    /**
-     * 是否显示密码框末尾图标
-     */
-    @Prop showPasswordIcon: boolean = true
-    /**
-     * 输入框自适应高度
-     */
-    @Prop autosize: boolean = false
-    /**
-     * 自适应高度时默认行数
-     */
-    @Prop rows: number = 1
-    /**
-     * 最大输入字符数
-     */
-    @Prop maxlength: number = -1
-    /**
-     * 是否显示字数统计
-     */
-    @Prop showWordLimit: boolean = false
-    /**
-     * 输入框文字对齐方式
-     */
-    @Prop inputAlign: FieldTextAlign = "left"
-    /**
-     * 是否必填, 仅控制*显隐
-     */
-    @Prop required?: boolean = undefined
-    /**
-     * 星号的位置
-     */
-    @Prop requireAsteriskPosition: RequireAsteriskPositionType = ''
-    /**
-     * 是否禁用
-     */
-    @Prop disabled?: boolean = undefined
-    /**
-     * 是否只读
-     */
-    @Prop readOnly: boolean = false
-    /**
-     * 是否开启点击反馈
-     */
-    @Prop clickable: boolean = false
-    /**
-     * 是否展示右侧箭头并开启点击反馈
-     */
-    @Prop isLink: boolean = false
-    /**
-     * 左侧图标
-     */
-    @Prop leftIcon: ResourceStr = ""
-    /**
-     * 左侧图标颜色
-     */
-    @Prop leftIconColor: ResourceColor = IBestFieldColor.labelColor
-    /**
-     * 右侧图标
-     */
-    @Prop rightIcon: ResourceStr = ""
-    /**
-     * 右侧图标颜色
-     */
-    @Prop rightIconColor: ResourceColor = IBestFieldColor.rightIconColor
-    /**
-     * 底部线条
-     */
-    @Prop hasBorder: boolean = true
-    /**
-     * 是否启用清除图标，点击清除图标后会清空输入框
-     */
-    @Prop clearable: boolean = false
-    /**
-     * 自定义清除图标
-     */
-    @Prop clearIcon: ResourceStr = ""
-    /**
-     * 显示清除图标的时机
-     */
-    @Prop clearTrigger: ClearTriggerType = 'focus'
-    /**
-     * 是否显示验证信息
-     */
-    @Prop showMessage?: boolean = undefined
+export struct IBestField {
+	/**
+	 * 全局公共样式
+	 */
+	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+	/**
+	 * form id 用于验证
+	 */
+	@Prop formId: IBestStringNumber = ""
+	/**
+	 * 表单绑定属性名
+	 */
+	@Prop prop: string = ""
+	/**
+	 * 验证规则
+	 */
+	@Prop @Watch("rulesChange") rules: IBestFormRuleItem[]
+	/**
+	 * 组件绑定的值
+	 */
+	@Link @Watch("valueChange") value: IBestFieldValueType
+	/**
+	 * 左侧文本内容
+	 */
+	@Prop label: ResourceStr = ""
+	/**
+	 * 是否在label后加冒号
+	 */
+	@Prop colon?: boolean = undefined
+	/**
+	 * 文本宽度
+	 */
+	@Prop labelWidth: IBestStringNumber = 0
+	/**
+	 * 文本位置
+	 */
+	@Prop labelPosition: LabelPositionType = ''
+	/**
+	 * 文本对齐方式
+	 */
+	@Prop labelAlign: FieldTextAlign = ''
+	/**
+	 * 输入框占位提示文字
+	 */
+	@Prop placeholder: ResourceStr = ""
+	/**
+	 * 占位文字颜色
+	 * @since 2.0.1
+	 */
+	@Prop placeholderColor: ResourceColor = IBestFieldColor.placeholderColor
+	/**
+	 * 输入框类型
+	 */
+	@Prop type: IBestFieldType = "normal"
+	/**
+	 * 小数点位数
+	 */
+	@Prop decimalLength: number = -1
+	/**
+	 * 是否显示密码框末尾图标
+	 */
+	@Prop showPasswordIcon: boolean = true
+	/**
+	 * 输入框自适应高度
+	 */
+	@Prop autosize: boolean = false
+	/**
+	 * 自适应高度时默认行数
+	 */
+	@Prop rows: number = 1
+	/**
+	 * 最大输入字符数
+	 */
+	@Prop maxlength: number = -1
+	/**
+	 * 是否显示字数统计
+	 */
+	@Prop showWordLimit: boolean = false
+	/**
+	 * 输入框文字对齐方式
+	 */
+	@Prop inputAlign: FieldTextAlign = "left"
+	/**
+	 * 是否必填, 仅控制*显隐
+	 */
+	@Prop required?: boolean = undefined
+	/**
+	 * 星号的位置
+	 */
+	@Prop requireAsteriskPosition: RequireAsteriskPositionType = ''
+	/**
+	 * 是否禁用
+	 */
+	@Prop disabled?: boolean = undefined
+	/**
+	 * 是否只读
+	 */
+	@Prop readOnly: boolean = false
+	/**
+	 * 是否开启点击反馈
+	 */
+	@Prop clickable: boolean = false
+	/**
+	 * 是否展示右侧箭头并开启点击反馈
+	 */
+	@Prop isLink: boolean = false
+	/**
+	 * 左侧图标
+	 */
+	@Prop leftIcon: ResourceStr = ""
+	/**
+	 * 左侧图标颜色
+	 */
+	@Prop leftIconColor: ResourceColor = IBestFieldColor.labelColor
+	/**
+	 * 右侧图标
+	 */
+	@Prop rightIcon: ResourceStr = ""
+	/**
+	 * 右侧图标颜色
+	 */
+	@Prop rightIconColor: ResourceColor = IBestFieldColor.rightIconColor
+	/**
+	 * 底部线条
+	 */
+	@Prop hasBorder: boolean = true
+	/**
+	 * 是否启用清除图标，点击清除图标后会清空输入框
+	 */
+	@Prop clearable: boolean = false
+	/**
+	 * 自定义清除图标
+	 */
+	@Prop clearIcon: ResourceStr = ""
+	/**
+	 * 显示清除图标的时机
+	 */
+	@Prop clearTrigger: ClearTriggerType = 'focus'
+	/**
+	 * 是否显示验证信息
+	 */
+	@Prop showMessage?: boolean = undefined
 	/**
 	 * 验证信息对齐方式, 默认同输入框文字对齐方式一致
 	 * @since 2.0.9
 	 */
 	@Prop messageTextAlign: FieldTextAlign = this.inputAlign
-    /**
-     * 执行格式化函数触发时机
-     */
-    @Prop formatTrigger: FormatTriggerType = 'onchange'
-    /**
-     * label字体大小
-     * @since 1.19.0
-     */
-    @Prop labelFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
-    /**
-     * label字体颜色
-     * @since 1.19.0
-     */
-    @Prop labelColor: ResourceColor = IBestFieldColor.labelColor
-    /**
-     * 左侧图标大小
-     * @since 1.19.0
-     */
-    @Prop leftIconSize: IBestStringNumber = convertDimensionsWidthUnit(18)
-    /**
-     * 右侧图标大小
-     * @since 1.19.0
-     */
-    @Prop rightIconSize: IBestStringNumber = convertDimensionsWidthUnit(18)
-    /**
-     * 是否显示label
-     * @since 2.0.0
-     */
-    @Prop showLabel: boolean = true
-    /**
-     * 背景色
-     * @since 2.0.1
-     */
-    @Prop bgColor: ResourceColor = IBestFieldColor.bg2
-    /**
-     * 输入框文字大小
-     * @since 2.0.4
-     */
-    @Prop inputFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
-		/**
-	 	* 输入框文字粗细
-	 	*/
-	  @Prop inputFontWeight: string | number | FontWeight = FontWeight.Normal
-    /**
-     * 光标颜色
-     * @since 2.0.5
-     */
-    @Prop caretColor: ResourceColor = ""
-    /**
-     * 最小值, type 为 number、decimal 有效
-     * @since 2.0.5
-     */
-    @Prop min: number = -1
-    /**
-     * 最大值, type 为 number、decimal 有效
-     * @since 2.0.5
-     */
-    @Prop max: number = -1
-    /**
-     * 垂直方向对齐方式, 仅labelPosition为left时有效
-     * @since 2.0.6
-     */
-    @Prop verticalAlign: "top" | "center"
-    /**
-     * 外部圆角
-     * @since 2.0.6
-     */
-    @Prop radius: IBestStringNumber = 0
-    /**
-     * 前缀内容
-     * @since 2.0.7
-     */
-    @Prop prefix: ResourceStr = ""
-    /**
-     * 前缀内容颜色
-     * @since 2.0.7
-     */
-    @Prop prefixFontColor: ResourceColor = IBestFieldColor.prefixFontColor
-    /**
-     * 后缀内容
-     * @since 2.0.7
-     */
-    @Prop suffix: ResourceStr = ""
-    /**
-     * 后缀内容颜色
-     * @since 2.0.7
-     */
-    @Prop suffixFontColor: ResourceColor = IBestFieldColor.suffixFontColor
-    /**
-     * 右侧按钮builder
-     */
-    @BuilderParam buttonBuilder?: CustomBuilder
-    /**
-     * 自定义右侧内容
-     */
-    @BuilderParam customRightContent?: CustomBuilder
-    /**
-     * 格式化函数
-     */
-    formatter?: (value: string) => string
-    /**
-     * value变化回调函数
-     */
-    onChange: (value: IBestFieldValueType) => void = () => {}
-    /**
-     * 点击清除按钮时触发
-     */
-    onClear: () => void = () => {}
-    /**
-     * 点击组件触发
-     */
-    onFieldClick: () => void = () => {}
-    /**
-     * 输入框获得焦点时触发
-     */
-    onFieldFocus: () => void = () => {}
-    /**
-     * 输入框失去焦点时触发
-     */
-    onFieldBlur: () => void = () => {}
-    /**
-     * 左侧图标点击时触发
-     */
-    onLeftIconClick: () => void = () => {}
-    /**
-     * 右侧图标点击时触发
-     */
-    onRightIconClick: () => void = () => {}
-
+	/**
+	 * 执行格式化函数触发时机
+	 */
+	@Prop formatTrigger: FormatTriggerType = 'onchange'
+	/**
+	 * label字体大小
+	 * @since 1.19.0
+	 */
+	@Prop labelFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
+	/**
+	 * label字体颜色
+	 * @since 1.19.0
+	 */
+	@Prop labelColor: ResourceColor = IBestFieldColor.labelColor
+	/**
+	 * 左侧图标大小
+	 * @since 1.19.0
+	 */
+	@Prop leftIconSize: IBestStringNumber = convertDimensionsWidthUnit(18)
+	/**
+	 * 右侧图标大小
+	 * @since 1.19.0
+	 */
+	@Prop rightIconSize: IBestStringNumber = convertDimensionsWidthUnit(18)
+	/**
+	 * 是否显示label
+	 * @since 2.0.0
+	 */
+	@Prop showLabel: boolean = true
+	/**
+	 * 背景色
+	 * @since 2.0.1
+	 */
+	@Prop bgColor: ResourceColor = IBestFieldColor.bgColor
+	/**
+	 * 输入框文字大小
+	 * @since 2.0.4
+	 */
+	@Prop inputFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
+	/**
+	 * 输入框文字粗细
+	 */
+	@Prop inputFontWeight: IBestStringNumber | FontWeight = FontWeight.Normal
+	/**
+	 * 光标颜色
+	 * @since 2.0.5
+	 */
+	@Prop caretColor: ResourceColor = ""
+	/**
+	 * 最小值, type 为 number、decimal 有效
+	 * @since 2.0.5
+	 */
+	@Prop min: number = -1
+	/**
+	 * 最大值, type 为 number、decimal 有效
+	 * @since 2.0.5
+	 */
+	@Prop max: number = -1
+	/**
+	 * 垂直方向对齐方式, 仅labelPosition为left时有效
+	 * @since 2.0.6
+	 */
+	@Prop verticalAlign: "top" | "center"
+	/**
+	 * 外部圆角
+	 * @since 2.0.6
+	 */
+	@Prop radius: Length | BorderRadiuses | LocalizedBorderRadiuses = 0
+	/**
+	 * 前缀内容
+	 * @since 2.0.7
+	 */
+	@Prop prefix: ResourceStr = ""
+	/**
+	 * 前缀内容颜色
+	 * @since 2.0.7
+	 */
+	@Prop prefixFontColor: ResourceColor = IBestFieldColor.prefixFontColor
+	/**
+	 * 后缀内容
+	 * @since 2.0.7
+	 */
+	@Prop suffix: ResourceStr = ""
+	/**
+	 * 后缀内容颜色
+	 * @since 2.0.7
+	 */
+	@Prop suffixFontColor: ResourceColor = IBestFieldColor.suffixFontColor
+	/**
+	 * 右侧按钮builder
+	 */
+	@BuilderParam buttonBuilder: CustomBuilder
+	/**
+	 * 自定义右侧内容
+	 */
+	@BuilderParam customRightContent: CustomBuilder
+	/**
+	 * 格式化函数
+	 */
+	formatter?: (value: string) => string
 	@State uniId: number = 0
 	// 验证状态
 	@State status: 'passed' | 'failed' | 'unvalidated' = 'unvalidated'
 	// 验证信息
 	@State validateMessage: ResourceStr = ""
 	@State isFocus: boolean = false
-    private uiContext = this.getUIContext()
-
-	@Builder fieldLabelAsterisk(){
+	private uiContext = this.getUIContext()
+	/**
+	 * value变化回调函数
+	 */
+	onChange: (value: IBestFieldValueType) => void = () => {
+	}
+	/**
+	 * 点击清除按钮时触发
+	 */
+	onClear: () => void = () => {
+	}
+	/**
+	 * 点击组件触发
+	 */
+	onFieldClick: () => void = () => {
+	}
+	/**
+	 * 输入框获得焦点时触发
+	 */
+	onFieldFocus: () => void = () => {
+	}
+	/**
+	 * 输入框失去焦点时触发
+	 */
+	onFieldBlur: () => void = () => {
+	}
+	/**
+	 * 左侧图标点击时触发
+	 */
+	onLeftIconClick: () => void = () => {
+	}
+	/**
+	 * 右侧图标点击时触发
+	 */
+	onRightIconClick: () => void = () => {
+	}
+	@Builder fieldLabelAsterisk() {
 		Text("*")
 			.margin({
 				left: this.requireAsteriskPosition == "right" ? this.baseStyle.spaceMini : 0,
@@ -331,7 +336,7 @@ export struct IBestField{
 						onIconClick: () => {
 							this.onLeftIconClick()
 						}
-					}).margin({left: this.baseStyle.spaceBase})
+					}).margin({ left: this.baseStyle.spaceBase })
 				}
 				if (this.requireAsteriskPosition == "left") {
 					this.fieldLabelAsterisk()
@@ -357,23 +362,23 @@ export struct IBestField{
 				this.labelAlign == "center" ? FlexAlign.Center : FlexAlign.End)
 		}
 	}
-    @Builder focusText(){
-        Text()
-            .focusable(true)
-            .position({left: 0, top: 0})
-            .zIndex(-10)
-            .id(`ibest_field_${this.uniId}`)
-    }
-	@Builder fieldContent(){
-		Column(){
+	@Builder focusText() {
+		Text()
+			.focusable(true)
+			.position({ left: 0, top: 0 })
+			.zIndex(-10)
+			.id(`ibest_field_${this.uniId}`)
+	}
+	@Builder fieldContent() {
+		Column() {
 			Row() {
 				// 前缀
-				if(this.prefix){
+				if (this.prefix) {
 					Text(this.prefix)
 						.fontSize(getSizeByUnit(this.inputFontSize, true))
 						.fontColor(this.prefixFontColor)
 						.fontWeight(this.inputFontWeight)
-						.margin({right: this.baseStyle.spaceBase})
+						.margin({ right: this.baseStyle.spaceBase })
 				}
 				if (this.customRightContent) {
 					this.customRightContent()
@@ -391,11 +396,12 @@ export struct IBestField{
 							.placeholderColor(this.placeholderColor)
 							.constraintSize({ minHeight: convertDimensionsWidthUnit(this.rows * 20) })
 							.lineHeight(this.baseStyle.lineHeightMd)
+							.textAlign(this.getInputAlign())
 							.maxLength(this.maxlength)
-								// .showCounter(this.showWordLimit, {
-								//     thresholdPercentage: 1,
-								//     highlightBorder: false
-								// })
+							// .showCounter(this.showWordLimit, {
+							//     thresholdPercentage: 1,
+							//     highlightBorder: false
+							// })
 							.enableAutoFill(false)
 							.type(this.getTextAreaType())
 							.onChange((value: string) => {
@@ -429,10 +435,10 @@ export struct IBestField{
 							.lineHeight(this.baseStyle.lineHeightMd)
 							.textAlign(this.getInputAlign())
 							.maxLength(this.maxlength)
-								// .showCounter(this.showWordLimit, {
-								//     thresholdPercentage: 1,
-								//     highlightBorder: false
-								// })
+							// .showCounter(this.showWordLimit, {
+							//     thresholdPercentage: 1,
+							//     highlightBorder: false
+							// })
 							.selectionMenuHidden(true)
 							.type(this.getInputType())
 							.onChange((value: string) => {
@@ -465,11 +471,11 @@ export struct IBestField{
 					}
 				}
 				// 按钮
-				if(this.buttonBuilder){
+				if (this.buttonBuilder) {
 					this.buttonBuilder()
 				}
 				// 右侧图标
-				if(this.rightIcon){
+				if (this.rightIcon) {
 					IBestIcon({
 						name: this.rightIcon,
 						iconSize: this.rightIconSize,
@@ -477,42 +483,42 @@ export struct IBestField{
 						onIconClick: () => {
 							this.onRightIconClick()
 						}
-					}).margin({left: this.baseStyle.spaceBase})
+					}).margin({ left: this.baseStyle.spaceBase })
 				}
 				// 后缀
-				if(this.suffix){
+				if (this.suffix) {
 					Text(this.suffix)
 						.fontSize(getSizeByUnit(this.inputFontSize, true))
 						.fontColor(this.suffixFontColor)
 						.fontWeight(this.inputFontWeight)
-						.margin({left: this.baseStyle.spaceBase})
+						.margin({ left: this.baseStyle.spaceBase })
 				}
 				// link箭头
-				if(this.isLink){
+				if (this.isLink) {
 					IBestIcon({
 						name: "arrow",
 						iconSize: this.rightIconSize,
 						color: this.rightIconColor
-					}).margin({left: this.baseStyle.spaceBase})
+					}).margin({ left: this.baseStyle.spaceBase })
 				}
 			}
 			.width(CONTAINER_SIZE.FULL)
 			// 限制字数, 官方的showCounter属性在TextInput上正常, 在TextArea上有问题,输入内容后才会显示下面字数
-			if(typeof this.value == "string" && this.maxlength > 0 && this.showWordLimit){
+			if (typeof this.value == "string" && this.maxlength > 0 && this.showWordLimit) {
 				Text(this.value.length + "/" + this.maxlength)
 					.width(CONTAINER_SIZE.FULL)
 					.textAlign(TextAlign.End)
 					.fontSize(this.baseStyle.fontSizeXs)
 					.fontColor(GRAY_COLOR.GRAY_5)
-					.margin({top: this.baseStyle.spaceBase})
+					.margin({ top: this.baseStyle.spaceBase })
 			}
 			// 验证信息
-			if(this.showMessage && this.validateMessage){
+			if (this.showMessage && this.validateMessage) {
 				Text(this.validateMessage)
 					.width(CONTAINER_SIZE.FULL)
 					.fontSize(this.baseStyle.fontSizeSm)
 					.fontColor(this.baseStyle.danger)
-					.margin({top: this.baseStyle.spaceBase})
+					.margin({ top: this.baseStyle.spaceBase })
 					.textAlign(this.getMessageAlign())
 			}
 		}
@@ -520,32 +526,32 @@ export struct IBestField{
 		.layoutWeight(this.labelPosition == "top" ? 0 : 1)
 		.alignItems(HorizontalAlign.Start)
 	}
-    @Styles ibestFieldStyle(){
-        .width(CONTAINER_SIZE.FULL)
-        .padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
-        .stateStyles({
-            normal: {
-                .backgroundColor(this.bgColor)
-            },
-            pressed: {
-                .backgroundColor((this.clickable || this.isLink) ? IBestFieldColor.activeColor : this.bgColor)
-            }
-        })
-        .borderRadius(getSizeByUnit(this.radius))
-        .enabled(!this.disabled)
-        .opacity(this.disabled ? 0.6 : 1)
-        .clip(true)
+	@Styles ibestFieldStyle(){
+		.width(CONTAINER_SIZE.FULL)
+		.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
+		.stateStyles({
+			normal: {
+				.backgroundColor(this.bgColor)
+			},
+			pressed: {
+				.backgroundColor((this.clickable || this.isLink) ? IBestFieldColor.activeColor : this.bgColor)
+			}
+		})
+		.borderRadius(getSizeByUnit(this.radius))
+		.enabled(!this.disabled)
+		.opacity(this.disabled ? 0.6 : 1)
+		.clip(true)
 		.onClick(() => {
 			this.fieldClick()
 		})
-    }
-    @Styles ibestFieldContentStyle(){
-        .padding({ top: convertDimensionsWidthUnit(10), bottom: convertDimensionsWidthUnit(10) })
-        .border({
-            width: { bottom: this.hasBorder ? 1 : 0 },
-            color: IBestFieldColor.borderColor
-        })
-    }
+	}
+	@Styles ibestFieldContentStyle(){
+		.padding({ top: convertDimensionsWidthUnit(10), bottom: convertDimensionsWidthUnit(10) })
+		.border({
+			width: { bottom: this.hasBorder ? 1 : 0 },
+			color: IBestFieldColor.borderColor
+		})
+	}
 	@Styles ibestFieldInputStyle(){
 		.layoutWeight(1)
 		.padding(0)
@@ -556,176 +562,183 @@ export struct IBestField{
 			this.fieldClick()
 		})
 	}
-
-    aboutToAppear(): void {
-        this.uniId = this.getUniqueId()
-        this.initValue()
-        if(this.formId && this.prop){
-            emitter.on(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.RESEND_FORM_ITEM, this.formId), this.uniId, (): void => this.sendFormItemData())
-            this.sendFormItemData()
-        }else{
-            this.init()
-        }
-    }
-    aboutToDisappear(): void {
-        if(this.formId && this.prop) {
-            emitter.off(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.RESEND_FORM_ITEM, this.formId), this.uniId)
-            emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.DELETE_FORM_ITEM, this.formId), this.uniId)
-            emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.RESEND_FORM_ITEM, this.formId))
-        }
-    }
-    rulesChange(){
-        this.required = this.rules?.length > 0 && this.rules.some((item: IBestFormRuleItem) => item.required)
-        if(!this.required){
-            this.resetValidation()
-        }
-    }
-	initValue(){
-        if(typeof this.value == "number"){
-            this.value = this.value.toString()
-        }
-        if(this.value === undefined || this.value === null){
-            this.value = ""
-        }
-    }
-    // 发送表单子项信息
-    sendFormItemData(){
-        emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.SEND_FIELD, this.formId), {
-            uniId: this.uniId,
-            prop: this.prop,
-            validate: (rules: IBestFormRuleItem[]):Promise<void | FieldValidateResult> => this.validate(rules),
-            getValue: (): IBestFieldValueType => this.value,
-            resetValidation: (): void => this.resetValidation()
-        }, (result: IBestFormSendFieldCallResult): void => this.init(result))
-    }
-    // 初始化参数
-    init(results?: IBestFormSendFieldCallResult){
-        if(results){
-            this.rules = this.rules || (results?.rules || [])
-        }
-        this.required = this.required ?? (this.rules?.length > 0 && this.rules.some((item: IBestFormRuleItem) => item.required))
-        this.labelWidth = this.labelWidth || results?.labelWidth || convertDimensionsWidthUnit(80)
-        this.labelPosition = this.labelPosition || results?.labelPosition || 'left'
-        this.labelAlign = this.labelAlign || results?.labelAlign || 'left'
-        this.colon = this.colon ?? (results ? results.colon : false)
-        this.requireAsteriskPosition = this.requireAsteriskPosition || results?.requireAsteriskPosition || 'left'
-        this.showMessage = this.showMessage ?? (results ? results.showMessage : true)
-        this.disabled = this.disabled ?? (results ? results.disabled : false)
-    }
-    // 重置验证
-    resetValidation(){
-        this.status = 'unvalidated'
-        this.validateMessage = ""
-    }
-    // 验证
-    validate(rules: IBestFormRuleItem[]): Promise<FieldValidateResult | void> {
-        return new Promise<FieldValidateResult | void>((resolve) => {
-            this.resetValidation()
-            rules = rules || this.rules
-            if (rules.length) {
-                let value = this.value
-                this.runRules(value, rules).then(() => {
-                    if (this.status === 'failed') {
-                        resolve({
-                            label: getResourceStr(this.label),
-                            name: this.prop,
-                            message: getResourceStr(this.validateMessage)
-                        })
-                    } else {
-                        this.status = 'passed'
-                        resolve()
-                    }
-                })
-            } else {
-                resolve()
-            }
-        })
-    }
-    // 执行规则
-    async runRules(value: IBestFieldValueType, rules: IBestFormRuleItem[]){
-        for (let rule of rules) {
-            if (!runSyncRule(value, rule)) {
-                this.status = 'failed'
-                this.validateMessage = rule.message || ''
-                return
-            }
-            if (rule.validator && typeof value === 'string') {
-                await runRuleValidator(value, rule).then(result => {
-                    if (result && typeof result === 'string') {
-                        this.status = 'failed'
-                        this.validateMessage = result
-                        return
-                    } else if (result === false) {
-                        this.status = 'failed'
-                        this.validateMessage = rule.message || ""
-                        return
-                    }
-                })
-            }
-        }
-    }
-    // 通过trigger 判断rules中是否有可触发项
-    getFilteredRule(trigger: 'blur' | 'change') {
-        return this.rules ? this.rules.filter((rule) => {
-            if (!rule.trigger) return true
-            return rule.trigger === trigger
-        }) : []
-    }
-    // value  change变化 执行验证
-    valueChange(){
-        this.sendValidate("change")
-    }
+	aboutToAppear(): void {
+		this.uniId = this.getUniqueId()
+		this.initValue()
+		if (this.formId && this.prop) {
+			emitter.on(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.RESEND_FORM_ITEM, this.formId), this.uniId,
+				(): void => this.sendFormItemData())
+			this.sendFormItemData()
+		} else {
+			this.init()
+		}
+	}
+	aboutToDisappear(): void {
+		if (this.formId && this.prop) {
+			emitter.off(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.RESEND_FORM_ITEM, this.formId), this.uniId)
+			emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.DELETE_FORM_ITEM, this.formId), this.uniId)
+			emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.RESEND_FORM_ITEM, this.formId))
+		}
+	}
+	rulesChange() {
+		this.required = this.rules?.length > 0 && this.rules.some((item: IBestFormRuleItem) => item.required)
+		if (!this.required) {
+			this.resetValidation()
+		}
+	}
+	initValue() {
+		if (typeof this.value == "number") {
+			this.value = this.value.toString()
+		}
+		if (this.value === undefined || this.value === null) {
+			this.value = ""
+		}
+	}
+	// 发送表单子项信息
+	sendFormItemData() {
+		emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.SEND_FIELD, this.formId), {
+			uniId: this.uniId,
+			prop: this.prop,
+			validate: (rules: IBestFormRuleItem[]): Promise<void | FieldValidateResult> => this.validate(rules),
+			getValue: (): IBestFieldValueType => this.value,
+			resetValidation: (): void => this.resetValidation()
+		}, (result: IBestFormSendFieldCallResult): void => this.init(result))
+	}
+	// 初始化参数
+	init(results?: IBestFormSendFieldCallResult) {
+		if (results) {
+			this.rules = this.rules || (results?.rules || [])
+		}
+		this.required =
+			this.required ?? (this.rules?.length > 0 && this.rules.some((item: IBestFormRuleItem) => item.required))
+		this.labelWidth = this.labelWidth || results?.labelWidth || convertDimensionsWidthUnit(80)
+		this.labelPosition = this.labelPosition || results?.labelPosition || 'left'
+		this.labelAlign = this.labelAlign || results?.labelAlign || 'left'
+		this.colon = this.colon ?? (results ? results.colon : false)
+		this.requireAsteriskPosition = this.requireAsteriskPosition || results?.requireAsteriskPosition || 'left'
+		this.showMessage = this.showMessage ?? (results ? results.showMessage : true)
+		this.disabled = this.disabled ?? (results ? results.disabled : false)
+	}
+	// 重置验证
+	resetValidation() {
+		this.status = 'unvalidated'
+		this.validateMessage = ""
+	}
+	// 验证
+	validate(rules: IBestFormRuleItem[]): Promise<FieldValidateResult | void> {
+		return new Promise<FieldValidateResult | void>((resolve) => {
+			this.resetValidation()
+			rules = rules || this.rules
+			if (rules.length) {
+				let value = this.value
+				this.runRules(value, rules).then(() => {
+					if (this.status === 'failed') {
+						resolve({
+							label: getResourceStr(this.label),
+							name: this.prop,
+							message: getResourceStr(this.validateMessage)
+						})
+					} else {
+						this.status = 'passed'
+						resolve()
+					}
+				})
+			} else {
+				resolve()
+			}
+		})
+	}
+	// 执行规则
+	async runRules(value: IBestFieldValueType, rules: IBestFormRuleItem[]) {
+		for (let rule of rules) {
+			if (!runSyncRule(value, rule)) {
+				this.status = 'failed'
+				this.validateMessage = rule.message || ''
+				return
+			}
+			if (rule.validator && typeof value === 'string') {
+				await runRuleValidator(value, rule).then(result => {
+					if (result && typeof result === 'string') {
+						this.status = 'failed'
+						this.validateMessage = result
+						return
+					} else if (result === false) {
+						this.status = 'failed'
+						this.validateMessage = rule.message || ""
+						return
+					}
+				})
+			}
+		}
+	}
+	// 通过trigger 判断rules中是否有可触发项
+	getFilteredRule(trigger: 'blur' | 'change') {
+		return this.rules ? this.rules.filter((rule) => {
+			if (!rule.trigger) {
+				return true
+			}
+			return rule.trigger === trigger
+		}) : []
+	}
+	// value 变化 执行验证
+	valueChange() {
+		this.sendValidate("change")
+	}
 	// 格式化值
 	formatValue(value: string, trigger: string) {
 		if (this.formatter && this.formatTrigger == trigger) {
 			this.value = this.formatter(value)
 		}
-		if(this.type == "number" || this.type == "decimal"){
-			if(trigger == 'onblur' && value !== '' && (this.min > -1 || this.max > -1)){
-				const validValue = clamp(Number(value), this.min > -1 ? this.min : -Infinity, this.max > -1 ? this.max : Infinity)
+		if (this.type == "number" || this.type == "decimal") {
+			if (trigger == 'onblur' && value !== '' && (this.min > -1 || this.max > -1)) {
+				const validValue =
+					clamp(Number(value), this.min > -1 ? this.min : -Infinity, this.max > -1 ? this.max : Infinity)
 				this.value = value = validValue.toString()
 			}
-			if(this.type == "decimal" && this.decimalLength > 0){
+			if (this.type == "decimal" && this.decimalLength > 0) {
 				let index = value.indexOf(".")
-				if(index > -1){
+				if (index > -1) {
 					let decimal = value.substring(index + 1)
-					if(decimal.length > this.decimalLength){
+					if (decimal.length > this.decimalLength) {
 						this.value = Number(value).toFixed(this.decimalLength)
 					}
 				}
 			}
 		}
 	}
-    // 失焦执行
-    handleBlur(){
-        this.onFieldBlur()
-        this.sendValidate("blur")
-    }
-    // 发送单个验证
-    sendValidate(trigger: 'blur' | 'change'){
-        if(this.formId && this.prop){
-            let rules: IBestFormRuleItem[] = this.getFilteredRule(trigger)
-            if(rules.length) {
-                emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.VALIDATE_FIELD, this.formId), this.prop)
-            }
-        }
-    }
-    getVerticalAlign(){
-        if(this.verticalAlign){
-            return this.verticalAlign == 'top' ? VerticalAlign.Top : VerticalAlign.Center
-        }else{
-            return (this.showWordLimit || this.autosize || this.validateMessage) ? VerticalAlign.Top : VerticalAlign.Center
-        }
-    }
-	getInputAlign(){
-		return this.inputAlign == 'center' ? TextAlign.Center : this.inputAlign == 'right' ? TextAlign.End : TextAlign.Start
+	// 失焦执行
+	handleBlur() {
+		this.onFieldBlur()
+		this.sendValidate("blur")
 	}
-	getMessageAlign(){
-		return this.messageTextAlign == 'center' ? TextAlign.Center : this.messageTextAlign == 'right' ? TextAlign.End : TextAlign.Start
+	// 发送单个验证
+	sendValidate(trigger: 'blur' | 'change') {
+		if (this.formId && this.prop) {
+			let rules: IBestFormRuleItem[] = this.getFilteredRule(trigger)
+			if (rules.length) {
+				emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.VALIDATE_FIELD, this.formId), this.prop)
+			}
+		}
+	}
+	getVerticalAlign() {
+		if (this.verticalAlign) {
+			return this.verticalAlign == 'top' ? VerticalAlign.Top : VerticalAlign.Center
+		} else {
+			return (this.showWordLimit || this.autosize || this.validateMessage) ? VerticalAlign.Top :
+			VerticalAlign.Center
+		}
+	}
+	getInputAlign() {
+		return this.inputAlign == 'center' ? TextAlign.Center :
+			this.inputAlign == 'right' ? TextAlign.End : TextAlign.Start
+	}
+	getMessageAlign() {
+		return this.messageTextAlign == 'center' ? TextAlign.Center :
+			this.messageTextAlign == 'right' ? TextAlign.End : TextAlign.Start
 	}
 	// 获取输入框类型
-	getInputType(): InputType{
-		switch(this.type){
+	getInputType(): InputType {
+		switch (this.type) {
 			case "password":
 				return InputType.NEW_PASSWORD
 			case "email":
@@ -745,8 +758,8 @@ export struct IBestField{
 		}
 	}
 	// 获取textarea类型
-	getTextAreaType(): TextAreaType{
-		switch(this.type){
+	getTextAreaType(): TextAreaType {
+		switch (this.type) {
 			case "number":
 				return TextAreaType.NUMBER
 			case "phone":
@@ -760,37 +773,36 @@ export struct IBestField{
 		}
 	}
 	// field点击
-	fieldClick(){
+	fieldClick() {
 		this.onFieldClick()
-		if((this.disabled || this.readOnly || this.isLink) && !this.customRightContent){
+		if ((this.disabled || this.readOnly || this.isLink) && !this.customRightContent) {
 			this.uiContext.getFocusController().requestFocus(`ibest_field_${this.uniId}`)
 		}
 	}
-
-    build() {
-        if(this.labelPosition == "left"){
-            Row(){
-                Row(){
-                    this.fieldLabel()
-                    this.fieldContent()
-                }
-                .alignItems(this.getVerticalAlign())
-                .ibestFieldContentStyle()
-                this.focusText()
-            }
-            .ibestFieldStyle()
-        }else{
-            Column(){
-                Column(){
+	build() {
+		if (this.labelPosition == "left") {
+			Row() {
+				Row() {
 					this.fieldLabel()
 					this.fieldContent()
-                }
-                .alignItems(HorizontalAlign.Start)
-                .ibestFieldContentStyle()
-                this.focusText()
-            }
-            .alignItems(HorizontalAlign.Start)
-            .ibestFieldStyle()
-        }
-    }
+				}
+				.alignItems(this.getVerticalAlign())
+				.ibestFieldContentStyle()
+				this.focusText()
+			}
+			.ibestFieldStyle()
+		} else {
+			Column() {
+				Column() {
+					this.fieldLabel()
+					this.fieldContent()
+				}
+				.alignItems(HorizontalAlign.Start)
+				.ibestFieldContentStyle()
+				this.focusText()
+			}
+			.alignItems(HorizontalAlign.Start)
+			.ibestFieldStyle()
+		}
+	}
 }

@@ -98,7 +98,7 @@ struct MakePosterPage {
 		    { required: true, message: '请输入高度'}
 		]
 	}
-	private context = getContext(this) as common.UIAbilityContext
+	private context = this.getUIContext().getHostContext() as common.UIAbilityContext
 
 	@Builder bgTypeBuilder(){
 		IBestRadioGroup({group: "radioGroup", active: $canvasBgType, placeDirection: Axis.Horizontal}){

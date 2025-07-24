@@ -77,7 +77,7 @@ struct DialogPage {
 
 	onDidBuild(): void {
 		setTimeout(() => {
-			let uniId = this.uiContext.getAttachedFrameNodeById("main")?.getUniqueId()
+			let uniId = this.uiContext.getAttachedFrameNodeById("dialogMain")?.getUniqueId()
 			if(uniId){
 				this.uniId = uniId
 			}
@@ -280,6 +280,6 @@ struct DialogPage {
 		}
 		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)
-		.id("main")
+		.id("dialogMain")
 	}
 }

@@ -1,8 +1,7 @@
 import {
 	IBestButton,
-	IBestCellGroup,
 	IBestContactAddressController,
-	IBestContactAddressForm,
+	IBestContactAddress,
 	IBestDialogUtil,
 	IBestDivider,
 	IBestField,
@@ -11,7 +10,6 @@ import {
 	IBestToast
 } from '@ibestservices/ibest-ui';
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
-import ComponentShowContainer from '../../components/ComponentShowContainer';
 import CustomNavBar from '../../components/CustomNavBar';
 import { getRandomColor } from '../../utils/utils';
 import { pasteboard } from '@kit.BasicServicesKit';
@@ -28,10 +26,10 @@ struct ContactAddressPage {
 	@State showInputBox: boolean = true
 	@State labelColor: string = '#5d5d5d'
 	@State inputFontSize: number = 14
-	@State hasBorder: boolean = false
+	@State hasBorder: boolean = true
 	@State identifyPlaceholder: string = "请粘贴或输入文本，点击“识别”自动识别姓名、电话和地址"
-	@State identifyTagText: string = "示例：菜小鸟，15900000000，浙江省杭州市西湖区某小区"
-	@State identifyTagColor: string = '#7F007DFF'
+	@State identifyTagText: string = "张先生，15900000000，浙江省杭州市西湖区某小区"
+	@State identifyTagBgColor: string = '#1989fa'
 	controller: IBestContactAddressController = new IBestContactAddressController()
 	private labelWidth: number = 120
 	private testList: Array<string> = [
@@ -45,7 +43,7 @@ struct ContactAddressPage {
 
 	@Builder showInputBoxBuilder() {
 		IBestSwitch({
-			value: this.showInputBox
+			value: $showInputBox
 		})
 	}
 	@Builder labelColorChangeBuilder() {
@@ -66,7 +64,7 @@ struct ContactAddressPage {
 			plain: true,
 			buttonSize: "mini",
 			onBtnClick: () => {
-				this.identifyTagColor = getRandomColor()
+				this.identifyTagBgColor = getRandomColor()
 			}
 		})
 	}
@@ -80,7 +78,7 @@ struct ContactAddressPage {
 	}
 	@Builder showHasBorderBuilder() {
 		IBestSwitch({
-			value: this.hasBorder
+			value: $hasBorder
 		})
 	}
 	build() {
@@ -88,18 +86,16 @@ struct ContactAddressPage {
 			CustomNavBar({ title: this.title })
 			List() {
 				ListItem() {
-					ComponentShowContainer() {
-						IBestContactAddressForm({
-							controller: this.controller,
-							hasIdentifyInputBox: this.showInputBox,
-							labelColor: this.labelColor,
-							inputFontSize: this.inputFontSize,
-							hasBorder: this.hasBorder,
-							identifyPlaceholder: this.identifyPlaceholder,
-							identifyTagText: this.identifyTagText,
-							identifyTagColor: this.identifyTagColor
-						})
-					}
+					IBestContactAddress({
+						controller: this.controller,
+						showIdentifyInputBox: this.showInputBox,
+						labelColor: this.labelColor,
+						inputFontSize: this.inputFontSize,
+						hasBorder: this.hasBorder,
+						identifyPlaceholder: this.identifyPlaceholder,
+						identifyTagText: this.identifyTagText,
+						identifyTagBgColor: this.identifyTagBgColor
+					})
 				}
 				ListItem().height(15)
 				ListItem() {
@@ -111,6 +107,7 @@ struct ContactAddressPage {
 						IBestButton({
 							text: "验证表单",
 							type: "primary",
+							buttonSize: "small",
 							onBtnClick: () => {
 								this.controller.validateForm().then(res => {
 									if (res.valid) {
@@ -127,6 +124,7 @@ struct ContactAddressPage {
 						IBestButton({
 							text: "获取数据",
 							type: "primary",
+							buttonSize: "small",
 							onBtnClick: () => {
 								IBestDialogUtil.open({
 									message: JSON.stringify(this.controller.getFormValues(), null, 2),
@@ -137,6 +135,7 @@ struct ContactAddressPage {
 						IBestButton({
 							text: "清空表单",
 							type: "primary",
+							buttonSize: "small",
 							onBtnClick: () => {
 								this.controller.cleanFormValues()
 							}
@@ -144,6 +143,7 @@ struct ContactAddressPage {
 						IBestButton({
 							text: "随机数据",
 							type: "primary",
+							buttonSize: "small",
 							onBtnClick: () => {
 								let getRandomItem: (arr: string[]) => string = (arr: string[]) => {
 									const randomIndex = Math.floor(Math.random() * arr.length)
@@ -158,6 +158,7 @@ struct ContactAddressPage {
 										const pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, text)
 										const systemPasteboard = pasteboard.getSystemPasteboard()
 										systemPasteboard.setData(pasteData)
+										IBestToast.show("复制成功")
 									}
 								})
 							}
@@ -170,7 +171,7 @@ struct ContactAddressPage {
 				}
 				ListItem().height(10)
 				ListItem() {
-					IBestCellGroup({ inset: true }) {
+					Column(){
 						IBestField({
 							value: this.showInputBox,
 							label: "识别输入框",
@@ -192,7 +193,7 @@ struct ContactAddressPage {
 							disabled: !this.showInputBox
 						})
 						IBestField({
-							value: this.identifyTagColor,
+							value: this.identifyTagBgColor,
 							label: "识别框主题颜色",
 							labelWidth: this.labelWidth,
 							buttonBuilder: () => this.tagColorChangeBuilder(),
@@ -222,7 +223,7 @@ struct ContactAddressPage {
 				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding(SPACE.BASE)
+			.padding(SPACE.MD)
 		}
 		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)

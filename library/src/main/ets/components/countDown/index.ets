@@ -54,6 +54,11 @@ export struct IBestCountDown{
      */
 	@Prop autoStart: boolean = true
 	/**
+	 * 结束事件
+	 * @since 2.1.3
+     */
+	onFinish: () => void = () => {}
+	/**
 	 * 实例
      */
 	controller: IBestCountDownController = new IBestCountDownController()
@@ -99,6 +104,8 @@ export struct IBestCountDown{
 				this.remain = this.getRemainSecond()
 				if(this.remain > 0){
 					this.secondCountdown()
+				}else {
+					this.onFinish()
 				}
 			}
 		}, 30)

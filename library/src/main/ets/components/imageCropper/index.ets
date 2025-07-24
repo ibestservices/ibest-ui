@@ -82,9 +82,19 @@ export struct IBestImageCropper {
 	private settings: RenderingContextSettings = new RenderingContextSettings(true)
 	private context: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
 	private uiContext = this.getUIContext()
-	private pageContext = getContext(this) as common.UIAbilityContext
+	private pageContext = this.uiContext.getHostContext() as common.UIAbilityContext
 	private resourceManager = GlobalStore.context.resourceManager
 	private sandBoxPath: string = ""
+
+	@Builder corner(angle: number = 0){
+		Path()
+			.width(this.realCenterWidth/2)
+			.aspectRatio(1)
+			.fill(this.maskColor)
+			.commands(this.getCommands())
+			.stroke(Color.Transparent)
+			.rotate({z: 1, angle})
+	}
 
 	aboutToAppear() {
 		this.uniId = this.getUniqueId()
@@ -154,8 +164,8 @@ export struct IBestImageCropper {
 		let imageSource = image.createImageSource(path)
 		this.imgModel = await imageSource.createPixelMap()
 		let imageInfo = await imageSource.getImageInfo()
-		let width = px2vp(imageInfo.size.width)
-		let height = px2vp(imageInfo.size.height)
+		let width = this.uiContext.px2vp(imageInfo.size.width)
+		let height = this.uiContext.px2vp(imageInfo.size.height)
 		let aspect = width / height
 		if (width > height) { // 横向图片
 			this.imgInitHeight = this.realCenterHeight
@@ -191,6 +201,10 @@ export struct IBestImageCropper {
 		this.positionY = 0
 		this.offsetMaxX = 0
 		this.offsetMaxY = 0
+	}
+	getCommands(){
+		let width = this.uiContext.vp2px(this.realCenterWidth/2)
+		return `M0 ${width} V0 0 L${width} 0 A${width} ${width} 0 0 0 0 ${width}`
 	}
 	getId(){
 		return `ibest_imagecrop_${this.uniId}`
@@ -254,10 +268,10 @@ export struct IBestImageCropper {
 					Stack({alignContent: Alignment.Center}){
 						if(this.shape == 'circle'){
 							Flex({wrap: FlexWrap.Wrap}){
-								corner()
-								corner().rotate({z: 1, angle: 90})
-								corner().rotate({z: 1, angle: -90})
-								corner().rotate({z: 1, angle: 180})
+								this.corner()
+								this.corner(90)
+								this.corner(-90)
+								this.corner(180)
 							}
 							if(this.showBorder){
 								Circle()
@@ -319,23 +333,5 @@ export struct IBestImageCropper {
 					})
 		  	)
 		)
-	}
-}
-
-@Component
-struct corner{
-	@Consume realCenterWidth: number
-	@Consume maskColor: ResourceColor
-	getCommands(){
-		let width = vp2px(this.realCenterWidth/2)
-		return `M0 ${width} V0 0 L${width} 0 A${width} ${width} 0 0 0 0 ${width}`
-	}
-	build() {
-		Path()
-			.width(this.realCenterWidth/2)
-			.aspectRatio(1)
-			.fill(this.maskColor)
-			.commands(this.getCommands())
-			.stroke(Color.Transparent)
 	}
 }

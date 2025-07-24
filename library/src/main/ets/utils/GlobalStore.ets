@@ -29,7 +29,7 @@ export default class GlobalStore {
 		// 监听颜色模式变化
 		GlobalStore.setColorModeListener()
 		// 注册字体
-		font.registerFont({
+		windowStage.getMainWindowSync().getUIContext().getFont().registerFont({
 			familyName: 'ibestFont',
 			familySrc: $rawfile('ibest_font.woff')
 		})
@@ -39,25 +39,25 @@ export default class GlobalStore {
      */
 	private static getScreenAndAvoidSize(){
 		try {
-			let mainWindow: window.Window = GlobalStore.windowStage.getMainWindowSync()
-			let screenInfo: window.WindowProperties = mainWindow.getWindowProperties()
-			let avoidArea = mainWindow.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
-			let systemDht = mainWindow.getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR)
-			let topSize = px2vp(avoidArea.topRect.height)
-			let navigationSize = px2vp(systemDht.bottomRect.height)
-			let o = display.getDefaultDisplaySync().orientation
-			let screenWidth = screenInfo.windowRect.width
-			let screenHeight = screenInfo.windowRect.height
+			const mainWindow: window.Window = GlobalStore.getMainWindow()
+			const screenInfo: window.WindowProperties = mainWindow.getWindowProperties()
+			const avoidArea = mainWindow.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
+			const systemDht = mainWindow.getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR)
+			const topSize = GlobalStore.px2vp(avoidArea.topRect.height)
+			const navigationSize = GlobalStore.px2vp(systemDht.bottomRect.height)
+			const o = display.getDefaultDisplaySync().orientation
+			const screenWidth = screenInfo.windowRect.width
+			const screenHeight = screenInfo.windowRect.height
 			GlobalStore.screenWidth = screenInfo.windowRect.width
 			GlobalStore.screenHeight = screenInfo.windowRect.height
 			AppStorage.setOrCreate("IBestIsLandscape", o == 1 || o == 3)
-			AppStorage.setOrCreate("IBestScreenWidth", px2vp(screenWidth))
-			AppStorage.setOrCreate("IBestScreenHeight", px2vp(screenHeight))
+			AppStorage.setOrCreate("IBestScreenWidth", GlobalStore.px2vp(screenWidth))
+			AppStorage.setOrCreate("IBestScreenHeight", GlobalStore.px2vp(screenHeight))
 			AppStorage.setOrCreate("IBestTopAvoidHeight", topSize)
 			AppStorage.setOrCreate("IBestBottomBarHeight", navigationSize)
 			mainWindow.on("avoidAreaChange", data => {
 				if (data.type == window.AvoidAreaType.TYPE_KEYBOARD) {
-					AppStorage.setOrCreate("IBestKeyBoardHeight", px2vp(data.area.bottomRect.height))
+					AppStorage.setOrCreate("IBestKeyBoardHeight", GlobalStore.px2vp(data.area.bottomRect.height))
 				}
 			})
 		}catch (e) {
@@ -101,5 +101,20 @@ export default class GlobalStore {
 	public static setGlobalConfig(option?: IBestGlobalConfigType){
 		AppStorage.setOrCreate("IBestGlobalConfig", new IBestGlobalConfig(option))
 		setIBestUIBaseStyle()
+	}
+	/**
+	 * 获取mainWindow
+     */
+	public static getMainWindow(){
+		return GlobalStore.windowStage.getMainWindowSync()
+	}
+	/**
+	 * 尺寸转换
+     */
+	public static px2vp(value: number){
+		return GlobalStore.getMainWindow().getUIContext().px2vp(value)
+	}
+	public static vp2px(value: number){
+		return GlobalStore.getMainWindow().getUIContext().vp2px(value)
 	}
 }

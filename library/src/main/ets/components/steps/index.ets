@@ -18,6 +18,11 @@ export struct IBestSteps{
      */
 	@Prop @Watch("activeChange") active: number = 0
 	/**
+	 * 背景色
+	 * @since 2.1.3
+	 */
+	@Prop bgColor: ResourceColor = IBestStepsColor.bgColor
+	/**
 	 * 步骤条方向
      */
 	@Prop placeDirection: Axis = Axis.Horizontal
@@ -145,7 +150,7 @@ export struct IBestSteps{
 				.id(`ibest_steps_right_${this.groupId}`)
 			}
 			.width(CONTAINER_SIZE.FULL)
-			.backgroundColor(IBestStepsColor.bgColor)
+			.backgroundColor(this.bgColor)
 		}else {
 			Stack({alignContent: Alignment.Top}){
 				Row(){
@@ -167,7 +172,7 @@ export struct IBestSteps{
 				.justifyContent(FlexAlign.SpaceBetween)
 			}
 			.width(CONTAINER_SIZE.FULL)
-			.backgroundColor(IBestStepsColor.bgColor)
+			.backgroundColor(this.bgColor)
 			.opacity(this.percentContentSize ? 1 : 0)
 		}
 	}

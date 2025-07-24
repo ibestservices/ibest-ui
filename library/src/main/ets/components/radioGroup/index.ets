@@ -1,7 +1,7 @@
 import { emitter } from '../../utils/EventEmitter'
 import { COMPONENT_NAME, RADIO_GROUP_EVENT_NAME } from './index.type'
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit, sleep } from '../../utils/utils'
-import { IBestStringNumber } from '../../model/Global.type'
+import { IBestAwaitable, IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestRadioGroup {
@@ -34,7 +34,7 @@ export struct IBestRadioGroup {
 	 * 默认内容
 	 * @since 2.0.1
 	 */
-	@BuilderParam defaultBuilder?: CustomBuilder
+	@BuilderParam defaultBuilder: CustomBuilder
 	/**
 	 * 选中变化的回调
 	 * @param name radio子组件的的name值
@@ -44,21 +44,17 @@ export struct IBestRadioGroup {
 	 * 改变前的回调
 	 * @since 2.0.8
 	 */
-	beforeChange?: (name: IBestStringNumber | boolean) => Promise<boolean> | boolean
+	beforeChange?: (name: IBestStringNumber | boolean) => IBestAwaitable
 
 	aboutToAppear() {
 		this.uniId = this.getUniqueId()
-		if(this.group){
-			emitter.on(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.uniId, (name: IBestStringNumber | boolean): Promise<void> => this.onItemChange(name))
-			sleep(50).then(() => {
-				this.initRadio()
-			})
-		}
+		emitter.on(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.uniId, (name: IBestStringNumber | boolean): Promise<void> => this.onItemChange(name))
+		sleep(50).then(() => {
+			this.initRadio()
+		})
 	}
 	aboutToDisappear() {
-		if(this.group){
-			emitter.off(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.uniId)
-		}
+		emitter.off(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.uniId)
 	}
 	initRadio() {
 		emitter.emit(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.active, this.disabled)

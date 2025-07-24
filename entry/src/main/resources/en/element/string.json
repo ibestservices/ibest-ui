@@ -21,6 +21,10 @@
 			"value": "Please refer to the document for details"
 		},
 		{
+			"name": "tab_bar_chart",
+			"value": "Charts"
+		},
+		{
 			"name": "tab_bar_about",
 			"value": "About"
 		},

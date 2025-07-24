@@ -37,7 +37,7 @@ export struct IBestBadge {
 	/**
 	 * 自定义内容
 	 */
-	@BuilderParam defaultBuilder?: CustomBuilder
+	@BuilderParam defaultBuilder: CustomBuilder
 
 	isShow(){
 		return !(typeof this.content == "number" && this.content == 0 && !this.showZero)

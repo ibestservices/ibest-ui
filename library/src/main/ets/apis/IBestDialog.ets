@@ -1,8 +1,8 @@
-import { ComponentContent, ImmersiveMode, LengthMetrics, LevelMode, PromptAction, window } from '@kit.ArkUI'
+import { ComponentContent, ImmersiveMode, LengthMetrics, LevelMode, PromptAction } from '@kit.ArkUI'
 import { generateId } from '../utils/utils'
 import { IBestDialogView } from '../components/dialog/dialog'
-import { IBestStringNumber } from '../model/Global.type'
-
+import { IBestAwaitable, IBestStringNumber } from '../model/Global.type'
+import GlobalStore from '../utils/GlobalStore'
 class IBestDialogOption {
 	/**
 	 * 弹窗宽度
@@ -11,7 +11,7 @@ class IBestDialogOption {
 	/**
 	 * 弹窗border-radius
 	 */
-	dialogBorderRadius?: IBestStringNumber
+	dialogBorderRadius?: Length | BorderRadiuses | LocalizedBorderRadiuses
 	/**
 	 * 背景图片
 	 * @since 2.0.8
@@ -212,7 +212,7 @@ class IBestDialogOption {
 	/**
 	 * 关闭前的回调函数，返回 false 可阻止关闭，支持返回 Promise
 	 */
-	beforeClose?: (action: 'cancel' | 'confirm') => Promise<boolean> | boolean
+	beforeClose?: (action: 'cancel' | 'confirm') => IBestAwaitable
 	/**
 	 * 点击取消的回调
 	 */
@@ -403,7 +403,7 @@ class Dialog{
 	 */
 	public async open(option: IBestDialogOption): Promise<string> {
 		let key = this.getUniKey()
-		let windowClass: window.Window = await window.getLastWindow(getContext())
+		let windowClass = GlobalStore.getMainWindow()
 		let uiContext = windowClass.getUIContext()
 		let promptAction = uiContext.getPromptAction()
 		let params = new IBestDialogParams(option)

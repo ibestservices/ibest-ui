@@ -21,6 +21,10 @@
 			"value": "文档详见"
 		},
 		{
+			"name": "tab_bar_chart",
+			"value": "图表组件"
+		},
+		{
 			"name": "tab_bar_about",
 			"value": "关于"
 		},

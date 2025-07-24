@@ -1,6 +1,6 @@
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { IBestHighlight } from '@ibestservices/ibest-ui';
+import { IBestHighlight, IBestHighlightKeywords } from '@ibestservices/ibest-ui';
 import CustomNavBar from '../../components/CustomNavBar';
 
 @Builder
@@ -12,6 +12,10 @@ export function HighlightBuilder(_: string, title: string){
 @Component
 struct HighlightPage {
 	@State title: string = ''
+	@State keywords: IBestHighlightKeywords[] = [
+		{ text: "难题", color: Color.Red },
+		{ text: "答案", fontSize: 20 }
+	]
 	build() {
 		NavDestination() {
 			CustomNavBar({title: this.title})
@@ -33,7 +37,17 @@ struct HighlightPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '设置高亮样式' }) {
+					ComponentShowContainer({ title: '设置非高亮样式' }) {
+						IBestHighlight({
+							keywords: ['难题', '终有一天', '答案'],
+							sourceString: '慢慢来，不要急，生活给你出了难题，可也终有一天会给出答案。',
+							textColor: Color.Red,
+							textFontSize: 16
+						})
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '自定义高亮样式' }) {
 						IBestHighlight({
 							keywords: ['难题', '终有一天', '答案'],
 							sourceString: '慢慢来，不要急，生活给你出了难题，可也终有一天会给出答案。',
@@ -42,13 +56,11 @@ struct HighlightPage {
 						})
 					}
 				}
-				ListItem() {
-					ComponentShowContainer({ title: '设置默认样式' }) {
+				ListItem(){
+					ComponentShowContainer({ title: '自定义高亮词样式' }) {
 						IBestHighlight({
-							keywords: ['难题', '终有一天', '答案'],
 							sourceString: '慢慢来，不要急，生活给你出了难题，可也终有一天会给出答案。',
-							textColor: Color.Red,
-							textFontSize: 16
+							keywords: this.keywords
 						})
 					}
 				}

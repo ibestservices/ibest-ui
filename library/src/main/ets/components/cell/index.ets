@@ -55,9 +55,19 @@ export struct IBestCell {
 	 */
 	@Prop isLink: boolean = false
 	/**
-	 * 是否展示右侧箭头并开启点击反馈
+	 * 右侧箭头方向
 	 */
 	@Prop arrowDirection: `${ARROW_DIRECTION}` = ARROW_DIRECTION.RIGHT
+	/**
+	 * 右侧箭头大小
+	 * @since 2.1.3
+   	 */
+	@Prop arrowSize: IBestStringNumber = convertDimensionsWidthUnit(14)
+	/**
+	 * 右侧箭头颜色
+	 * @since 2.1.3
+     */
+	@Prop arrowColor: ResourceColor = GRAY_COLOR.GRAY_6
 	/**
 	 * 是否显示必填*号
 	 */
@@ -146,6 +156,11 @@ export struct IBestCell {
 	 * @since 2.1.2
      */
 	@Prop labelFontSize: IBestStringNumber = ""
+	/**
+	 * 单元格padding
+	 * @since 2.1.3
+     */
+	@Prop cellPadding: Length | Padding | LocalizedPadding = 0
 	/**
 	 * title的插槽 优先级大于 title
 	 */
@@ -275,12 +290,13 @@ export struct IBestCell {
 							iconSize: this.rightIconSize,
 							color: this.rightIconColor
 						}).margin({ left: getSizeByUnit(this.rightIconMarginLeft) })
-					} else if (this.isLink) {
+					}
+					if (this.isLink) {
 						Row() {
 							IBestIcon({
 								name: "arrow",
-								iconSize: this.rightIconSize,
-								color: this.rightIconColor
+								iconSize: this.arrowSize,
+								color: this.arrowColor
 							})
 								.margin({
 									left: getSizeByUnit(this.rightIconMarginLeft)
@@ -302,7 +318,7 @@ export struct IBestCell {
 			}
 			.alignItems(this.getAlignItems())
 			.width(CONTAINER_SIZE.FULL)
-			.padding({
+			.padding(this.cellPadding ? getSizeByUnit(this.cellPadding) : {
 				top: this.getCellSize().padding,
 				bottom: this.getCellSize().padding,
 				left: getSizeByUnit(this.leftRightPadding),

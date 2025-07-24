@@ -69,7 +69,7 @@ export struct IBestDivider{
 	/**
 	 * 自定义文本内容
      */
-	@BuilderParam textBuilder?: CustomBuilder
+	@BuilderParam textBuilder: CustomBuilder
 
 	build() {
 		if(this.vertical){

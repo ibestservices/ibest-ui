@@ -138,7 +138,7 @@ export struct IBestTag {
 						color: this.getTextColor()
 					})
 						.onClick(() => {
-							animateTo({ duration: this.baseStyle.animationDuration as number }, () => {
+							this.getUIContext().animateTo({ duration: this.baseStyle.animationDuration as number }, () => {
 								this.onClose()
 							})
 						})

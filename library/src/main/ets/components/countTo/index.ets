@@ -51,13 +51,17 @@ export struct IBestCountTo{
      * 字重
      */
     @Prop fontWeight: FontWeight = FontWeight.Normal
+	/**
+	 * 结束事件
+	 * @since 2.1.3
+	 */
+	onFinish: () => void = () => {}
     /**
      * 实例
      */
     controller: IBestCountToController = new IBestCountToController()
 
     @State formatVal: string = ''
-    isCounting: boolean = false
     current: number = 0
     interval: number = 16
     timer: number = 0
@@ -82,7 +86,6 @@ export struct IBestCountTo{
         this.startTime = 0
         this.localDuration = this.duration
         this.localStartVal = this.start
-        this.isCounting = true
         this.countTo()
     }
     // 暂定状态，重新再开始滚动；或者滚动状态下，暂停
@@ -107,22 +110,22 @@ export struct IBestCountTo{
     countTo(){
         this.clearTimer()
         this.timer = setTimeout(() => {
-            if(this.isCounting){
-                let timestamp = Date.now() + this.interval
-                if (!this.startTime) this.startTime = timestamp
-                const progress = timestamp - this.startTime
-                this.remaining = this.localDuration - progress
-                if (this.useEasing) {
-                    this.current = this.easingFn(progress, this.localStartVal, this.end - this.localStartVal, this.localDuration)
-                } else {
-                    this.current = this.localStartVal + (this.end - this.localStartVal) * (progress / this.localDuration)
-                }
-                this.current = Math.min(this.end, this.current)
-                this.formatVal = this.format(this.current)
-                if (progress < this.localDuration) {
-                    this.countTo()
-                }
-            }
+			let timestamp = Date.now() + this.interval
+			if (!this.startTime) this.startTime = timestamp
+			const progress = timestamp - this.startTime
+			this.remaining = this.localDuration - progress
+			if (this.useEasing) {
+				this.current = this.easingFn(progress, this.localStartVal, this.end - this.localStartVal, this.localDuration)
+			} else {
+				this.current = this.localStartVal + (this.end - this.localStartVal) * (progress / this.localDuration)
+			}
+			this.current = Math.min(this.end, this.current)
+			this.formatVal = this.format(this.current)
+			if (progress < this.localDuration) {
+				this.countTo()
+			}else {
+				this.onFinish()
+			}
         }, this.interval)
     }
     // 缓动函数

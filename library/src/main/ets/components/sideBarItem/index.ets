@@ -30,7 +30,7 @@ export struct IBestSideBarItem{
 	/**
 	 * 自定义内容
      */
-	@BuilderParam defaultBuilder?: CustomBuilder
+	@BuilderParam defaultBuilder: CustomBuilder
 	/**
 	 * 点击事件
      */

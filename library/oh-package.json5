@@ -12,7 +12,8 @@
 	"license": "Apache-2.0",
 	"dependencies": {
 		"@hview/dayjs": "^1.11.11",
-		"lunar": "^1.0.0"
+		"lunar": "^1.0.0",
+		"@ibestservices/area-data": "^0.0.4"
 	},
 	"author": "ibestservices",
 	"ibestservices": {
