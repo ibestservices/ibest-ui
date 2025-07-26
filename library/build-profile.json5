@@ -5,6 +5,28 @@
 //			"byteCodeHar": true
 //		}
 //	},
+	"buildOptionSet": [
+		{
+			"name": "release",
+			"arkOptions": {
+				// 混淆相关参数
+				"obfuscation": {
+					"ruleOptions": {
+						// true表示进行混淆，false表示不进行混淆。5.0.3.600及以上版本默认为false
+						"enable": false,
+						// 混淆规则文件
+						"files": [
+							"./obfuscation-rules.txt"
+						]
+					},
+					// consumerFiles中指定的混淆配置文件会在构建依赖这个library的工程或library时被应用
+					"consumerFiles": [
+						"./consumer-rules.txt"
+					]
+				}
+			},
+		},
+	],
 	"targets": [
 		{
 			"name": "default",

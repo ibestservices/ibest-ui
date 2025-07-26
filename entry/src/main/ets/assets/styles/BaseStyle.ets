@@ -76,13 +76,15 @@ interface GeneratedObjectLiteralInterface_3 {
 	TWENTY_TWO: number;
 	FORTY: number;
 	FULL: string;
+	CHART_HEIGHT: number;
 }
 export const CONTAINER_SIZE: GeneratedObjectLiteralInterface_3 = {
 	FOURTEEN: 14,
 	SIXTEEN: 16,
 	TWENTY_TWO: 22,
 	FORTY: 40,
-	FULL: '100%'
+	FULL: '100%',
+	CHART_HEIGHT: 250
 };
 /**
  * 颜色

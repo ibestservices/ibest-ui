@@ -317,13 +317,77 @@ struct Index {
 			path: "ImageCropper"
 		}
 	]
-	chartsComponentList: ComponentItem[] = [
+	@State chartsComponentList: ComponentItem[] = [
 		{
 			name: 'Column 柱状图',
 			path: "Column"
 		},
+		{
+			name: 'Mount 山峰图',
+			path: "Mount"
+		},
+		{
+			name: 'Bar 条状图',
+			path: "Bar"
+		},
+		{
+			name: 'Line 折线图',
+			path: "Line"
+		},
+		{
+			name: 'Area 区域图',
+			path: "Area"
+		},
+		{
+			name: 'Scatter 散点图',
+			path: "Scatter"
+		},
+		{
+			name: 'Bubble 气泡图',
+			path: "Bubble"
+		},
+		{
+			name: 'Mix 混合图',
+			path: "Mix"
+		},
+		{
+			name: 'Pie 饼状图',
+			path: "Pie"
+		},
+		{
+			name: 'Ring 圆环图',
+			path: "Ring"
+		},
+		{
+			name: 'Rose 玫瑰图',
+			path: "Rose"
+		},
+		{
+			name: 'Radar 雷达图',
+			path: "Radar"
+		},
+		{
+			name: 'Arcbar 进度条',
+			path: "Arcbar"
+		},
+		{
+			name: 'Gauge 仪表盘',
+			path: "Gauge"
+		},
+		{
+			name: 'Funnel 漏斗图',
+			path: "Funnel"
+		},
+		{
+			name: 'Word 词云图',
+			path: "Word"
+		},
+		{
+			name: 'Candle K线图',
+			path: "Candle"
+		}
 	]
-	private tabsList: Tab[] = [
+	@State tabsList: Tab[] = [
 		{
 			name: $r("app.string.tab_bar_basic"),
 			icon: $r("app.media.icon_base")
@@ -332,10 +396,10 @@ struct Index {
 			name: $r("app.string.tab_bar_extend"),
 			icon: $r("app.media.icon_yewu")
 		},
-		// {
-		// 	name: $r("app.string.tab_bar_chart"),
-		// 	icon: $r("app.media.icon_chart")
-		// },
+		{
+			name: $r("app.string.tab_bar_chart"),
+			icon: $r("app.media.icon_chart")
+		},
 		{
 			name: $r("app.string.tab_bar_about"),
 			icon: $r("app.media.icon_about")
@@ -364,17 +428,24 @@ struct Index {
 	}
 	@Builder listTop(index: number){
 		Column({ space: SPACE.MD }) {
-			// if(index == 2){
-			// 	Row({ space: SPACE.XS }) {
-			// 		Image($r("app.media.app_icon")).width(32).borderRadius(BORDER_RADIUS.BASE)
-			// 		Text("UCharts")
-			// 			.fontSize(32)
-			// 			.fontColor(modeColor.textColor2)
-			// 	}.justifyContent(FlexAlign.Center)
-			// 	Text("以下为UCharts图表组件")
-			// 		.fontSize(FONT_SIZE.MD)
-			// 		.fontColor(modeColor.textColor4)
-			// }else {
+			if(index == 2){
+				Row({ space: SPACE.XS }) {
+					Image($r("app.media.app_icon")).width(32).borderRadius(BORDER_RADIUS.BASE)
+					Text("UCharts For HarmonyOS")
+						.fontSize(24)
+						.fontColor(modeColor.textColor2)
+				}.justifyContent(FlexAlign.Center)
+				Text(){
+					Span("以下为UCharts图表组件，具体配置请参考：")
+					Span($r("app.string.ucharts_url"))
+						.decoration({ type: TextDecorationType.Underline, color: modeColor.textColor4 })
+						.onClick(() => {
+							this.viewUrl("ucharts")
+						})
+				}
+					.fontSize(FONT_SIZE.MD)
+					.fontColor(modeColor.textColor4)
+			}else {
 				Row({ space: SPACE.XS }) {
 					Image($r("app.media.app_icon")).width(32).borderRadius(BORDER_RADIUS.BASE)
 					Text($r("app.string.app_name"))
@@ -398,7 +469,7 @@ struct Index {
 				}
 				.fontSize(FONT_SIZE.MD)
 				.fontColor(modeColor.textColor4)
-			// }
+			}
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.alignItems(HorizontalAlign.Start)
@@ -444,24 +515,23 @@ struct Index {
 			.onDidScroll(() => {
 				this.getScrollTop()
 			})
-		}
-		// else if (index == 2) {
-		// 	List({ scroller: this.scrollerForList3 }){
-		// 		ListItem() {
-		// 			this.listTop(index)
-		// 		}
-		// 		ForEach(this.chartsComponentList, (item: ComponentItem, i) => {
-		// 			ListItem() {
-		// 				this.componentItem(item, i)
-		// 			}
-		// 		})
-		// 	}
-		// 	.listStyle()
-		// 	.onDidScroll(() => {
-		// 		this.getScrollTop()
-		// 	})
-		// }
-		else{
+		}else if (index == 2) {
+			List({ scroller: this.scrollerForList3 }){
+				ListItem() {
+					this.listTop(index)
+				}
+				ForEach(this.chartsComponentList, (item: ComponentItem, i) => {
+					ListItem() {
+						this.componentItem(item, i)
+					}
+				})
+				ListItem().height(20)
+			}
+			.listStyle()
+			.onDidScroll(() => {
+				this.getScrollTop()
+			})
+		}else{
 			Column() {
 				Scroll(){
 					Column({ space: SPACE.MD }) {
@@ -563,7 +633,7 @@ struct Index {
 		this.checkUpdate()
 		this.getUiVersion()
 		setTimeout(() => {
-			// RouterUtil.push("DropdownMenu")
+			// RouterUtil.push("Candle")
 		}, 100)
 	}
 	getTitleOpacity(){
@@ -578,9 +648,9 @@ struct Index {
 			case 1:
 				this.scrollerForList2.scrollTo({xOffset: 0, yOffset: 0, animation: true})
 				break
-			// case 2:
-			// 	this.scrollerForList3.scrollTo({xOffset: 0, yOffset: 0, animation: true})
-			// 	break
+			case 2:
+				this.scrollerForList3.scrollTo({xOffset: 0, yOffset: 0, animation: true})
+				break
 		}
 	}
 	getScrollTop(){
@@ -592,9 +662,9 @@ struct Index {
 				this.scrollTop = this.scrollerForList2.currentOffset().yOffset
 				break
 			case 2:
-			// 	this.scrollTop = this.scrollerForList3.currentOffset().yOffset
-			// 	break
-			// case 3:
+				this.scrollTop = this.scrollerForList3.currentOffset().yOffset
+				break
+			case 3:
 				this.scrollTop = 0
 				break
 		}
@@ -602,8 +672,9 @@ struct Index {
 	viewUrl(type: string){
 		if(type == "doc"){
 			RouterUtil.push("Doc")
-		}else{
-			let url = this.context.resourceManager.getStringSync($r("app.string.company_url"))
+		} else {
+			let res = type == 'ucharts' ? $r("app.string.ucharts_url") : $r("app.string.company_url")
+			let url = this.context.resourceManager.getStringSync(res)
 			let want: Want = {
 				action: "ohos.want.action.viewData",
 				entities: ["entity.system.browsable"],
@@ -655,9 +726,9 @@ struct Index {
 				TabContent(){
 					this.tabContentBuilder(2)
 				}.tabBar(this.tabBuilder(2))
-				// TabContent(){
-				// 	this.tabContentBuilder(3)
-				// }.tabBar(this.tabBuilder(3))
+				TabContent(){
+					this.tabContentBuilder(3)
+				}.tabBar(this.tabBuilder(3))
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.barHeight(70)

@@ -15,6 +15,10 @@
 		{
 			"name": "company_url",
 			"value": "https://www.ibestservices.com"
+		},
+		{
+			"name": "ucharts_url",
+			"value": "https://www.ucharts.cn/v2/#/document/index"
 		}
 	]
 }

@@ -329,6 +329,86 @@
 			"name": "Column",
 			"pageSourceFile": "src/main/ets/pages/ucharts/Column.ets",
 			"buildFunction": "ColumnBuilder"
+		},
+		{
+			"name": "Mount",
+			"pageSourceFile": "src/main/ets/pages/ucharts/Mount.ets",
+			"buildFunction": "MountBuilder"
+		},
+		{
+			"name": "Bar",
+			"pageSourceFile": "src/main/ets/pages/ucharts/Bar.ets",
+			"buildFunction": "BarBuilder"
+		},
+		{
+			"name": "Line",
+			"pageSourceFile": "src/main/ets/pages/ucharts/Line.ets",
+			"buildFunction": "LineBuilder"
+		},
+		{
+			"name": "Area",
+			"pageSourceFile": "src/main/ets/pages/ucharts/Area.ets",
+			"buildFunction": "AreaBuilder"
+		},
+		{
+			"name": "Scatter",
+			"pageSourceFile": "src/main/ets/pages/ucharts/Scatter.ets",
+			"buildFunction": "ScatterBuilder"
+		},
+		{
+			"name": "Bubble",
+			"pageSourceFile": "src/main/ets/pages/ucharts/Bubble.ets",
+			"buildFunction": "BubbleBuilder"
+		},
+		{
+			"name": "Mix",
+			"pageSourceFile": "src/main/ets/pages/ucharts/Mix.ets",
+			"buildFunction": "MixBuilder"
+		},
+		{
+			"name": "Pie",
+			"pageSourceFile": "src/main/ets/pages/ucharts/Pie.ets",
+			"buildFunction": "PieBuilder"
+		},
+		{
+			"name": "Ring",
+			"pageSourceFile": "src/main/ets/pages/ucharts/Ring.ets",
+			"buildFunction": "RingBuilder"
+		},
+		{
+			"name": "Rose",
+			"pageSourceFile": "src/main/ets/pages/ucharts/Rose.ets",
+			"buildFunction": "RoseBuilder"
+		},
+		{
+			"name": "Radar",
+			"pageSourceFile": "src/main/ets/pages/ucharts/Radar.ets",
+			"buildFunction": "RadarBuilder"
+		},
+		{
+			"name": "Arcbar",
+			"pageSourceFile": "src/main/ets/pages/ucharts/Arcbar.ets",
+			"buildFunction": "ArcbarBuilder"
+		},
+		{
+			"name": "Gauge",
+			"pageSourceFile": "src/main/ets/pages/ucharts/Gauge.ets",
+			"buildFunction": "GaugeBuilder"
+		},
+		{
+			"name": "Funnel",
+			"pageSourceFile": "src/main/ets/pages/ucharts/Funnel.ets",
+			"buildFunction": "FunnelBuilder"
+		},
+		{
+			"name": "Word",
+			"pageSourceFile": "src/main/ets/pages/ucharts/Word.ets",
+			"buildFunction": "WordBuilder"
+		},
+		{
+			"name": "Candle",
+			"pageSourceFile": "src/main/ets/pages/ucharts/Candle.ets",
+			"buildFunction": "CandleBuilder"
 		}
 	]
 }
