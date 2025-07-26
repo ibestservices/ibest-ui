@@ -21,7 +21,7 @@
 				"label": "$string:app_name",
 				"startWindowIcon": "$media:app_icon",
 				"startWindowBackground": "$color:doc_background_3",
-				"orientation": "auto_rotation_unspecified",
+//				"orientation": "auto_rotation_unspecified",
 				"exported": true,
 				"skills": [
 					{
