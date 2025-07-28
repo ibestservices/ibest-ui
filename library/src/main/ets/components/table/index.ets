@@ -34,7 +34,7 @@ export struct IBestTable {
     /**
      * 表格数据
      */
-    @Provide({allowOverride: "data"}) @Require data: AnyType[]
+    @Provide({allowOverride: "data"}) @Require data: AnyType[] = []
     /**
      * 斑马纹
      */

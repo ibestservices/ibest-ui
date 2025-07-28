@@ -143,8 +143,9 @@ export struct IBestContactAddress {
 		this.provinceCityDistrictStr = this.provinceCityDistrict
 			.filter((item, index, arr) => index !== 1 || item.text !== arr[0].text)
 			.map(item => item.text)
+			.filter(e => e)
 			.join(' ')
-		this.selectValue = [val.provinceCode, val.cityCode, val.areaCode]
+		this.selectValue = [val.provinceCode, val.cityCode, val.areaCode].filter(e => e)
 		this.detail = val.detail
 		this.name = val.name
 		this.postalCode = val.postalCode || ''

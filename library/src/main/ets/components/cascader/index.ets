@@ -99,6 +99,7 @@ export struct IBestCascaderContent{
 	createAllOptionsInstance(array: IBestCascaderOptionInstance[][] = [], children: IBestCascaderOption[] = [], index: number){
 		let curValue = this.value[index]
 		let i = children.findIndex((item: IBestCascaderOption) => item.value === curValue)
+		i = i > -1 ? i : 0
 		array.push(
 			children.map((item: IBestCascaderOption) => {
 				let obj: IBestCascaderOptionInstanceType = {
