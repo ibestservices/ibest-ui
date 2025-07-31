@@ -191,3 +191,10 @@ Non-Bundled Plugins:
 <a href="https://github.com/ibestservices/ibest-ui/graphs/contributors">
   <img src="https://ibestservices.github.io/ibest-ui/screenshot/Contributors.png" />
 </a>
+
+## 打赏
+本项目为开源免费项目，长期维护需要时间和精力。如果您认可它的价值，欢迎通过打赏支持项目发展。您的每一份鼓励，都是我持续更新的动力源泉。   
+
+<img src="https://ibestservices.github.io/ibest-ui/screenshot/WxRewardCode.jpg" width="50%">
+
+<img src="https://ibestservices.github.io/ibest-ui/screenshot/ZfbRewardCode.jpg" width="50%">
