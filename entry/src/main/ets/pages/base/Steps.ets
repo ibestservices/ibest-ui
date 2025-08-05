@@ -39,6 +39,7 @@ struct StepsPage {
 							IBestStep({groupId: this.groupId, title: "步骤一"})
 							IBestStep({groupId: this.groupId, title: "步骤二"})
 							IBestStep({groupId: this.groupId, title: "步骤三"})
+							IBestStep({groupId: this.groupId, title: "步骤四"})
 						}
 					}
 				}
@@ -52,6 +53,7 @@ struct StepsPage {
 							IBestStep({groupId: this.groupId1, title: "步骤一"})
 							IBestStep({groupId: this.groupId1, title: "步骤二"})
 							IBestStep({groupId: this.groupId1, title: "步骤三"})
+							IBestStep({groupId: this.groupId1, title: "步骤四"})
 						}
 					}
 				}
@@ -68,6 +70,7 @@ struct StepsPage {
 							IBestStep({groupId: this.groupId2, title: "步骤一", description: "一些描述信息"})
 							IBestStep({groupId: this.groupId2, title: "步骤二", description: "一些描述信息"})
 							IBestStep({groupId: this.groupId2, title: "步骤三", description: "一些描述信息"})
+							IBestStep({groupId: this.groupId2, title: "步骤四", description: "一些描述信息"})
 						}
 					}
 				}
@@ -79,7 +82,7 @@ struct StepsPage {
 							active: this.active,
 							placeDirection: Axis.Vertical
 						}){
-							ForEach([0, 1, 2], (_: number, index: number) => {
+							ForEach([0, 1, 2, 3], (_: number, index: number) => {
 								IBestStep({
 									groupId: this.groupId3,
 									type: index == 1 ? "dot" : "icon",
@@ -97,7 +100,7 @@ struct StepsPage {
 						IBestButton({
 							text: "下一步",
 							onBtnClick: () => {
-								if (this.active++ >= 2) {
+								if (this.active++ >= 3) {
 									this.active = 0
 								}
 							}
