@@ -1,7 +1,7 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { getDefaultBaseStyle } from '../../theme-chalk/src';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { IBestStringNumber, LoadingIconType } from '../../model/Global.type';
+import { IBestStorageKey, IBestStringNumber, LoadingIconType } from '../../model/Global.type';
 import { IBestLoadingCircular } from './circular';
 import { IBestLoadingSpinner } from './spinner';
 import { getSizeByUnit } from '../../utils/utils';
@@ -11,7 +11,7 @@ export struct IBestLoading {
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
 	/**
 	 * 类型，可选值为 spinner
 	 */

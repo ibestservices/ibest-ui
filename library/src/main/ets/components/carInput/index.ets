@@ -1,4 +1,4 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { getDefaultBaseStyle } from '../../theme-chalk/src';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { CarKeyboard } from '../carKeyboard';
@@ -6,7 +6,7 @@ import { IBestCarInputModel, IBestCarKeyboardConfig, IBestInputHighlightType } f
 import { FocusController } from '@ohos.arkui.UIContext';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
 import { IBestCarInputColor } from './color';
-import { IBestStringNumber } from '../../model/Global.type';
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type';
 
 @Extend(TextInput) function ibestCarInputStyle(){
 	.width(CONTAINER_SIZE.FULL)
@@ -22,7 +22,7 @@ export struct IBestCarInput {
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 值
 	 */
@@ -185,7 +185,7 @@ export struct IBestCarInput {
 
 @Component
 struct InputField {
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@Consume maxLength: number
 	@Consume space: IBestStringNumber
 	@Consume radius: IBestStringNumber

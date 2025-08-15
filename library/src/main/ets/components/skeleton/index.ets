@@ -1,5 +1,5 @@
-import { IBestSize, IBestStringNumber } from '../../model/Global.type'
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { IBestSize, IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
@@ -11,7 +11,7 @@ export struct IBestSkeleton{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 段落占位图行数
      */
@@ -70,8 +70,8 @@ export struct IBestSkeletonParagraph{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp("IBestColorMode") colorMode: ColorMode = ColorMode.LIGHT
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.LANGUAGE) colorMode: ColorMode = ColorMode.LIGHT
 	/**
 	 * 占位图类型
 	 */

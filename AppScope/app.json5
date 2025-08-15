@@ -3,7 +3,7 @@
 		"bundleName": "com.ibestservice.ibest_ui",
 		"vendor": "example",
 		"versionCode": 1000008,
-		"versionName": "1.0.8",
+		"versionName": "1.0.9",
 		"icon": "$media:layered_image",
 		"label": "$string:app_name"
 	}

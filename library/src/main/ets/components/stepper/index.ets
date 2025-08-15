@@ -1,8 +1,8 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { accAdd, accSub, convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { IBestStepperColor } from './color'
-import { IBestStringNumber } from '../../model/Global.type'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { IBestIcon } from '../icon'
 
 enum STEPPER_BTN_TYPE {
@@ -14,7 +14,7 @@ export struct IBestStepper {
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 绑定值
 	 * @since 2.0.1
@@ -188,17 +188,7 @@ export struct IBestStepper {
 		}
 		// 数据限制展示多少位
 		if (trigger != 'init' && this.decimalLength > 0) {
-			let index = val.indexOf(".")
-			if(index > -1){
-				let decimal = val.substring(index + 1)
-				if(!decimal){
-					val = this.preValue
-				}else if(decimal.length > this.decimalLength){
-					val = Number(val).toFixed(this.decimalLength)
-				}
-			}else {
-				val = Number(this.preValue).toFixed(this.decimalLength)
-			}
+			val = Number(val).toFixed(this.decimalLength)
 		}
 		this.preValue = this.inputNumValue = val.toString()
 		this.handleSetStepperBtnStatus()

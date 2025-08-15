@@ -8,10 +8,6 @@ import { rcp } from '@kit.RemoteCommunicationKit'
 import fs from '@ohos.file.fs'
 import { updateManager } from '@kit.AppGalleryKit'
 import RouterUtil from '../utils/routerUtil'
-import { authentication } from '@kit.AccountKit'
-import { hilog } from '@kit.PerformanceAnalysisKit'
-import { util } from '@kit.ArkTS'
-import { BusinessError } from '@kit.BasicServicesKit'
 
 interface ComponentPart {
 	title: Resource
@@ -204,6 +200,10 @@ struct Index {
 			title: $r("app.string.display_component"),
 			list: [
 				{
+					name: $r("app.string.component_avatar"),
+					path: "Avatar"
+				},
+				{
 					name: $r("app.string.component_badge"),
 					path: "Badge"
 				},
@@ -250,6 +250,10 @@ struct Index {
 				{
 					name: $r("app.string.component_progress"),
 					path: "Progress"
+				},
+				{
+					name: $r("app.string.component_sectorprogress"),
+					path: "SectorProgress"
 				},
 				{
 					name: $r("app.string.component_skeleton"),
@@ -632,9 +636,9 @@ struct Index {
 		RouterUtil.navPathStackList.push(this.navPathStack)
 		this.checkUpdate()
 		this.getUiVersion()
-		setTimeout(() => {
-			// RouterUtil.push("Candle")
-		}, 100)
+		// setTimeout(() => {
+		// 	RouterUtil.push("SectorProgress")
+		// }, 100)
 	}
 	getTitleOpacity(){
 		// let scrollY = this.scrollTop < 50 ? this.scrollTop : 50

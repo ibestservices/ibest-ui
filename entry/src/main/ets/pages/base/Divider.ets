@@ -2,6 +2,8 @@ import { IBestDivider } from '@ibestservices/ibest-ui';
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import CustomNavBar from '../../components/CustomNavBar';
+import { LengthMetrics } from '@kit.ArkUI';
+
 @Builder
 export function DividerBuilder(_: string, title: string){
 	DividerPage({title})
@@ -36,7 +38,7 @@ struct DividerPage {
 							IBestDivider({ text: '细线' })
 							IBestDivider({text: '非细线', hairline: false, lineWidth: 4})
 							IBestDivider({
-								textBuilder: this.textBuilder
+								textBuilder: (): void => this.textBuilder()
 							})
 						}.padding({top: SPACE.MD})
 					}
@@ -60,7 +62,11 @@ struct DividerPage {
 						Column(){
 							IBestDivider({
 								text: '文本',
-								dashed: true
+								hairline: false,
+								dashed: true,
+								lineWidth: 4,
+								dashGap: LengthMetrics.vp(5),
+								dashWidth: LengthMetrics.vp(12)
 							})
 						}.padding({top: SPACE.MD})
 					}
@@ -72,7 +78,8 @@ struct DividerPage {
 								text: '文本',
 								color: "#3d8af2",
 								lineColor: "#3d8af2",
-								leftRightPadding: 20
+								leftRightPadding: 20,
+								rightLineColor: "#ee0a24"
 							})
 						}.padding({top: SPACE.MD})
 					}

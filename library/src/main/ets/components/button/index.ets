@@ -1,4 +1,4 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
@@ -9,14 +9,14 @@ import { IBestLoading } from '../loading/index'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { IBestButtonColor } from './color'
 import { IBestIcon } from '../icon'
-import { IBestStringNumber } from '../../model/Global.type'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestButton {
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 类型，可选值为 primary success warning danger 默认值为default
 	 */
@@ -112,6 +112,16 @@ export struct IBestButton {
 	 * @since 2.0.8
      */
 	@Prop fontWeight: IBestStringNumber | FontWeight = FontWeight.Normal
+	/**
+	 * 内边距
+	 * @since 2.1.5
+     */
+	@Prop btnPadding: Length | Padding | LocalizedPadding
+	/**
+	 * 是否开启按压态
+	 * @since 2.1.5
+     */
+	@Prop stateEffect: boolean = true
 	/**
 	 * defaultSlot 默认插槽
 	 */
@@ -279,7 +289,7 @@ export struct IBestButton {
 		}
 		.width(getSizeByUnit(this.getBtnSize().width))
 		.height(getSizeByUnit(this.getBtnSize().height))
-		.padding({ left: getSizeByUnit(this.getBtnSize().padding), right: getSizeByUnit(this.getBtnSize().padding), top: 0, bottom: 0 })
+		.padding(this.btnPadding || { left: getSizeByUnit(this.getBtnSize().padding), right: getSizeByUnit(this.getBtnSize().padding), top: 0, bottom: 0 })
 		.borderWidth(convertDimensionsWidthUnit(this.hairline ? 0.5 : 1))
 		.borderRadius(this.getBtnBorderRadius())
 		.fontColor(this.getBtnTextColor())
@@ -288,6 +298,7 @@ export struct IBestButton {
 		.hitTestBehavior(this.loading ? HitTestMode.None : HitTestMode.Default)
 		.enabled(!this.disabled)
 		.opacity(this.disabled && this.plain ? 0.5 : 1)
+		.stateEffect(this.stateEffect)
 		.onClick(() => {
 			this.onClickBtn()
 			this.onBtnClick()

@@ -1,5 +1,5 @@
-import { IBestStringNumber } from '../../model/Global.type'
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import GlobalStore from '../../utils/GlobalStore'
 import { base64ToPixelMap, getResourceStr } from '../../utils/utils'
@@ -11,8 +11,8 @@ export struct IBestWatermark {
 	/**
 	 * 全局公共样式
 	 */
-	@StorageProp(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp("IBestColorMode") @Watch("drawWaterMark") colorMode: ColorMode = ColorMode.LIGHT
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.LANGUAGE) @Watch("drawWaterMark") colorMode: ColorMode = ColorMode.LIGHT
 	/**
 	 * 图片水印的宽度
 	 */

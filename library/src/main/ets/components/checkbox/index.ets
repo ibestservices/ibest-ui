@@ -1,5 +1,5 @@
 import { emitter } from '../../utils/EventEmitter'
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { CHECKBOX_GROUP_EVENT_NAME, COMPONENT_NAME } from '../checkboxGroup/index.type'
@@ -7,14 +7,14 @@ import { IBestCheckboxBuilderParams, IBestCheckboxMaxChangeParams } from './inde
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
 import { IBestCheckboxColor } from './color'
 import { IBestIcon } from '../icon'
-import { IBestAwaitable, IBestStringNumber } from '../../model/Global.type'
+import { IBestAwaitable, IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestCheckbox {
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 组名
 	 */

@@ -1,11 +1,11 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { IBestStringNumber } from '../../model/Global.type'
-import { regionData } from "@ibestservices/area-data"
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
+import { regionData } from '@ibestservices/area-data'
 import { IBestContactAddressColor } from './color'
 import { convertDimensionsWidthUnit, getResourceStr, getSizeByUnit } from '../../utils/utils'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
-import { IBestContactAddressFormResult, IBestContactAddressController } from './index.type'
+import { IBestContactAddressController, IBestContactAddressFormResult } from './index.type'
 import { IBestCascaderOption } from '../cascader/index.type'
 import { IBestFormController, IBestFormRule } from '../form/index.type'
 import { IBestTextEllipsis } from '../textEllipsis'
@@ -19,7 +19,7 @@ export struct IBestContactAddress {
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 是否显示识别输入框
 	 */

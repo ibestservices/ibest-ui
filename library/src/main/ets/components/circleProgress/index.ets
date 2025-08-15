@@ -1,10 +1,10 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { convertDimensions, getSizeByUnit } from '../../utils/utils'
+import { clamp, convertDimensions, getSizeByUnit } from '../../utils/utils'
 import { matrix4 } from '@kit.ArkUI'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestCircleProgressColor } from './color'
-import { IBestStringNumber } from '../../model/Global.type'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 
 class Point {
     x: number
@@ -37,7 +37,7 @@ export struct IBestCircleProgress{
     /**
      * 全局公共样式
      */
-    @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+    @StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     /**
      * 进度值
      */
@@ -79,7 +79,7 @@ export struct IBestCircleProgress{
      */
     @Prop strokeWidth: number = 4
     /**
-     * 动画时长
+     * 动画时长, 单位ms
      */
     @Prop duration: number = 300
     /**
@@ -113,7 +113,7 @@ export struct IBestCircleProgress{
         if(this.value > 0){
             this.isShow = true
         }
-        this.value = Math.min(this.target, Math.max(this.value, 0))
+        this.value = clamp(this.value, 0, this.target)
         this.strokeDashArray = new Point(this.value ? (this.maxPerimeter * this.value) / this.target : 0.01, this.maxPerimeter)
 		if(this.value == this.target){
 			this.onReachTarget()
@@ -142,19 +142,17 @@ export struct IBestCircleProgress{
     }
 
     build() {
-        Row(){
+        Stack(){
             Circle({width: this.getSize(), height: this.getSize()})
                 .fill("transparent")
                 .strokeWidth(this.strokeWidth)
                 .stroke(this.bgColor)
                 .strokeLineCap(LineCapStyle.Round)
-                .position({left: this.strokeWidth/2, top: this.strokeWidth/2})
             Circle({width: this.getSize(), height: this.getSize()})
                 .fill("transparent")
                 .strokeWidth(this.strokeWidth)
                 .stroke(this.getColor())
                 .strokeLineCap(LineCapStyle.Round)
-                .position({left: this.strokeWidth/2, top: this.strokeWidth/2})
                 .animatableDashArray(this.strokeDashArray)
                 .animation({
                     duration: this.duration,
@@ -171,9 +169,6 @@ export struct IBestCircleProgress{
                     .fontSize(getSizeByUnit(this.textFontSize, true))
                     .fontColor(this.textColor)
                     .fontWeight(this.textFontWeight)
-                    .padding({left: this.strokeWidth, right: this.strokeWidth})
-                    .position({left:0, top: "50%"})
-                    .translate({ y: "-50%" })
             }
         }
         .width(getSizeByUnit(this.diameter))

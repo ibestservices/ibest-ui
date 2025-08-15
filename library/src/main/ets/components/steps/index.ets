@@ -1,5 +1,6 @@
 import { IBestIcon, IBestProgress, IBestStringNumber } from '../../../../../Index'
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { IBestStorageKey } from '../../model/Global.type'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { emitter } from '../../utils/EventEmitter'
@@ -97,6 +98,9 @@ export struct IBestSteps{
 							stepHeightArr.push(getComponentsInfo(this.uiContext, `ibest_step_item_${this.groupId}_${i}`).height)
 						}
 						this.percentContentHeight = stepHeightArr.reduce((a, b) => a + b, 0)
+					}else {
+						let width = getComponentsInfo(this.uiContext, `ibest_steps_content_${this.uniId}`).width / (this.allSteps.length - 1)
+						emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_STEP_ITEM_WIDTH, this.groupId), width)
 					}
 				}, 80)
 			}
@@ -174,6 +178,7 @@ export struct IBestSteps{
 			.width(CONTAINER_SIZE.FULL)
 			.backgroundColor(this.bgColor)
 			.opacity(this.percentContentSize ? 1 : 0)
+			.id(`ibest_steps_content_${this.uniId}`)
 		}
 	}
 }
@@ -183,7 +188,7 @@ export struct IBestStep{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 分组id
 	 */
@@ -235,6 +240,7 @@ export struct IBestStep{
 	@State active: number = 0
 	@State config: IBestStepConfig = {} as IBestStepConfig
 	@State maxMarkWidth: number = 0
+	@State stepItemWidth: number = 0
 
 	@Builder stepContent(){
 		Row(){
@@ -299,12 +305,16 @@ export struct IBestStep{
 		emitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_MAX_MARK_SIZE, this.groupId), this.uniId, (size: number): void => {
 			this.maxMarkWidth = size
 		})
+		emitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_STEP_ITEM_WIDTH, this.groupId), this.uniId, (width: number): void => {
+			this.stepItemWidth = width
+		})
 		emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_ALL_STEPS, this.groupId), this.uniId)
 	}
 	aboutToDisappear(): void {
 		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_CONFIG, this.groupId), this.uniId)
 		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.ACTIVE_CHANGE, this.groupId), this.uniId)
 		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_MAX_MARK_SIZE, this.groupId), this.uniId)
+		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_STEP_ITEM_WIDTH, this.groupId), this.uniId)
 	}
 	// 保存配置信息
 	saveConfig(steps: number[], active: number, data: IBestStepConfig){
@@ -359,7 +369,8 @@ export struct IBestStep{
 			Column({space: this.baseStyle.spaceXs as string}){
 				this.stepContent()
 			}
-			.layoutWeight(1)
+			.width(this.isFirstStep() || this.isLastStep() ? 'auto' : this.stepItemWidth)
+			.layoutWeight(this.isFirstStep() || this.isLastStep() ? 1 : undefined)
 			.alignItems(this.isFirstStep() ? HorizontalAlign.Start : this.isLastStep() ? HorizontalAlign.End : HorizontalAlign.Center)
 		}
 	}

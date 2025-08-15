@@ -321,6 +321,10 @@
 			"value": "$color:ibest_border_color"
 		},
 		{
+			"name": "ibest_avatar_background",
+			"value": "$color:ibest_gray_5"
+		},
+		{
 			"name": "ibest_badge_background",
 			"value": "$color:ibest_danger_color"
 		},

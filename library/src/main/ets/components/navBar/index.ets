@@ -1,7 +1,8 @@
-import { IBestStringNumber } from '../../model/Global.type'
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import GlobalStore from '../../utils/GlobalStore'
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
 import { IBestIcon } from '../icon'
 import { IBestNavbarColor } from './color'
@@ -14,13 +15,12 @@ export struct IBestNavBar{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
-	@StorageProp("IBestIsApp") isApp: boolean = false
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.TOP_AVOID_HEIGHT) topAvoidHeight: number = 0
 	/**
 	 * 导航栏高度
 	 */
-	@Prop navBarHeight: IBestStringNumber = convertDimensionsWidthUnit(this.isApp ? 46 : 56)
+	@Prop navBarHeight: IBestStringNumber = convertDimensionsWidthUnit(GlobalStore.isApp ? 46 : 56)
 	/**
 	 * 导航栏背景色
      */
@@ -232,7 +232,7 @@ export struct IBestNavBar{
 				rightWidth = getComponentsInfo(this.uiContext, `ibest_navbar_right_${this.uniId}`).width
 			}
 			let maxWidth = Math.max(leftWidth, rightWidth)
-			if(this.isApp){
+			if(GlobalStore.isApp){
 				this.leftWidth = this.titleBuilder ? leftWidth : maxWidth
 				this.rightWidth = this.titleBuilder ? rightWidth : maxWidth
 			}else{

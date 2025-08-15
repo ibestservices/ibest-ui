@@ -1,5 +1,14 @@
 import { provinceAndCityData, provinceData, regionData } from '@ibestservices/area-data'
-import { AddressParseConfigType, IBestContactAddressFormResult, AddressParseResult_, AreaJsonBasicType, CascaderOption, CityJsonType, DistrictJsonType, filterResult } from './index.type'
+import {
+    AddressParseConfigType,
+    AddressParseResult_,
+    AreaJsonBasicType,
+    CascaderOption,
+    CityJsonType,
+    DistrictJsonType,
+    filterResult,
+    IBestContactAddressFormResult
+} from './index.type'
 import { surname } from './surname'
 
 const provincesJson: Array<AreaJsonBasicType> = provinceData.reduce((per: Array<AreaJsonBasicType>, cur: CascaderOption) => {

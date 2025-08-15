@@ -1,5 +1,6 @@
 import { UIContext } from '@ohos.arkui.UIContext';
-import { IBestGlobalConfig, IBestStringNumber } from '../../model/Global.type';
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type';
+import { IBestGlobalConfig } from '../../model/GlobalConfig';
 import { GRAY_COLOR } from '../../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils';
@@ -51,13 +52,13 @@ export struct IBestLoadingCircular {
 	@State maxPerimeter: number = 0
 	@State strokeDashArray: Point = new Point(0, 0)
 	@State strokeDashOffset: number = 0
-	@StorageProp("IBestGlobalConfig") ibestGlobalConfig: IBestGlobalConfig = new IBestGlobalConfig()
+	@StorageProp(IBestStorageKey.GLOBAL_CONFIG) globalConfig: IBestGlobalConfig = new IBestGlobalConfig()
 	private uiContext: UIContext = this.getUIContext()
 	aboutToAppear() {
 		this.uniId = this.getUniqueId()
 		setTimeout(() => {
 			let width = getComponentsInfo(this.uiContext, `ibest_circle_${this.uniId}`).width
-			this.maxPerimeter = Math.floor(Math.PI * (width + (this.ibestGlobalConfig.unit == "vp" ? 20 : 0)))
+			this.maxPerimeter = Math.floor(Math.PI * (width + (this.globalConfig.unit == "vp" ? 20 : 0)))
 			this.strokeDashArray = new Point(0, this.maxPerimeter)
 		}, 50)
 	}

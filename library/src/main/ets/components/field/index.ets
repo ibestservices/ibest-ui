@@ -1,36 +1,36 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import {
-	COMPONENT_NAME,
-	FieldValidateResult,
-	FORM_EVENT_NAME,
-	IBestFormRuleItem,
-	IBestFormSendFieldCallResult
+    COMPONENT_NAME,
+    FieldValidateResult,
+    FORM_EVENT_NAME,
+    IBestFormRuleItem,
+    IBestFormSendFieldCallResult
 } from '../form/index.type'
 import type {
-	ClearTriggerType,
-	FieldTextAlign,
-	FormatTriggerType,
-	IBestFieldType,
-	IBestFieldValueType,
-	LabelPositionType,
-	RequireAsteriskPositionType
+    ClearTriggerType,
+    FieldTextAlign,
+    FormatTriggerType,
+    IBestFieldType,
+    IBestFieldValueType,
+    LabelPositionType,
+    RequireAsteriskPositionType
 } from './index.type'
 import { emitter } from '../../utils/EventEmitter'
 import { runRuleValidator, runSyncRule } from './utils'
 import { clamp, convertDimensionsWidthUnit, getEventName, getResourceStr, getSizeByUnit } from '../../utils/utils'
 import { IBestFieldColor } from './color'
 import { IBestIcon } from '../icon'
-import { IBestStringNumber } from '../../model/Global.type'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestField {
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
 	/**
 	 * form id 用于验证
 	 */

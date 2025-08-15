@@ -1,9 +1,9 @@
-import { IBestStringNumber } from '../../model/Global.type'
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { emitter } from '../../utils/EventEmitter'
-import { convertDimensionsWidthUnit, getComponentsInfo, getEventName, getSizeByUnit } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
 import { IBestCollapseColor } from '../collapse/color'
 import { COLLAPSE_EVENT_NAME, COMPONENT_NAME } from '../collapse/index.type'
 import { IBestIcon } from '../icon'
@@ -13,7 +13,7 @@ export struct IBestCollapseItem {
     /**
      * 全局公共样式
      */
-    @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+    @StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     /**
      * 分组id
      */
@@ -84,11 +84,9 @@ export struct IBestCollapseItem {
     @State contentHeight: number = 0
     @State isReady: boolean = false
     @State isShow: boolean = false
-    private uiContext = this.getUIContext()
 
     aboutToAppear(): void {
         this.uniId = this.getUniqueId()
-        this.getContentHeight()
         emitter.emit(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME, this.groupId), this.name, this.disabled || this.readOnly)
         emitter.on(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId, (activeNames: IBestStringNumber | IBestStringNumber[]): void => this.changeState(activeNames))
     }
@@ -103,15 +101,6 @@ export struct IBestCollapseItem {
             activeNames = activeNames.toString()
         }
         this.isExpand = typeof activeNames == "string" ? activeNames == this.name : activeNames.includes(this.name)
-    }
-    getContentHeight(){
-        setTimeout(() => {
-            this.contentHeight = getComponentsInfo(this.uiContext, `ibest_collapse_item_${this.uniId}`).height
-            this.isReady = true
-            setTimeout(() => {
-                this.isShow = true
-            }, 250)
-        }, 50)
     }
     getHeight(){
         return this.isReady ? this.isExpand ? this.contentHeight : 0 : "auto"
@@ -166,8 +155,8 @@ export struct IBestCollapseItem {
             .onClick(() => {
                 this.toggle()
             })
-            Row(){
-                Row(){
+            Scroll(){
+                Column(){
                     Divider()
                         .height(1)
                         .color(IBestCollapseColor.borderColor)
@@ -178,10 +167,21 @@ export struct IBestCollapseItem {
                 }
                 .width(CONTAINER_SIZE.FULL)
                 .padding({left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd, top: this.baseStyle.spaceSm, bottom: this.baseStyle.spaceSm})
-                .id(`ibest_collapse_item_${this.uniId}`)
+                .onAreaChange((oldVal: Area, newVal: Area) => {
+                    if(oldVal.height != newVal.height){
+                        this.contentHeight = newVal.height as number
+                        if(!this.isShow){
+                            this.isReady = true
+                            setTimeout(() => {
+                                this.isShow = true
+                            }, 250)
+                        }
+                    }
+                })
             }
+            .width(CONTAINER_SIZE.FULL)
             .height(this.getHeight())
-            .clip(true)
+            .scrollBar(BarState.Off)
             .animation({
                 duration: this.isShow ? 200 : 0,
                 curve: Curve.EaseInOut

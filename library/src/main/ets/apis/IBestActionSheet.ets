@@ -1,13 +1,13 @@
 import { ComponentContent, LengthMetrics, UIContext } from '@kit.ArkUI';
 import { convertDimensionsWidthUnit, generateId, getLengthUnit, getSizeByUnit } from '../utils/utils';
 import CustomContent from '../common/components/CustomContent';
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src';
+import { getDefaultBaseStyle } from '../theme-chalk/src';
 import { GRAY_COLOR } from '../theme-chalk/src/color';
 import { CONTAINER_SIZE } from '../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type';
 import { IBestActionSheetColor } from './color';
 import { IBestIcon } from '../components/icon';
-import { IBestAwaitable, IBestStringNumber } from '../model/Global.type';
+import { IBestAwaitable, IBestStorageKey, IBestStringNumber } from '../model/Global.type';
 import GlobalStore from '../utils/GlobalStore';
 // 选项类型
 export class IBestActionType {
@@ -187,9 +187,9 @@ struct defaultContent{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp("IBestColorMode") @Watch("colorModeChange") colorMode: ColorMode = ColorMode.LIGHT
-	@StorageProp("IBestBottomBarHeight") bottomBarHeight: number = 0
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.LANGUAGE) @Watch("colorModeChange") colorMode: ColorMode = ColorMode.LIGHT
+	@StorageProp(IBestStorageKey.BOTTOM_BAR_HEIGHT) bottomBarHeight: number = 0
 	@Prop option: IBestActionSheetParams
 
 	@State bgColor: ResourceColor = IBestActionSheetColor.contentBg

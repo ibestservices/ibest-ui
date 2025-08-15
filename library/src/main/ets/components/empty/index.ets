@@ -1,5 +1,5 @@
-import { IBestStringNumber } from '../../model/Global.type';
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type';
+import { getDefaultBaseStyle } from '../../theme-chalk/src';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
@@ -9,7 +9,7 @@ export struct IBestEmpty {
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 描述文字底部的builder
 	 */

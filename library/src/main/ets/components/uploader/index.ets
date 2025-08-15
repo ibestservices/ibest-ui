@@ -1,7 +1,7 @@
 import { FileSelectOptions, IBestUploaderFile, IBestUploaderSelectType } from './index.type'
 import { isImageFile, isImageUrl } from './utils'
 import { LengthMetrics } from '@kit.ArkUI'
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { picker } from '@kit.CoreFileKit'
@@ -11,7 +11,7 @@ import fs from '@ohos.file.fs'
 import { IBestIcon, IBestImagePreview } from '../../../../../Index'
 import { convertDimensions, convertDimensionsWidthUnit, getLengthUnit, getSizeByUnit } from '../../utils/utils'
 import { IBestUploaderColor } from './color'
-import { IBestAwaitable, IBestStringNumber } from '../../model/Global.type'
+import { IBestAwaitable, IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestUploader {
@@ -293,7 +293,7 @@ struct UploadItem{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@State isError: boolean = false
 
 	@ObjectLink file: IBestUploaderFile

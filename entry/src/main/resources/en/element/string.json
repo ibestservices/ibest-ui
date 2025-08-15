@@ -225,6 +225,10 @@
 			"value": "SwipeCell"
 		},
 		{
+			"name": "component_avatar",
+			"value": "Avatar"
+		},
+		{
 			"name": "component_badge",
 			"value": "Badge"
 		},
@@ -271,6 +275,10 @@
 		{
 			"name": "component_progress",
 			"value": "Progress"
+		},
+		{
+			"name": "component_sectorprogress",
+			"value": "SectorProgress"
 		},
 		{
 			"name": "component_skeleton",
@@ -471,6 +479,10 @@
 		{
 			"name": "radius",
 			"value": "Radius"
+		},
+		{
+			"name": "padding",
+			"value": "Padding"
 		},
 		{
 			"name": "usage",

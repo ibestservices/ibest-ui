@@ -1,4 +1,4 @@
-import { FieldValidateResult, IBestFormValidateResult } from "../form/index.type"
+import { FieldValidateResult, IBestFormValidateResult } from '../form/index.type'
 
 export interface IBestContactAddressFormResult {
 	/**

@@ -196,6 +196,11 @@
 			"buildFunction": "SwipeCellBuilder"
 		},
 		{
+			"name": "Avatar",
+			"pageSourceFile": "src/main/ets/pages/base/Avatar.ets",
+			"buildFunction": "AvatarBuilder"
+		},
+		{
 			"name": "Badge",
 			"pageSourceFile": "src/main/ets/pages/base/Badge.ets",
 			"buildFunction": "BadgeBuilder"
@@ -254,6 +259,11 @@
 			"name": "Progress",
 			"pageSourceFile": "src/main/ets/pages/base/Progress.ets",
 			"buildFunction": "ProgressBuilder"
+		},
+		{
+			"name": "SectorProgress",
+			"pageSourceFile": "src/main/ets/pages/base/SectorProgress.ets",
+			"buildFunction": "SectorProgressBuilder"
 		},
 		{
 			"name": "Skeleton",

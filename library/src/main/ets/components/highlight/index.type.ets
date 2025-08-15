@@ -1,4 +1,4 @@
-import { IBestStringNumber } from "../../model/Global.type"
+import { IBestStringNumber } from '../../model/Global.type'
 export interface Chunk {
 	start: number
 	end: number

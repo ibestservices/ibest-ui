@@ -107,6 +107,17 @@ struct BadgePage {
 					}
 				}
 				ListItem() {
+					ComponentShowContainer({ title: '显示图标' }){
+						IBestBadge({
+							icon: "medal",
+							iconColor: Color.Red,
+							badgePosition: "bottom-right"
+						}){
+							this.badgeContent()
+						}
+					}
+				}
+				ListItem() {
 					ComponentShowContainer({ title: '自定义徽标位置' }){
 						Row({space: 20}) {
 							IBestBadge({

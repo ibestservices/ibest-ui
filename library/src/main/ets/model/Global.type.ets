@@ -31,6 +31,10 @@ export interface IBestSize{
 	height: IBestStringNumber
 }
 /**
+ * 形状
+ */
+export type IBestShape = "square" | "circle"
+/**
  * 组件信息类型
  */
 export interface ComInfoType {
@@ -53,31 +57,40 @@ export interface ComAvoidAreaSize{
     rightSize: number
     navigationSize: number
 }
-
-type IBestLengthUnit = "vp" | "px" | "lpx"
-type IBestFontUnit = IBestLengthUnit | "fp"
 /**
- * 全局配置信息
+ * AppStorage key名称枚举
  */
-export class IBestGlobalConfigType{
+export enum IBestStorageKey {
     /**
-     * 标识页面设计基准宽度 默认720px
+     * 全局基础样式
      */
-    designWidth?: number
+    BASE_STYLE = 'ibestBaseStyle',
     /**
-     * 全局尺寸单位, 默认vp
+     * 顶部规避尺寸
      */
-    unit?: IBestLengthUnit
+    TOP_AVOID_HEIGHT = 'ibestTopAvoidHeight',
     /**
-     * 全局字体尺寸单位, 默认fp
+     * 底部导航条高度
      */
-    fontUnit?: IBestFontUnit
-}
-export class IBestGlobalConfig extends IBestGlobalConfigType {
-    constructor(option?: IBestGlobalConfigType) {
-        super()
-        this.designWidth = option?.designWidth || 720
-        this.unit = option?.unit || "vp"
-        this.fontUnit = option?.fontUnit || "fp"
-    }
+    BOTTOM_BAR_HEIGHT = 'ibestBottomBarHeight',
+    /**
+     * 是否横屏
+     */
+    IS_LANDSCAPE = 'ibestIsLandscape',
+    /**
+     * 键盘高度
+     */
+    KEYBOARD_HEIGHT = 'ibestKeyBoardHeight',
+    /**
+     * 颜色模式
+     */
+    COLOR_MODE = 'ibestColorMode',
+    /**
+     * 语言
+     */
+    LANGUAGE = 'ibestLanguage',
+    /**
+     * 全局配置
+     */
+    GLOBAL_CONFIG = 'ibestGlobalConfig'
 }

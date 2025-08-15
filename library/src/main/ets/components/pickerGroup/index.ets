@@ -1,16 +1,18 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { getDefaultBaseStyle } from '../../theme-chalk/src';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { IBestTabs } from '../tab';
 import { IBestTabItemType } from '../tab/index.type';
 import { convertDimensionsWidthUnit } from '../../utils/utils';
 import { IBestPickerGroupColor } from './color';
+import { IBestStorageKey } from '../../model/Global.type';
+
 @Component
 export struct IBestPickerGroup{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 标题
 	 */

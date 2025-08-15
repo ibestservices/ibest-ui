@@ -4,11 +4,11 @@ import { IBestPickerOption } from '../picker/index.type'
 import { COMPONENT_NAME, DATE_PICKER_EVENT_NAME, DatePickerColumnType, IBestDatePickerResult } from './index.type'
 import { emitter } from '../../utils/EventEmitter'
 import { convertDimensionsWidthUnit, getEventName, getResourceStr } from '../../utils/utils'
-import { IBestStringNumber } from '../../model/Global.type'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { Lunar } from 'lunar'
 @Component
 export struct IBestDatePicker {
-    @StorageProp("IBestLanguage") @Watch("init") language: string = "zh"
+    @StorageProp(IBestStorageKey.LANGUAGE) @Watch("init") language: string = "zh"
 	/**
 	 * 分组id
 	 */
@@ -82,6 +82,11 @@ export struct IBestDatePicker {
 	 * @since 2.1.3
      */
 	@Prop @Watch("init") lunar: boolean
+	/**
+	 * 外部圆角
+	 * @since 2.1.5
+	 */
+	@Prop radius: Length | BorderRadiuses | LocalizedBorderRadiuses = 0
 	/**
 	 * 过滤器
 	 */
@@ -275,6 +280,7 @@ export struct IBestDatePicker {
 			itemWidth: this.itemWidth,
 			contentHeight: this.contentHeight,
 			optionFontSize: this.optionFontSize,
+			radius: this.radius,
 			onConfirm: () => {
 				this.onConfirm(this.getResult())
 			},

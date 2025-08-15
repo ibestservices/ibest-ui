@@ -3,12 +3,12 @@ import { IBestPicker } from '../picker'
 import { IBestPickerOption } from '../picker/index.type'
 import { COMPONENT_NAME, DATE_TIME_PICKER_EVENT_NAME, IBestDateTimePickerResult } from './index.type'
 import { emitter } from '../../utils/EventEmitter'
-import { clamp, convertDimensionsWidthUnit, getEventName, getResourceStr } from '../../utils/utils'
-import { IBestStringNumber } from '../../model/Global.type'
+import { convertDimensionsWidthUnit, getEventName, getResourceStr } from '../../utils/utils'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestDateTimePicker {
-    @StorageProp("IBestLanguage") @Watch("init") IBestLanguage: string = "zh"
+    @StorageProp(IBestStorageKey.LANGUAGE) @Watch("init") IBestLanguage: string = "zh"
 	/**
 	 * 分组id
 	 */
@@ -61,6 +61,11 @@ export struct IBestDateTimePicker {
 	 * 是否显示秒
      */
 	@Prop showSecond: boolean = true
+	/**
+	 * 外部圆角
+	 * @since 2.1.5
+	 */
+	@Prop radius: Length | BorderRadiuses | LocalizedBorderRadiuses = 0
 	/**
 	 * 确认按钮点击事件
 	 */
@@ -312,6 +317,7 @@ export struct IBestDateTimePicker {
 			confirmText: this.confirmText,
 			cancelText: this.cancelText,
 			optionFontSize: this.optionFontSize,
+			radius: this.radius,
 			onConfirm: () => {
 				this.onConfirm(this.getResult())
 			},

@@ -1,16 +1,21 @@
-import { IBestCell, IBestIcon, IBestStringNumber } from "../../../../../Index"
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from "../../theme-chalk/src"
-import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
-import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { emitter } from "../../utils/EventEmitter"
-import { convertDimensionsWidthUnit, getComponentsInfo, getEventName, getSizeByUnit } from "../../utils/utils"
-import { IBestDropdownMenuColor } from "./color"
-import { COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME, IBestDropdownMenuContentParams,
+import { IBestCell, IBestIcon, IBestStringNumber } from '../../../../../Index'
+import { IBestStorageKey } from '../../model/Global.type'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { emitter } from '../../utils/EventEmitter'
+import GlobalStore from '../../utils/GlobalStore'
+import { convertDimensionsWidthUnit, getComponentsInfo, getEventName, getSizeByUnit } from '../../utils/utils'
+import { IBestDropdownMenuColor } from './color'
+import {
+    COMPONENT_NAME,
+    DROPDOWN_MENU_EVENT_NAME,
+    IBestDropdownMenuContentParams,
     IBestDropdownMenuContentType,
+    IBestDropdownMenuController,
     IBestDropdownMenuOption,
-    MenuContentController,
-    IBestDropdownMenuController
-} from "./index.type"
+    MenuContentController
+} from './index.type'
 
 const popupDuration = 150
 const hideDuration = 170
@@ -20,9 +25,8 @@ export struct IBestDropdownMenu{
     /**
      * 全局公共样式
      */
-    @StorageProp(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-    @StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
-    @StorageProp("IBestScreenHeight") screenHeight: number = 0
+    @StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+    @StorageProp(IBestStorageKey.TOP_AVOID_HEIGHT) topAvoidHeight: number = 0
     /**
      * 分组id
      */
@@ -130,6 +134,7 @@ export struct IBestDropdownMenu{
     }
     aboutToDisappear() {
         emitter.off(getEventName(COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME.OPTION_CHANGE, this.groupId), this.uniId)
+        this.manualClose()
     }
     // 更新选项
     updateOption(type: string, option: IBestDropdownMenuContentType, callBack?: (index: number) => void) {
@@ -178,7 +183,7 @@ export struct IBestDropdownMenu{
             }
         }
         let y = this.getMaskTop()
-        let maskHeight = this.screenHeight - y
+        let maskHeight = GlobalStore.screenHeight - y
         this.activeIndex = index
         this.promptAction.openCustomDialog({
             builder: () => this.menuContentBuilder(maskHeight),
@@ -253,7 +258,7 @@ export struct IBestDropdownMenu{
 
 @Component
 struct IBestDropdownMenuOptionItem{
-    @StorageProp(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+    @StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     @ObjectLink @Watch("getShowText") option: IBestDropdownMenuContentParams
 	@Consume menuFontColor: ResourceColor
     @Consume activeIndex: number
@@ -301,7 +306,7 @@ struct IBestDropdownMenuOptionItem{
 
 @Component
 struct IBestDropdownMenuContent{
-    @StorageProp(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+    @StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     @Prop groupId: IBestStringNumber
     @Prop maxHeight: number
     @Prop option: IBestDropdownMenuContentParams

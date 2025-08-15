@@ -1,17 +1,17 @@
 import dayjs, { Dayjs } from '@hview/dayjs'
 import { Lunar } from 'lunar'
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import {
-	HeaderItemType,
-	IBestCalendarConfirmResult,
-	IBestCalendarDay,
-	IBestCalendarDayItem,
-	SelectedStyleType,
-	SelectType,
-	WeekDayType
+    HeaderItemType,
+    IBestCalendarConfirmResult,
+    IBestCalendarDay,
+    IBestCalendarDayItem,
+    SelectedStyleType,
+    SelectType,
+    WeekDayType
 } from './index.type'
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
 import { UIContext } from '@kit.ArkUI'
@@ -19,7 +19,7 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { isBeforeToday, set16ToRgb } from './utils'
 import { IBestCalendarColor } from './color'
 import { IBestIcon } from '../icon'
-import { IBestStringNumber } from '../../model/Global.type'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 
 
 @Extend(Text) function ibestCalendarHeaderStyle(itemWidth: IBestStringNumber){
@@ -35,7 +35,7 @@ import { IBestStringNumber } from '../../model/Global.type'
 }
 @Component
 struct CalendarItem {
-    @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+    @StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
     @State fontColor: ResourceColor = IBestCalendarColor.textColor
     @State bgColor: ResourceColor = "transparent"
     @ObjectLink @Watch("itemChange") dayItem: IBestCalendarDay
@@ -199,9 +199,9 @@ export struct IBestCalendar{
     /**
      * 全局公共样式
      */
-    @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+    @StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     // 是否横屏
-    @StorageProp("IBestIsLandscape") IBestIsLandscape: boolean = false
+    @StorageProp(IBestStorageKey.IS_LANDSCAPE) isLandscape: boolean = false
     /**
      * 默认选中日期
      */
@@ -381,7 +381,7 @@ export struct IBestCalendar{
             .width(CONTAINER_SIZE.FULL)
             .id(`ibest_calender_${this.uniId}`)
         }
-        .padding(this.IBestIsLandscape ? undefined : {left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
+        .padding(this.isLandscape ? undefined : {left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
     }
 
     selectDateChange(){
@@ -764,7 +764,7 @@ export struct IBestCalendar{
             .width(CONTAINER_SIZE.FULL)
             .height(convertDimensionsWidthUnit(30))
             .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
-            if(this.IBestIsLandscape){
+            if(this.isLandscape){
                 Scroll() {
                     this.contentBuilder()
                 }
