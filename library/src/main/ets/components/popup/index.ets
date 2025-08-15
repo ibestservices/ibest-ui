@@ -1,11 +1,11 @@
 import { convertDimensionsWidthUnit, getSizeByUnit, sleep } from '../../utils/utils'
 import { PopupAlign, PopupBaseController } from './index.type'
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestPopupColor } from './color'
 import { IBestIcon } from '../icon'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
-import { IBestStringNumber } from '../../model/Global.type'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import GlobalStore from '../../utils/GlobalStore'
 import { ImmersiveMode, LengthMetrics } from '@kit.ArkUI'
 
@@ -22,10 +22,10 @@ struct IBestPopupBaseContent {
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp("IBestIsLandscape") @Watch("initSize") isLandscape: boolean = false
-	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
-	@StorageProp("IBestBottomBarHeight") bottomBarHeight: number = 0
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.IS_LANDSCAPE) @Watch("initSize") isLandscape: boolean = false
+	@StorageProp(IBestStorageKey.TOP_AVOID_HEIGHT) topAvoidHeight: number = 0
+	@StorageProp(IBestStorageKey.BOTTOM_BAR_HEIGHT) bottomBarHeight: number = 0
 	/**
 	 * 弹框显示位置
 	 */
@@ -236,8 +236,8 @@ struct IBestPopupBaseContent {
 
 @Component
 export struct IBestPopup{
-	@StorageProp("IBestIsLandscape") @Watch("landScapeChange") isLandscape: boolean = false
-	@StorageProp("IBestTopAvoidHeight") topAvoidHeight: number = 0
+	@StorageProp(IBestStorageKey.IS_LANDSCAPE) @Watch("landScapeChange") isLandscape: boolean = false
+	@StorageProp(IBestStorageKey.TOP_AVOID_HEIGHT) topAvoidHeight: number = 0
 	/**
 	 * 弹框展示状态
 	 */

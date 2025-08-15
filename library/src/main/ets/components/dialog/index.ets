@@ -1,8 +1,8 @@
 import { IBestDialogView } from './dialog';
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { getDefaultBaseStyle } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { convertDimensionsWidthUnit, sleep } from '../../utils/utils';
-import { IBestAwaitable, IBestStringNumber } from '../../model/Global.type';
+import { IBestAwaitable, IBestStorageKey, IBestStringNumber } from '../../model/Global.type';
 import { ImmersiveMode, LengthMetrics, LevelMode } from '@kit.ArkUI';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 @Component
@@ -10,7 +10,7 @@ export struct IBestDialog {
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 弹框展示状态
 	 * @since 1.16.0

@@ -1,21 +1,21 @@
 import { emitter } from '../../utils/EventEmitter'
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
 import {
-	FieldTextAlign,
-	IBestFieldValueType,
-	LabelPositionType,
-	RequireAsteriskPositionType
+    FieldTextAlign,
+    IBestFieldValueType,
+    LabelPositionType,
+    RequireAsteriskPositionType
 } from '../field/index.type'
 import {
-	COMPONENT_NAME,
-	FieldValidateResult,
-	FORM_EVENT_NAME,
-	IBestFieldItem,
-	IBestFieldValidateResult,
-	IBestFormController,
-	IBestFormRule,
-	IBestFormSendFieldCallResult,
-	IBestFormValidateResult
+    COMPONENT_NAME,
+    FieldValidateResult,
+    FORM_EVENT_NAME,
+    IBestFieldItem,
+    IBestFieldValidateResult,
+    IBestFormController,
+    IBestFormRule,
+    IBestFormSendFieldCallResult,
+    IBestFormValidateResult
 } from './index.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestStringNumber } from '../../model/Global.type'

@@ -1,4 +1,4 @@
-import { IBestStringNumber } from "../../../../../Index";
+import { IBestStringNumber } from '../../../../../Index';
 
 export enum ARROW_DIRECTION {
 	TOP = 'top',

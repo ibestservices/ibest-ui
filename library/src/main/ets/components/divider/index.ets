@@ -1,15 +1,16 @@
-import { IBestStringNumber } from '../../model/Global.type'
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { IBestDividerColor } from './color'
+
 @Component
 export struct IBestDivider{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 线宽, 仅hairline为false时生效
      */
@@ -17,7 +18,7 @@ export struct IBestDivider{
 	/**
 	 * 是否使用虚线
 	 */
-	@Prop dashed: boolean = false
+	@Prop @Watch("dashedChange") dashed: boolean = false
 	/**
 	 * 是否使用细线
      */
@@ -33,7 +34,7 @@ export struct IBestDivider{
 	/**
 	 * 线颜色
      */
-	@Prop lineColor: ResourceColor = IBestDividerColor.borderColor
+	@Prop @Watch("lineColorChange") lineColor: ResourceColor = IBestDividerColor.borderColor
 	/**
 	 * 文本内容, 仅水平时生效
      */
@@ -67,9 +68,40 @@ export struct IBestDivider{
      */
 	@Prop leftRightMargin: IBestStringNumber = this.baseStyle.spaceXs as string
 	/**
+	 * 虚线间距, 仅在dashed为true时生效
+	 * @since 2.1.5
+     */
+	@Prop dashGap: LengthMetrics
+	/**
+	 * 虚线线段长度, 仅在dashed为true时生效
+	 * @since 2.1.5
+     */
+	@Prop dashWidth: LengthMetrics
+	/**
+	 * 右侧线颜色, 默认与lineColor一致
+	 * @since 2.1.5
+     */
+	@Prop rightLineColor: ResourceColor
+	/**
+	 * 右侧线是否使用虚线, 默认与dashed一致
+	 * @since 2.1.5
+     */
+	@Prop rightDashed: boolean
+	/**
 	 * 自定义文本内容
      */
 	@BuilderParam textBuilder: CustomBuilder
+
+	lineColorChange(){
+		if(!this.rightLineColor){
+			this.rightLineColor = this.lineColor
+		}
+	}
+	dashedChange(){
+		if(this.rightDashed === undefined){
+			this.rightDashed = this.dashed
+		}
+	}
 
 	build() {
 		if(this.vertical){
@@ -77,7 +109,13 @@ export struct IBestDivider{
 				.width(1)
 				.height(getSizeByUnit(this.lineHeight))
 				.scale({x: this.hairline ? 0.5 : 1})
-				.border({ width: { left: this.hairline ? 1 : getSizeByUnit(this.lineWidth) }, color: this.lineColor, style: this.dashed ? BorderStyle.Dashed : BorderStyle.Solid })
+				.border({
+					width: { left: this.hairline ? 1 : getSizeByUnit(this.lineWidth) },
+					color: this.lineColor,
+					style: this.dashed ? BorderStyle.Dashed : BorderStyle.Solid,
+					dashGap: this.dashGap,
+					dashWidth: this.dashWidth
+				})
 				.margin({left: getSizeByUnit(this.leftRightMargin), right: getSizeByUnit(this.leftRightMargin)})
 		}else{
 			Row(){
@@ -86,7 +124,13 @@ export struct IBestDivider{
 					.height(1)
 					.layoutWeight(this.leftLineWidth ? "" : 1)
 					.scale({y: this.hairline ? 0.5 : 1})
-					.border({ width: { top: this.hairline ? 1 : getSizeByUnit(this.lineWidth) }, color: this.lineColor, style: this.dashed ? BorderStyle.Dashed : BorderStyle.Solid })
+					.border({
+						width: { top: this.hairline ? 1 : getSizeByUnit(this.lineWidth) },
+						color: this.lineColor,
+						style: this.dashed ? BorderStyle.Dashed : BorderStyle.Solid,
+						dashGap: this.dashGap,
+						dashWidth: this.dashWidth
+					})
 				if(this.textBuilder || this.text){
 					Row(){
 						if(this.textBuilder){
@@ -103,7 +147,13 @@ export struct IBestDivider{
 						.height(1)
 						.layoutWeight(this.rightLineWidth ? "" : 1)
 						.scale({y: this.hairline ? 0.5 : 1})
-						.border({ width: { top: this.hairline ? 1 : getSizeByUnit(this.lineWidth) }, color: this.lineColor, style: this.dashed ? BorderStyle.Dashed : BorderStyle.Solid })
+						.border({
+							width: { top: this.hairline ? 1 : getSizeByUnit(this.lineWidth) },
+							color: this.rightLineColor || this.lineColor,
+							style: (this.rightDashed ?? this.dashed) ? BorderStyle.Dashed : BorderStyle.Solid,
+							dashGap: this.dashGap,
+							dashWidth: this.dashWidth
+						})
 				}
 			}
 			.width(CONTAINER_SIZE.FULL)

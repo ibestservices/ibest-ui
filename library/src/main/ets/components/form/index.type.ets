@@ -1,9 +1,9 @@
 import { IBestStringNumber } from '../../model/Global.type'
 import {
-	FieldTextAlign,
-	IBestFieldValueType,
-	LabelPositionType,
-	RequireAsteriskPositionType
+    FieldTextAlign,
+    IBestFieldValueType,
+    LabelPositionType,
+    RequireAsteriskPositionType
 } from '../field/index.type'
 /**
  * 验证规则

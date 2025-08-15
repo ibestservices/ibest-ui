@@ -4,11 +4,11 @@ import { convertDimensionsWidthUnit } from '../../utils/utils'
 import { IBestPopup } from '../popup'
 import { IBestCalendar } from './index'
 import {
-	IBestCalendarConfirmResult,
-	IBestCalendarDayItem,
-	SelectedStyleType,
-	SelectType,
-	WeekDayType
+    IBestCalendarConfirmResult,
+    IBestCalendarDayItem,
+    SelectedStyleType,
+    SelectType,
+    WeekDayType
 } from './index.type'
 
 @Component

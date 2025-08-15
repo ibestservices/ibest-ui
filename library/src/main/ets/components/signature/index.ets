@@ -1,5 +1,5 @@
-import { IBestStringNumber } from '../../model/Global.type'
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensions, convertDimensionsWidthUnit, getComponentSnapshot, getSizeByUnit } from '../../utils/utils'
@@ -23,8 +23,8 @@ export struct IBestSignature{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp("IBestColorMode") @Watch("setCanvasStyle") colorMode: ColorMode = ColorMode.LIGHT
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.LANGUAGE) @Watch("setCanvasStyle") colorMode: ColorMode = ColorMode.LIGHT
 	/**
 	 * 宽度
 	 */

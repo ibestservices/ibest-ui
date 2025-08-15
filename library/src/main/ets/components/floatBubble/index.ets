@@ -1,9 +1,9 @@
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils';
 import { ComponentContent, OverlayManager } from '@kit.ArkUI';
 import { IBestFloatBubbleDragAxis, IBestFloatBubbleParams } from './index.type';
-import { IBestEdges, IBestStringNumber } from '../../model/Global.type';
+import { IBestEdges, IBestShape, IBestStorageKey, IBestStringNumber } from '../../model/Global.type';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { getDefaultBaseStyle } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { IBestIcon } from '../icon';
 import { IBestFloatBubbleColor } from './color';
@@ -22,7 +22,7 @@ struct FloatBubbleComponent{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@Prop option: IBestFloatBubbleParams
     @BuilderParam defaultBuilder: CustomBuilder
 	@State uniId: number = 0
@@ -205,7 +205,7 @@ export struct IBestFloatBubble{
 	/**
 	 * 气泡样式类型
 	 */
-	@Prop shape: "square" | "circle" = "circle"
+	@Prop shape: IBestShape = "circle"
 	/**
 	 * 气泡图标
 	 */

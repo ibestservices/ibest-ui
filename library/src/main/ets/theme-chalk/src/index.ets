@@ -1,3 +1,4 @@
+import { IBestStorageKey } from '../../model/Global.type'
 import { convertDimensionsWidthUnit } from '../../utils/utils'
 import { BORDER_RADIUS } from './border'
 import { COLOR_OPACITY, THEME_COLOR } from './color'
@@ -49,10 +50,6 @@ export function getDefaultBaseStyle(): IBestUIBaseStyleObjType {
 	return data;
 }
 /**
- * AppStorage命名空间
- */
-export const IBEST_UI_NAMESPACE = '__IBEST-UI_BASE_STYLE'
-/**
  * 设置全局样式
  * @param styleData
  */
@@ -65,5 +62,5 @@ export function setIBestUIBaseStyle(styleData?: Partial<IBestUIBaseStyleType>) {
 			}
 		})
 	}
-	AppStorage.setOrCreate(IBEST_UI_NAMESPACE, newStyleData)
+	AppStorage.setOrCreate(IBestStorageKey.BASE_STYLE, newStyleData)
 }

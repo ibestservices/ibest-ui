@@ -1,11 +1,11 @@
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit, sleep } from '../../utils/utils';
 import { IBestTabController, IBestTabItem, IBestTabItemType, TabWidthType } from './index.type';
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { getDefaultBaseStyle } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { debounce } from '../../utils/DebounceThrottle';
 import { IBestTabColor } from './color';
-import { IBestStringNumber } from '../../model/Global.type';
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type';
 import { IBestIcon } from '../../../../../Index';
 
 @Component
@@ -13,8 +13,8 @@ export struct IBestTabs{
     /**
      * 全局公共样式
      */
-    @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
-    @StorageProp("IBestIsLandscape") @Watch("onDidBuild") IBestIsLandscape: boolean = false
+    @StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+    @StorageProp(IBestStorageKey.IS_LANDSCAPE) @Watch("onDidBuild") isLandscape: boolean = false
 	/**
 	 * 当前激活的tab的name
 	 */
@@ -116,6 +116,11 @@ export struct IBestTabs{
 	 * @since 2.0.9
      */
 	@Provide({allowOverride: "activeFontSize"}) activeFontSize: IBestStringNumber = this.fontSize
+    /**
+     * 外侧圆角
+     * @since 2.1.5
+     */
+    @Provide({allowOverride: "outerRadius"}) outerRadius: Length | BorderRadiuses | LocalizedBorderRadiuses = 0
 	/**
 	 * tabContent 内容
 	 * @since 2.0.9
@@ -188,7 +193,7 @@ export struct IBestTabs{
 			}
 			.width(this.tabWidthType == "flex" ? "100%" : "")
 			.height(getSizeByUnit(this.tabHeight))
-			.borderRadius(this.baseStyle.borderRadiusSm)
+			.borderRadius(this.outerRadius || this.baseStyle.borderRadiusSm)
 			.border({ width: this.type == "card" ? 1 : 0, color: this.getLineColor() })
 			// 标记线
 			if(this.type == "line" && this.showActiveLine){
@@ -361,6 +366,8 @@ export struct IBestTabs{
         }
         .width(CONTAINER_SIZE.FULL)
         .alignItems(HorizontalAlign.Start)
+        .borderRadius(getSizeByUnit(this.outerRadius))
+        .clip(true)
     }
 }
 
@@ -369,7 +376,7 @@ struct IBestTab{
     /**
      * 全局公共样式
      */
-    @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+    @StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     @Consume uniId: number
     @Consume type: 'line' | 'card'
     @Consume tabWidthType: "auto" | "flex"

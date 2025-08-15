@@ -47,6 +47,7 @@ export class IBestTabItem extends IBestTabItemType{
 }
 /**
  * tabController类型
+ * @deprecated
  */
 export class IBestTabController{
     changeTab: (name: IBestStringNumber) => void = () => {}

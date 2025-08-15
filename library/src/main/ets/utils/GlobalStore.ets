@@ -1,9 +1,10 @@
 import window from '@ohos.window';
-import font from '@ohos.font';
 import { bundleManager, common } from '@kit.AbilityKit';
-import { IBestGlobalConfig, IBestGlobalConfigType } from '../model/Global.type';
+import { IBestStorageKey } from '../model/Global.type';
+
 import { setIBestUIBaseStyle } from '../theme-chalk/src';
 import { display } from '@kit.ArkUI';
+import { IBestGlobalConfig, IBestGlobalConfigType } from '../model/GlobalConfig';
 
 // 全局存储中心
 export default class GlobalStore {
@@ -14,6 +15,7 @@ export default class GlobalStore {
 	// 屏幕信息
 	public static screenWidth: number = 0
 	public static screenHeight: number = 0
+	public static isApp: boolean = false
 	/**
 	 * 初始化
 	 */
@@ -46,18 +48,14 @@ export default class GlobalStore {
 			const topSize = GlobalStore.px2vp(avoidArea.topRect.height)
 			const navigationSize = GlobalStore.px2vp(systemDht.bottomRect.height)
 			const o = display.getDefaultDisplaySync().orientation
-			const screenWidth = screenInfo.windowRect.width
-			const screenHeight = screenInfo.windowRect.height
 			GlobalStore.screenWidth = screenInfo.windowRect.width
 			GlobalStore.screenHeight = screenInfo.windowRect.height
-			AppStorage.setOrCreate("IBestIsLandscape", o == 1 || o == 3)
-			AppStorage.setOrCreate("IBestScreenWidth", GlobalStore.px2vp(screenWidth))
-			AppStorage.setOrCreate("IBestScreenHeight", GlobalStore.px2vp(screenHeight))
-			AppStorage.setOrCreate("IBestTopAvoidHeight", topSize)
-			AppStorage.setOrCreate("IBestBottomBarHeight", navigationSize)
+			AppStorage.setOrCreate(IBestStorageKey.IS_LANDSCAPE, o == 1 || o == 3)
+			AppStorage.setOrCreate(IBestStorageKey.TOP_AVOID_HEIGHT, topSize)
+			AppStorage.setOrCreate(IBestStorageKey.BOTTOM_BAR_HEIGHT, navigationSize)
 			mainWindow.on("avoidAreaChange", data => {
 				if (data.type == window.AvoidAreaType.TYPE_KEYBOARD) {
-					AppStorage.setOrCreate("IBestKeyBoardHeight", GlobalStore.px2vp(data.area.bottomRect.height))
+					AppStorage.setOrCreate(IBestStorageKey.KEYBOARD_HEIGHT, GlobalStore.px2vp(data.area.bottomRect.height))
 				}
 			})
 		}catch (e) {
@@ -79,12 +77,12 @@ export default class GlobalStore {
      */
 	private static setColorModeListener(){
 		let appContext = GlobalStore.context.getApplicationContext()
-		AppStorage.setOrCreate("IBestColorMode", GlobalStore.context.config.colorMode)
-		AppStorage.setOrCreate("IBestLanguage", GlobalStore.context.config.language)
+		AppStorage.setOrCreate(IBestStorageKey.COLOR_MODE, GlobalStore.context.config.colorMode)
+		AppStorage.setOrCreate(IBestStorageKey.LANGUAGE, GlobalStore.context.config.language)
 		appContext.on('environment', {
 			onConfigurationUpdated(config) {
-				AppStorage.setOrCreate("IBestColorMode", config.colorMode)
-				AppStorage.setOrCreate("IBestLanguage", config.language)
+				AppStorage.setOrCreate(IBestStorageKey.COLOR_MODE, config.colorMode)
+				AppStorage.setOrCreate(IBestStorageKey.LANGUAGE, config.language)
 			},
 			onMemoryLevel() {}
 		})
@@ -93,13 +91,13 @@ export default class GlobalStore {
 	 * 获取是否是元服务
 	 */
 	private static getBundleType(){
-		AppStorage.setOrCreate("IBestIsApp", bundleManager.getBundleInfoForSelfSync(bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_APPLICATION).appInfo.bundleType == bundleManager.BundleType.APP)
+		GlobalStore.isApp = bundleManager.getBundleInfoForSelfSync(bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_APPLICATION).appInfo.bundleType == bundleManager.BundleType.APP
 	}
 	/**
 	 * 设置全局配置
 	 */
 	public static setGlobalConfig(option?: IBestGlobalConfigType){
-		AppStorage.setOrCreate("IBestGlobalConfig", new IBestGlobalConfig(option))
+		AppStorage.setOrCreate(IBestStorageKey.GLOBAL_CONFIG, new IBestGlobalConfig(option))
 		setIBestUIBaseStyle()
 	}
 	/**

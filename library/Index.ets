@@ -5,7 +5,9 @@ import IBestImagePreview from './src/main/ets/apis/IBestImagePreview'
 import IBestDialogUtil from './src/main/ets/apis/IBestDialog'
 import IBestNotify from './src/main/ets/apis/IBestNotify'
 import GlobalStore from './src/main/ets/utils/GlobalStore'
-import { IBestGlobalConfigType, IBestStringNumber } from './src/main/ets/model/Global.type'
+import { IBestStringNumber } from './src/main/ets/model/Global.type'
+import { IBestGlobalConfigType } from './src/main/ets/model/GlobalConfig'
+
 const init = GlobalStore.init
 const setGlobalConfig = GlobalStore.setGlobalConfig
 
@@ -116,6 +118,9 @@ export { IBestRefreshContentParams } from './src/main/ets/components/pullRefresh
 
 export { IBestSwipeCell } from './src/main/ets/components/swipeCell/index'
 
+export { IBestAvatar } from './src/main/ets/components/avatar/index'
+export { IBestAvatarGroup } from './src/main/ets/components/avatarGroup/index'
+
 export { IBestBadge } from './src/main/ets/components/badge/index'
 
 export { IBestCircleProgress } from './src/main/ets/components/circleProgress/index'
@@ -143,6 +148,8 @@ export { IBestPopover } from './src/main/ets/components/popover/index'
 export { IBestPopoverAction, IBestPopoverController } from './src/main/ets/components/popover/index.type'
 
 export { IBestProgress } from './src/main/ets/components/progress/index'
+
+export { IBestSectorProgress } from './src/main/ets/components/sectorProgress/index'
 
 export { IBestSkeleton, IBestSkeletonParagraph } from './src/main/ets/components/skeleton/index'
 export { IBestSkeletonType } from './src/main/ets/components/skeleton/index.type'

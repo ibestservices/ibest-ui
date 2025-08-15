@@ -182,7 +182,11 @@ struct ButtonPage {
 				}
 				ListItem() {
 					ComponentShowContainer({ title: $r("app.string.custom_style", $r("app.string.custom")) }) {
-						Row({ space: SPACE.SM }) {
+						Flex({
+							wrap: FlexWrap.Wrap,
+							alignItems: ItemAlign.Center,
+							space: { main: LengthMetrics.vp(SPACE.SM), cross: LengthMetrics.vp(SPACE.SM) }
+						}) {
 							IBestButton({
 								text: $r("app.string.color"),
 								color: "#7232dd"
@@ -199,6 +203,11 @@ struct ButtonPage {
 								type: "primary",
 								text: $r("app.string.radius"),
 								btnBorderRadius: 16
+							})
+							IBestButton({
+								type: "primary",
+								text: $r("app.string.padding"),
+								btnPadding: 5
 							})
 						}
 					}

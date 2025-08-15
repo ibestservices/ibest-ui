@@ -3,11 +3,11 @@ import { emitter } from '../../utils/EventEmitter'
 import { getEventName } from '../../utils/utils'
 import { IBestCollapseColor } from './color'
 import {
-	COLLAPSE_EVENT_NAME,
-	COMPONENT_NAME,
-	IBestCollapseController,
-	IBestCollapseItemData,
-	ToggleOption
+    COLLAPSE_EVENT_NAME,
+    COMPONENT_NAME,
+    IBestCollapseController,
+    IBestCollapseItemData,
+    ToggleOption
 } from './index.type'
 @Component
 export struct IBestCollapse {

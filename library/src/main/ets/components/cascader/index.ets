@@ -1,5 +1,5 @@
 import { convertDimensionsWidthUnit, getResourceStr, getSizeByUnit, sleep } from '../../utils/utils'
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestTabs } from '../tab'
 import { IBestTabItem } from '../tab/index.type'
@@ -7,16 +7,16 @@ import { IBestCascaderOption, IBestCascaderOptionInstance, IBestCascaderOptionIn
 import { IBestPopup } from '../popup/index'
 import { IBestCascaderColor } from './color'
 import { IBestIcon } from '../icon'
-import { IBestStringNumber } from '../../model/Global.type'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 @Component
 export struct IBestCascaderContent{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	// 是否横屏
-	@StorageProp("IBestIsLandscape") @Watch("getListHeight") IBestIsLandscape: boolean = false
+	@StorageProp(IBestStorageKey.IS_LANDSCAPE) @Watch("getListHeight") isLandscape: boolean = false
 	/**
 	 * 可选项数据源
 	 */
@@ -79,7 +79,7 @@ export struct IBestCascaderContent{
 		}
 	}
 	getListHeight(){
-		return this.listHeight ? getSizeByUnit(this.listHeight) : (this.IBestIsLandscape ? "60%" : convertDimensionsWidthUnit(350))
+		return this.listHeight ? getSizeByUnit(this.listHeight) : (this.isLandscape ? "60%" : convertDimensionsWidthUnit(350))
 	}
 	// 创建当前tab下的选项实例
 	createOptionsInstance(children: IBestCascaderOption[] = []): IBestCascaderOptionInstance[]{
@@ -267,7 +267,7 @@ struct CascaderOptionItem{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 选项数据
 	 */
@@ -312,7 +312,7 @@ export struct IBestCascader{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 弹框显隐
 	 */

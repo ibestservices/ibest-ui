@@ -1,8 +1,8 @@
-import { ComponentContent, PromptAction, window } from '@kit.ArkUI'
+import { ComponentContent, PromptAction } from '@kit.ArkUI'
 import { IBestIcon } from '../components/icon'
 import { IBestLoading } from '../components/loading'
-import { IBestStringNumber, LoadingIconType, WordBreakType } from '../model/Global.type'
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../theme-chalk/src/index'
+import { IBestStorageKey, IBestStringNumber, LoadingIconType, WordBreakType } from '../model/Global.type'
+import { getDefaultBaseStyle } from '../theme-chalk/src/index'
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type'
 import GlobalStore from '../utils/GlobalStore'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../utils/utils'
@@ -85,7 +85,7 @@ struct defaultContent{
     /**
      * 全局公共样式
      */
-    @StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+    @StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     @Prop option: ToastParams
     build() {
         Column({space: this.baseStyle.spaceXs as string}){

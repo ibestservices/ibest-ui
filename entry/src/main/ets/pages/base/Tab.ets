@@ -152,24 +152,26 @@ struct TabPage {
 			CustomNavBar({title: this.title})
             List() {
                 ListItem() {
-                    ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
+                    ComponentShowContainer({ title: '基础用法' }) {
                         IBestTabs({
                             tabsList: this.tabsList,
-                            currentName: $curTabName
+                            currentName: $curTabName,
+                            outerRadius: 8
                         })
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '样式风格', titlePaddingLeft: SPACE.MD }) {
+                    ComponentShowContainer({ title: '样式风格' }) {
                         IBestTabs({
                             type: "card",
                             tabsList: this.tabsList,
-                            currentName: $curTabName
+                            currentName: $curTabName,
+                            outerRadius: 8
                         })
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '收缩布局', titlePaddingLeft: SPACE.MD }) {
+                    ComponentShowContainer({ title: '收缩布局' }) {
                         Column({space: 20}){
                             IBestTabs({
                                 tabWidthType: "auto",
@@ -205,7 +207,7 @@ struct TabPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '固定线宽', titlePaddingLeft: SPACE.MD }) {
+                    ComponentShowContainer({ title: '固定线宽' }) {
                         IBestTabs({
                             tabsList: this.tabsList,
                             isTabLineWidthFixed: true,
@@ -216,7 +218,7 @@ struct TabPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '禁用标签', titlePaddingLeft: SPACE.MD }) {
+                    ComponentShowContainer({ title: '禁用标签' }) {
                         Column({space: 20}){
                             IBestTabs({
                                 tabsList: this.tabsList2,
@@ -233,7 +235,7 @@ struct TabPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: 'change事件', titlePaddingLeft: SPACE.MD }) {
+                    ComponentShowContainer({ title: 'change事件' }) {
                         IBestTabs({
                             tabsList: this.tabsList,
                             currentName: $curTabName4,
@@ -244,7 +246,7 @@ struct TabPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '自定义标签', titlePaddingLeft: SPACE.MD }) {
+                    ComponentShowContainer({ title: '自定义标签' }) {
                         Column({space: 20}){
                             IBestTabs({
                                 tabsList: this.tabsList3,
@@ -263,7 +265,7 @@ struct TabPage {
                     }
                 }
 				ListItem() {
-					ComponentShowContainer({ title: '内容联动', titlePaddingLeft: SPACE.MD }) {
+					ComponentShowContainer({ title: '内容联动' }) {
 						IBestTabs({
 							tabsList: this.tabsList,
 							currentName: $curTabName
@@ -275,6 +277,7 @@ struct TabPage {
 				ListItem().height(50)
             }
             .layoutWeight(1)
+            .padding(SPACE.MD)
         }
         .hideTitleBar(true)
         .backgroundColor(modeColor.bg)

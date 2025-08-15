@@ -1,4 +1,4 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { getDefaultBaseStyle } from '../../theme-chalk/src';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { LengthMetrics } from '@kit.ArkUI';
@@ -6,6 +6,7 @@ import { IBestNumberKeyboardType } from './index.type';
 import { IBestPopup } from '../popup';
 import { convertDimensionsWidthUnit, getResourceStr } from '../../utils/utils';
 import { IBestNumberKeyboardColor } from './color';
+import { IBestStorageKey } from '../../model/Global.type';
 
 @Extend(Row) function ibestNumberKeyboardKeyBoxStyle(fullWidth?: boolean){
 	.width(fullWidth ? `calc((100% - ${convertDimensionsWidthUnit(12)})/3*2 + ${convertDimensionsWidthUnit(6)})` : `calc((100% - ${convertDimensionsWidthUnit(12)})/3)`)
@@ -48,8 +49,8 @@ export struct NumberKeyboard{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp("IBestBottomBarHeight") bottomBarHeight: number = 0
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BOTTOM_BAR_HEIGHT) bottomBarHeight: number = 0
 	/**
 	 * 值
 	 */

@@ -1,6 +1,6 @@
 {
 	"name": "@ibestservices/ibest-ui",
-	"version": "2.1.4",
+	"version": "2.1.5",
 	"description": "一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库, 包含Button、Calendar、Form、Field、Picker、Popup、Toast、Dialog、ImageCropper等50+个优质组件。",
 	"main": "Index.ets",
 	"keywords": [
@@ -13,7 +13,7 @@
 	"dependencies": {
 		"@hview/dayjs": "^1.11.11",
 		"lunar": "^1.0.0",
-		"@ibestservices/area-data": "^0.0.4"
+		"@ibestservices/area-data": "^0.0.6"
 	},
 	"author": "ibestservices",
 	"ibestservices": {

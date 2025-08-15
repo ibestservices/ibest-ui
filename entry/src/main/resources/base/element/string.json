@@ -225,6 +225,10 @@
 			"value": "SwipeCell 滑动单元格"
 		},
 		{
+			"name": "component_avatar",
+			"value": "Avatar 头像"
+		},
+		{
 			"name": "component_badge",
 			"value": "Badge 徽标"
 		},
@@ -271,6 +275,10 @@
 		{
 			"name": "component_progress",
 			"value": "Progress 进度条"
+		},
+		{
+			"name": "component_sectorprogress",
+			"value": "SectorProgress 扇形进度条"
 		},
 		{
 			"name": "component_skeleton",
@@ -471,6 +479,10 @@
 		{
 			"name": "radius",
 			"value": "圆角"
+		},
+		{
+			"name": "padding",
+			"value": "内边距"
 		},
 		{
 			"name": "usage",

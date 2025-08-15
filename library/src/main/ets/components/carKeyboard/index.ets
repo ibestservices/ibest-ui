@@ -1,11 +1,11 @@
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestCarKeyboardKey } from './index.type'
 import { IBestPopup } from '../popup'
 import { convertDimensionsWidthUnit, getComponentsInfo, getResourceStr, getSizeByUnit } from '../../utils/utils'
 import { IBestCarKeyboardColor } from './color'
-import { IBestStringNumber } from '../../model/Global.type'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 const keyWidth = 0.09
 
 @Extend(Row) function ibestCarKeyboardKeyBoxStyle(){
@@ -28,8 +28,8 @@ const keyWidth = 0.09
 
 @Component
 export struct CarKeyboard{
-    @StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp("IBestBottomBarHeight") bottomBarHeight: number = 0
+    @StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BOTTOM_BAR_HEIGHT) bottomBarHeight: number = 0
     @Link @Watch("switchDisabled") value: string
 	@Prop maxLength: number = 8
     @Prop title: ResourceStr = ''

@@ -2,7 +2,7 @@ import AbilityConstant from '@ohos.app.ability.AbilityConstant';
 import UIAbility from '@ohos.app.ability.UIAbility';
 import Want from '@ohos.app.ability.Want';
 import window from '@ohos.window';
-import { IBestInit } from '@ibestservices/ibest-ui';
+import { IBestInit, IBestSetGlobalConfig } from '@ibestservices/ibest-ui';
 import { ConfigurationConstant } from '@kit.AbilityKit';
 import GlobalStore from '../utils/global';
 
@@ -25,9 +25,13 @@ export default class EntryAbility extends UIAbility {
 			GlobalStore.init(windowStage, this.context)
 			// 组件库初始化
 			IBestInit(windowStage, this.context)
+			// 全局配置
 			// IBestSetGlobalConfig({
-			//   unit: "lpx",
-			//   fontUnit: "lpx"
+			//   	unit: "lpx",
+			//   	fontUnit: "lpx",
+			// 	avatar: {
+			// 		  defaultAvatar: $r("app.media.01")
+			// 	}
 			// })
 		});
 	}

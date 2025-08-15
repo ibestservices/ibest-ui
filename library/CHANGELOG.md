@@ -1,5 +1,24 @@
 # 版本记录
 
+## 2.1.5
+#### 新增:
+1. 新增 IBestAvatar 头像组件;
+2. 新增 IBestAvatarGroup 头像组组件;
+3. 新增 IBestSectorProgress 扇形进度条;
+4. IBestButton 新增 btnPadding stateEffect 属性;
+5. IBestCellGroup 新增 outerMargin 属性;
+6. IBestPicker IBestDatePicker IBestDateTimePicker IBestTimePicker 新增 radius 属性;
+7. IBestDivider 新增 dashGap dashWidth rightLineColor rightDashed 属性;
+8. IBestBadge 新增 icon iconSize iconColor 属性;
+9. IBestTabs 新增 outerRadius 属性;
+10. 全局配置新增 avatar 属性;
+
+#### Bug修复:
+1. IBestCollapseItem 内容变化时高度未自适应问题;
+2. IBestSteps 步骤较多时进度与点无法对齐问题;
+3. IBestStepper 有小数时无法增加问题;
+4. IBestDropdownMenu 在页面返回没有关闭问题;
+
 ## 2.1.4 - 5.0.3(17)
 #### 新增:
 1. 新增 IBestContactAddress 联系人地址组件;

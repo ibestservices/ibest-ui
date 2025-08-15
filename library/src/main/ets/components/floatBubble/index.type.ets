@@ -1,4 +1,4 @@
-import { IBestEdges, IBestStringNumber } from "../../model/Global.type"
+import { IBestEdges, IBestShape, IBestStringNumber } from '../../model/Global.type'
 /**
  * 可拖拽方向
  */
@@ -6,7 +6,7 @@ export type IBestFloatBubbleDragAxis = 'x' | 'y' | 'xy' | 'lock'
 
 export class IBestFloatBubbleOption{
 	bubbleSize: IBestStringNumber = ""
-	shape: "square" | "circle" = "circle"
+	shape: IBestShape = "circle"
 	icon: ResourceStr = ""
 	iconSize: IBestStringNumber = ""
 	iconColor: ResourceColor = ""

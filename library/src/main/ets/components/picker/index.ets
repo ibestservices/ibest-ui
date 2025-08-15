@@ -1,10 +1,10 @@
 import { clamp, convertDimensionsWidthUnit, getComponentsInfo, getResourceStr, getSizeByUnit } from '../../utils/utils';
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src';
+import { getDefaultBaseStyle } from '../../theme-chalk/src';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { ColumnType, IBestPickerOption } from './index.type';
 import { IBestPickerColor } from './color';
-import { IBestStringNumber } from '../../model/Global.type';
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type';
 
 @Extend(Text) function ibestPickerItemStyle(itemHeight: IBestStringNumber, fontSize: IBestStringNumber){
 	.width(CONTAINER_SIZE.FULL)
@@ -41,8 +41,8 @@ export struct IBestPicker{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp("IBestColorMode") colorMode: ColorMode = ColorMode.LIGHT
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.LANGUAGE) colorMode: ColorMode = ColorMode.LIGHT
 	/**
 	 * 分组id
 	 */
@@ -99,6 +99,11 @@ export struct IBestPicker{
 	 * @since 2.0.0
      */
 	@Prop optionFontSize: IBestStringNumber = this.baseStyle.fontSizeLg as string
+	/**
+	 * 外部圆角
+	 * @since 2.1.5
+     */
+	@Prop radius: Length | BorderRadiuses | LocalizedBorderRadiuses = 0
 	/**
 	 * 确认按钮点击事件
 	 */
@@ -552,6 +557,8 @@ export struct IBestPicker{
 		.width(CONTAINER_SIZE.FULL)
 		.alignItems(HorizontalAlign.Start)
 		.backgroundColor(IBestPickerColor.bgColor)
+		.borderRadius(getSizeByUnit(this.radius))
+		.clip(true)
 		.onVisibleAreaChange([0, 1], (isExpanding: boolean) => {
 			if(isExpanding && !this.itemCalcHeight){
 				this.initSize()

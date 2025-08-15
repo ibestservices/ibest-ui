@@ -7,20 +7,21 @@ import {
 	getLengthUnit,
 	getSizeByUnit
 } from '../../utils/utils'
-import { getDefaultBaseStyle, IBEST_UI_NAMESPACE } from '../../theme-chalk/src'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { LengthUnit } from '@kit.ArkUI'
 import { IBestSliderValue } from './index.type'
-import { IBestGlobalConfig, IBestStringNumber } from '../../model/Global.type'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { IBestSliderColor } from './color'
+import { IBestGlobalConfig } from '../../model/GlobalConfig'
 
 @Component
 export struct IBestSlider{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@State uniId: number = 0
 	@State space: number = 2.5
 	@State percentage: number = 0
@@ -287,8 +288,8 @@ struct DragBar{
 	/**
 	 * 全局公共样式
 	 */
-	@StorageLink(IBEST_UI_NAMESPACE) private baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp("IBestGlobalConfig") config: IBestGlobalConfig = new IBestGlobalConfig()
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	@StorageProp(IBestStorageKey.GLOBAL_CONFIG) config: IBestGlobalConfig = new IBestGlobalConfig()
 	@Prop value: IBestSliderValue
 	@Prop uniId: number
 	@Consume buttonWidth: number
