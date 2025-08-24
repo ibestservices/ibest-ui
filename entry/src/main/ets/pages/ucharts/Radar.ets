@@ -155,57 +155,49 @@ struct RadarPage {
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '多边形雷达图' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller,
-                                onReady: () => {
-                                    this.controller.updateData(this.opts)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller,
+                            onReady: () => {
+                                this.controller.updateData(this.opts)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '圆形雷达图' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller1,
-                                onReady: () => {
-                                    this.controller1.updateData(this.opts1)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller1,
+                            onReady: () => {
+                                this.controller1.updateData(this.opts1)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '刻度标签+网格抽稀' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller2,
-                                onReady: () => {
-                                    this.controller2.updateData(this.opts2)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller2,
+                            onReady: () => {
+                                this.controller2.updateData(this.opts2)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '渐变色雷达图' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller3,
-                                onReady: () => {
-                                    this.controller3.updateData(this.opts3)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller3,
+                            onReady: () => {
+                                this.controller3.updateData(this.opts3)
+                            }
+                        })
                     }
                 }
 

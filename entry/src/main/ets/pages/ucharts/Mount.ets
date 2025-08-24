@@ -17,7 +17,13 @@ struct MountPage {
         type: "mount",
         series: [
             {
-                data: [{"name":"一班","value":82},{"name":"二班","value":63},{"name":"三班","value":86},{"name":"四班","value":65},{"name":"五班","value":79}]
+                data: [
+                    {"name":"一班","value":82},
+                    {"name":"二班","value":63},
+                    {"name":"三班","value":86},
+                    {"name":"四班","value":65},
+                    {"name":"五班","value":79}
+                ]
             }
         ],
         padding: [15,15,0,5],
@@ -45,7 +51,13 @@ struct MountPage {
         type: "mount",
         series: [
             {
-                data: [{"name":"一班","value":82},{"name":"二班","value":63},{"name":"三班","value":86},{"name":"四班","value":65},{"name":"五班","value":79}]
+                data: [
+                    {"name":"一班","value":82},
+                    {"name":"二班","value":63},
+                    {"name":"三班","value":86},
+                    {"name":"四班","value":65},
+                    {"name":"五班","value":79}
+                ]
             }
         ],
         padding: [15,15,0,5],
@@ -249,85 +261,73 @@ struct MountPage {
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '圆角山峰图' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller,
-                                onReady: () => {
-                                    this.controller.updateData(this.opts)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller,
+                            onReady: () => {
+                                this.controller.updateData(this.opts)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '三角山峰图' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller1,
-                                onReady: () => {
-                                    this.controller1.updateData(this.opts1)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller1,
+                            onReady: () => {
+                                this.controller1.updateData(this.opts1)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '正负山峰图无边渐变色' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller2,
-                                onReady: () => {
-                                    this.controller2.updateData(this.opts2)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller2,
+                            onReady: () => {
+                                this.controller2.updateData(this.opts2)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '山峰图有边透明渐变+滚动条' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller3,
-                                onReady: () => {
-                                    this.controller3.updateData(this.opts3)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller3,
+                            onReady: () => {
+                                this.controller3.updateData(this.opts3)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '山峰图有边渐变+标记线' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller4,
-                                onReady: () => {
-                                    this.controller4.updateData(this.opts4)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller4,
+                            onReady: () => {
+                                this.controller4.updateData(this.opts4)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '山峰图圆角渐变色柱状图' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller5,
-                                onReady: () => {
-                                    this.controller5.updateData(this.opts5)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller5,
+                            onReady: () => {
+                                this.controller5.updateData(this.opts5)
+                            }
+                        })
                     }
                 }
 

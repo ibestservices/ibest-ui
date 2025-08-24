@@ -1,6 +1,6 @@
 # 版本记录
 
-## 2.1.5
+## 2.1.6
 #### 新增:
 1. 新增 IBestAvatar 头像组件;
 2. 新增 IBestAvatarGroup 头像组组件;

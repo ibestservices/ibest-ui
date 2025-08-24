@@ -283,38 +283,31 @@ export struct IBestField {
 	/**
 	 * value变化回调函数
 	 */
-	onChange: (value: IBestFieldValueType) => void = () => {
-	}
+	onChange: (value: IBestFieldValueType) => void = () => {}
 	/**
 	 * 点击清除按钮时触发
 	 */
-	onClear: () => void = () => {
-	}
+	onClear: () => void = () => {}
 	/**
 	 * 点击组件触发
 	 */
-	onFieldClick: () => void = () => {
-	}
+	onFieldClick: () => void = () => {}
 	/**
 	 * 输入框获得焦点时触发
 	 */
-	onFieldFocus: () => void = () => {
-	}
+	onFieldFocus: () => void = () => {}
 	/**
 	 * 输入框失去焦点时触发
 	 */
-	onFieldBlur: () => void = () => {
-	}
+	onFieldBlur: () => void = () => {}
 	/**
 	 * 左侧图标点击时触发
 	 */
-	onLeftIconClick: () => void = () => {
-	}
+	onLeftIconClick: () => void = () => {}
 	/**
 	 * 右侧图标点击时触发
 	 */
-	onRightIconClick: () => void = () => {
-	}
+	onRightIconClick: () => void = () => {}
 	@Builder fieldLabelAsterisk() {
 		Text("*")
 			.margin({

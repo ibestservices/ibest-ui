@@ -266,82 +266,70 @@ struct ColumnPage {
                                 this.getChartData()
                             }
                         })
-                        Column() {
-                            UCharts({
-                                controller: this.controller
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '堆叠柱状图' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller1,
-                                onReady: () => {
-                                    this.controller1.updateData(this.opts1)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller1,
+                            onReady: () => {
+                                this.controller1.updateData(this.opts1)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '圆角+渐变+半透明柱状图' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller2,
-                                onReady: () => {
-                                    this.controller2.updateData(this.opts2)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller2,
+                            onReady: () => {
+                                this.controller2.updateData(this.opts2)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '正负柱状图' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller3,
-                                onReady: () => {
-                                    this.controller3.updateData(this.opts3)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller3,
+                            onReady: () => {
+                                this.controller3.updateData(this.opts3)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '柱状图滚动条' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller4,
-                                onReady: () => {
-                                    this.controller4.updateData(this.opts4)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller4,
+                            onReady: () => {
+                                this.controller4.updateData(this.opts4)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '全圆角柱状图+标记线' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller5,
-                                onReady: () => {
-                                    this.controller5.updateData(this.opts5)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller5,
+                            onReady: () => {
+                                this.controller5.updateData(this.opts5)
+                            }
+                        })
                     }
                 }
 

@@ -1,0 +1,2 @@
+-keep-file-name **/resources/*
+-keep-resource-id *
