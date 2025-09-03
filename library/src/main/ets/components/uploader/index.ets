@@ -51,7 +51,7 @@ export struct IBestUploader {
 	 */
 	@Prop uploaderIconColor: ResourceColor = IBestUploaderColor.uploaderIconColor
 	/**
-	 * 最大上传数量, 优先级大于imageSelectOption/fileSelectOption的maxSelectNumber
+	 * 最大上传数量，超过max时不显示触发器
 	 */
 	@Prop max: number = -1
 	/**
@@ -180,7 +180,7 @@ export struct IBestUploader {
 				status: "ready",
 				name: fileName,
 				size: stat.size,
-				isImage: this.selectType == "image" || isImageUrl(e)
+				isImage: isImageUrl(e)
 			})
 			if(this.onBeforeInsert(obj)){
 				arr.push(obj)

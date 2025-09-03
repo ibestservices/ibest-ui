@@ -14,5 +14,5 @@ LineHeightData {
 	scrollBarColor: string,
 	animationDuration: number
 }
-export type IbestUIBaseStyleValue = ResourceColor | EdgeEffect
-export type IBestUIBaseStyleObjType = Record<keyof IBestUIBaseStyleType, IbestUIBaseStyleValue>
+export type IBestUIBaseStyleValue = ResourceColor | EdgeEffect
+export type IBestUIBaseStyleObjType = Record<keyof IBestUIBaseStyleType, IBestUIBaseStyleValue>

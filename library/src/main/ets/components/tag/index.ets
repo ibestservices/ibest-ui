@@ -1,13 +1,13 @@
-import { getDefaultBaseStyle } from '../../theme-chalk/src';
-import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type';
-import { GRAY_COLOR } from '../../theme-chalk/src/color';
-import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { SIZE } from '../../theme-chalk/src/size.type';
-import { TagSizeData } from './index.type';
-import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
-import { IBestTagColor } from './color';
-import { IBestIcon } from '../icon';
-import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type';
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
+import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
+import { GRAY_COLOR } from '../../theme-chalk/src/color'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { SIZE } from '../../theme-chalk/src/size.type'
+import { TagSizeData } from './index.type'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
+import { IBestTagColor } from './color'
+import { IBestIcon } from '../icon'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 
 @Extend(Row) function ibestTagSizeStyle(data: TagSizeData) {
 	.padding({
@@ -24,24 +24,24 @@ export struct IBestTag {
 	/**
 	 * 全局公共样式
 	 */
-	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 类型，可选值为 primary success warning danger 默认值为default
 	 */
-	@Prop type: ColorType = COLOR_TYPE.DEFAULT;
+	@Prop type: ColorType = COLOR_TYPE.DEFAULT
 	/**
 	 * 大小，可选值为 large normal small mini
 	 * size是保留字所以没使用size
 	 */
-	@Prop tagSize: `${SIZE.LARGE}` | `medium` | `${SIZE.SMALL}` = SIZE.SMALL;
+	@Prop tagSize: `${SIZE.LARGE}` | `medium` | `${SIZE.SMALL}` = SIZE.SMALL
 	/**
 	 * 标签内容
 	 */
-	@Prop text: ResourceStr = '';
+	@Prop text: ResourceStr = ''
 	/**
 	 * 标签颜色
 	 */
-	@Prop color: ResourceColor = '';
+	@Prop color: ResourceColor = ''
 	/**
 	 * 文本颜色，优先级高于 color 属性
 	 */
@@ -49,23 +49,23 @@ export struct IBestTag {
 	/**
 	 * 是否为空心样式
 	 */
-	@Prop plain: boolean = false;
+	@Prop plain: boolean = false
 	/**
 	 * 是否为圆角样式
 	 */
-	@Prop round: boolean = false;
+	@Prop round: boolean = false
 	/**
 	 * 是否为标记样式
 	 */
-	@Prop mark: boolean = false;
+	@Prop mark: boolean = false
 	/**
 	 * 是否为可关闭标签 关闭标签时会触发 close 事件，在 close 事件中可以执行隐藏标签的逻辑
 	 */
-	@Prop closeable: boolean = false;
+	@Prop closeable: boolean = false
 	/**
 	 * 是否展示标签
 	 */
-	@Prop show: boolean = true;
+	@Prop show: boolean = true
 	/**
 	 * 点击关闭按钮触发的回调
 	 */
@@ -97,17 +97,17 @@ export struct IBestTag {
 	}
 	// 根据size获取tag的尺寸
 	getTagSize() {
-		const tagSize = this.tagSize;
+		const tagSize = this.tagSize
 		switch (tagSize) {
 			case 'medium':
 				return new TagSizeData(convertDimensionsWidthUnit(6), convertDimensionsWidthUnit(20),
-					this.baseStyle.fontSizeSm, this.getBorderRadius(convertDimensionsWidthUnit(2)));
+					this.baseStyle.fontSizeSm as string, this.getBorderRadius(convertDimensionsWidthUnit(2)))
 			case SIZE.LARGE:
-				return new TagSizeData(this.baseStyle.spaceXs, convertDimensionsWidthUnit(24),
-					this.baseStyle.fontSizeMd, this.getBorderRadius(convertDimensionsWidthUnit(4)));
+				return new TagSizeData(this.baseStyle.spaceXs as string, convertDimensionsWidthUnit(24),
+					this.baseStyle.fontSizeMd as string, this.getBorderRadius(convertDimensionsWidthUnit(4)))
 			default:
-				return new TagSizeData(this.baseStyle.spaceBase, convertDimensionsWidthUnit(17),
-					this.baseStyle.fontSizeSm, this.getBorderRadius(convertDimensionsWidthUnit(2)));
+				return new TagSizeData(this.baseStyle.spaceBase as string, convertDimensionsWidthUnit(17),
+					this.baseStyle.fontSizeSm as string, this.getBorderRadius(convertDimensionsWidthUnit(2)))
 		}
 	}
 	// 获取边框radius

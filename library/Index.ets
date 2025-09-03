@@ -55,6 +55,7 @@ export { IBestCascader, IBestCascaderContent } from './src/main/ets/components/c
 export { IBestCascaderOption } from './src/main/ets/components/cascader/index.type'
 
 export { IBestCheckbox } from './src/main/ets/components/checkbox/index'
+export { IBestCheckboxBuilderParams } from './src/main/ets/components/checkbox/index.type'
 export { IBestCheckboxGroup } from './src/main/ets/components/checkboxGroup/index'
 export { IBestCheckboxGroupController } from './src/main/ets/components/checkboxGroup/index.type'
 

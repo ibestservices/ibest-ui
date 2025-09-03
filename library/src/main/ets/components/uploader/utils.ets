@@ -10,7 +10,7 @@ export const isImageUrl = (url: string): boolean => IMAGE_REGEXP.test(url)
 // 是否是图片
 export function isImageFile(item: IBestUploaderFile): boolean {
     if (item.isImage) {
-        return true;
+        return true
     }
     if (item.url) {
         return isImageUrl(item.url)

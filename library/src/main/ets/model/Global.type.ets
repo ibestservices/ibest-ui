@@ -35,6 +35,10 @@ export interface IBestSize{
  */
 export type IBestShape = "square" | "circle"
 /**
+ * 分割线尺寸类型
+ */
+export type IBestBorderSizeType = "full" | "center" | "right"
+/**
  * 组件信息类型
  */
 export interface ComInfoType {

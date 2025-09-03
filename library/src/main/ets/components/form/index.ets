@@ -82,20 +82,17 @@ export struct IBestForm {
 		this.controller.resetValidation = (name?: string | string[]): void => this.resetValidation(name)
 		this.controller.getValues = (): Promise<Record<string, IBestFieldValueType>> => this.getValues()
 		this.controller.getFormValues = (): Record<string, IBestFieldValueType> => this.getFormValues()
-		if(this.formId){
-			// 初始化收集表单项信息
-			emitter.on(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.SEND_FIELD, this.formId), this.uniId, (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void): void => this.init(data, callBack))
-			// 验证单个表单
-			emitter.on(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.VALIDATE_FIELD, this.formId), this.uniId, (name: string): Promise<IBestFieldValidateResult> => this.validateField(name))
-			// 删除表单项
-			emitter.on(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.DELETE_FORM_ITEM, this.formId), this.uniId, (uniId: number): void => this.deleteField(uniId))
-		}
+		this.controller.setFormValues = (values: Record<string, IBestFieldValueType>): void => this.setFormValues(values)
+		// 初始化收集表单项信息
+		emitter.on(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.SEND_FIELD, this.formId), this.uniId, (data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void): void => this.init(data, callBack))
+		// 验证单个表单
+		emitter.on(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.VALIDATE_FIELD, this.formId), this.uniId, (name: string): Promise<IBestFieldValidateResult> => this.validateField(name))
+		// 删除表单项
+		emitter.on(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.DELETE_FORM_ITEM, this.formId), this.uniId, (uniId: number): void => this.deleteField(uniId))
 	}
 	aboutToDisappear(): void {
-		if(this.formId){
-			emitter.off(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.SEND_FIELD, this.formId), this.uniId)
-			emitter.off(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.VALIDATE_FIELD, this.formId), this.uniId)
-		}
+		emitter.off(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.SEND_FIELD, this.formId), this.uniId)
+		emitter.off(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.VALIDATE_FIELD, this.formId), this.uniId)
 	}
 	// 初始化
 	init(data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void){
@@ -180,6 +177,15 @@ export struct IBestForm {
 			result[item.prop] = item.getValue()
 		})
 		return result
+	}
+	// 设置表单值
+	setFormValues(values: Record<string, IBestFieldValueType>){
+		let keys = Object.keys(values)
+		this.formItems.forEach((item: IBestFieldItem) => {
+			if(keys.includes(item.prop)){
+				item.setValue(values[item.prop])
+			}
+		})
 	}
 	build() {
 		Column({ space: getSizeByUnit(this.space) }){

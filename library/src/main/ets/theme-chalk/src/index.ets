@@ -47,14 +47,14 @@ export function getDefaultBaseStyle(): IBestUIBaseStyleObjType {
 		scrollBarColor: '#dbdfe6',
 		animationDuration: 200
 	}
-	return data;
+	return data
 }
 /**
  * 设置全局样式
  * @param styleData
  */
 export function setIBestUIBaseStyle(styleData?: Partial<IBestUIBaseStyleType>) {
-	const newStyleData = getDefaultBaseStyle();
+	const newStyleData = getDefaultBaseStyle()
 	if (typeof styleData === 'object' && styleData !== null) {
 		Object.keys(styleData).forEach(item => {
 			if (newStyleData[item]) {

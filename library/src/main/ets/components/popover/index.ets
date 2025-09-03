@@ -1,10 +1,10 @@
-import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
+import { IBestBorderSizeType, IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { IBestIcon } from '../icon'
 import { IBestPopoverColor } from './color'
-import { BorderSizeType, IBestPopoverAction, IBestPopoverController, IBestPopoverMask } from './index.type'
+import { IBestPopoverAction, IBestPopoverController, IBestPopoverMask } from './index.type'
 
 @Component
 export struct IBestPopover{
@@ -92,7 +92,7 @@ export struct IBestPopover{
      * 底部分割线尺寸类型
      * @since 2.0.5
      */
-    @Provide borderSizeType: BorderSizeType = "center"
+    @Provide borderSizeType: IBestBorderSizeType = "center"
     /**
      * 固定高度
      * @since 2.0.6
@@ -204,7 +204,7 @@ struct PopoverContent{
     @Consume iconSize: IBestStringNumber
     @Consume iconColor: ResourceColor
     @Consume bgColor: ResourceColor
-    @Consume borderSizeType: BorderSizeType
+    @Consume borderSizeType: IBestBorderSizeType
     @Consume dividerColor: ResourceColor
     @Consume scrollBarState: BarState
     @Link isShow: boolean
