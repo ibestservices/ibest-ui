@@ -827,6 +827,8 @@ export struct IBestField {
 	getInputType(): InputType {
 		switch (this.type) {
 			case "password":
+				return InputType.Password
+			case "new-password":
 				return InputType.NEW_PASSWORD
 			case "email":
 				return InputType.Email

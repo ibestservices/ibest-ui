@@ -3,7 +3,7 @@
 ## 2.1.7
 #### 新增：
 1. IBestCheckBox value值新增 string number 类型，新增 trueValue falseValue 属性;
-2. IBestField 新增 inputFontColor borderSizeType borderLeft fieldPadding bdColor prefixIcon prefixSize suffixIcon suffixSize showValue 属性;
+2. IBestField 新增 inputFontColor borderSizeType borderLeft fieldPadding bdColor prefixIcon prefixSize suffixIcon suffixSize showValue 属性, type 新增 new-password 类型;
 3. IBestForm 新增 setFormValues 方法.
 
 #### 优化：

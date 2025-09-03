@@ -19,7 +19,7 @@ export type RequireAsteriskPositionType = '' | 'left' | 'right'
 /**
  * 输入框类型
  */
-export type IBestFieldType = 'normal' | 'password' | 'email' | 'number' | 'phone' | 'username' | 'number-password' | 'decimal'
+export type IBestFieldType = 'normal' | 'password' | 'new-password' | 'email' | 'number' | 'phone' | 'username' | 'number-password' | 'decimal'
 /**
  * 清除图标显示时机
  */
