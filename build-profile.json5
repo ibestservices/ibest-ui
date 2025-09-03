@@ -48,11 +48,11 @@
 				"compatibleSdkVersion": "5.0.5(17)",
 				"runtimeOS": "HarmonyOS",
 				"targetSdkVersion": "5.1.1(19)",
-				"buildOption": {
-					"strictMode": {
-						"useNormalizedOHMUrl": true
-					}
-				}
+//				"buildOption": {
+//					"strictMode": {
+//						"useNormalizedOHMUrl": true
+//					}
+//				}
 			}
 		],
 		"buildModeSet": [

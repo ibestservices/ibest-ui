@@ -277,7 +277,7 @@
 			"value": "$color:ibest_gray_4"
 		},
 		{
-			"name": "ibest_file_background",
+			"name": "ibest_uploader_file_background",
 			"value": "$color:ibest_background"
 		},
 		{
@@ -393,7 +393,7 @@
 			"value": "$color:ibest_background_2"
 		},
 		{
-			"name": "ibest_sub_title_text_color",
+			"name": "ibest_navbar_sub_title_text_color",
 			"value": "$color:ibest_text_color_2"
 		},
 		{
@@ -475,14 +475,6 @@
 		{
 			"name": "ibest_table_footer_background",
 			"value": "$color:ibest_gray_2"
-		},
-		{
-			"name": "ibest_skeleton_bg_color",
-			"value": "#f0f2f5"
-		},
-		{
-			"name": "ibest_skeleton_bg_color_darker",
-			"value": "#e6e8eb"
 		},
 		{
 			"name": "ibest_step_background_color",

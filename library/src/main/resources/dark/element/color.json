@@ -65,14 +65,6 @@
 			"value": "#262727"
 		},
 		{
-			"name": "ibest_skeleton_bg_color",
-			"value": "#303030"
-		},
-		{
-			"name": "ibest_skeleton_bg_color_darker",
-			"value": "#424243"
-		},
-		{
 			"name": "ibest_car_keyboard_background",
 			"value": "$color:ibest_gray_8"
 		},

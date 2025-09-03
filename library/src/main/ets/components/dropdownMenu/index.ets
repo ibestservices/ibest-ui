@@ -312,7 +312,6 @@ struct IBestDropdownMenuContent{
     @Prop groupId: IBestStringNumber
     @Prop maxHeight: number
     @Prop option: IBestDropdownMenuContentParams
-    @Consume bgColor: ResourceColor
     @Consume activeColor: ResourceColor
     @Consume dropDownFontSize: IBestStringNumber
     @Consume selectedIcon: ResourceStr
