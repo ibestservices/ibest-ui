@@ -14,10 +14,6 @@ import {
 @Component
 export struct IBestCalendarDialog {
     /**
-     * 已选日期
-     */
-    @State selectedDate: IBestCalendarConfirmResult[] = []
-    /**
      * 底部偏移
      */
     @Prop offsetY: number = 0
@@ -127,6 +123,9 @@ export struct IBestCalendarDialog {
      * 选择回调
      */
     onConfirm: (value: IBestCalendarConfirmResult[]) => void = () => {}
+
+    // 已选日期
+    @State selectedDate: IBestCalendarConfirmResult[] = []
 
     @Builder baseBuilder() {
         IBestCalendar({

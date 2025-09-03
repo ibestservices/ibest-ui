@@ -51,7 +51,7 @@ export struct IBestUploader {
 	 */
 	@Prop uploaderIconColor: ResourceColor = IBestUploaderColor.uploaderIconColor
 	/**
-	 * 最大上传数量, 优先级大于imageSelectOption/fileSelectOption的maxSelectNumber
+	 * 最大上传数量，超过max时不显示触发器
 	 */
 	@Prop max: number = -1
 	/**
@@ -142,11 +142,6 @@ export struct IBestUploader {
 	// 选择文件
 	selectFile(){
 		const docPicker = new picker.DocumentViewPicker(this.context)
-		if(this.max > -1){
-			this.fileSelectOption.maxSelectNumber = this.max
-		}else if(this.fileSelectOption.maxSelectNumber) {
-			this.max = this.fileSelectOption.maxSelectNumber
-		}
 		docPicker.select(this.fileSelectOption).then(result => {
 			this.onFileSelect(result)
 		})
@@ -154,11 +149,6 @@ export struct IBestUploader {
 	// 选择图片
 	selectImg(){
 		let photoPicker = new photoAccessHelper.PhotoViewPicker()
-		if(this.max > -1){
-			this.imageSelectOption.maxSelectNumber = this.max
-		}else if(this.imageSelectOption.maxSelectNumber) {
-			this.max = this.imageSelectOption.maxSelectNumber
-		}
 		photoPicker.select(this.imageSelectOption).then((result: photoAccessHelper.PhotoSelectResult) => {
 			this.onFileSelect(result.photoUris)
 		})
@@ -190,7 +180,7 @@ export struct IBestUploader {
 				status: "ready",
 				name: fileName,
 				size: stat.size,
-				isImage: this.selectType == "image" || isImageUrl(e)
+				isImage: isImageUrl(e)
 			})
 			if(this.onBeforeInsert(obj)){
 				arr.push(obj)

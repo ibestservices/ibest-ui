@@ -144,11 +144,13 @@ ohos.permission.INTERNET
 
 ## 官方生态
 
-| 项目                         | 描述                                                               |                                                                                                       |
-|:---------------------------|:-----------------------------------------------------------------|:------------------------------------------------------------------------------------------------------|
-| @ibestservices/ibest-ui-v2 | 一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库，基于状态管理v2版本。            | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2" target="_blank">地址</a> |
-| @ibestservices/ucharts     | 一个类型丰富、高性能、可扩展、支持主题定制的图表库。                                       | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fucharts" target="_blank">地址</a>     |
-| @ibestservices/area-data   | 中国省市区数据，适用于鸿蒙 ArkUI 的 TextPicker 和 IBest-UI 的 IBestCascader 等组件。 | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Farea-data" target="_blank">地址</a>   |
+| 项目                           | 描述                                                                                         |                                                                                                         |
+|:-----------------------------|:-------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------|
+| @ibestservices/ibest-ui-v2   | 一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库，基于状态管理v2版本。                                          | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2" target="_blank">地址</a>   |
+| @ibestservices/ucharts       | 一个类型丰富、高性能、可扩展、支持主题定制的图表库。                                                                 | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fucharts" target="_blank">地址</a>       |
+| @ibestservices/area-data     | 中国省市区数据，适用于鸿蒙 ArkUI 的 TextPicker 和 IBest-UI 的 IBestCascader 等组件。                           | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Farea-data" target="_blank">地址</a>     |
+| @ibestservices/ibest-orm     | 一个轻量、简单易用、全功能、支持实体关联、事务、自动迁移的鸿蒙开源 ORM 工具库。                                                 | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-orm" target="_blank">地址</a>     |
+| @ibestservices/ibest-barcode | 一个轻量、简单易用的鸿蒙开源条形码组件, 支持CODE39、CODE93、CODE128、、EAN13、UPC、ITF、MSI、Pharmacode、Codabar等多种条码类型。 | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-barcode" target="_blank">地址</a> |
 
 ## 链接
 - [Github](https://github.com/ibestservices/ibest-ui)
@@ -187,7 +189,7 @@ Non-Bundled Plugins:
 ```
 
 ## 开源协议
-本项目基于 Apache License 2.0，请自由地享受和参与开源。
+本项目基于 MIT 协议，请自由地享受和参与开源。
 
 ## 贡献者
 感谢以下同学对IBest-UI做的贡献:

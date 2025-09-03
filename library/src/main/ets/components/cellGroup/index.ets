@@ -1,9 +1,9 @@
-import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type';
-import { getDefaultBaseStyle } from '../../theme-chalk/src';
-import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
-import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
-import { IBestCellGroupColor } from './color';
+import { IBestStorageKey } from '../../model/Global.type'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
+import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
+import { IBestCellGroupColor } from './color'
 @Component
 export struct IBestCellGroup {
 	/**
@@ -13,15 +13,15 @@ export struct IBestCellGroup {
 	/**
 	 * 分组标题
 	 */
-	@Prop title: ResourceStr = '';
+	@Prop title: ResourceStr = ''
 	/**
 	 * 是否展示为圆角卡片风格
 	 */
-	@Prop inset: boolean = false;
+	@Prop inset: boolean = false
 	/**
 	 * 是否显示外边框
 	 */
-	@Prop hasBorder: boolean = true;
+	@Prop hasBorder: boolean = true
 	/**
 	 * 圆角大小, 仅inset为true时有效
 	 * @since 2.0.6
@@ -66,7 +66,13 @@ export struct IBestCellGroup {
 					.fontColor(IBestCellGroupColor.textColor)
 			}
 			if (this.defaultBuilder) {
-				this.defaultBuilder()
+				Column(){
+					this.defaultBuilder()
+				}
+				.width(CONTAINER_SIZE.FULL)
+				.alignItems(HorizontalAlign.Start)
+				.borderRadius(this.inset ? getSizeByUnit(this.radius) : 0)
+				.clip(true)
 			}
 		}
 		.border({
@@ -74,7 +80,5 @@ export struct IBestCellGroup {
 			color: IBestCellGroupColor.borderColor
 		})
 		.margin(this.getMargin())
-		.borderRadius(this.inset ? getSizeByUnit(this.radius) : 0)
-		.clip(true)
 	}
 }

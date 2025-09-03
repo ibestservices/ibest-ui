@@ -20,10 +20,10 @@ import type {
 } from './index.type'
 import { emitter } from '../../utils/EventEmitter'
 import { runRuleValidator, runSyncRule } from './utils'
-import { clamp, convertDimensionsWidthUnit, getEventName, getResourceStr, getSizeByUnit } from '../../utils/utils'
+import { clamp, convertDimensionsWidthUnit, getComponentsInfo, getEventName, getResourceStr, getSizeByUnit } from '../../utils/utils'
 import { IBestFieldColor } from './color'
 import { IBestIcon } from '../icon'
-import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
+import { IBestBorderSizeType, IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestField {
@@ -217,6 +217,11 @@ export struct IBestField {
 	 */
 	@Prop inputFontWeight: IBestStringNumber | FontWeight = FontWeight.Normal
 	/**
+	 * 输入框文字颜色
+	 * @since 2.1.7
+     */
+	@Prop inputFontColor: ResourceColor = IBestFieldColor.inputColor
+	/**
 	 * 光标颜色
 	 * @since 2.0.5
 	 */
@@ -235,7 +240,7 @@ export struct IBestField {
 	 * 垂直方向对齐方式, 仅labelPosition为left时有效
 	 * @since 2.0.6
 	 */
-	@Prop verticalAlign: "top" | "center"
+	@Prop verticalAlign: "top" | "center" = "top"
 	/**
 	 * 外部圆角
 	 * @since 2.0.6
@@ -247,22 +252,72 @@ export struct IBestField {
 	 */
 	@Prop prefix: ResourceStr = ""
 	/**
+	 * 前缀图标, 优先级高于prefix
+	 * @since 2.1.7
+	 */
+	@Prop prefixIcon: ResourceStr = ""
+	/**
 	 * 前缀内容颜色
 	 * @since 2.0.7
 	 */
 	@Prop prefixFontColor: ResourceColor = IBestFieldColor.prefixFontColor
+	/**
+	 * 前缀内容大小
+	 * @since 2.1.7
+	 */
+	@Prop prefixSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
 	/**
 	 * 后缀内容
 	 * @since 2.0.7
 	 */
 	@Prop suffix: ResourceStr = ""
 	/**
+	 * 后缀图标, 优先级高于suffix
+	 * @since 2.1.7
+     */
+	@Prop suffixIcon: ResourceStr = ""
+	/**
 	 * 后缀内容颜色
 	 * @since 2.0.7
 	 */
 	@Prop suffixFontColor: ResourceColor = IBestFieldColor.suffixFontColor
 	/**
-	 * 右侧按钮builder
+	 * 后缀内容大小
+	 * @since 2.1.7
+	 */
+	@Prop suffixSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
+	/**
+	 * 底部边框线尺寸类型
+	 * @since 2.1.7
+	 */
+	@Provide borderSizeType: IBestBorderSizeType = "center"
+	/**
+	 * 底部边框线left值
+	 * @since 2.1.7
+	 */
+	@Prop borderLeft: Dimension
+	/**
+	 * 内边距
+	 * @since 2.1.7
+     */
+	@Prop fieldPadding: Length | Padding | LocalizedPadding = {
+		left: this.baseStyle.spaceMd,
+		right: this.baseStyle.spaceMd,
+		top: convertDimensionsWidthUnit(10),
+		bottom: convertDimensionsWidthUnit(10)
+	}
+	/**
+	 * 底部边框线颜色
+	 * @since 2.1.7
+	 */
+	@Prop bdColor: ResourceColor = IBestFieldColor.borderColor
+	/**
+	 * 右侧要显示的内容，当右侧需要显示的内容与value不同时可使用该属性，仅autosize为false且disabled | readOnly | isLink为true时生效
+	 * @since 2.1.7
+     */
+	@Prop showValue: ResourceStr = ''
+	/**
+	 * 右侧按钮插槽
 	 */
 	@BuilderParam buttonBuilder: CustomBuilder
 	/**
@@ -273,48 +328,44 @@ export struct IBestField {
 	 * 格式化函数
 	 */
 	formatter?: (value: string) => string
+	/**
+	 * value变化回调函数
+	 */
+	onChange: (value: IBestFieldValueType) => void = () => {}
+	/**
+	 * 点击清除按钮时触发
+	 */
+	onClear: () => void = () => {}
+	/**
+	 * 点击组件触发
+	 */
+	onFieldClick: () => void = () => {}
+	/**
+	 * 输入框获得焦点时触发
+	 */
+	onFieldFocus: () => void = () => {}
+	/**
+	 * 输入框失去焦点时触发
+	 */
+	onFieldBlur: () => void = () => {}
+	/**
+	 * 左侧图标点击时触发
+	 */
+	onLeftIconClick: () => void = () => {}
+	/**
+	 * 右侧图标点击时触发
+	 */
+	onRightIconClick: () => void = () => {}
+
 	@State uniId: number = 0
 	// 验证状态
 	@State status: 'passed' | 'failed' | 'unvalidated' = 'unvalidated'
 	// 验证信息
 	@State validateMessage: ResourceStr = ""
 	@State isFocus: boolean = false
+	@State borderRight: number = 0
 	private uiContext = this.getUIContext()
-	/**
-	 * value变化回调函数
-	 */
-	onChange: (value: IBestFieldValueType) => void = () => {
-	}
-	/**
-	 * 点击清除按钮时触发
-	 */
-	onClear: () => void = () => {
-	}
-	/**
-	 * 点击组件触发
-	 */
-	onFieldClick: () => void = () => {
-	}
-	/**
-	 * 输入框获得焦点时触发
-	 */
-	onFieldFocus: () => void = () => {
-	}
-	/**
-	 * 输入框失去焦点时触发
-	 */
-	onFieldBlur: () => void = () => {
-	}
-	/**
-	 * 左侧图标点击时触发
-	 */
-	onLeftIconClick: () => void = () => {
-	}
-	/**
-	 * 右侧图标点击时触发
-	 */
-	onRightIconClick: () => void = () => {
-	}
+
 	@Builder fieldLabelAsterisk() {
 		Text("*")
 			.margin({
@@ -360,6 +411,7 @@ export struct IBestField {
 			.alignItems(VerticalAlign.Center)
 			.justifyContent(this.labelAlign == "left" ? FlexAlign.Start :
 				this.labelAlign == "center" ? FlexAlign.Center : FlexAlign.End)
+			.id(`ibest_field_label_${this.uniId}`)
 		}
 	}
 	@Builder focusText() {
@@ -367,15 +419,28 @@ export struct IBestField {
 			.focusable(true)
 			.position({ left: 0, top: 0 })
 			.zIndex(-10)
-			.id(`ibest_field_${this.uniId}`)
+			.id(`ibest_field_focus_text_${this.uniId}`)
+	}
+	@Builder fieldDivider() {
+		Divider()
+			.width(this.borderSizeType == 'center' ? `calc(100% - ${this.borderLeft}vp - ${this.borderRight}vp)` : CONTAINER_SIZE.FULL)
+			.height(1)
+			.color(this.bdColor)
+			.position({ left: this.borderSizeType == "full" ? 0 : this.borderLeft, bottom: 0 })
 	}
 	@Builder fieldContent() {
 		Column() {
 			Row() {
 				// 前缀
-				if (this.prefix) {
+				if (this.prefixIcon) {
+					IBestIcon({
+						name: this.prefixIcon,
+						iconSize: this.prefixSize,
+						color: this.prefixFontColor
+					}).margin({ right: this.baseStyle.spaceBase })
+				} else if (this.prefix) {
 					Text(this.prefix)
-						.fontSize(getSizeByUnit(this.inputFontSize, true))
+						.fontSize(getSizeByUnit(this.prefixSize, true))
 						.fontColor(this.prefixFontColor)
 						.fontWeight(this.inputFontWeight)
 						.margin({ right: this.baseStyle.spaceBase })
@@ -388,7 +453,7 @@ export struct IBestField {
 							.ibestFieldInputStyle()
 							.caretColor(this.caretColor)
 							.fontSize(getSizeByUnit(this.inputFontSize, true))
-							.fontColor(IBestFieldColor.inputColor)
+							.fontColor(this.inputFontColor)
 							.fontWeight(this.inputFontWeight)
 							.placeholderFont({
 								size: getSizeByUnit(this.inputFontSize, true)
@@ -420,42 +485,54 @@ export struct IBestField {
 								}
 							})
 					} else {
-						TextInput({ text: $$this.value, placeholder: this.placeholder })
-							.ibestFieldInputStyle()
-							.caretColor(this.caretColor)
-							.fontSize(getSizeByUnit(this.inputFontSize, true))
-							.fontColor(IBestFieldColor.inputColor)
-							.fontWeight(this.inputFontWeight)
-							.placeholderFont({
-								size: getSizeByUnit(this.inputFontSize, true)
-							})
-							.placeholderColor(this.placeholderColor)
-							.showPasswordIcon(this.showPasswordIcon)
-							.height(this.baseStyle.lineHeightMd)
-							.lineHeight(this.baseStyle.lineHeightMd)
-							.textAlign(this.getInputAlign())
-							.maxLength(this.maxlength)
-							// .showCounter(this.showWordLimit, {
-							//     thresholdPercentage: 1,
-							//     highlightBorder: false
-							// })
-							.selectionMenuHidden(true)
-							.type(this.getInputType())
-							.onChange((value: string) => {
-								this.formatValue(value, "onchange")
-								this.onChange(this.value)
-							})
-							.onFocus(() => {
-								this.isFocus = true
-								this.onFieldFocus()
-							})
-							.onBlur(() => {
-								this.isFocus = false
-								this.onFieldBlur()
-								if (typeof this.value == "string") {
-									this.formatValue(this.value, "onblur")
-								}
-							})
+						Stack({alignContent: Alignment.Start}){
+							TextInput({ text: $$this.value, placeholder: this.placeholder })
+								.ibestFieldInputStyle()
+								.opacity((this.disabled || this.readOnly || this.isLink) && this.showValue ? 0 : 1)
+								.caretColor(this.caretColor)
+								.fontSize(getSizeByUnit(this.inputFontSize, true))
+								.fontColor(this.inputFontColor)
+								.fontWeight(this.inputFontWeight)
+								.placeholderFont({
+									size: getSizeByUnit(this.inputFontSize, true)
+								})
+								.placeholderColor(this.placeholderColor)
+								.showPasswordIcon(this.showPasswordIcon)
+								.height(this.baseStyle.lineHeightMd)
+								.lineHeight(this.baseStyle.lineHeightMd)
+								.textAlign(this.getInputAlign())
+								.maxLength(this.maxlength)
+								// .showCounter(this.showWordLimit, {
+								//     thresholdPercentage: 1,
+								//     highlightBorder: false
+								// })
+								.selectionMenuHidden(true)
+								.type(this.getInputType())
+								.onChange((value: string) => {
+									this.formatValue(value, "onchange")
+									this.onChange(this.value)
+								})
+								.onFocus(() => {
+									this.isFocus = true
+									this.onFieldFocus()
+								})
+								.onBlur(() => {
+									this.isFocus = false
+									this.onFieldBlur()
+									if (typeof this.value == "string") {
+										this.formatValue(this.value, "onblur")
+									}
+								})
+							if((this.disabled || this.readOnly || this.isLink) && this.showValue){
+								Text(this.showValue)
+									.width(CONTAINER_SIZE.FULL)
+									.fontSize(getSizeByUnit(this.inputFontSize, true))
+									.fontColor(this.inputFontColor)
+									.fontWeight(this.inputFontWeight)
+									.lineHeight(this.baseStyle.lineHeightMd)
+									.textAlign(this.getInputAlign())
+							}
+						}.layoutWeight(1)
 					}
 					// 清除图标
 					if (this.clearable && this.value && (this.clearTrigger == 'always' || this.isFocus)) {
@@ -464,7 +541,7 @@ export struct IBestField {
 							iconSize: this.rightIconSize
 						})
 							.onClick(() => {
-								this.value = ''
+								this.setValue('')
 								this.onClear()
 							})
 							.margin({ left: this.baseStyle.spaceBase })
@@ -486,9 +563,15 @@ export struct IBestField {
 					}).margin({ left: this.baseStyle.spaceBase })
 				}
 				// 后缀
-				if (this.suffix) {
+				if (this.suffixIcon) {
+					IBestIcon({
+						name: this.suffixIcon,
+						iconSize: this.suffixSize,
+						color: this.suffixFontColor
+					}).margin({ left: this.baseStyle.spaceBase })
+				} else if (this.suffix) {
 					Text(this.suffix)
-						.fontSize(getSizeByUnit(this.inputFontSize, true))
+						.fontSize(getSizeByUnit(this.suffixSize, true))
 						.fontColor(this.suffixFontColor)
 						.fontWeight(this.inputFontWeight)
 						.margin({ left: this.baseStyle.spaceBase })
@@ -525,10 +608,10 @@ export struct IBestField {
 		.width(this.labelPosition == "top" ? CONTAINER_SIZE.FULL : "auto")
 		.layoutWeight(this.labelPosition == "top" ? 0 : 1)
 		.alignItems(HorizontalAlign.Start)
+		.id(`ibest_field_content_${this.uniId}`)
 	}
 	@Styles ibestFieldStyle(){
 		.width(CONTAINER_SIZE.FULL)
-		.padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd })
 		.stateStyles({
 			normal: {
 				.backgroundColor(this.bgColor)
@@ -541,16 +624,13 @@ export struct IBestField {
 		.enabled(!this.disabled)
 		.opacity(this.disabled ? 0.6 : 1)
 		.clip(true)
+		.id(`ibest_field_${this.uniId}`)
 		.onClick(() => {
 			this.fieldClick()
 		})
 	}
 	@Styles ibestFieldContentStyle(){
-		.padding({ top: convertDimensionsWidthUnit(10), bottom: convertDimensionsWidthUnit(10) })
-		.border({
-			width: { bottom: this.hasBorder ? 1 : 0 },
-			color: IBestFieldColor.borderColor
-		})
+		.padding(getSizeByUnit(this.fieldPadding))
 	}
 	@Styles ibestFieldInputStyle(){
 		.layoutWeight(1)
@@ -572,6 +652,9 @@ export struct IBestField {
 		} else {
 			this.init()
 		}
+		setTimeout(() => {
+			this.initBorderSize()
+		}, 100)
 	}
 	aboutToDisappear(): void {
 		if (this.formId && this.prop) {
@@ -580,6 +663,15 @@ export struct IBestField {
 			emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.RESEND_FORM_ITEM, this.formId))
 		}
 	}
+	// 获取左右边距
+	initBorderSize(){
+		if(this.borderLeft === undefined){
+			this.borderLeft = getComponentsInfo(this.uiContext, `ibest_field_label_${this.uniId}`).localLeft
+		}
+		let fullWidth = getComponentsInfo(this.uiContext, `ibest_field_${this.uniId}`).width
+		let rightInfo = getComponentsInfo(this.uiContext, `ibest_field_content_${this.uniId}`)
+		this.borderRight = fullWidth - rightInfo.width - rightInfo.localLeft
+	}
 	rulesChange() {
 		this.required = this.rules?.length > 0 && this.rules.some((item: IBestFormRuleItem) => item.required)
 		if (!this.required) {
@@ -587,11 +679,11 @@ export struct IBestField {
 		}
 	}
 	initValue() {
-		if (typeof this.value == "number") {
-			this.value = this.value.toString()
+		if (typeof this.value == "number" && !this.customRightContent) {
+			this.setValue(this.value.toString())
 		}
 		if (this.value === undefined || this.value === null) {
-			this.value = ""
+			this.setValue("")
 		}
 	}
 	// 发送表单子项信息
@@ -601,7 +693,8 @@ export struct IBestField {
 			prop: this.prop,
 			validate: (rules: IBestFormRuleItem[]): Promise<void | FieldValidateResult> => this.validate(rules),
 			getValue: (): IBestFieldValueType => this.value,
-			resetValidation: (): void => this.resetValidation()
+			resetValidation: (): void => this.resetValidation(),
+			setValue: (value: IBestFieldValueType): void => this.setValue(value)
 		}, (result: IBestFormSendFieldCallResult): void => this.init(result))
 	}
 	// 初始化参数
@@ -609,8 +702,7 @@ export struct IBestField {
 		if (results) {
 			this.rules = this.rules || (results?.rules || [])
 		}
-		this.required =
-			this.required ?? (this.rules?.length > 0 && this.rules.some((item: IBestFormRuleItem) => item.required))
+		this.required = this.required ?? (this.rules?.length > 0 && this.rules.some((item: IBestFormRuleItem) => item.required))
 		this.labelWidth = this.labelWidth || results?.labelWidth || convertDimensionsWidthUnit(80)
 		this.labelPosition = this.labelPosition || results?.labelPosition || 'left'
 		this.labelAlign = this.labelAlign || results?.labelAlign || 'left'
@@ -687,7 +779,7 @@ export struct IBestField {
 	// 格式化值
 	formatValue(value: string, trigger: string) {
 		if (this.formatter && this.formatTrigger == trigger) {
-			this.value = this.formatter(value)
+			this.setValue(this.formatter(value))
 		}
 		if (this.type == "number" || this.type == "decimal") {
 			if (trigger == 'onblur' && value !== '' && (this.min > -1 || this.max > -1)) {
@@ -700,7 +792,7 @@ export struct IBestField {
 				if (index > -1) {
 					let decimal = value.substring(index + 1)
 					if (decimal.length > this.decimalLength) {
-						this.value = Number(value).toFixed(this.decimalLength)
+						this.setValue(Number(value).toFixed(this.decimalLength))
 					}
 				}
 			}
@@ -721,12 +813,7 @@ export struct IBestField {
 		}
 	}
 	getVerticalAlign() {
-		if (this.verticalAlign) {
-			return this.verticalAlign == 'top' ? VerticalAlign.Top : VerticalAlign.Center
-		} else {
-			return (this.showWordLimit || this.autosize || this.validateMessage) ? VerticalAlign.Top :
-			VerticalAlign.Center
-		}
+		return this.verticalAlign == 'top' ? VerticalAlign.Top : VerticalAlign.Center
 	}
 	getInputAlign() {
 		return this.inputAlign == 'center' ? TextAlign.Center :
@@ -776,8 +863,12 @@ export struct IBestField {
 	fieldClick() {
 		this.onFieldClick()
 		if ((this.disabled || this.readOnly || this.isLink) && !this.customRightContent) {
-			this.uiContext.getFocusController().requestFocus(`ibest_field_${this.uniId}`)
+			this.uiContext.getFocusController().requestFocus(`ibest_field_focus_text_${this.uniId}`)
 		}
+	}
+	// 设置值
+	setValue(value: IBestFieldValueType) {
+		this.value = value
 	}
 	build() {
 		if (this.labelPosition == "left") {
@@ -789,6 +880,9 @@ export struct IBestField {
 				.alignItems(this.getVerticalAlign())
 				.ibestFieldContentStyle()
 				this.focusText()
+				if (this.hasBorder) {
+					this.fieldDivider()
+				}
 			}
 			.ibestFieldStyle()
 		} else {
@@ -800,6 +894,9 @@ export struct IBestField {
 				.alignItems(HorizontalAlign.Start)
 				.ibestFieldContentStyle()
 				this.focusText()
+				if (this.hasBorder) {
+					this.fieldDivider()
+				}
 			}
 			.alignItems(HorizontalAlign.Start)
 			.ibestFieldStyle()

@@ -330,99 +330,85 @@ struct LinePage {
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '基本折线图' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller,
-                                onReady: () => {
-                                    this.controller.updateData(this.opts)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller,
+                            onReady: () => {
+                                this.controller.updateData(this.opts)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '基本曲线图' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller1,
-                                onReady: () => {
-                                    this.controller1.updateData(this.opts1)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller1,
+                            onReady: () => {
+                                this.controller1.updateData(this.opts1)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '基本时序图' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller2,
-                                onReady: () => {
-                                    this.controller2.updateData(this.opts2)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller2,
+                            onReady: () => {
+                                this.controller2.updateData(this.opts2)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '折线图+断点续连connectNulls' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller3,
-                                onReady: () => {
-                                    this.controller3.updateData(this.opts3)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller3,
+                            onReady: () => {
+                                this.controller3.updateData(this.opts3)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '渐变色曲线图' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller4,
-                                onReady: () => {
-                                    this.controller4.updateData(this.opts4)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller4,
+                            onReady: () => {
+                                this.controller4.updateData(this.opts4)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '渐变色+阴影+水平动画' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller5,
-                                onReady: () => {
-                                    this.controller5.updateData(this.opts5)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller5,
+                            onReady: () => {
+                                this.controller5.updateData(this.opts5)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '折线图滚动条' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller6,
-                                onReady: () => {
-                                    this.controller6.updateData(this.opts6)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller6,
+                            onReady: () => {
+                                this.controller6.updateData(this.opts6)
+                            }
+                        })
                     }
                 }
 

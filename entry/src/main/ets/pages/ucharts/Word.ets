@@ -123,29 +123,25 @@ struct WordPage {
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '词云图水平排列' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller,
-                                onReady: () => {
-                                    this.controller.updateData(this.opts)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller,
+                            onReady: () => {
+                                this.controller.updateData(this.opts)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '词云图水平垂直混排' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller1,
-                                onReady: () => {
-                                    this.controller1.updateData(this.opts1)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller1,
+                            onReady: () => {
+                                this.controller1.updateData(this.opts1)
+                            }
+                        })
                     }
                 }
 

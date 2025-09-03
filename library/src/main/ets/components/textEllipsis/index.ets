@@ -106,9 +106,10 @@ export struct IBestTextEllipsis{
     }
     formatText(){
         setTimeout(() => {
+            let text = this.getTextString()
             this.textWidth = getComponentsInfo(this.uiContext, `ibest_text_ellipsis_${this.uniId}`).width
-            this.textHeight = this.measureText(this.getTextString())
-            this.maxLineHeight = this.measureText(this.getTextString(), this.rows)
+            this.textHeight = this.measureText(text)
+            this.maxLineHeight = this.measureText(text, this.rows)
             if(this.textHeight > this.maxLineHeight){
                 this.getTextByWidth()
             }else {
@@ -127,16 +128,16 @@ export struct IBestTextEllipsis{
         while (textHeight > this.maxLineHeight) {
             switch (this.omitPosition){
                 case "start":
-                    clipText = clipText.substring(1)
+                    clipText = this.deleteLastChar('start', clipText)
                     textHeight = this.measureText(omitText + clipText + (this.showAction ? expandText : ""))
                     break
                 case "middle":
-                    leftStr = leftStr.substring(0, leftStr.length - 1)
-                    rightStr = rightStr.substring(1)
+                    leftStr = this.deleteLastChar('end', leftStr)
+                    rightStr = this.deleteLastChar('start', rightStr)
                     textHeight = this.measureText(leftStr + omitText + rightStr + (this.showAction ? expandText : ""))
                     break
                 case "end":
-                    clipText = clipText.substring(0, clipText.length - 1)
+                    clipText = this.deleteLastChar('end', clipText)
                     textHeight = this.measureText(clipText + (this.textHeight > this.maxLineHeight ? omitText : "") + (this.showAction ? expandText : ""))
                     break
             }
@@ -151,6 +152,22 @@ export struct IBestTextEllipsis{
             lineHeight: getSizeByUnit(this.lineHeight),
             maxLines: rows
         }).height
+    }
+    // 判断最后一个字符是否是emoji字符
+    lastEmojiCharacter(lastChar: string): boolean {
+        return lastChar >= '\uD800' && lastChar <= '\uDBFF'
+    }
+    // 删除最后一个字符串
+    deleteLastChar(position: 'start' | 'end', text: string){
+        let lastChar = ''
+        switch (position){
+            case "start":
+                lastChar = text.slice(0, 2)
+                return this.lastEmojiCharacter(lastChar) ? text.slice(2) : text.slice(1)
+            case "end":
+                lastChar = text.slice(text.length - 2)
+                return this.lastEmojiCharacter(lastChar) ? text.slice(0, text.length-2) : text.slice(0, text.length-1)
+        }
     }
 
     build() {

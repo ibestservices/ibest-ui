@@ -45,7 +45,7 @@ export function getAppVersion(){
     return bundleManager.getBundleInfoForSelfSync(bundleManager.BundleFlag.GET_BUNDLE_INFO_DEFAULT).versionName
 }
 /**
- * pixelMap 转 buffer
+ * pixelMap 转 ArrayBuffer
  */
 export async function pixelMap2Buffer(pixelMap: PixelMap) {
     const imagePackerApi: image.ImagePacker = image.createImagePacker()

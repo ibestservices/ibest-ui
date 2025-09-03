@@ -132,57 +132,49 @@ struct PiePage {
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '基本饼状图' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller,
-                                onReady: () => {
-                                    this.controller.updateData(this.opts)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller,
+                            onReady: () => {
+                                this.controller.updateData(this.opts)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '带分割线+渐变色' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller1,
-                                onReady: () => {
-                                    this.controller1.updateData(this.opts1)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller1,
+                            onReady: () => {
+                                this.controller1.updateData(this.opts1)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '自定义标签内容' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller2,
-                                onReady: () => {
-                                    this.controller2.updateData(this.opts2)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller2,
+                            onReady: () => {
+                                this.controller2.updateData(this.opts2)
+                            }
+                        })
                     }
                 }
 
                 ListItem() {
                     ComponentShowContainer({ title: '自定义标签隐藏' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller3,
-                                onReady: () => {
-                                    this.controller3.updateData(this.opts3)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller3,
+                            onReady: () => {
+                                this.controller3.updateData(this.opts3)
+                            }
+                        })
                     }
                 }
 

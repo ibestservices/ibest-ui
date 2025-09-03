@@ -51,7 +51,7 @@ export struct IBestSectorProgress {
     /**
      * 底层背景色
      */
-    @Prop bgColor: ResourceColor = this.baseStyle.default
+    @Prop bgColor: ResourceColor = IBestSectorProgressColor.bgColor
     /**
      * 扇形背景颜色
      */

@@ -1,7 +1,9 @@
 interface IBestSectorProgressColorType {
+    bgColor: ResourceColor
     textColor: ResourceColor
 }
 
 export const IBestSectorProgressColor: IBestSectorProgressColorType = {
-    textColor: $r("app.color.ibest_circle_progress_text_color")
+    bgColor: $r("app.color.ibest_sector_progress_background"),
+    textColor: $r("app.color.ibest_sector_progress_text_color")
 }

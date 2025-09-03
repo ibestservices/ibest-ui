@@ -24,10 +24,11 @@ export struct IBestCheckbox {
 	 */
 	@Prop name: IBestStringNumber = ''
 	/**
-	 * 默认是否选中 非双向绑定
+	 * 默认是否选中, 非双向绑定, 仅单独使用时有效
 	 * 如果要更改数据请从onChange回调中获取最新的值
+	 * @since 2.1.7 开始支持 string number类型
 	 */
-	@Prop value: boolean = false
+	@Prop value: IBestStringNumber | boolean = false
 	/**
 	 * 形状
 	 */
@@ -76,29 +77,41 @@ export struct IBestCheckbox {
      */
 	@Prop bdColor: ResourceColor = IBestCheckboxColor.borderColor
 	/**
+	 * 选中时的值，仅单独使用时生效
+	 * @since 2.1.7
+     */
+	@Prop trueValue: IBestStringNumber = '1'
+	/**
+	 * 没有选中时的值，仅单独使用时生效
+	 * @since 2.1.7
+     */
+	@Prop falseValue: IBestStringNumber = '0'
+	/**
 	 * 自定义文本插槽
 	 */
-	@BuilderParam defaultBuilder: (data: IBestCheckboxBuilderParams) => void
+	@BuilderParam defaultBuilder: ($$: IBestCheckboxBuilderParams) => void
 	/**
 	 * 自定义图标插槽
 	 */
-	@BuilderParam iconBuilder: (data: IBestCheckboxBuilderParams) => void
+	@BuilderParam iconBuilder: ($$: IBestCheckboxBuilderParams) => void
 	/**
 	 * 改变的回调
 	 */
-	onChange: (checked: boolean) => void = () => {}
+	onChange: (checked: IBestStringNumber | boolean) => void = () => {}
 	/**
 	 * 改变前的回调
 	 * @since 2.0.8
 	 */
 	beforeChange?: (value: boolean) => IBestAwaitable
+
+	@State uniId: number = 0
+	@State localValue: boolean = false
 	// 受checkboxgroup的最大可选数量禁用的
 	@State checkboxGroupMaxDisabled: boolean = false
 	// 分组禁用
 	@State groupDisabled: boolean = false
 	// 是否展示不确定状态的按钮
 	@State isShowIndeterminateImg: boolean = false
-	@State uniId: number = 0
 	// 当不确定图标从显示变隐藏时 等待动画结束后再变
 	private isShowIndeterminateTimeId: number | null = null
 
@@ -106,7 +119,7 @@ export struct IBestCheckbox {
 		if(this.defaultBuilder || this.label) {
 			Row() {
 				if (this.defaultBuilder) {
-					this.defaultBuilder({ checked: this.value, disabled: this.getIsDisabled() })
+					this.defaultBuilder({ checked: this.getBooleanValue(), disabled: this.getIsDisabled() })
 				} else {
 					Text(this.label)
 						.fontColor(this.getLabelColor())
@@ -140,12 +153,25 @@ export struct IBestCheckbox {
 		clearTimeout(this.isShowIndeterminateTimeId)
 	}
 	init(actives: IBestStringNumber[], disabled: boolean) {
-		this.value = actives.includes(this.name)
+		this.localValue = actives.includes(this.name)
 		this.groupDisabled = disabled
+	}
+	getValue(){
+		if(this.group){
+			return this.localValue
+		}
+		return this.value
+	}
+	getBooleanValue(){
+		if(this.group){
+			return this.localValue
+		}
+		return typeof this.value === 'boolean' ? this.value : this.value === this.trueValue
 	}
 	// 是否展示背景色
 	isShowBackground() {
-		return this.value || this.indeterminate
+		let value = this.getValue()
+		return (typeof value === 'boolean' ? value : value === this.trueValue) || this.indeterminate
 	}
 	// 获取背景色
 	getBackgroundColor() {
@@ -175,9 +201,9 @@ export struct IBestCheckbox {
 	isLeftLabel() {
 		return this.labelPosition === 'left'
 	}
-	updateGroup() {
+	updateGroup(value: boolean) {
 		if (this.group) {
-			emitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.name, this.value)
+			emitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.name, value)
 		}
 	}
 	async handleBeforeClose(value: boolean) {
@@ -192,17 +218,19 @@ export struct IBestCheckbox {
 		return status
 	}
 	// 改变选中状态的回调
-	async handleCheckedChange(status = !this.value) {
+	async handleCheckedChange() {
 		if (this.getIsDisabled()) {
 			return
 		}
-		let state = await this.handleBeforeClose(status)
+		let value = this.getValue()
+		let booleanValue = typeof value == 'boolean' ? !value : value === this.trueValue ? value === this.falseValue : value === this.trueValue
+		let changedValue = typeof value == 'boolean' ? !value : value === this.trueValue ? this.falseValue : this.trueValue
+		let state = await this.handleBeforeClose(booleanValue)
 		if(!state){
 			return
 		}
-		this.value = status
-		this.onChange(this.value)
-		this.updateGroup()
+		this.onChange(changedValue)
+		this.updateGroup(booleanValue)
 	}
 	// 当选中的最大数量变化时 或者选中的数据变化时
 	handleMaxChange(data: IBestCheckboxMaxChangeParams) {
@@ -239,7 +267,7 @@ export struct IBestCheckbox {
 			}
 			Column() {
 				if (this.iconBuilder) {
-					this.iconBuilder({ checked: this.value, disabled: this.getIsDisabled() })
+					this.iconBuilder({ checked: this.getBooleanValue(), disabled: this.getIsDisabled() })
 				} else {
 					IBestIcon({
 						name: this.isShowIndeterminateImg ? "minus" : "success",

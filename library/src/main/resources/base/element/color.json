@@ -377,6 +377,14 @@
 			"value": "$color:ibest_gray_3"
 		},
 		{
+			"name": "ibest_sector_progress_background",
+			"value": "$color:ibest_gray_3"
+		},
+		{
+			"name": "ibest_sector_progress_text_color",
+			"value": "$color:ibest_gray_8"
+		},
+		{
 			"name": "ibest_water_mark_background",
 			"value": "$color:ibest_background_2"
 		},

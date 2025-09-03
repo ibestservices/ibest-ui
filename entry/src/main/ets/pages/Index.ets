@@ -637,7 +637,7 @@ struct Index {
 		this.checkUpdate()
 		this.getUiVersion()
 		// setTimeout(() => {
-		// 	RouterUtil.push("SectorProgress")
+		// 	RouterUtil.push("TextEllipsis")
 		// }, 100)
 	}
 	getTitleOpacity(){

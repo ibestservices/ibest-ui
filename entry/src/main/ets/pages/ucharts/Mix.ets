@@ -109,15 +109,13 @@ struct MixPage {
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: '多坐标系混合图' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller,
-                                onReady: () => {
-                                    this.controller.updateData(this.opts)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller,
+                            onReady: () => {
+                                this.controller.updateData(this.opts)
+                            }
+                        })
                     }
                 }
             }

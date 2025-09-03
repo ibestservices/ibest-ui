@@ -93,10 +93,10 @@ struct FormPage {
 	@State value5: boolean = false
 	@State value6: boolean = false
 	@State value7: string[] = []
-	@State value8: string = ""
+	@State value8: boolean = false
 	@State value9: number = 1
-	@State value10: string = ""
-	@State selectValue: string[] = []
+	@State value10: string[] = []
+	@State selectValue: string = ''
 	@State visible: boolean = false
 	@State value11: string = ''
 	@State visible1: boolean = false
@@ -193,7 +193,7 @@ struct FormPage {
 	]
 
 	private formId4: string = 'form4'
-	@State sex: string = ""
+	@State sex: string | number = ''
 	@State info1: string = ""
 	@State info2: string = ""
 	@State list: Subject[] = []
@@ -225,9 +225,8 @@ struct FormPage {
 		IBestCheckbox({
 			value: this.value6,
 			shape: "square",
-			name: "value6",
 			onChange: value => {
-				this.value6 = value
+				this.value6 = value as boolean
 			}
 		})
 	}
@@ -260,12 +259,12 @@ struct FormPage {
 			IBestRadio({
 				group: "group1",
 				label: "单选框1",
-				name: "1"
+				name: true
 			})
 			IBestRadio({
 				group: "group1",
 				label: "单选框2",
-				name: "2"
+				name: false
 			})
 		}
 	}
@@ -278,12 +277,12 @@ struct FormPage {
 			IBestRadio({
 				group: "group2",
 				label: "男",
-				name: "1"
+				name: 1
 			})
 			IBestRadio({
 				group: "group2",
 				label: "女",
-				name: "2"
+				name: 2
 			})
 		}
 	}
@@ -323,7 +322,7 @@ struct FormPage {
 									placeholder: "请输入姓名",
 									rules:[
 										{ required: true, message: '请输入姓名' },
-										{ min: 3, max: 10, message: '姓名长度在3-10个字符之间' }
+										{ min: 2, max: 10, message: '姓名长度在2-10个字符之间' }
 									]
 								})
 								IBestField({
@@ -474,7 +473,8 @@ struct FormPage {
 								IBestField({
 									formId: this.formId3,
 									prop: 'value10',
-									value: this.value10,
+									value: $value10,
+									showValue: this.selectValue,
 									label: "选择城市",
 									placeholder: "请选择城市",
 									isLink: true,
@@ -485,7 +485,7 @@ struct FormPage {
 								IBestField({
 									formId: this.formId3,
 									prop: 'value11',
-									value: this.value11,
+									value: $value11,
 									label: "日历",
 									placeholder: "请选择日期",
 									isLink: true,
@@ -502,6 +502,23 @@ struct FormPage {
 									customRightContent: (): void => this.uploadImg()
 								})
 							}
+							IBestButton({
+								text: "设置值",
+								type: 'primary',
+								buttonSize: 'large',
+								onBtnClick: () => {
+									this.controller3.setFormValues({
+										"value5": true,
+										"value6": true,
+										"value7": ['1'],
+										"value8": true,
+										"value9": 3,
+										"value10": ["320000","320500","320583"],
+										"value11": '2025-08-25'
+									})
+									this.selectValue = "江苏省,苏州市,昆山市"
+								}
+							})
 							IBestButton({
 								text: "提交",
 								type: 'primary',
@@ -530,10 +547,10 @@ struct FormPage {
 									prop: 'sex',
 									value: $sex,
 									label: "性别",
-									hasBorder: this.sex != '',
+									hasBorder: this.sex != 0,
 									customRightContent: (): void => this.radioContent1()
 								})
-								if(this.sex == '1'){
+								if(this.sex == 1){
 									IBestField({
 										formId: this.formId4,
 										prop: 'info1',
@@ -542,7 +559,7 @@ struct FormPage {
 										placeholder: "请输入男生信息",
 										hasBorder: false
 									})
-								}else if(this.sex == '2'){
+								}else if(this.sex == 2){
 									IBestField({
 										formId: this.formId4,
 										prop: 'info2',
@@ -592,9 +609,9 @@ struct FormPage {
 			IBestCascader({
 				visible: this.visible,
 				options: this.options,
-				value: $selectValue,
+				value: $value10,
 				onConfirm: value => {
-					this.value10 = value.map(item => item.text).join(',')
+					this.selectValue = value.map(item => item.text).join(',')
 				}
 			})
 			// 日历

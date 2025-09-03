@@ -151,15 +151,13 @@ struct CandlePage {
             List() {
                 ListItem() {
                     ComponentShowContainer({ title: 'K线图+双指缩放' }) {
-                        Column() {
-                            UCharts({
-                                controller: this.controller,
-                                onReady: () => {
-                                    this.controller.updateData(this.opts)
-                                }
-                            })
-                        }
-                        .height(CONTAINER_SIZE.CHART_HEIGHT)
+                        UCharts({
+                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                            controller: this.controller,
+                            onReady: () => {
+                                this.controller.updateData(this.opts)
+                            }
+                        })
                     }
                 }
             }

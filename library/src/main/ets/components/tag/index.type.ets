@@ -1,13 +1,13 @@
+import { IBestStringNumber } from '../../../../../Index'
 /**
  * 按钮尺寸对象数据
  */
-import { IbestUIBaseStyleValue } from '../../theme-chalk/src/index.type'
 export class TagSizeData {
-	padding: IbestUIBaseStyleValue
-	height: IbestUIBaseStyleValue
-	fontSize: IbestUIBaseStyleValue
+	padding: IBestStringNumber
+	height: IBestStringNumber
+	fontSize: IBestStringNumber
 	borderRadius: Length | BorderRadiuses | LocalizedBorderRadiuses
-	constructor(padding: IbestUIBaseStyleValue, height: IbestUIBaseStyleValue, fontSize: IbestUIBaseStyleValue,
+	constructor(padding: IBestStringNumber, height: IBestStringNumber, fontSize: IBestStringNumber,
 		borderRadius: BorderRadiuses | Length) {
 		this.padding = padding;
 		this.height = height;

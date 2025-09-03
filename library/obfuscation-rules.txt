@@ -22,3 +22,6 @@
 #-enable-toplevel-obfuscation
 #-enable-filename-obfuscation
 #-enable-export-obfuscation
+
+-keep-file-name **/resources/*
+-keep-resource-id *

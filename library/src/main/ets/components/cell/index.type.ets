@@ -1,4 +1,4 @@
-import { IBestStringNumber } from '../../../../../Index';
+import { IBestStringNumber } from '../../../../../Index'
 
 export enum ARROW_DIRECTION {
 	TOP = 'top',
@@ -6,7 +6,6 @@ export enum ARROW_DIRECTION {
 	BOTTOM = 'bottom',
 	LEFT = 'left'
 }
-export type BorderSizeType = "full" | "center" | "right"
 export class CellSizeData {
 	padding: IBestStringNumber
 	fontSize: IBestStringNumber
