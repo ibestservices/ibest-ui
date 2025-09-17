@@ -5,8 +5,7 @@
 1. IBestIcon 新增 fontName 属性,支持使用自定义图标;
 2. IBestCalendar 新增 value 属性, 支持双向绑定;
 3. IBestSearch 新增 outPadding 属性;
-4. IBestDropdownMenu 新增 dropDownIconSize 属性, IBestDropdownItem 新增 maxHeight beforeOpen 事件,  IBestDropdownMenuOption 
-   新增 iconPosition 属性;
+4. IBestDropdownMenu 新增 dropDownIconSize 属性, IBestDropdownItem 新增 maxHeight beforeOpen 事件, IBestDropdownMenuOption 新增 iconPosition 属性;
 5. IBestHighlight 新增 onKeywordClick 事件;
 6. IBestImageCropper 新增 enableRotate maxAngle 属性, IBestImageCropperController 新增 setScale setAngle reset 方法;
 7. IBestTabItemType 新增 iconPosition 属性.
