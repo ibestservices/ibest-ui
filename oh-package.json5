@@ -10,7 +10,7 @@
 		"@ibestservices/ibest-ui": "file:library",
 		"@ibestservices/area-data": "^0.0.6",
 		"@hview/dayjs": "^1.11.11",
-		"@ibestservices/ucharts": "^1.0.7"
+		"@ibestservices/ucharts": "^1.0.9"
 	},
 	"devDependencies": {
 		"@ohos/hypium": "1.0.11"
