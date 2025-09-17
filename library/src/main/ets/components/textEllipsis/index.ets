@@ -115,7 +115,7 @@ export struct IBestTextEllipsis{
             }else {
                 this.showText = this.getTextString()
             }
-        }, 0)
+        }, 20)
     }
     getTextByWidth(){
         let clipText = this.getTextString()

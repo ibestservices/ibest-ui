@@ -117,7 +117,7 @@ export struct IBestPopover{
      */
     @BuilderParam popoverContentBuilder: CustomBuilder
     /**
-     * 点击选项是触发
+     * 点击选项时触发
      */
     onSelect: (action: IBestPopoverAction, index: number) => void = () => {}
     /**

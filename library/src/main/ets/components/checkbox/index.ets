@@ -4,7 +4,7 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { CHECKBOX_GROUP_EVENT_NAME, COMPONENT_NAME } from '../checkboxGroup/index.type'
 import { IBestCheckboxBuilderParams, IBestCheckboxMaxChangeParams } from './index.type'
-import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getEventName, getSizeByUnit, handleBeforeFunction } from '../../utils/utils'
 import { IBestCheckboxColor } from './color'
 import { IBestIcon } from '../icon'
 import { IBestAwaitable, IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
@@ -206,17 +206,6 @@ export struct IBestCheckbox {
 			emitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.name, value)
 		}
 	}
-	async handleBeforeClose(value: boolean) {
-		let status = true
-		try {
-			if (this.beforeChange) {
-				status = await this.beforeChange(value)
-			}
-		} catch (e) {
-			status = false
-		}
-		return status
-	}
 	// 改变选中状态的回调
 	async handleCheckedChange() {
 		if (this.getIsDisabled()) {
@@ -225,7 +214,7 @@ export struct IBestCheckbox {
 		let value = this.getValue()
 		let booleanValue = typeof value == 'boolean' ? !value : value === this.trueValue ? value === this.falseValue : value === this.trueValue
 		let changedValue = typeof value == 'boolean' ? !value : value === this.trueValue ? this.falseValue : this.trueValue
-		let state = await this.handleBeforeClose(booleanValue)
+		let state = await handleBeforeFunction(this.beforeChange, booleanValue)
 		if(!state){
 			return
 		}

@@ -114,7 +114,8 @@ struct TabPage {
         new IBestTabItem({
             label: "标签一",
             name: "1",
-            icon: "https://ibestui.ibestservices.com/favicon.ico"
+            icon: "https://ibestui.ibestservices.com/favicon.ico",
+            iconPosition: "right"
         }),
         new IBestTabItem({
             label: "标签二",

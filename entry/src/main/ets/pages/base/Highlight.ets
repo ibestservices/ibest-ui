@@ -1,6 +1,6 @@
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import { IBestHighlight, IBestHighlightKeywords } from '@ibestservices/ibest-ui';
+import { IBestHighlight, IBestHighlightKeywords, IBestToast } from '@ibestservices/ibest-ui';
 import CustomNavBar from '../../components/CustomNavBar';
 
 @Builder
@@ -61,6 +61,17 @@ struct HighlightPage {
 						IBestHighlight({
 							sourceString: '慢慢来，不要急，生活给你出了难题，可也终有一天会给出答案。',
 							keywords: this.keywords
+						})
+					}
+				}
+				ListItem(){
+					ComponentShowContainer({ title: '高亮词点击事件' }) {
+						IBestHighlight({
+							sourceString: $r("app.string.app_desc"),
+							keywords: ['轻量', '深色模式', '鸿蒙'],
+							onKeywordClick: (keyword: string) => {
+								IBestToast.show(`当前点击的高亮词是：${keyword}`)
+							}
 						})
 					}
 				}

@@ -54,6 +54,15 @@ struct IconsPage {
 					}
 				}
 			}
+			ListItem() {
+				ComponentShowContainer({ title: "使用自定义图标" }) {
+					Row({ space: SPACE.SM }) {
+						IBestIcon({ fontName: "testFont", name: "\ue953" })
+						IBestIcon({ fontName: "testFont", name: "\ue963" })
+						IBestIcon({ fontName: "testFont", name: "\ue973" })
+					}
+				}
+			}
 		}
 		.layoutWeight(1)
 		.padding({
@@ -62,23 +71,6 @@ struct IconsPage {
 		})
 		.backgroundColor(modeColor.bg2)
 		.borderRadius(SPACE.SM)
-	}
-	copyText(text: string) {
-		// const pasteboardData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, text);
-		// const systemPasteboard = pasteboard.getSystemPasteboard();
-		// systemPasteboard.setData(pasteboardData); // 将数据放入剪切板
-		// systemPasteboard.getData().then((data) => {
-		//   if (data) {
-		//     // promptAction.showToast({ message: '复制成功' });
-		//     IBestNotify.show({
-		//       message: `已复制到剪切板`,
-		//       color: Color.White,
-		//       backgroundColor: '#58be6a'
-		//     })
-		//   } else {
-		//     promptAction.showToast({ message: '复制失败' });
-		//   }
-		// })
 	}
 	@Builder iconShowList(list: string[]) {
 		Grid() {
@@ -104,9 +96,6 @@ struct IconsPage {
 						}
 					})
 				}
-				.onClick(() => {
-					this.copyText(item)
-				})
 			})
 		}
 		.columnsTemplate("1fr 1fr 1fr 1fr")

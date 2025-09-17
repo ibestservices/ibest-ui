@@ -63,7 +63,7 @@ export struct IBestColorPicker{
 	/**
 	 * 预定颜色
      */
-	@Prop predefineColors: string[] = []
+	@Prop @Watch("getFormatPredefineColor") predefineColors: string[] = []
 	/**
 	 * 预定颜色块宽度
 	 */
@@ -88,30 +88,32 @@ export struct IBestColorPicker{
 	@State alphaSliderX: number = 0
 	@State alphaSliderPositionX: number = 0
 	@State hsva: IBestHsva = {} as IBestHsva
-	@State isLock: boolean = false
 	@State formatPredefineColor: IBestFormatPredefineColor[] = []
 	private uiContext = this.getUIContext()
+	private flag: boolean = false
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
-		setTimeout(() => {
-			let panelInfo = getComponentsInfo(this.uiContext, `ibest_colorpicker_panel_${this.uniId}`)
-			this.realPanelWidth = panelInfo.width
-			this.realPanelHeight = panelInfo.height
-			this.realCursorWidth = getComponentsInfo(this.uiContext, `ibest_colorpicker_cursor_${this.uniId}`).width
-			this.realHueSliderHeight = getComponentsInfo(this.uiContext, `ibest_colorpicker_hueslider_${this.uniId}`).height
-			this.realAlphaSliderWidth = getComponentsInfo(this.uiContext, `ibest_colorpicker_alphaslider_${this.uniId}`).width
-			this.hsva = new IBestHsva()
-			this.initColorFormat()
-			if(this.value){
-				this.setHsva()
-			}else{
-				this.update()
-			}
-			if(this.predefineColors.length){
-				this.getFormatPredefineColor()
-			}
-		}, 50)
+		if(this.predefineColors.length){
+			this.getFormatPredefineColor()
+		}
+	}
+	// 初始化尺寸
+	initSize(){
+		let panelInfo = getComponentsInfo(this.uiContext, `ibest_colorpicker_panel_${this.uniId}`)
+		this.realPanelWidth = panelInfo.width
+		this.realPanelHeight = panelInfo.height
+		this.realCursorWidth = getComponentsInfo(this.uiContext, `ibest_colorpicker_cursor_${this.uniId}`).width
+		this.realHueSliderHeight = getComponentsInfo(this.uiContext, `ibest_colorpicker_hueslider_${this.uniId}`).height
+		this.realAlphaSliderWidth = getComponentsInfo(this.uiContext, `ibest_colorpicker_alphaslider_${this.uniId}`).width
+		this.hsva = new IBestHsva()
+		this.initColorFormat()
+		if(this.value){
+			this.init()
+		} else {
+			this.hueSliderY = this.realHueSliderHeight / 2
+			this.alphaSliderX = this.realPanelWidth / 2
+		}
 	}
 	// 初始化 colorFormat
 	initColorFormat(){
@@ -139,18 +141,27 @@ export struct IBestColorPicker{
 		})
 	}
 	valueChange(){
-		if(this.value){
-			this.setHsva()
+		if (this.flag){
+			this.flag = false
+		}else {
+			this.init()
 		}
 	}
 	// 记录hsv
-	setHsva(value?: string){
-		let hsva = color2Hsva(value || this.value, this.enableAlpha)
+	init(){
+		let hsva = color2Hsva(this.value, this.enableAlpha)
 		this.hsva.h = hsva.h
 		this.hsva.s = hsva.s
 		this.hsva.v = hsva.v
 		this.hsva.a = hsva.a
-		this.setValue()
+		let sliderY = this.hsva.h == 0 || this.hsva.h <= 10 / 360 || this.hsva.h >= 350 / 360 || this.hsva.h == 1 ? this.realHueSliderHeight / 2 : this.hsva.h * this.realPanelHeight
+		let cursorX = this.hsva.s * this.realPanelWidth
+		let cursorY = (1 - this.hsva.v) * this.realPanelHeight
+		let alphaX = this.hsva.a == 0 ? this.realAlphaSliderWidth / 2 : this.hsva.a == 1 ? this.realPanelWidth - this.realAlphaSliderWidth / 2 : this.hsva.a * this.realPanelWidth
+		this.hueSliderY = sliderY
+		this.cursorX = cursorX
+		this.cursorY = cursorY
+		this.alphaSliderX = alphaX
 	}
 	// 获取面板背景颜色
 	getPanelBgColor(): string{
@@ -159,15 +170,17 @@ export struct IBestColorPicker{
 	}
 	// 获取透明度面板渐变色
 	getAlphaLinearGradient(): [string, number][]{
-		let h = this.hueSliderY / (this.realPanelHeight - this.realHueSliderHeight / 2)
-		let rgb = hsva2RgbColor({h, s: 1, v: 1, a: 1})
+		let rgb = hsva2RgbColor(this.hsva)
 		return [[`rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0)`, 0], [`rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`, 1]]
 	}
 	setH(y: number){
+		this.hueSliderY = y
 		this.hsva.h = y / this.realPanelHeight
 		this.setValue()
 	}
 	setSv(x: number, y: number){
+		this.cursorX = x
+		this.cursorY = y
 		this.hsva.s = x / this.realPanelWidth
 		this.hsva.v = 1 - (y / this.realPanelHeight)
 		this.setValue()
@@ -180,43 +193,26 @@ export struct IBestColorPicker{
 			a = x / this.realPanelWidth
 		}
 		this.hsva.a = a
+		this.alphaSliderX = x
 		this.setValue()
 	}
-	// 更新坐标
-	update(){
-		let sliderY = this.hsva.h == 0 ? this.realHueSliderHeight / 2 : this.hsva.h == 1 ? this.realPanelHeight - this.realHueSliderHeight / 2 :  this.hsva.h * this.realPanelHeight
-		let cursorX = this.hsva.s * this.realPanelWidth
-		let cursorY = (1 - this.hsva.v) * this.realPanelHeight
-		let alphaX = this.hsva.a == 0 ? this.realAlphaSliderWidth / 2 : this.hsva.a == 1 ? this.realPanelWidth - this.realAlphaSliderWidth / 2 : this.hsva.a * this.realPanelWidth
-		this.hueSliderY = sliderY
-		this.cursorX = cursorX
-		this.cursorY = cursorY
-		this.alphaSliderX = alphaX
-		if(!this.isLock){
-			this.hueSliderPositionY = sliderY
-			this.cursorPositionX = cursorX
-			this.cursorPositionY = cursorY
-			this.alphaSliderPositionX = alphaX
-		}
-	}
-	setValue(){
+	setValue() {
 		let value = ''
 		if (this.colorFormat == 'rgb') {
 			value = getRgbaStr(hsva2RgbColor(this.hsva), this.enableAlpha)
 		} else {
 			value = hsva2HexColor(this.hsva, this.enableAlpha)
 		}
-		if(value === this.value){
-			this.update()
-		}else {
-			this.value = value
-			this.onChange(value)
-		}
+		this.flag = true
+		this.value = value
+		this.onChange(value)
 	}
 	// 选择预设颜色
 	choosePredefineColor(item: IBestFormatPredefineColor){
 		if(this.value != item.format){
-			this.setHsva(item.format)
+			this.flag = true
+			this.value = item.format
+			this.init()
 		}
 	}
 
@@ -232,18 +228,16 @@ export struct IBestColorPicker{
 						.width(CONTAINER_SIZE.FULL)
 						.height(CONTAINER_SIZE.FULL)
 						.linearGradient({ direction: GradientDirection.Top, colors: [['#000', 0], ['#0000', 1]] })
-					Row(){
-						Row()
-							.width(getSizeByUnit(this.cursorWidth))
-							.aspectRatio(1)
-							.borderRadius(this.baseStyle.borderRadiusMax)
-							.border({width: 2, color: "#fff"})
-							.shadow({ radius: 2, color: "#0006" })
-							.id(`ibest_colorpicker_cursor_${this.uniId}`)
-							.translate({x: "-50%", y: "-50%"})
-					}
-					.position({x: this.cursorX, y: this.cursorY})
-					.zIndex(1)
+					Row()
+						.width(getSizeByUnit(this.cursorWidth))
+						.aspectRatio(1)
+						.borderRadius(this.baseStyle.borderRadiusMax)
+						.border({width: 2, color: "#fff"})
+						.shadow({ radius: 2, color: "#0006" })
+						.id(`ibest_colorpicker_cursor_${this.uniId}`)
+						.translate({x: "-50%", y: "-50%"})
+						.position({x: this.cursorX, y: this.cursorY})
+						.zIndex(1)
 				}
 				.layoutWeight(1)
 				.height(getSizeByUnit(this.panelHeight))
@@ -258,7 +252,8 @@ export struct IBestColorPicker{
                 .gesture(
 					PanGesture({distance: 1})
 						.onActionStart(() => {
-							this.isLock = true
+							this.cursorPositionX = this.cursorX
+							this.cursorPositionY = this.cursorY
 						})
 						.onActionUpdate((event: PanGestureEvent) => {
 							let x = this.cursorPositionX + event.offsetX
@@ -266,11 +261,6 @@ export struct IBestColorPicker{
 							x = x < 0 ? 0 : x > this.realPanelWidth ? this.realPanelWidth : x
 							y = y < 0 ? 0 : y > this.realPanelHeight ? this.realPanelHeight : y
 							this.setSv(x, y)
-						})
-						.onActionEnd(() => {
-							this.isLock = false
-							this.cursorPositionX = this.cursorX
-							this.cursorPositionY = this.cursorY
 						})
 				)
 				Row(){
@@ -305,16 +295,12 @@ export struct IBestColorPicker{
 				.gesture(
 					PanGesture({direction: PanDirection.Vertical, distance: 1})
 						.onActionStart(() => {
-							this.isLock = true
+							this.hueSliderPositionY = this.hueSliderY
 						})
 						.onActionUpdate((event: PanGestureEvent) => {
 							let y = this.hueSliderPositionY + event.offsetY
 							y = y < this.realHueSliderHeight/2 ? this.realHueSliderHeight/2 : y > this.realPanelHeight - this.realHueSliderHeight/2 ? this.realPanelHeight - this.realHueSliderHeight/2 : y
 							this.setH(y)
-						})
-						.onActionEnd(() => {
-							this.isLock = false
-							this.hueSliderPositionY = this.hueSliderY
 						})
 				)
 			}
@@ -349,16 +335,12 @@ export struct IBestColorPicker{
 				.gesture(
 					PanGesture({direction: PanDirection.Horizontal, distance: 1})
 						.onActionStart(() => {
-							this.isLock = true
+							this.alphaSliderPositionX = this.alphaSliderX
 						})
 						.onActionUpdate((event: PanGestureEvent) => {
 							let x = this.alphaSliderPositionX + event.offsetX
 							x = x < this.realAlphaSliderWidth/2 ? this.realAlphaSliderWidth/2 : x > this.realPanelWidth - this.realAlphaSliderWidth/2 ? this.realPanelWidth - this.realAlphaSliderWidth/2 : x
 							this.setAlpha(x)
-						})
-						.onActionEnd(() => {
-							this.isLock = false
-							this.alphaSliderPositionX = this.alphaSliderX
 						})
 				)
 			}
@@ -383,5 +365,15 @@ export struct IBestColorPicker{
 		.width(CONTAINER_SIZE.FULL)
 		.alignItems(HorizontalAlign.Start)
 		.backgroundColor(this.bgColor)
+		.onAppear(() => {
+			setTimeout(() => {
+				this.initSize()
+			}, 50)
+		})
+		.onVisibleAreaChange([0,1], (isExpanding: boolean) => {
+			if(isExpanding && !this.realPanelWidth){
+				this.initSize()
+			}
+		})
 	}
 }

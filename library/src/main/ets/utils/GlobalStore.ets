@@ -48,8 +48,8 @@ export default class GlobalStore {
 			const topSize = GlobalStore.px2vp(avoidArea.topRect.height)
 			const navigationSize = GlobalStore.px2vp(systemDht.bottomRect.height)
 			const o = display.getDefaultDisplaySync().orientation
-			GlobalStore.screenWidth = screenInfo.windowRect.width
-			GlobalStore.screenHeight = screenInfo.windowRect.height
+			GlobalStore.screenWidth = GlobalStore.px2vp(screenInfo.windowRect.width)
+			GlobalStore.screenHeight = GlobalStore.px2vp(screenInfo.windowRect.height)
 			AppStorage.setOrCreate(IBestStorageKey.IS_LANDSCAPE, o == 1 || o == 3)
 			AppStorage.setOrCreate(IBestStorageKey.TOP_AVOID_HEIGHT, topSize)
 			AppStorage.setOrCreate(IBestStorageKey.BOTTOM_BAR_HEIGHT, navigationSize)

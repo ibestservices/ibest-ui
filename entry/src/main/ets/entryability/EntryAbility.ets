@@ -11,28 +11,19 @@ export default class EntryAbility extends UIAbility {
 		let applicationContext = this.context.getApplicationContext()
 		applicationContext.setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET)
 	}
-	// onDestroy(): void {
-		// hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
-	// }
 	onWindowStageCreate(windowStage: window.WindowStage): void {
-		// Main window is created, set main page for this ability
-		// let systemLanguages: Array<string> = i18n.System.getSystemLanguages()
-		// console.log('systemLanguages', systemLanguages)
-		// i18n.System.setAppPreferredLanguage('zh')
-		windowStage.getMainWindowSync().setWindowLayoutFullScreen(true)
+		let mainWindow = windowStage.getMainWindowSync()
+		mainWindow.setWindowLayoutFullScreen(true)
 		windowStage.loadContent('pages/Splash', (err, data) => {
 			GlobalStore.init(windowStage, this.context)
 			// 组件库初始化
 			IBestInit(windowStage, this.context)
-			// 全局配置
-			// IBestSetGlobalConfig({
-			//   	unit: "lpx",
-			//   	fontUnit: "lpx",
-			// 	avatar: {
-			// 		  defaultAvatar: $r("app.media.01")
-			// 	}
-			// })
-		});
+			// 注册自定义字体图标
+			mainWindow.getUIContext().getFont().registerFont({
+				familyName: 'testFont',
+				familySrc: $rawfile('iconfont.woff')
+			})
+		})
 	}
 
 	// onConfigurationUpdate(newConfig: Configuration): void {

@@ -129,7 +129,7 @@ struct CollapsePage {
                                 groupId: this.groupId2,
                                 name: '2',
                                 index: 1,
-                                title: '标题2',
+                                title: '禁用标题2',
                                 disabled: true
                             }){
                                 Text('技术无非就是那些开发它的人的共同灵魂。').fontSize(14).fontColor(modeColor.textColor4)
@@ -138,8 +138,8 @@ struct CollapsePage {
                                 groupId: this.groupId2,
                                 name: '3',
                                 index: 2,
-                                title: '标题3',
-                                disabled: true
+                                title: '只读标题3',
+                                readOnly: true
                             }){
                                 Text('在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。').fontSize(14).fontColor(modeColor.textColor4)
                             }

@@ -1,4 +1,4 @@
-import { IBestActionSheet, IBestButton, IBestToast } from '@ibestservices/ibest-ui';
+import { IBestActionSheet, IBestButton, IBestDialogUtil, IBestToast } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import CustomNavBar from '../../components/CustomNavBar';
 
@@ -63,6 +63,21 @@ struct ActionSheetPage {
 							actions: ["选项一", "选项二", "选项三"],
 							onSelect: (index: number) => {
 								IBestToast.show(`点击了第${index}个选项`)
+							},
+							beforeClose: () => {
+								return new Promise((resolve, reject) => {
+									IBestDialogUtil.open({
+										title: "提示",
+										message: "确定关闭?",
+										showCancelButton: true,
+										onConfirm: () => {
+											resolve(true)
+										},
+										onCancel: () => {
+											reject(false)
+										}
+									})
+								})
 							}
 						})
 					}

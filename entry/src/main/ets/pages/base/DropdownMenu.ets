@@ -2,7 +2,8 @@ import { IBestDropdownMenu, IBestDropdownItem, IBestDropdownMenuOption, IBestToa
     IBestCell,
     IBestSwitch,
     IBestDropdownMenuController,
-    IBestButton} from '@ibestservices/ibest-ui';
+    IBestButton
+} from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import CustomNavBar from '../../components/CustomNavBar';
@@ -20,8 +21,36 @@ struct DropdownMenuPage{
     @State value: number = 1
     @State options: IBestDropdownMenuOption[] = [
         { text: '全部商品', value: 1 },
-        { text: '新款商品', value: 2 },
-        { text: '活动商品', value: 3 }
+        { text: '第一个新款商品', value: 2 },
+        { text: '活动商品', value: 3 },
+        { text: '优惠商品', value: 4 },
+        { text: '价格商品', value: 5 },
+        { text: '折扣商品', value: 6 },
+        { text: '精选商品', value: 7 },
+        { text: '推荐商品', value: 8 },
+        { text: '精选商品', value: 9 },
+        { text: '推荐商品', value: 10 },
+        { text: '新品商品', value: 11 },
+        { text: '优惠商品', value: 12 },
+        { text: '价格商品', value: 13 },
+        { text: '折扣商品', value: 14 },
+        { text: '精选商品', value: 15 },
+        { text: '推荐商品', value: 16 },
+        { text: '新品商品', value: 17 },
+        { text: '优惠商品', value: 18 },
+        { text: '价格商品', value: 19 },
+        { text: '折扣商品', value: 20 },
+        { text: '精选商品', value: 21 },
+        { text: '推荐商品', value: 22 },
+        { text: '新品商品', value: 23 },
+        { text: '优惠商品', value: 24 },
+        { text: '价格商品', value: 25 },
+        { text: '折扣商品', value: 26 },
+        { text: '精选商品', value: 27 },
+        { text: '推荐商品', value: 28 },
+        { text: '新品商品', value: 29 },
+        { text: '优惠商品', value: 30 },
+        { text: '最后一个价格商品', value: 31 }
     ]
     @State value1: string = ''
     @State options1: IBestDropdownMenuOption[] = [
@@ -42,7 +71,7 @@ struct DropdownMenuPage{
     @State value3: string = ''
     @State options2: IBestDropdownMenuOption[] = [
         { text: '全部商品', icon: "star", value: '1' },
-        { text: '新款商品', icon: "fire", value: '2' },
+        { text: '新款商品', icon: "fire", iconPosition: 'right', value: '2' },
         { text: '活动商品', icon: "gem", value: '3', disabled: true }
     ]
     @State options3: IBestDropdownMenuOption[] = [
@@ -76,6 +105,7 @@ struct DropdownMenuPage{
                                 groupId: this.groupId,
                                 value: this.value,
                                 options: this.options,
+                                maxHeight: 500,
                                 onChange: value => {
                                     this.value = value as number
                                     IBestToast.show("选项为：" + value)
@@ -225,21 +255,27 @@ struct DropdownMenuPage{
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '异步选项', titlePaddingLeft: SPACE.MD }){
+                    ComponentShowContainer({ title: '异步打开', titlePaddingLeft: SPACE.MD }){
                         IBestDropdownMenu({ groupId: this.groupId4 }){
                             IBestDropdownItem({
                                 groupId: this.groupId4,
                                 title: "商品",
                                 value: this.value2,
                                 options: this.options4,
-                                onOpen: () => {
-                                    setTimeout(() => {
-                                        this.options4 = [
-                                            { text: '打折商品', value: '1' },
-                                            { text: '新款商品', value: '2' },
-                                            { text: '活动商品', value: '3' }
-                                        ]
-                                    }, 1500)
+                                beforeOpen: () => {
+                                    if(this.options4.length){
+                                        return true
+                                    }
+                                    return new Promise((resolve, reject) => {
+                                        setTimeout(() => {
+                                            this.options4 = [
+                                                { text: '打折商品', value: '1' },
+                                                { text: '新款商品', value: '2' },
+                                                { text: '活动商品', value: '3' }
+                                            ]
+                                            resolve(true)
+                                        }, 1500)
+                                    })
                                 },
                                 onChange: value => {
                                     this.value2 = value as string
@@ -271,6 +307,8 @@ struct DropdownMenuPage{
                                 onBtnClick: () => {
                                     this.value2 = ''
                                     this.value3 = ''
+                                    this.options4 = []
+                                    this.options5 = []
                                 }
                             })
                         }.width(CONTAINER_SIZE.FULL).justifyContent(FlexAlign.Center).margin({top: SPACE.MD})

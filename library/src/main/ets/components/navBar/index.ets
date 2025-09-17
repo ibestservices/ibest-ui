@@ -24,7 +24,7 @@ export struct IBestNavBar{
 	/**
 	 * 导航栏背景色
      */
-	@Prop @Watch("navBarBgColorChange") navBarBgColor: ResourceColor = IBestNavbarColor.bgColor
+	@Prop navBarBgColor: ResourceColor = IBestNavbarColor.bgColor
 	/**
 	 * 导航栏渐变色
      */
@@ -168,7 +168,7 @@ export struct IBestNavBar{
 	 */
 	@Prop isShowStatusBar: boolean = false
 	/**
-	 * 状态栏背景色
+	 * 状态栏背景色, 仅isKeepBgColorSame为false时生效
 	 */
 	@Prop statusBarBgColor: ResourceColor = ''
 	/**
@@ -214,14 +214,9 @@ export struct IBestNavBar{
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
-		this.getLeftRightWidth()
+		this.initSize()
 	}
-	navBarBgColorChange(){
-		if(this.isKeepBgColorSame){
-			this.statusBarBgColor = this.navBarBgColor
-		}
-	}
-	getLeftRightWidth(){
+	initSize(){
 		setTimeout(() => {
 			let leftWidth = 0
 			let rightWidth = 0
@@ -240,7 +235,7 @@ export struct IBestNavBar{
 				this.leftWidth = this.titleBuilder || this.titleTextAlign == "left" ? leftWidth : maxPadding
 				this.rightWidth = maxPadding
 			}
-		}, 0)
+		}, 50)
 	}
 
 	build() {
@@ -249,7 +244,7 @@ export struct IBestNavBar{
 				Row()
 					.width(CONTAINER_SIZE.FULL)
 					.height(this.topAvoidHeight)
-					.backgroundColor(this.statusBarBgColor)
+					.backgroundColor(this.isKeepBgColorSame ? this.navBarBgColor : this.statusBarBgColor)
 			}
 			Row(){
 				if(this.isShowLeft){

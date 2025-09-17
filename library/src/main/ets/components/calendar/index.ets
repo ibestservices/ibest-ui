@@ -204,8 +204,15 @@ export struct IBestCalendar{
     @StorageProp(IBestStorageKey.IS_LANDSCAPE) isLandscape: boolean = false
     /**
      * 默认选中日期
+     * @deprecated since 2.1.8
+     * @useinstead value
      */
-    @Prop @Watch("defaultSelectedDateChange") defaultSelectedDate: string[] = []
+    @Prop @Watch("selectedDateChange") defaultSelectedDate: string[] = []
+    /**
+     * 已选日期
+     * @since 2.1.8
+     */
+    @Link @Watch("selectedDateChange") value: string | string[]
     /**
      * 单项宽度
      */
@@ -222,10 +229,6 @@ export struct IBestCalendar{
      * 选择类型
      */
     @Provide({allowOverride: "selectType"}) selectType: SelectType = "single"
-    /**
-     * 已选的日期列表
-     */
-    @Provide({allowOverride: "selectedList"}) selectedList: IBestCalendarDay[] = []
     /**
      * 选中样式
      */
@@ -311,10 +314,8 @@ export struct IBestCalendar{
 
 	// 唯一id
 	@State uniId: number = 0
-    // 当前点击选择的年月日
-    @State @Watch("selectDateChange") curSelectedDate: string = dayjs().format('YYYY-MM-DD')
     // 当前所在年月份
-    @State @Watch("monthChange") curYearMonth: string = dayjs().format('YYYY-MM')
+    @State @Watch("monthChange") curYearMonth: string = ''
     // 当前月份
     @State curMonth: string = ""
     // 日历头部
@@ -352,6 +353,8 @@ export struct IBestCalendar{
     @Provide daysList: IBestCalendarDay[] = []
     // 日期区域高度
     @State contentHeight: number = 0
+    // 已选的日期列表
+    @Provide selectedList: IBestCalendarDay[] = []
     private context: UIContext = this.getUIContext()
 
     @Builder contentBuilder(){
@@ -384,9 +387,6 @@ export struct IBestCalendar{
         .padding(this.isLandscape ? undefined : {left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
     }
 
-    selectDateChange(){
-        this.curYearMonth = dayjs(this.curSelectedDate).format('YYYY-MM')
-    }
     monthChange(){
         this.curMonth = dayjs(this.curYearMonth).format('M')
     }
@@ -396,9 +396,7 @@ export struct IBestCalendar{
         this.init()
         this.initDaysList()
     }
-    /**
-     * 初始化本地数据
-     */
+    // 初始化本地数据
     init(){
         if(this.clock){
             this.selectType = "range"
@@ -413,12 +411,15 @@ export struct IBestCalendar{
     // 初始化selectedList
     initSelectedList(){
         let list: IBestCalendarDay[] = []
-        if(this.defaultSelectedDate.length){
-            if(this.defaultSelectedDate.some(e => !dayjs(e).isValid())){
+        let dateList = this.value || this.defaultSelectedDate
+        if(dateList.length){
+            if(typeof dateList === 'string'){
+                dateList = [dateList]
+            }
+            if(dateList.some(e => !dayjs(e).isValid())){
                 return
             }
-            this.curSelectedDate = this.defaultSelectedDate[0]
-            this.defaultSelectedDate.forEach(e => {
+            dateList.forEach(e => {
                 if(dayjs(e).isValid() && !this.getIsDisabled(dayjs(e))){
                     list.push(new IBestCalendarDay({
                         date: dayjs(e),
@@ -435,12 +436,15 @@ export struct IBestCalendar{
                 }
             })
         }
+        if(!this.curYearMonth){
+            this.curYearMonth = dayjs(dateList[0] || new Date()).format('YYYY-MM')
+        }
         this.selectedList = list
     }
     isSelect(dateStr: string){
         return this.selectedList.some(e => e.dateStr == dateStr)
     }
-    defaultSelectedDateChange(){
+    selectedDateChange(){
         this.initSelectedList()
         this.daysList.forEach(e => {
             e.isSelected = this.clock ? isBeforeToday(e.date) && this.isSelect(e.dateStr) : this.isSelect(e.dateStr)
@@ -449,9 +453,7 @@ export struct IBestCalendar{
             }
         })
     }
-    /**
-     * 初始化日历列表
-     */
+    // 初始化日历列表
     initDaysList(){
         this.daysList = []
         let list: IBestCalendarDay[] = []
@@ -533,39 +535,29 @@ export struct IBestCalendar{
         this.selectedList = this.refreshListParam(this.selectedList)
         this.getDateAreaHeight()
     }
-    /**
-     * 获取日期区域高度
-     */
+    // 获取日期区域高度
     getDateAreaHeight(){
         setTimeout(()=>{
             this.contentHeight = getComponentsInfo(this.context, `ibest_calender_${this.uniId}`).height
-        }, 0)
+        }, 50)
     }
-    /**
-     * 刷新字段
-     */
+    // 刷新字段
     refreshListParam(list: IBestCalendarDay[]): IBestCalendarDay[]{
         list.forEach((item: IBestCalendarDay) => {
             item.isCurMonthDay = item.date.format('YYYY-MM') == this.curYearMonth
         })
         return list
     }
-    /**
-     * 获取日期是否禁用
-     */
+    // 获取日期是否禁用
     getIsDisabled(day: Dayjs): boolean{
         return this.minDate && dayjs(day).isBefore(this.minDate, 'day') || this.maxDate && dayjs(day).isAfter(this
             .maxDate, 'day')
     }
-    /**
-     * 获取日期是周几 0123456
-     */
+    // 获取日期是周几 0123456
     getWeekNum(date?: string | Dayjs): number{
         return dayjs(date).day()
     }
-    /**
-     * 切换年、月份
-     */
+    // 切换年、月份
     changeYearMonth(type: string){
         switch (type){
             case "preYear":
@@ -583,9 +575,7 @@ export struct IBestCalendar{
         }
         this.initDaysList()
     }
-    /**
-     * 点击选择日期
-     */
+    // 点击选择日期
     selectDate(item: IBestCalendarDay){
         switch(this.selectType){
             case "single":
@@ -594,19 +584,20 @@ export struct IBestCalendar{
                         e.isSelected = false
                     })
                     item.isSelected = true
-                    this.curSelectedDate = item.dateStr
+                    this.curYearMonth = dayjs(item.dateStr).format('YYYY-MM')
                 }else{
-                    this.curSelectedDate = item.dateStr
+                    this.curYearMonth = dayjs(item.dateStr).format('YYYY-MM')
                     this.initDaysList()
                 }
                 this.selectedList = [item]
+                this.value = item.dateStr
                 !this.isShowConfirmBtn && this.confirm()
                 break
             case "multiple":
                 if(item.isCurMonthDay){
                     item.isSelected = !item.isSelected
                     if(item.isSelected){
-                        this.curSelectedDate = item.dateStr
+                        this.curYearMonth = dayjs(item.dateStr).format('YYYY-MM')
                     }
                     let index = this.selectedList.findIndex(e => e.dateStr == item.dateStr)
                     if(index == -1){
@@ -615,7 +606,7 @@ export struct IBestCalendar{
                         this.selectedList.splice(index, 1)
                     }
                 }else{
-                    this.curSelectedDate = item.dateStr
+                    this.curYearMonth = dayjs(item.dateStr).format('YYYY-MM')
                     let index = this.selectedList.findIndex(e => e.dateStr == item.dateStr)
                     if(index == -1){
                         this.selectedList.push(item)
@@ -628,10 +619,11 @@ export struct IBestCalendar{
                 this.selectedList.sort((a, b) => {
                     return dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1
                 })
+                this.value = this.selectedList.map(e => e.dateStr)
                 !this.isShowConfirmBtn && this.confirm()
                 break
             case "range":
-                this.curSelectedDate = item.dateStr
+                this.curYearMonth = dayjs(item.dateStr).format('YYYY-MM')
                 if(this.selectedList.length == 1){  // 已选起始日期 选择结束日期
                     let days: IBestCalendarDay[] = []
                     let isOutRange = false
@@ -655,6 +647,7 @@ export struct IBestCalendar{
                         })
                     }
                     this.selectedList = days
+                    this.value = this.selectedList.map(e => e.dateStr)
                     !this.isShowConfirmBtn && this.confirm()
                 }else{  // 已选结束日期  重选
                     item.isSelected = true
@@ -667,9 +660,7 @@ export struct IBestCalendar{
                 break
             }
     }
-    /**
-     * 获取两个日期之间的所有日期
-     */
+    // 获取两个日期之间的所有日期
     getDateListBetween(startDayjs: Dayjs, endDayjs: Dayjs): IBestCalendarDay[]{
         let dateArray: IBestCalendarDay[] = []
         let start = dayjs(startDayjs)
@@ -693,9 +684,7 @@ export struct IBestCalendar{
         }
         return dateArray
     }
-    /**
-     * 提交
-     */
+    // 提交
     confirm(){
          this.onConfirm(this.selectedList.map(e => {
             let obj: IBestCalendarConfirmResult = {

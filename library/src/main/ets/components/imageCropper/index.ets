@@ -57,24 +57,36 @@ export struct IBestImageCropper {
 	 */
 	@Prop maxScale: number = 2
 	/**
+	 * 是否开启旋转, 开启后不可移动
+	 * @since 2.1.8
+     */
+	@Prop @Watch("enableRotateChange") enableRotate: boolean = false
+	/**
+	 * 最大旋转角度, 默认180°, 即顺时针最大180°, 逆时针最大180°
+	 * @since 2.1.8
+     */
+	@Prop maxAngle: number = 180
+	/**
 	 * 控制器实例
      */
 	controller: IBestImageCropperController = new IBestImageCropperController()
 
 	@State uniId: number = 0
 	@State scaleValue: number = 1
-	@State pinchValue: number = 1
+	private pinchScaleValue: number = 1
 	@State offsetX: number = 0
 	@State offsetY: number = 0
-	@State positionX: number = 0
-	@State positionY: number = 0
+	private positionX: number = 0
+	private positionY: number = 0
+	@State angle: number = 0
+	private pinchAngle: number = 0
 	@State imgInitWidth: number = 0
 	@State imgInitHeight: number = 0
 	@State imgWidth: number = 0
 	@State imgHeight: number = 0
 	@State offsetMaxX: number = 0
 	@State offsetMaxY: number = 0
-	@Provide({allowOverride: "realCenterWidth"}) realCenterWidth: number = 0
+	@State realCenterWidth: number = 0
 	@State realCenterHeight: number = 0
 	private imgModel: PixelMap | null = null
 	private panOption: PanGestureOptions = new PanGestureOptions({ direction: PanDirection.Left | PanDirection.Right
@@ -98,11 +110,18 @@ export struct IBestImageCropper {
 
 	aboutToAppear() {
 		this.uniId = this.getUniqueId()
+		this.controller.setScale = (scale: number): void => this.setScale(scale)
+		this.controller.setAngle = (angle: number): void => this.setAngle(angle)
+		this.controller.reset = (): void => this.reset()
 		this.controller.getResult = (callBack?: (result: PixelMap) => void): Promise<PixelMap> => this.getResult(callBack)
 		this.getCenterSize()
 	}
 	aboutToDisappear(): void {
 		this.clearCache()
+	}
+	enableRotateChange(){
+		this.pinchAngle = this.angle = 0
+		this.positionX = this.positionY = this.offsetX = this.offsetY = 0
 	}
 	// 获取透镜尺寸
 	getCenterSize(){
@@ -176,11 +195,6 @@ export struct IBestImageCropper {
 		}
 		this.setParams()
 	}
-	// 设置图片动态尺寸
-	setImgSize() {
-		this.imgWidth = Number((this.imgInitWidth * this.scaleValue).toFixed())
-		this.imgHeight = Number((this.imgInitHeight * this.scaleValue).toFixed())
-	}
 	// 设置参数
 	setParams() {
 		this.setImgSize()
@@ -191,16 +205,23 @@ export struct IBestImageCropper {
 		this.positionX = this.offsetX
 		this.positionY = this.offsetY
 	}
+	// 设置图片动态尺寸
+	setImgSize() {
+		this.imgWidth = Number((this.imgInitWidth * this.scaleValue).toFixed())
+		this.imgHeight = Number((this.imgInitHeight * this.scaleValue).toFixed())
+	}
 	// 重置参数
 	resetParams(){
 		this.scaleValue = 1
-		this.pinchValue = 1
+		this.pinchScaleValue = 1
 		this.offsetX = 0
 		this.offsetY = 0
 		this.positionX = 0
 		this.positionY = 0
 		this.offsetMaxX = 0
 		this.offsetMaxY = 0
+		this.angle = 0
+		this.pinchAngle = 0
 	}
 	getCommands(){
 		let width = this.uiContext.vp2px(this.realCenterWidth/2)
@@ -212,14 +233,36 @@ export struct IBestImageCropper {
 	// 绘制
 	drawImg(){
 		this.context.clearRect(0, 0, this.realCenterWidth, this.realCenterHeight)
-		this.context.drawImage(this.imgModel, this.offsetX - this.offsetMaxX, this.offsetY - this.offsetMaxY, this
-			.imgWidth, this.imgHeight)
+		this.context.reset()
+		this.context.translate(this.realCenterWidth / 2, this.realCenterHeight / 2)
+		this.context.rotate(this.angle * Math.PI / 180)
+		this.context.drawImage(this.imgModel, this.offsetX - this.imgWidth / 2, this.offsetY - this.imgHeight / 2, this.imgWidth, this.imgHeight)
 	}
 	// 将arrayBuffer写入沙箱
 	writeToSandBox(arrayBuffer: ArrayBuffer | ArrayBufferLike) {
 		let file = fs.openSync(this.sandBoxPath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE)
 		fs.writeSync(file.fd, arrayBuffer)
 		fs.closeSync(file.fd)
+	}
+	// 设置比例
+	setScale(scale: number){
+		scale = scale < 1 ? 1 : scale > this.maxScale ? this.maxScale : scale
+		this.pinchScaleValue = this.scaleValue = scale
+		this.setParams()
+	}
+	// 设置角度
+	setAngle(angle: number){
+		if(this.enableRotate){
+			angle = angle < -this.maxAngle ? -this.maxAngle : angle > this.maxAngle ? this.maxAngle : angle
+			this.pinchAngle = this.angle = angle
+		}else {
+			console.warn('旋转功能未启用')
+		}
+	}
+	// 重置
+	reset(){
+		this.resetParams()
+		this.setParams()
 	}
 	// 获取最终截取结果
 	getResult(callBack?: (result: PixelMap) => void): Promise<PixelMap> {
@@ -243,6 +286,7 @@ export struct IBestImageCropper {
 				.objectFit(ImageFit.Contain)
 				.scale({ x: this.scaleValue, y: this.scaleValue, z: 1 })
 				.translate({ x: this.offsetX, y: this.offsetY, z: 0 })
+				.rotate({z: 1, angle: this.angle})
 				.animation({
 					duration: 100
 				})
@@ -306,32 +350,50 @@ export struct IBestImageCropper {
 		.backgroundColor(this.bgColor)
 		.clip(true)
 		.gesture(
-		  	GestureGroup(GestureMode.Exclusive,
-			  	// 移动
-			  	PanGesture(this.panOption)
-					.onActionUpdate((event: GestureEvent) => {
-						let x = Number((this.positionX + event.offsetX).toFixed())
-						let y = Number((this.positionY + event.offsetY).toFixed())
-						this.offsetX = x >= this.offsetMaxX ? this.offsetMaxX : x <= -this.offsetMaxX ? -this.offsetMaxX : x
-						this.offsetY = y >= this.offsetMaxY ? this.offsetMaxY : y <= -this.offsetMaxY ? -this.offsetMaxY : y
-					})
-					.onActionEnd(() => {
-						this.positionX = this.offsetX
-						this.positionY = this.offsetY
-					}),
+			// 移动
+			PanGesture(this.panOption)
+				.onActionUpdate((event: GestureEvent) => {
+					let x = Number((this.positionX + event.offsetX).toFixed())
+					let y = Number((this.positionY + event.offsetY).toFixed())
+					this.offsetX = x >= this.offsetMaxX ? this.offsetMaxX : x <= -this.offsetMaxX ? -this.offsetMaxX : x
+					this.offsetY = y >= this.offsetMaxY ? this.offsetMaxY : y <= -this.offsetMaxY ? -this.offsetMaxY : y
+				})
+				.onActionEnd(() => {
+					this.positionX = this.offsetX
+					this.positionY = this.offsetY
+				})
+		)
+		.gesture(
+			GestureGroup(GestureMode.Parallel,
 				// 缩放
 				PinchGesture({ fingers: 2 })
 					.onActionUpdate((event: GestureEvent) => {
-						let scale = Number((this.pinchValue * event.scale).toFixed(1))
+						let scale = Number((this.pinchScaleValue * event.scale).toFixed(1))
 						this.scaleValue = scale
 						this.setImgSize()
 					})
 					.onActionEnd(() => {
 						this.scaleValue = this.scaleValue < 1 ? 1 : this.scaleValue > this.maxScale ? this.maxScale : this.scaleValue
-						this.pinchValue = this.scaleValue
+						this.pinchScaleValue = this.scaleValue
 						this.setParams()
+					}),
+				// 旋转
+				RotationGesture({ fingers: 2 })
+					.onActionUpdate((event: GestureEvent) => {
+						let angle = this.pinchAngle + event.angle
+						angle = angle < -this.maxAngle ? -this.maxAngle : angle > this.maxAngle ? this.maxAngle : angle
+						this.angle = angle
 					})
-		  	)
+					.onActionEnd(() => {
+						this.pinchAngle = this.angle
+					})
+			)
 		)
+		.onGestureJudgeBegin((gestureInfo: GestureInfo) => {
+			if (gestureInfo.type == GestureControl.GestureType.PAN_GESTURE && this.enableRotate || gestureInfo.type == GestureControl.GestureType.ROTATION_GESTURE && !this.enableRotate) {
+				return GestureJudgeResult.REJECT
+			}
+			return GestureJudgeResult.CONTINUE
+		})
 	}
 }

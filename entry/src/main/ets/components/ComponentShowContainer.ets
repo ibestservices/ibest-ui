@@ -24,7 +24,7 @@ export default struct ComponentShowContainer {
                     this.defaultBuilder()
                 }
             }
-            .width(CONTAINER_SIZE.FULL)
+            .width(this.card ? `calc(100% - ${SPACE.SM*2}vp)` : CONTAINER_SIZE.FULL)
             .alignItems(HorizontalAlign.Start)
             .margin({ left: this.card ? SPACE.SM : 0, right: this.card ? SPACE.SM : 0 })
             .borderRadius(BORDER_RADIUS.MEDIUM)

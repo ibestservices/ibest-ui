@@ -144,13 +144,13 @@ ohos.permission.INTERNET
 
 ## 官方生态
 
-| 项目                           | 描述                                                                                         |                                                                                                                               |
-|:-----------------------------|:-------------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------|
-| @ibestservices/ibest-ui-v2   | 一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库，基于状态管理v2版本。                                          | <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2')">地址</a>   |
-| @ibestservices/ucharts       | 一个类型丰富、高性能、可扩展、支持主题定制的图表库。                                                                 | <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fucharts')">地址</a>       |
-| @ibestservices/area-data     | 中国省市区数据，适用于鸿蒙 ArkUI 的 TextPicker 和 IBest-UI 的 IBestCascader 等组件。                           | <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Farea-data')">地址</a>     |
-| @ibestservices/ibest-orm     | 一个轻量、简单易用、全功能、支持实体关联、事务、自动迁移的鸿蒙开源 ORM 工具库。                                                 | <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-orm')">地址</a>     |
-| @ibestservices/ibest-barcode | 一个轻量、简单易用的鸿蒙开源条形码组件, 支持CODE39、CODE93、CODE128、、EAN13、UPC、ITF、MSI、Pharmacode、Codabar等多种条码类型。 | <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-barcode')">地址</a> |
+| 项目                           | 描述                                                                                        |                                                                                                                               |
+|:-----------------------------|:------------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------|
+| @ibestservices/ibest-ui-v2   | 一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库，基于状态管理v2版本。                                         | <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2')">地址</a>   |
+| @ibestservices/ucharts       | 一个类型丰富、高性能、可扩展、支持主题定制的图表库。                                                                | <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fucharts')">地址</a>       |
+| @ibestservices/area-data     | 中国省市区数据，适用于鸿蒙 ArkUI 的 TextPicker 和 IBest-UI 的 IBestCascader 等组件。                          | <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Farea-data')">地址</a>     |
+| @ibestservices/ibest-orm     | 一个轻量、简单易用、全功能、支持实体关联、事务、自动迁移的鸿蒙开源 ORM 工具库。                                                | <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-orm')">地址</a>     |
+| @ibestservices/ibest-barcode | 一个轻量、简单易用的鸿蒙开源条形码组件, 支持CODE39、CODE93、CODE128、EAN13、UPC、ITF、MSI、Pharmacode、Codabar等多种条码类型。 | <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-barcode')">地址</a> |
 
 ## 链接
 - [Github](https://github.com/ibestservices/ibest-ui)
@@ -171,21 +171,18 @@ ohos.permission.INTERNET
 在下述版本验证通过：
 ```text
 DevEco Studio 5.1.1 Release
-Build #DS-233.14475.28.36.511823
-构建版本：5.1.1.823, built on July 12, 2025
-Runtime version: 17.0.12+1-b1087.25 x86_64
+Build #DS-233.14475.28.36.511840
+构建版本：5.1.1.840, built on September 5, 2025
+Runtime version: 17.0.12+1-b1087.25 amd64
 VM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.
-macOS 15.5
+Windows 11.0
 GC: G1 Young Generation, G1 Old Generation
 Memory: 2048M
-Cores: 12
-Metal Rendering is ON
+Cores: 20
 Registry:
   idea.plugins.compatible.build=IC-233.14475.28
 Non-Bundled Plugins:
-  com.harmonyos.cases (1.0.10-Alpha)
-  com.huawei.agc.ecomarket.component.plugin (233.14475.28)
-  com.alibabacloud.intellij.cosy (2.5.15)
+  com.alibabacloud.intellij.cosy (2.5.16)
 ```
 
 ## 开源协议

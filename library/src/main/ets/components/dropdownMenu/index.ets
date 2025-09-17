@@ -1,11 +1,11 @@
 import { IBestCell, IBestIcon, IBestStringNumber } from '../../../../../Index'
-import { IBestStorageKey } from '../../model/Global.type'
+import { IBestAwaitable, IBestStorageKey } from '../../model/Global.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { emitter } from '../../utils/EventEmitter'
 import GlobalStore from '../../utils/GlobalStore'
-import { convertDimensionsWidthUnit, getComponentsInfo, getEventName, getSizeByUnit } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getComponentsInfo, getEventName, getSizeByUnit, handleBeforeFunction } from '../../utils/utils'
 import { IBestDropdownMenuColor } from './color'
 import {
     COMPONENT_NAME,
@@ -18,7 +18,7 @@ import {
 } from './index.type'
 
 const popupDuration = 150
-const hideDuration = 170
+const hideDuration = 180
 
 @Component
 export struct IBestDropdownMenu{
@@ -74,8 +74,13 @@ export struct IBestDropdownMenu{
     /**
      * 下拉选项文字大小
      */
-    @Provide({ allowOverride: 'dropDownFontSize' }) dropDownFontSize: IBestStringNumber = ""
+    @Provide({ allowOverride: 'dropDownFontSize' }) dropDownFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
 	/**
+     * 下拉选项图标大小
+     * @since 2.1.8
+     */
+    @Provide({ allowOverride: 'dropDownIconSize' }) dropDownIconSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
+    /**
      * 下拉选项选中图标
      */
     @Provide({ allowOverride: 'selectedIcon' }) selectedIcon: ResourceStr = 'success'
@@ -98,12 +103,12 @@ export struct IBestDropdownMenu{
     private uiContext = this.getUIContext()
     private promptAction = this.uiContext.getPromptAction()
     private baseController: MenuContentController = new MenuContentController()
+    private isOpening: boolean = false
 
     @Builder optionListBuilder(){
         ForEach(this.menuList, (option: IBestDropdownMenuContentParams, index: number) => {
             IBestDropdownMenuOptionItem({ option: option, index: index })
                 .layoutWeight(this.menuWidthType == 'flex' ? 1 : 0)
-                .id(`ibest_dropdown_menu_${this.uniId}`)
                 .enabled(!option.disabled)
                 .onClick(() => {
                     this.openMenu(index)
@@ -118,11 +123,12 @@ export struct IBestDropdownMenu{
         .height(getSizeByUnit(this.menuHeight))
         .backgroundColor(this.bgColor)
         .shadow(this.menuShadow)
+        .id(`ibest_dropdown_menu_${this.uniId}`)
     }
     @Builder menuContentBuilder(maxHeight: number) {
         IBestDropdownMenuContent({
             groupId: this.groupId,
-            maxHeight: maxHeight,
+            maxHeight,
             option: this.getOption(),
             controller: this.baseController
         })
@@ -175,12 +181,20 @@ export struct IBestDropdownMenu{
     }
     // 打开筛选
     async openMenu(index: number) {
+        if(this.isOpening){
+            return
+        }
         let i = this.getOpenIndex()
         if (i > -1) {
             await this.close(i)
             if (i == index) {
                 return
             }
+        }
+        this.isOpening = true
+        let status = await handleBeforeFunction(this.menuList[index].beforeOpen)
+        if (!status) {
+            return
         }
         let y = this.getMaskTop()
         let maskHeight = GlobalStore.screenHeight - y
@@ -203,6 +217,9 @@ export struct IBestDropdownMenu{
                 height: maskHeight
             },
             offset: { dx: 0, dy: y - this.topAvoidHeight },
+            transition: TransitionEffect.OPACITY.animation({
+                duration: hideDuration
+            }),
             onWillDismiss: (dismissDialogAction: DismissDialogAction) => {
                 let reason = dismissDialogAction.reason
                 if (reason == DismissReason.TOUCH_OUTSIDE && !this.closeOnClickOverlay) {
@@ -213,6 +230,7 @@ export struct IBestDropdownMenu{
         }).then((id: number) => {
             this.menuList[index].dialogId = id
             this.menuList[index].onOpen!()
+            this.isOpening = false
         })
     }
     // 关闭
@@ -294,7 +312,7 @@ struct IBestDropdownMenuOptionItem{
             IBestIcon({
                 name: this.menuIcon,
                 iconSize: this.menuIconSize,
-                color: this.option.disabled ? IBestDropdownMenuColor.disabledColor : this.isOpen() ? this.activeColor : IBestDropdownMenuColor.textColor
+                color: this.option.disabled ? IBestDropdownMenuColor.disabledColor : this.isOpen() ? this.activeColor : this.menuFontColor
             })
                 .rotate({ z: 1, angle: this.isOpen() ? 180 : 0 })
                 .animation({duration: 200})
@@ -314,11 +332,35 @@ struct IBestDropdownMenuContent{
     @Prop option: IBestDropdownMenuContentParams
     @Consume activeColor: ResourceColor
     @Consume dropDownFontSize: IBestStringNumber
+    @Consume dropDownIconSize: IBestStringNumber
     @Consume selectedIcon: ResourceStr
     controller: MenuContentController = new MenuContentController()
     @BuilderParam defaultBuilder: CustomBuilder
 
     @State transY: IBestStringNumber = "-100%"
+
+    @Builder cellTitleBuilder(option: IBestDropdownMenuOption){
+        Row({space: this.baseStyle.spaceBase}){
+            if(option.icon && (!option.iconPosition || option.iconPosition == 'left')){
+                IBestIcon({
+                    name: option.icon,
+                    color: this.option.value == option.value ? this.activeColor : IBestDropdownMenuColor.textColor,
+                    iconSize: this.dropDownIconSize
+                })
+            }
+            Text(option.text)
+                .fontSize(getSizeByUnit(this.dropDownFontSize, true))
+                .fontColor(this.option.value == option.value ? this.activeColor : IBestDropdownMenuColor.textColor)
+            if(option.icon && option.iconPosition == 'right'){
+                IBestIcon({
+                    name: option.icon,
+                    color: this.option.value == option.value ? this.activeColor : IBestDropdownMenuColor.textColor,
+                    iconSize: this.dropDownIconSize
+                })
+            }
+        }.alignItems(VerticalAlign.Center)
+    }
+
     aboutToAppear(): void {
         this.controller.hide = (): void => this.init()
         this.init()
@@ -336,11 +378,7 @@ struct IBestDropdownMenuContent{
                 }else {
                     ForEach(this.option.options, (option: IBestDropdownMenuOption, index: number) => {
                         IBestCell({
-                            leftIcon: option.icon,
-                            leftIconColor: this.option.value == option.value ? this.activeColor : IBestDropdownMenuColor.textColor,
-                            title: option.text,
-                            titleFontSize: this.dropDownFontSize,
-                            titleColor: this.option.value == option.value ? this.activeColor : IBestDropdownMenuColor.textColor,
+                            titleBuilder: () => this.cellTitleBuilder(option),
                             rightIcon: this.option.value == option.value ? this.selectedIcon : "",
                             rightIconColor: this.activeColor,
                             disabled: option.disabled,
@@ -357,9 +395,10 @@ struct IBestDropdownMenuContent{
         }
         .width(CONTAINER_SIZE.FULL)
         .backgroundColor(this.baseStyle.default)
-        .constraintSize({ maxHeight: this.maxHeight * 0.8 })
+        .constraintSize({ maxHeight: this.option.maxHeight ? getSizeByUnit(this.option.maxHeight) : this.maxHeight*0.9 })
         .translate({ y: this.transY })
         .border({ width:{ top:1 }, color: IBestDropdownMenuColor.borderColor })
+        .opacity(this.transY == 0 ? 1 : 0)
         .animation({ duration: popupDuration, curve: Curve.EaseInOut })
         .onAppear(() => {
             setTimeout(() => {
@@ -392,6 +431,11 @@ export struct IBestDropdownItem{
      */
     @Prop @Watch("disabledChange") disabled: boolean = false
     /**
+     * 最大高度
+     * @since 2.1.8
+     */
+    @Prop maxHeight: IBestStringNumber = ''
+    /**
      * 默认内容
      */
     @BuilderParam defaultBuilder: CustomBuilder
@@ -407,6 +451,11 @@ export struct IBestDropdownItem{
      * 点击选项时触发
      */
     onChange: (value: IBestStringNumber) => void = () => {}
+    /**
+     * 打开前回调
+     * @since 2.1.8
+     */
+    beforeOpen?: () => IBestAwaitable
 
     @State uniId: number = 0
     @State index: number = 0
@@ -420,14 +469,16 @@ export struct IBestDropdownItem{
     }
     init(){
         emitter.emit(getEventName(COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME.OPTION_CHANGE, this.groupId), 'init', {
-            options: this.options,
             value: this.value,
             title: this.title,
+            options: this.options,
+            maxHeight: this.maxHeight,
             disabled: this.disabled,
             defaultBuilder: this.defaultBuilder,
             onOpen: this.onOpen,
             onClose: this.onClose,
-            onChange: this.onChange
+            onChange: this.onChange,
+            beforeOpen: this.beforeOpen
         }, (index: number) => {
             this.index = index
         })

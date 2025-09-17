@@ -87,7 +87,7 @@ struct NavBarPage {
 							IBestNavBar({
 								isShowLeft: false,
 								title: "IBest-UI",
-								titleIcon: $r("app.media.app_icon"),
+								titleIcon: $r("app.media.app_icon")
 							})
 							IBestNavBar({
 								isShowLeft: false,

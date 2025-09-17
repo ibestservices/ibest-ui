@@ -1,7 +1,6 @@
 import {
 	addNumber,
 	clamp,
-	convertDimensions,
 	convertDimensionsWidthUnit,
 	getComponentsInfo,
 	getLengthUnit,
@@ -14,7 +13,6 @@ import { LengthUnit } from '@kit.ArkUI'
 import { IBestSliderValue } from './index.type'
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { IBestSliderColor } from './color'
-import { IBestGlobalConfig } from '../../model/GlobalConfig'
 
 @Component
 export struct IBestSlider{
@@ -22,13 +20,6 @@ export struct IBestSlider{
 	 * 全局公共样式
 	 */
 	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@State uniId: number = 0
-	@State space: number = 2.5
-	@State percentage: number = 0
-	@State barOffset: number = 0
-	@State buttonIndex: 0 | 1 = 0
-	@Provide buttonWidth: number = 0
-	@Provide buttonHeight: number = 0
 	/**
 	 * 当前进度值
 	 */
@@ -52,7 +43,7 @@ export struct IBestSlider{
 	/**
 	 * 滑块大小
 	 */
-	@Provide({allowOverride: "buttonSize"}) buttonSize: number = convertDimensions(24)
+	@Provide({allowOverride: "buttonSize"}) buttonSize: IBestStringNumber = convertDimensionsWidthUnit(24)
 	/**
 	 * 滑块背景色
 	 * @since 2.0.1
@@ -92,24 +83,47 @@ export struct IBestSlider{
 	 */
 	onChange: (value: IBestSliderValue) => void = () => {}
 
+	@State uniId: number = 0
+	@State space: number = 2.5
+	@State percentage: number = 0
+	@State barOffset: number = 0
+	@State buttonIndex: 0 | 1 = 0
+	@Provide buttonWidth: number = 0
+	@Provide buttonHeight: number = 0
 	private uiContext = this.getUIContext()
+
+	@Builder dragBar(buttonIndex: 0 | 1){
+		Row(){
+			if(buttonIndex == 0 && this.customButton){
+				this.customButton()
+			}else if (buttonIndex == 1 && this.customSecondButton) {
+				this.customSecondButton()
+			}else{
+				Row()
+					.width(getSizeByUnit(this.buttonSize))
+					.aspectRatio(1)
+					.backgroundColor(this.buttonBgColor)
+					.borderRadius(this.baseStyle.borderRadiusMax)
+					.shadow({ radius: 2, color: "rgba(0,0,0,0.5)", offsetY: 1 })
+			}
+		}
+		.id(`ibest_slider_buttonBox_${this.uniId}`)
+		.position(this.getBarPosition(buttonIndex))
+	}
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
 		this.updateValue(this.value)
 		this.calcMainAxis()
-		setTimeout(() => {
-			this.getButtonSize()
-		}, 50)
 	}
 
 	// 获取slider 内容容器尺寸
 	getButtonSize(){
-		let size = getComponentsInfo(this.uiContext, `buttonBox_${this.uniId}`)
+		let size = getComponentsInfo(this.uiContext, `ibest_slider_buttonBox_${this.uniId}`)
 		this.buttonWidth = size.width
 		this.buttonHeight = size.height
 	}
-	getBarPosition(): LocalizedEdges{
+	getActiveLinePosition(): LocalizedEdges{
 		if(this.reverse){
 			return this.vertical ? {
 				bottom: { value: this.barOffset, unit: LengthUnit.PERCENT }
@@ -124,6 +138,41 @@ export struct IBestSlider{
 			}
 		}
 	}
+	getBarPosition(buttonIndex: 0 | 1): LocalizedEdges{
+		let value: LengthMetrics = {
+			value: -this.buttonWidth/2,
+			unit: getLengthUnit()
+		}
+		if(Array.isArray(this.value)){
+			if(this.vertical){
+				return buttonIndex == 0 ? {
+					top: value
+				} : {
+					bottom: value
+				}
+			}else{
+				return buttonIndex == 0 ? {
+					start: value
+				} : {
+					end: value
+				}
+			}
+		}else{
+			if(this.reverse){
+				return this.vertical ? {
+					top: value
+				} : {
+					start: value
+				}
+			}else{
+				return this.vertical ? {
+					bottom: value
+				} : {
+					end: value
+				}
+			}
+		}
+	}
 	// 获取活动最大值
 	getScopeValue(){
 		return this.max - this.min
@@ -134,8 +183,7 @@ export struct IBestSlider{
 		const max = +this.max
 		const step = +this.step
 		value = clamp(value, min, max)
-		const diff = Math.round((value - min) / step) * step
-		return addNumber(min, diff)
+		return addNumber(min, Math.round((value - min) / step) * step)
 	}
 	// 计算选中条的长度百分比
 	calcMainAxis(){
@@ -161,9 +209,9 @@ export struct IBestSlider{
 		const x = touch.x
 		const y = touch.y
 		if(this.reverse){
-			value = (this.vertical ? Math.round((height - y) / height * scope) : Math.round((width - x) / width * scope)) + this.min
+			value = (this.vertical ? (height - y) / height * scope : (width - x) / width * scope) + this.min
 		}else{
-			value = (this.vertical ? Math.round(y / height * scope) : Math.round(x / width * scope)) + this.min
+			value = (this.vertical ? y / height * scope : x / width * scope) + this.min
 		}
 		switch (event.type){
 			case TouchType.Down:
@@ -179,9 +227,9 @@ export struct IBestSlider{
 						current = [left, value]
 						this.buttonIndex = 1
 					}
-					this.updateValue(current)
+					this.updateValue(current, true)
 				}else {
-					this.updateValue(value)
+					this.updateValue(value, true)
 				}
 				break
 			case TouchType.Move:
@@ -199,22 +247,19 @@ export struct IBestSlider{
 					}else{
 						current[index] = value
 					}
-					this.updateValue(current)
+					this.updateValue(current, true)
 				} else {
-					this.updateValue(value)
+					this.updateValue(value, true)
 				}
-				break
-			case TouchType.Up:
-				this.onChange(this.value)
 				break
 		}
 	}
 	// 更新值
-	updateValue(value: IBestSliderValue){
-		if (Array.isArray(value)) {
-			this.value = value.map(e => this.format(e)) as IBestSliderValue
-		} else {
-			this.value = this.format(value)
+	updateValue(value: IBestSliderValue, emitChange: boolean = false){
+		let val = Array.isArray(value) ? value.map(e => this.format(e)) as IBestSliderValue : this.format(value)
+		this.value = val
+		if (emitChange) {
+			this.onChange(val)
 		}
 	}
 
@@ -238,25 +283,16 @@ export struct IBestSlider{
 							.borderRadius(this.baseStyle.borderRadiusMax)
 							.opacity(this.disabled ? 0.5 : 1)
 						// 拖动按钮1
-						DragBar({
-							value: this.value,
-							uniId: this.uniId,
-							buttonIndex: 0,
-							customButton: this.customButton
-						})
+						this.dragBar(0)
 						// 拖动按钮2
 						if(Array.isArray(this.value)){
-							DragBar({
-								value: this.value,
-								buttonIndex: 1,
-								customButton: this.customSecondButton
-							})
+							this.dragBar(1)
 						}
 					}
-					.width(this.vertical ? convertDimensionsWidthUnit(this.buttonWidth || this.buttonSize) : "")
-					.height(this.vertical ? "" : convertDimensionsWidthUnit(this.buttonHeight || this.buttonSize))
+					.width(this.vertical ? this.buttonWidth || getSizeByUnit(this.buttonSize) : "")
+					.height(this.vertical ? "" : this.buttonHeight || getSizeByUnit(this.buttonSize))
 					.justifyContent(FlexAlign.Center)
-					.position(this.getBarPosition())
+					.position(this.getActiveLinePosition())
 				}
 				.width(CONTAINER_SIZE.FULL)
 				.height(CONTAINER_SIZE.FULL)
@@ -270,88 +306,26 @@ export struct IBestSlider{
 						this.onBgTouch(event)
 					})
 			}
-			.width(this.vertical ? convertDimensionsWidthUnit(this.buttonWidth) : CONTAINER_SIZE.FULL)
-			.height(this.vertical ? CONTAINER_SIZE.FULL : convertDimensionsWidthUnit(this.buttonHeight))
+			.width(this.vertical ? this.buttonWidth : CONTAINER_SIZE.FULL)
+			.height(this.vertical ? CONTAINER_SIZE.FULL : this.buttonHeight)
 		}
 		.padding({
-			left: this.vertical ? 0 : convertDimensionsWidthUnit(this.buttonWidth/2 + this.space),
-			right: this.vertical ? 0 : convertDimensionsWidthUnit(this.buttonWidth/2 + this.space),
-			top: this.vertical ? convertDimensionsWidthUnit(this.buttonHeight/2 + this.space) : convertDimensionsWidthUnit(this.space),
-			bottom: this.vertical ? convertDimensionsWidthUnit(this.buttonHeight/2 + this.space) : convertDimensionsWidthUnit(this.space)
+			left: this.vertical ? 0 : this.buttonWidth/2 + this.space,
+			right: this.vertical ? 0 : this.buttonWidth/2 + this.space,
+			top: this.vertical ? this.buttonHeight/2 + this.space : this.space,
+			bottom: this.vertical ? this.buttonHeight/2 + this.space : this.space
 		})
 		.enabled(!this.disabled)
-	}
-}
-
-@Component
-struct DragBar{
-	/**
-	 * 全局公共样式
-	 */
-	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp(IBestStorageKey.GLOBAL_CONFIG) config: IBestGlobalConfig = new IBestGlobalConfig()
-	@Prop value: IBestSliderValue
-	@Prop uniId: number
-	@Consume buttonWidth: number
-	@Consume buttonHeight: number
-	@Consume buttonSize: IBestStringNumber
-	@Consume buttonBgColor: ResourceColor
-	@Consume vertical: boolean
-	@Consume reverse: boolean
-	@Prop buttonIndex: 0 | 1 = 0
-	@BuilderParam customButton: CustomBuilder
-
-	getBarPosition(): LocalizedEdges{
-		let value: LengthMetrics = {
-			value: -convertDimensions(this.buttonWidth/2),
-			unit: getLengthUnit()
-		}
-		if(Array.isArray(this.value)){
-			if(this.vertical){
-				return this.buttonIndex == 0 ? {
-					top: value
-				} : {
-					bottom: value
-				}
-			}else{
-				return this.buttonIndex == 0 ? {
-					start: value
-				} : {
-					end: value
-				}
+		.onAppear(() => {
+			setTimeout(() => {
+				this.getButtonSize()
+			}, 50)
+		})
+		.onVisibleAreaChange([0,1], (isExpanding: boolean) => {
+			if(isExpanding && !this.buttonWidth){
+				this.getButtonSize()
 			}
-		}else{
-			if(this.reverse){
-				return this.vertical ? {
-					top: value
-				} : {
-					start: value
-				}
-			}else{
-				return this.vertical ? {
-					bottom: value
-				} : {
-					end: value
-				}
-			}
-		}
-	}
-
-	build() {
-		Row(){
-			if(this.customButton){
-				this.customButton()
-			}else{
-				Row()
-					.width(getSizeByUnit(this.buttonSize))
-					.aspectRatio(1)
-					.backgroundColor(this.buttonBgColor)
-					.borderRadius(this.baseStyle.borderRadiusMax)
-					.shadow({ radius: 2, color: "rgba(0,0,0,0.5)", offsetY: 1 })
-			}
-		}
-		.id(`buttonBox_${this.uniId}`)
-		.position(this.getBarPosition())
+		})
 	}
 }
 

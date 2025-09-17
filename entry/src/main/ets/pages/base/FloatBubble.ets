@@ -42,6 +42,7 @@ struct FloatBubblePage {
     @State bubbleShow1: boolean = false
     @State bubbleShow2: boolean = false
 
+    @State isChecked: boolean = true
     @State group: string = "bubbleGroup"
     @State active: string = "1"
     @State switchValue: boolean = true
@@ -75,9 +76,11 @@ struct FloatBubblePage {
             }
             ComponentShowContainer({ title: $r("app.string.component_checkbox") }) {
                 IBestCheckbox({
-                    value: true,
-                    name: '1',
-                    label: $r("app.string.content")
+                    value: this.isChecked,
+                    label: $r("app.string.content"),
+                    onChange: checked => {
+                        this.isChecked = checked as boolean
+                    }
                 })
             }
             ComponentShowContainer({ title: $r("app.string.component_radio") }) {
