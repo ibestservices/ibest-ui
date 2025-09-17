@@ -14,6 +14,21 @@ import {
 @Component
 export struct IBestCalendarDialog {
     /**
+     * 弹框展示状态
+     */
+    @Link @Watch("visibleChange") visible: boolean
+    /**
+     * 已选日期
+     * @since 2.1.8
+     */
+    @Link @Watch("valueChange") value: string | string[]
+    /**
+     * 默认选中日期
+     * @deprecated since 2.1.8
+     * @useinstead value
+     */
+    @Prop defaultSelectedDate: string[] = []
+    /**
      * 底部偏移
      */
     @Prop offsetY: number = 0
@@ -25,14 +40,6 @@ export struct IBestCalendarDialog {
      * 弹框圆角半径
      */
     @Prop cornerRadius: Length | BorderRadiuses | LocalizedBorderRadiuses = convertDimensionsWidthUnit(10)
-    /**
-     * 弹框展示状态
-     */
-    @Link visible: boolean
-    /**
-     * 默认选中日期
-     */
-    @Prop defaultSelectedDate: string[] = []
     /**
      * 单项宽度
      */
@@ -124,12 +131,11 @@ export struct IBestCalendarDialog {
      */
     onConfirm: (value: IBestCalendarConfirmResult[]) => void = () => {}
 
-    // 已选日期
-    @State selectedDate: IBestCalendarConfirmResult[] = []
+    @State selectedValue: string | string[] = []
 
     @Builder baseBuilder() {
         IBestCalendar({
-            defaultSelectedDate: this.selectedDate.length ? this.selectedDate.map(item => item.dateStr) : this.defaultSelectedDate,
+            value: $selectedValue,
             itemWidth: this.itemWidth,
             isShowLunar: this.isShowLunar,
             selectType: this.selectType,
@@ -155,13 +161,23 @@ export struct IBestCalendarDialog {
         })
     }
 
-    /**
-     * 获取日历选择结果 触发onConfirm回调函数 并关闭弹框
-     */
+    aboutToAppear(): void {
+        this.selectedValue = this.value || this.defaultSelectedDate
+    }
+
+    valueChange(){
+        this.selectedValue = this.value
+    }
+    visibleChange(){
+        if(this.visible){
+            this.valueChange()
+        }
+    }
+    // 获取日历选择结果 触发onConfirm回调函数 并关闭弹框
     onGetCalendarResult(value: IBestCalendarConfirmResult[]) {
         if(value.length){
-            this.selectedDate = value
-            this.onConfirm(this.selectedDate)
+            this.value = this.selectedValue
+            this.onConfirm(value)
             this.visible = false
         }
     }

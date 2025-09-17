@@ -9,8 +9,8 @@ import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import GlobalStore from '../../utils/GlobalStore'
 import { ImmersiveMode, LengthMetrics } from '@kit.ArkUI'
 
-const popupDuration = 200
-const hideDuration = 220
+const popupDuration = 150
+const hideDuration = 180
 
 interface PopupSize{
 	width: IBestStringNumber
@@ -362,8 +362,7 @@ export struct IBestPopup{
 	onClose: () => void = () => {}
 
 	private baseController: PopupBaseController = new PopupBaseController()
-	private uiContext = this.getUIContext()
-	private promptAction = this.uiContext.getPromptAction()
+	private promptAction = this.getUIContext().getPromptAction()
 	private dialogId: number = 0
 	@Builder defaultContentBuilder() {
 		IBestPopupBaseContent({
@@ -421,7 +420,7 @@ export struct IBestPopup{
 				this.defaultContentBuilder()
 			},
 			width: CONTAINER_SIZE.FULL,
-			height: this.uiContext.px2vp(GlobalStore.screenHeight),
+			height: GlobalStore.screenHeight,
 			backgroundBlurStyle: BlurStyle.NONE,
 			cornerRadius: 0,
 			alignment: this.getAlignment(),

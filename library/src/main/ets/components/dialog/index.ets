@@ -1,7 +1,7 @@
 import { IBestDialogView } from './dialog';
 import { getDefaultBaseStyle } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { convertDimensionsWidthUnit, sleep } from '../../utils/utils';
+import { convertDimensionsWidthUnit, handleBeforeFunction, sleep } from '../../utils/utils';
 import { IBestAwaitable, IBestStorageKey, IBestStringNumber } from '../../model/Global.type';
 import { ImmersiveMode, LengthMetrics, LevelMode } from '@kit.ArkUI';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
@@ -331,18 +331,6 @@ export struct IBestDialog {
 				return DialogAlignment.Center
 		}
 	}
-	// 结束前的动画
-	async handleBeforeClose(action: 'cancel' | 'confirm') {
-		let status = true
-		try {
-			if (this.beforeClose) {
-				status = await this.beforeClose(action)
-			}
-		} catch (e) {
-			status = false
-		}
-		return status
-	}
 	// 点击取消的回调
 	async handleCancel() {
 		if (this.cancelButtonDisabled || this.cancelButtonLoading) {
@@ -350,7 +338,7 @@ export struct IBestDialog {
 		}
 		if (this.beforeClose) {
 			this.cancelButtonLoading = true
-			const status = await this.handleBeforeClose('cancel');
+			const status = await handleBeforeFunction(this.beforeClose, 'cancel')
 			this.cancelButtonLoading = false
 			if (!status) {
 				return
@@ -370,7 +358,7 @@ export struct IBestDialog {
 		}
 		if (this.beforeClose) {
 			this.confirmButtonLoading = true
-			const status = await this.handleBeforeClose('confirm');
+			const status = await handleBeforeFunction(this.beforeClose, 'confirm')
 			this.confirmButtonLoading = false
 			if (!status) {
 				return

@@ -1,6 +1,6 @@
 import { emitter } from '../../utils/EventEmitter'
 import { COMPONENT_NAME, RADIO_GROUP_EVENT_NAME } from './index.type'
-import { convertDimensionsWidthUnit, getEventName, getSizeByUnit, sleep } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getEventName, getSizeByUnit, handleBeforeFunction, sleep } from '../../utils/utils'
 import { IBestAwaitable, IBestStringNumber } from '../../model/Global.type'
 
 @Component
@@ -59,19 +59,8 @@ export struct IBestRadioGroup {
 	initRadio() {
 		emitter.emit(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.active, this.disabled)
 	}
-	async handleBeforeClose(name: IBestStringNumber | boolean) {
-		let status = true
-		try {
-			if (this.beforeChange) {
-				status = await this.beforeChange(name)
-			}
-		} catch (e) {
-			status = false
-		}
-		return status
-	}
 	async onItemChange(name: IBestStringNumber | boolean) {
-		let status = await this.handleBeforeClose(name)
+		let status = await handleBeforeFunction(this.beforeChange, name)
 		if(!status){
 			return
 		}

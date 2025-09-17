@@ -270,7 +270,7 @@ export struct IBestStep{
 				.padding({left: 4, right: 4})
 				.aspectRatio(1)
 				.borderRadius(this.baseStyle.borderRadiusMax)
-				.border({width: 2, color: this.isActive() ? this.baseStyle.primary : IBestStepsColor.borderColor})
+				.border({width: 2, color: this.isActive() ? this.getActiveColor() : IBestStepsColor.borderColor})
 				.justifyContent(FlexAlign.Center)
 				.backgroundColor(IBestStepsColor.bgColor)
 				.id(this.getMarkId())

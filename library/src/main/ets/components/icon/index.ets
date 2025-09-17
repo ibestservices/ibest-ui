@@ -1,19 +1,18 @@
-import { IBestIconData } from './config';
-import { IBestIconDataType } from './index.type';
-import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
-import { IBestIconColor } from './color';
-import { IBestStringNumber } from '../../model/Global.type';
+import { IBestIconData } from './config'
+import { IBestIconDataType } from './index.type'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
+import { IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestIcon {
 	/**
-	 * 图标名称或图片链接
+	 * 图标名称、unicode 编码、图片链接
 	 */
-	@Prop name: keyof IBestIconDataType | ResourceStr = 'arrow'
+	@Prop @Require name: keyof IBestIconDataType | ResourceStr
 	/**
 	 * 图标颜色
 	 */
-	@Prop color: ResourceColor = IBestIconColor.iconColor
+	@Prop color: ResourceColor
 	/**
 	 * 图标大小
 	 */
@@ -24,6 +23,11 @@ export struct IBestIcon {
 	 */
 	@Prop iconRadius: Length | BorderRadiuses | LocalizedBorderRadiuses = 0
 	/**
+	 * 字体名称
+	 * @since 2.1.8
+     */
+	@Prop fontName: ResourceStr = ""
+	/**
 	 * 点击回调
 	 */
 	onIconClick: (event: TouchEvent) => void = () => {}
@@ -32,8 +36,8 @@ export struct IBestIcon {
 	}
 	build() {
 		if (typeof this.name == "string" && !this.isOnlineImage()) {
-			Text(Object(IBestIconData)[this.name])
-				.fontFamily('ibestFont')
+			Text(this.fontName ? this.name : Object(IBestIconData)[this.name as string])
+				.fontFamily(this.fontName || "ibestFont")
 				.fontColor(this.color)
 				.fontSize(getSizeByUnit(this.iconSize))
 				.borderRadius(getSizeByUnit(this.iconRadius))
@@ -43,7 +47,6 @@ export struct IBestIcon {
 		} else {
 			Image(this.name)
 				.width(getSizeByUnit(this.iconSize))
-				.aspectRatio(1)
 				.fillColor(this.color)
 				.borderRadius(getSizeByUnit(this.iconRadius))
 				.draggable(false)

@@ -410,13 +410,13 @@ struct IBestTab{
     }
     build() {
         Row() {
-            Row(){
-                if(this.item.icon) {
+            Row({space: this.baseStyle.spaceBase}){
+                if(this.item.icon && (!this.item.iconPosition || this.item.iconPosition == "left")) {
                     IBestIcon({
                         name: this.item.icon,
                         iconSize: this.fontSize,
                         color: this.getFontColor()
-                    }).margin({right: this.baseStyle.spaceBase})
+                    })
                 }
                 Text(){
                     Span(this.item.label)
@@ -430,6 +430,13 @@ struct IBestTab{
                 .maxLines(1)
                 .textOverflow({overflow: TextOverflow.Ellipsis})
 				.fontWeight(this.getIsActive() ? this.activeFontWeight : FontWeight.Normal)
+                if(this.item.icon && this.item.iconPosition == "right") {
+                    IBestIcon({
+                        name: this.item.icon,
+                        iconSize: this.fontSize,
+                        color: this.getFontColor()
+                    })
+                }
             }
             .id(`ibestTab_${this.uniId}_text_${this.item.name}`)
         }

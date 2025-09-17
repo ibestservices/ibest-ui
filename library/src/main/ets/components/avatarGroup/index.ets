@@ -60,7 +60,7 @@ export struct IBestAvatarGroup{
     @State avatarWidth: number = 0
     private uiContext = this.getUIContext()
 
-    onDidBuild(): void {
+    getWidth(){
         setTimeout(() => {
             this.avatarWidth = getComponentsInfo(this.uiContext, "ibest_avatar_0").width
         }, 50)
@@ -102,5 +102,15 @@ export struct IBestAvatarGroup{
                 .margin({left: index === 0 ? 0 : -(this.avatarWidth * this.gap)})
             })
         }
+        .onAppear(() => {
+            setTimeout(() => {
+                this.getWidth()
+            }, 10)
+        })
+        .onVisibleAreaChange([0,1], (isExpanding: boolean) => {
+            if(isExpanding && !this.avatarWidth){
+                this.getWidth()
+            }
+        })
     }
 }

@@ -1,5 +1,5 @@
 import { ComponentContent, ImmersiveMode, LengthMetrics, LevelMode, PromptAction } from '@kit.ArkUI'
-import { generateId } from '../utils/utils'
+import { generateId, handleBeforeFunction } from '../utils/utils'
 import { IBestDialogView } from '../components/dialog/dialog'
 import { IBestAwaitable, IBestStringNumber } from '../model/Global.type'
 import GlobalStore from '../utils/GlobalStore'
@@ -283,18 +283,6 @@ class IBestDialogParams extends IBestDialogOption {
 	}
 }
 
-async function handleBeforeClose(option: IBestDialogParams, action: 'cancel' | 'confirm'){
-	let status = true
-	if(option.beforeClose){
-		try {
-			status = await option.beforeClose(action)
-		} catch (e) {
-			status = false
-		}
-	}
-	return status
-}
-
 @Component
 struct DialogContent{
 	@Prop option: IBestDialogParams
@@ -302,7 +290,7 @@ struct DialogContent{
 		if (this.option.beforeClose) {
 			action == 'cancel' ? this.option.cancelButtonLoading = true : this.option.confirmButtonLoading = true
 			this.option.contentNode?.update(this.option)
-			let status = await handleBeforeClose(this.option, action)
+			let status = await handleBeforeFunction(this.option.beforeClose, action)
 			action == 'cancel' ? this.option.cancelButtonLoading = false : this.option.confirmButtonLoading = false
 			this.option.contentNode?.update(this.option)
 			if (!status) {
@@ -443,7 +431,7 @@ class Dialog{
 				if (reason == DismissReason.PRESS_BACK && !(option.closeOnBackPress ?? true) || reason == DismissReason.TOUCH_OUTSIDE && !option.closeOnClickOverlay) {
 					return
 				}
-				let status = await handleBeforeClose(params, "cancel")
+				let status = await handleBeforeFunction(params.beforeClose, "cancel")
 				if (!status) {
 					return
 				}

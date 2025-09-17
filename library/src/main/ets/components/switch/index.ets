@@ -1,7 +1,7 @@
 import { IBestAwaitable, IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit, handleBeforeFunction } from '../../utils/utils'
 import { IBestLoading } from '../loading'
 import { IBestSwitchColor } from './color'
 @Component
@@ -70,26 +70,16 @@ export struct IBestSwitch {
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
+	}
+	initSize(){
 		setTimeout(() => {
 			this.switchBarSize = getComponentsInfo(this.uiContext, `ibest_switch_${this.uniId}`).width
-		}, 20)
-	}
-	// 结束前的动画
-	async handleBeforeClose(value: boolean) {
-		let status = true
-		try {
-			if (this.onBeforeChange) {
-				status = await this.onBeforeChange(value)
-			}
-		} catch (e) {
-			status = false
-		}
-		return status
+		}, 50)
 	}
 	// 改变的回调
 	async handleChange() {
 		const nextValue = !this.value
-		let status = await this.handleBeforeClose(nextValue)
+		let status = await handleBeforeFunction(this.onBeforeChange, nextValue)
 		if(!status){
 			return
 		}
@@ -146,6 +136,16 @@ export struct IBestSwitch {
 			this.handleChange()
 			this.onClickSwitch()
 			this.onSwitchClick()
+		})
+		.onAppear(() => {
+			setTimeout(() => {
+				this.initSize()
+			}, 20)
+		})
+		.onVisibleAreaChange([0,1], (isExpanding: boolean) => {
+			if(isExpanding && !this.switchBarSize){
+				this.initSize()
+			}
 		})
 	}
 }

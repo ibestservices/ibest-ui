@@ -140,6 +140,7 @@ export struct IBestCollapseItem {
                     .margin({left: this.baseStyle.spaceBase})
                     .rotate({ z:1, angle: this.isExpand ? -180 : 0 })
                     .animation({ duration: 300 })
+                    .visibility(this.readOnly ? Visibility.Hidden : Visibility.Visible)
             }
             .padding({left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd, top: this.baseStyle.spaceSm, bottom: this.baseStyle.spaceSm})
             .stateStyles({
@@ -157,16 +158,18 @@ export struct IBestCollapseItem {
             })
             Scroll(){
                 Column(){
-                    Divider()
-                        .height(1)
-                        .color(IBestCollapseColor.borderColor)
-                        .position({left: 0, top: "-" + this.baseStyle.spaceSm as Dimension})
+                    if(this.isShowBorder){
+                        Divider()
+                            .height(1)
+                            .color(IBestCollapseColor.borderColor)
+                            .position({left: 0, top: "-" + this.baseStyle.spaceSm as Dimension})
+                    }
                     if(this.defaultBuilder){
                         this.defaultBuilder()
                     }
                 }
                 .width(CONTAINER_SIZE.FULL)
-                .padding({left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd, top: this.baseStyle.spaceSm, bottom: this.baseStyle.spaceSm})
+                .padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd, top: this.baseStyle.spaceSm, bottom: this.baseStyle.spaceSm })
                 .onAreaChange((oldVal: Area, newVal: Area) => {
                     if(oldVal.height != newVal.height){
                         this.contentHeight = newVal.height as number
@@ -186,7 +189,7 @@ export struct IBestCollapseItem {
                 duration: this.isShow ? 200 : 0,
                 curve: Curve.EaseInOut
             })
-            if(this.index > 0){
+            if(this.isShowBorder && this.index > 0){
                 Divider()
                     .width(`calc(100% - ${this.baseStyle.spaceMd} - ${this.baseStyle.spaceMd})`)
                     .height(1)

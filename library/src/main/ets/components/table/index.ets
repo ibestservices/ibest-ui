@@ -1,4 +1,4 @@
-import { getEventName, getResourceStr, getSizeByUnit } from '../../utils/utils'
+import { getComponentsInfo, getEventName, getResourceStr, getSizeByUnit } from '../../utils/utils'
 import { AnyType } from '../../model/AnyType'
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
@@ -46,11 +46,11 @@ export struct IBestTable {
     /**
      * 高度
      */
-    @Prop fixHeight: IBestStringNumber = "auto"
+    @Prop fixHeight: IBestStringNumber = ""
     /**
      * 最大高度
      */
-    @Prop maxHeight: IBestStringNumber = "auto"
+    @Prop maxHeight: IBestStringNumber
     /**
      * 表头背景色
      */
@@ -108,6 +108,9 @@ export struct IBestTable {
     @Provide columnList: IBestTableColumnInfo[] = []
     @Provide leftFixedColumnList: IBestTableColumnInfo[] = []
     @Provide rightFixedColumnList: IBestTableColumnInfo[] = []
+    @State headerHeight: number = 0
+    @State footerHeight: number = 0
+    private uiContext = this.getUIContext()
     private headerScroller: Scroller = new Scroller()
     private bodyHorizontalScroller: Scroller = new Scroller()
     private bodyVerticalScroller: Scroller = new Scroller()
@@ -134,10 +137,11 @@ export struct IBestTable {
 		}
 	}
     @Styles ibestTableFixBodyStyle(){
-        .height(getSizeByUnit(this.fixHeight))
-        .constraintSize({maxHeight: getSizeByUnit(this.maxHeight)})
+        .height(this.fixHeight ? CONTAINER_SIZE.FULL : '')
+        .constraintSize({maxHeight: this.maxHeight ? `calc(${this.maxHeight} - ${this.headerHeight}vp - ${this.footerHeight}vp)` : undefined})
         .align(Alignment.Start)
     }
+
     aboutToAppear() {
         this.uniId = this.getUniqueId()
         emitter.on(getEventName(COMPONENT_NAME, TABLE_EVENT_NAME.SEND_COLUMN_ITEM, this.tableId), this.uniId, (column: IBestTableColumnInfo): void => this.getColumn(column))
@@ -189,13 +193,15 @@ export struct IBestTable {
                 .scrollBar(BarState.Off)
                 .enableScrollInteraction(false)
                 .edgeEffect(EdgeEffect.None)
-                if(this.leftFixedColumnList){
+                if(this.leftFixedColumnList.length){
 					this.headerFooterCellBuilder("header", 'left')
                 }
                 if(this.rightFixedColumnList.length){
 					this.headerFooterCellBuilder("header", 'right')
                 }
             }
+            .width(CONTAINER_SIZE.FULL)
+            .id(`ibest_table_header_${this.uniId}`)
             Row(){
                 Scroll(this.bodyVerticalScroller){
                     Scroll(this.bodyHorizontalScroller){
@@ -248,14 +254,12 @@ export struct IBestTable {
                     .ibestTableFixScrollStyle('right')
                 }
             }
+            .width(CONTAINER_SIZE.FULL)
+            .layoutWeight(this.fixHeight ? 1 : undefined)
             if(this.showSummary){
                 Row(){
                     Scroll(this.footerScroller){
-						HeaderFooterCellRow({
-							cellType: 'footer',
-							cellPosition: 'body',
-							summaryMethod: this.summaryMethod
-						})
+                        this.headerFooterCellBuilder('footer', 'body')
                     }
                     .width(CONTAINER_SIZE.FULL)
                     .align(Alignment.Start)
@@ -263,29 +267,30 @@ export struct IBestTable {
                     .scrollBar(BarState.Off)
                     .enableScrollInteraction(false)
                     .edgeEffect(EdgeEffect.None)
-                    if(this.leftFixedColumnList){
-						HeaderFooterCellRow({
-							cellType: 'footer',
-							cellPosition: 'left',
-							summaryMethod: this.summaryMethod
-						})
+                    if(this.leftFixedColumnList.length){
+                        this.headerFooterCellBuilder('footer', 'left')
                     }
                     if(this.rightFixedColumnList.length){
-						HeaderFooterCellRow({
-							cellType: 'footer',
-							cellPosition: 'right',
-							summaryMethod: this.summaryMethod
-						})
+                        this.headerFooterCellBuilder('header', 'right')
                     }
                 }
+                .width(CONTAINER_SIZE.FULL)
+                .id(`ibest_table_footer_${this.uniId}`)
             }
             if(this.defaultBuilder){
                 this.defaultBuilder()
             }
         }
         .width(CONTAINER_SIZE.FULL)
+        .height(getSizeByUnit(this.fixHeight))
         .border({width: {left: this.showBorder ? 1 : 0, top: 1}, color: this.bdColor})
         .constraintSize({maxHeight: getSizeByUnit(this.maxHeight)})
+        .onAreaChange(() => {
+            let height1 = getComponentsInfo(this.uiContext, `ibest_table_header_${this.uniId}`).height
+            let height2 = getComponentsInfo(this.uiContext, `ibest_table_footer_${this.uniId}`).height
+            this.headerHeight = height1
+            this.footerHeight = height2
+        })
     }
 }
 

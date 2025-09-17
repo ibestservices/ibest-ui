@@ -90,10 +90,12 @@ struct PickerGroupPage {
 							}
 						}){
 							IBestPicker({
+								groupId: this.groupId,
 								options: this.options1,
 								value: $selectValue3
 							})
 							IBestPicker({
+								groupId: this.groupId,
 								options: this.options2,
 								value: $selectValue4
 							})
@@ -149,10 +151,12 @@ struct PickerGroupPage {
 								}
 							}) {
 								IBestPicker({
+									groupId: this.groupId,
 									options: this.options1,
 									value: $selectValue1
 								})
 								IBestPicker({
+									groupId: this.groupId,
 									options: this.options2,
 									value: $selectValue2
 								})

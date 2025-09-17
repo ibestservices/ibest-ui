@@ -16,6 +16,7 @@ import {
 	IBestRadio,
 	IBestRadioGroup,
 	IBestStepper,
+	IBestSwipeCell,
 	IBestSwitch,
 	IBestToast,
 	IBestUploader,
@@ -47,7 +48,7 @@ class Subject {
 struct FormPage {
 	@State title: string = ''
 	@State name: string = ""
-	@State phone: string = ""
+	@State phone: number | string = ""
 	private formId1: string = 'form1'
 	private controller1: IBestFormController = new IBestFormController()
 
@@ -327,6 +328,7 @@ struct FormPage {
 								})
 								IBestField({
 									formId: this.formId1,
+									type: "number",
 									prop: 'phone',
 									value: $phone,
 									label: "手机号",
@@ -337,6 +339,17 @@ struct FormPage {
 									]
 								})
 							}
+							IBestButton({
+								text: "设置值",
+								type: 'primary',
+								buttonSize: 'large',
+								onBtnClick: () => {
+									this.controller1.setFormValues({
+										"name": "测试",
+										"phone": 123456
+									})
+								}
+							})
 							IBestButton({
 								text: "验证姓名",
 								type: 'primary',
@@ -617,9 +630,7 @@ struct FormPage {
 			// 日历
 			IBestCalendarDialog({
 				visible: $visible1,
-				onConfirm: value => {
-					this.value11 = value[0].dateStr
-				}
+				value: $value11
 			})
 		}
 		.hideTitleBar(true)
@@ -635,7 +646,7 @@ struct subjectItem{
 	@State @Watch("typeChange") type: string = ""
 	@State @Watch("nameChange") name: string = ""
 	@State visible: boolean = false
-	@State @Watch("scoreChange") score: string = ""
+	@State @Watch("scoreChange") score: number = 0
 	private options: IBestPickerOption[] = [
 		{ text: '语文', value: '1' },
 		{ text: '数学', value: '2' },
@@ -660,37 +671,8 @@ struct subjectItem{
 			}
 		})
 	}
-	aboutToAppear(): void {
-		let item = this.item
-		if(item.type){
-			this.type = item.type
-		}
-		if(item.name){
-			this.name = item.name
-		}
-		if(item.score){
-			this.score = item.score.toString()
-		}
-	}
-	typeChange(){
-		this.item.type = this.type
-	}
-	nameChange(){
-		this.item.name = this.name
-	}
-	scoreChange(){
-		this.item.score = Number(this.score)
-	}
-
-	build() {
-		IBestCellGroup({title: `学科${this.index+1}`, hasBorder: false}){
-			Text("删除")
-				.fontColor(modeColor.textColor4)
-				.fontSize(FONT_SIZE.SM)
-				.position({right: 0, top: 17})
-				.onClick(() => {
-					this.delete(this.index)
-				})
+	@Builder contentBuilder(){
+		IBestCellGroup({title: `学科${this.index+1}(左滑删除)`, hasBorder: false}){
 			IBestField({
 				formId: this.formId,
 				prop: `type.${this.index}`,
@@ -717,5 +699,42 @@ struct subjectItem{
 				contentBuilder: (): void => this.pickerBuilder()
 			})
 		}
+	}
+	@Builder delBuilder(){
+		IBestButton({
+			type: "danger",
+			round: true,
+			text: "删除",
+			onBtnClick: () => {
+				this.delete(this.index)
+			}
+		}).margin({left: SPACE.SM, right: SPACE.SM, top: 40})
+	}
+
+	aboutToAppear(): void {
+		let item = this.item
+		if(item.type){
+			this.type = item.type
+		}
+		if(item.name){
+			this.name = item.name
+		}
+		this.score = item.score
+	}
+	typeChange(){
+		this.item.type = this.type
+	}
+	nameChange(){
+		this.item.name = this.name
+	}
+	scoreChange(){
+		this.item.score = Number(this.score)
+	}
+
+	build() {
+		IBestSwipeCell({
+			defaultContent: (): void => this.contentBuilder(),
+			rightContent: (): void => this.delBuilder()
+		})
 	}
 }

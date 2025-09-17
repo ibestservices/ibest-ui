@@ -69,7 +69,6 @@ export class GuideRect {
             throw new Error('Please check the rect params');
         }
         if (isStrict && (left < 0 || top < 0 || right < 0 || bottom < 0)) {
-            //throw new Error('Please check if the area is within the screen');
             return false
         }
         return true
