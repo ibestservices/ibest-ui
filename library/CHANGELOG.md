@@ -13,7 +13,7 @@
 #### bug修复:
 1. IBestPicker 选项value值为0时切换返回空问题;
 2. IBestCascader 异步加载方式重复打开报错问题;
-3. IBestRadio type为dot时中心不显示问题;
+3. IBestRadio type为dot时中心不显示问题.
 
 ## 2.1.8
 #### 新增:

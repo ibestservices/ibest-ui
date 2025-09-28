@@ -27,19 +27,19 @@
 //					"storeFile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p12"
 //				}
 //			},
-			{
-				"name": "default",
-				"type": "HarmonyOS",
-				"material": {
-					"certpath": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.cer",
-					"keyAlias": "debugKey",
-					"keyPassword": "0000001B5AEF4C7604B9034FF0265111E6919C3B1BB9CE9513381588E542A6F4F2512BA6387EAB99E805B4",
-					"profile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p7b",
-					"signAlg": "SHA256withECDSA",
-					"storeFile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p12",
-					"storePassword": "0000001BB96A19F44A5AE323929A73BCA1445BBE7C409DFBAFD91F81544C70357DF24E1527006B88470E9B"
-				}
-			}
+//			{
+//				"name": "default",
+//				"type": "HarmonyOS",
+//				"material": {
+//					"certpath": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.cer",
+//					"keyAlias": "debugKey",
+//					"keyPassword": "0000001B5AEF4C7604B9034FF0265111E6919C3B1BB9CE9513381588E542A6F4F2512BA6387EAB99E805B4",
+//					"profile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p7b",
+//					"signAlg": "SHA256withECDSA",
+//					"storeFile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p12",
+//					"storePassword": "0000001BB96A19F44A5AE323929A73BCA1445BBE7C409DFBAFD91F81544C70357DF24E1527006B88470E9B"
+//				}
+//			}
 		],
 		"products": [
 			{
