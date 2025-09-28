@@ -150,7 +150,7 @@ export struct IBestRadio {
 		if (this.getIsDisabled()) {
 			return IBestRadioColor.disabledIconColor
 		} else {
-			return this.shape === 'dot' ? this.checkedColor : IBestRadioColor.whiteColor
+			return this.shape === 'dot' ? (this.checkedColor || this.baseStyle.primary as string) : IBestRadioColor.whiteColor
 		}
 	}
 	// 是否是在左边的label

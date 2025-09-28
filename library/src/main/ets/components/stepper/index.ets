@@ -98,6 +98,41 @@ export struct IBestStepper {
 	 */
 	@Prop longPress: boolean = true
 	/**
+	 * 减少按钮背景色
+	 * @since 2.1.9
+     */
+	@Prop minusBtnBgColor: ResourceColor = IBestStepperColor.bg
+	/**
+	 * 增加按钮背景色
+	 * @since 2.1.9
+     */
+	@Prop plusBtnBgColor: ResourceColor = IBestStepperColor.bg
+	/**
+	 * 减少按钮边框色
+	 * @since 2.1.9
+     */
+	@Prop minusBtnBorderColor: ResourceColor
+	/**
+	 * 增加按钮边框色
+	 * @since 2.1.9
+     */
+	@Prop plusBtnBorderColor: ResourceColor
+	/**
+	 * 减少按钮图标颜色
+	 * @since 2.1.9
+     */
+	@Prop minusBtnIconColor: ResourceColor = IBestStepperColor.textColor
+	/**
+	 * 增加按钮图标颜色
+	 * @since 2.1.9
+     */
+	@Prop plusBtnIconColor: ResourceColor = IBestStepperColor.textColor
+	/**
+	 * 输入框背景色
+	 * @since 2.1.9
+     */
+	@Prop inputBgColor: ResourceColor = IBestStepperColor.bg
+	/**
 	 * 改变的回调
 	 */
 	onChange: (val: number) => void = () => {}
@@ -125,20 +160,17 @@ export struct IBestStepper {
 			IBestIcon({
 				name: type,
 				iconSize: this.iconSize,
-				color: IBestStepperColor.textColor
+				color: type == 'plus' ? this.plusBtnIconColor : this.minusBtnIconColor
 			})
 		}
 		.type(ButtonType.Normal)
-		.backgroundColor(this.disabled ? IBestStepperColor.disabledBg : IBestStepperColor.bg)
 		.width(getSizeByUnit(this.buttonSize))
-		.height(getSizeByUnit(this.buttonSize))
-		.borderRadius({
-			topLeft: getSizeByUnit(this.buttonRadius),
-			topRight: getSizeByUnit(this.buttonRadius),
-			bottomLeft: getSizeByUnit(this.buttonRadius),
-			bottomRight: getSizeByUnit(this.buttonRadius)
-		})
+		.aspectRatio(1)
+		.backgroundColor(type == 'plus' ? this.plusBtnBgColor : this.minusBtnBgColor)
+		.border({width: 1, color: type == 'plus' ? this.plusBtnBorderColor || this.plusBtnBgColor : (this.minusBtnBorderColor || this.minusBtnBgColor)})
+		.borderRadius(getSizeByUnit(this.buttonRadius))
 		.enabled(!this.getBtnDisabled(type))
+		.opacity(this.disableInput ? 0.5 : 1)
 		.onClick(() => {
 			this.handleClickStepperBtn(type == 'plus' ? STEPPER_BTN_TYPE.PLUS : STEPPER_BTN_TYPE.REDUCE)
 		})
@@ -233,7 +265,7 @@ export struct IBestStepper {
 		return this.disabled || (type == 'minus' ? this.reduceBtnDisabled || this.disableMinus : this.plusBtnDisabled || this.disablePlus)
 	}
 	build() {
-		Row() {
+		Row({space: 2}) {
 			if (this.showMinus) {
 				this.stepperBtn("minus")
 			}
@@ -244,15 +276,10 @@ export struct IBestStepper {
 					.width(getSizeByUnit(this.inputWidth))
 					.height(getSizeByUnit(this.buttonSize))
 					.padding(0)
-					.margin({
-						top: 0,
-						bottom: 0,
-						left: convertDimensionsWidthUnit(2),
-						right: convertDimensionsWidthUnit(2)
-					})
+					.margin(0)
 					.fontSize(this.baseStyle.fontSizeMd)
 					.fontColor(this.disabled ? IBestStepperColor.disabledTextColor : IBestStepperColor.textColor)
-					.backgroundColor(IBestStepperColor.bg)
+					.backgroundColor(this.inputBgColor)
 					.borderRadius(0)
 					.textAlign(TextAlign.Center)
 					.onBlur(() => this.handleInputNumChange('blur', this.inputNumValue))

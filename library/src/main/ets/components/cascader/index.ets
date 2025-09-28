@@ -9,6 +9,7 @@ import { IBestCascaderColor } from './color'
 import { IBestIcon } from '../icon'
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
+
 @Component
 export struct IBestCascaderContent{
 	/**
@@ -16,7 +17,7 @@ export struct IBestCascaderContent{
 	 */
 	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	// 是否横屏
-	@StorageProp(IBestStorageKey.IS_LANDSCAPE) @Watch("getListHeight") isLandscape: boolean = false
+	@StorageProp(IBestStorageKey.IS_LANDSCAPE) isLandscape: boolean = false
 	/**
 	 * 可选项数据源
 	 */
@@ -66,7 +67,7 @@ export struct IBestCascaderContent{
 	//数据源实例
 	@State optionsInstance: IBestCascaderOptionInstance[][] = []
 	// swiper默认显示选项
-	@State swiperDefaultIndex: number = 0
+	@State swiperIndex: number = 0
 	private swiperController: SwiperController = new SwiperController()
 
 	aboutToAppear(): void {
@@ -117,15 +118,18 @@ export struct IBestCascaderContent{
 			this.createAllOptionsInstance(array, children[i].children, index + 1)
 		}else{
 			this.optionsInstance = array
-			this.tabList = this.value.map((item: IBestStringNumber, j: number) => {
+			let value = this.value
+			if(value.length > array.length){
+				value = value.slice(0, array.length)
+			}
+			this.tabList = value.map((item: IBestStringNumber, j: number) => {
 				let a = array[j].find((e: IBestCascaderOptionInstance) => e.value == item)
 				return new IBestTabItem({
 					label: a?.text ?? "",
-					name: `${j}`
+					name: j
 				})
 			})
-			this.currentTabName = this.value.length - 1
-			this.swiperDefaultIndex = this.value.length - 1
+			this.currentTabName = this.swiperIndex = value.length - 1
 		}
 	}
 	// 选项变化
@@ -185,13 +189,21 @@ export struct IBestCascaderContent{
 	}
 	// 创建下一个选项的数据实例
 	async createNextSwiperData(children: IBestCascaderOption[], index: number){
-		let name = Number(this.tabList[this.tabList.length - 1].name) + 1
-		await sleep(50)
-		this.tabList.push(new IBestTabItem({
+		await sleep(30)
+		let tab = new IBestTabItem({
 			label: $r("app.string.ibest_please_select"),
-			name
-		}))
-		this.optionsInstance.push(this.createOptionsInstance(children))
+			name: index
+		})
+		let optionsInstance = this.createOptionsInstance(children)
+		if(this.value[index] !== undefined){
+			let i = optionsInstance.findIndex((e: IBestCascaderOptionInstance) => e.value == this.value[index])
+			if(i > -1){
+				optionsInstance[i].actived = true
+				tab.label = optionsInstance[i].text
+			}
+		}
+		this.optionsInstance.push(optionsInstance)
+		this.tabList.push(tab)
 		await sleep(30)
 		this.tabChange(index)
 	}
@@ -251,7 +263,7 @@ export struct IBestCascaderContent{
 			.indicator(false)
 			.loop(false)
 			.duration(100)
-			.index(this.swiperDefaultIndex)
+			.index(this.swiperIndex)
 			.onChange(index => {
 				this.currentTabName = index
 			})

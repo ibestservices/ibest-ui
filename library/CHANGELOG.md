@@ -1,5 +1,20 @@
 # 版本记录
 
+## 2.1.9
+#### 新增：
+1. 新增 IBestCaliper 卡尺 组件;
+2. 新增 IBestReadMore 查看更多 组件;
+3. 新增 IBestSegmented 分段控制器 组件;
+4. IBestIcon 新增 iconAnimation 属性;
+5. IBestActionSheet onSelect 新增 name 参数;
+6. IBestSlider 新增 ticks 属性;
+7. IBestStepper 新增 minusBtnBgColor minusBtnBorderColor minusBtnIconColor plusBtnBgColor plusBtnBorderColor plusBtnIconColor inputBgColor 属性.
+
+#### bug修复:
+1. IBestPicker 选项value值为0时切换返回空问题;
+2. IBestCascader 异步加载方式重复打开报错问题;
+3. IBestRadio type为dot时中心不显示问题;
+
 ## 2.1.8
 #### 新增:
 1. IBestIcon 新增 fontName 属性,支持使用自定义图标;

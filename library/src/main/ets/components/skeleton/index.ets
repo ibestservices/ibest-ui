@@ -71,7 +71,7 @@ export struct IBestSkeletonParagraph{
 	 * 全局公共样式
 	 */
 	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp(IBestStorageKey.LANGUAGE) colorMode: ColorMode = ColorMode.LIGHT
+	@StorageProp(IBestStorageKey.COLOR_MODE) colorMode: ColorMode = ColorMode.LIGHT
 	/**
 	 * 占位图类型
 	 */

@@ -59,7 +59,7 @@ export struct IBestPagination {
 	/**
 	 * 未激活文字颜色
      */
-	@Prop textColor: ResourceColor = IBestPaginationColor.textColor
+	@Prop textColor: ResourceColor = this.baseStyle.primary
 	/**
 	 * 激活文字颜色
      */
@@ -75,7 +75,7 @@ export struct IBestPagination {
 	/**
 	 * 激活背景色
      */
-	@Prop activeBgColor: ResourceColor = IBestPaginationColor.activeBg
+	@Prop activeBgColor: ResourceColor = this.baseStyle.primary
 	/**
 	 * 禁用背景色
      */
@@ -162,9 +162,6 @@ export struct IBestPagination {
 		}
 		return border
 	}
-	getActiveBgColor(){
-		return this.activeBgColor || IBestPaginationColor.activeBg
-	}
 	updateCurrentPage(value: number) {
 		value = Math.max(1, Math.min(value, this.getCount()))
 		if (this.currentPage !== value) {
@@ -194,7 +191,7 @@ export struct IBestPagination {
 							.fontColor(page.active ? this.activeTextColor : this.textColor)
 							.borderRadius(0)
 							.padding(0)
-							.backgroundColor(page.active ? this.getActiveBgColor() : this.bgColor)
+							.backgroundColor(page.active ? this.activeBgColor : this.bgColor)
 							.border({ width: { left: 1, top: 1, bottom: 1, right: 0 }, color: this.bdColor })
 							.onClick(() => this.updateCurrentPage(page.number))
 					})

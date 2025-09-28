@@ -13,13 +13,13 @@ export function PickerBuilder(_: string, title: string){
 struct PickerPage {
 	@State title: string = ''
 	@State options1: IBestPickerOption[] = [
-		{ text: '南京', value: 'Nanjing' },
-		{ text: '苏州', value: 'Suzhou' },
-		{ text: '常州', value: 'Chazhou' },
-		{ text: '扬州', value: 'Yangzhou' },
-		{ text: '镇江', value: 'Zhejiang' }
+		{ text: '南京', value: 1 },
+		{ text: '苏州', value: 0 },
+		{ text: '常州', value: 2 },
+		{ text: '扬州', value: 3 },
+		{ text: '镇江', value: 4 }
 	]
-	@State selectValue: string[] = []
+	@State selectValue: number[] = [0]
 	@State selectValue1: string[] = []
 	@State selectValue2: string[] = ["Suzhou"]
 	@Builder pickerBuilder(){
@@ -139,10 +139,10 @@ struct PickerPage {
 							title: "标题",
 							value: $selectValue,
 							onConfirm: (selectedValues, selectTexts) => {
-								IBestToast.show(selectTexts.join('-'))
+								IBestToast.show(JSON.stringify(this.selectValue))
 							},
 							onChange: (selectedValues, selectTexts) => {
-								IBestToast.show(selectTexts.join('-'))
+								IBestToast.show(JSON.stringify(this.selectValue))
 							}
 						})
 					}

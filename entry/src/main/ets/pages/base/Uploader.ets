@@ -34,11 +34,7 @@ struct UploaderPage {
 	@State imgList4: IBestUploaderFile[] = []
 	@State imgList5: IBestUploaderFile[] = []
 	@State imgList6: IBestUploaderFile[] = []
-	@State imgList7: IBestUploaderFile[] = [
-		new IBestUploaderFile({
-			url: "https://pic1.zhimg.com/80/v2-03cdb3bff2090e98885fe4951799a1f4_1440w.webp"
-		})
-	]
+	@State imgList7: IBestUploaderFile[] = []
 	@State imgList8: IBestUploaderFile[] = []
 	@State imgList9: IBestUploaderFile[] = [
 		new IBestUploaderFile({
@@ -56,13 +52,12 @@ struct UploaderPage {
 			.fontSize(14)
 	}
 
-	@Builder previewItem(file: IBestUploaderFile){
+	@Builder previewItem(file: IBestUploaderFile, index: number){
 		Column() {
 			Image(file.url || file.previewUri)
 				.width("100%")
 			Text(file.name)
 				.width("100%")
-				.fontColor("#fff")
 				.fontSize(14)
 				.textAlign(TextAlign.Center)
 				.maxLines(1)
@@ -144,7 +139,7 @@ struct UploaderPage {
 					ComponentShowContainer({ title: '自定义预览内容' }) {
 						IBestUploader({
 							fileList: $imgList7,
-							customPreview: (file: IBestUploaderFile): void => this.previewItem(file)
+							customPreview: (file: IBestUploaderFile, index: number): void => this.previewItem(file, index)
 						})
 					}
 				}

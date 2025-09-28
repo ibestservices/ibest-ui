@@ -46,6 +46,11 @@
 			"buildFunction": "CalendarBuilder"
 		},
 		{
+			"name": "Caliper",
+			"pageSourceFile": "src/main/ets/pages/base/Caliper.ets",
+			"buildFunction": "CaliperBuilder"
+		},
+		{
 			"name": "CarInput",
 			"pageSourceFile": "src/main/ets/pages/base/CarInput.ets",
 			"buildFunction": "CarInputBuilder"
@@ -121,14 +126,14 @@
 			"buildFunction": "SearchBuilder"
 		},
 		{
-			"name": "Slider",
-			"pageSourceFile": "src/main/ets/pages/base/Slider.ets",
-			"buildFunction": "SliderBuilder"
-		},
-		{
 			"name": "Signature",
 			"pageSourceFile": "src/main/ets/pages/base/Signature.ets",
 			"buildFunction": "SignatureBuilder"
+		},
+		{
+			"name": "Slider",
+			"pageSourceFile": "src/main/ets/pages/base/Slider.ets",
+			"buildFunction": "SliderBuilder"
 		},
 		{
 			"name": "Stepper",
@@ -261,9 +266,19 @@
 			"buildFunction": "ProgressBuilder"
 		},
 		{
+			"name": "ReadMore",
+			"pageSourceFile": "src/main/ets/pages/base/ReadMore.ets",
+			"buildFunction": "ReadMoreBuilder"
+		},
+		{
 			"name": "SectorProgress",
 			"pageSourceFile": "src/main/ets/pages/base/SectorProgress.ets",
 			"buildFunction": "SectorProgressBuilder"
+		},
+		{
+			"name": "Segmented",
+			"pageSourceFile": "src/main/ets/pages/base/Segmented.ets",
+			"buildFunction": "SegmentedBuilder"
 		},
 		{
 			"name": "Skeleton",

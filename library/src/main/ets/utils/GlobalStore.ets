@@ -1,7 +1,6 @@
 import window from '@ohos.window';
 import { bundleManager, common } from '@kit.AbilityKit';
 import { IBestStorageKey } from '../model/Global.type';
-
 import { setIBestUIBaseStyle } from '../theme-chalk/src';
 import { display } from '@kit.ArkUI';
 import { IBestGlobalConfig, IBestGlobalConfigType } from '../model/GlobalConfig';

@@ -105,6 +105,10 @@
 			"value": "Calendar 日历"
 		},
 		{
+			"name": "component_caliper",
+			"value": "Caliper 卡尺"
+		},
+		{
 			"name": "component_carInput",
 			"value": "CarInput 车牌输入框"
 		},
@@ -165,12 +169,12 @@
 			"value": "Search 搜索"
 		},
 		{
-			"name": "component_slider",
-			"value": "Slider 滑块"
-		},
-		{
 			"name": "component_signature",
 			"value": "Signature 签名"
+		},
+		{
+			"name": "component_slider",
+			"value": "Slider 滑块"
 		},
 		{
 			"name": "component_stepper",
@@ -273,8 +277,16 @@
 			"value": "Popover 气泡弹出框"
 		},
 		{
+			"name": "component_readmore",
+			"value": "ReadMore 查看更多"
+		},
+		{
 			"name": "component_progress",
 			"value": "Progress 进度条"
+		},
+		{
+			"name": "component_segmented",
+			"value": "Segmented 分段控制器"
 		},
 		{
 			"name": "component_sectorprogress",
