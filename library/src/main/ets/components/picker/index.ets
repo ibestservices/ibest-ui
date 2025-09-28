@@ -42,7 +42,7 @@ export struct IBestPicker{
 	 * 全局公共样式
 	 */
 	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp(IBestStorageKey.LANGUAGE) colorMode: ColorMode = ColorMode.LIGHT
+	@StorageProp(IBestStorageKey.COLOR_MODE) colorMode: ColorMode = ColorMode.LIGHT
 	/**
 	 * 分组id
 	 */
@@ -250,7 +250,6 @@ export struct IBestPicker{
 		.height((this.itemCalcHeight || 44) * this.visibleItemCount)
 		.clip(true)
 	}
-
 	@Builder horizontalBuilder(){
 		Stack() {
 			// 数据层
@@ -532,7 +531,7 @@ export struct IBestPicker{
 	}
 	// 根据索引设置value
 	setValueByIndex(){
-		this.value = this.getColumns().map((item, index) => item[this.indexArr[index]]?.value || "")
+		this.value = this.getColumns().map((item, index) => item[this.indexArr[index]]?.value ?? "")
 	}
 	// 根据索引获取值 文字
 	getTextByIndex(): string[]{
@@ -540,7 +539,7 @@ export struct IBestPicker{
 	}
 	// 根据索引获取值
 	getValueByIndex(): IBestStringNumber[]{
-		return this.getColumns().map((item, index) => item[this.indexArr[index]]?.value || "")
+		return this.getColumns().map((item, index) => item[this.indexArr[index]]?.value ?? "")
 	}
 
 	build() {

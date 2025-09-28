@@ -185,6 +185,7 @@ export struct IBestCollapseItem {
             .width(CONTAINER_SIZE.FULL)
             .height(this.getHeight())
             .scrollBar(BarState.Off)
+            .enableScrollInteraction(false)
             .animation({
                 duration: this.isShow ? 200 : 0,
                 curve: Curve.EaseInOut

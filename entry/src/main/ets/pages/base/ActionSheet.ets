@@ -61,8 +61,8 @@ struct ActionSheetPage {
 					onBtnClick: () => {
 						IBestActionSheet.show({
 							actions: ["选项一", "选项二", "选项三"],
-							onSelect: (index: number) => {
-								IBestToast.show(`点击了第${index}个选项`)
+							onSelect: (index: number, name?: string | number) => {
+								IBestToast.show(`点击了第${index}个选项，名称为${name}`)
 							},
 							beforeClose: () => {
 								return new Promise((resolve, reject) => {
@@ -91,8 +91,8 @@ struct ActionSheetPage {
 								{ name: '选项二', icon: "https://ibestui.ibestservices.com/favicon.ico" },
 								{ name: '选项三', icon: $r("app.media.ibest_icon_star_o") }
 							],
-							onSelect: (index: number) => {
-								IBestToast.show(`点击了第${index}个选项`)
+							onSelect: (index: number, name?: string | number) => {
+								IBestToast.show(`点击了第${index}个选项，名称为${name}`)
 							}
 						})
 					}
@@ -107,8 +107,8 @@ struct ActionSheetPage {
 								{ name: '选项三' }
 							],
 							cancelText: '取消',
-							onSelect: (index: number) => {
-								IBestToast.show(`点击了第${index}个选项`)
+							onSelect: (index: number, name?: string | number) => {
+								IBestToast.show(`点击了第${index}个选项，名称为${name}`)
 							},
 							onCancel: () => {
 								IBestToast.show(`取消`)
@@ -156,8 +156,8 @@ struct ActionSheetPage {
 								{ name: '选项二', value: '2' },
 								{ name: '选项三', value: '3' }
 							],
-							onSelect: (index: number, value?: string | number) => {
-								IBestToast.show(`点击了第${index}个选项，标识为${value}`)
+							onSelect: (index: number, value?: string | number, name?: string | number) => {
+								IBestToast.show(`点击了第${index}个选项，标识为${value}，名称为${name}`)
 							}
 						})
 					}
@@ -168,23 +168,23 @@ struct ActionSheetPage {
 						IBestActionSheet.show({
 							actions: [
 								[
-									{ name: '选项一', value: '1', icon: "https://img0.baidu.com/it/u=3543009939,2144310597&fm=253&fmt=auto&app=138&f=JPEG?w=704&h=500", isDisabled: true },
-									{ name: '选项二', value: '2', icon: "https://img0.baidu.com/it/u=2123036823,827931345&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800" },
-									{ name: '选项三', value: '3', icon: "https://img0.baidu.com/it/u=180300320,2476402890&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800" },
-									{ name: '选项四', value: '4', icon: "https://img0.baidu.com/it/u=3335548191,973645921&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500" },
-									{ name: '选项五', value: '5', icon: "https://img0.baidu.com/it/u=2138148539,1764238981&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500" },
-									{ name: '选项六', value: '6', icon: "https://img1.baidu.com/it/u=733418214,3903491350&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313" },
-									{ name: '选项七', value: '7', icon: "https://img1.baidu.com/it/u=1718642830,3610884461&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500" }
+									{ name: '选项一', value: '1', icon: "https://img1.baidu.com/it/u=626427719,3451396095&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500", isDisabled: true },
+									{ name: '选项二', value: '2', icon: "https://img1.baidu.com/it/u=700838104,4078529388&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" },
+									{ name: '选项三', value: '3', icon: "https://img2.baidu.com/it/u=4065465253,912770067&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=800" },
+									{ name: '选项四', value: '4', icon: "https://img1.baidu.com/it/u=2725751717,2191296050&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" },
+									{ name: '选项五', value: '5', icon: "https://img1.baidu.com/it/u=3680872223,3132467302&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" },
+									{ name: '选项六', value: '6', icon: "https://img2.baidu.com/it/u=2265290985,2435372066&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" },
+									{ name: '选项七', value: '7', icon: "https://img2.baidu.com/it/u=2400134426,605051231&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=800" }
 								],
 								[
-									{ name: '选项八', value: '8', icon: "https://img0.baidu.com/it/u=145395842,2013084776&fm=253&fmt=auto&app=120&f=JPEG?w=889&h=500" },
-									{ name: '选项九', value: '9', icon: "https://img2.baidu.com/it/u=840413173,1942127153&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500" },
-									{ name: '选项十', value: '10', icon: "https://img0.baidu.com/it/u=863503243,1550253516&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800" }
+									{ name: '选项八', value: '8', icon: "https://img0.baidu.com/it/u=4206081356,667300244&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" },
+									{ name: '选项九', value: '9', icon: "https://img0.baidu.com/it/u=2290976380,3655879079&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=500" },
+									{ name: '选项十', value: '10', icon: "https://img0.baidu.com/it/u=1901164914,2143836773&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=500" }
 								]
 							],
 							cancelText: '取消',
-							onSelect: (index1: number, index2?: number | string, value?: number | string) => {
-								IBestToast.show(`点击了第${index1}行第${index2}个选项，标识为${value}`)
+							onSelect: (index1: number, index2?: number | string, value?: number | string, name?: string | number) => {
+								IBestToast.show(`点击了第${index1}行第${index2}个选项，标识为${value}，名称为${name}`)
 							}
 						})
 					}

@@ -8,7 +8,7 @@ import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestDateTimePicker {
-    @StorageProp(IBestStorageKey.LANGUAGE) @Watch("init") IBestLanguage: string = "zh"
+    @StorageProp(IBestStorageKey.LANGUAGE) @Watch("init") language: string = "zh"
 	/**
 	 * 分组id
 	 */

@@ -18,10 +18,10 @@
 
 ## 介绍
 
-IBest-UI由 <a style="color:#0366d6;" href="https://www.ibestservices.com/" target="_blank">安徽百得思维信息科技有限公司</a> 
-开源，是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库, 包含 Button、Calendar、Form、Field、Picker、Popup、Toast、Dialog、ImageCropper 等50+个优质组件，上手简单，使用方便，可大大提高鸿蒙开发者的开发效率。
+<a href="https://ibestui.ibestservices.com/" target="_blank">IBest-UI</a>
+由 <a href="https://www.ibestservices.com" target="_blank">安徽百得思维信息科技有限公司</a> 开源，是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库，包含 Button、Calendar、Form、Field、Picker、Popup、Toast、Dialog、ImageCropper 等60+个优质组件，上手简单，使用方便，可大大提高鸿蒙开发者的开发效率。
 
-目前 <a style="color:#0366d6;" onclick="openPage('https://www.ibestservices.com)" title="安徽百得思维信息科技有限公司">ibestservices 官方</a> 提供了 <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui')">V1</a> 和 <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2')">V2</a> 版本，当前为状态管理 **V1** 版本，开发者可根据自己项目使用的**状态管理版本**选择对应的版本进行开发。
+目前 <a href="https://www.ibestservices.com" target="_blank" title="安徽百得思维信息科技有限公司">ibestservices 官方</a> 提供了 <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui')">V1</a> 和 <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2')">V2</a> 版本，当前为状态管理 **V1** 版本，开发者可根据自己项目使用的**状态管理版本**选择对应的版本进行开发。
 
 <div>
 	<img src="https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI-Light.png" width="48%">
@@ -29,7 +29,7 @@ IBest-UI由 <a style="color:#0366d6;" href="https://www.ibestservices.com/" targ
 </div>
 
 ## 特性
-- 🚀 50+ 个高质量组件，覆盖移动端主流场景
+- 🚀 60+个高质量组件，覆盖移动端主流场景
 - 💪 单元测试覆盖率超过 90%，提供稳定性保障
 - 📖 提供丰富的中文文档和组件示例
 - 🍭 支持主题定制，内置 100+ 个主题变量
@@ -64,6 +64,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | 组件                    | 介绍                                                                             |                                                                                               |
 |:----------------------|:-------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
 | Calendar 日历           | 日历用于选择单个、多个日期或日期范围。                                                            | <a href="https://ibestui.ibestservices.com/components/calendar/" target="_blank">文档</a>       |
+| Caliper 卡尺            | 用于选择某个范围内的值。                                                                   | <a href="https://ibestui.ibestservices.com/components/caliper/" target="_blank">文档</a>        |
 | CarInput 车牌输入框        | 用于输入车牌号码。                                                                      | <a href="https://ibestui.ibestservices.com/components/carInput/" target="_blank">文档</a>       |
 | CarKeyboard 车牌键盘      | 带网格的输入框组件，通常与车牌输入框组件或其它自定义输入框配合使用。                                             | <a href="https://ibestui.ibestservices.com/components/carkeyboard/" target="_blank">文档</a>    |
 | Cascader 级联选择器        | 级联选择框，用于多层级数据的选择，典型场景为省市区选择。                                                   | <a href="https://ibestui.ibestservices.com/components/cascader/" target="_blank">文档</a>       |
@@ -79,8 +80,8 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | Radio 单选框             | 在一组备选项中进行单选。                                                                   | <a href="https://ibestui.ibestservices.com/components/radio/" target="_blank">文档</a>          |
 | Rate 评分               | 用于对事物进行评级操作。                                                                   | <a href="https://ibestui.ibestservices.com/components/rate/" target="_blank">文档</a>           |
 | Search 搜索             | 用于搜索场景的输入框组件。                                                                  | <a href="https://ibestui.ibestservices.com/components/search/" target="_blank">文档</a>         |
-| Slider 滑块             | 滑动输入条，用于在给定的范围内选择一个值。                                                          | <a href="https://ibestui.ibestservices.com/components/slider/" target="_blank">文档</a>         |
 | Signature 签名          | 用于签名场景的组件，基于 Canvas 实现。                                                        | <a href="https://ibestui.ibestservices.com/components/signature/" target="_blank">文档</a>      |
+| Slider 滑块             | 滑动输入条，用于在给定的范围内选择一个值。                                                          | <a href="https://ibestui.ibestservices.com/components/slider/" target="_blank">文档</a>         |
 | Stepper 步进器           | 步进器由增加按钮、减少按钮和输入框组成，用于在一定范围内输入、调整数字。                                           | <a href="https://ibestui.ibestservices.com/components/stepper/" target="_blank">文档</a>        |
 | Switch 开关             | 用于在打开和关闭状态之间进行切换。                                                              | <a href="https://ibestui.ibestservices.com/components/switch/" target="_blank">文档</a>         |
 | TimePicker 时间选择       | 日期选择器，用于选择年、月、日，通常与弹出层组件配合使用。                                                  | <a href="https://ibestui.ibestservices.com/components/timepicker/" target="_blank">文档</a>     |
@@ -115,7 +116,9 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | NoticeBar 通知栏        | 用于循环播放展示一组消息通知。                    | <a href="https://ibestui.ibestservices.com/components/noticeBar/" target="_blank">文档</a>      |
 | Popover 气泡弹出框        | 弹出式的气泡菜单。                          | <a href="https://ibestui.ibestservices.com/components/popover/" target="_blank">文档</a>        |
 | Progress 进度条         | 用于展示操作的当前进度。                       | <a href="https://ibestui.ibestservices.com/components/progress/" target="_blank">文档</a>       |
+| ReadMore 查看更多        | 用于内容超出指定高度时，显示"展开/收起"按钮。           | <a href="https://ibestui.ibestservices.com/components/readMore/" target="_blank">文档</a>       |
 | SectorProgress 扇形进度条 | 用于展示进度、占比。                         | <a href="https://ibestui.ibestservices.com/components/sectorProgress/" target="_blank">文档</a> |
+| Segmented 分段控制器      | 用于展示多个选项并允许用户选择其中单个选项。             | <a href="https://ibestui.ibestservices.com/components/segmented/" target="_blank">文档</a>      |
 | Skeleton 骨架屏         | 用于在内容加载过程中展示一组占位图形。                | <a href="https://ibestui.ibestservices.com/components/skeleton/" target="_blank">文档</a>       |
 | Steps 步骤条            | 用于展示操作流程的各个环节，让用户了解当前的操作在整体流程中的位置。 | <a href="https://ibestui.ibestservices.com/components/steps/" target="_blank">文档</a>          |
 | Table 表格             | 用于展示多条结构类似的数据。                     | <a href="https://ibestui.ibestservices.com/components/table/" target="_blank">文档</a>          |

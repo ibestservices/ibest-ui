@@ -137,6 +137,10 @@
 			"value": "#f5f5f7"
 		},
 		{
+			"name": "ibest_caliper_scale_color",
+			"value": "$color:ibest_gray_6"
+		},
+		{
 			"name": "ibest_cascader_background",
 			"value": "$color:ibest_background_2"
 		},
@@ -385,6 +389,18 @@
 			"value": "$color:ibest_gray_8"
 		},
 		{
+			"name": "ibest_segmented_background",
+			"value": "$color:ibest_background"
+		},
+		{
+			"name": "ibest_segmented_inactive_text_color",
+			"value": "$color:ibest_gray_7"
+		},
+		{
+			"name": "ibest_segmented_active_text_color",
+			"value": "$color:ibest_white"
+		},
+		{
 			"name": "ibest_water_mark_background",
 			"value": "$color:ibest_background_2"
 		},
@@ -403,14 +419,6 @@
 		{
 			"name": "ibest_pagination_background",
 			"value": "$color:ibest_white"
-		},
-		{
-			"name": "ibest_pagination_active_background",
-			"value": "$color:ibest_primary_color"
-		},
-		{
-			"name": "ibest_pagination_text_color",
-			"value": "$color:ibest_primary_color"
 		},
 		{
 			"name": "ibest_pagination_active_text_color",
@@ -485,10 +493,6 @@
 			"value": "$color:ibest_text_color_2"
 		},
 		{
-			"name": "ibest_step_active_color",
-			"value": "$color:ibest_primary_color"
-		},
-		{
 			"name": "ibest_car_keyboard_background",
 			"value": "$color:ibest_gray_2"
 		},
@@ -519,10 +523,6 @@
 		{
 			"name": "ibest_dropdown_menu_text_color",
 			"value": "$color:ibest_text_color"
-		},
-		{
-			"name": "ibest_dropdown_menu_active_color",
-			"value": "$color:ibest_primary_color"
 		},
 		{
 			"name": "ibest_dropdown_menu_border_color",

@@ -21,6 +21,7 @@ struct StepperPage {
 	@State value5: number = 10
 	@State value6: number = 14
 	@State value7: number = 1
+	@State value8: number = 1
 
 
 	build() {
@@ -82,6 +83,20 @@ struct StepperPage {
 							value: $value7,
 							inputWidth: 40,
 							buttonSize: 32
+						})
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '自定义样式' }) {
+						IBestStepper({
+							value: $value8,
+							buttonRadius: 999,
+							minusBtnBgColor: "#fff",
+							minusBtnIconColor: "#1989fa",
+							minusBtnBorderColor: "#1989fa",
+							plusBtnBgColor: "#1989fa",
+							plusBtnIconColor: "#fff",
+							inputBgColor: "transparent"
 						})
 					}
 				}

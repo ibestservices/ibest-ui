@@ -105,6 +105,10 @@
 			"value": "Calendar"
 		},
 		{
+			"name": "component_caliper",
+			"value": "Caliper"
+		},
+		{
 			"name": "component_carInput",
 			"value": "CarInput"
 		},
@@ -165,12 +169,12 @@
 			"value": "Search"
 		},
 		{
-			"name": "component_slider",
-			"value": "Slider"
-		},
-		{
 			"name": "component_signature",
 			"value": "Signature"
+		},
+		{
+			"name": "component_slider",
+			"value": "Slider"
 		},
 		{
 			"name": "component_stepper",
@@ -277,8 +281,16 @@
 			"value": "Progress"
 		},
 		{
+			"name": "component_readmore",
+			"value": "ReadMore"
+		},
+		{
 			"name": "component_sectorprogress",
 			"value": "SectorProgress"
+		},
+		{
+			"name": "component_segmented",
+			"value": "Segmented"
 		},
 		{
 			"name": "component_skeleton",

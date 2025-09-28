@@ -70,7 +70,7 @@ export struct IBestDropdownMenu{
 	/**
 	 * 菜单标题和下拉选项的选中态颜色
 	 */
-	@Provide({ allowOverride: 'activeColor' }) activeColor: ResourceColor = IBestDropdownMenuColor.activeColor
+	@Provide({ allowOverride: 'activeColor' }) activeColor: ResourceColor = this.baseStyle.primary
     /**
      * 下拉选项文字大小
      */

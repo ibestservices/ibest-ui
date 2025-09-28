@@ -29,8 +29,24 @@
 							"entity.system.home"
 						],
 						"actions": [
-							"action.system.home"
+							"ohos.want.action.home"
 						]
+					},
+					{
+						"entities": [
+							"entity.system.browsable"
+						],
+						"actions": [
+							"ohos.want.action.viewData"
+						],
+						"uris": [
+							{
+								"scheme": "https",
+								"host": "ibestui.ibestservices.com",
+								"pathRegex": ".*"
+							}
+						],
+						"domainVerify": true
 					}
 				]
 			}

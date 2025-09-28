@@ -24,7 +24,7 @@ export struct IBestSignature{
 	 * 全局公共样式
 	 */
 	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	@StorageProp(IBestStorageKey.LANGUAGE) @Watch("setCanvasStyle") colorMode: ColorMode = ColorMode.LIGHT
+	@StorageProp(IBestStorageKey.COLOR_MODE) @Watch("setCanvasStyle") colorMode: ColorMode = ColorMode.LIGHT
 	/**
 	 * 宽度
 	 */

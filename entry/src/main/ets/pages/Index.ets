@@ -2,7 +2,7 @@ import { IBestCell, IBestCellGroup, IBestNavBar } from '@ibestservices/ibest-ui'
 import { BORDER_RADIUS, CONTAINER_SIZE, FONT_SIZE, FONT_WEIGHT, modeColor, SPACE } from '../assets/styles/BaseStyle'
 import ComponentShowContainer from '../components/ComponentShowContainer'
 import GlobalStore from '../utils/global'
-import { common, Want } from '@kit.AbilityKit'
+import { common, Want, bundleManager } from '@kit.AbilityKit'
 import { getAppVersion, getResourceStr } from '../utils/utils'
 import { rcp } from '@kit.RemoteCommunicationKit'
 import fs from '@ohos.file.fs'
@@ -70,6 +70,10 @@ struct Index {
 					path: "Calendar"
 				},
 				{
+					name: $r("app.string.component_caliper"),
+					path: "Caliper"
+				},
+				{
 					name: $r("app.string.component_carInput"),
 					path: "CarInput"
 				},
@@ -130,12 +134,12 @@ struct Index {
 					path: "Search"
 				},
 				{
-					name: $r("app.string.component_slider"),
-					path: "Slider"
-				},
-				{
 					name: $r("app.string.component_signature"),
 					path: "Signature"
+				},
+				{
+					name: $r("app.string.component_slider"),
+					path: "Slider"
 				},
 				{
 					name: $r("app.string.component_stepper"),
@@ -252,8 +256,16 @@ struct Index {
 					path: "Progress"
 				},
 				{
+					name: $r("app.string.component_readmore"),
+					path: "ReadMore"
+				},
+				{
 					name: $r("app.string.component_sectorprogress"),
 					path: "SectorProgress"
+				},
+				{
+					name: $r("app.string.component_segmented"),
+					path: "Segmented"
 				},
 				{
 					name: $r("app.string.component_skeleton"),
@@ -578,11 +590,18 @@ struct Index {
 								IBestCell({
 									title: $r("app.string.privacy_policy"),
 									isLink: true,
-									hasBorder: false,
 									onCellClick: () => {
 										this.router.pushUrl({
 											url: "pages/PrivacyPolicy"
 										})
+									}
+								})
+								IBestCell({
+									title: "五星鼓励一下~",
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										this.showCommentDialog()
 									}
 								})
 							}
@@ -612,12 +631,8 @@ struct Index {
 			Image($r("app.media.title_back"))
 				.width(CONTAINER_SIZE.FOURTEEN)
 				.fillColor($r("app.color.doc_text_color_3"))
-				.margin({
-					right: SPACE.SM
-				})
-				.rotate({
-					angle: 180
-				})
+				.margin({ right: SPACE.SM })
+				.rotate({ angle: 180 })
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FORTY)
@@ -637,7 +652,7 @@ struct Index {
 		this.checkUpdate()
 		this.getUiVersion()
 		// setTimeout(() => {
-		// 	RouterUtil.push("TextEllipsis")
+		// 	RouterUtil.push("Slider")
 		// }, 100)
 	}
 	getTitleOpacity(){
@@ -700,6 +715,16 @@ struct Index {
 		if(res){
 			this.uiVersion = res[0].slice(1, -1)
 		}
+	}
+	// 提示评论
+	showCommentDialog(){
+		// 评论弹框 6.0.0 支持
+		// commentManager.showCommentDialog(this.context).then(()=>{
+		// 	console.log("succeeded in showing commentDialog.");
+		// })
+		let bundleName = bundleManager.getBundleInfoForSelfSync(bundleManager.BundleFlag.GET_BUNDLE_INFO_DEFAULT).name
+		let link = 'https://appgallery.huawei.com/app/detail?id=' + bundleName + '&action=write-review'
+		this.context.openLink(link, { appLinkingOnly: false })
 	}
 	// 检查新版本
 	checkUpdate(){

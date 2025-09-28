@@ -47,6 +47,8 @@ export { IBestCalendar } from './src/main/ets/components/calendar/index'
 export { IBestCalendarDialog } from './src/main/ets/components/calendar/calendarDialog'
 export { IBestCalendarDayItem, IBestCalendarConfirmResult } from './src/main/ets/components/calendar/index.type'
 
+export { IBestCaliper } from './src/main/ets/components/caliper/index'
+
 export { IBestCarInput } from './src/main/ets/components/carInput/index'
 
 export { IBestCarKeyboard } from './src/main/ets/components/carKeyboard/index'
@@ -150,7 +152,12 @@ export { IBestPopoverAction, IBestPopoverController } from './src/main/ets/compo
 
 export { IBestProgress } from './src/main/ets/components/progress/index'
 
+export { IBestReadMore } from './src/main/ets/components/readMore/index'
+
 export { IBestSectorProgress } from './src/main/ets/components/sectorProgress/index'
+
+export { IBestSegmented } from './src/main/ets/components/segmented/index'
+export { IBestSegmentedOption } from './src/main/ets/components/segmented/index.type'
 
 export { IBestSkeleton, IBestSkeletonParagraph } from './src/main/ets/components/skeleton/index'
 export { IBestSkeletonType } from './src/main/ets/components/skeleton/index.type'

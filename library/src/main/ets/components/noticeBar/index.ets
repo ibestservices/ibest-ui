@@ -10,8 +10,6 @@ export struct IBestNoticeBar{
 	 * 全局公共样式
 	 */
 	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	// 是否横屏
-	@StorageProp(IBestStorageKey.IS_LANDSCAPE) @Watch("init") isLandscape: boolean = false
 	/**
 	 * 通知栏模式
      */
@@ -134,6 +132,9 @@ export struct IBestNoticeBar{
 		this.init()
 	}
 	init(){
+		if(!this.isShow){
+			return
+		}
 		clearTimeout(this.startTimer)
 		this.transX = 0
 		this.duration = 0
@@ -252,6 +253,9 @@ export struct IBestNoticeBar{
 		})
 		.visibility(this.isShow ? Visibility.Visible : Visibility.None)
 		.clip(true)
+		.onAreaChange(() => {
+			this.init()
+		})
 		.onClick(() => {
 			this.onBarClick()
 		})
