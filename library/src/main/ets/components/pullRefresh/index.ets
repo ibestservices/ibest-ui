@@ -140,6 +140,7 @@ export struct IBestPullRefresh {
 	@State headSize: number = 0
 	@State bottomSize: number = 0
 	private uiContext = this.getUIContext()
+	private flag: boolean = false
 
 	@Builder textTip(){
 		Row({space: convertDimensionsWidthUnit(5)}){
@@ -159,7 +160,14 @@ export struct IBestPullRefresh {
 		setTimeout(() => {
 			this.headSize = getComponentsInfo(this.uiContext, `ibest_pull_up_${this.uniId}`).height
 			this.bottomSize = getComponentsInfo(this.uiContext, `ibest_pull_down_${this.uniId}`).height
+			if(this.loading){
+				this.autoPull()
+			}
 		}, 50)
+	}
+	autoPull(){
+		this.setRefreshStatus(this.headSize, true)
+		this.onRefresh("pull")
 	}
 	isTouchable(){
 		return this.refreshStatus != "loading" && this.refreshStatus != "success"
@@ -224,6 +232,7 @@ export struct IBestPullRefresh {
 					if(this.refreshStatus == "loosing"){
 						this.setRefreshStatus(this.transY > 0 ? this.headSize : -this.bottomSize, true)
 						this.loading = true
+						this.flag = true
 						this.onRefresh(this.actionType)
 					}else{
 						this.setRefreshStatus(0)
@@ -242,6 +251,12 @@ export struct IBestPullRefresh {
 				}, duration)
 			} else {
 				this.setRefreshStatus(0)
+			}
+		}else {
+			if(this.flag){	// 内部更新
+				this.flag = false
+			}else {
+				this.autoPull()
 			}
 		}
 	}

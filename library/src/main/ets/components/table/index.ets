@@ -4,7 +4,7 @@ import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { emitter } from '../../utils/EventEmitter'
+import { emitter } from '../../utils/eventEmitter'
 import { IBestTableColor } from './color'
 import {
     COMPONENT_NAME,
@@ -453,6 +453,7 @@ struct TableCell{
                     this.cellBuilder(this.item, {title: this.column.title, prop: this.column.prop}, this.rowIndex, this.columnIndex)
                 }else{
                     Text(this.getText())
+                        .width(CONTAINER_SIZE.FULL)
                         .fontSize(this.cellType == 'header' ? this.headerFontSize : this.cellFontSize)
                         .fontColor(this.cellType == 'header' ? this.headerTextColor : this.cellTextColor)
                         .fontWeight(this.cellType == 'header' ? 600 : FontWeight.Normal)

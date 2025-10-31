@@ -5,7 +5,7 @@ import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit, handleBeforeFunction } from "../../utils/utils"
 import { IBestSegmentedColor } from "./color"
 import { IBestSegmentedOption } from "./index.type"
-import { debounce } from '../../utils/DebounceThrottle'
+import { debounce } from '../../utils/debounceThrottle'
 import { IBestIcon } from "../../../../../Index"
 
 @Component
@@ -53,7 +53,7 @@ export struct IBestSegmented{
     /**
      * 选中背景颜色
      */
-    @Prop activeBgColor: ResourceColor = this.baseStyle.primary
+    @Prop activeBgColor: ResourceColor = ""
     /**
      * 未选中文字颜色
      */
@@ -110,7 +110,7 @@ export struct IBestSegmented{
             if(this.getActiveIndex() > -1 && this.getActiveIndex() < this.options.length){
                 Row()
                     .height(CONTAINER_SIZE.FULL)
-                    .backgroundColor(this.activeBgColor)
+                    .backgroundColor(this.activeBgColor || this.baseStyle.primary)
                     .borderRadius(this.getRadius())
                     .shadow(this.activeShadow)
                     .translate({ x: this.translateXList[this.getActiveIndex()] })

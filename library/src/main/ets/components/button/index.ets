@@ -116,7 +116,12 @@ export struct IBestButton {
 	 * 内边距
 	 * @since 2.1.5
      */
-	@Prop btnPadding: Length | Padding | LocalizedPadding
+	@Prop btnPadding: Length | Padding | LocalizedPadding = {
+		left: getSizeByUnit(this.getBtnSize().padding),
+		right: getSizeByUnit(this.getBtnSize().padding),
+		top: 0,
+		bottom: 0
+	}
 	/**
 	 * 是否开启按压态
 	 * @since 2.1.5
@@ -289,7 +294,7 @@ export struct IBestButton {
 		}
 		.width(getSizeByUnit(this.getBtnSize().width))
 		.height(getSizeByUnit(this.getBtnSize().height))
-		.padding(this.btnPadding || { left: getSizeByUnit(this.getBtnSize().padding), right: getSizeByUnit(this.getBtnSize().padding), top: 0, bottom: 0 })
+		.padding(getSizeByUnit(this.btnPadding))
 		.borderWidth(convertDimensionsWidthUnit(this.hairline ? 0.5 : 1))
 		.borderRadius(this.getBtnBorderRadius())
 		.fontColor(this.getBtnTextColor())

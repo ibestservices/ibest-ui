@@ -1,4 +1,4 @@
-import { emitter } from '../../utils/EventEmitter'
+import { emitter } from '../../utils/eventEmitter'
 import { COMPONENT_NAME, RADIO_GROUP_EVENT_NAME } from './index.type'
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit, handleBeforeFunction, sleep } from '../../utils/utils'
 import { IBestAwaitable, IBestStringNumber } from '../../model/Global.type'

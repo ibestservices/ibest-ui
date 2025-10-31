@@ -2,7 +2,7 @@ import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { emitter } from '../../utils/EventEmitter'
+import { emitter } from '../../utils/eventEmitter'
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
 import { COMPONENT_NAME, SIDEBAR_EVENT_NAME, SideBarConfig } from '../sideBar/index.type'
 @Component
@@ -27,6 +27,15 @@ export struct IBestSideBarItem{
 	 * 是否禁用该项
      */
 	@Prop disabled: boolean = false
+	/**
+	 * 内边距
+	 * @since 2.2.0
+     */
+	@Prop contentPadding: Length | Padding | LocalizedPadding = {
+		top: convertDimensionsWidthUnit(20),
+		bottom: convertDimensionsWidthUnit(20),
+		right: this.baseStyle.spaceSm
+	}
 	/**
 	 * 自定义内容
      */
@@ -66,14 +75,14 @@ export struct IBestSideBarItem{
 	build() {
 		Row(){
 			if(this.defaultBuilder){
-				this.defaultBuilder
+				this.defaultBuilder()
 			}else{
 				if(this.config.showLeftBar){
 					Divider()
 						.vertical(true)
 						.width(getSizeByUnit(this.config.leftBarSize.width))
 						.height(getSizeByUnit(this.config.leftBarSize.height))
-						.backgroundColor(this.config.leftBarColor)
+						.backgroundColor(this.config.leftBarColor || this.baseStyle.primary)
 						.margin({right: 12})
 						.visibility(this.isActive ? Visibility.Visible : Visibility.Hidden)
 				}
@@ -86,16 +95,12 @@ export struct IBestSideBarItem{
 			}
 		}
 		.width(CONTAINER_SIZE.FULL)
-		.padding({
-			top: convertDimensionsWidthUnit(20),
-			bottom: convertDimensionsWidthUnit(20),
-			right: this.baseStyle.spaceSm
-		})
+		.padding(getSizeByUnit(this.contentPadding))
 		.justifyContent(FlexAlign.Start)
 		.alignItems(VerticalAlign.Center)
 		.backgroundColor(this.isActive ? this.config.activeBgColor : "")
 		.enabled(!this.disabled)
-		.opacity(this.disabled ? 0.5 : 1)
+		.opacity(this.disabled ? 0.6 : 1)
 		.onClick(() => {
 			this.changeActive()
 		})

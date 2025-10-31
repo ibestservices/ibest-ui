@@ -6,7 +6,7 @@ import { IBestPopupColor } from './color'
 import { IBestIcon } from '../icon'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
-import GlobalStore from '../../utils/GlobalStore'
+import GlobalStore from '../../utils/globalStore'
 import { ImmersiveMode, LengthMetrics } from '@kit.ArkUI'
 
 const popupDuration = 150

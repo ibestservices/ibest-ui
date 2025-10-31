@@ -160,7 +160,7 @@ struct ImageCropperPage {
 										min: 1,
 										max: 3,
 										step: 0.01,
-										onChange: (value) => {
+										onTouchMove: (value) => {
 											this.controller2.setScale(value as number)
 										}
 									})
@@ -183,7 +183,7 @@ struct ImageCropperPage {
 										min: -45,
 										max: 45,
 										step: 1,
-										onChange: (value) => {
+										onTouchMove: (value) => {
 											this.controller2.setAngle(value as number)
 										}
 									})

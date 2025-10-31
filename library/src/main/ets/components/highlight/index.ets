@@ -53,6 +53,11 @@ export struct IBestHighlight {
   	 */
 	@Prop overflow: TextOverflow = TextOverflow.None
 	/**
+	 * 行高
+	 * @since 2.2.0
+     */
+	@Prop lineHeight: IBestStringNumber | Resource = ''
+	/**
 	 * 高亮词点击事件
 	 * @since 2.1.8
 	 */
@@ -181,6 +186,7 @@ export struct IBestHighlight {
 		}
 		.fontSize(getSizeByUnit(this.textFontSize, true))
 		.fontColor(this.textColor)
+		.lineHeight(getSizeByUnit(this.lineHeight))
 		.maxLines(this.maxLines)
 		.textOverflow({overflow: this.overflow})
 	}

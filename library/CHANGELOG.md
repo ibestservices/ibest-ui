@@ -1,5 +1,22 @@
 # 版本记录
 
+## 2.2.0
+#### 新增:
+1. 新增 IBestPrice 价格组件;
+2. 新增 IBestRollingText 翻滚文本组件;
+3. IBestSwitch 新增 componentWidth componentPadding activeText inactiveText activeIcon inactiveIcon textFontSize activeTextColor inactiveTextColor activeValue inactiveValue 属性;
+4. IBestField 新增 inputFilter 属性;
+5. IBestForm 新增导出 IBestFieldValidateInfo IBestFormValidateResult IBestFieldValidateResult 类型;
+6. IBestSlider 新增 onTouchStart onTouchMove onTouchEnd 事件;
+7. IBestHighLight 新增 lineHeight 属性;
+8. IBestPullRefresh 支持自动下拉加载;
+9. IBestSideBarItem 新增 contentPadding 属性.
+
+#### bug修复:
+1. IBestSideBarItem defaultBuilder不生效问题;
+2. IBestNavBar isShowRight动态配置时右侧间距问题;
+3. IBestTableColumn cellAlign 不生效问题.
+
 ## 2.1.9
 #### 新增：
 1. 新增 IBestCaliper 卡尺 组件;

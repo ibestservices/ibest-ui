@@ -59,7 +59,7 @@ export struct IBestCountDown{
      */
 	onFinish: () => void = () => {}
 	/**
-	 * 实例
+	 * 控制器
      */
 	controller: IBestCountDownController = new IBestCountDownController()
 

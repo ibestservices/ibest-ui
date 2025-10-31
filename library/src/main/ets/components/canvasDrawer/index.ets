@@ -1,6 +1,5 @@
 import { IBestCanvasContent } from './index.type';
 import { base64ToPixelMap, getComponentsInfo, getComponentSnapshot, getSizeByUnit, sleep } from '../../utils/utils';
-import GlobalStore from '../../utils/GlobalStore';
 import { IBestStringNumber } from '../../model/Global.type';
 
 @Component
@@ -42,9 +41,10 @@ export struct IBestCanvasDrawer{
 	@State contentWidth: number = 0
 	@State contentHeight: number = 0
 	private uiContext = this.getUIContext()
+	private context = this.uiContext.getHostContext()!
 	private settings: RenderingContextSettings = new RenderingContextSettings(true)
 	private ctx: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
-	private resourceManager = GlobalStore.context.resourceManager
+	private resourceManager = this.context.resourceManager
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
@@ -89,7 +89,7 @@ export struct IBestCanvasDrawer{
 				imgModel = new ImageBitmap(url)
 			}
 		} else {	// Resource
-			imgModel = await base64ToPixelMap(this.resourceManager.getMediaContentBase64Sync(url))
+			imgModel = await base64ToPixelMap(this.resourceManager.getMediaContentBase64Sync(url?.id))
 		}
 		if (deg) {
 			this.ctx.translate(left + width / 2, top + height / 2)
@@ -227,13 +227,6 @@ export struct IBestCanvasDrawer{
 	async createUrl(){
 		await sleep(500)
 		let pixelMap = getComponentSnapshot(this.uiContext, `ibest_poster_${this.uniId}`)
-		// const imagePackerApi: image.ImagePacker = image.createImagePacker()
-		// let opts: image.PackingOption = {
-		// 	format: "image/png",
-		// 	quality: 90
-		// }
-		// let arrayBuffer = await imagePackerApi.packing(pixelMap, opts)
-		// let buf: buffer.Buffer = buffer.from(arrayBuffer)
 		this.onDrawFinish(pixelMap)
 	}
 

@@ -25,7 +25,6 @@ interface Tab {
 @Extend(List) function listStyle(){
 	.width(CONTAINER_SIZE.FULL)
 	.height(CONTAINER_SIZE.FULL)
-	.edgeEffect(EdgeEffect.None)
 	.padding({ left: SPACE.MD, right: SPACE.MD })
 }
 
@@ -175,7 +174,7 @@ struct Index {
 					path: "DropdownMenu"
 				},
                 {
-                    name: $r("app.string.component_float_bubble"),
+                    name: $r("app.string.component_floatBubble"),
                     path: "FloatBubble"
                 },
 				{
@@ -212,7 +211,7 @@ struct Index {
 					path: "Badge"
 				},
 				{
-					name: $r("app.string.component_circleprogress"),
+					name: $r("app.string.component_circleProgress"),
 					path: "CircleProgress"
 				},
 				{
@@ -236,15 +235,15 @@ struct Index {
 					path: "Empty"
 				},
 				{
-					name: $r("app.string.component_highlight"),
+					name: $r("app.string.component_highLight"),
 					path: "Highlight"
 				},
 				{
-					name: $r("app.string.component_imagepreview"),
+					name: $r("app.string.component_imagePreview"),
 					path: "ImagePreview"
 				},
 				{
-					name: $r("app.string.component_noticebar"),
+					name: $r("app.string.component_noticeBar"),
 					path: "NoticeBar"
 				},
 				{
@@ -252,15 +251,23 @@ struct Index {
 					path: "Popover"
 				},
 				{
+					name: $r("app.string.component_price"),
+					path: "Price"
+				},
+				{
 					name: $r("app.string.component_progress"),
 					path: "Progress"
 				},
 				{
-					name: $r("app.string.component_readmore"),
+					name: $r("app.string.component_readMore"),
 					path: "ReadMore"
 				},
 				{
-					name: $r("app.string.component_sectorprogress"),
+					name: $r("app.string.component_rollingText"),
+					path: "RollingText"
+				},
+				{
+					name: $r("app.string.component_sectorProgress"),
 					path: "SectorProgress"
 				},
 				{
@@ -284,7 +291,7 @@ struct Index {
 					path: "Tag"
 				},
 				{
-					name: $r("app.string.component_textellipsis"),
+					name: $r("app.string.component_textEllipsis"),
 					path: "TextEllipsis"
 				},
 				{
@@ -511,6 +518,7 @@ struct Index {
 					}
 					.transition(TransitionEffect.move(TransitionEdge.BOTTOM).animation({ duration: 1000, curve: Curve.Ease, delay: 500*index }))
 				})
+				ListItem().height(80)
 			}
 			.listStyle()
 			.onDidScroll(() => {
@@ -526,6 +534,7 @@ struct Index {
 						this.componentItem(item, i)
 					}
 				})
+				ListItem().height(80)
 			}
 			.listStyle()
 			.onDidScroll(() => {
@@ -541,7 +550,7 @@ struct Index {
 						this.componentItem(item, i)
 					}
 				})
-				ListItem().height(20)
+				ListItem().height(80)
 			}
 			.listStyle()
 			.onDidScroll(() => {
@@ -614,7 +623,10 @@ struct Index {
 				Column({ space: SPACE.BASE }){
 					Text("皖ICP备16012151号-7A").fontColor(modeColor.primaryColor).fontSize(FONT_SIZE.XS)
 					Text($r("app.string.copy_right")).fontSize(FONT_SIZE.XS).textAlign(TextAlign.Center)
-				}.padding(SPACE.BASE)
+				}
+				.height(36)
+				.transition(TransitionEffect.move(TransitionEdge.BOTTOM).animation({ duration: 1500, curve: Curve.Ease }))
+				Column().height(70)
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.height(CONTAINER_SIZE.FULL)
@@ -652,7 +664,7 @@ struct Index {
 		this.checkUpdate()
 		this.getUiVersion()
 		// setTimeout(() => {
-		// 	RouterUtil.push("Slider")
+		// 	RouterUtil.push("Switch")
 		// }, 100)
 	}
 	getTitleOpacity(){
@@ -761,9 +773,9 @@ struct Index {
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.barHeight(70)
-			.barBackgroundColor(modeColor.bg2)
 			.divider({strokeWidth: 1, color: modeColor.borderColor})
-			.layoutWeight(1)
+			.barOverlap(true)
+			.barBackgroundBlurStyle(BlurStyle.Thin)
 			.onChange(() => {
 				this.getScrollTop()
 			})

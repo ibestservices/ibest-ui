@@ -1,5 +1,5 @@
 import { IBestAwaitable } from '../../model/Global.type'
-import { emitter } from '../../utils/EventEmitter'
+import { emitter } from '../../utils/eventEmitter'
 import { clamp, getComponentsInfo, getEventName, handleBeforeFunction } from '../../utils/utils'
 import { COMPONENT_NAME, IBestSwipeCellSide, SWIPECELL_EVENT_NAME } from './index.type'
 

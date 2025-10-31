@@ -52,16 +52,6 @@ export interface ComInfoType {
     windowLeft: number
 }
 /**
- * 窗口规避尺寸信息
- */
-export interface ComAvoidAreaSize{
-    topSize: number
-    bottomSize: number
-    leftSize: number
-    rightSize: number
-    navigationSize: number
-}
-/**
  * AppStorage key名称枚举
  */
 export enum IBestStorageKey {

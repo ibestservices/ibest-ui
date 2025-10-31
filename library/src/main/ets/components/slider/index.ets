@@ -52,7 +52,7 @@ export struct IBestSlider{
 	/**
 	 * 进度条激活态颜色
 	 */
-	@Prop activeColor: ResourceColor = this.baseStyle.primary
+	@Prop activeColor: ResourceColor = ""
 	/**
 	 * 进度条背景颜色
 	 */
@@ -84,11 +84,22 @@ export struct IBestSlider{
      */
 	@BuilderParam customSecondButton: CustomBuilder
 	/**
-	 * 进度变化且拖动结束后触发
+	 * 触摸开始触发
+	 */
+	onTouchStart: (value: IBestSliderValue) => void = () => {}
+	/**
+	 * 触摸滑动中触发
+	 */
+	onTouchMove: (value: IBestSliderValue) => void = () => {}
+	/**
+	 * 触摸结束触发
+	 */
+	onTouchEnd: (value: IBestSliderValue) => void = () => {}
+	/**
+	 * 触摸结束触发
 	 */
 	onChange: (value: IBestSliderValue) => void = () => {}
 
-	@State uniId: number = 0
 	@State space: number = 2.5
 	@State percentage: number = 0
 	@State barOffset: number = 0
@@ -96,7 +107,6 @@ export struct IBestSlider{
 	@State buttonIndex: 0 | 1 = 0
 	@State buttonWidth: number = 0
 	@State buttonHeight: number = 0
-	private uiContext = this.getUIContext()
 
 	@Builder dragBar(buttonIndex: 0 | 1){
 		Row(){
@@ -113,12 +123,14 @@ export struct IBestSlider{
 					.shadow({ radius: 2, color: "rgba(0,0,0,0.5)", offsetY: 1 })
 			}
 		}
-		.id(`ibest_slider_buttonBox_${this.uniId}`)
 		.position(this.getBarPosition(buttonIndex))
+		.onAreaChange((_, newVal) => {
+			this.buttonWidth = newVal.width as number
+			this.buttonHeight = newVal.height as number
+		})
 	}
 
 	aboutToAppear(): void {
-		this.uniId = this.getUniqueId()
 		this.updateValue(this.value)
 		this.calcMainAxis()
 	}
@@ -136,12 +148,6 @@ export struct IBestSlider{
 	// 获取刻度大小
 	getScaleSize(){
 		return this.realBarHeight + 4
-	}
-	// 获取slider 内容容器尺寸
-	getButtonSize(){
-		let size = getComponentsInfo(this.uiContext, `ibest_slider_buttonBox_${this.uniId}`)
-		this.buttonWidth = size.width
-		this.buttonHeight = size.height
 	}
 	getActiveLinePosition(): LocalizedEdges{
 		if(this.reverse){
@@ -247,9 +253,9 @@ export struct IBestSlider{
 						current = [left, value]
 						this.buttonIndex = 1
 					}
-					this.updateValue(current)
+					this.updateValue(current, "start")
 				}else {
-					this.updateValue(value)
+					this.updateValue(value, "start")
 				}
 				break
 			case TouchType.Move:
@@ -267,22 +273,25 @@ export struct IBestSlider{
 					}else{
 						current[index] = value
 					}
-					this.updateValue(current, true)
+					this.updateValue(current, 'move')
 				} else {
-					this.updateValue(value, true)
+					this.updateValue(value, 'move')
 				}
 				break
 			case TouchType.Up:
+				this.onTouchEnd(this.value)
 				this.onChange(this.value)
 				break
 		}
 	}
 	// 更新值
-	updateValue(value: IBestSliderValue, emitChange: boolean = false){
+	updateValue(value: IBestSliderValue, type?: "start" | "move"){
 		let val = Array.isArray(value) ? value.map(e => this.format(e)) as IBestSliderValue : this.format(value)
 		this.value = val
-		if (emitChange) {
-			this.onChange(val)
+		if(type == "start"){
+			this.onTouchStart(val)
+		}else if(type == "move"){
+			this.onTouchMove(val)
 		}
 	}
 
@@ -300,7 +309,7 @@ export struct IBestSlider{
 									.height(this.vertical ? this.getScaleSize() : '')
 									.aspectRatio(1)
 									.borderRadius(this.baseStyle.borderRadiusMax)
-									.backgroundColor((Array.isArray(this.value) ? item.value >= this.value[0] && item.value <= this.value[1] : this.value >= item.value) ? this.activeColor : this.barBgColor)
+									.backgroundColor((Array.isArray(this.value) ? item.value >= this.value[0] && item.value <= this.value[1] : this.value >= item.value) ? this.activeColor || this.baseStyle.primary : this.barBgColor)
 									.margin(this.vertical ? this.reverse ? { bottom: -this.getScaleSize()/2 } : { top: -this.getScaleSize()/2 } : this.reverse ? { left: -this.getScaleSize()/2 } : { right: -this.getScaleSize()/2 })
 									.position(this.vertical ? this.reverse ? { bottom: `${item.percent}%`, left: this.realBarHeight/2 } : { top: `${item.percent}%`, left: this.realBarHeight/2 } : this.reverse ? { right: `${item.percent}%`, top: this.realBarHeight/2 } : { left: `${item.percent}%`, top: this.realBarHeight/2 })
 									.translate(this.vertical ? { x: "-50%", y: this.reverse ? "50%" : "-50%" } : { x: this.reverse ? "50%" : "-50%", y: "-50%" })
@@ -321,7 +330,7 @@ export struct IBestSlider{
 						Row()
 							.width(this.vertical ? getSizeByUnit(this.barHeight) : `${this.percentage}%`)
 							.height(this.vertical ? `${this.percentage}%` : getSizeByUnit(this.barHeight))
-							.backgroundColor(this.activeColor)
+							.backgroundColor(this.activeColor || this.baseStyle.primary)
 							.borderRadius(this.baseStyle.borderRadiusMax)
 							.opacity(this.disabled ? 0.5 : 1)
 						// 拖动按钮1
@@ -350,6 +359,7 @@ export struct IBestSlider{
 			}
 			.width(this.vertical ? this.buttonWidth : CONTAINER_SIZE.FULL)
 			.height(this.vertical ? CONTAINER_SIZE.FULL : this.buttonHeight)
+			.opacity(this.buttonHeight ? 1 : 0)
 		}
 		.padding({
 			left: this.vertical ? 0 : this.buttonWidth/2 + this.space,
@@ -358,16 +368,6 @@ export struct IBestSlider{
 			bottom: this.vertical ? this.buttonHeight/2 + this.space : this.space
 		})
 		.enabled(!this.disabled)
-		.onAppear(() => {
-			setTimeout(() => {
-				this.getButtonSize()
-			}, 50)
-		})
-		.onVisibleAreaChange([0,1], (isExpanding: boolean) => {
-			if(isExpanding && !this.buttonWidth){
-				this.getButtonSize()
-			}
-		})
 	}
 }
 

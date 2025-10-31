@@ -59,7 +59,7 @@ export struct IBestPagination {
 	/**
 	 * 未激活文字颜色
      */
-	@Prop textColor: ResourceColor = this.baseStyle.primary
+	@Prop textColor: ResourceColor = ""
 	/**
 	 * 激活文字颜色
      */
@@ -75,7 +75,7 @@ export struct IBestPagination {
 	/**
 	 * 激活背景色
      */
-	@Prop activeBgColor: ResourceColor = this.baseStyle.primary
+	@Prop activeBgColor: ResourceColor = ""
 	/**
 	 * 禁用背景色
      */
@@ -148,7 +148,7 @@ export struct IBestPagination {
 		return type == 'prev' ? 1 : this.getCount()
 	}
 	getTurnBtnFontColor(type: IBestTurnBtnType){
-		return this.currentPage !== this.getTarget(type) ? this.textColor : this.disabledTextColor
+		return this.currentPage !== this.getTarget(type) ? this.textColor || this.baseStyle.primary : this.disabledTextColor
 	}
 	getTurnBtnBgColor(type: IBestTurnBtnType){
 		return this.currentPage !== this.getTarget(type) ? this.bgColor : this.disabledBgColor
@@ -188,10 +188,10 @@ export struct IBestPagination {
 							.width(convertDimensionsWidthUnit(36))
 							.height(CONTAINER_SIZE.FULL)
 							.fontSize(this.baseStyle.fontSizeSm)
-							.fontColor(page.active ? this.activeTextColor : this.textColor)
+							.fontColor(page.active ? this.activeTextColor : (this.textColor || this.baseStyle.primary))
 							.borderRadius(0)
 							.padding(0)
-							.backgroundColor(page.active ? this.activeBgColor : this.bgColor)
+							.backgroundColor(page.active ? this.activeBgColor || this.baseStyle.primary : this.bgColor)
 							.border({ width: { left: 1, top: 1, bottom: 1, right: 0 }, color: this.bdColor })
 							.onClick(() => this.updateCurrentPage(page.number))
 					})

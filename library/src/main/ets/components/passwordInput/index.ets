@@ -53,7 +53,7 @@ export struct IBestPasswordInput {
 	/**
 	 * 高亮颜色
 	 */
-	@Provide({allowOverride: "highlightColor"}) highlightColor: ResourceColor = this.baseStyle.primary
+	@Provide({allowOverride: "highlightColor"}) highlightColor: ResourceColor = ""
 	/**
 	 * 是否隐藏内容
 	 */
@@ -244,6 +244,7 @@ export struct IBestPasswordInput {
 
 @Component
 struct InputField {
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@Consume isHidden: boolean
 	@Consume space: number
 	@Consume radius: number
@@ -311,7 +312,7 @@ struct InputField {
 		.backgroundColor(this.cellBgColor)
 		.border(this.space ? {
 			width: this.isShowBorder ? 1 : 0,
-			color: this.getIsFocus() ? this.highlightType == 'border' ? this.highlightColor : '' : this.bdColor
+			color: this.getIsFocus() ? this.highlightType == 'border' ? this.highlightColor || this.baseStyle.primary : '' : this.bdColor
 		} : {
 			width: { left: this.index > 0 && this.isShowBorder ? 1 : 0 },
 			color: this.bdColor
@@ -319,7 +320,7 @@ struct InputField {
 		.borderRadius(this.space ? getSizeByUnit(this.radius) : 0)
 		.shadow({
 			radius: this.highlightType == 'shadow' && this.getIsFocus() ? 20 : 0,
-			color: this.highlightColor,
+			color: this.highlightColor || this.baseStyle.primary as string,
 			type: ShadowType.COLOR
 		})
 	}

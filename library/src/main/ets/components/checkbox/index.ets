@@ -1,4 +1,4 @@
-import { emitter } from '../../utils/EventEmitter'
+import { emitter } from '../../utils/eventEmitter'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
@@ -26,7 +26,7 @@ export struct IBestCheckbox {
 	/**
 	 * 默认是否选中, 非双向绑定, 仅单独使用时有效
 	 * 如果要更改数据请从onChange回调中获取最新的值
-	 * @since 2.1.7 开始支持 string number类型
+	 * @since 2.1.7 开始支持string number类型
 	 */
 	@Prop value: IBestStringNumber | boolean = false
 	/**
@@ -202,9 +202,7 @@ export struct IBestCheckbox {
 		return this.labelPosition === 'left'
 	}
 	updateGroup(value: boolean) {
-		if (this.group) {
-			emitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.name, value)
-		}
+		emitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.name, value)
 	}
 	// 改变选中状态的回调
 	async handleCheckedChange() {
@@ -213,13 +211,15 @@ export struct IBestCheckbox {
 		}
 		let value = this.getValue()
 		let booleanValue = typeof value == 'boolean' ? !value : value === this.trueValue ? value === this.falseValue : value === this.trueValue
-		let changedValue = typeof value == 'boolean' ? !value : value === this.trueValue ? this.falseValue : this.trueValue
 		let state = await handleBeforeFunction(this.beforeChange, booleanValue)
 		if(!state){
 			return
 		}
+		let changedValue = typeof value == 'boolean' ? !value : value === this.trueValue ? this.falseValue : this.trueValue
 		this.onChange(changedValue)
-		this.updateGroup(booleanValue)
+		if (this.group) {
+			this.updateGroup(booleanValue)
+		}
 	}
 	// 当选中的最大数量变化时 或者选中的数据变化时
 	handleMaxChange(data: IBestCheckboxMaxChangeParams) {

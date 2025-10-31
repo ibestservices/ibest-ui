@@ -14,7 +14,7 @@ export default class RouterUtil {
         RouterUtil.navPathStack.pop()
         RouterUtil.navPathStack.replacePathByName(name, param, true)
     }
-    // 返回页面
+    // 返回
     public static pop(result?: Object) {
         if (result !== undefined) {
             RouterUtil.navPathStack.pop(result, true)

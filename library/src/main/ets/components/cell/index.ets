@@ -354,7 +354,7 @@ export struct IBestCell {
 			duration: this.baseStyle.animationDuration as number
 		})
 		.enabled(!this.disabled)
-		.opacity(this.disabled ? 0.6 : 1)
+		.opacity(this.disabled ? 0.7 : 1)
 		.clip(true)
 		.id(`ibest_cell_${this.uniId}`)
 		.onClick(() => {

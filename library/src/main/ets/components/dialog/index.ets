@@ -311,6 +311,9 @@ export struct IBestDialog {
 			}
 		})
 	}
+	aboutToAppear() {
+		this.visibleChange()
+	}
 	// visible 变化
 	visibleChange() {
 		if (this.visible) {

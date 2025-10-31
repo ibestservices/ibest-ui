@@ -66,7 +66,7 @@ export struct IBestCarInput {
 	/**
 	 * 高亮颜色
 	 */
-	@Provide({allowOverride: "highlightColor"}) highlightColor: ResourceColor = this.baseStyle.primary
+	@Provide({allowOverride: "highlightColor"}) highlightColor: ResourceColor = ""
 	/**
 	 * 键盘配置
 	 */
@@ -260,7 +260,7 @@ struct InputField {
 		.backgroundColor(this.bgColor)
 		.border(this.space ? {
 			width: this.isShowBorder ? 1 : 0,
-			color: this.getIsFocus() ? this.highlightType == 'border' ? this.highlightColor : '' : this.bdColor
+			color: this.getIsFocus() ? this.highlightType == 'border' ? this.highlightColor || this.baseStyle.primary : '' : this.bdColor
 		} : {
 			width: { left: this.index > 0 && this.isShowBorder ? 1 : 0 },
 			color: this.bdColor
@@ -268,7 +268,7 @@ struct InputField {
 		.borderRadius(this.space ? getSizeByUnit(this.radius) : 0)
 		.shadow({
 			radius: this.highlightType == 'shadow' && this.getIsFocus() ? 20 : 0,
-			color: this.highlightColor
+			color: this.highlightColor || this.baseStyle.primary as string
 		})
 	}
 }

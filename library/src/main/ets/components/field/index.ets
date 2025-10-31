@@ -4,7 +4,7 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import {
     COMPONENT_NAME,
-    FieldValidateResult,
+    IBestFieldValidateInfo,
     FORM_EVENT_NAME,
     IBestFormRuleItem,
     IBestFormSendFieldCallResult
@@ -18,7 +18,7 @@ import type {
     LabelPositionType,
     RequireAsteriskPositionType
 } from './index.type'
-import { emitter } from '../../utils/EventEmitter'
+import { emitter } from '../../utils/eventEmitter'
 import { runRuleValidator, runSyncRule } from './utils'
 import { clamp, convertDimensionsWidthUnit, getComponentsInfo, getEventName, getResourceStr, getSizeByUnit } from '../../utils/utils'
 import { IBestFieldColor } from './color'
@@ -317,6 +317,11 @@ export struct IBestField {
      */
 	@Prop showValue: ResourceStr = ''
 	/**
+	 * 过滤器
+	 * @since 2.2.0
+     */
+	@Prop inputFilter: ResourceStr
+	/**
 	 * 右侧按钮插槽
 	 */
 	@BuilderParam buttonBuilder: CustomBuilder
@@ -463,6 +468,7 @@ export struct IBestField {
 							.lineHeight(this.baseStyle.lineHeightMd)
 							.textAlign(this.getInputAlign())
 							.maxLength(this.maxlength)
+							.inputFilter(this.inputFilter)
 							// .showCounter(this.showWordLimit, {
 							//     thresholdPercentage: 1,
 							//     highlightBorder: false
@@ -502,6 +508,7 @@ export struct IBestField {
 								.lineHeight(this.baseStyle.lineHeightMd)
 								.textAlign(this.getInputAlign())
 								.maxLength(this.maxlength)
+								.inputFilter(this.inputFilter)
 								// .showCounter(this.showWordLimit, {
 								//     thresholdPercentage: 1,
 								//     highlightBorder: false
@@ -697,7 +704,7 @@ export struct IBestField {
 		emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.SEND_FIELD, this.formId), {
 			uniId: this.uniId,
 			prop: this.prop,
-			validate: (rules: IBestFormRuleItem[]): Promise<void | FieldValidateResult> => this.validate(rules),
+			validate: (rules: IBestFormRuleItem[]): Promise<void | IBestFieldValidateInfo> => this.validate(rules),
 			getValue: (): IBestFieldValueType => this.value,
 			resetValidation: (): void => this.resetValidation(),
 			setValue: (value: IBestFieldValueType): void => this.setValue(value)
@@ -723,8 +730,8 @@ export struct IBestField {
 		this.validateMessage = ""
 	}
 	// 验证
-	validate(rules: IBestFormRuleItem[]): Promise<FieldValidateResult | void> {
-		return new Promise<FieldValidateResult | void>((resolve) => {
+	validate(rules: IBestFormRuleItem[]): Promise<IBestFieldValidateInfo | void> {
+		return new Promise<IBestFieldValidateInfo | void>((resolve) => {
 			this.resetValidation()
 			rules = rules || this.rules
 			if (rules.length) {

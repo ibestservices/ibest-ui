@@ -58,13 +58,7 @@ export struct IBestAvatarGroup{
     onMoreClick: () => void = () => {}
 
     @State avatarWidth: number = 0
-    private uiContext = this.getUIContext()
 
-    getWidth(){
-        setTimeout(() => {
-            this.avatarWidth = getComponentsInfo(this.uiContext, "ibest_avatar_0").width
-        }, 50)
-    }
     getShowUrls(){
         return this.urls.slice(0, this.max)
     }
@@ -77,8 +71,13 @@ export struct IBestAvatarGroup{
                         src: item,
                         avatarSize: this.avatarSize,
                         shape: this.shape,
-                        radius: this.radius,
-                    }).id(`ibest_avatar_${index}`)
+                        radius: this.radius
+                    })
+                    .onAreaChange((_, newVal) => {
+                        if(index == 0){
+                            this.avatarWidth = newVal.width as number
+                        }
+                    })
                     if(this.showMore && index == this.getShowUrls().length - 1 && (this.urls.length > this.max || this.moreText)){
                         Row(){
                             Text(this.moreText || `+${this.urls.length - this.max}`)
@@ -102,15 +101,5 @@ export struct IBestAvatarGroup{
                 .margin({left: index === 0 ? 0 : -(this.avatarWidth * this.gap)})
             })
         }
-        .onAppear(() => {
-            setTimeout(() => {
-                this.getWidth()
-            }, 10)
-        })
-        .onVisibleAreaChange([0,1], (isExpanding: boolean) => {
-            if(isExpanding && !this.avatarWidth){
-                this.getWidth()
-            }
-        })
     }
 }

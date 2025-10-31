@@ -4,7 +4,7 @@ import IBestActionSheet, { IBestActionMultiLine, IBestActionType } from './src/m
 import IBestImagePreview from './src/main/ets/apis/IBestImagePreview'
 import IBestDialogUtil from './src/main/ets/apis/IBestDialog'
 import IBestNotify from './src/main/ets/apis/IBestNotify'
-import GlobalStore from './src/main/ets/utils/GlobalStore'
+import GlobalStore from './src/main/ets/utils/globalStore'
 import { IBestStringNumber } from './src/main/ets/model/Global.type'
 import { IBestGlobalConfigType } from './src/main/ets/model/GlobalConfig'
 
@@ -29,7 +29,7 @@ export {
 	IBestStringNumber
 }
 
-export { debounce, throttle } from './src/main/ets/utils/DebounceThrottle'
+export { debounce, throttle } from './src/main/ets/utils/debounceThrottle'
 
 export { IBestUIBaseStyleType } from './src/main/ets/theme-chalk/src/index.type'
 
@@ -71,7 +71,7 @@ export { IBestField } from './src/main/ets/components/field/index'
 export { IBestFieldValueType } from './src/main/ets/components/field/index.type'
 
 export { IBestForm } from './src/main/ets/components/form/index'
-export { IBestFormController, IBestFormRule, IBestFormRuleItem } from './src/main/ets/components/form/index.type'
+export { IBestFormController, IBestFormRule, IBestFormRuleItem, IBestFieldValidateInfo, IBestFormValidateResult, IBestFieldValidateResult } from './src/main/ets/components/form/index.type'
 
 export { IBestNumberKeyboard } from './src/main/ets/components/numberKeyboard/index'
 
@@ -150,9 +150,14 @@ export { IBestNoticeBar } from './src/main/ets/components/noticeBar/index'
 export { IBestPopover } from './src/main/ets/components/popover/index'
 export { IBestPopoverAction, IBestPopoverController } from './src/main/ets/components/popover/index.type'
 
+export { IBestPrice } from './src/main/ets/components/price/index'
+
 export { IBestProgress } from './src/main/ets/components/progress/index'
 
 export { IBestReadMore } from './src/main/ets/components/readMore/index'
+
+export { IBestRollingText } from './src/main/ets/components/rollingText/index'
+export { IBestRollingTextController } from './src/main/ets/components/rollingText/index.type'
 
 export { IBestSectorProgress } from './src/main/ets/components/sectorProgress/index'
 

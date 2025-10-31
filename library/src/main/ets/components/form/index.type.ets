@@ -70,7 +70,7 @@ export interface IBestFormSendFieldCallResult {
 /**
  * 表单验证结果
  */
-export interface FieldValidateResult{
+export interface IBestFieldValidateInfo{
 	label: string
 	name: string
 	message: string
@@ -81,18 +81,18 @@ export interface FieldValidateResult{
 export interface IBestFieldItem{
 	uniId: number
 	prop: string
-	validate: (rules: IBestFormRuleItem[]) => Promise<FieldValidateResult>
+	validate: (rules: IBestFormRuleItem[]) => Promise<IBestFieldValidateInfo>
 	resetValidation: () => void
 	getValue: () => IBestFieldValueType
 	setValue: (value: IBestFieldValueType) => void
 }
 export interface IBestFormValidateResult{
 	valid: boolean
-	fields: FieldValidateResult[]
+	fields: IBestFieldValidateInfo[]
 }
 export interface IBestFieldValidateResult{
 	valid: boolean
-	field: FieldValidateResult
+	field: IBestFieldValidateInfo
 }
 /**
  * 表单控制器
@@ -102,7 +102,7 @@ export class IBestFormController {
 	 * 验证整个表单
 	 * @param callBack 回调函数
 	 */
-	public validate: (callBack?: (valid: boolean, field: FieldValidateResult[]) => void) => Promise<IBestFormValidateResult> = () => {
+	public validate: (callBack?: (valid: boolean, fields: IBestFieldValidateInfo[]) => void) => Promise<IBestFormValidateResult> = () => {
 		let res: IBestFormValidateResult = {
 			valid: true,
 			fields: []
@@ -114,7 +114,7 @@ export class IBestFormController {
 	 * @param name 表单属性名
 	 * @param callBack 回调函数
 	 */
-	public validateField: (name: string, callBack?: (valid: boolean, field?: FieldValidateResult) => void) => Promise<IBestFieldValidateResult> = () => {
+	public validateField: (name: string, callBack?: (valid: boolean, field?: IBestFieldValidateInfo) => void) => Promise<IBestFieldValidateResult> = () => {
 		let res: IBestFieldValidateResult = {
 			valid: true,
 			field: {

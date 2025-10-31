@@ -21,7 +21,9 @@
 <a href="https://ibestui.ibestservices.com/" target="_blank">IBest-UI</a> 
 由 <a href="https://www.ibestservices.com" target="_blank">安徽百得思维信息科技有限公司</a> 开源，是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库，包含 Button、Calendar、Form、Field、Picker、Popup、Toast、Dialog、ImageCropper 等60+个优质组件，上手简单，使用方便，可大大提高鸿蒙开发者的开发效率。
 
-目前 <a href="https://www.ibestservices.com/" target="_blank">ibestservices 官方</a> 提供了 <a href="https://ibestui.ibestservices.com/guide/home/" target="_blank">V1</a> 和 <a href="https://ibestui-v2.ibestservices.com/guide/home/" target="_blank">V2</a> 版本，当前为状态管理 **V1** 版本，开发者可根据自己项目使用的**状态管理版本**选择对应的版本进行开发。
+目前 <a href="https://www.ibestservices.com/" target="_blank">ibestservices 官方</a> 提供了 <a href="https://ibestui.ibestservices.com/guide/home/" target="_blank">V1</a> 和 <a href="https://ibestui-v2.ibestservices.com/guide/home/" target="_blank">V2</a> 版本，当前为状态管理 **V1** 版本，开发者可根据自己项目使用的**状态管理版本**选择对应的版本进行开发，官方推荐使用V2。
+
+如果觉得还不错，请帮忙给项目点个**Star**，谢谢！
 
 <div>
 	<img src="https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI-Light.png" width="48%">
@@ -97,7 +99,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | Guide 引导          | 分步引导用户了解产品功能的气泡组件，用来引导用户并介绍产品。                       | <a href="https://ibestui.ibestservices.com/components/guide/" target="_blank">文档</a>        |
 | Loading 加载        | 加载图标，用于表示加载中的过渡状态。                                   | <a href="https://ibestui.ibestservices.com/components/loading/" target="_blank">文档</a>      |
 | Notify 消息提示       | 在页面顶部展示消息提示。                                         | <a href="https://ibestui.ibestservices.com/components/notify/" target="_blank">文档</a>       |
-| PullRefresh 下拉刷新  | 轻量级，用于提供下拉刷新的交互操作。                                  | <a href="https://ibestui.ibestservices.com/components/pullrefresh/" target="_blank">文档</a>  |
+| PullRefresh 下拉刷新  | 轻量级，用于提供下拉刷新的交互操作。                                   | <a href="https://ibestui.ibestservices.com/components/pullrefresh/" target="_blank">文档</a>  |
 | SwipeCell 滑动单元格   | 可以左右滑动来展示操作按钮的单元格组件。                                 | <a href="https://ibestui.ibestservices.com/components/swipecell/" target="_blank">文档</a>    |
 
 ### 展示组件
@@ -115,8 +117,10 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | ImagePreview 图片预览    | 图片放大预览。                            | <a href="https://ibestui.ibestservices.com/components/imagepreview/" target="_blank">文档</a>   |
 | NoticeBar 通知栏        | 用于循环播放展示一组消息通知。                    | <a href="https://ibestui.ibestservices.com/components/noticeBar/" target="_blank">文档</a>      |
 | Popover 气泡弹出框        | 弹出式的气泡菜单。                          | <a href="https://ibestui.ibestservices.com/components/popover/" target="_blank">文档</a>        |
+| Price 价格             | 用于展示价格。                            | <a href="https://ibestui.ibestservices.com/components/price/" target="_blank">文档</a>          |
 | Progress 进度条         | 用于展示操作的当前进度。                       | <a href="https://ibestui.ibestservices.com/components/progress/" target="_blank">文档</a>       |
 | ReadMore 查看更多        | 用于内容超出指定高度时，显示"展开/收起"按钮。           | <a href="https://ibestui.ibestservices.com/components/readMore/" target="_blank">文档</a>       |
+| RollingText 翻滚文本     | 文本翻滚动效，可以翻滚数字。                     | <a href="https://ibestui.ibestservices.com/components/rollingText/" target="_blank">文档</a>    | 
 | SectorProgress 扇形进度条 | 用于展示进度、占比。                         | <a href="https://ibestui.ibestservices.com/components/sectorProgress/" target="_blank">文档</a> |
 | Segmented 分段控制器      | 用于展示多个选项并允许用户选择其中单个选项。             | <a href="https://ibestui.ibestservices.com/components/segmented/" target="_blank">文档</a>      |
 | Skeleton 骨架屏         | 用于在内容加载过程中展示一组占位图形。                | <a href="https://ibestui.ibestservices.com/components/skeleton/" target="_blank">文档</a>       |

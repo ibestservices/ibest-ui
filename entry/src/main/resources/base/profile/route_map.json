@@ -261,6 +261,11 @@
 			"buildFunction": "PopoverBuilder"
 		},
 		{
+			"name": "Price",
+			"pageSourceFile": "src/main/ets/pages/base/Price.ets",
+			"buildFunction": "PriceBuilder"
+		},
+		{
 			"name": "Progress",
 			"pageSourceFile": "src/main/ets/pages/base/Progress.ets",
 			"buildFunction": "ProgressBuilder"
@@ -269,6 +274,11 @@
 			"name": "ReadMore",
 			"pageSourceFile": "src/main/ets/pages/base/ReadMore.ets",
 			"buildFunction": "ReadMoreBuilder"
+		},
+		{
+			"name": "RollingText",
+			"pageSourceFile": "src/main/ets/pages/base/RollingText.ets",
+			"buildFunction": "RollingTextBuilder"
 		},
 		{
 			"name": "SectorProgress",

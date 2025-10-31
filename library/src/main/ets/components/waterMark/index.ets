@@ -1,7 +1,7 @@
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import GlobalStore from '../../utils/GlobalStore'
+import GlobalStore from '../../utils/globalStore'
 import { base64ToPixelMap, getResourceStr } from '../../utils/utils'
 import { IBestWatermarkColor } from './color'
 import { IBestDrawCanvasItemArgs, IBestWatermarkCountData } from './index.type'
