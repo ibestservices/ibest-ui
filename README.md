@@ -51,6 +51,12 @@ ohpm install @ibestservices/ibest-ui
 
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
+## 组件库版本与api版本对应关系
+| 组件库版本     | api版本      |
+|:----------|:-----------|
+| v2.1.4及以上 | `api17` 以上 |
+| v2.0.8及以上 | `api15` 以上 |
+
 ## 组件介绍
 
 ### 基础组件
