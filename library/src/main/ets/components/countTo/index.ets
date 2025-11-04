@@ -58,7 +58,7 @@ export struct IBestCountTo{
 	 */
 	onFinish: () => void = () => {}
     /**
-     * 实例
+     * 控制器
      */
     controller: IBestCountToController = new IBestCountToController()
 

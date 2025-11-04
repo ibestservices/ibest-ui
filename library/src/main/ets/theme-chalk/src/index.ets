@@ -38,6 +38,7 @@ export function getDefaultBaseStyle(): IBestUIBaseStyleObjType {
 		borderRadiusLg: convertDimensionsWidthUnit(BORDER_RADIUS.LG),
 		borderRadiusMax: convertDimensionsWidthUnit(BORDER_RADIUS.MAX),
 		lineHeightXs: convertDimensionsWidthUnit(LINE_HEIGHT.XS),
+		lineHeightXsm: convertDimensionsWidthUnit(LINE_HEIGHT.XSM),
 		lineHeightSm: convertDimensionsWidthUnit(LINE_HEIGHT.SM),
 		lineHeightMd: convertDimensionsWidthUnit(LINE_HEIGHT.MD),
 		lineHeightLg: convertDimensionsWidthUnit(LINE_HEIGHT.LG),

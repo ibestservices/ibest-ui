@@ -1,7 +1,7 @@
 import { IBestPicker } from '../picker'
 import { IBestPickerOption } from '../picker/index.type'
 import { COMPONENT_NAME, IBestTimePickerColumnType, TIME_PICKER_EVENT_NAME } from './index.type'
-import { emitter } from '../../utils/EventEmitter'
+import { emitter } from '../../utils/eventEmitter'
 import { convertDimensionsWidthUnit, getEventName, getResourceStr } from '../../utils/utils'
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 

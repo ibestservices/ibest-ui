@@ -2,16 +2,12 @@ import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import GlobalStore from '../../utils/GlobalStore'
+import GlobalStore from '../../utils/globalStore'
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
 import { IBestIcon } from '../icon'
 import { IBestNavbarColor } from './color'
 @Component
 export struct IBestNavBar{
-	@State uniId: number = 0
-	// 标题区域左右宽度
-	@State leftWidth: number = 0
-	@State rightWidth: number = 0
 	/**
 	 * 全局公共样式
 	 */
@@ -90,7 +86,7 @@ export struct IBestNavBar{
 	/**
 	 * 是否显示左侧
      */
-	@Prop isShowLeft: boolean = true
+	@Prop @Watch("initSize") isShowLeft: boolean = true
 	/**
 	 * 左侧图标名称
 	 * @deprecated 请使用leftIcon
@@ -128,7 +124,7 @@ export struct IBestNavBar{
 	/**
 	 * 是否显示右侧
      */
-	@Prop isShowRight: boolean = false
+	@Prop @Watch("initSize") isShowRight: boolean = false
 	/**
 	 * 右侧图标名称
 	 * @deprecated 请使用rightIcon
@@ -210,11 +206,14 @@ export struct IBestNavBar{
      */
 	onTitleClick: () => void = () => {}
 
+	@State uniId: number = 0
+	// 标题区域左右宽度
+	@State leftWidth: number = 0
+	@State rightWidth: number = 0
 	private uiContext = this.getUIContext()
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
-		this.initSize()
 	}
 	initSize(){
 		setTimeout(() => {
@@ -362,5 +361,15 @@ export struct IBestNavBar{
 		}
 		.backgroundColor(this.navBarBgColor)
 		.expandSafeArea(this.expandSafeAreaType, [SafeAreaEdge.TOP])
+		.onAppear(() => {
+			setTimeout(() => {
+				this.initSize()
+			}, 50)
+		})
+		.onVisibleAreaChange([0,1], (isExpanding: boolean) => {
+			if(isExpanding && (this.isShowLeft && !this.leftWidth || this.isShowRight && !this.rightWidth)){
+				this.initSize()
+			}
+		})
 	}
 }

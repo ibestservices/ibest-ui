@@ -5,7 +5,7 @@ import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type'
 import CustomContent from '../common/components/CustomContent'
 import { convertDimensionsWidthUnit, getSizeByUnit, sleep } from '../utils/utils'
 import { IBestStorageKey, IBestStringNumber } from '../model/Global.type'
-import GlobalStore from '../utils/GlobalStore'
+import GlobalStore from '../utils/globalStore'
 class IBestNotifyOption{
 	/**
 	 * 展示类型

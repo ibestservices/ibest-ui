@@ -1,7 +1,7 @@
-import { componentUtils, ComponentUtils, LengthUnit, MeasureOptions } from '@kit.ArkUI'
+import { componentUtils, LengthUnit, MeasureOptions } from '@kit.ArkUI'
 import { ComInfoType, IBestAwaitable, IBestStorageKey, IBestStringNumber } from '../model/Global.type'
 import { AnyType } from '../model/AnyType'
-import GlobalStore from './GlobalStore'
+import GlobalStore from './globalStore'
 import { util } from '@kit.ArkTS'
 import { image } from '@kit.ImageKit'
 import { IBestGlobalConfig } from '../model/GlobalConfig'
@@ -124,8 +124,7 @@ export function random(min: number, max: number) {
  * @param {key} 组件id
  * */
 export const getComponentsInfo = (context: UIContext, key: string): ComInfoType => {
-	let comUtils: ComponentUtils = context.getComponentUtils()
-	let info: componentUtils.ComponentInfo = comUtils.getRectangleById(key)
+	let info: componentUtils.ComponentInfo = context.getComponentUtils().getRectangleById(key)
 	return {
 		width: context.px2vp(info.size.width),
 		height: context.px2vp(info.size.height),
@@ -248,7 +247,7 @@ export function getResourceStr(res: ResourceStr): string {
 	if(typeof res == 'string'){
 		return res
 	}
-	return GlobalStore.context.resourceManager.getStringSync(res)
+	return GlobalStore.context.resourceManager.getStringSync(res.id)
 }
 /**
  * 处理异步函数

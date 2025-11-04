@@ -1,6 +1,6 @@
 import IBestToast from '../../apis/IBestToast';
 import { getComponentsInfo } from '../../utils/utils';
-import GlobalStore from '../../utils/GlobalStore';
+import GlobalStore from '../../utils/globalStore';
 import { window } from '@kit.ArkUI';
 import { IBestStringNumber } from '../../model/Global.type';
 export class GuideRect {

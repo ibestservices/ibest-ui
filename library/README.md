@@ -21,7 +21,9 @@
 <a href="https://ibestui.ibestservices.com/" target="_blank">IBest-UI</a>
 由 <a href="https://www.ibestservices.com" target="_blank">安徽百得思维信息科技有限公司</a> 开源，是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库，包含 Button、Calendar、Form、Field、Picker、Popup、Toast、Dialog、ImageCropper 等60+个优质组件，上手简单，使用方便，可大大提高鸿蒙开发者的开发效率。
 
-目前 <a href="https://www.ibestservices.com" target="_blank" title="安徽百得思维信息科技有限公司">ibestservices 官方</a> 提供了 <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui')">V1</a> 和 <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2')">V2</a> 版本，当前为状态管理 **V1** 版本，开发者可根据自己项目使用的**状态管理版本**选择对应的版本进行开发。
+目前 <a href="https://www.ibestservices.com" target="_blank" title="安徽百得思维信息科技有限公司">ibestservices 官方</a> 提供了 <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui')">V1</a> 和 <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2')">V2</a> 版本，当前为状态管理 **V1** 版本，开发者可根据自己项目使用的**状态管理版本**选择对应的版本进行开发，官方推荐使用V2。
+
+欢迎加入下方微信群交流提供想法与建议，如果觉得还不错，请帮忙右上角点个赞~ 感谢支持！
 
 <div>
 	<img src="https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI-Light.png" width="48%">
@@ -48,6 +50,12 @@ ohpm install @ibestservices/ibest-ui
 ```
 
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+
+## 组件库版本与api版本对应关系
+| 组件库版本     | api版本      |
+|:----------|:-----------|
+| v2.1.4及以上 | `api17` 以上 |
+| v2.0.8及以上 | `api15` 以上 |
 
 ## 组件介绍
 
@@ -115,8 +123,10 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | ImagePreview 图片预览    | 图片放大预览。                            | <a href="https://ibestui.ibestservices.com/components/imagepreview/" target="_blank">文档</a>   |
 | NoticeBar 通知栏        | 用于循环播放展示一组消息通知。                    | <a href="https://ibestui.ibestservices.com/components/noticeBar/" target="_blank">文档</a>      |
 | Popover 气泡弹出框        | 弹出式的气泡菜单。                          | <a href="https://ibestui.ibestservices.com/components/popover/" target="_blank">文档</a>        |
+| Price 价格             | 用于展示价格。                            | <a href="https://ibestui.ibestservices.com/components/price/" target="_blank">文档</a>          |
 | Progress 进度条         | 用于展示操作的当前进度。                       | <a href="https://ibestui.ibestservices.com/components/progress/" target="_blank">文档</a>       |
 | ReadMore 查看更多        | 用于内容超出指定高度时，显示"展开/收起"按钮。           | <a href="https://ibestui.ibestservices.com/components/readMore/" target="_blank">文档</a>       |
+| RollingText 翻滚文本     | 文本翻滚动效，可以翻滚数字。                     | <a href="https://ibestui.ibestservices.com/components/rollingText/" target="_blank">文档</a>    | 
 | SectorProgress 扇形进度条 | 用于展示进度、占比。                         | <a href="https://ibestui.ibestservices.com/components/sectorProgress/" target="_blank">文档</a> |
 | Segmented 分段控制器      | 用于展示多个选项并允许用户选择其中单个选项。             | <a href="https://ibestui.ibestservices.com/components/segmented/" target="_blank">文档</a>      |
 | Skeleton 骨架屏         | 用于在内容加载过程中展示一组占位图形。                | <a href="https://ibestui.ibestservices.com/components/skeleton/" target="_blank">文档</a>       |
@@ -146,7 +156,6 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 ohos.permission.INTERNET
 
 ## 官方生态
-
 | 项目                           | 描述                                                                                        |                                                                                                                               |
 |:-----------------------------|:------------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------|
 | @ibestservices/ibest-ui-v2   | 一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库，基于状态管理v2版本。                                         | <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2')">地址</a>   |
@@ -185,7 +194,7 @@ Cores: 20
 Registry:
   idea.plugins.compatible.build=IC-233.14475.28
 Non-Bundled Plugins:
-  com.alibabacloud.intellij.cosy (2.5.16)
+  com.alibabacloud.intellij.cosy (2.6.4)
 ```
 
 ## 开源协议

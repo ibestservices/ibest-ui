@@ -3,7 +3,7 @@ import { IBestTabController, IBestTabItem, IBestTabItemType, TabWidthType } from
 import { getDefaultBaseStyle } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
-import { debounce } from '../../utils/DebounceThrottle'
+import { debounce } from '../../utils/debounceThrottle'
 import { IBestTabColor } from './color';
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type';
 import { IBestIcon } from '../../../../../Index';

@@ -2,7 +2,7 @@ import dayjs from '@hview/dayjs'
 import { IBestPicker } from '../picker'
 import { IBestPickerOption } from '../picker/index.type'
 import { COMPONENT_NAME, DATE_TIME_PICKER_EVENT_NAME, IBestDateTimePickerResult } from './index.type'
-import { emitter } from '../../utils/EventEmitter'
+import { emitter } from '../../utils/eventEmitter'
 import { convertDimensionsWidthUnit, getEventName, getResourceStr } from '../../utils/utils'
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 

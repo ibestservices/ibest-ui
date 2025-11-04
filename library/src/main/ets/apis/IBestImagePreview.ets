@@ -3,7 +3,7 @@ import { CONTAINER_SIZE } from '../theme-chalk/src/container'
 import { clamp, convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../utils/utils'
 import { IBestActionSheetColor } from './color'
 import { IBestStringNumber } from '../model/Global.type'
-import GlobalStore from '../utils/GlobalStore'
+import GlobalStore from '../utils/globalStore'
 type IBestPreviewImgType = PixelMap | ResourceStr | DrawableDescriptor
 
 interface CenterLocation {

@@ -205,7 +205,7 @@
 			"value": "DropdownMenu"
 		},
 		{
-			"name": "component_float_bubble",
+			"name": "component_floatBubble",
 			"value": "FloatBubble"
 		},
 		{
@@ -237,7 +237,7 @@
 			"value": "Badge"
 		},
 		{
-			"name": "component_circleprogress",
+			"name": "component_circleProgress",
 			"value": "CircleProgress"
 		},
 		{
@@ -261,15 +261,15 @@
 			"value": "Empty"
 		},
 		{
-			"name": "component_highlight",
+			"name": "component_highLight",
 			"value": "Highlight"
 		},
 		{
-			"name": "component_imagepreview",
+			"name": "component_imagePreview",
 			"value": "ImagePreview"
 		},
 		{
-			"name": "component_noticebar",
+			"name": "component_noticeBar",
 			"value": "NoticeBar"
 		},
 		{
@@ -277,15 +277,23 @@
 			"value": "Popover"
 		},
 		{
+			"name": "component_price",
+			"value": "Price"
+		},
+		{
 			"name": "component_progress",
 			"value": "Progress"
 		},
 		{
-			"name": "component_readmore",
+			"name": "component_readMore",
 			"value": "ReadMore"
 		},
 		{
-			"name": "component_sectorprogress",
+			"name": "component_rollingText",
+			"value": "RollingText"
+		},
+		{
+			"name": "component_sectorProgress",
 			"value": "SectorProgress"
 		},
 		{
@@ -309,7 +317,7 @@
 			"value": "Tag"
 		},
 		{
-			"name": "component_textellipsis",
+			"name": "component_textEllipsis",
 			"value": "TextEllipsis"
 		},
 		{

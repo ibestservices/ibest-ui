@@ -1,10 +1,12 @@
 import {
 	IBestButton,
+	IBestCaliper,
 	IBestCheckbox,
 	IBestCircleProgress,
 	IBestProgress,
 	IBestRadio,
 	IBestRadioGroup,
+	IBestSegmented,
 	IBestSwitch,
 	IBestTabs,
 	IBestTag,
@@ -30,6 +32,9 @@ struct ThemePage {
 	@State active: string = "1"
 	@State switchValue: boolean = true
 	@State progressValue: number = 50
+	@State caliperValue: number = 0
+	@State segmentedValue: string = "选项1"
+	private segmentedOptions: string[] = ['选项1', '选项2', '选项3', '选项4']
 	aboutToDisappear() {
 		setIBestUIBaseStyle({ primary: '#3D8AF2' })
 	}
@@ -94,7 +99,7 @@ struct ThemePage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.component_circleprogress") }) {
+					ComponentShowContainer({ title: $r("app.string.component_circleProgress") }) {
 						IBestCircleProgress({
 							value: $progressValue,
 							text: `50%`
@@ -145,12 +150,27 @@ struct ThemePage {
 						})
 					}
 				}
+				ListItem() {
+					ComponentShowContainer({ title: "卡尺" }) {
+						IBestCaliper({
+							value: $caliperValue
+						})
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: "分段控制器" }) {
+						IBestSegmented({
+							value: $segmentedValue,
+							options: this.segmentedOptions
+						})
+					}
+				}
 				ListItem().height(50)
 			}
 			.layoutWeight(1)
 			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
 		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg)
+		.backgroundColor(modeColor.bg2)
 	}
 }

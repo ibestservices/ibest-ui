@@ -1,4 +1,4 @@
-import { FieldValidateResult, IBestFormValidateResult } from '../form/index.type'
+import { IBestFieldValidateInfo, IBestFormValidateResult } from '../form/index.type'
 
 export interface IBestContactAddressFormResult {
 	/**
@@ -99,7 +99,7 @@ export class IBestContactAddressController {
 	/**
 	 * 验证整个表单
 	 */
-	public validateForm: (callBack?: (valid: boolean, field: FieldValidateResult[]) => void) => Promise<IBestFormValidateResult> = () => {
+	public validateForm: (callBack?: (valid: boolean, field: IBestFieldValidateInfo[]) => void) => Promise<IBestFormValidateResult> = () => {
 		let res: IBestFormValidateResult = {
 			valid: true,
 			fields: []

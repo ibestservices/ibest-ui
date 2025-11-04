@@ -122,10 +122,13 @@ struct CheckboxPage {
 								}
 							})
 							IBestCheckbox({
-								value: false,
+								value: this.isChecked,
 								bdColor: '#ee0a24',
 								bgColor: "#fff",
-								label: '自定义背景色'
+								label: '自定义背景色',
+								onChange: checked => {
+									this.isChecked = checked as boolean
+								}
 							})
 						}.alignItems(HorizontalAlign.Start)
 					}

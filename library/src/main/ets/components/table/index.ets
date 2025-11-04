@@ -1,10 +1,10 @@
-import { getComponentsInfo, getEventName, getResourceStr, getSizeByUnit } from '../../utils/utils'
+import { generateId, getComponentsInfo, getEventName, getResourceStr, getSizeByUnit } from '../../utils/utils'
 import { AnyType } from '../../model/AnyType'
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { emitter } from '../../utils/EventEmitter'
+import { emitter } from '../../utils/eventEmitter'
 import { IBestTableColor } from './color'
 import {
     COMPONENT_NAME,
@@ -34,7 +34,7 @@ export struct IBestTable {
     /**
      * 表格数据
      */
-    @Provide({allowOverride: "data"}) @Require data: AnyType[] = []
+    @ObjectLink data: AnyType[]
     /**
      * 斑马纹
      */
@@ -120,6 +120,7 @@ export struct IBestTable {
 
     @Builder headerFooterCellBuilder(cellType: 'header' | 'footer', position: IBestCellPosition){
 		HeaderFooterCellRow({
+            data: this.data,
 			cellType,
 			cellPosition: position,
 			summaryMethod: this.summaryMethod
@@ -133,7 +134,7 @@ export struct IBestTable {
 					item,
 					rowIndex: index
 				})
-			}, (_: AnyType, index: number) => index.toString())
+			}, (_: AnyType, index: number) => `${generateId()}_${index}`)
 		}
 	}
     @Styles ibestTableFixBodyStyle(){
@@ -298,7 +299,7 @@ export struct IBestTable {
 struct HeaderFooterCellRow{
 	@Prop @Require cellType: 'header' | 'footer'
 	@Prop @Require cellPosition: IBestCellPosition
-	@Consume data: AnyType[]
+    @Prop @Require data: AnyType[]
 	@Consume columnList: IBestTableColumnInfo[]
 	@Consume leftFixedColumnList: IBestTableColumnInfo[]
 	@Consume rightFixedColumnList: IBestTableColumnInfo[]
@@ -359,7 +360,7 @@ struct HeaderFooterCellRow{
 					headerBuilder: column.headerBuilder,
 					cellBuilder: column.cellBuilder
 				})
-			}, (_: IBestTableColumnInfo, index: number) => index.toString())
+			})
 		}
 		.border({width: {bottom: 1}, color: this.bdColor})
 		.backgroundColor(this.cellType == 'header' ? this.headerBgColor : IBestTableColor.footerBgColor)
@@ -402,7 +403,7 @@ struct BodyCellRow{
 					headerBuilder: column.headerBuilder,
 					cellBuilder: column.cellBuilder
 				})
-			}, (_: IBestTableColumnInfo, index1: number) => index1.toString())
+			})
 		}
 		.border({width: {bottom: 1}, color: this.bdColor})
 		.backgroundColor(this.stripe && this.rowIndex % 2 == 0 ? this.stripeBgColor : this.cellBgColor)
@@ -453,6 +454,7 @@ struct TableCell{
                     this.cellBuilder(this.item, {title: this.column.title, prop: this.column.prop}, this.rowIndex, this.columnIndex)
                 }else{
                     Text(this.getText())
+                        .width(CONTAINER_SIZE.FULL)
                         .fontSize(this.cellType == 'header' ? this.headerFontSize : this.cellFontSize)
                         .fontColor(this.cellType == 'header' ? this.headerTextColor : this.cellTextColor)
                         .fontWeight(this.cellType == 'header' ? 600 : FontWeight.Normal)

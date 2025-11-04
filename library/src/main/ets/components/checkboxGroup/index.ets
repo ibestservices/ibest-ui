@@ -1,4 +1,4 @@
-import { emitter } from '../../utils/EventEmitter'
+import { emitter } from '../../utils/eventEmitter'
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit, handleBeforeFunction, sleep } from '../../utils/utils'
 import { CHECKBOX_GROUP_EVENT_NAME, COMPONENT_NAME, IBestCheckboxGroupController } from './index.type'
 import { IBestAwaitable, IBestStringNumber } from '../../model/Global.type'

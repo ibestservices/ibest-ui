@@ -205,7 +205,7 @@
 			"value": "DropdownMenu 下拉菜单"
 		},
 		{
-			"name": "component_float_bubble",
+			"name": "component_floatBubble",
 			"value": "FloatBubble 浮动气泡"
 		},
 		{
@@ -237,7 +237,7 @@
 			"value": "Badge 徽标"
 		},
 		{
-			"name": "component_circleprogress",
+			"name": "component_circleProgress",
 			"value": "CircleProgress 环形进度条"
 		},
 		{
@@ -261,15 +261,15 @@
 			"value": "Empty 空状态"
 		},
 		{
-			"name": "component_highlight",
+			"name": "component_highLight",
 			"value": "Highlight 高亮文本"
 		},
 		{
-			"name": "component_imagepreview",
+			"name": "component_imagePreview",
 			"value": "ImagePreview 图片预览"
 		},
 		{
-			"name": "component_noticebar",
+			"name": "component_noticeBar",
 			"value": "NoticeBar 通知栏"
 		},
 		{
@@ -277,20 +277,28 @@
 			"value": "Popover 气泡弹出框"
 		},
 		{
-			"name": "component_readmore",
-			"value": "ReadMore 查看更多"
+			"name": "component_price",
+			"value": "Price 价格"
 		},
 		{
 			"name": "component_progress",
 			"value": "Progress 进度条"
 		},
 		{
-			"name": "component_segmented",
-			"value": "Segmented 分段控制器"
+			"name": "component_readMore",
+			"value": "ReadMore 查看更多"
 		},
 		{
-			"name": "component_sectorprogress",
+			"name": "component_rollingText",
+			"value": "RollingText 翻滚文本"
+		},
+		{
+			"name": "component_sectorProgress",
 			"value": "SectorProgress 扇形进度条"
+		},
+		{
+			"name": "component_segmented",
+			"value": "Segmented 分段控制器"
 		},
 		{
 			"name": "component_skeleton",
@@ -309,7 +317,7 @@
 			"value": "Tag 标签"
 		},
 		{
-			"name": "component_textellipsis",
+			"name": "component_textEllipsis",
 			"value": "TextEllipsis 文本省略"
 		},
 		{

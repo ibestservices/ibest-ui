@@ -3,7 +3,7 @@ import { IBestStorageKey } from '../../model/Global.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { emitter } from '../../utils/EventEmitter'
+import { emitter } from '../../utils/eventEmitter'
 import { convertDimensionsWidthUnit, getComponentsInfo, getEventName, getSizeByUnit } from '../../utils/utils'
 import { IBestStepsColor } from './color'
 import { COMPONENT_NAME, IBestStepConfig, IBestStepMarkType, STEPS_EVENT_NAME } from './index.type'
@@ -58,7 +58,7 @@ export struct IBestSteps{
 	/**
 	 * 激活颜色
      */
-	@Prop activeColor: ResourceColor = this.baseStyle.primary
+	@Prop activeColor: ResourceColor = ""
 	/**
 	 * 自定义内容
      */
@@ -350,7 +350,7 @@ export struct IBestStep{
 	}
 	// 获取激活颜色
 	getActiveColor(){
-		return this.isActive() ? this.config.activeColor : this.config.inactiveColor
+		return this.isActive() ? this.config.activeColor || this.baseStyle.primary : this.config.inactiveColor
 	}
 	// 生成id
 	getMarkId(){

@@ -8,7 +8,7 @@ import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type';
 import { IBestActionSheetColor } from './color';
 import { IBestIcon } from '../components/icon';
 import { IBestAwaitable, IBestStorageKey, IBestStringNumber } from '../model/Global.type';
-import GlobalStore from '../utils/GlobalStore';
+import GlobalStore from '../utils/globalStore';
 // 选项类型
 export class IBestActionType {
 	name: ResourceStr = ""

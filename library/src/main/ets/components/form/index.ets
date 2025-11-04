@@ -1,4 +1,4 @@
-import { emitter } from '../../utils/EventEmitter'
+import { emitter } from '../../utils/eventEmitter'
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
 import {
     FieldTextAlign,
@@ -8,7 +8,7 @@ import {
 } from '../field/index.type'
 import {
     COMPONENT_NAME,
-    FieldValidateResult,
+    IBestFieldValidateInfo,
     FORM_EVENT_NAME,
     IBestFieldItem,
     IBestFieldValidateResult,
@@ -77,8 +77,8 @@ export struct IBestForm {
 	controller: IBestFormController = new IBestFormController()
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
-		this.controller.validate = (callBack?: (valid: boolean, field: FieldValidateResult[]) => void): Promise<IBestFormValidateResult> => this.validateForm(callBack)
-		this.controller.validateField = (name: string, callBack?: (valid: boolean, field?: FieldValidateResult) => void): Promise<IBestFieldValidateResult> => this.validateField(name, callBack)
+		this.controller.validate = (callBack?: (valid: boolean, field: IBestFieldValidateInfo[]) => void): Promise<IBestFormValidateResult> => this.validateForm(callBack)
+		this.controller.validateField = (name: string, callBack?: (valid: boolean, field?: IBestFieldValidateInfo) => void): Promise<IBestFieldValidateResult> => this.validateField(name, callBack)
 		this.controller.resetValidation = (name?: string | string[]): void => this.resetValidation(name)
 		this.controller.getValues = (): Promise<Record<string, IBestFieldValueType>> => this.getValues()
 		this.controller.getFormValues = (): Record<string, IBestFieldValueType> => this.getFormValues()
@@ -119,7 +119,7 @@ export struct IBestForm {
 		this.formItems = this.formItems.filter((item: IBestFieldItem) => item.uniId !== uniId)
 	}
 	// 验证表单
-	validateForm(callBack?: (valid: boolean, field: FieldValidateResult[]) => void): Promise<IBestFormValidateResult> {
+	validateForm(callBack?: (valid: boolean, field: IBestFieldValidateInfo[]) => void): Promise<IBestFormValidateResult> {
 		return new Promise((resolve) => {
 			Promise.all(this.formItems.map((item: IBestFieldItem) => item.validate(this.rules[item.prop.split(".")[0]]))).then((errors) => {
 				errors = errors.filter(Boolean)
@@ -135,11 +135,11 @@ export struct IBestForm {
 		})
 	}
 	// 验证单个表单
-	validateField(prop: string, callBack?: (valid: boolean, field?: FieldValidateResult) => void): Promise<IBestFieldValidateResult>{
+	validateField(prop: string, callBack?: (valid: boolean, field?: IBestFieldValidateInfo) => void): Promise<IBestFieldValidateResult>{
 		return new Promise((resolve) => {
 			const item = this.formItems.find((item: IBestFieldItem) => item.prop === prop)
 			if (item) {
-				item.validate(this.rules[prop]).then((res: FieldValidateResult) => {
+				item.validate(this.rules[prop]).then((res: IBestFieldValidateInfo) => {
 					if(callBack){
 						callBack(res === undefined, res)
 					}else{

@@ -1,5 +1,5 @@
 import { IBestStringNumber } from '../../model/Global.type'
-import { emitter } from '../../utils/EventEmitter'
+import { emitter } from '../../utils/eventEmitter'
 import { getEventName } from '../../utils/utils'
 import { IBestCollapseColor } from './color'
 import {

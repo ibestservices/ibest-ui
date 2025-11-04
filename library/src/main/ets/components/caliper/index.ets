@@ -47,7 +47,7 @@ export struct IBestCaliper{
     /**
      * 选中刻度线颜色
      */
-    @Prop activeScaleColor: ResourceColor = this.baseStyle.primary
+    @Prop activeScaleColor: ResourceColor = ""
     /**
      * 刻度对齐方式
      */
@@ -59,7 +59,7 @@ export struct IBestCaliper{
     /**
      * 字体颜色
      */
-    @Prop fontColor: ResourceColor = this.baseStyle.primary
+    @Prop fontColor: ResourceColor = ""
     /**
      * 大刻度宽度
      */
@@ -250,11 +250,11 @@ export struct IBestCaliper{
                         Row()
                             .width(getSizeByUnit(this.value === item.value ? this.activeScaleWidth : item.isBig ? this.bigScaleWidth : this.smallScaleWidth))
                             .height(getSizeByUnit(item.isBig ? this.bigScaleHeight : this.smallScaleHeight))
-                            .backgroundColor(this.value === item.value ? this.activeScaleColor : this.scaleColor)
+                            .backgroundColor(this.value === item.value ? this.activeScaleColor || this.baseStyle.primary : this.scaleColor)
                             .borderRadius(this.value === item.value ? this.baseStyle.borderRadiusMax : 0)
                         if(item.isBig){
                             Text(item.value.toString())
-                                .fontColor(this.fontColor)
+                                .fontColor(this.fontColor || this.baseStyle.primary)
                                 .fontSize(getSizeByUnit(this.fontSize, true))
                                 .fontWeight(this.value === item.value ? this.activeFontWeight : "")
                                 .position({left: this.value === item.value ? this.realActiveWidth / 2 : 0, bottom: -5})

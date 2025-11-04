@@ -21,7 +21,9 @@
 <a href="https://ibestui.ibestservices.com/" target="_blank">IBest-UI</a> 
 由 <a href="https://www.ibestservices.com" target="_blank">安徽百得思维信息科技有限公司</a> 开源，是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库，包含 Button、Calendar、Form、Field、Picker、Popup、Toast、Dialog、ImageCropper 等60+个优质组件，上手简单，使用方便，可大大提高鸿蒙开发者的开发效率。
 
-目前 <a href="https://www.ibestservices.com/" target="_blank">ibestservices 官方</a> 提供了 <a href="https://ibestui.ibestservices.com/guide/home/" target="_blank">V1</a> 和 <a href="https://ibestui-v2.ibestservices.com/guide/home/" target="_blank">V2</a> 版本，当前为状态管理 **V1** 版本，开发者可根据自己项目使用的**状态管理版本**选择对应的版本进行开发。
+目前 <a href="https://www.ibestservices.com/" target="_blank">ibestservices 官方</a> 提供了 <a href="https://ibestui.ibestservices.com/guide/home/" target="_blank">V1</a> 和 <a href="https://ibestui-v2.ibestservices.com/guide/home/" target="_blank">V2</a> 版本，当前为状态管理 **V1** 版本，开发者可根据自己项目使用的**状态管理版本**选择对应的版本进行开发，官方推荐使用V2。
+
+欢迎加入下方微信群交流提供想法与建议，如果觉得还不错，请帮忙给项目点个**Star**，谢谢！
 
 <div>
 	<img src="https://ibestservices.github.io/ibest-ui/screenshot/IBest-UI-Light.png" width="48%">
@@ -48,6 +50,12 @@ ohpm install @ibestservices/ibest-ui
 ```
 
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+
+## 组件库版本与api版本对应关系
+| 组件库版本     | api版本      |
+|:----------|:-----------|
+| v2.1.4及以上 | `api17` 以上 |
+| v2.0.8及以上 | `api15` 以上 |
 
 ## 组件介绍
 
@@ -97,7 +105,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | Guide 引导          | 分步引导用户了解产品功能的气泡组件，用来引导用户并介绍产品。                       | <a href="https://ibestui.ibestservices.com/components/guide/" target="_blank">文档</a>        |
 | Loading 加载        | 加载图标，用于表示加载中的过渡状态。                                   | <a href="https://ibestui.ibestservices.com/components/loading/" target="_blank">文档</a>      |
 | Notify 消息提示       | 在页面顶部展示消息提示。                                         | <a href="https://ibestui.ibestservices.com/components/notify/" target="_blank">文档</a>       |
-| PullRefresh 下拉刷新  | 轻量级，用于提供下拉刷新的交互操作。                                  | <a href="https://ibestui.ibestservices.com/components/pullrefresh/" target="_blank">文档</a>  |
+| PullRefresh 下拉刷新  | 轻量级，用于提供下拉刷新的交互操作。                                   | <a href="https://ibestui.ibestservices.com/components/pullrefresh/" target="_blank">文档</a>  |
 | SwipeCell 滑动单元格   | 可以左右滑动来展示操作按钮的单元格组件。                                 | <a href="https://ibestui.ibestservices.com/components/swipecell/" target="_blank">文档</a>    |
 
 ### 展示组件
@@ -115,8 +123,10 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | ImagePreview 图片预览    | 图片放大预览。                            | <a href="https://ibestui.ibestservices.com/components/imagepreview/" target="_blank">文档</a>   |
 | NoticeBar 通知栏        | 用于循环播放展示一组消息通知。                    | <a href="https://ibestui.ibestservices.com/components/noticeBar/" target="_blank">文档</a>      |
 | Popover 气泡弹出框        | 弹出式的气泡菜单。                          | <a href="https://ibestui.ibestservices.com/components/popover/" target="_blank">文档</a>        |
+| Price 价格             | 用于展示价格。                            | <a href="https://ibestui.ibestservices.com/components/price/" target="_blank">文档</a>          |
 | Progress 进度条         | 用于展示操作的当前进度。                       | <a href="https://ibestui.ibestservices.com/components/progress/" target="_blank">文档</a>       |
 | ReadMore 查看更多        | 用于内容超出指定高度时，显示"展开/收起"按钮。           | <a href="https://ibestui.ibestservices.com/components/readMore/" target="_blank">文档</a>       |
+| RollingText 翻滚文本     | 文本翻滚动效，可以翻滚数字。                     | <a href="https://ibestui.ibestservices.com/components/rollingText/" target="_blank">文档</a>    | 
 | SectorProgress 扇形进度条 | 用于展示进度、占比。                         | <a href="https://ibestui.ibestservices.com/components/sectorProgress/" target="_blank">文档</a> |
 | Segmented 分段控制器      | 用于展示多个选项并允许用户选择其中单个选项。             | <a href="https://ibestui.ibestservices.com/components/segmented/" target="_blank">文档</a>      |
 | Skeleton 骨架屏         | 用于在内容加载过程中展示一组占位图形。                | <a href="https://ibestui.ibestservices.com/components/skeleton/" target="_blank">文档</a>       |
@@ -135,25 +145,25 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | Tab 标签页       | 选项卡组件，用于在不同的内容区域之间进行切换。        | <a href="https://ibestui.ibestservices.com/components/tab/" target="_blank">文档</a>        |
 
 ### 业务组件
-| 组件                   | 介绍                |                                                                                               |
-|:---------------------|:------------------|:----------------------------------------------------------------------------------------------|
-| CanvasDrawer 画布绘制    | 用于绘制海报、图片加水印等场景。  | <a href="https://ibestui.ibestservices.com/components/canvasDrawer/" target="_blank">文档</a>   |
-| ColorPicker 颜色选择     | 用于选择颜色。           | <a href="https://ibestui.ibestservices.com/components/colorPicker/" target="_blank">文档</a>    |
+| 组件                   | 介绍               |                                                                                               |
+|:---------------------|:-----------------|:----------------------------------------------------------------------------------------------|
+| CanvasDrawer 画布绘制    | 用于绘制海报、图片加水印等场景。 | <a href="https://ibestui.ibestservices.com/components/canvasDrawer/" target="_blank">文档</a>   |
+| ColorPicker 颜色选择     | 用于选择颜色。          | <a href="https://ibestui.ibestservices.com/components/colorPicker/" target="_blank">文档</a>    |
 | ContactAddress 联系人地址 | 用于选择联系人地址，可粘贴识别。 | <a href="https://ibestui.ibestservices.com/components/contactAddress/" target="_blank">文档</a> |
-| ImageCropper 图片裁剪    | 用于裁剪图片。           | <a href="https://ibestui.ibestservices.com/components/imageCropper/" target="_blank">文档</a>   |
+| ImageCropper 图片裁剪    | 用于裁剪图片。          | <a href="https://ibestui.ibestservices.com/components/imageCropper/" target="_blank">文档</a>   |
 
 ## 需要权限
 ohos.permission.INTERNET
 
 ## 官方生态
 
-| 项目                           | 描述                                                                                         |                                                                                                         |
-|:-----------------------------|:-------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------|
-| @ibestservices/ibest-ui-v2   | 一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库，基于状态管理v2版本。                                          | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2" target="_blank">地址</a>   |
-| @ibestservices/ucharts       | 一个类型丰富、高性能、可扩展、支持主题定制的图表库。                                                                 | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fucharts" target="_blank">地址</a>       |
-| @ibestservices/area-data     | 中国省市区数据，适用于鸿蒙 ArkUI 的 TextPicker 和 IBest-UI 的 IBestCascader 等组件。                           | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Farea-data" target="_blank">地址</a>     |
-| @ibestservices/ibest-orm     | 一个轻量、简单易用、全功能、支持实体关联、事务、自动迁移的鸿蒙开源 ORM 工具库。                                                 | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-orm" target="_blank">地址</a>     |
-| @ibestservices/ibest-barcode | 一个轻量、简单易用的鸿蒙开源条形码组件，支持CODE39、CODE93、CODE128、、EAN13、UPC、ITF、MSI、Pharmacode、Codabar等多种条码类型。 | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-barcode" target="_blank">地址</a> |
+| 项目                           | 描述                                                                                       |                                                                                                         |
+|:-----------------------------|:-----------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------|
+| @ibestservices/ibest-ui-v2   | 一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库，基于状态管理v2版本。                                        | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2" target="_blank">地址</a>   |
+| @ibestservices/ucharts       | 一个类型丰富、高性能、可扩展、支持主题定制的图表库。                                                               | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fucharts" target="_blank">地址</a>       |
+| @ibestservices/area-data     | 中国省市区数据，适用于鸿蒙 ArkUI 的 TextPicker 和 IBest-UI 的 IBestCascader 等组件。                         | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Farea-data" target="_blank">地址</a>     |
+| @ibestservices/ibest-orm     | 一个轻量、简单易用、全功能、支持实体关联、事务、自动迁移的鸿蒙开源 ORM 工具库。                                               | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-orm" target="_blank">地址</a>     |
+| @ibestservices/ibest-barcode | 一个轻量、简单易用的鸿蒙开源条形码组件，支持CODE39、CODE93、CODE128、EAN13、UPC、ITF、MSI、Pharmacode、Codabar等多种条码类型。 | <a href="https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-barcode" target="_blank">地址</a> |
 
 ## 链接
 - [Github](https://github.com/ibestservices/ibest-ui)

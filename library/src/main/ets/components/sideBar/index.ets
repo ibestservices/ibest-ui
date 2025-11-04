@@ -1,7 +1,7 @@
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { emitter } from '../../utils/EventEmitter'
+import { emitter } from '../../utils/eventEmitter'
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
 import { IBestSidebarColor } from './color'
 import { COMPONENT_NAME, LeftBarSize, SIDEBAR_EVENT_NAME } from './index.type'
@@ -54,7 +54,7 @@ export struct IBestSideBar{
 	/**
 	 * 左侧颜色条颜色
      */
-	@Prop leftBarColor: ResourceColor = this.baseStyle.primary
+	@Prop leftBarColor: ResourceColor = ""
 	/**
 	 * 激活态文字颜色
      */

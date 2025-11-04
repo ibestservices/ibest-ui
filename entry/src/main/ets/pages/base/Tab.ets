@@ -278,7 +278,7 @@ struct TabPage {
 				ListItem().height(50)
             }
             .layoutWeight(1)
-            .padding(SPACE.MD)
+            .padding({ left: SPACE.SM, right: SPACE.SM })
         }
         .hideTitleBar(true)
         .backgroundColor(modeColor.bg)
