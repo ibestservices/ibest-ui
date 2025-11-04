@@ -29,17 +29,15 @@ interface TableData1{
 	amount4: number
 	amount5: number
 }
-class TableData2Type{
+class TableData2{
 	name: string = ""
 	number: number = 0
-}
-class TableData2 extends TableData2Type{
-	constructor(value: TableData2Type) {
-		super()
-		this.name = value.name
-		this.number = value.number
+	constructor(name: string, number: number) {
+		this.name = name
+		this.number = number
 	}
 }
+
 @Entry
 @Component
 struct TablePage {
@@ -67,8 +65,8 @@ struct TablePage {
 		{ name: "数据5", amount1: 88, amount2: 97, amount3: 85.9, amount4: 68.3, amount5: 76.9 }
 	]
 	@State data3: TableData2[] = [
-		UIUtils.makeObserved(new TableData2({ name: "数据1", number: 10 })),
-		UIUtils.makeObserved(new TableData2({ name: "数据2", number: 20 }))
+		UIUtils.makeObserved(new TableData2("数据1", 10)),
+		UIUtils.makeObserved(new TableData2("数据2", 20))
 	]
 
 	@State tableId1: string = "table1"
@@ -223,13 +221,26 @@ struct TablePage {
 							IBestTableColumn({ tableId: this.tableId8, title: "名称", prop: "name", cellWidth: 100 })
 							IBestTableColumn({ tableId: this.tableId8, title: "数量", prop: "number"})
 						}
-						IBestButton({
-							type: "primary",
-							text: "修改数量",
-							onBtnClick: () => {
-								this.data3[0].number += 10
-							}
-						}).margin({ top: SPACE.SM })
+						Row({space: SPACE.SM}){
+							IBestButton({
+								type: "primary",
+								text: "修改数量",
+								onBtnClick: () => {
+									this.data3[0].number += 10
+								}
+							})
+							IBestButton({
+								type: "primary",
+								text: "修改整个数据",
+								onBtnClick: () => {
+									this.data3 = [
+										UIUtils.makeObserved(new TableData2("数据3", 30)),
+										UIUtils.makeObserved(new TableData2("数据4", 40))
+									]
+								}
+							})
+						}
+						.margin({ top: SPACE.SM })
 					}
 				}
 				ListItem().height(50)

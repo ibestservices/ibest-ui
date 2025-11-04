@@ -10,7 +10,8 @@
 6. IBestSlider 新增 onTouchStart onTouchMove onTouchEnd 事件;
 7. IBestHighLight 新增 lineHeight 属性;
 8. IBestPullRefresh 支持自动下拉加载;
-9. IBestSideBarItem 新增 contentPadding 属性.
+9. IBestSideBarItem 新增 contentPadding 属性;
+10. IBestTable 支持动态更新.
 
 #### bug修复:
 1. IBestSideBarItem defaultBuilder不生效问题;
