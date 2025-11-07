@@ -141,7 +141,7 @@ export struct IBestCanvasDrawer{
 		this.ctx.textAlign = textAlign
 		this.ctx.fillStyle = fontColor
 		this.ctx.font = `normal ${fontWeight} ${fontSize}vp sans-serif`
-		let text = typeof params.text == "string" ? params.text : this.resourceManager.getStringSync(params.text)
+		let text = typeof params.text == "string" ? params.text : this.resourceManager.getStringSync(params.text?.id)
 		let result = this.ctx.measureText(text)
 		let maxLineNumber = params.maxLineNumber || 1,
 			top = params.top || 0,
