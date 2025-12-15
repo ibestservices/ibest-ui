@@ -2,10 +2,21 @@
 
 ## 2.2.1
 #### 新增:
-
+1. 新增 IBestTree 树形控件;
+2. 全局配置新增 fontNames 属性,支持在包含图标的组件上使用自定义图标;
+3. IBestButton 新增 btnBorder 属性;
+4. IBestCascader 新增 selectAnyLevel 属性;
+5. IBestCheckbox 新增 radius 属性;
+6. IBestField required rules支持动态验证;
+7. IBestToast show方法支持Resource类型;
+8. IBestActionSheet 新增 keyboardAvoidMode 属性;
+9. IBestProgress 新增 radius 属性;
+10. IBestSteps 支持异步、动态更新.
 
 #### bug修复:
-
+1. IBestCaliper 小数刻度显示问题;
+2. IBestImagePreview closeOnClickImage为false时不生效问题，优化性能;
+3. IBestPullRefresh onRefresh 初始状态时重复执行问题.
 
 ## 2.2.0 - 5.1.1(19)
 #### 新增:
