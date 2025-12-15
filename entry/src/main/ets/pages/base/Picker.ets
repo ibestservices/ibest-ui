@@ -19,7 +19,7 @@ struct PickerPage {
 		{ text: '扬州', value: 3 },
 		{ text: '镇江', value: 4 }
 	]
-	@State selectValue: number[] = [0]
+	@State selectValue: number[] = []
 	@State selectValue1: string[] = []
 	@State selectValue2: string[] = ["Suzhou"]
 	@Builder pickerBuilder(){

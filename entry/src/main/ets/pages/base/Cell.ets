@@ -229,7 +229,6 @@ struct CellPage {
 				ListItem().height(50)
 			}
 			.layoutWeight(1)
-			.padding({ bottom: SPACE.MD })
 		}
 		.hideTitleBar(true)
 		.backgroundColor(modeColor.bg)

@@ -182,7 +182,7 @@ export struct IBestSignature{
 		}
 	}
 	build() {
-		Column() {
+		Column({space: this.baseStyle.spaceXs}) {
 			Row(){
 				Canvas(this.context)
 					.width(CONTAINER_SIZE.FULL)
@@ -201,7 +201,7 @@ export struct IBestSignature{
 			.clip(true)
 			.id(`ibest_signature_${this.uniId}`)
 			if(this.isShowFooter){
-				Row({ space: this.baseStyle.spaceXs as string }){
+				Row({ space: this.baseStyle.spaceXs }){
 					IBestButton({
 						text: this.clearText,
 						btnWidth: 60,
@@ -223,7 +223,6 @@ export struct IBestSignature{
 					})
 				}
 				.width(CONTAINER_SIZE.FULL)
-				.margin({ top: this.baseStyle.spaceXs })
 				.justifyContent(FlexAlign.End)
 			}
 		}

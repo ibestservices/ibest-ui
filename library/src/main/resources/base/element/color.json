@@ -539,6 +539,14 @@
 		{
 			"name": "ibest_guide_text_color",
 			"value": "$color:ibest_text_color"
+		},
+		{
+			"name": "ibest_tree_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_tree_active_background",
+			"value": "$color:ibest_active_color"
 		}
 	]
 }

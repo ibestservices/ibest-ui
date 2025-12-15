@@ -94,15 +94,15 @@ class IBestImagePreviewParams extends IBestImagePreviewOption {
 		this.maskColor = params?.maskColor || 'rgba(24,24,25,0.95)'
 		this.startIndex = params?.startIndex || 0
 		this.swipeDuration = params?.swipeDuration || 200
-		this.showIndex = params?.showIndex != undefined ? params.showIndex : list.length > 1
+		this.showIndex = params?.showIndex ?? list.length > 1
 		this.indexPosition = params?.indexPosition || 'bottom'
 		this.indexOffset = params?.indexOffset || convertDimensionsWidthUnit(52)
 		this.indexFontColor = params?.indexFontColor || IBestActionSheetColor.whiteColor
 		this.indexFontSize = params?.indexFontSize || convertDimensionsWidthUnit(14, true)
-		this.loop = params?.loop != undefined ? params.loop : true
-		this.doubleScale = params?.doubleScale != undefined ? params.doubleScale : true
-		this.closeOnClickOverlay = params?.closeOnClickOverlay != undefined ? params.closeOnClickOverlay : true
-		this.closeOnClickImage = params?.closeOnClickImage != undefined ? params.closeOnClickImage : true
+		this.loop = params?.loop ?? true
+		this.doubleScale = params?.doubleScale ?? true
+		this.closeOnClickOverlay = params?.closeOnClickOverlay ?? true
+		this.closeOnClickImage = params?.closeOnClickImage ?? true
 		this.maxScale = params?.maxScale || 3
 		this.minScale = params?.minScale || 1
 		this.onImgClick = params?.onImgClick
@@ -110,19 +110,41 @@ class IBestImagePreviewParams extends IBestImagePreviewOption {
 	}
 }
 
+class IBestImagePreviewDataSource implements IDataSource {
+	private list: IBestPreviewImgType[] = []
+
+	constructor(list: IBestPreviewImgType[]) {
+		this.list = list
+	}
+
+	totalCount(): number {
+		return this.list.length
+	}
+
+	getData(index: number): IBestPreviewImgType {
+		return this.list[index]
+	}
+
+	registerDataChangeListener(listener: DataChangeListener): void {}
+
+	unregisterDataChangeListener() {}
+}
+
 @Component
 struct PreviewContent{
-	params: IBestImagePreviewParams = new IBestImagePreviewParams([])
+	@Prop params: IBestImagePreviewParams = new IBestImagePreviewParams([])
 	@State active: number = 0
 	@State isDisabledSwiper: boolean = false
+	private data: IBestImagePreviewDataSource = new IBestImagePreviewDataSource([])
 
 	aboutToAppear(): void {
 		this.active = this.params.startIndex as number
+		this.data = new IBestImagePreviewDataSource(this.params.list)
 	}
 	build() {
 		Stack({ alignContent: this.params.indexPosition === 'top' ? Alignment.Top : Alignment.Bottom }){
 			Swiper() {
-				ForEach(this.params.list, (item: IBestPreviewImgType, index: number) => {
+				LazyForEach(this.data, (item: IBestPreviewImgType, index: number) => {
 					SwiperItem({
 						url: item,
 						index: index,
@@ -130,7 +152,7 @@ struct PreviewContent{
 						params: this.params,
 						isDisabledSwiper: $isDisabledSwiper
 					})
-				}, (item: IBestPreviewImgType, index: number) => index + "")
+				}, (_: IBestPreviewImgType, index: number) => index.toString())
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.height(CONTAINER_SIZE.FULL)
@@ -139,6 +161,7 @@ struct PreviewContent{
 			.loop(this.params.loop)
 			.duration(this.params.swipeDuration)
 			.disableSwipe(this.isDisabledSwiper)
+			.cachedCount(3)
 			if(this.params.showIndex){
 				Text(`${this.active + 1} / ${this.params.list.length}`)
 					.fontColor(this.params.indexFontColor)
@@ -156,6 +179,8 @@ struct SwiperItem{
 	@Prop index: number
 	@Prop @Watch("reset") active: number
 	@Link isDisabledSwiper: boolean
+
+	@State uniId: number = 0
 	@State rootWidth: number = 0
 	@State rootHeight: number = 0
 	@State imgWidth: number = 0
@@ -180,9 +205,12 @@ struct SwiperItem{
 	private longImageRatio: number = 2.6
 	private lastCenter: CenterLocation = { x: 0, y: 0 }
 
+	aboutToAppear(): void {
+		this.uniId = this.getUniqueId()
+	}
 	// 初始化
 	init(width: number, height: number){
-		let comInfo = getComponentsInfo(this.getUIContext(), "ibestPreviewImgContent")
+		let comInfo = getComponentsInfo(this.getUIContext(), `ibest_preview_img_content_${this.uniId}`)
 		let rootRatio = comInfo.height / comInfo.width
 		this.imgWidth = GlobalStore.px2vp(width)
 		this.imgHeight = GlobalStore.px2vp(height)
@@ -228,24 +256,26 @@ struct SwiperItem{
 	}
 	// 单击
 	singleClick(type: "img" | "mask"){
-		if(!this.isFingerMove){
+		if(this.isFingerMove){
+			return
+		}
+		if(type == "img"){
 			!this.params.closeOnClickImage && this.params.onImgClick && this.params.onImgClick(this.index)
-			if(type == "img"){
-				this.params.closeOnClickImage && this.params.hide()
-			}else{
-				this.params.closeOnClickOverlay && this.params.hide()
-			}
+			this.params.closeOnClickImage && this.params.hide()
+		}else{
+			this.params.closeOnClickOverlay && this.params.hide()
 		}
 	}
 	// 双击
 	doubleClick(fingers: FingerInfo[]){
-		if(!this.isFingerMove){
-			if(this.params.doubleScale){
-				let scale = this.curScale == 1 ? 2 : 1
-				this.setParams(scale, scale == 2 || this.isLongImage ? { x: fingers[0].localX, y: fingers[0].localY } : undefined)
-			}else{
-				this.params.closeOnClickImage && this.params.hide()
-			}
+		if(this.isFingerMove){
+			return
+		}
+		if(this.params.doubleScale){
+			let scale = this.curScale == 1 ? 2 : 1
+			this.setParams(scale, scale == 2 || this.isLongImage ? { x: fingers[0].localX, y: fingers[0].localY } : undefined)
+		}else{
+			this.params.closeOnClickImage && this.params.hide()
 		}
 	}
 	// 手指移动
@@ -316,35 +346,43 @@ struct SwiperItem{
 				.scale({ x: this.curScale, y: this.curScale, z: 1 })
 				.translate({ x: this.offsetX, y: this.offsetY, z: 0 })
 				.draggable(this.imgDraggable)
-				.animation({
-					duration: 100
-				})
+				.animation({ duration: 100 })
 				.onComplete((event) => {
 					if(event){
 						this.init(event.contentWidth, event.contentHeight)
 					}
 				})
 				.gesture(
-					// 长按
-					LongPressGesture({ fingers: 1 }).onAction(() => {
-						this.params.onImgLongPress && this.params.onImgLongPress(this.index)
-					})
+					GestureGroup(GestureMode.Exclusive,
+						// 双击
+						TapGesture({ count: 2 }).onAction((event) => {
+							this.doubleClick(event.fingerList)
+						}),
+						// 单击
+						TapGesture().onAction(() => {
+							this.singleClick("img")
+						})
+					)
 				)
 		}
 		.justifyContent(FlexAlign.Center)
-		.id("ibestPreviewImgContent")
+		.id(`ibest_preview_img_content_${this.uniId}`)
 		.onTouch((event) => {
 			this.onFingerMove(event)
 		})
-		.parallelGesture(
+		.gesture(
 			GestureGroup(GestureMode.Exclusive,
 				// 双击
-				TapGesture({ fingers: 1, count: 2 }).onAction((event) => {
+				TapGesture({ count: 2 }).onAction((event) => {
 					this.doubleClick(event.fingerList)
 				}),
 				// 单击
-				TapGesture({ fingers: 1, count: 1 }).onAction(() => {
+				TapGesture().onAction(() => {
 					this.singleClick("mask")
+				}),
+				// 长按
+				LongPressGesture().onAction(() => {
+					this.params.onImgLongPress && this.params.onImgLongPress(this.index)
 				}),
 				// 缩放
 				PinchGesture({ fingers: 2 })

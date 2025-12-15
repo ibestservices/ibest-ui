@@ -98,7 +98,7 @@ export struct IBestGuide {
                 this.controller.__cache.__guideTotal, this.controller)
         } else {
             Scroll() {
-                Column({ space: this.baseStyle.spaceSm as string }) {
+                Column({ space: this.baseStyle.spaceSm }) {
                     Text(this.controller.__cache.__guideItemValue)
                         .width(CONTAINER_SIZE.FULL)
                         .textAlign(TextAlign.Start)
@@ -107,7 +107,7 @@ export struct IBestGuide {
                         .fontColor(this.messageFontColor)
                     Row() {
                         Text(this.controller.__cache.__currentSort.toString() + " / " + this.controller.__cache.__guideTotal.toString())
-                            .letterSpacing(this.baseStyle.spaceMini as string)
+                            .letterSpacing(this.baseStyle.spaceMini)
                             .fontSize(this.baseStyle.fontSizeMd)
                         Row({ space: getSizeByUnit(this.buttonSpace) }) {
                             IBestButton({

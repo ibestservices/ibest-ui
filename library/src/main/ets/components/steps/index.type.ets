@@ -1,4 +1,5 @@
-import { IBestStringNumber } from '../../../../../Index'
+import { IBestStringNumber } from "../../model/Global.type"
+
 
 /**
  * 组件名称
@@ -10,9 +11,17 @@ export const COMPONENT_NAME = "STEPS"
 
 export enum STEPS_EVENT_NAME {
     /**
-     * 获取所有步骤信息
+     * 初始化步骤信息
      */
-    GET_ALL_STEPS = "GET_ALL_STEPS",
+    INIT_STEPS = "INIT_STEPS",
+    /**
+     * 保存步骤信息
+     */
+    SAVE_STEPS = "SAVE_STEPS",
+    /**
+     * 删除步骤
+     */
+    DELETE_STEP = "DELETE_STEP",
     /**
      * 获取配置信息
      */
@@ -43,6 +52,7 @@ export interface IBestStepConfig {
     iconSize: IBestStringNumber
     activeColor: ResourceColor
     inactiveColor: ResourceColor
+    bgColor: ResourceColor
 }
 
 /**

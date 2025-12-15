@@ -16,15 +16,20 @@ export class IBestGlobalConfigType{
     /**
      * 标识页面设计基准宽度 默认720px
      */
-    designWidth?: number
+    designWidth: number = 720
     /**
      * 全局尺寸单位, 默认vp
      */
-    unit?: IBestLengthUnit
+    unit: IBestLengthUnit = 'vp'
     /**
      * 全局字体尺寸单位, 默认fp
      */
-    fontUnit?: IBestFontUnit
+    fontUnit: IBestFontUnit = 'fp'
+    /**
+     * 自定义字体名称
+     * @since 2.2.1
+     */
+    fontNames: ResourceStr[] = []
     /**
      * 头像组件全局配置信息
      * @since 2.1.5
@@ -32,11 +37,12 @@ export class IBestGlobalConfigType{
     avatar?: IBestAvatarConfig
 }
 export class IBestGlobalConfig extends IBestGlobalConfigType {
-    constructor(option?: IBestGlobalConfigType) {
+    constructor(option?: Partial<IBestGlobalConfigType>) {
         super()
         this.designWidth = option?.designWidth || 720
         this.unit = option?.unit || "vp"
         this.fontUnit = option?.fontUnit || "fp"
+        this.fontNames = option?.fontNames || []
         this.avatar = option?.avatar
     }
 }

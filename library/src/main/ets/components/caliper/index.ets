@@ -2,7 +2,9 @@ import { IBestStorageKey, IBestStringNumber } from "../../model/Global.type"
 import { getDefaultBaseStyle } from "../../theme-chalk/src"
 import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
 import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit, measureTextSize } from "../../utils/utils"
+import {
+    addNumber,
+    convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit, measureTextSize } from "../../utils/utils"
 import { IBestCaliperColor } from "./color"
 import { IBestCaliperScale } from "./index.type"
 
@@ -119,10 +121,11 @@ export struct IBestCaliper{
     // 初始化刻度列表
     initScaleList(){
         let list: IBestCaliperScale[] = []
-        for (let i = this.startNum; i <= this.endNum; i+=this.scaleSize) {
+        const scaleSize = this.scales * this.scaleSize
+        for (let i = this.startNum; i <= this.endNum; i = addNumber(i, this.scaleSize)) {
             list.push({
                 value: i,
-                isBig: i % (this.scales * this.scaleSize) === 0,
+                isBig: i % scaleSize === 0,
                 localLeft: 0
             })
         }

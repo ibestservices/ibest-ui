@@ -66,8 +66,8 @@ class ToastParams extends ToastOption{
     constructor(value?: ToastOption) {
         super()
         this.type = value?.type
-        this.message = value?.message || "加载中"
-        this.duration = typeof value?.duration != "undefined" ? value.duration : 1500
+        this.message = value?.message || $r("app.string.ibest_text_loading")
+        this.duration = value?.duration ?? 1500
         this.wordBreak = value?.wordBreak || "normal"
         this.icon = value?.icon
         this.iconWidth = value?.iconWidth || convertDimensionsWidthUnit(36)
@@ -88,7 +88,7 @@ struct defaultContent{
     @StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     @Prop option: ToastParams
     build() {
-        Column({space: this.baseStyle.spaceXs as string}){
+        Column({space: this.baseStyle.spaceXs}){
             if(this.option.icon){
                 IBestIcon({
                     name: this.option.icon,
@@ -132,7 +132,7 @@ class Toast{
 	private timer: number = 0
 	private isLock: boolean = false
 
-    set message(msg: string){
+    set message(msg: ResourceStr){
         if(this.toastContent && this.toastOption){
 			this.toastOption.message = msg
 			this.toastContent.update(new ToastParams(this.toastOption))
@@ -141,7 +141,7 @@ class Toast{
     /**
      * 根据参数打开弹框
      */
-    private async open(option: string | ToastOption) {
+    private async open(option: ResourceStr | ToastOption) {
         if(this.isLock){
             return
         }
@@ -152,7 +152,7 @@ class Toast{
 		let windowClass = GlobalStore.getMainWindow()
 		let uiContext = windowClass.getUIContext()
 		this.promptAction = uiContext.getPromptAction()
-		let params: ToastParams = typeof option == "string" ? new ToastParams({ message: option }) : new ToastParams(option)
+		let params: ToastParams = typeof option == "string" || (option as Resource).moduleName ? new ToastParams({ message: option as ResourceStr }) : new ToastParams(option as ToastOption)
 		let toastContent = new ComponentContent(uiContext, wrapBuilder(defaultBuilder), params)
 		this.toastContent = toastContent
 		this.toastOption = params
@@ -183,7 +183,7 @@ class Toast{
     /**
      * 显示toast
      */
-    public show(option: string | ToastOption){
+    public show(option: ResourceStr | ToastOption){
         this.open(option)
         return this
     }

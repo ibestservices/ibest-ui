@@ -83,7 +83,7 @@ export struct IBestSideBarItem{
 						.width(getSizeByUnit(this.config.leftBarSize.width))
 						.height(getSizeByUnit(this.config.leftBarSize.height))
 						.backgroundColor(this.config.leftBarColor || this.baseStyle.primary)
-						.margin({right: 12})
+						.margin({right: this.baseStyle.spaceSm})
 						.visibility(this.isActive ? Visibility.Visible : Visibility.Hidden)
 				}
 				Text(this.title)

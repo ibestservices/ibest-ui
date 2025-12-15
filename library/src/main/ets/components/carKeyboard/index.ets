@@ -27,7 +27,7 @@ const keyWidth = 0.09
 }
 
 @Component
-export struct CarKeyboard{
+export struct IBestCarKeyboardContent{
     @StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@StorageProp(IBestStorageKey.BOTTOM_BAR_HEIGHT) bottomBarHeight: number = 0
     @Link @Watch("switchDisabled") value: string
@@ -159,7 +159,7 @@ export struct CarKeyboard{
 			.width(CONTAINER_SIZE.FULL)
 			.height(convertDimensionsWidthUnit(40))
 			Column(){
-				Column({ space: this.baseStyle.spaceXs as string }){
+				Column({ space: this.baseStyle.spaceXs }){
 					ForEach(this.provinceKeysList, (item: IBestCarKeyboardKey[], index: number) => {
 						Row({space: this.space}){
 							ForEach(item, (e: IBestCarKeyboardKey) => {
@@ -279,7 +279,7 @@ export struct IBestCarKeyboard{
 	onConfirm: (value: string) => void = () => {}
 
     @Builder baseBuilder() {
-        CarKeyboard({
+		IBestCarKeyboardContent({
             value: $value,
 			maxLength: this.maxLength,
 			title: this.title,

@@ -1,10 +1,10 @@
 {
 	"apiType": "stageMode",
-//	"buildOption": {
-//		"arkOptions": {
-//			"byteCodeHar": true
-//		}
-//	},
+	"buildOption": {
+		"arkOptions": {
+			"byteCodeHar": true
+		}
+	},
 	"buildOptionSet": [
 		{
 			"name": "release",
@@ -13,7 +13,7 @@
 				"obfuscation": {
 					"ruleOptions": {
 						// true表示进行混淆，false表示不进行混淆。5.0.3.600及以上版本默认为false
-						"enable": false,
+						"enable": true,
 						// 混淆规则文件
 						"files": [
 							"./obfuscation-rules.txt"

@@ -197,7 +197,12 @@ struct ButtonPage {
 							})
 							IBestButton({
 								text: $r("app.string.border"),
-								btnBorderColor: "red"
+								btnBorder: {
+									width: 2,
+									color: "red",
+									style: BorderStyle.Dashed,
+									radius: 16
+								}
 							})
 							IBestButton({
 								type: "primary",

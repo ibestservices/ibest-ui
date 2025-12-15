@@ -39,18 +39,17 @@ export struct IBestSkeleton{
 
     build() {
 		if(this.loading){
-			Row({space: this.baseStyle.spaceSm as string}){
+			Row({space: this.baseStyle.spaceSm}){
 				if(this.avatar){
 					IBestSkeletonParagraph({type: "circle"})
 				}
-				Column(){
+				Column({space: this.baseStyle.spaceSm}){
 					ForEach(Array.from({length: this.rows+1}), (_: number, index: number) => {
 						IBestSkeletonParagraph({
 							radius: this.radius,
 							animated: this.animated,
 							rowWidth: index == 0 ? "40%" : index == this.rows ? "60%" : CONTAINER_SIZE.FULL
 						})
-							.margin({top: index > 0 ? this.baseStyle.spaceSm : 0})
 					})
 				}
 				.layoutWeight(1)

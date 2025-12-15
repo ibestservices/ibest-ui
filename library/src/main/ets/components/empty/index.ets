@@ -74,11 +74,9 @@ export struct IBestEmpty {
 			// 描述
 			if (this.descriptionBuilder) {
 				this.descriptionBuilder()
-			} else {
+			} else if(this.description) {
 				Text(this.description)
-					.margin({
-						top: this.description ? this.baseStyle.spaceMd : 0
-					})
+					.margin({ top: this.baseStyle.spaceMd })
 					.padding({
 						left: this.baseStyle.spaceXl,
 						right: this.baseStyle.spaceXl

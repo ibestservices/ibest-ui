@@ -163,7 +163,7 @@ struct CalendarItem {
 					isClock: this.dayItem.isClock
 				})
 			}else {
-				Column({ space: this.baseStyle.spaceMini as string }) {
+				Column({ space: this.baseStyle.spaceMini }) {
 					Text(this.dayItem.day)
 						.fontSize(this.baseStyle.fontSizeMd)
 						.fontColor(this.fontColor)

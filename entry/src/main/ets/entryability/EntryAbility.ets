@@ -2,7 +2,7 @@ import AbilityConstant from '@ohos.app.ability.AbilityConstant';
 import UIAbility from '@ohos.app.ability.UIAbility';
 import Want from '@ohos.app.ability.Want';
 import window from '@ohos.window';
-import { IBestInit, IBestSetGlobalConfig } from '@ibestservices/ibest-ui';
+import { IBestInit, IBestSetUIGlobalConfig } from '@ibestservices/ibest-ui';
 import { ConfigurationConstant } from '@kit.AbilityKit';
 import GlobalStore from '../utils/global';
 
@@ -22,6 +22,9 @@ export default class EntryAbility extends UIAbility {
 			mainWindow.getUIContext().getFont().registerFont({
 				familyName: 'testFont',
 				familySrc: $rawfile('iconfont.woff')
+			})
+			IBestSetUIGlobalConfig({
+				fontNames: ['testFont']
 			})
 		})
 	}

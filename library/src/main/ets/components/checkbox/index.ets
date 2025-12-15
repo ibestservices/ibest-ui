@@ -77,15 +77,20 @@ export struct IBestCheckbox {
      */
 	@Prop bdColor: ResourceColor = IBestCheckboxColor.borderColor
 	/**
-	 * 选中时的值，仅单独使用时生效
+	 * 选中时的值，仅单独使用且value类型不为boolean时生效
 	 * @since 2.1.7
      */
 	@Prop trueValue: IBestStringNumber = '1'
 	/**
-	 * 没有选中时的值，仅单独使用时生效
+	 * 没有选中时的值，仅单独使用且value类型不为boolean时生效
 	 * @since 2.1.7
      */
 	@Prop falseValue: IBestStringNumber = '0'
+	/**
+	 * 圆角，仅shape为square时生效
+	 * @since 2.2.1
+     */
+	@Prop radius: IBestStringNumber = 0
 	/**
 	 * 自定义文本插槽
 	 */
@@ -126,10 +131,6 @@ export struct IBestCheckbox {
 						.fontSize(getSizeByUnit(this.labelFontSize, true))
 				}
 			}
-			.margin({
-				left: this.isLeftLabel() ? 0 : this.baseStyle.spaceXs,
-				right: this.isLeftLabel() ? this.baseStyle.spaceXs : 0
-			})
 			.onClick(() => {
 				!this.labelDisabled && this.handleCheckedChange()
 			})
@@ -250,7 +251,7 @@ export struct IBestCheckbox {
 		this.isShowIndeterminateImg = this.indeterminate
 	}
 	build() {
-		Row() {
+		Row({space: this.baseStyle.spaceXs}) {
 			if (this.labelPosition === 'left') {
 				this.LabelContain()
 			}
@@ -273,16 +274,14 @@ export struct IBestCheckbox {
 			.justifyContent(FlexAlign.Center)
 			.alignItems(HorizontalAlign.Center)
 			.border({ color: this.getBorderColor(), width: 1 })
-			.borderRadius(this.shape === 'round' ? this.baseStyle.borderRadiusMax : 0)
+			.borderRadius(this.shape === 'round' ? this.baseStyle.borderRadiusMax : getSizeByUnit(this.radius))
 			.backgroundColor(this.getBackgroundColor())
 			.clip(true)
 			.animation({
 				duration: this.baseStyle.animationDuration as number
 			})
-			.onTouch(event => {
-				if(event.type == TouchType.Up){
-					this.handleCheckedChange()
-				}
+			.onClick(() => {
+				this.handleCheckedChange()
 			})
 			if (this.labelPosition === 'right') {
 				this.LabelContain()

@@ -217,10 +217,10 @@ export function convertDimensionsWidthUnit(val: number, isFont?: boolean): strin
 	let unit = isFont ? "fp" : "vp"
 	let value = val
 	if (config) {
-		unit = (isFont ? config.fontUnit : config.unit) as string
+		unit = isFont ? config.fontUnit : config.unit
 		switch (unit) {
 			case "lpx":
-				value = val * GlobalStore.screenWidth / (config.designWidth as number)
+				value = val * GlobalStore.screenWidth / config.designWidth
 				break
 			case "px":
 				value = GlobalStore.vp2px(val)
@@ -247,7 +247,12 @@ export function getResourceStr(res: ResourceStr): string {
 	if(typeof res == 'string'){
 		return res
 	}
-	return GlobalStore.context.resourceManager.getStringSync(res.id)
+	let params: string[] = res.params || []
+	if(params.length){
+		return GlobalStore.context.resourceManager.getStringByNameSync(params[0].split('.')[2])
+	}else {
+		return GlobalStore.context.resourceManager.getStringSync(res.id)
+	}
 }
 /**
  * 处理异步函数

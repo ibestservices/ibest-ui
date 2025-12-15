@@ -10,7 +10,7 @@ import {
 	IBestSwitch,
 	IBestTabs,
 	IBestTag,
-	setIBestUIBaseStyle
+	IBestSetUIBaseStyle
 } from '@ibestservices/ibest-ui';
 import { FONT_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
@@ -36,7 +36,7 @@ struct ThemePage {
 	@State segmentedValue: string = "选项1"
 	private segmentedOptions: string[] = ['选项1', '选项2', '选项3', '选项4']
 	aboutToDisappear() {
-		setIBestUIBaseStyle({ primary: '#3D8AF2' })
+		IBestSetUIBaseStyle({ primary: '#3D8AF2' })
 	}
 	build() {
 		NavDestination() {
@@ -57,7 +57,7 @@ struct ThemePage {
 								round: true,
 								buttonSize: 'small',
 								onBtnClick: () => {
-									setIBestUIBaseStyle({ primary: this.colorText || '#3D8AF2' })
+									IBestSetUIBaseStyle({ primary: this.colorText || '#3D8AF2' })
 									this.colorText = getRandomColor()
 								}
 							})

@@ -81,12 +81,13 @@ export struct IBestCollapseItem {
 
     @State isExpand: boolean = false
     @State uniId: number = 0
-    @State contentHeight: number = 0
     @State isReady: boolean = false
-    @State isShow: boolean = false
 
     aboutToAppear(): void {
         this.uniId = this.getUniqueId()
+        setTimeout(() => {
+            this.isReady = true
+        }, 220)
         emitter.emit(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME, this.groupId), this.name, this.disabled || this.readOnly)
         emitter.on(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId, (activeNames: IBestStringNumber | IBestStringNumber[]): void => this.changeState(activeNames))
     }
@@ -102,10 +103,6 @@ export struct IBestCollapseItem {
         }
         this.isExpand = typeof activeNames == "string" ? activeNames == this.name : activeNames.includes(this.name)
     }
-    getHeight(){
-        return this.isReady ? this.isExpand ? this.contentHeight : 0 : "auto"
-    }
-
     toggle(){
         this.isExpand = !this.isExpand
         emitter.emit(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE, this.groupId), this.name, this.isExpand)
@@ -113,13 +110,13 @@ export struct IBestCollapseItem {
 
     build() {
         Column(){
-            Row(){
+            Row({space: this.baseStyle.spaceBase}){
                 if(this.icon){
                     IBestIcon({
                         name: this.icon,
                         iconSize: this.iconSize,
                         color: this.iconColor
-                    }).margin({right: this.baseStyle.spaceBase})
+                    })
                 }
                 Text(this.title)
                     .layoutWeight(1)
@@ -137,7 +134,6 @@ export struct IBestCollapseItem {
                     iconSize: this.baseStyle.fontSizeMd as string,
                     color: IBestCollapseColor.rightIconColor
                 })
-                    .margin({left: this.baseStyle.spaceBase})
                     .rotate({ z:1, angle: this.isExpand ? -180 : 0 })
                     .animation({ duration: 300 })
                     .visibility(this.readOnly ? Visibility.Hidden : Visibility.Visible)
@@ -156,40 +152,21 @@ export struct IBestCollapseItem {
             .onClick(() => {
                 this.toggle()
             })
-            Scroll(){
-                Column(){
-                    if(this.isShowBorder){
-                        Divider()
-                            .height(1)
-                            .color(IBestCollapseColor.borderColor)
-                            .position({left: 0, top: "-" + this.baseStyle.spaceSm as Dimension})
-                    }
-                    if(this.defaultBuilder){
-                        this.defaultBuilder()
-                    }
+            Column(){
+                if(this.isShowBorder){
+                    Divider()
+                        .height(1)
+                        .color(IBestCollapseColor.borderColor)
+                        .position({left: 0, top: "-" + this.baseStyle.spaceSm as Dimension})
                 }
-                .width(CONTAINER_SIZE.FULL)
-                .padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd, top: this.baseStyle.spaceSm, bottom: this.baseStyle.spaceSm })
-                .onAreaChange((oldVal: Area, newVal: Area) => {
-                    if(oldVal.height != newVal.height){
-                        this.contentHeight = newVal.height as number
-                        if(!this.isShow){
-                            this.isReady = true
-                            setTimeout(() => {
-                                this.isShow = true
-                            }, 250)
-                        }
-                    }
-                })
+                if(this.defaultBuilder){
+                    this.defaultBuilder()
+                }
             }
             .width(CONTAINER_SIZE.FULL)
-            .height(this.getHeight())
-            .scrollBar(BarState.Off)
-            .enableScrollInteraction(false)
-            .animation({
-                duration: this.isShow ? 200 : 0,
-                curve: Curve.EaseInOut
-            })
+            .padding({ left: this.baseStyle.spaceMd, right: this.baseStyle.spaceMd, top: this.baseStyle.spaceSm, bottom: this.baseStyle.spaceSm })
+            .visibility(this.isExpand ? Visibility.Visible : Visibility.None)
+            .animation({ duration: this.isReady ? 200 : 0 })
             if(this.isShowBorder && this.index > 0){
                 Divider()
                     .width(`calc(100% - ${this.baseStyle.spaceMd} - ${this.baseStyle.spaceMd})`)

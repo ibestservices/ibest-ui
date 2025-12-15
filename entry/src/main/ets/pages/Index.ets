@@ -6,7 +6,7 @@ import { common, Want, bundleManager } from '@kit.AbilityKit'
 import { getAppVersion, getResourceStr } from '../utils/utils'
 import { rcp } from '@kit.RemoteCommunicationKit'
 import fs from '@ohos.file.fs'
-import { updateManager } from '@kit.AppGalleryKit'
+import { commentManager, updateManager } from '@kit.AppGalleryKit'
 import RouterUtil from '../utils/routerUtil'
 
 interface ComponentPart {
@@ -14,7 +14,7 @@ interface ComponentPart {
 	list: ComponentItem[]
 }
 interface ComponentItem {
-	name: ResourceStr,
+	name: ResourceStr
 	path: string
 }
 interface Tab {
@@ -295,6 +295,10 @@ struct Index {
 					path: "TextEllipsis"
 				},
 				{
+					name: $r("app.string.component_tree"),
+					path: "Tree"
+				},
+				{
 					name: $r("app.string.component_watermark"),
 					path: "Watermark"
 				}
@@ -437,6 +441,7 @@ struct Index {
 	private context = this.getUIContext().getHostContext() as common.UIAbilityContext
 	private router = this.getUIContext().getRouter()
 	private navPathStack: NavPathStack = new NavPathStack()
+	private timer: number = 0
 
 	@Builder tabBuilder(index: number){
 		Column({space: 5}) {
@@ -610,7 +615,7 @@ struct Index {
 									isLink: true,
 									hasBorder: false,
 									onCellClick: () => {
-										this.showCommentDialog()
+										this.viewAppStoreDetail()
 									}
 								})
 							}
@@ -663,9 +668,14 @@ struct Index {
 		RouterUtil.navPathStackList.push(this.navPathStack)
 		this.checkUpdate()
 		this.getUiVersion()
+		this.showCommentDialog()
 		// setTimeout(() => {
-		// 	RouterUtil.push("Switch")
+		//     RouterUtil.push("Tree")
 		// }, 100)
+	}
+	aboutToDisappear(): void {
+		clearInterval(this.timer)
+		this.timer = 0
 	}
 	getTitleOpacity(){
 		// let scrollY = this.scrollTop < 50 ? this.scrollTop : 50
@@ -730,10 +740,21 @@ struct Index {
 	}
 	// 提示评论
 	showCommentDialog(){
-		// 评论弹框 6.0.0 支持
-		// commentManager.showCommentDialog(this.context).then(()=>{
-		// 	console.log("succeeded in showing commentDialog.");
-		// })
+		let count = 0
+		this.timer = setInterval(() => {
+			count++
+			if(count > 120){
+				clearInterval(this.timer)
+				commentManager.showCommentDialog(this.context).then(()=>{
+					console.log("succeeded in showing commentDialog.");
+				}).catch((error: BusinessError<Object>) => {
+					console.log(`showCommentDialog failed, Code: ${error.code}, message: ${error.message}`);
+				})
+			}
+		}, 1000)
+	}
+	// 跳转应用市场详情
+	viewAppStoreDetail(){
 		let bundleName = bundleManager.getBundleInfoForSelfSync(bundleManager.BundleFlag.GET_BUNDLE_INFO_DEFAULT).name
 		let link = 'https://appgallery.huawei.com/app/detail?id=' + bundleName + '&action=write-review'
 		this.context.openLink(link, { appLinkingOnly: false })

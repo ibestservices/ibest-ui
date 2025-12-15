@@ -6,6 +6,7 @@ import {
 	IBestCellGroup,
 	IBestCheckbox,
 	IBestCheckboxGroup,
+	IBestDialogUtil,
 	IBestField,
 	IBestForm,
 	IBestFormController,
@@ -23,9 +24,10 @@ import {
 	IBestUploaderFile
 } from '@ibestservices/ibest-ui'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
-import { FONT_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
 import { generateId } from '../../utils/utils'
 import CustomNavBar from '../../components/CustomNavBar'
+import { LengthMetrics } from '@kit.ArkUI'
 
 @Builder
 export function FormBuilder(_: string, title: string){
@@ -106,7 +108,8 @@ struct FormPage {
 	private formId3: string = 'form3'
 	private rules3: IBestFormRule = {
 		"value7": [
-			{ required: true, message: '请选择至少一项' }
+			{ required: true, message: '请选择' },
+			{ min: 2, message: '最多选择2项' }
 		],
 		"value8": [
 			{ required: true, message: "请选择" }
@@ -237,18 +240,32 @@ struct FormPage {
 			activeList: $value7,
 			placeDirection: Axis.Horizontal
 		}){
-			IBestCheckbox({
-				group: "group1",
-				shape: "square",
-				label: "复选框1",
-				name: "1"
-			})
-			IBestCheckbox({
-				group: "group1",
-				shape: "square",
-				label: "复选框2",
-				name: "2"
-			})
+			Flex({wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(10), cross: LengthMetrics.vp(5) }}){
+				IBestCheckbox({
+					group: "group1",
+					shape: "square",
+					label: "复选框1",
+					name: "1"
+				})
+				IBestCheckbox({
+					group: "group1",
+					shape: "square",
+					label: "复选框2",
+					name: "2"
+				})
+				IBestCheckbox({
+					group: "group1",
+					shape: "square",
+					label: "复选框3",
+					name: "3"
+				})
+				IBestCheckbox({
+					group: "group1",
+					shape: "square",
+					label: "复选框4",
+					name: "4"
+				})
+			}
 		}
 	}
 	@Builder radioContent() {
@@ -467,6 +484,7 @@ struct FormPage {
 									prop: 'value7',
 									value: $value7,
 									label: "复选框组",
+									required: this.value5,
 									customRightContent: (): void => this.checkboxGroupContent()
 								})
 								IBestField({
@@ -539,7 +557,10 @@ struct FormPage {
 								onBtnClick: () => {
 									this.controller3.validate((valid) => {
 										if (valid) {
-											IBestToast.show("验证成功")
+											IBestDialogUtil.open({
+												title: "表单值",
+												message: JSON.stringify(this.controller3.getFormValues())
+											})
 										}
 									})
 								}
@@ -606,7 +627,10 @@ struct FormPage {
 								onBtnClick: () => {
 									this.controller4.validate((valid) => {
 										if (valid) {
-											IBestToast.show("验证成功")
+											IBestDialogUtil.open({
+												title: "表单值",
+												message: JSON.stringify(this.controller4.getFormValues())
+											})
 										}
 									})
 								}

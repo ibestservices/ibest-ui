@@ -61,14 +61,11 @@ struct ActionSheetPage {
 					onBtnClick: () => {
 						IBestActionSheet.show({
 							actions: ["选项一", "选项二", "选项三"],
-							onSelect: (index: number, name?: string | number) => {
-								IBestToast.show(`点击了第${index}个选项，名称为${name}`)
-							},
-							beforeClose: () => {
+							beforeClose: (index: number, name?: string | number) => {
 								return new Promise((resolve, reject) => {
 									IBestDialogUtil.open({
 										title: "提示",
-										message: "确定关闭?",
+										message: `确定选择${name}？`,
 										showCancelButton: true,
 										onConfirm: () => {
 											resolve(true)
@@ -78,6 +75,9 @@ struct ActionSheetPage {
 										}
 									})
 								})
+							},
+							onSelect: (index: number, name?: string | number) => {
+								IBestToast.show(`点击了第${index}个选项，名称为${name}`)
 							}
 						})
 					}
@@ -216,7 +216,6 @@ struct ActionSheetPage {
 						})
 					}
 				})
-
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.justifyContent(FlexAlign.Center)

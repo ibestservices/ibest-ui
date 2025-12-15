@@ -136,12 +136,52 @@ export struct IBestPopover{
         if(this.popoverContentBuilder){
             this.popoverContentBuilder()
         }else {
-            PopoverContent({
-                isShow: $isShow,
-                actions: this.actions,
-                onOpen: (): void => this.onOpen(),
-                onSelect: (action: IBestPopoverAction, index: number): void => this.onSelect(action, index)
-            })
+            Scroll(){
+                Column(){
+                    ForEach(this.actions, (item: IBestPopoverAction, index: number) => {
+                        Row(){
+                            Row({space: this.baseStyle.spaceXs}){
+                                if(item.icon){
+                                    IBestIcon({
+                                        name: item.icon,
+                                        iconSize: this.iconSize,
+                                        color: this.iconColor
+                                    })
+                                }
+                                Text(item.text)
+                                    .layoutWeight(this.popoverWidth ? 1 : 0)
+                                    .height(getSizeByUnit(this.itemHeight))
+                                    .fontSize(getSizeByUnit(this.textFontSize, true))
+                                    .fontColor(item.color || this.textColor)
+                                    .border({width:{top: this.borderSizeType == 'right' && index > 0 ? 1 : 0}, color: this.dividerColor})
+                                    .textAlign(this.getTextAlign(item))
+                                    .maxLines(1)
+                                    .textOverflow({overflow: TextOverflow.Ellipsis})
+                            }
+                            .border({width:{top: this.borderSizeType == 'center' && index > 0 ? 1 : 0}, color: this.dividerColor})
+                        }
+                        .border({width: {top: this.borderSizeType == 'full' && index > 0 ? 1 : 0}, color: this.dividerColor})
+                        .padding({left: getSizeByUnit(this.itemPadding), right: getSizeByUnit(this.itemPadding)})
+                        .stateStyles({
+                            pressed: {
+                                .backgroundColor(IBestPopoverColor.activeBg)
+                            },
+                            normal: {
+                                .backgroundColor(this.bgColor)
+                            }
+                        })
+                        .enabled(!item.disabled)
+                        .opacity(item.disabled ? 0.5 : 1)
+                        .onClick(() => {
+                            this.onSelect(item, index)
+                            this.isShow = false
+                        })
+                    })
+                }
+            }
+            .scrollBar(this.scrollBarState)
+            .height(getSizeByUnit(this.fixHeight))
+            .constraintSize({maxHeight: getSizeByUnit(this.maxHeight)})
         }
     }
 
@@ -154,6 +194,9 @@ export struct IBestPopover{
     }
     close(): void {
         this.isShow = false
+    }
+    getTextAlign(item: IBestPopoverAction){
+        return this.textAlign || (item.icon ? TextAlign.Start : TextAlign.Center)
     }
 
     build() {
@@ -181,89 +224,12 @@ export struct IBestPopover{
             mask: this.popoverMask,
             targetSpace: this.space,
             radius: getSizeByUnit(this.radius) as Dimension,
-            onWillDismiss: (): void => this.close()
-        })
-    }
-}
-
-@Component
-struct PopoverContent{
-    /**
-     * 全局公共样式
-     */
-    @StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-    @Prop actions: IBestPopoverAction[]
-    @Consume popoverWidth: IBestStringNumber
-    @Consume fixHeight: IBestStringNumber
-    @Consume maxHeight: IBestStringNumber
-    @Consume itemHeight: IBestStringNumber
-    @Consume textFontSize: IBestStringNumber
-    @Consume textColor: ResourceColor
-    @Consume textAlign?: TextAlign
-    @Consume itemPadding: IBestStringNumber
-    @Consume iconSize: IBestStringNumber
-    @Consume iconColor: ResourceColor
-    @Consume bgColor: ResourceColor
-    @Consume borderSizeType: IBestBorderSizeType
-    @Consume dividerColor: ResourceColor
-    @Consume scrollBarState: BarState
-    @Link isShow: boolean
-    onOpen: () => void = () => {}
-    onSelect: (action: IBestPopoverAction, index: number) => void = () => {}
-
-    getTextAlign(item: IBestPopoverAction){
-        return this.textAlign || (item.icon || item.iconName ? TextAlign.Start : TextAlign.Center)
-    }
-    aboutToAppear(): void {
-        this.onOpen()
-    }
-
-    build() {
-        Scroll(){
-            Column(){
-                ForEach(this.actions, (item: IBestPopoverAction, index: number) => {
-                    Row(){
-                        Row(){
-                            if(item.icon || item.iconName){
-                                IBestIcon({
-                                    name: item.icon || item.iconName,
-                                    iconSize: this.iconSize,
-                                    color: this.iconColor
-                                }).margin({right: this.baseStyle.spaceXs})
-                            }
-                            Text(item.text)
-                                .layoutWeight(this.popoverWidth ? 1 : 0)
-                                .height(getSizeByUnit(this.itemHeight))
-                                .fontSize(getSizeByUnit(this.textFontSize, true))
-                                .fontColor(item.color || this.textColor)
-                                .border({width:{top: this.borderSizeType == 'right' && index > 0 ? 1 : 0}, color: this.dividerColor})
-                                .textAlign(this.getTextAlign(item))
-                                .maxLines(1)
-                                .textOverflow({overflow: TextOverflow.Ellipsis})
-                        }
-                        .border({width:{top: this.borderSizeType == 'center' && index > 0 ? 1 : 0}, color: this.dividerColor})
-                    }
-                    .border({width: {top: this.borderSizeType == 'full' && index > 0 ? 1 : 0}, color: this.dividerColor})
-                    .padding({left: getSizeByUnit(this.itemPadding), right: getSizeByUnit(this.itemPadding)})
-                    .stateStyles({
-                        pressed: {
-                            .backgroundColor(IBestPopoverColor.activeBg)
-                        },
-                        normal: {
-                            .backgroundColor(this.bgColor)
-                        }
-                    })
-                    .enabled(!item.disabled)
-                    .opacity(item.disabled ? 0.5 : 1)
-                    .onClick(() => {
-                        this.onSelect(item, index)
-                        this.isShow = false
-                    })
-                })
+            onWillDismiss: (): void => this.close(),
+            onStateChange: event => {
+                if(event.isVisible){
+                    this.onOpen()
+                }
             }
-        }
-        .scrollBar(this.scrollBarState)
-        .height(getSizeByUnit(this.fixHeight))
-        .constraintSize({maxHeight: getSizeByUnit(this.maxHeight)})
+        })
     }
 }
