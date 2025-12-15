@@ -316,6 +316,11 @@
 			"buildFunction": "TextEllipsisBuilder"
 		},
 		{
+			"name": "Tree",
+			"pageSourceFile": "src/main/ets/pages/base/Tree.ets",
+			"buildFunction": "TreeBuilder"
+		},
+		{
 			"name": "Watermark",
 			"pageSourceFile": "src/main/ets/pages/base/Watermark.ets",
 			"buildFunction": "WatermarkBuilder"

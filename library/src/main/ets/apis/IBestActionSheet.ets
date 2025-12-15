@@ -69,6 +69,16 @@ class IBestActionSheetOption {
 	 */
 	actions?: (IBestActionType | string)[] | (IBestActionMultiLine)[][]
 	/**
+	 * 选项高度
+	 * @since 2.0.0
+	 */
+	itemHeight?: IBestStringNumber
+	/**
+	 * 弹窗圆角
+	 * @since 2.0.8
+	 */
+	radius?: number | BorderRadiuses | LocalizedBorderRadiuses
+	/**
 	 * 自定义标题
 	 */
 	customTitle?: ResourceStr
@@ -93,6 +103,11 @@ class IBestActionSheetOption {
 	 */
 	cancelText?: ResourceStr
 	/**
+	 * 取消按钮文字颜色
+	 * @since 1.17.0
+	 */
+	cancelTextColor?: ResourceColor
+	/**
 	 * 是否开启底部安全距离适配
 	 */
 	safeAreaInsetBottom?: boolean
@@ -109,42 +124,34 @@ class IBestActionSheetOption {
 	 */
 	customContent?: CustomBuilder
 	/**
+	 * 半模态对软键盘的避让方式
+	 * @since 2.2.1
+     */
+	keyboardAvoidMode?: SheetKeyboardAvoidMode
+	/**
 	 * 打开回调
 	 */
 	onOpen?: () => void
 	/**
-	 * 选择后回调
-	 * @since 2.1.9 新增name
+	 * 选择选项后触发，若传入了beforeClose，则在beforeClose返回true/Promise<true>时触发
+	 * @description 当actions为一维简单数组或一维对象数组且未指定value时, index1为选项索引, index2为选项名称；
+	 * 当actions为一维对象数组且指定value或二维数组时, index1为点击选项的行索引, index2为当前行的选项索引, value为选项标识, name为选项名称
 	 */
 	onSelect?: (index1: number, index2?: IBestStringNumber, value?: IBestStringNumber, name?: string) => void
 	/**
-	 * 点击取消回调
+	 * 点击取消触发
 	 */
 	onCancel?: () => void
 	/**
-	 * 关闭回调
+	 * 面板关闭后触发
 	 */
 	onClose?: () => void
 	/**
-	 * 取消按钮文字颜色
+	 * 仅在选择选项后触发，返回 false 可阻止关闭，支持返回 Promise
 	 * @since 1.17.0
+	 * @since 2.2.1 新增回调参数，参数说明同onSelect
 	 */
-	cancelTextColor?: ResourceColor
-	/**
-	 * 关闭前的回调函数，返回 false 可阻止关闭，支持返回 Promise
-	 * @since 1.17.0
-	 */
-	beforeClose?: () => IBestAwaitable
-	/**
-	 * 选项高度
-	 * @since 2.0.0
-     */
-	itemHeight?: IBestStringNumber
-	/**
-	 * 圆角
-	 * @since 2.0.8
-     */
-	radius?: number | BorderRadiuses | LocalizedBorderRadiuses
+	beforeClose?: (index1: number, index2?: IBestStringNumber, value?: IBestStringNumber, name?: string) => IBestAwaitable
 }
 
 class IBestActionSheetParams extends IBestActionSheetOption {
@@ -180,6 +187,7 @@ class IBestActionSheetParams extends IBestActionSheetOption {
 		this.beforeClose = option.beforeClose || undefined
 		this.itemHeight = option.itemHeight || convertDimensionsWidthUnit(50)
 		this.radius = option.radius ?? 16
+		this.keyboardAvoidMode = option.keyboardAvoidMode ?? SheetKeyboardAvoidMode.TRANSLATE_AND_RESIZE
 	}
 }
 
@@ -209,6 +217,17 @@ struct defaultContent{
 		this.disabledTextColor = IBestActionSheetColor.disabledTextColor
 		this.bdColor = IBestActionSheetColor.borderColor
 		this.activeBg = IBestActionSheetColor.activeBg
+	}
+	// 选择选项
+	async selectOption(index1: number, index2?: IBestStringNumber, value?: IBestStringNumber, name?: string){
+		if(this.option.beforeClose){
+			let status = await handleBeforeFunction(this.option.beforeClose, index1, index2, value, name)
+			if(!status){
+				return
+			}
+		}
+		this.option.onSelect?.(index1, index2, value, name)
+		this.option.close(this.option.id)
 	}
 	build() {
 		Column() {
@@ -298,8 +317,7 @@ struct defaultContent{
 										.opacity(action.isDisabled ? 0.5 : 1)
 										.onClick(() => {
 											if (!(action.isDisabled || action.readonly)) {
-												this.option.onSelect?.(listIndex, index, action.value, getResourceStr(action.name))
-												this.option.close(this.option.id)
+												this.selectOption(listIndex, index, action.value, getResourceStr(action.name))
 											}
 										})
 									})
@@ -315,14 +333,14 @@ struct defaultContent{
 					}else{
 						ForEach(this.option.actions, (action: IBestActionType | string, index) => {
 							Button({ type: ButtonType.Normal }){
-								Column() {
-									Row(){
+								Column({space: this.baseStyle.spaceXs}) {
+									Row({space: this.baseStyle.spaceXs}){
 										if(typeof action == "object" && action.icon){
 											 IBestIcon({
 												name: action.icon,
 												iconSize: convertDimensionsWidthUnit(18),
 												color: typeof action == "object" && action.isDisabled ? this.disabledTextColor : this.textColor
-											}).margin({ right: this.baseStyle.spaceXs })
+											})
 										}
 										Text(typeof action == "object" ? action.name : action)
 											.fontColor(typeof action == "object" && action.isDisabled ? this.disabledTextColor : (typeof action == "object" && action.color || this.textColor))
@@ -333,7 +351,6 @@ struct defaultContent{
 											.textAlign(TextAlign.Center)
 											.fontSize(this.baseStyle.fontSizeSm)
 											.fontColor(this.descriptionColor)
-											.margin({ top: this.baseStyle.spaceXs })
 									}
 								}
 								.width(CONTAINER_SIZE.FULL)
@@ -350,11 +367,10 @@ struct defaultContent{
 							.onClick(() => {
 								if(typeof action == "string" || !(action.isDisabled || action.readonly)){
 									if(typeof action == "object" && action.value !== undefined){
-										this.option.onSelect?.(index, action.value, getResourceStr(action.name))
+										this.selectOption(index, action.value, getResourceStr(action.name))
 									}else{
-										this.option.onSelect?.(index, getResourceStr(typeof action == "object" ? action.name : action as string))
+										this.selectOption(index, getResourceStr(typeof action == "object" ? action.name : action as string))
 									}
-									this.option.close(this.option.id)
 								}
 							})
 						})
@@ -415,10 +431,12 @@ class ActionSheet{
 		let sheetOption: SheetOptions = {
 			width: params.width,
 			height: params.height,
+			backgroundColor: params.backgroundColor,
 			radius: typeof params.radius === 'number' ? new LengthMetrics(params.radius, getLengthUnit()) : params.radius,
 			dragBar: params.dragBar,
 			preferType: params.preferType,
 			showClose: params.showClose,
+			keyboardAvoidMode: params.keyboardAvoidMode,
 			onAppear: () => {
 				params.onOpen?.()
 			},
@@ -432,9 +450,6 @@ class ActionSheet{
 			onDisappear: () => {
 				params.onClose?.()
 			}
-		}
-		if(params.backgroundColor){
-			sheetOption.backgroundColor = params.backgroundColor
 		}
 		if(params.detents){
 			sheetOption.detents = params.detents
@@ -462,12 +477,6 @@ class ActionSheet{
 		if(this.contentNodeArr.some(e => e.key == key)){
 			let index = this.contentNodeArr.findIndex(e => e.key == key)
 			let val = this.contentNodeArr[index]
-			if(val.params.beforeClose){
-				let status = await handleBeforeFunction(val.params.beforeClose)
-				if(!status){
-					return
-				}
-			}
 			val.uiContext.closeBindSheet(val.content).then(() => {
 				val.content.dispose()
 				this.contentNodeArr.splice(index, 1)

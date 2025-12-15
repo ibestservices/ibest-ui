@@ -95,7 +95,8 @@ export default class GlobalStore {
 	/**
 	 * 设置全局配置
 	 */
-	public static setGlobalConfig(option?: IBestGlobalConfigType){
+	public static setGlobalConfig(option?: Partial<IBestGlobalConfigType>){
+		console.log(`官方推荐使用V2版本 https://ibestui-v2.ibestservices.com/guide/home`)
 		AppStorage.setOrCreate(IBestStorageKey.GLOBAL_CONFIG, new IBestGlobalConfig(option))
 		setIBestUIBaseStyle()
 	}

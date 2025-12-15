@@ -65,10 +65,10 @@ export struct IBestProgress{
      */
 	@Prop duration: number = 3
 	/**
-	 * 方向
-	 * @since 2.1.0
+	 * 圆角
+	 * @since 2.2.1
      */
-	@Prop placeDirection: Axis = Axis.Horizontal
+	@Prop radius: IBestStringNumber = this.baseStyle.borderRadiusMax as number
 	/**
 	 * 格式化文本函数
      */
@@ -82,8 +82,11 @@ export struct IBestProgress{
 	@State positionX: string = `-${this.value}%`
 
 	valueChange(){
-		let value = Math.min(this.target, Math.max(this.value, 0))
-		this.value = value
+		let value = this.value
+		if(value < 0 || value > this.target){
+			value = Math.min(this.target, Math.max(value, 0))
+			this.value = value
+		}
 		if(value == this.target){
 			this.onReachTarget()
 		}
@@ -102,7 +105,7 @@ export struct IBestProgress{
 	}
 
 	build() {
-		Row(){
+		Row({space: this.baseStyle.spaceXs}){
 			Stack({alignContent: Alignment.Start}){
 				Row()
 					.width(CONTAINER_SIZE.FULL)
@@ -118,7 +121,7 @@ export struct IBestProgress{
 				}
 				.width(this.getWidth())
 				.height(CONTAINER_SIZE.FULL)
-				.borderRadius(this.baseStyle.borderRadiusMax)
+				.borderRadius(getSizeByUnit(this.radius))
 				.linearGradient(this.linearGradientColor)
 				.justifyContent(FlexAlign.End)
 				.position(this.indeterminate ? {x: this.positionX} : undefined)
@@ -136,13 +139,12 @@ export struct IBestProgress{
 			}
 			.layoutWeight(1)
 			.height(getSizeByUnit(this.lineWidth))
-			.borderRadius(this.baseStyle.borderRadiusMax)
+			.borderRadius(getSizeByUnit(this.radius))
 			.clip(true)
 			if(this.showText && !this.textInside){
 				Text(this.getText())
 					.fontSize(getSizeByUnit(this.textFontSize, true))
 					.fontColor(this.getTextColor())
-					.margin({left: this.baseStyle.spaceXs})
 					.constraintSize({minWidth: convertDimensionsWidthUnit(40)})
 			}
 		}

@@ -18,10 +18,9 @@
 # -keep-global-name: specifies names that you want to keep in the global scope
 
 # ZsHx:
-#-enable-property-obfuscation
-#-enable-toplevel-obfuscation
-#-enable-filename-obfuscation
-#-enable-export-obfuscation
+# -enable-property-obfuscation
+# -enable-toplevel-obfuscation
+-enable-filename-obfuscation
+# -enable-export-obfuscation
 
--keep-file-name **/resources/*
--keep-resource-id *
+-keep-parameter-names

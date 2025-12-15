@@ -314,23 +314,18 @@ export struct IBestDialogView {
 						// 取消按钮
 						if (this.showCancelButton) {
 							Button({ type: ButtonType.Normal }) {
-								Row() {
-									if (this.cancelButtonLoading) {
-										LoadingProgress()
-											.width(getSizeByUnit(this.buttonFontSize))
-											.color(this.getCancelBtnFontColor())
-											.margin({
-												right: this.baseStyle.spaceMini
-											})
-											.transition({ type: TransitionType.Insert, opacity: 1 })
-											.transition({ type: TransitionType.Delete, opacity: 0 })
-									} else {
-										Text(this.cancelButtonText)
-											.fontColor(this.getCancelBtnFontColor())
-											.fontSize(getSizeByUnit(this.buttonFontSize, true))
-											.transition({ type: TransitionType.Insert, opacity: 1 })
-											.transition({ type: TransitionType.Delete, opacity: 0 })
-									}
+								if (this.cancelButtonLoading) {
+									LoadingProgress()
+										.width(getSizeByUnit(this.buttonFontSize))
+										.color(this.getCancelBtnFontColor())
+										.transition({ type: TransitionType.Insert, opacity: 1 })
+										.transition({ type: TransitionType.Delete, opacity: 0 })
+								} else {
+									Text(this.cancelButtonText)
+										.fontColor(this.getCancelBtnFontColor())
+										.fontSize(getSizeByUnit(this.buttonFontSize, true))
+										.transition({ type: TransitionType.Insert, opacity: 1 })
+										.transition({ type: TransitionType.Delete, opacity: 0 })
 								}
 							}
 							.border({
@@ -353,24 +348,19 @@ export struct IBestDialogView {
 						// 确认按钮
 						if (this.showConfirmButton) {
 							Button({ type: ButtonType.Normal }) {
-								Row() {
-									if (this.confirmButtonLoading) {
-										LoadingProgress()
-											.width(getSizeByUnit(this.buttonFontSize))
-											.color(this.getConfirmBtnFontColor())
-											.margin({
-												right: this.baseStyle.spaceMini
-											})
-											.transition({ type: TransitionType.Insert, opacity: 1 })
-											.transition({ type: TransitionType.Delete, opacity: 0 })
-									} else {
-										Text(this.confirmButtonText)
-											.fontColor(this.getConfirmBtnFontColor())
-											.fontSize(getSizeByUnit(this.buttonFontSize, true))
-											.fontWeight(this.confirmButtonFontWeight)
-											.transition({ type: TransitionType.Insert, opacity: 1 })
-											.transition({ type: TransitionType.Delete, opacity: 0 })
-									}
+								if (this.confirmButtonLoading) {
+									LoadingProgress()
+										.width(getSizeByUnit(this.buttonFontSize))
+										.color(this.getConfirmBtnFontColor())
+										.transition({ type: TransitionType.Insert, opacity: 1 })
+										.transition({ type: TransitionType.Delete, opacity: 0 })
+								} else {
+									Text(this.confirmButtonText)
+										.fontColor(this.getConfirmBtnFontColor())
+										.fontSize(getSizeByUnit(this.buttonFontSize, true))
+										.fontWeight(this.confirmButtonFontWeight)
+										.transition({ type: TransitionType.Insert, opacity: 1 })
+										.transition({ type: TransitionType.Delete, opacity: 0 })
 								}
 							}
 							.enabled(!this.confirmButtonDisabled || !this.confirmButtonLoading)

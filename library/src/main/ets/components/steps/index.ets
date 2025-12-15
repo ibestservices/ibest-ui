@@ -1,10 +1,11 @@
-import { IBestIcon, IBestProgress, IBestStringNumber } from '../../../../../Index'
-import { IBestStorageKey } from '../../model/Global.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { emitter } from '../../utils/eventEmitter'
 import { convertDimensionsWidthUnit, getComponentsInfo, getEventName, getSizeByUnit } from '../../utils/utils'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
+import { IBestIcon } from '../icon'
+import { IBestProgress } from '../progress'
 import { IBestStepsColor } from './color'
 import { COMPONENT_NAME, IBestStepConfig, IBestStepMarkType, STEPS_EVENT_NAME } from './index.type'
 
@@ -70,51 +71,61 @@ export struct IBestSteps{
 	@State percent: number = 0
 	allSteps: number[] = []
 	private uiContext = this.getUIContext()
+	private timer: number = 0
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
-		emitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_ALL_STEPS, this.groupId), this.uniId, (uniId: number): void => this.saveSteps(uniId))
+		emitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.INIT_STEPS, this.groupId), this.uniId, (type: string, uniId: number): void => this.initSteps(type, uniId))
 	}
-	onDidBuild(): void {
-		setTimeout(() => {
-			if(this.allSteps.length){
-				emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_CONFIG, this.groupId), this.allSteps, this.active, {
-					placeDirection: this.placeDirection,
-					type: this.type,
-					dotSize: this.dotSize,
-					inactiveIcon: this.inactiveIcon,
-					activeIcon: this.activeIcon,
-					iconSize: this.iconSize,
-					activeColor: this.activeColor,
-					inactiveColor: this.inactiveColor
+	aboutToDisappear(): void {
+		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.INIT_STEPS, this.groupId), this.uniId)
+	}
+	onDidBuild() {
+		if(this.allSteps.length){
+			emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_CONFIG, this.groupId), this.active, {
+				placeDirection: this.placeDirection,
+				type: this.type,
+				dotSize: this.dotSize,
+				inactiveIcon: this.inactiveIcon,
+				activeIcon: this.activeIcon,
+				iconSize: this.iconSize,
+				activeColor: this.activeColor,
+				inactiveColor: this.inactiveColor,
+				bgColor: this.bgColor
+			})
+			this.percent = this.active / (this.allSteps.length - 1) * 100
+			setTimeout(() => {
+				let arr: number[] = []
+				this.allSteps.forEach((_, index) => {
+					arr.push(getComponentsInfo(this.uiContext, `ibest_steps_mark_${this.groupId}_${index}`).width)
 				})
-				this.percent = this.active / (this.allSteps.length - 1) * 100
-				setTimeout(() => {
-					let arr: number[] = []
-					this.allSteps.forEach((_, index) => {
-						arr.push(getComponentsInfo(this.uiContext, `ibest_steps_mark_${this.groupId}_${index}`).width)
-					})
-					this.percentContentSize = Math.max(...arr)
-					emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_MAX_MARK_SIZE, this.groupId), this.percentContentSize)
-					if(this.placeDirection == Axis.Vertical){
-						let stepHeightArr: number[] = []
-						for (let i = 0; i < this.allSteps.length - 1; i++) {
-							stepHeightArr.push(getComponentsInfo(this.uiContext, `ibest_step_item_${this.groupId}_${i}`).height)
-						}
-						this.percentContentHeight = stepHeightArr.reduce((a, b) => a + b, 0)
-					}else {
-						let width = getComponentsInfo(this.uiContext, `ibest_steps_content_${this.uniId}`).width / (this.allSteps.length - 1)
-						emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_STEP_ITEM_WIDTH, this.groupId), width)
+				this.percentContentSize = Math.max(...arr)
+				emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_MAX_MARK_SIZE, this.groupId), this.percentContentSize)
+				if(this.placeDirection == Axis.Vertical){
+					let stepHeightArr: number[] = []
+					for (let i = 0; i < this.allSteps.length - 1; i++) {
+						stepHeightArr.push(getComponentsInfo(this.uiContext, `ibest_step_item_${this.groupId}_${i}`).height)
 					}
-				}, 80)
-			}
-		}, 50)
+					this.percentContentHeight = stepHeightArr.reduce((a, b) => a + b, 0)
+				}else {
+					let width = getComponentsInfo(this.uiContext, `ibest_steps_content_${this.uniId}`).width / (this.allSteps.length - 1)
+					emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_STEP_ITEM_WIDTH, this.groupId), width)
+				}
+			}, 20)
+		}
 	}
 	// 保存步骤id
-	saveSteps(uniId: number){
-		if(!this.allSteps.includes(uniId)){
+	initSteps(type: string, uniId: number){
+		if(type == 'add'){
 			this.allSteps.push(uniId)
+		}else if(type == 'del'){
+			this.allSteps = this.allSteps.filter(item => item != uniId)
 		}
+		emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.SAVE_STEPS, this.groupId), this.allSteps)
+		clearTimeout(this.timer)
+		this.timer = setTimeout(() => {
+			this.onDidBuild()
+		}, 0)
 	}
 	// 索引变化
 	activeChange(){
@@ -129,21 +140,17 @@ export struct IBestSteps{
 		if(this.placeDirection == Axis.Vertical){
 			Stack({alignContent: Alignment.TopStart}){
 				Column(){
-					Column(){
-						IBestProgress({
-							value: $percent,
-							lineWidth: 2,
-							bgColor: IBestStepsColor.borderColor,
-							color: this.activeColor,
-							showText: false
-						})
-					}
-					.width(this.percentContentHeight)
-					.position({x: this.percentContentSize / 2, y: 0})
-					.rotate({z: 1, angle: 90, centerX: 0, centerY: 1})
+					IBestProgress({
+						value: $percent,
+						lineWidth: 2,
+						bgColor: IBestStepsColor.borderColor,
+						color: this.activeColor,
+						showText: false
+					})
 				}
-				.width(this.percentContentSize)
-				.height(this.percentContentHeight)
+				.width(this.percentContentHeight)
+				.position({x: this.percentContentSize / 2, y: 0})
+				.rotate({z: 1, angle: 90, centerX: 0, centerY: 1})
 				Column(){
 					if(this.defaultBuilder){
 						this.defaultBuilder()
@@ -174,6 +181,7 @@ export struct IBestSteps{
 				}
 				.width(CONTAINER_SIZE.FULL)
 				.justifyContent(FlexAlign.SpaceBetween)
+				.alignItems(VerticalAlign.Top)
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.backgroundColor(this.bgColor)
@@ -259,7 +267,7 @@ export struct IBestStep{
 						color: this.getActiveColor()
 					})
 				}
-				.backgroundColor(IBestStepsColor.bgColor)
+				.backgroundColor(this.config.bgColor)
 				.id(this.getMarkId())
 			}else if(this.config.type == 'num') {
 				Row(){
@@ -272,7 +280,7 @@ export struct IBestStep{
 				.borderRadius(this.baseStyle.borderRadiusMax)
 				.border({width: 2, color: this.isActive() ? this.getActiveColor() : IBestStepsColor.borderColor})
 				.justifyContent(FlexAlign.Center)
-				.backgroundColor(IBestStepsColor.bgColor)
+				.backgroundColor(this.config.bgColor)
 				.id(this.getMarkId())
 			}
 		}
@@ -287,18 +295,21 @@ export struct IBestStep{
 				Text(this.title)
 					.fontSize(this.baseStyle.fontSizeSm)
 					.fontColor(this.getActiveColor())
+					.textAlign(this.isVertical() ? TextAlign.Start : this.isLastStep() ? TextAlign.End : this.isFirstStep() ? TextAlign.Start : TextAlign.Center)
 			}
 			if(this.description){
 				Text(this.description)
 					.fontSize(this.baseStyle.fontSizeXs)
 					.fontColor(this.getActiveColor())
+					.textAlign(this.isVertical() ? TextAlign.Start : this.isLastStep() ? TextAlign.End : this.isFirstStep() ? TextAlign.Start : TextAlign.Center)
 			}
 		}
 	}
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
-		emitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_CONFIG, this.groupId), this.uniId, (steps: number[], active: number, data: IBestStepConfig): void => this.saveConfig(steps, active, data))
+		emitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.SAVE_STEPS, this.groupId), this.uniId, (steps: number[]): void => this.saveSteps(steps))
+		emitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_CONFIG, this.groupId), this.uniId, (active: number, data: IBestStepConfig): void => this.saveConfig(active, data))
 		emitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.ACTIVE_CHANGE, this.groupId), this.uniId, (active: number): void => {
 			this.active = active
 		})
@@ -308,19 +319,26 @@ export struct IBestStep{
 		emitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_STEP_ITEM_WIDTH, this.groupId), this.uniId, (width: number): void => {
 			this.stepItemWidth = width
 		})
-		emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_ALL_STEPS, this.groupId), this.uniId)
 	}
 	aboutToDisappear(): void {
+		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.SAVE_STEPS, this.groupId), this.uniId)
 		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_CONFIG, this.groupId), this.uniId)
 		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.ACTIVE_CHANGE, this.groupId), this.uniId)
 		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_MAX_MARK_SIZE, this.groupId), this.uniId)
 		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_STEP_ITEM_WIDTH, this.groupId), this.uniId)
+		emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.INIT_STEPS, this.groupId), 'del', this.uniId)
+	}
+	onDidBuild(): void {
+		emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.INIT_STEPS, this.groupId), 'add', this.uniId)
+	}
+
+	saveSteps(steps: number[]){
+		this.allSteps = steps
 	}
 	// 保存配置信息
-	saveConfig(steps: number[], active: number, data: IBestStepConfig){
-		this.allSteps = steps
+	saveConfig(active: number, data: IBestStepConfig){
 		this.active = active
-		this.index = steps.indexOf(this.uniId)
+		this.index = this.allSteps.indexOf(this.uniId)
 		this.config = {
 			placeDirection: data.placeDirection,
 			type: this.type || data.type,
@@ -329,7 +347,8 @@ export struct IBestStep{
 			activeIcon: this.activeIcon || data.activeIcon,
 			iconSize: this.iconSize || data.iconSize,
 			inactiveColor: this.inactiveColor || data.inactiveColor,
-			activeColor: this.activeColor || data.activeColor
+			activeColor: this.activeColor || data.activeColor,
+			bgColor: data.bgColor
 		}
 	}
 	// 获取是否是第一个
@@ -358,20 +377,21 @@ export struct IBestStep{
 	}
 	build() {
 		if(this.isVertical()){
-			Row({space: this.baseStyle.spaceXs as string}){
+			Row({space: this.baseStyle.spaceXs}){
 				this.stepContent()
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.alignItems(VerticalAlign.Top)
-			.padding({bottom: this.baseStyle.spaceSm as string})
+			.padding({bottom: this.baseStyle.spaceSm})
 			.id(`ibest_step_item_${this.groupId}_${this.index}`)
 		}else {
-			Column({space: this.baseStyle.spaceXs as string}){
+			Column({space: this.baseStyle.spaceXs}){
 				this.stepContent()
 			}
 			.width(this.isFirstStep() || this.isLastStep() ? 'auto' : this.stepItemWidth)
 			.layoutWeight(this.isFirstStep() || this.isLastStep() ? 1 : undefined)
 			.alignItems(this.isFirstStep() ? HorizontalAlign.Start : this.isLastStep() ? HorizontalAlign.End : HorizontalAlign.Center)
+			.animation({duration: this.isFirstStep() || this.isLastStep() ? 0 : 100})
 		}
 	}
 }

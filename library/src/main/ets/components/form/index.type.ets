@@ -81,7 +81,7 @@ export interface IBestFieldValidateInfo{
 export interface IBestFieldItem{
 	uniId: number
 	prop: string
-	validate: (rules: IBestFormRuleItem[]) => Promise<IBestFieldValidateInfo>
+	validate: () => Promise<IBestFieldValidateInfo>
 	resetValidation: () => void
 	getValue: () => IBestFieldValueType
 	setValue: (value: IBestFieldValueType) => void

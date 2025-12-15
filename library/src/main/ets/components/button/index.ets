@@ -88,12 +88,12 @@ export struct IBestButton {
 	 */
 	@Prop fontColor: ResourceColor = ""
 	/**
-	 * 按钮边框颜色
+	 * 按钮边框颜色，优先级高于btnBorder
 	 * @since 2.0.1
 	 */
 	@Prop btnBorderColor: ResourceColor = ""
 	/**
-	 * 按钮圆角
+	 * 按钮圆角，优先级高于btnBorder
 	 * @since 2.0.1
 	 */
 	@Prop btnBorderRadius: Length | BorderRadiuses | LocalizedBorderRadiuses = ""
@@ -128,6 +128,11 @@ export struct IBestButton {
      */
 	@Prop stateEffect: boolean = true
 	/**
+	 * 按钮边框
+	 * @since 2.2.1
+     */
+	@Prop btnBorder: BorderOptions
+	/**
 	 * defaultSlot 默认插槽
 	 */
 	@BuilderParam defaultBuilder: CustomBuilder
@@ -147,7 +152,7 @@ export struct IBestButton {
 	onClickBtn: () => void = () => {}
 	onBtnClick: () => void = () => {}
 
-	@Builder iconContent() {
+	@Builder iconContent(){
 		if (this.loading) {
 			if (this.loadingIconBuilder) {
 				this.loadingIconBuilder()
@@ -155,11 +160,6 @@ export struct IBestButton {
 				IBestLoading({
 					loadingSize: this.getLoadingSize(),
 					loadingColor: this.getBtnTextColor()
-				}).margin({
-					left: this.iconPosition == "right" && (this.text || this.loadingText) ? getSizeByUnit(this.space) : 0,
-					right: this.iconPosition == "left" && (this.text || this.loadingText) ? getSizeByUnit(this.space) : 0,
-					bottom: this.iconPosition == "top" && (this.text || this.loadingText) ? getSizeByUnit(this.space) : 0,
-					top: this.iconPosition == "bottom" && (this.text || this.loadingText) ? getSizeByUnit(this.space) : 0
 				})
 			}
 		} else if (this.iconBuilder) {
@@ -169,22 +169,28 @@ export struct IBestButton {
 				name: this.icon,
 				iconSize: this.getBtnSize()?.fontSize,
 				color: this.getBtnTextColor()
-			}).margin({
-				left: this.iconPosition == "right" && (this.text || this.loadingText) ? getSizeByUnit(this.space) : 0,
-				right: this.iconPosition == "left" && (this.text || this.loadingText) ? getSizeByUnit(this.space) : 0,
-				bottom: this.iconPosition == "top" && (this.text || this.loadingText) ? getSizeByUnit(this.space) : 0,
-				top: this.iconPosition == "bottom" && (this.text || this.loadingText) ? getSizeByUnit(this.space) : 0
 			})
 		}
 	}
+	@Builder textContext(){
+		if(this.loadingText || this.text){
+			Text(this.loading ? this.loadingText || this.text : this.text)
+				.fontSize(getSizeByUnit(this.getBtnSize()?.fontSize))
+				.fontColor(this.getBtnTextColor())
+				.fontWeight(this.fontWeight)
+		}
+	}
 
+	aboutToAppear() {
+		this.handleColorChange()
+	}
 	// 根据buttonSize换对应的按钮尺寸
 	getBtnSize(): BtnSizeType {
 		if (this.btnWidth || this.btnHeight) {
 			return {
 				width: this.btnWidth || "auto",
-				height: this.btnHeight || convertDimensionsWidthUnit(44),
-				padding: convertDimensionsWidthUnit(15),
+				height: this.btnHeight || 44,
+				padding: 15,
 				fontSize: this.btnFontSize || this.baseStyle.fontSizeMd as string
 			}
 		}
@@ -193,43 +199,44 @@ export struct IBestButton {
 			case SIZE.MINI:
 				return {
 					width: "auto",
-					height: convertDimensionsWidthUnit(24),
+					height: 24,
 					padding: this.baseStyle.spaceBase as string,
 					fontSize: this.btnFontSize || this.baseStyle.fontSizeXs as string
 				}
 			case SIZE.SMALL:
 				return {
 					width: "auto",
-					height: convertDimensionsWidthUnit(32),
+					height: 32,
 					padding: this.baseStyle.spaceXs as string,
 					fontSize: this.btnFontSize || this.baseStyle.fontSizeSm as string
 				}
 			case SIZE.LARGE:
 				return {
 					width: CONTAINER_SIZE.FULL,
-					height: convertDimensionsWidthUnit(50),
+					height: 50,
 					padding: this.baseStyle.spaceXs as string,
 					fontSize: this.btnFontSize || this.baseStyle.fontSizeLg as string
 				}
 			default:
 				return {
 					width: "auto",
-					height: convertDimensionsWidthUnit(44),
-					padding: convertDimensionsWidthUnit(15),
+					height: 44,
+					padding: 15,
 					fontSize: this.btnFontSize || this.baseStyle.fontSizeMd as string
 				}
 		}
 	}
-	getBtnFontSize() {
-		return this.btnFontSize != undefined ? getSizeByUnit(this.btnFontSize, true) : ""
+	// 根据颜色type获取背景色
+	getBackgroundColor() {
+		return this.plain ? "transparent" : this.color ? this.color : this.type == "default" ? IBestButtonColor.defaultBg : this.baseStyle[this.type]
 	}
 	// 获取按钮的borderRadius
-	getBtnBorderRadius() {
-		return this.btnBorderRadius !== '' ? getSizeByUnit(this.btnBorderRadius) : (this.square ? 0 : this.baseStyle[`borderRadius${this.round ? 'Max' : 'Md'}`])
+	getBorderRadius() {
+		return this.btnBorderRadius !== '' ? getSizeByUnit(this.btnBorderRadius) : this.btnBorder?.radius ?? (this.square ? 0 : this.baseStyle[`borderRadius${this.round ? 'Max' : 'Md'}`])
 	}
 	// 获取按钮边框的颜色
 	getBorderColor() {
-		return this.btnBorderColor || (this.color ? this.color : this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_4 : this.baseStyle[this.type])
+		return this.btnBorderColor || this.btnBorder?.color || this.color || (this.type === COLOR_TYPE.DEFAULT ? GRAY_COLOR.GRAY_4 : this.baseStyle[this.type])
 	}
 	// 获取按钮文字的颜色
 	getBtnTextColor() {
@@ -241,10 +248,6 @@ export struct IBestButton {
 		}
 		return this.type === COLOR_TYPE.DEFAULT ? IBestButtonColor.textColor : IBestButtonColor.whiteColor
 	}
-	// 根据颜色type获取背景色
-	getBackgroundColor() {
-		return this.plain ? "transparent" : this.color ? this.color : this.type == "default" ? IBestButtonColor.defaultBg : this.baseStyle[this.type]
-	}
 	// 获取loading的大小
 	getLoadingSize() {
 		return this.loadingSize != -1 ? getSizeByUnit(this.loadingSize) : this.getBtnSize()?.fontSize as string
@@ -255,36 +258,28 @@ export struct IBestButton {
 			this.type = 'primary'
 		}
 	}
-	aboutToAppear() {
-		this.handleColorChange()
-	}
+
 	build() {
 		Button({ type: ButtonType.Normal }) {
 			if (this.defaultBuilder) {
 				this.defaultBuilder()
 			} else {
 				if(['left', 'right'].includes(this.iconPosition)){
-					Row() {
+					Row({space: getSizeByUnit(this.space)}) {
 						if(this.iconPosition == "left"){
 							this.iconContent()
 						}
-						Text(this.loading ? this.loadingText ?? this.text : this.text)
-							.fontSize(this.getBtnSize()?.fontSize)
-							.fontColor(this.getBtnTextColor())
-							.fontWeight(this.fontWeight)
+						this.textContext()
 						if(this.iconPosition == "right"){
 							this.iconContent()
 						}
 					}
 				}else{
-					Column(){
+					Column({space: getSizeByUnit(this.space)}){
 						if(this.iconPosition == "top"){
 							this.iconContent()
 						}
-						Text(this.loading ? this.loadingText ?? this.text : this.text)
-							.fontSize(this.getBtnSize()?.fontSize)
-							.fontColor(this.getBtnTextColor())
-							.fontWeight(this.fontWeight)
+						this.textContext()
 						if(this.iconPosition == "bottom"){
 							this.iconContent()
 						}
@@ -295,11 +290,11 @@ export struct IBestButton {
 		.width(getSizeByUnit(this.getBtnSize().width))
 		.height(getSizeByUnit(this.getBtnSize().height))
 		.padding(getSizeByUnit(this.btnPadding))
-		.borderWidth(convertDimensionsWidthUnit(this.hairline ? 0.5 : 1))
-		.borderRadius(this.getBtnBorderRadius())
-		.fontColor(this.getBtnTextColor())
-		.backgroundColor(this.getBackgroundColor())
+		.border(this.btnBorder)
+		.borderWidth(this.btnBorder?.width ?? convertDimensionsWidthUnit(this.hairline ? 0.5 : 1))
 		.borderColor(this.getBorderColor())
+		.borderRadius(this.getBorderRadius())
+		.backgroundColor(this.getBackgroundColor())
 		.hitTestBehavior(this.loading ? HitTestMode.None : HitTestMode.Default)
 		.enabled(!this.disabled)
 		.opacity(this.disabled && this.plain ? 0.5 : 1)

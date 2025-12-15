@@ -36,3 +36,7 @@ export class IBestCascaderOptionInstance extends IBestCascaderOptionInstanceType
 		this.isEnd = value.isEnd
 	}
 }
+
+export class IBestCascaderContentController{
+	getSelectedOptions: () => IBestCascaderOption[] = () => []
+}

@@ -1,5 +1,12 @@
 # 版本记录
 
+## 2.2.1
+#### 新增:
+
+
+#### bug修复:
+
+
 ## 2.2.0 - 5.1.1(19)
 #### 新增:
 1. 新增 IBestPrice 价格组件;
@@ -47,7 +54,7 @@
 1. IBestCollapseItem readOnly为true时不显示右侧箭头.
 
 #### bug修复:
-1. IBestSteps type为num类型时，activeColor 属性未生效问题;
+1. IBestSteps type为num类型时,activeColor 属性未生效问题;
 2. IBestColorPicker 滑动时色相滑块抖动问题;
 3. IBestSideBar maxHeight 无效问题;
 4. IBestCollapseItem isShowBorder 无效问题;
@@ -55,7 +62,7 @@
 
 ## 2.1.7
 #### 新增:
-1. IBestCheckBox value值新增 string number 类型，新增 trueValue falseValue 属性;
+1. IBestCheckBox value值新增 string number 类型,新增 trueValue falseValue 属性;
 2. IBestField 新增 inputFontColor borderSizeType borderLeft fieldPadding bdColor prefixIcon prefixSize suffixIcon suffixSize showValue 属性, type 新增 new-password 类型;
 3. IBestForm 新增 setFormValues 方法.
 
@@ -63,8 +70,8 @@
 1. IBestCheckBox 异步切换时动画.
 
 #### bug修复:
-1. IBestCellGroup 在存在title时，顶部圆角不生效问题;
-2. IBestForm value为boolean类型且自定义表单项时，值为false会触发校验问题;
+1. IBestCellGroup 在存在title时,顶部圆角不生效问题;
+2. IBestForm value为boolean类型且自定义表单项时,值为false会触发校验问题;
 3. IBestTextEllipsis 字符串中有表情时行数异常问题;
 4. IBestDropdownMenu 在close方法执行多次时报错问题.
 
@@ -106,10 +113,10 @@
 2. 部分组件 radius 支持自定义设置位置.
 
 #### Bug修复:
-1. IBestTable 自定义表格内容时，边框线高度不一致问题;
+1. IBestTable 自定义表格内容时,边框线高度不一致问题;
 2. IBestButton btnBorderRadius 0未生效问题;
 3. IBestProgress 进度条宽度较宽时文字错位问题;
-4. IBestHighlight text动态修改时，文字未同步变化问题;
+4. IBestHighlight text动态修改时,文字未同步变化问题;
 5. IBestField autosize 为true时 inputAlign不生效问题.
 
 ## 2.1.2
@@ -188,7 +195,7 @@
 6. IBestActionSheet 新增 radius 属性;
 7. IBestPasswordInput 新增 onFinish;
 8. IBestCircleProgress 新增 onReachTarget;
-9. IBestProgress 新增 target onReachTarget，value 变更为双向绑定.
+9. IBestProgress 新增 target onReachTarget,value 变更为双向绑定.
 
 ## 2.0.7
 #### 新增:
@@ -302,7 +309,7 @@
 ## 1.18.0
 #### 新增:
 1. 新增 IBestBadge 徽标组件;
-2. Search 新增 textColor 属性;
+2. IBestSearch 新增 textColor 属性;
 3. IBestCell 新增 leftContentWidth、leftIconMarginRight、rightIconMarginLeft、leftRightPadding、borderSizeType、borderLeft、bdColor 属性;
 4. IBestToast 新增 iconWidth 属性;
 5. IBestCheckBox IBestRadio 新增 labelFontSize 属性;

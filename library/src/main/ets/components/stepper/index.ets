@@ -170,7 +170,7 @@ export struct IBestStepper {
 		.border({width: 1, color: type == 'plus' ? this.plusBtnBorderColor || this.plusBtnBgColor : (this.minusBtnBorderColor || this.minusBtnBgColor)})
 		.borderRadius(getSizeByUnit(this.buttonRadius))
 		.enabled(!this.getBtnDisabled(type))
-		.opacity(this.disableInput ? 0.5 : 1)
+		.opacity(this.disabled ? 0.5 : 1)
 		.onClick(() => {
 			this.handleClickStepperBtn(type == 'plus' ? STEPPER_BTN_TYPE.PLUS : STEPPER_BTN_TYPE.REDUCE)
 		})

@@ -247,7 +247,7 @@ export struct IBestNavBar{
 			}
 			Row(){
 				if(this.isShowLeft){
-					Row({space: this.baseStyle.spaceBase as string}){
+					Row({space: this.baseStyle.spaceBase}){
 						if(this.leftBuilder){
 							this.leftBuilder()
 						}else {
@@ -280,8 +280,8 @@ export struct IBestNavBar{
 					if(this.titleBuilder){
 						this.titleBuilder()
 					}else{
-						Column({space: this.baseStyle.spaceMini as string}){
-							Row({space: this.baseStyle.spaceXs as string}){
+						Column({space: this.baseStyle.spaceMini}){
+							Row({space: this.baseStyle.spaceXs}){
 								if(this.titleIcon || this.titleIconName){
 									IBestIcon({
 										name: this.titleIcon || this.titleIconName,
@@ -324,7 +324,7 @@ export struct IBestNavBar{
 				.alignItems(this.titleBuilder ? HorizontalAlign.Start : HorizontalAlign.Center)
 				.padding({left: this.leftWidth, right: this.rightWidth})
 				if(this.isShowRight){
-					Row({space: this.baseStyle.spaceBase as string}){
+					Row({space: this.baseStyle.spaceBase}){
 						if(this.rightBuilder){
 							this.rightBuilder()
 						}else{

@@ -95,10 +95,6 @@ export struct IBestRadio {
 						.fontSize(getSizeByUnit(this.labelFontSize, true))
 				}
 			}
-			.margin({
-				left: this.isLeftLabel() ? 0 : this.baseStyle.spaceXs,
-				right: this.isLeftLabel() ? this.baseStyle.spaceXs : 0
-			})
 			.onClick(() => {
 				!this.labelDisabled && this.handleCheckedChange()
 			})
@@ -171,7 +167,7 @@ export struct IBestRadio {
 	}
 
 	build() {
-		Row() {
+		Row({space: this.baseStyle.spaceXs}) {
 			if (this.labelPosition === 'left') {
 				this.LabelContain()
 			}

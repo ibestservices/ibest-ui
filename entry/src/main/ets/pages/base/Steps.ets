@@ -12,11 +12,14 @@ export function StepsBuilder(_: string, title: string){
 @Component
 struct StepsPage {
 	@State title: string = ''
+	@State list: number[] = [1,2,3,4]
+	@State list1: number[] = []
 	@State active: number = 0
 	@State groupId: string = 'steps'
 	@State groupId1: string = 'steps1'
 	@State groupId2: string = 'steps2'
 	@State groupId3: string = 'steps3'
+	@State groupId4: string = 'steps4'
 	@Builder customStepContent(index: number){
 		Column({space: 10}){
 			Text("【城市】物流状态" + (index + 1))
@@ -25,6 +28,11 @@ struct StepsPage {
 				.fontColor(this.active >= index ? modeColor.primaryColor : modeColor.textColor2)
 		}
 		.alignItems(HorizontalAlign.Start)
+	}
+	aboutToAppear(): void {
+		setTimeout(() => {
+			this.list1 = [1, 2, 3, 4]
+		}, 500)
 	}
 	build() {
 		NavDestination() {
@@ -36,10 +44,9 @@ struct StepsPage {
 							groupId: this.groupId,
 							active: this.active
 						}){
-							IBestStep({groupId: this.groupId, title: "步骤一"})
-							IBestStep({groupId: this.groupId, title: "步骤二"})
-							IBestStep({groupId: this.groupId, title: "步骤三"})
-							IBestStep({groupId: this.groupId, title: "步骤四"})
+							ForEach(this.list, (item: number) => {
+								IBestStep({groupId: this.groupId, title: `步骤${item}`})
+							})
 						}
 					}
 				}
@@ -50,10 +57,9 @@ struct StepsPage {
 							active: this.active,
 							type: 'dot'
 						}){
-							IBestStep({groupId: this.groupId1, title: "步骤一"})
-							IBestStep({groupId: this.groupId1, title: "步骤二"})
-							IBestStep({groupId: this.groupId1, title: "步骤三"})
-							IBestStep({groupId: this.groupId1, title: "步骤四"})
+							ForEach(this.list, (item: number) => {
+								IBestStep({groupId: this.groupId1, title: `步骤${item}`})
+							})
 						}
 					}
 				}
@@ -67,29 +73,40 @@ struct StepsPage {
 							activeIcon: "checked",
 							activeColor: "#07c160"
 						}){
-							IBestStep({groupId: this.groupId2, title: "步骤一", description: "一些描述信息"})
-							IBestStep({groupId: this.groupId2, title: "步骤二", description: "一些描述信息"})
-							IBestStep({groupId: this.groupId2, title: "步骤三", description: "一些描述信息"})
-							IBestStep({groupId: this.groupId2, title: "步骤四", description: "一些描述信息"})
+							ForEach(this.list, (item: number) => {
+								IBestStep({groupId: this.groupId2, title: `步骤${item}`, description: "一些描述信息"})
+							})
+						}
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '异步' }){
+						IBestSteps({
+							groupId: this.groupId3,
+							active: this.active
+						}){
+							ForEach(this.list1, (item: number) => {
+								IBestStep({groupId: this.groupId3, title: `步骤${item}`, description: "一些描述信息"})
+							})
 						}
 					}
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '竖向步骤条' }){
 						IBestSteps({
-							groupId: this.groupId3,
+							groupId: this.groupId4,
 							dotSize: 8,
 							active: this.active,
 							placeDirection: Axis.Vertical
 						}){
-							ForEach([0, 1, 2, 3], (_: number, index: number) => {
+							ForEach(this.list, (item: number, index: number) => {
 								IBestStep({
-									groupId: this.groupId3,
+									groupId: this.groupId4,
 									type: index == 1 ? "dot" : "icon",
 									inactiveIcon: index == 0 ? "like-o" : "passed",
-									activeIcon: index == 0 ? "like" : "checked",
+									activeIcon: index == 0 ? "like" : "checked"
 								}){
-									this.customStepContent(index)
+									this.customStepContent(item)
 								}
 							})
 						}
@@ -97,14 +114,34 @@ struct StepsPage {
 				}
 				ListItem() {
 					ComponentShowContainer(){
-						IBestButton({
-							text: "下一步",
-							onBtnClick: () => {
-								if (this.active++ >= 3) {
-									this.active = 0
+						Row({space: SPACE.MD}){
+							IBestButton({
+								text: "添加",
+								onBtnClick: () => {
+									this.list.push(this.list.length + 1)
 								}
-							}
-						})
+							})
+							IBestButton({
+								text: "删除",
+								onBtnClick: () => {
+									this.list.pop()
+								}
+							})
+							IBestButton({
+								text: "切换",
+								onBtnClick: () => {
+									this.list = [5, 6, 7, 8]
+								}
+							})
+							IBestButton({
+								text: "下一步",
+								onBtnClick: () => {
+									if (this.active++ >= this.list.length-1) {
+										this.active = 0
+									}
+								}
+							})
+						}
 					}
 				}
 			}

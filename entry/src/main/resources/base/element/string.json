@@ -321,6 +321,10 @@
 			"value": "TextEllipsis 文本省略"
 		},
 		{
+			"name": "component_tree",
+			"value": "Tree 树形控件"
+		},
+		{
 			"name": "component_watermark",
 			"value": "Watermark 水印"
 		},

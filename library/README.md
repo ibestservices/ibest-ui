@@ -135,6 +135,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | Table 表格             | 用于展示多条结构类似的数据。                     | <a href="https://ibestui.ibestservices.com/components/table/" target="_blank">文档</a>          |
 | Tag 标签               | 用于标记关键词和概括主要内容。                    | <a href="https://ibestui.ibestservices.com/components/tag/" target="_blank">文档</a>            |
 | TextEllipsis 文本省略    | 对长文本进行省略，支持展开/收起。                  | <a href="https://ibestui.ibestservices.com/components/textEllipsis/" target="_blank">文档</a>   |
+| Tree 树形控件            | 用清晰的层级结构展示信息，可展开或折叠。               | <a href="https://ibestui.ibestservices.com/components/tree/" target="_blank">文档</a>           |
 | Watermark 水印         | 在页面上添加特定的文字或图案作为水印，可用于防止信息盗用。      | <a href="https://ibestui.ibestservices.com/components/watermark/" target="_blank">文档</a>      |
 
 ### 导航组件

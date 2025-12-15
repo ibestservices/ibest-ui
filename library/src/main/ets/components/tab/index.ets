@@ -238,6 +238,9 @@ export struct IBestTabs{
     }
     // tabName 变化
     async currentNameChange(){
+        if(this.tabsWidthList.length != this.tabsList.length){
+            this.getTabsWidth()
+        }
         if(this.tabsWidthList.length){
             let index = this.tabsList.findIndex((item: IBestTabItem) => item.name == this.currentName)
             // 获取并改变tabLine的宽度

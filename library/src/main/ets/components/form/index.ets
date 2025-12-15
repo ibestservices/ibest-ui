@@ -22,15 +22,10 @@ import { IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestForm {
-	@State uniId: number = 0
 	/**
      * form id 用于验证
      */
 	@Prop @Require formId: IBestStringNumber
-	/**
-	 * 表单子项信息
-	 */
-	@State formItems: IBestFieldItem[] = []
 	/**
 	 * 表单验证规则
 	 */
@@ -75,6 +70,10 @@ export struct IBestForm {
 	 * 表单控制器
 	 */
 	controller: IBestFormController = new IBestFormController()
+
+	@State uniId: number = 0
+	@State formItems: IBestFieldItem[] = []
+
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
 		this.controller.validate = (callBack?: (valid: boolean, field: IBestFieldValidateInfo[]) => void): Promise<IBestFormValidateResult> => this.validateForm(callBack)
@@ -121,7 +120,7 @@ export struct IBestForm {
 	// 验证表单
 	validateForm(callBack?: (valid: boolean, field: IBestFieldValidateInfo[]) => void): Promise<IBestFormValidateResult> {
 		return new Promise((resolve) => {
-			Promise.all(this.formItems.map((item: IBestFieldItem) => item.validate(this.rules[item.prop.split(".")[0]]))).then((errors) => {
+			Promise.all(this.formItems.map((item: IBestFieldItem) => item.validate())).then((errors) => {
 				errors = errors.filter(Boolean)
 				if(callBack){
 					callBack(!errors.length, errors)
@@ -139,7 +138,7 @@ export struct IBestForm {
 		return new Promise((resolve) => {
 			const item = this.formItems.find((item: IBestFieldItem) => item.prop === prop)
 			if (item) {
-				item.validate(this.rules[prop]).then((res: IBestFieldValidateInfo) => {
+				item.validate().then((res: IBestFieldValidateInfo) => {
 					if(callBack){
 						callBack(res === undefined, res)
 					}else{

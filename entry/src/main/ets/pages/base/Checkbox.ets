@@ -103,6 +103,7 @@ struct CheckboxPage {
 						IBestCheckbox({
 							value: this.isChecked,
 							shape: 'square',
+							radius: 4,
 							label: '自定义形状',
 							onChange: checked => {
 								this.isChecked = checked as boolean

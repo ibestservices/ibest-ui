@@ -45,6 +45,7 @@ struct ProgressPage {
 						IBestProgress({
 							value: $value,
 							lineWidth: 18,
+							radius: 0,
 							textInside: true
 						})
 					}

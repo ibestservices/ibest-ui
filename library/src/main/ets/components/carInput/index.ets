@@ -1,7 +1,7 @@
 import { getDefaultBaseStyle } from '../../theme-chalk/src';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
-import { CarKeyboard } from '../carKeyboard';
+import { IBestCarKeyboardContent } from '../carKeyboard';
 import { IBestCarInputModel, IBestCarKeyboardConfig, IBestInputHighlightType } from './index.type';
 import { FocusController } from '@ohos.arkui.UIContext';
 import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils';
@@ -108,7 +108,7 @@ export struct IBestCarInput {
 	private textInputController: TextInputController = new TextInputController()
 	private focusController: FocusController = this.getUIContext().getFocusController()
 	@Builder carKeyboardBuilder(){
-		CarKeyboard({
+		IBestCarKeyboardContent({
 			value: $value,
 			maxLength: this.maxLength,
 			title: this.keyboardConfig?.title,
