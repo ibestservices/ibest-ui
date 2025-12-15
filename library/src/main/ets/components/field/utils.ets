@@ -5,7 +5,7 @@ export function isEmptyValue(value: IBestFieldValueType) {
 	if (Array.isArray(value)) {
 		return !value.length
 	}
-	return value === '' || value === null || value === undefined || value === false
+	return value === '' || value === null || value === undefined
 }
 
 export function runSyncRule(value: IBestFieldValueType, rule: IBestFormRuleItem) {
