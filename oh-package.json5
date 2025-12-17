@@ -7,8 +7,8 @@
 	"author": "",
 	"license": "",
 	"dependencies": {
-//		"@ibestservices/ibest-ui": "file:library",
-		"@ibestservices/ibest-ui": "file:library/build/default/outputs/default/library.har",
+		"@ibestservices/ibest-ui": "file:library",
+//		"@ibestservices/ibest-ui": "file:library/build/default/outputs/default/library.har",
 		"@ibestservices/area-data": "^0.0.6",
 		"@hview/dayjs": "^1.11.11",
 		"@ibestservices/ucharts": "^1.0.9"
