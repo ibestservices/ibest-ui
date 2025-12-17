@@ -21,7 +21,7 @@ export default class EntryAbility extends UIAbility {
 			// 注册自定义字体图标
 			mainWindow.getUIContext().getFont().registerFont({
 				familyName: 'testFont',
-				familySrc: $rawfile('iconfont.woff')
+				familySrc: $rawfile('iconfont.ttf')
 			})
 			IBestSetUIGlobalConfig({
 				fontNames: ['testFont']

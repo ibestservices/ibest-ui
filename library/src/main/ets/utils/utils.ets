@@ -119,6 +119,17 @@ export function random(min: number, max: number) {
 	return 0
 }
 /**
+ * 合并对象
+ */
+export function mergeObject(target: AnyType, source: AnyType) {
+	if(!source){
+		return
+	}
+	for (let key of Object.keys(source)) {
+		target[key] = source[key]
+	}
+}
+/**
  * 获取组件信息
  * @param {context} UIContext
  * @param {key} 组件id

@@ -41,9 +41,17 @@ export struct IBestIcon {
 	isOnlineImage(): boolean {
 		return (this.name as string).startsWith("http")
 	}
+	isSingleUnicodeEscape(str: string) {
+		return str.length == 1 && /^[\u0000-\uFFFF]$/.test(str)
+	}
 	getFontFamily(){
-		let arr = ["ibestFont", getResourceStr(this.fontName)].concat(this.config.fontNames.map(e => getResourceStr(e)))
-		return Array.from<string>(new Set(arr.filter(e => e))).join(",")
+		let name = this.name as string
+		if(this.isSingleUnicodeEscape(name)){
+			let arr = this.config.fontNames.map(e => getResourceStr(e)).concat([getResourceStr(this.fontName)])
+			return Array.from<string>(new Set(arr.filter(e => e))).join(",")
+		}else {
+			return "ibestFont"
+		}
 	}
 	build() {
 		if (typeof this.name == "string" && !this.isOnlineImage()) {

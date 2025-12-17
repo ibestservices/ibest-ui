@@ -1,5 +1,5 @@
 import { IBestStorageKey } from '../../model/Global.type'
-import { convertDimensionsWidthUnit } from '../../utils/utils'
+import { convertDimensionsWidthUnit, mergeObject } from '../../utils/utils'
 import { BORDER_RADIUS } from './border'
 import { COLOR_OPACITY, THEME_COLOR } from './color'
 import { FONT_SIZE } from './font'
@@ -56,12 +56,8 @@ export function getDefaultBaseStyle(): IBestUIBaseStyleObjType {
  */
 export function setIBestUIBaseStyle(styleData?: Partial<IBestUIBaseStyleType>) {
 	const newStyleData = getDefaultBaseStyle()
-	if (typeof styleData === 'object' && styleData !== null) {
-		Object.keys(styleData).forEach(item => {
-			if (newStyleData[item]) {
-				newStyleData[item] = (styleData as IBestUIBaseStyleObjType)[item] ?? newStyleData[item]
-			}
-		})
+	if (styleData) {
+		mergeObject(newStyleData, styleData)
 	}
 	AppStorage.setOrCreate(IBestStorageKey.BASE_STYLE, newStyleData)
 }

@@ -57,8 +57,9 @@ struct IconsPage {
 			ListItem() {
 				ComponentShowContainer({ title: "使用自定义图标" }) {
 					Row({ space: SPACE.SM }) {
-						IBestIcon({ fontName: "testFont", name: "\ue953" })
+						IBestIcon({ fontName: "testFont", name: "\ue6d4" })
 						IBestIcon({ fontName: "testFont", name: "\ue963" })
+						IBestIcon({ fontName: "testFont", name: "\ue971" })
 						IBestIcon({ fontName: "testFont", name: "\ue973" })
 					}
 				}
