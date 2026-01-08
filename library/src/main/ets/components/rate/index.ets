@@ -5,7 +5,7 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestRateOption } from './index.type'
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
-import { IBestIcon } from '../../../../../Index'
+import { IBestIcon } from '../icon'
 
 @Component
 export struct IBestRate {

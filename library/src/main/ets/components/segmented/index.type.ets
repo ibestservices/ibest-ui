@@ -1,4 +1,4 @@
-import { IBestStringNumber } from "../../../../../Index"
+import { IBestStringNumber } from "../../model/Global.type"
 
 /**
  * 选项类型

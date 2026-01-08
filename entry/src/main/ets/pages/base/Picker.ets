@@ -178,11 +178,13 @@ struct PickerPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '默认选中', titlePaddingLeft: SPACE.SM, card: true }) {
+					ComponentShowContainer({ title: '自定义样式', titlePaddingLeft: SPACE.SM, card: true }) {
 						IBestPicker({
 							options: this.options1,
 							title: "标题",
 							value: $selectValue2,
+							selectedFontColor: "#1989fa",
+							selectedFontWeight: FontWeight.Bold,
 							onConfirm: (selectedValues, selectTexts) => {
 								IBestToast.show(selectTexts.join('-'))
 							},

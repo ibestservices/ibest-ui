@@ -9,7 +9,6 @@ import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 const keyWidth = 0.09
 
 @Extend(Row) function ibestCarKeyboardKeyBoxStyle(){
-    .borderRadius(getDefaultBaseStyle().borderRadiusMd)
     .justifyContent(FlexAlign.Center)
     .alignItems(VerticalAlign.Center)
     .stateStyles({
@@ -20,10 +19,6 @@ const keyWidth = 0.09
             .backgroundColor(IBestCarKeyboardColor.activeBg)
         }
     })
-}
-@Extend(Text) function ibestCarKeyboardKeyTextStyle(){
-    .fontSize(getDefaultBaseStyle().fontSizeLg)
-    .fontColor(IBestCarKeyboardColor.textColor)
 }
 
 @Component
@@ -69,6 +64,7 @@ export struct IBestCarKeyboardContent{
 		.layoutWeight(1)
 		.height(getSizeByUnit(this.keyHeight))
 		.ibestCarKeyboardKeyBoxStyle()
+		.borderRadius(this.baseStyle.borderRadiusMd)
 		.onClick(() => {
 			this.selectKey(new IBestCarKeyboardKey("delete"))
 		})
@@ -215,6 +211,7 @@ export struct IBestCarKeyboardContent{
 
 @Component
 struct KeyButton{
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@ObjectLink item: IBestCarKeyboardKey
 	@Prop keyHeight: IBestStringNumber
 	@Prop full: boolean = false
@@ -222,11 +219,13 @@ struct KeyButton{
 	build() {
 		Row(){
 			Text(this.item.text)
-				.ibestCarKeyboardKeyTextStyle()
+				.fontSize(this.baseStyle.fontSizeLg)
+				.fontColor(IBestCarKeyboardColor.textColor)
 		}
 		.width(this.full ? CONTAINER_SIZE.FULL : keyWidth * 100 + '%')
 		.height(getSizeByUnit(this.keyHeight))
 		.ibestCarKeyboardKeyBoxStyle()
+		.borderRadius(this.baseStyle.borderRadiusMd)
 		.enabled(!this.item.disabled)
 		.opacity(this.item.disabled ? 0.6 : 1)
 		.onClick(() => {

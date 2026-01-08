@@ -1,4 +1,4 @@
-import { IBestBadge } from '../../../../../Index'
+import { IBestBadge } from '../badge'
 import { IBestShape, IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { IBestGlobalConfig } from '../../model/GlobalConfig'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
@@ -36,7 +36,7 @@ export struct IBestAvatar{
     /**
      * 圆角值
      */
-    @Prop radius: Length | BorderRadiuses | LocalizedBorderRadiuses = convertDimensionsWidthUnit(4)
+    @Prop radius: Length | BorderRadiuses | LocalizedBorderRadiuses = this.baseStyle.borderRadiusMd
     /**
      * 背景色
      */
@@ -96,7 +96,7 @@ export struct IBestAvatar{
     /**
      * 徽标图标大小
      */
-    @Prop badgeIconSize: IBestStringNumber = convertDimensionsWidthUnit(12)
+    @Prop badgeIconSize: IBestStringNumber = this.baseStyle.fontSizeSm as string
     /**
      * 徽标图标颜色
      */

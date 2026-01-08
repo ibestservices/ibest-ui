@@ -156,6 +156,11 @@
 			"buildFunction": "UploaderBuilder"
 		},
 		{
+			"name": "WeekPicker",
+			"pageSourceFile": "src/main/ets/pages/base/WeekPicker.ets",
+			"buildFunction": "WeekPickerBuilder"
+		},
+		{
 			"name": "ActionSheet",
 			"pageSourceFile": "src/main/ets/pages/base/ActionSheet.ets",
 			"buildFunction": "ActionSheetBuilder"
@@ -211,6 +216,11 @@
 			"buildFunction": "BadgeBuilder"
 		},
 		{
+			"name": "Card",
+			"pageSourceFile": "src/main/ets/pages/base/Card.ets",
+			"buildFunction": "CardBuilder"
+		},
+		{
 			"name": "CircleProgress",
 			"pageSourceFile": "src/main/ets/pages/base/CircleProgress.ets",
 			"buildFunction": "CircleProgressBuilder"
@@ -249,6 +259,11 @@
 			"name": "ImagePreview",
 			"pageSourceFile": "src/main/ets/pages/base/ImagePreview.ets",
 			"buildFunction": "ImagePreviewBuilder"
+		},
+		{
+			"name": "Mosaic",
+			"pageSourceFile": "src/main/ets/pages/base/Mosaic.ets",
+			"buildFunction": "MosaicBuilder"
 		},
 		{
 			"name": "NoticeBar",
@@ -361,9 +376,19 @@
 			"buildFunction": "ContactAddressBuilder"
 		},
 		{
+			"name": "GridAlbum",
+			"pageSourceFile": "src/main/ets/pages/extend/GridAlbum.ets",
+			"buildFunction": "GridAlbumBuilder"
+		},
+		{
 			"name": "ImageCropper",
 			"pageSourceFile": "src/main/ets/pages/extend/ImageCropper.ets",
 			"buildFunction": "ImageCropperBuilder"
+		},
+		{
+			"name": "InputTag",
+			"pageSourceFile": "src/main/ets/pages/extend/InputTag.ets",
+			"buildFunction": "InputTagBuilder"
 		},
 		{
 			"name": "Column",

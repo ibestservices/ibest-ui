@@ -81,7 +81,7 @@ export struct IBestSwitch {
 	 * 文字/图标大小
 	 * @since 2.2.0
      */
-	@Prop textFontSize: IBestStringNumber = convertDimensionsWidthUnit(14)
+	@Prop textFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
 	/**
 	 * 打开时文字/图标颜色
 	 * @since 2.2.0

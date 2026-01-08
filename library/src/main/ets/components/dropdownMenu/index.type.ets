@@ -1,12 +1,11 @@
-import { IBestStringNumber } from '../../../../../Index'
-import { IBestAwaitable } from '../../model/Global.type';
+import { IBestAwaitable, IBestStringNumber } from '../../model/Global.type';
 
 /**
  * 组件名称
  */
 export const COMPONENT_NAME = 'DROPDOWN_MENU';
 /**
- * radio group的emitter的事件
+ * dropDownMenu事件名称
  */
 export enum DROPDOWN_MENU_EVENT_NAME {
     /**

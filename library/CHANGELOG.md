@@ -1,5 +1,24 @@
 # 版本记录
 
+## 2.2.3
+#### 新增:
+1. 新增 IBestWeekPicker 周选择 组件;
+2. 新增 IBestCard 卡片 组件;
+3. 新增 IBestMosaic 马赛克 组件;
+4. 新增 IBestGridsAlbum 九宫格相册 组件;
+5. 新增 IBestInputTag 标签输入框 组件;
+6. IBestCalendar 支持滑动切换月份;
+7. IBestPicker、IBestDatePicker、IBestDateTimePicker、IBestTimePicker 新增 fontColor、fontWeight、selectedFontSize、selectedFontColor、selectedFontWeight 属性;
+8. IBestTable 新增 spanMethod 属性,支持合并单元格;
+9. IBestContactAddress 新增 regionData 属性;
+10. IBestFloatBubble isMagnetic autoHide支持动态更新.
+
+#### 优化:
+1. 移除 @ibestservices/area-data、dayjs、Lunar 依赖.
+
+#### bug修复:
+1. IBestNavBar 标题居左,且右侧自定义超过两个图标时,标题位置显示异常问题.
+
 ## 2.2.2
 #### 新增:
 1. 新增 IBestTree 树形控件;
@@ -15,7 +34,7 @@
 
 #### bug修复:
 1. IBestCaliper 小数刻度显示问题;
-2. IBestImagePreview closeOnClickImage为false时不生效问题，优化性能;
+2. IBestImagePreview closeOnClickImage为false时不生效问题,优化性能;
 3. IBestPullRefresh onRefresh 初始状态时重复执行问题.
 
 ## 2.2.0 - 5.1.1(19)

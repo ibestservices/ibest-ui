@@ -53,11 +53,11 @@ export struct IBestDialog {
 	/**
 	 * 标题的padding-left与padding-right值
 	 */
-	@Prop titlePaddingX: IBestStringNumber = convertDimensionsWidthUnit(24)
+	@Prop titlePaddingX: IBestStringNumber = this.baseStyle.spaceLg as string
 	/**
 	 * 标题的padding-top值
 	 */
-	@Prop titleLineHeight: IBestStringNumber = convertDimensionsWidthUnit(24)
+	@Prop titleLineHeight: IBestStringNumber = this.baseStyle.spaceLg as string
 	/**
 	 * 标题的对齐方式
 	 */
@@ -81,11 +81,11 @@ export struct IBestDialog {
 	/**
 	 * 内容区域的padding-top值
 	 */
-	@Prop messagePaddingTop: IBestStringNumber = convertDimensionsWidthUnit(8)
+	@Prop messagePaddingTop: IBestStringNumber = this.baseStyle.spaceXs as string
 	/**
 	 * 内容区域的padding-left与padding-right值
 	 */
-	@Prop messagePaddingX: IBestStringNumber = convertDimensionsWidthUnit(24)
+	@Prop messagePaddingX: IBestStringNumber = this.baseStyle.spaceLg as string
 	/**
 	 * 内容区域的padding-bottom值
 	 */

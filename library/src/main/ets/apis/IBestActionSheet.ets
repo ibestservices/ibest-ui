@@ -302,7 +302,7 @@ struct defaultContent{
 													Text(action.subName)
 														.fontSize(this.baseStyle.fontSizeSm)
 														.fontColor(this.descriptionColor)
-														.margin({ top: convertDimensionsWidthUnit(6) })
+														.margin({ top: this.baseStyle.spaceX })
 														.padding({
 															left: this.baseStyle.spaceBase,
 															right: this.baseStyle.spaceBase

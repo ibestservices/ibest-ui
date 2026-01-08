@@ -1,12 +1,14 @@
-import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils';
+import { convertDimensionsWidthUnit, getComponentsInfo, getEventName, getSizeByUnit, mergeObject } from '../../utils/utils';
 import { ComponentContent, OverlayManager } from '@kit.ArkUI';
-import { IBestFloatBubbleDragAxis, IBestFloatBubbleParams } from './index.type';
+import { COMPONENT_NAME, FLOAT_BUBBLE_EVENT_NAME, IBestFloatBubbleDragAxis, IBestFloatBubbleOption, IBestFloatBubbleParams } from './index.type';
 import { IBestEdges, IBestShape, IBestStorageKey, IBestStringNumber } from '../../model/Global.type';
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { getDefaultBaseStyle } from '../../theme-chalk/src';
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type';
 import { IBestIcon } from '../icon';
 import { IBestFloatBubbleColor } from './color';
+import ibestEmitter from '../../utils/eventEmitter'
+
 @Builder
 function bubbleDefaultBuilder(option: IBestFloatBubbleParams) {
 	Column(){
@@ -31,7 +33,6 @@ struct FloatBubbleComponent{
 	@State offsetY: number = 0
     private enableAnimation: boolean = true
     private isHide: boolean = false
-    private isDragging: boolean = false
     private positionX: number = 0
     private positionY: number = 0
     private boxWidth: number = 0
@@ -46,7 +47,12 @@ struct FloatBubbleComponent{
 	private preX: number = 0
 
 	aboutToAppear(): void {
+		this.uniId = this.getUniqueId()
 		this.init()
+		ibestEmitter.on(getEventName(COMPONENT_NAME, FLOAT_BUBBLE_EVENT_NAME.CONFIG_UPDATE, this.option.groupId), this.uniId, (option: Partial<IBestFloatBubbleOption>): void => this.optionChange(option))
+	}
+	aboutToDisappear(): void {
+		ibestEmitter.off(getEventName(COMPONENT_NAME, FLOAT_BUBBLE_EVENT_NAME.CONFIG_UPDATE, this.option.groupId), this.uniId)
 	}
 	// 初始化位置
 	init(){
@@ -75,13 +81,21 @@ struct FloatBubbleComponent{
                 this.offsetX = this.maxX
                 this.offsetY = this.maxY
             }
-            this.positionX = this.offsetX
+            this.positionX = this.preX = this.offsetX
             this.positionY = this.offsetY
             setTimeout(() => {
                 this.isReady = true
                 this.autoHide()
             }, 300)
 		}, 50)
+	}
+	optionChange(option: Partial<IBestFloatBubbleOption>){
+		mergeObject(this.option, option)
+		if(option.isMagnetic !== undefined){
+			this.onActionEnd()
+		}else if(option.autoHide !== undefined){
+			this.autoHide()
+		}
 	}
     // 设置拖动方向
     setDirection(){
@@ -120,10 +134,12 @@ struct FloatBubbleComponent{
 		}
 		this.positionX = this.offsetX
 		this.positionY = this.offsetY
-        this.isDragging = false
 	}
 	// 自动隐藏
 	autoHide(){
+		if(!this.option.isMagnetic){
+			return
+		}
         if(this.option.autoHide){
             clearTimeout(this.timer)
             this.timer = setTimeout(() => {
@@ -132,7 +148,11 @@ struct FloatBubbleComponent{
                 this.isHide = true
                 this.panOption.setDirection(PanDirection.None)
             }, this.option.hideDelay)
-        }
+        }else {
+			this.isHide = false
+			this.offsetX = this.preX
+			this.setDirection()
+		}
 	}
 	// 气泡点击
 	onBubbleClick(){
@@ -174,7 +194,6 @@ struct FloatBubbleComponent{
 				})
 				.gesture(PanGesture(this.panOption)
                     .onActionStart(() => {
-                        this.isDragging = true
                         this.enableAnimation = false
                         clearTimeout(this.timer)
                     })
@@ -237,7 +256,7 @@ export struct IBestFloatBubble{
 	/**
 	 * 是否开启磁吸
 	 */
-	@Prop isMagnetic: boolean = true
+	@Prop @Watch("isMagneticChange") isMagnetic: boolean = true
 	/**
 	 * 气泡与窗口最小间距
 	 */
@@ -249,7 +268,7 @@ export struct IBestFloatBubble{
 	/**
 	 * 贴边后是否自动延时隐藏, 仅isMagnetic为true时有效
      */
-	@Prop autoHide: boolean = false
+	@Prop @Watch("autoHideChange") autoHide: boolean = false
 	/**
 	 * 延时隐藏时间, 单位ms, 仅autoHide为true时有效
      */
@@ -267,10 +286,14 @@ export struct IBestFloatBubble{
      */
 	onBubbleClick: () => void = () => {}
 
+	private uniId: number = 0
 	private uiContext: UIContext = this.getUIContext()
 	private overlayManager: OverlayManager = this.uiContext.getOverlayManager()
 	private overlayContent: ComponentContent<IBestFloatBubbleParams> | null = null
 
+	aboutToAppear() {
+		this.uniId = this.getUniqueId()
+	}
 	aboutToDisappear(): void {
 		this.unmountBubble()
 	}
@@ -281,11 +304,22 @@ export struct IBestFloatBubble{
 			this.hideBubble()
 		}
 	}
+	isMagneticChange(){
+		ibestEmitter.emit(getEventName(COMPONENT_NAME, FLOAT_BUBBLE_EVENT_NAME.CONFIG_UPDATE, this.uniId), {
+			isMagnetic: this.isMagnetic
+		})
+	}
+	autoHideChange(){
+		ibestEmitter.emit(getEventName(COMPONENT_NAME, FLOAT_BUBBLE_EVENT_NAME.CONFIG_UPDATE, this.uniId), {
+			autoHide: this.autoHide
+		})
+	}
 	mountBubble(){
 		if(this.overlayContent){
 			this.overlayManager.showComponentContent(this.overlayContent)
 		}else {
 			let params = new IBestFloatBubbleParams({
+				groupId: this.uniId,
 				bubbleSize: this.bubbleSize,
 				shape: this.shape,
 				icon: this.icon,

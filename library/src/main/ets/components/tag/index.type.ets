@@ -1,4 +1,5 @@
-import { IBestStringNumber } from '../../../../../Index'
+import { IBestStringNumber } from "../../model/Global.type";
+
 /**
  * 按钮尺寸对象数据
  */

@@ -30,7 +30,7 @@ export struct IBestDivider{
 	/**
 	 * 分割线高度, 仅垂直时生效
      */
-	@Prop lineHeight: IBestStringNumber = convertDimensionsWidthUnit(14)
+	@Prop lineHeight: IBestStringNumber = this.baseStyle.lineHeightXs as string
 	/**
 	 * 线颜色
      */
@@ -46,7 +46,7 @@ export struct IBestDivider{
 	/**
 	 * 文本大小, 仅水平时生效
      */
-	@Prop texFontSize: IBestStringNumber = convertDimensionsWidthUnit(14, true)
+	@Prop texFontSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
 	/**
 	 * 文本与线段间距, 仅水平时生效
      */

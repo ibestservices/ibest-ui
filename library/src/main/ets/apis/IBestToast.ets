@@ -1,7 +1,7 @@
 import { ComponentContent, PromptAction } from '@kit.ArkUI'
 import { IBestIcon } from '../components/icon'
 import { IBestLoading } from '../components/loading'
-import { IBestStorageKey, IBestStringNumber, LoadingIconType, WordBreakType } from '../model/Global.type'
+import { IBestStorageKey, IBestStringNumber, IBestLoadingIconType, IBestWordBreakType } from '../model/Global.type'
 import { getDefaultBaseStyle } from '../theme-chalk/src/index'
 import { IBestUIBaseStyleObjType } from '../theme-chalk/src/index.type'
 import GlobalStore from '../utils/globalStore'
@@ -18,7 +18,7 @@ class LoadingOption{
     /**
      * 加载类型  type为loading时有效
      */
-    loadingType?: LoadingIconType
+    loadingType?: IBestLoadingIconType
 }
 
 class ToastOption extends LoadingOption {
@@ -29,7 +29,7 @@ class ToastOption extends LoadingOption {
     /**
      * 换行方式
      */
-    wordBreak?: WordBreakType
+    wordBreak?: IBestWordBreakType
     /**
      * 自定义图标
      */
@@ -98,7 +98,7 @@ struct defaultContent{
                 if(this.option.type == "loading"){
                     IBestLoading({
                         loadingIconType: this.option.loadingType,
-                        loadingSize: convertDimensionsWidthUnit(20),
+                        loadingSize: this.baseStyle.fontSizeXl as string,
                         loadingStrokeWidth: 2
                     })
                 }else{
@@ -109,10 +109,12 @@ struct defaultContent{
                     })
                 }
             }
-            Text(this.option.message)
-                .fontColor($r("app.color.ibest_white"))
-                .fontSize(this.baseStyle.fontSizeMd)
-                .wordBreak(this.option.wordBreak == "normal" ? WordBreak.NORMAL : this.option.wordBreak == "break-all" ? WordBreak.BREAK_ALL : WordBreak.BREAK_WORD)
+            if(this.option.message){
+                Text(this.option.message)
+                    .fontColor($r("app.color.ibest_white"))
+                    .fontSize(this.baseStyle.fontSizeMd)
+                    .wordBreak(this.option.wordBreak == "normal" ? WordBreak.NORMAL : this.option.wordBreak == "break-all" ? WordBreak.BREAK_ALL : WordBreak.BREAK_WORD)
+            }
         }
         .constraintSize({minWidth: convertDimensionsWidthUnit(96), maxWidth: "60%", minHeight: !this.option.type && !this.option.icon ? 0 : convertDimensionsWidthUnit(98)})
         .backgroundColor("rgba(0,0,0,0.7)")
@@ -152,8 +154,8 @@ class Toast{
 		let windowClass = GlobalStore.getMainWindow()
 		let uiContext = windowClass.getUIContext()
 		this.promptAction = uiContext.getPromptAction()
-		let params: ToastParams = typeof option == "string" || (option as Resource).moduleName ? new ToastParams({ message: option as ResourceStr }) : new ToastParams(option as ToastOption)
-		let toastContent = new ComponentContent(uiContext, wrapBuilder(defaultBuilder), params)
+		let params: ToastParams = new ToastParams(typeof option == "object" && ((option as ToastOption).message || (option as ToastOption).type && typeof option.type == 'string') ? option as ToastOption : { message: option as ResourceStr })
+        let toastContent = new ComponentContent(uiContext, wrapBuilder(defaultBuilder), params)
 		this.toastContent = toastContent
 		this.toastOption = params
         await this.promptAction.openCustomDialog(toastContent, {

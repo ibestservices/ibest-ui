@@ -13,6 +13,7 @@ import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import CustomNavBar from '../../components/CustomNavBar';
 import { getRandomColor } from '../../utils/utils';
 import { pasteboard } from '@kit.BasicServicesKit';
+import { regionData } from "@ibestservices/area-data"
 
 @Builder
 export function ContactAddressBuilder(_: string, title: string) {
@@ -87,6 +88,7 @@ struct ContactAddressPage {
 			List() {
 				ListItem() {
 					IBestContactAddress({
+						regionData,
 						controller: this.controller,
 						showIdentifyInputBox: this.showInputBox,
 						labelColor: this.labelColor,

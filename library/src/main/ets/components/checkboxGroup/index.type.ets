@@ -3,7 +3,7 @@
  */
 export const COMPONENT_NAME = 'CHECKBOX';
 /**
- * checkboxgroup的emitter的事件
+ * checkboxgroup事件名称
  */
 export enum CHECKBOX_GROUP_EVENT_NAME {
 	/**

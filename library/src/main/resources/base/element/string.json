@@ -1,31 +1,59 @@
 {
 	"string": [
 		{
-			"name": "ibest_calendar_monday",
+			"name": "ibest_monday",
+			"value": "周一"
+		},
+		{
+			"name": "ibest_tuesday",
+			"value": "周二"
+		},
+		{
+			"name": "ibest_wednesday",
+			"value": "周三"
+		},
+		{
+			"name": "ibest_thursday",
+			"value": "周四"
+		},
+		{
+			"name": "ibest_friday",
+			"value": "周五"
+		},
+		{
+			"name": "ibest_saturday",
+			"value": "周六"
+		},
+		{
+			"name": "ibest_sunday",
+			"value": "周日"
+		},
+		{
+			"name": "ibest_monday_omit",
 			"value": "一"
 		},
 		{
-			"name": "ibest_calendar_tuesday",
+			"name": "ibest_tuesday_omit",
 			"value": "二"
 		},
 		{
-			"name": "ibest_calendar_wednesday",
+			"name": "ibest_wednesday_omit",
 			"value": "三"
 		},
 		{
-			"name": "ibest_calendar_thursday",
+			"name": "ibest_thursday_omit",
 			"value": "四"
 		},
 		{
-			"name": "ibest_calendar_friday",
+			"name": "ibest_friday_omit",
 			"value": "五"
 		},
 		{
-			"name": "ibest_calendar_saturday",
+			"name": "ibest_saturday_omit",
 			"value": "六"
 		},
 		{
-			"name": "ibest_calendar_sunday",
+			"name": "ibest_sunday_omit",
 			"value": "日"
 		},
 		{
@@ -51,10 +79,6 @@
 		{
 			"name": "ibest_please_select",
 			"value": "请选择"
-		},
-		{
-			"name": "ibest_custom_select",
-			"value": "选择%s"
 		},
 		{
 			"name": "ibest_year",

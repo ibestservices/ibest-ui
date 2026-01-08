@@ -97,7 +97,7 @@ struct IBestPopupBaseContent {
 				.fontColor(this.titleColor)
 			IBestIcon({
 				name: this.closeIcon,
-				iconSize: convertDimensionsWidthUnit(20),
+				iconSize: this.baseStyle.fontSizeXl as string,
 				color: this.closeIconColor
 			})
 				.onClick(() => {

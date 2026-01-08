@@ -6,7 +6,7 @@ import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit, handleBef
 import { IBestSegmentedColor } from "./color"
 import { IBestSegmentedOption } from "./index.type"
 import { debounce } from '../../utils/debounceThrottle'
-import { IBestIcon } from "../../../../../Index"
+import { IBestIcon } from "../icon"
 
 @Component
 export struct IBestSegmented{

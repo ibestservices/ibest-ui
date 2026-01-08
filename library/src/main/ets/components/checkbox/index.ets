@@ -1,4 +1,4 @@
-import { emitter } from '../../utils/eventEmitter'
+import ibestEmitter from '../../utils/eventEmitter'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
@@ -140,16 +140,16 @@ export struct IBestCheckbox {
 	aboutToAppear() {
 		this.uniId = this.getUniqueId()
 		if (this.group) {
-			emitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId, (actives: IBestStringNumber[], disabled: boolean): void => this.init(actives, disabled))
-			emitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE, this.group), this.uniId, (data: IBestCheckboxMaxChangeParams): void => this.handleMaxChange(data))
-			emitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.GET_ALL_NAME, this.group), this.name)
+			ibestEmitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId, (actives: IBestStringNumber[], disabled: boolean): void => this.init(actives, disabled))
+			ibestEmitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE, this.group), this.uniId, (data: IBestCheckboxMaxChangeParams): void => this.handleMaxChange(data))
+			ibestEmitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.GET_ALL_NAME, this.group), this.name)
 		}
 		this.handleIndeterminateChange()
 	}
 	aboutToDisappear() {
 		if (this.group) {
-			emitter.off(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId)
-			emitter.off(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE, this.group), this.uniId)
+			ibestEmitter.off(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId)
+			ibestEmitter.off(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE, this.group), this.uniId)
 		}
 		clearTimeout(this.isShowIndeterminateTimeId)
 	}
@@ -203,7 +203,7 @@ export struct IBestCheckbox {
 		return this.labelPosition === 'left'
 	}
 	updateGroup(value: boolean) {
-		emitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.name, value)
+		ibestEmitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.name, value)
 	}
 	// 改变选中状态的回调
 	async handleCheckedChange() {

@@ -1,5 +1,3 @@
-import dayjs, { Dayjs } from '@hview/dayjs'
-
 export type SelectType = "single" | "multiple" | "range"
 
 export type SelectedStyleType = "normal" | "circle"
@@ -28,7 +26,7 @@ export interface IBestCalendarConfirmResult{
 }
 
 export class IBestCalendarDayItem{
-    date: Dayjs = dayjs()
+    date: Date = new Date()
     dateStr: string = ""
     year: string = ""
     month: string = ""
@@ -65,4 +63,61 @@ export class IBestCalendarDay extends IBestCalendarDayItem{
 export interface HeaderItemType{
     text: ResourceStr
     key: number
+}
+
+class BasicDataSource implements IDataSource {
+    private listeners: DataChangeListener[] = []
+    private originDataArray: IBestCalendarDay[][] = []
+    public totalCount(): number {
+        return this.originDataArray.length
+    }
+    public getData(index: number): IBestCalendarDay[] {
+        return this.originDataArray[index]
+    }
+    registerDataChangeListener(listener: DataChangeListener): void {
+        if (this.listeners.indexOf(listener) < 0) {
+            this.listeners.push(listener)
+        }
+    }
+    unregisterDataChangeListener(listener: DataChangeListener): void {
+        const pos = this.listeners.indexOf(listener)
+        if (pos >= 0) {
+            this.listeners.splice(pos, 1)
+        }
+    }
+    notifyDataReload(): void {
+        this.listeners.forEach(listener => {
+            listener.onDataReloaded()
+        })
+    }
+    notifyDataAdd(index: number): void {
+        this.listeners.forEach(listener => {
+            listener.onDataAdd(index)
+        })
+    }
+}
+
+export class IBestCalendarDataSource extends BasicDataSource {
+    private list: IBestCalendarDay[][] = []
+    public totalCount(): number {
+        return this.list.length
+    }
+    public setList(list: IBestCalendarDay[][]){
+        this.list = list
+        this.notifyDataReload()
+    }
+    public getAllList(){
+        return this.list
+    }
+    public getData(index: number): IBestCalendarDay[] {
+        return this.list[index]
+    }
+    public unshiftData(data: IBestCalendarDay[]){
+        this.list.unshift(data)
+        this.notifyDataAdd(0)
+    }
+    public pushData(data: IBestCalendarDay[]): void {
+        this.list.push(data)
+        this.notifyDataAdd(this.list.length - 1)
+    }
 }

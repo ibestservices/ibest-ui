@@ -193,6 +193,10 @@
 			"value": "Uploader"
 		},
 		{
+			"name": "component_weekPicker",
+			"value": "WeekPicker"
+		},
+		{
 			"name": "component_actionSheet",
 			"value": "ActionSheet"
 		},
@@ -237,6 +241,10 @@
 			"value": "Badge"
 		},
 		{
+			"name": "component_card",
+			"value": "Card"
+		},
+		{
 			"name": "component_circleProgress",
 			"value": "CircleProgress"
 		},
@@ -267,6 +275,10 @@
 		{
 			"name": "component_imagePreview",
 			"value": "ImagePreview"
+		},
+		{
+			"name": "component_mosaic",
+			"value": "Mosaic"
 		},
 		{
 			"name": "component_noticeBar",
@@ -357,8 +369,16 @@
 			"value": "ContactAddress"
 		},
 		{
+			"name": "component_gridAlbum",
+			"value": "GridAlbum"
+		},
+		{
 			"name": "component_imageCropper",
 			"value": "ImageCropper"
+		},
+		{
+			"name": "component_inputTag",
+			"value": "InputTag"
 		},
 		{
 			"name": "primary",

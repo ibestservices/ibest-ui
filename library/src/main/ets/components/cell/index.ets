@@ -62,7 +62,7 @@ export struct IBestCell {
 	 * 右侧箭头大小
 	 * @since 2.1.3
    	 */
-	@Prop arrowSize: IBestStringNumber = convertDimensionsWidthUnit(14)
+	@Prop arrowSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
 	/**
 	 * 右侧箭头颜色
 	 * @since 2.1.3
@@ -90,7 +90,7 @@ export struct IBestCell {
 	 * 左侧图标大小
 	 * @since 1.17.0
 	 */
-	@Prop leftIconSize: IBestStringNumber = convertDimensionsWidthUnit(16)
+	@Prop leftIconSize: IBestStringNumber = this.baseStyle.fontSizeLg as string
 	/**
 	 * 左侧图标与title间距
 	 * @since 1.18.0
@@ -110,7 +110,7 @@ export struct IBestCell {
 	 * 右侧图标大小
 	 * @since 1.17.0
 	 */
-	@Prop rightIconSize: IBestStringNumber = convertDimensionsWidthUnit(14)
+	@Prop rightIconSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
 	/**
 	 * 右侧图标与内容间距
 	 * @since 1.18.0
@@ -227,7 +227,7 @@ export struct IBestCell {
 			case SIZE.LARGE:
 				return new CellSizeData(convertDimensionsWidthUnit(14), this.titleFontSize || this.baseStyle.fontSizeLg as string, this.labelFontSize || this.baseStyle.fontSizeMd as string)
 			default:
-				return new CellSizeData(convertDimensionsWidthUnit(12), this.titleFontSize || this.baseStyle.fontSizeMd as string, this.labelFontSize || this.baseStyle.fontSizeSm as string)
+				return new CellSizeData(this.baseStyle.spaceSm as string, this.titleFontSize || this.baseStyle.fontSizeMd as string, this.labelFontSize || this.baseStyle.fontSizeSm as string)
 		}
 	}
 	getArrowRotateAngle() {

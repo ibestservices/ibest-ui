@@ -2,7 +2,7 @@ import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { emitter } from '../../utils/eventEmitter'
+import ibestEmitter from '../../utils/eventEmitter'
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
 import { IBestCollapseColor } from '../collapse/color'
 import { COLLAPSE_EVENT_NAME, COMPONENT_NAME } from '../collapse/index.type'
@@ -88,11 +88,11 @@ export struct IBestCollapseItem {
         setTimeout(() => {
             this.isReady = true
         }, 220)
-        emitter.emit(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME, this.groupId), this.name, this.disabled || this.readOnly)
-        emitter.on(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId, (activeNames: IBestStringNumber | IBestStringNumber[]): void => this.changeState(activeNames))
+        ibestEmitter.emit(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME, this.groupId), this.name, this.disabled || this.readOnly)
+        ibestEmitter.on(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId, (activeNames: IBestStringNumber | IBestStringNumber[]): void => this.changeState(activeNames))
     }
     aboutToDisappear(): void {
-        emitter.off(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId)
+        ibestEmitter.off(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId)
     }
     getIsDisabled(){
         return this.disabled || this.readOnly
@@ -105,7 +105,7 @@ export struct IBestCollapseItem {
     }
     toggle(){
         this.isExpand = !this.isExpand
-        emitter.emit(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE, this.groupId), this.name, this.isExpand)
+        ibestEmitter.emit(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE, this.groupId), this.name, this.isExpand)
     }
 
     build() {

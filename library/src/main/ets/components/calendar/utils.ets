@@ -1,4 +1,4 @@
-import dayjs from '@hview/dayjs'
+import dateUtils, { DateUtils } from "../../utils/dateUtils"
 
 // 16进制转rgb
 export function set16ToRgb(str:string): string{
@@ -24,6 +24,6 @@ export function set16ToRgb(str:string): string{
 /**
  * 是否是今天之前的日期
  */
-export function isBeforeToday(date: Date | string | dayjs.Dayjs): boolean{
-    return dayjs(date).isBefore(dayjs())
+export function isBeforeToday(date: Date | DateUtils): boolean{
+    return dateUtils(date).isBefore(new Date())
 }

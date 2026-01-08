@@ -1,10 +1,10 @@
-import { emitter } from '../../utils/eventEmitter'
+import ibestEmitter from '../../utils/eventEmitter'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { COMPONENT_NAME, RADIO_GROUP_EVENT_NAME } from '../radioGroup/index.type'
 import { IBestRadioBuilderParams } from './index.type'
-import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
+import { getEventName, getSizeByUnit } from '../../utils/utils'
 import { IBestRadioColor } from './color'
 import { IBestIcon } from '../icon'
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
@@ -34,7 +34,7 @@ export struct IBestRadio {
 	/**
 	 * 图标大小
 	 */
-	@Prop iconSize: IBestStringNumber = convertDimensionsWidthUnit(20)
+	@Prop iconSize: IBestStringNumber = this.baseStyle.fontSizeXl as string
 	/**
 	 * 是否禁用
 	 */
@@ -47,7 +47,7 @@ export struct IBestRadio {
 	 * 文本大小
 	 * @since 1.18.0
 	 */
-	@Prop labelFontSize: IBestStringNumber = convertDimensionsWidthUnit(16)
+	@Prop labelFontSize: IBestStringNumber = this.baseStyle.fontSizeLg as string
 	/**
 	 * 文本位置，可选值为 left
 	 */
@@ -104,12 +104,12 @@ export struct IBestRadio {
 	aboutToAppear() {
 		this.uniId = this.getUniqueId()
 		if (this.group) {
-			emitter.on(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId, (name: IBestStringNumber | boolean, disabled: boolean): void => this.handleRadioGroupInit(name, disabled))
+			ibestEmitter.on(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId, (name: IBestStringNumber | boolean, disabled: boolean): void => this.handleRadioGroupInit(name, disabled))
 		}
 	}
 	aboutToDisappear() {
 		if (this.group) {
-			emitter.off(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId)
+			ibestEmitter.off(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.uniId)
 		}
 	}
 	// 初始化
@@ -155,7 +155,7 @@ export struct IBestRadio {
 	}
 	updateGroup() {
 		if (this.group) {
-			emitter.emit(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.name)
+			ibestEmitter.emit(getEventName(COMPONENT_NAME, RADIO_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.name)
 		}
 	}
 	// 改变选中状态的回调

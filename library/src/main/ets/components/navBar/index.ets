@@ -3,7 +3,7 @@ import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import GlobalStore from '../../utils/globalStore'
-import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { IBestIcon } from '../icon'
 import { IBestNavbarColor } from './color'
 @Component
@@ -28,7 +28,7 @@ export struct IBestNavBar{
 	/**
 	 * 导航栏左右内边距
      */
-	@Prop leftRightPadding: IBestStringNumber = convertDimensionsWidthUnit(16)
+	@Prop leftRightPadding: IBestStringNumber = this.baseStyle.spaceMd as string
 	/**
 	 * 是否显示下边框
      */
@@ -44,7 +44,7 @@ export struct IBestNavBar{
 	/**
 	 * 标题文字大小
      */
-	@Prop titleFontSize: IBestStringNumber = convertDimensionsWidthUnit(16, true)
+	@Prop titleFontSize: IBestStringNumber = this.baseStyle.fontSizeLg as string
 	/**
 	 * 标题图标
 	 * @deprecated 请使用titleIcon
@@ -62,7 +62,7 @@ export struct IBestNavBar{
 	/**
 	 * 标题图标大小
      */
-	@Prop titleIconSize: IBestStringNumber = convertDimensionsWidthUnit(20)
+	@Prop titleIconSize: IBestStringNumber = this.baseStyle.fontSizeXl as string
 	/**
 	 * 标题图标圆角
 	 */
@@ -82,11 +82,11 @@ export struct IBestNavBar{
 	/**
 	 * 二级标题字体大小
      */
-	@Prop subTitleFontSize: IBestStringNumber = convertDimensionsWidthUnit(12, true)
+	@Prop subTitleFontSize: IBestStringNumber = this.baseStyle.fontSizeSm as string
 	/**
 	 * 是否显示左侧
      */
-	@Prop @Watch("initSize") isShowLeft: boolean = true
+	@Prop isShowLeft: boolean = true
 	/**
 	 * 左侧图标名称
 	 * @deprecated 请使用leftIcon
@@ -104,7 +104,7 @@ export struct IBestNavBar{
 	/**
 	 * 左侧图标大小
      */
-	@Prop leftIconSize: IBestStringNumber = convertDimensionsWidthUnit(20)
+	@Prop leftIconSize: IBestStringNumber = this.baseStyle.fontSizeXl as string
 	/**
 	 * 左侧图标圆角
 	 */
@@ -120,11 +120,11 @@ export struct IBestNavBar{
 	/**
 	 * 左侧文本大小
      */
-	@Prop leftLabelFontSize: IBestStringNumber = convertDimensionsWidthUnit(16, true)
+	@Prop leftLabelFontSize: IBestStringNumber = this.baseStyle.fontSizeLg as string
 	/**
 	 * 是否显示右侧
      */
-	@Prop @Watch("initSize") isShowRight: boolean = false
+	@Prop isShowRight: boolean = false
 	/**
 	 * 右侧图标名称
 	 * @deprecated 请使用rightIcon
@@ -142,7 +142,7 @@ export struct IBestNavBar{
 	/**
 	 * 右侧图标大小
      */
-	@Prop rightIconSize: IBestStringNumber = convertDimensionsWidthUnit(20)
+	@Prop rightIconSize: IBestStringNumber = this.baseStyle.fontSizeXl as string
 	/**
 	 * 右侧图标圆角
 	 */
@@ -158,7 +158,7 @@ export struct IBestNavBar{
 	/**
 	 * 右侧文本大小
      */
-	@Prop rightLabelFontSize: IBestStringNumber = convertDimensionsWidthUnit(16, true)
+	@Prop rightLabelFontSize: IBestStringNumber = this.baseStyle.fontSizeLg as string
 	/**
 	 * 是否显示状态栏
 	 */
@@ -206,35 +206,26 @@ export struct IBestNavBar{
      */
 	onTitleClick: () => void = () => {}
 
-	@State uniId: number = 0
-	// 标题区域左右宽度
 	@State leftWidth: number = 0
 	@State rightWidth: number = 0
-	private uiContext = this.getUIContext()
 
-	aboutToAppear(): void {
-		this.uniId = this.getUniqueId()
-	}
-	initSize(){
-		setTimeout(() => {
-			let leftWidth = 0
-			let rightWidth = 0
-			if(this.isShowLeft){
-				leftWidth = getComponentsInfo(this.uiContext, `ibest_navbar_left_${this.uniId}`).width
+	getWidth(pos: "left" | "right"){
+		let maxWidth = Math.max(this.leftWidth, this.rightWidth)
+		if(GlobalStore.isApp){
+			if(pos == 'left'){
+				return this.titleBuilder || this.titleTextAlign == "left" ? this.leftWidth : maxWidth
+			}else {
+				return this.titleBuilder ? this.rightWidth : maxWidth
 			}
-			if(this.isShowRight){
-				rightWidth = getComponentsInfo(this.uiContext, `ibest_navbar_right_${this.uniId}`).width
+
+		}else{
+			let maxPadding = Math.max(maxWidth, 100)
+			if(pos == 'left'){
+				return this.titleBuilder || this.titleTextAlign == "left" ? this.leftWidth : maxPadding
+			}else {
+				return maxPadding
 			}
-			let maxWidth = Math.max(leftWidth, rightWidth)
-			if(GlobalStore.isApp){
-				this.leftWidth = this.titleBuilder ? leftWidth : maxWidth
-				this.rightWidth = this.titleBuilder ? rightWidth : maxWidth
-			}else{
-				let maxPadding = Math.max(maxWidth, 100)
-				this.leftWidth = this.titleBuilder || this.titleTextAlign == "left" ? leftWidth : maxPadding
-				this.rightWidth = maxPadding
-			}
-		}, 50)
+		}
 	}
 
 	build() {
@@ -271,7 +262,9 @@ export struct IBestNavBar{
 					.position({left: 0})
 					.zIndex(10)
 					.padding({left: getSizeByUnit(this.leftRightPadding), right: this.baseStyle.spaceXs})
-					.id(`ibest_navbar_left_${this.uniId}`)
+					.onAreaChange((_: Area, newVal: Area) => {
+						this.leftWidth = newVal.width as number
+					})
 					.onClick(() => {
 						this.onLeftClick()
 					})
@@ -322,7 +315,7 @@ export struct IBestNavBar{
 				.height(CONTAINER_SIZE.FULL)
 				.justifyContent(FlexAlign.Center)
 				.alignItems(this.titleBuilder ? HorizontalAlign.Start : HorizontalAlign.Center)
-				.padding({left: this.leftWidth, right: this.rightWidth})
+				.padding({left: this.getWidth('left'), right: this.getWidth('right')})
 				if(this.isShowRight){
 					Row({space: this.baseStyle.spaceBase}){
 						if(this.rightBuilder){
@@ -347,7 +340,9 @@ export struct IBestNavBar{
 					.position({right: 0})
 					.zIndex(10)
 					.padding({left: this.baseStyle.spaceXs, right: getSizeByUnit(this.leftRightPadding)})
-					.id(`ibest_navbar_right_${this.uniId}`)
+					.onAreaChange((_: Area, newVal: Area) => {
+						this.rightWidth = newVal.width as number
+					})
 					.onClick(() => {
 						this.onRightClick()
 					})
@@ -361,15 +356,5 @@ export struct IBestNavBar{
 		}
 		.backgroundColor(this.navBarBgColor)
 		.expandSafeArea(this.expandSafeAreaType, [SafeAreaEdge.TOP])
-		.onAppear(() => {
-			setTimeout(() => {
-				this.initSize()
-			}, 50)
-		})
-		.onVisibleAreaChange([0,1], (isExpanding: boolean) => {
-			if(isExpanding && (this.isShowLeft && !this.leftWidth || this.isShowRight && !this.rightWidth)){
-				this.initSize()
-			}
-		})
 	}
 }

@@ -2,7 +2,7 @@ import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { emitter } from '../../utils/eventEmitter'
+import ibestEmitter from '../../utils/eventEmitter'
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit } from '../../utils/utils'
 import { COMPONENT_NAME, SIDEBAR_EVENT_NAME, SideBarConfig } from '../sideBar/index.type'
 @Component
@@ -52,13 +52,13 @@ export struct IBestSideBarItem{
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
 		if(this.groupId){
-			emitter.on(getEventName(COMPONENT_NAME, SIDEBAR_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId, (active: number, config?: SideBarConfig): void => this.init(active, config))
+			ibestEmitter.on(getEventName(COMPONENT_NAME, SIDEBAR_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId, (active: number, config?: SideBarConfig): void => this.init(active, config))
 		}
 	}
 
 	aboutToDisappear(): void {
 		if(this.groupId) {
-			emitter.off(getEventName(COMPONENT_NAME, SIDEBAR_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId)
+			ibestEmitter.off(getEventName(COMPONENT_NAME, SIDEBAR_EVENT_NAME.INIT_ITEM, this.groupId), this.uniId)
 		}
 	}
 
@@ -69,7 +69,7 @@ export struct IBestSideBarItem{
 		}
 	}
 	changeActive(){
-		emitter.emit(getEventName(COMPONENT_NAME, SIDEBAR_EVENT_NAME.CHANGE_ACTIVE, this.groupId), this.index)
+		ibestEmitter.emit(getEventName(COMPONENT_NAME, SIDEBAR_EVENT_NAME.CHANGE_ACTIVE, this.groupId), this.index)
 		this.onItemClick(this.index)
 	}
 	build() {

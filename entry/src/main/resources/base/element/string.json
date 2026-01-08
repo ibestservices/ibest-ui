@@ -193,6 +193,10 @@
 			"value": "Uploader 文件上传"
 		},
 		{
+			"name": "component_weekPicker",
+			"value": "WeekPicker 周选择器"
+		},
+		{
 			"name": "component_actionSheet",
 			"value": "ActionSheet 动作面板"
 		},
@@ -237,6 +241,10 @@
 			"value": "Badge 徽标"
 		},
 		{
+			"name": "component_card",
+			"value": "Card 卡片"
+		},
+		{
 			"name": "component_circleProgress",
 			"value": "CircleProgress 环形进度条"
 		},
@@ -267,6 +275,10 @@
 		{
 			"name": "component_imagePreview",
 			"value": "ImagePreview 图片预览"
+		},
+		{
+			"name": "component_mosaic",
+			"value": "Mosaic 马赛克"
 		},
 		{
 			"name": "component_noticeBar",
@@ -357,8 +369,16 @@
 			"value": "ContactAddress 联系人地址"
 		},
 		{
+			"name": "component_gridAlbum",
+			"value": "GridAlbum 九宫格相册"
+		},
+		{
 			"name": "component_imageCropper",
 			"value": "ImageCropper 图片裁剪"
+		},
+		{
+			"name": "component_inputTag",
+			"value": "InputTag 标签输入框"
 		},
 		{
 			"name": "primary",

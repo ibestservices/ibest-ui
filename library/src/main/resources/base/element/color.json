@@ -337,6 +337,18 @@
 			"value": "$color:ibest_white"
 		},
 		{
+			"name": "ibest_card_shadow_color",
+			"value": "#1f000000"
+		},
+		{
+			"name": "ibest_card_background_color",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_card_title_font_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
 			"name": "ibest_circle_progress_background",
 			"value": "$color:ibest_white"
 		},
@@ -547,6 +559,14 @@
 		{
 			"name": "ibest_tree_active_background",
 			"value": "$color:ibest_active_color"
+		},
+		{
+			"name": "ibest_inputTag_bg_color",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_inputTag_tag_bg_color",
+			"value": "$color:ibest_gray_2"
 		}
 	]
 }

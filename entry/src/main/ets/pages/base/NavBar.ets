@@ -72,7 +72,9 @@ struct NavBarPage {
 					ComponentShowContainer({ title: '标题居左', titlePaddingLeft: SPACE.MD }){
 						IBestNavBar({
 							title: "IBest-UI",
-							titleTextAlign: "left"
+							titleTextAlign: "left",
+							isShowRight: true,
+							rightBuilder: (): void => this.rightBuilder()
 						})
 					}
 				}
@@ -100,11 +102,9 @@ struct NavBarPage {
 				}
 				ListItem() {
 					ComponentShowContainer({ title: '自定义标题内容', titlePaddingLeft: SPACE.MD }){
-						Column({space: SPACE.MD}){
-							IBestNavBar({
-								titleBuilder: (): void => this.titleBuilder()
-							})
-						}
+						IBestNavBar({
+							titleBuilder: (): void => this.titleBuilder()
+						})
 					}
 				}
 				ListItem() {

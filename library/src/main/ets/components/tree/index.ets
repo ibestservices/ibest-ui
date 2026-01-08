@@ -250,7 +250,7 @@ export struct IBestTree{
                         onNodeDragEndSuccess: (dragNode: IBestTreeNodeData): void => this.removeNode(dragNode),
                         onRemoveNode: (node: IBestTreeNodeData): void => this.removeNode(node)
                     })
-                }, (item: IBestTreeNodeData) => `${item.label}_${item.$treeNodeId}`)
+                }, (item: IBestTreeNodeData, _: number) => item.dynamicId)
             }
             .constraintSize({minWidth: CONTAINER_SIZE.FULL})
             .alignItems(HorizontalAlign.Start)
@@ -436,18 +436,32 @@ struct IBestTreeNode{
         if(!this.enableDrag){
             return
         }
-        // console.log("onDragStart")
         let data = new unifiedDataChannel.PlainText()
         data.textContent = JSON.stringify(this.data)
         event.setData(new unifiedDataChannel.UnifiedData(data))
+        let dragItemInfo: DragItemInfo = {
+            extraInfo: JSON.stringify({
+                groupId: this.groupId,
+                $treeNodeId: this.data.$treeNodeId.toString(),
+                firstLevelId: this.data.firstLevelId.toString(),
+                level: this.level.toString()
+            })
+        }
+        return dragItemInfo
     }
-    dragEnter(event: DragEvent){
+    dragEnter(event: DragEvent, extraParams: string){
         if(!this.enableDrag){
             return
         }
-        // console.log("onDragEnter")
-        this.isDragEnter = true
-        event.setResult(DragResult.DROP_ENABLED)
+        let dragItemInfo = JSON.parse(extraParams) as DragItemInfo
+        const extraInfo: Record<string, string> = JSON.parse(dragItemInfo.extraInfo!)
+        if(extraInfo.groupId == this.groupId && extraInfo.$treeNodeId != this.data.$treeNodeId.toString() && !(extraInfo.firstLevelId == this.data.firstLevelId.toString() && extraInfo.level < this.data.level.toString())){
+            this.isDragEnter = true
+            event.setResult(DragResult.DROP_ENABLED)
+        }else {
+            this.isDragEnter = false
+            event.setResult(DragResult.DRAG_FAILED)
+        }
         event.dragBehavior = DragBehavior.MOVE
     }
     dragMove(event: DragEvent){
@@ -461,14 +475,12 @@ struct IBestTreeNode{
         if(!this.enableDrag){
             return
         }
-        // console.log("onDragLeave", this.data.label)
         this.isDragEnter = false
     }
     drop(event: DragEvent){
         if(!this.enableDrag){
             return
         }
-        // console.log("onDrop")
         let dragData = this.getDragData(event)
         this.isDragEnter = false
         if(!dragData){
@@ -500,7 +512,6 @@ struct IBestTreeNode{
         let result = event.getResult()
         this.isDragEnter = false
         if(result == DragResult.DRAG_SUCCESSFUL){
-            // console.log("onDragEnd")
             this.onNodeDragEndSuccess(this.data)
         }
     }
@@ -570,7 +581,7 @@ struct IBestTreeNode{
                 this.nodeClick("node")
             })
             .allowDrop(this.enableDrag ? [uniformTypeDescriptor.UniformDataType.PLAIN_TEXT] : null)
-            .onDragEnter((event: DragEvent): void => this.dragEnter(event))
+            .onDragEnter((event: DragEvent, extraParams: string): void => this.dragEnter(event, extraParams))
             .onDragMove((event): void => this.dragMove(event))
             .onDragLeave((): void => this.dragLeave())
             .onDrop((event: DragEvent): void => this.drop(event))
@@ -578,7 +589,7 @@ struct IBestTreeNode{
                 Column(){
                     ForEach(this.data.children, (item: IBestTreeNodeData, index: number) => {
                         IBestTreeNode({
-                            firstLevelId: this.uniId,
+                            firstLevelId: this.firstLevelId || this.uniId,
                             data: item,
                             index: index,
                             level: this.level + 1,
@@ -591,7 +602,7 @@ struct IBestTreeNode{
                             onNodeDragEndSuccess: (dragNode: IBestTreeNodeData): void => this.removeNode(dragNode),
                             onRemoveNode: (node: IBestTreeNodeData): void => this.removeNode(node)
                         })
-                    }, (item: IBestTreeNodeData) => `${item.label}_${item.$treeNodeId}`)
+                    }, (item: IBestTreeNodeData, _: number) => item.dynamicId)
                 }
                 .constraintSize({minWidth: CONTAINER_SIZE.FULL})
                 .alignItems(HorizontalAlign.Start)
@@ -602,7 +613,7 @@ struct IBestTreeNode{
         .constraintSize({minWidth: CONTAINER_SIZE.FULL})
         .alignItems(HorizontalAlign.Start)
         .draggable(this.enableDrag)
-        .onDragStart((event: DragEvent): void => this.dragStart(event))
+        .onDragStart((event: DragEvent) => this.dragStart(event))
         .onDragEnd((event: DragEvent): void => this.dragEnd(event))
     }
 }

@@ -1,7 +1,6 @@
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
-import { regionData } from '@ibestservices/area-data'
 import { IBestContactAddressColor } from './color'
 import { convertDimensionsWidthUnit, getResourceStr, getSizeByUnit } from '../../utils/utils'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
@@ -20,6 +19,11 @@ export struct IBestContactAddress {
 	 * 全局公共样式
 	 */
 	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
+	/**
+	 * 省市区数据
+	 * @since 2.2.3
+	 */
+	@Prop @Require regionData: IBestCascaderOption[]
 	/**
 	 * 是否显示识别输入框
 	 */
@@ -303,7 +307,7 @@ export struct IBestContactAddress {
 			}
 			IBestCascader({
 				visible: $visible,
-				options: regionData,
+				options: this.regionData,
 				value: $selectValue,
 				onConfirm: value => {
 					this.provinceCityDistrict = value

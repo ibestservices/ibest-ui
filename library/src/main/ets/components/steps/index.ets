@@ -1,7 +1,7 @@
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { emitter } from '../../utils/eventEmitter'
+import ibestEmitter from '../../utils/eventEmitter'
 import { convertDimensionsWidthUnit, getComponentsInfo, getEventName, getSizeByUnit } from '../../utils/utils'
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { IBestIcon } from '../icon'
@@ -51,7 +51,7 @@ export struct IBestSteps{
 	/**
 	 * 图标大小, 仅type为 icon 时有效
      */
-	@Prop iconSize: IBestStringNumber = convertDimensionsWidthUnit(14)
+	@Prop iconSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
 	/**
 	 * 未激活颜色
      */
@@ -75,14 +75,14 @@ export struct IBestSteps{
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
-		emitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.INIT_STEPS, this.groupId), this.uniId, (type: string, uniId: number): void => this.initSteps(type, uniId))
+		ibestEmitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.INIT_STEPS, this.groupId), this.uniId, (type: string, uniId: number): void => this.initSteps(type, uniId))
 	}
 	aboutToDisappear(): void {
-		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.INIT_STEPS, this.groupId), this.uniId)
+		ibestEmitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.INIT_STEPS, this.groupId), this.uniId)
 	}
 	onDidBuild() {
 		if(this.allSteps.length){
-			emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_CONFIG, this.groupId), this.active, {
+			ibestEmitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_CONFIG, this.groupId), this.active, {
 				placeDirection: this.placeDirection,
 				type: this.type,
 				dotSize: this.dotSize,
@@ -100,7 +100,7 @@ export struct IBestSteps{
 					arr.push(getComponentsInfo(this.uiContext, `ibest_steps_mark_${this.groupId}_${index}`).width)
 				})
 				this.percentContentSize = Math.max(...arr)
-				emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_MAX_MARK_SIZE, this.groupId), this.percentContentSize)
+				ibestEmitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_MAX_MARK_SIZE, this.groupId), this.percentContentSize)
 				if(this.placeDirection == Axis.Vertical){
 					let stepHeightArr: number[] = []
 					for (let i = 0; i < this.allSteps.length - 1; i++) {
@@ -109,7 +109,7 @@ export struct IBestSteps{
 					this.percentContentHeight = stepHeightArr.reduce((a, b) => a + b, 0)
 				}else {
 					let width = getComponentsInfo(this.uiContext, `ibest_steps_content_${this.uniId}`).width / (this.allSteps.length - 1)
-					emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_STEP_ITEM_WIDTH, this.groupId), width)
+					ibestEmitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_STEP_ITEM_WIDTH, this.groupId), width)
 				}
 			}, 20)
 		}
@@ -121,7 +121,7 @@ export struct IBestSteps{
 		}else if(type == 'del'){
 			this.allSteps = this.allSteps.filter(item => item != uniId)
 		}
-		emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.SAVE_STEPS, this.groupId), this.allSteps)
+		ibestEmitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.SAVE_STEPS, this.groupId), this.allSteps)
 		clearTimeout(this.timer)
 		this.timer = setTimeout(() => {
 			this.onDidBuild()
@@ -133,7 +133,7 @@ export struct IBestSteps{
 		let oldPercent = this.percent
 		this.percent = percent
 		setTimeout(() => {
-			emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.ACTIVE_CHANGE, this.groupId), this.active)
+			ibestEmitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.ACTIVE_CHANGE, this.groupId), this.active)
 		}, percent > oldPercent ? 280 : 0)
 	}
 	build() {
@@ -308,28 +308,28 @@ export struct IBestStep{
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
-		emitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.SAVE_STEPS, this.groupId), this.uniId, (steps: number[]): void => this.saveSteps(steps))
-		emitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_CONFIG, this.groupId), this.uniId, (active: number, data: IBestStepConfig): void => this.saveConfig(active, data))
-		emitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.ACTIVE_CHANGE, this.groupId), this.uniId, (active: number): void => {
+		ibestEmitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.SAVE_STEPS, this.groupId), this.uniId, (steps: number[]): void => this.saveSteps(steps))
+		ibestEmitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_CONFIG, this.groupId), this.uniId, (active: number, data: IBestStepConfig): void => this.saveConfig(active, data))
+		ibestEmitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.ACTIVE_CHANGE, this.groupId), this.uniId, (active: number): void => {
 			this.active = active
 		})
-		emitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_MAX_MARK_SIZE, this.groupId), this.uniId, (size: number): void => {
+		ibestEmitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_MAX_MARK_SIZE, this.groupId), this.uniId, (size: number): void => {
 			this.maxMarkWidth = size
 		})
-		emitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_STEP_ITEM_WIDTH, this.groupId), this.uniId, (width: number): void => {
+		ibestEmitter.on(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_STEP_ITEM_WIDTH, this.groupId), this.uniId, (width: number): void => {
 			this.stepItemWidth = width
 		})
 	}
 	aboutToDisappear(): void {
-		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.SAVE_STEPS, this.groupId), this.uniId)
-		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_CONFIG, this.groupId), this.uniId)
-		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.ACTIVE_CHANGE, this.groupId), this.uniId)
-		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_MAX_MARK_SIZE, this.groupId), this.uniId)
-		emitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_STEP_ITEM_WIDTH, this.groupId), this.uniId)
-		emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.INIT_STEPS, this.groupId), 'del', this.uniId)
+		ibestEmitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.SAVE_STEPS, this.groupId), this.uniId)
+		ibestEmitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_CONFIG, this.groupId), this.uniId)
+		ibestEmitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.ACTIVE_CHANGE, this.groupId), this.uniId)
+		ibestEmitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_MAX_MARK_SIZE, this.groupId), this.uniId)
+		ibestEmitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_STEP_ITEM_WIDTH, this.groupId), this.uniId)
+		ibestEmitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.INIT_STEPS, this.groupId), 'del', this.uniId)
 	}
 	onDidBuild(): void {
-		emitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.INIT_STEPS, this.groupId), 'add', this.uniId)
+		ibestEmitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.INIT_STEPS, this.groupId), 'add', this.uniId)
 	}
 
 	saveSteps(steps: number[]){

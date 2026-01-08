@@ -39,7 +39,7 @@ export { IBestCell } from './src/main/ets/components/cell/index'
 export { IBestCellGroup } from './src/main/ets/components/cellGroup/index'
 
 export { IBestIcon } from './src/main/ets/components/icon/index'
-export { IBestIconClassify, IBestIconData } from './src/main/ets/components/icon/config'
+export { IBestIconClassify } from './src/main/ets/components/icon/config'
 
 export { IBestPopup } from './src/main/ets/components/popup/index'
 
@@ -104,6 +104,8 @@ export { IBestTimePicker } from './src/main/ets/components/timePicker/index'
 export { IBestUploader } from './src/main/ets/components/uploader/index'
 export { IBestUploaderFile } from './src/main/ets/components/uploader/index.type'
 
+export { IBestWeekPicker } from './src/main/ets/components/weekPicker/index'
+
 export { IBestDialog } from './src/main/ets/components/dialog/index'
 
 export { IBestDropdownMenu, IBestDropdownItem } from './src/main/ets/components/dropdownMenu/index'
@@ -126,6 +128,8 @@ export { IBestAvatarGroup } from './src/main/ets/components/avatarGroup/index'
 
 export { IBestBadge } from './src/main/ets/components/badge/index'
 
+export { IBestCard } from './src/main/ets/components/card/index'
+
 export { IBestCircleProgress } from './src/main/ets/components/circleProgress/index'
 
 export { IBestCollapse } from './src/main/ets/components/collapse/index'
@@ -144,6 +148,8 @@ export { IBestEmpty } from './src/main/ets/components/empty/index'
 
 export { IBestHighlight } from './src/main/ets/components/highlight/index'
 export { IBestHighlightKeywords } from './src/main/ets/components/highlight/index.type'
+
+export { IBestMosaic } from './src/main/ets/components/mosaic/index'
 
 export { IBestNoticeBar } from './src/main/ets/components/noticeBar/index'
 
@@ -199,5 +205,9 @@ export { IBestColorPicker } from './src/main/ets/components/colorPicker/index'
 export { IBestContactAddress } from './src/main/ets/components/contactAddress/index'
 export { IBestContactAddressController, IBestContactAddressFormResult } from './src/main/ets/components/contactAddress/index.type'
 
+export { IBestGridAlbum } from './src/main/ets/components/gridAlbum/index'
+
 export { IBestImageCropper } from './src/main/ets/components/imageCropper/index'
 export { IBestImageCropperController } from './src/main/ets/components/imageCropper/index.type'
+
+export { IBestInputTag } from './src/main/ets/components/inputTag/index'

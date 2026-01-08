@@ -22,6 +22,7 @@ interface TableData{
 	desc: string
 }
 interface TableData1{
+	id: string
 	name: string
 	amount1: number
 	amount2: number
@@ -58,11 +59,12 @@ struct TablePage {
 		{ date: '2025-03-04', name: 'IBest-UI', desc: '一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库。' }
 	]
 	@State data2: TableData1[] = [
-		{ name: "数据1", amount1: 100, amount2: 98.6, amount3: 87.5, amount4: 98.6, amount5: 94.2 },
-		{ name: "数据2", amount1: 68.8, amount2: 100, amount3: 96.6, amount4: 76.5, amount5: 77.4 },
-		{ name: "数据3", amount1: 98.5, amount2: 87.4, amount3: 86.9, amount4: 87.3, amount5: 76.4 },
-		{ name: "数据4", amount1: 87, amount2: 97, amount3: 78.8, amount4: 76.3, amount5: 98.54 },
-		{ name: "数据5", amount1: 88, amount2: 97, amount3: 85.9, amount4: 68.3, amount5: 76.9 }
+		{ id: "123453333", name: "数据1", amount1: 95, amount2: 93.2, amount3: 88.1, amount4: 85.3, amount5: 79.5 },
+		{ id: "123455555", name: "数据2", amount1: 100, amount2: 98.6, amount3: 87.5, amount4: 98.6, amount5: 94.2 },
+		{ id: "123456666", name: "数据3", amount1: 68.8, amount2: 100, amount3: 96.6, amount4: 76.5, amount5: 77.4 },
+		{ id: "123457777", name: "数据4", amount1: 98.5, amount2: 87.4, amount3: 86.9, amount4: 87.3, amount5: 76.4 },
+		{ id: "123458888", name: "数据5", amount1: 87, amount2: 97, amount3: 78.8, amount4: 76.3, amount5: 98.54 },
+		{ id: "123459999", name: "数据6", amount1: 88, amount2: 97, amount3: 85.9, amount4: 68.3, amount5: 76.9 }
 	]
 	@State data3: TableData2[] = [
 		UIUtils.makeObserved(new TableData2("数据1", 10)),
@@ -78,6 +80,7 @@ struct TablePage {
 	@State tableId6: string = "table6"
 	@State tableId7: string = "table7"
 	@State tableId8: string = "table8"
+	@State tableId9: string = "table9"
 	@Builder headerBuilder(column: IBestTableColumnData, columnIndex: number){
 		Row({space: SPACE.BASE}){
 			Text(column.title).fontSize(14)
@@ -108,6 +111,33 @@ struct TablePage {
 	}
 	formatDate(row: TableData, column: IBestTableColumnData, rowIndex: number, columnIndex: number){
 		return row.date.replaceAll('-', '/')
+	}
+	arraySpanMethod(row: TableData, column: IBestTableColumnData, rowIndex: number, columnIndex: number) {
+		// 合并第一行的第一列和第二列
+		if (rowIndex === 0) {
+			if (columnIndex === 0) {
+				return [1, 2]
+			} else if (columnIndex === 1) {
+				return [0, 0]
+			}
+		}
+		// 合并第一列的第三行和第四行
+		if (columnIndex === 0) {
+			if (rowIndex === 2) {
+				return [2,1]
+			}else if (rowIndex === 3){
+				return [0, 0]
+			}
+		}
+		// 合并奇数行的第三列和第四列
+		if (rowIndex % 2 === 0) {
+			if (columnIndex === 2) {
+				return [1, 2]
+			} else if (columnIndex === 3) {
+				return [0, 0]
+			}
+		}
+		return [1, 1]
 	}
 	build() {
 		NavDestination() {
@@ -207,19 +237,32 @@ struct TablePage {
 					ComponentShowContainer({ title: '表尾合计行' }) {
 						IBestTable({ tableId: this.tableId7, data: this.data2, showSummary: true }){
 							IBestTableColumn({ tableId: this.tableId7, title: "名称", prop: "name", cellWidth: 70, fixed: true })
-							IBestTableColumn({ tableId: this.tableId7, title: "Amount1", prop: "amount1", cellWidth: 100 })
-							IBestTableColumn({ tableId: this.tableId7, title: "Amount2", prop: "amount2", cellWidth: 100 })
-							IBestTableColumn({ tableId: this.tableId7, title: "Amount3", prop: "amount3", cellWidth: 100 })
-							IBestTableColumn({ tableId: this.tableId7, title: "Amount4", prop: "amount4", cellWidth: 100 })
-							IBestTableColumn({ tableId: this.tableId7, title: "Amount5", prop: "amount5", cellWidth: 100 })
+							IBestTableColumn({ tableId: this.tableId7, title: "数量1", prop: "amount1", cellWidth: 100 })
+							IBestTableColumn({ tableId: this.tableId7, title: "数量2", prop: "amount2", cellWidth: 100 })
+							IBestTableColumn({ tableId: this.tableId7, title: "数量3", prop: "amount3", cellWidth: 100 })
+							IBestTableColumn({ tableId: this.tableId7, title: "数量4", prop: "amount4", cellWidth: 100 })
+							IBestTableColumn({ tableId: this.tableId7, title: "数量5", prop: "amount5", cellWidth: 100 })
 						}
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '动态修改数据' }) {
-						IBestTable({ tableId: this.tableId8, data: this.data3 }){
-							IBestTableColumn({ tableId: this.tableId8, title: "名称", prop: "name", cellWidth: 100 })
-							IBestTableColumn({ tableId: this.tableId8, title: "数量", prop: "number"})
+					ComponentShowContainer({ title: '合并行列', space: SPACE.SM }) {
+						IBestTable({ tableId: this.tableId8, data: this.data2, stripe: true, showBorder: true, spanMethod: this.arraySpanMethod}){
+							IBestTableColumn({ tableId: this.tableId8, title: "ID", prop: "id", cellWidth: 80, fixed: true })
+							IBestTableColumn({ tableId: this.tableId8, title: "名称", prop: "name", cellWidth: 50 })
+							IBestTableColumn({ tableId: this.tableId8, title: "数量1", prop: "amount1", cellWidth: 50 })
+							IBestTableColumn({ tableId: this.tableId8, title: "数量2", prop: "amount2", cellWidth: 50 })
+							IBestTableColumn({ tableId: this.tableId8, title: "数量3", prop: "amount3", cellWidth: 50 })
+							IBestTableColumn({ tableId: this.tableId8, title: "数量4", prop: "amount4", cellWidth: 50 })
+							IBestTableColumn({ tableId: this.tableId8, title: "数量5", prop: "amount5", cellWidth: 50 })
+						}
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '动态修改数据', space: SPACE.SM }) {
+						IBestTable({ tableId: this.tableId9, data: this.data3 }){
+							IBestTableColumn({ tableId: this.tableId9, title: "名称", prop: "name", cellWidth: 100 })
+							IBestTableColumn({ tableId: this.tableId9, title: "数量", prop: "number"})
 						}
 						Row({space: SPACE.SM}){
 							IBestButton({
@@ -240,7 +283,6 @@ struct TablePage {
 								}
 							})
 						}
-						.margin({ top: SPACE.SM })
 					}
 				}
 				ListItem().height(50)

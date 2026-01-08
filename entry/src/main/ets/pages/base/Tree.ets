@@ -430,9 +430,9 @@ struct TreePage {
                             data: $data3,
                             enableDrag: true,
                             onNodeDrop: (dragNode: IBestTreeNodeData, dropNode: IBestTreeNodeData) => {
-                                IBestDialogUtil.open({
-                                    message: `拖拽节点为${dragNode.label}, 拖入节点为${dropNode.label}`
-                                })
+                                // IBestDialogUtil.open({
+                                //     message: `拖拽节点为${dragNode.label}, 拖入节点为${dropNode.label}`
+                                // })
                             }
                         })
                     }

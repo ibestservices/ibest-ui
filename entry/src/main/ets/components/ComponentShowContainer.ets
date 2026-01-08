@@ -5,7 +5,8 @@ export default struct ComponentShowContainer {
     @Prop title: ResourceStr
     @Prop titlePaddingLeft: number
     @Prop card: boolean = false
-    @BuilderParam defaultBuilder?: CustomBuilder
+    @Prop space: number = 0
+    @BuilderParam defaultBuilder: CustomBuilder
 
     build() {
         Column() {
@@ -19,7 +20,7 @@ export default struct ComponentShowContainer {
                 })
                 .textAlign(TextAlign.Start)
                 .fontColor($r("app.color.doc_text_color_4"))
-            Column() {
+            Column({space: this.space}) {
                 if (this.defaultBuilder) {
                     this.defaultBuilder()
                 }
@@ -29,7 +30,6 @@ export default struct ComponentShowContainer {
             .margin({ left: this.card ? SPACE.SM : 0, right: this.card ? SPACE.SM : 0 })
             .borderRadius(BORDER_RADIUS.MEDIUM)
             .padding(this.card ? undefined : { top: SPACE.XS, bottom: SPACE.XS })
-            .clip(true)
         }
         .width(CONTAINER_SIZE.FULL)
         .justifyContent(FlexAlign.Start)

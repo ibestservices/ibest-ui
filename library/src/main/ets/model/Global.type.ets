@@ -1,11 +1,11 @@
 /**
  * 加载图标类型
  */
-export type LoadingIconType = 'circular' | 'spinner'
+export type IBestLoadingIconType = 'circular' | 'spinner'
 /**
  * 文字换行类型
  */
-export type WordBreakType = 'normal' | 'break-all' | 'break-word'
+export type IBestWordBreakType = 'normal' | 'break-all' | 'break-word'
 /**
  * 字符串或数字类型
  */
@@ -41,7 +41,7 @@ export type IBestBorderSizeType = "full" | "center" | "right"
 /**
  * 组件信息类型
  */
-export interface ComInfoType {
+export interface IBestComInfoType {
     width: number
     height: number
     localLeft: number

@@ -1,11 +1,12 @@
-import { IBestCell, IBestIcon, IBestStringNumber } from '../../../../../Index'
-import { IBestAwaitable, IBestStorageKey } from '../../model/Global.type'
+import { IBestAwaitable, IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import { emitter } from '../../utils/eventEmitter'
+import ibestEmitter from '../../utils/eventEmitter'
 import GlobalStore from '../../utils/globalStore'
 import { convertDimensionsWidthUnit, getComponentsInfo, getEventName, getSizeByUnit, handleBeforeFunction } from '../../utils/utils'
+import { IBestCell } from '../cell'
+import { IBestIcon } from '../icon'
 import { IBestDropdownMenuColor } from './color'
 import {
     COMPONENT_NAME,
@@ -136,10 +137,10 @@ export struct IBestDropdownMenu{
     aboutToAppear() {
         this.uniId = this.getUniqueId()
         this.controller.close = (): void => this.manualClose()
-        emitter.on(getEventName(COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME.OPTION_CHANGE, this.groupId), this.uniId, (type: string, option: IBestDropdownMenuContentType, callBack?: (index: number) => void): void => this.updateOption(type, option, callBack))
+        ibestEmitter.on(getEventName(COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME.OPTION_CHANGE, this.groupId), this.uniId, (type: string, option: IBestDropdownMenuContentType, callBack?: (index: number) => void): void => this.updateOption(type, option, callBack))
     }
     aboutToDisappear() {
-        emitter.off(getEventName(COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME.OPTION_CHANGE, this.groupId), this.uniId)
+        ibestEmitter.off(getEventName(COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME.OPTION_CHANGE, this.groupId), this.uniId)
         this.manualClose()
     }
     // 更新选项
@@ -465,10 +466,10 @@ export struct IBestDropdownItem{
         this.init()
     }
     aboutToDisappear(): void {
-        emitter.off(getEventName(COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME.OPTION_CLICK, this.groupId), this.uniId)
+        ibestEmitter.off(getEventName(COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME.OPTION_CLICK, this.groupId), this.uniId)
     }
     init(){
-        emitter.emit(getEventName(COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME.OPTION_CHANGE, this.groupId), 'init', {
+        ibestEmitter.emit(getEventName(COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME.OPTION_CHANGE, this.groupId), 'init', {
             value: this.value,
             title: this.title,
             options: this.options,
@@ -484,19 +485,19 @@ export struct IBestDropdownItem{
         })
     }
     valueChange(){
-        emitter.emit(getEventName(COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME.OPTION_CHANGE, this.groupId), 'value', {
+        ibestEmitter.emit(getEventName(COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME.OPTION_CHANGE, this.groupId), 'value', {
             index: this.index,
             value: this.value
         })
     }
     disabledChange(){
-        emitter.emit(getEventName(COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME.OPTION_CHANGE, this.groupId), 'disabled', {
+        ibestEmitter.emit(getEventName(COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME.OPTION_CHANGE, this.groupId), 'disabled', {
             index: this.index,
             disabled: this.disabled
         })
     }
     optionsChange(){
-        emitter.emit(getEventName(COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME.OPTION_CHANGE, this.groupId), 'options', {
+        ibestEmitter.emit(getEventName(COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME.OPTION_CHANGE, this.groupId), 'options', {
             index: this.index,
             options: this.options
         })

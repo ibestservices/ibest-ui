@@ -39,7 +39,7 @@ export struct IBestPopover{
     /**
      * 图标大小
      */
-    @Provide({allowOverride: "iconSize"}) iconSize: IBestStringNumber = convertDimensionsWidthUnit(20)
+    @Provide({allowOverride: "iconSize"}) iconSize: IBestStringNumber = this.baseStyle.fontSizeXl as string
     /**
      * 图标颜色
      */
