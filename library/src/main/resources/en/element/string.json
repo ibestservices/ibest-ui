@@ -1,31 +1,59 @@
 {
 	"string": [
 		{
-			"name": "ibest_calendar_monday",
+			"name": "ibest_monday",
+			"value": "Monday"
+		},
+		{
+			"name": "ibest_tuesday",
+			"value": "Tuesday"
+		},
+		{
+			"name": "ibest_wednesday",
+			"value": "Wednesday"
+		},
+		{
+			"name": "ibest_thursday",
+			"value": "Thursday"
+		},
+		{
+			"name": "ibest_friday",
+			"value": "Friday"
+		},
+		{
+			"name": "ibest_saturday",
+			"value": "Saturday"
+		},
+		{
+			"name": "ibest_sunday",
+			"value": "Sunday"
+		},
+		{
+			"name": "ibest_monday_omit",
 			"value": "Mon"
 		},
 		{
-			"name": "ibest_calendar_tuesday",
+			"name": "ibest_tuesday_omit",
 			"value": "Tue"
 		},
 		{
-			"name": "ibest_calendar_wednesday",
+			"name": "ibest_wednesday_omit",
 			"value": "Wed"
 		},
 		{
-			"name": "ibest_calendar_thursday",
+			"name": "ibest_thursday_omit",
 			"value": "Thu"
 		},
 		{
-			"name": "ibest_calendar_friday",
+			"name": "ibest_friday_omit",
 			"value": "Fri"
 		},
 		{
-			"name": "ibest_calendar_saturday",
+			"name": "ibest_saturday_omit",
 			"value": "Sat"
 		},
 		{
-			"name": "ibest_calendar_sunday",
+			"name": "ibest_sunday_omit",
 			"value": "Sun"
 		},
 		{
@@ -51,10 +79,6 @@
 		{
 			"name": "ibest_please_select",
 			"value": "please select"
-		},
-		{
-			"name": "ibest_custom_select",
-			"value": "select %s"
 		},
 		{
 			"name": "ibest_year",

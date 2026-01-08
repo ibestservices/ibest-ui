@@ -1,7 +1,7 @@
 import { IBestPicker } from '../picker'
 import { IBestPickerOption } from '../picker/index.type'
 import { COMPONENT_NAME, IBestTimePickerColumnType, TIME_PICKER_EVENT_NAME } from './index.type'
-import { emitter } from '../../utils/eventEmitter'
+import ibestEmitter from '../../utils/eventEmitter'
 import { convertDimensionsWidthUnit, getEventName, getResourceStr } from '../../utils/utils'
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 
@@ -82,6 +82,31 @@ export struct IBestTimePicker {
 	 */
 	@Prop radius: Length | BorderRadiuses | LocalizedBorderRadiuses = 0
 	/**
+	 * 未选中字体颜色
+	 * @since 2.2.3
+	 */
+	@Prop fontColor: ResourceColor
+	/**
+	 * 未选中字体字重
+	 * @since 2.2.3
+	 */
+	@Prop fontWeight: FontWeight
+	/**
+	 * 选中字体大小
+	 * @since 2.2.3
+	 */
+	@Prop selectedFontSize: IBestStringNumber
+	/**
+	 * 选中文字颜色
+	 * @since 2.2.3
+	 */
+	@Prop selectedFontColor: ResourceColor
+	/**
+	 * 选项文字字重
+	 * @since 2.2.3
+	 */
+	@Prop selectedFontWeight: FontWeight
+	/**
 	 * 过滤器
 	 */
 	filter: (type: IBestTimePickerColumnType, options: IBestPickerOption[]) => IBestPickerOption[] = (type, options) => options
@@ -107,13 +132,12 @@ export struct IBestTimePicker {
 		this.uniId = this.getUniqueId()
 		this.init()
 		if(this.groupId){
-			// 监听日期picker变化
-			emitter.on(getEventName(COMPONENT_NAME, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId), this.uniId, (uniId: number, selectedValues: string[]): void => this.handleGroupTimeChange(uniId, selectedValues))
+			ibestEmitter.on(getEventName(COMPONENT_NAME, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId), this.uniId, (uniId: number, selectedValues: string[]): void => this.handleGroupTimeChange(uniId, selectedValues))
 		}
 	}
 	aboutToDisappear(): void {
 		if(this.groupId) {
-			emitter.off(getEventName(COMPONENT_NAME, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId), this.uniId)
+			ibestEmitter.off(getEventName(COMPONENT_NAME, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId), this.uniId)
 		}
 	}
 	// 初始化
@@ -212,7 +236,7 @@ export struct IBestTimePicker {
 		}
 		this.onChange(this.value)
 		if(this.groupId) {
-			emitter.emit(getEventName(COMPONENT_NAME, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId), this.uniId, this.value)
+			ibestEmitter.emit(getEventName(COMPONENT_NAME, TIME_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId), this.uniId, this.value)
 		}
 	}
 	// 处理同组时间变化
@@ -243,6 +267,11 @@ export struct IBestTimePicker {
 			contentHeight: this.contentHeight,
 			optionFontSize: this.optionFontSize,
 			radius: this.radius,
+			fontColor: this.fontColor,
+			fontWeight: this.fontWeight,
+			selectedFontSize: this.selectedFontSize,
+			selectedFontColor: this.selectedFontColor,
+			selectedFontWeight: this.selectedFontWeight,
 			onConfirm: (selectedValues) => {
 				this.onConfirm(selectedValues as string[])
 			},

@@ -1,10 +1,24 @@
 import { IBestEdges, IBestShape, IBestStringNumber } from '../../model/Global.type'
 /**
+ * 组件名称
+ */
+export const COMPONENT_NAME = 'FLOATBUBBLE';
+/**
+ * FloatBubble事件名称
+ */
+export enum FLOAT_BUBBLE_EVENT_NAME {
+	/**
+	 * 配置更新
+	 */
+	CONFIG_UPDATE = 'CONFIG_UPDATE'
+}
+/**
  * 可拖拽方向
  */
 export type IBestFloatBubbleDragAxis = 'x' | 'y' | 'xy' | 'lock'
 
 export class IBestFloatBubbleOption{
+	groupId: number = 0
 	bubbleSize: IBestStringNumber = ""
 	shape: IBestShape = "circle"
 	icon: ResourceStr = ""
@@ -27,6 +41,7 @@ export class IBestFloatBubbleOption{
 export class IBestFloatBubbleParams extends IBestFloatBubbleOption{
 	constructor(option: IBestFloatBubbleOption) {
 		super()
+		this.groupId = option.groupId
 		this.bubbleSize = option.bubbleSize
 		this.shape = option.shape
 		this.icon = option.icon

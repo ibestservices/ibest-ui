@@ -11,7 +11,6 @@ import { IBestStorageKey } from '../../model/Global.type';
 @Extend(Row) function ibestNumberKeyboardKeyBoxStyle(fullWidth?: boolean){
 	.width(fullWidth ? `calc((100% - ${convertDimensionsWidthUnit(12)})/3*2 + ${convertDimensionsWidthUnit(6)})` : `calc((100% - ${convertDimensionsWidthUnit(12)})/3)`)
 	.height(convertDimensionsWidthUnit(48))
-	.borderRadius(getDefaultBaseStyle().borderRadiusMd)
 	.justifyContent(FlexAlign.Center)
 	.alignItems(VerticalAlign.Center)
 	.stateStyles({
@@ -27,21 +26,10 @@ import { IBestStorageKey } from '../../model/Global.type';
 	.fontSize(convertDimensionsWidthUnit(28, true))
 	.fontColor(IBestNumberKeyboardColor.textColor)
 }
-@Extend(Row) function ibestNumberKeyboardKeyCustomBoxStyle(bg?: boolean){
+@Extend(Row) function ibestNumberKeyboardKeyCustomBoxStyle(){
 	.width(CONTAINER_SIZE.FULL)
 	.height(convertDimensionsWidthUnit(102))
-	.borderRadius(getDefaultBaseStyle().borderRadiusMd)
 	.justifyContent(FlexAlign.Center)
-	.stateStyles({
-		normal: {
-			.backgroundColor(bg ? getDefaultBaseStyle().primary : IBestNumberKeyboardColor.keyBg)
-			.opacity(1)
-		},
-		pressed: {
-			.opacity(bg ? 0.5 : 1)
-			.backgroundColor(bg ? getDefaultBaseStyle().primary : IBestNumberKeyboardColor.activeBg)
-		}
-	})
 }
 
 @Component
@@ -232,6 +220,7 @@ export struct IBestNumberKeyboardContent{
 							this.extraButton(item)
 						}
 						.ibestNumberKeyboardKeyBoxStyle(item.fullWidth)
+						.borderRadius(this.baseStyle.borderRadiusMd)
 						.onClick(() => {
 							this.selectKey(item)
 						})
@@ -244,6 +233,15 @@ export struct IBestNumberKeyboardContent{
 							this.extraButton({ text: this.deleteButtonText, type: 'delete' })
 						}
 						.ibestNumberKeyboardKeyCustomBoxStyle()
+						.borderRadius(this.baseStyle.borderRadiusMd)
+						.stateStyles({
+							normal: {
+								.backgroundColor(IBestNumberKeyboardColor.keyBg)
+							},
+							pressed: {
+								.backgroundColor(IBestNumberKeyboardColor.activeBg)
+							}
+						})
 						.onClick(() => {
 							this.selectKey({ type: 'delete' })
 						})
@@ -252,7 +250,17 @@ export struct IBestNumberKeyboardContent{
 								.fontColor(IBestNumberKeyboardColor.white)
 								.fontSize(this.baseStyle.fontSizeLg)
 						}
-						.ibestNumberKeyboardKeyCustomBoxStyle(true)
+						.ibestNumberKeyboardKeyCustomBoxStyle()
+						.borderRadius(this.baseStyle.borderRadiusMd)
+						.backgroundColor(this.baseStyle.primary)
+						.stateStyles({
+							normal: {
+								.opacity(1)
+							},
+							pressed: {
+								.opacity(0.5)
+							}
+						})
 						.onClick(() => {
 							this.selectKey({ type: 'close' })
 						})

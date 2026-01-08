@@ -4,6 +4,7 @@
 /.idea
 **/build
 /.hvigor
+/.appanalyzer
 .cxx
 /.clangd
 /.clang-format

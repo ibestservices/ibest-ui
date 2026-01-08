@@ -1,4 +1,4 @@
-import { emitter } from '../../utils/eventEmitter'
+import ibestEmitter from '../../utils/eventEmitter'
 import { convertDimensionsWidthUnit, getEventName, getSizeByUnit, handleBeforeFunction, sleep } from '../../utils/utils'
 import { CHECKBOX_GROUP_EVENT_NAME, COMPONENT_NAME, IBestCheckboxGroupController } from './index.type'
 import { IBestAwaitable, IBestStringNumber } from '../../model/Global.type'
@@ -60,8 +60,8 @@ export struct IBestCheckboxGroup {
 		this.uniId = this.getUniqueId()
 		this.controller.toggleAll = (isSelectAll?: boolean): void => this.toggleAll(isSelectAll)
 		if (this.group) {
-			emitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.GET_ALL_NAME, this.group), this.uniId, (name: IBestStringNumber): void => this.getAllNames(name))
-			emitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.uniId, (name: string, checked: boolean): Promise<void> => this.onItemChange(name, checked))
+			ibestEmitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.GET_ALL_NAME, this.group), this.uniId, (name: IBestStringNumber): void => this.getAllNames(name))
+			ibestEmitter.on(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.uniId, (name: string, checked: boolean): Promise<void> => this.onItemChange(name, checked))
 			sleep(50).then(() => {
 				this.initChildren()
 				this.handleMaxChange()
@@ -70,8 +70,8 @@ export struct IBestCheckboxGroup {
 	}
 	aboutToDisappear() {
 		if(this.group){
-			emitter.off(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.GET_ALL_NAME, this.group), this.uniId)
-			emitter.off(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.uniId)
+			ibestEmitter.off(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.GET_ALL_NAME, this.group), this.uniId)
+			ibestEmitter.off(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ITEM_CHANGE, this.group), this.uniId)
 		}
 	}
 	getAllNames(name: IBestStringNumber){
@@ -80,7 +80,7 @@ export struct IBestCheckboxGroup {
 		}
 	}
 	initChildren() {
-		emitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.activeList, this.disabled)
+		ibestEmitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.INIT_CHILDREN, this.group), this.activeList, this.disabled)
 	}
 	activeChange(){
 		this.initChildren()
@@ -108,7 +108,7 @@ export struct IBestCheckboxGroup {
 	// 当最大数量变化时
 	handleMaxChange() {
 		this.max > 0 &&
-		emitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE, this.group), {
+		ibestEmitter.emit(getEventName(COMPONENT_NAME, CHECKBOX_GROUP_EVENT_NAME.ON_MAX_CHANGE, this.group), {
 			max: this.max,
 			checkedList: this.activeList
 		})

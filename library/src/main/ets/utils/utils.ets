@@ -1,10 +1,14 @@
 import { componentUtils, LengthUnit, MeasureOptions } from '@kit.ArkUI'
-import { ComInfoType, IBestAwaitable, IBestStorageKey, IBestStringNumber } from '../model/Global.type'
+import { IBestComInfoType, IBestAwaitable, IBestStorageKey, IBestStringNumber } from '../model/Global.type'
 import { AnyType } from '../model/AnyType'
 import GlobalStore from './globalStore'
 import { util } from '@kit.ArkTS'
 import { image } from '@kit.ImageKit'
 import { IBestGlobalConfig } from '../model/GlobalConfig'
+import { request } from "@kit.BasicServicesKit"
+import { buffer } from "@kit.ArkTS"
+import fs from '@ohos.file.fs'
+import { common } from '@kit.AbilityKit'
 
 /**
  * 休眠
@@ -134,7 +138,7 @@ export function mergeObject(target: AnyType, source: AnyType) {
  * @param {context} UIContext
  * @param {key} 组件id
  * */
-export const getComponentsInfo = (context: UIContext, key: string): ComInfoType => {
+export const getComponentsInfo = (context: UIContext, key: string): IBestComInfoType => {
 	let info: componentUtils.ComponentInfo = context.getComponentUtils().getRectangleById(key)
 	return {
 		width: context.px2vp(info.size.width),
@@ -253,13 +257,14 @@ export async function base64ToPixelMap(base64: string): Promise<PixelMap> {
 }
 /**
  * 获取Resource字符串
+ * TODO $r("app.string.ibest_week_prefix", $r("app.string.ibest_monday")) 这种形式params有值 无法处理
  */
 export function getResourceStr(res: ResourceStr): string {
 	if(typeof res == 'string'){
 		return res
 	}
-	let params: string[] = res.params || []
-	if(params.length){
+	if(res.id == -1){
+		let params: string[] = res.params || []
 		return GlobalStore.context.resourceManager.getStringByNameSync(params[0].split('.')[2])
 	}else {
 		return GlobalStore.context.resourceManager.getStringSync(res.id)
@@ -278,4 +283,41 @@ export async function handleBeforeFunction(fn?: (...funArgs: AnyType[]) => IBest
 		status = false
 	}
 	return status
+}
+/**
+ * 处理地址并写入沙箱
+ */
+export async function dealUrlToSandbox(context: common.UIAbilityContext, url: ResourceStr, path: string, cb?: () => void) {
+	try {
+		fs.unlinkSync(path)
+	}catch(e){}
+	if (typeof url == 'string') {
+		if (url.startsWith("http")) { // 网络图片
+			let task = await request.agent.create(context, {
+				action: request.agent.Action.DOWNLOAD,
+				url,
+				overwrite: true,
+				saveas: path
+			})
+			task.on('completed', () => {
+				cb && cb()
+			})
+			await task.start()
+			return
+		}else if(url.startsWith("data:image")) { // base64
+			let base64 = url.replace(/^data:image\/\w+;base64,/, "")
+			let dataBuffer = buffer.from(base64, 'base64')
+			writeBufferToSandBox(path, dataBuffer.buffer)
+		} else { // 本地选择的图片 \ 沙箱路径
+			let file = fs.openSync(url, fs.OpenMode.CREATE)
+			fs.copyFileSync(file.fd, path)
+		}
+	} else {	// Resource
+		writeBufferToSandBox(path, context.resourceManager.getMediaContentSync(url.id, 0).buffer)
+	}
+}
+export function writeBufferToSandBox(path: string, arrayBuffer: ArrayBuffer | ArrayBufferLike) {
+	let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE)
+	fs.writeSync(file.fd, arrayBuffer)
+	fs.closeSync(file.fd)
 }

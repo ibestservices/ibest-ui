@@ -1,10 +1,10 @@
-import dayjs from '@hview/dayjs'
 import { IBestPicker } from '../picker'
 import { IBestPickerOption } from '../picker/index.type'
 import { COMPONENT_NAME, DATE_TIME_PICKER_EVENT_NAME, IBestDateTimePickerResult } from './index.type'
-import { emitter } from '../../utils/eventEmitter'
+import ibestEmitter from '../../utils/eventEmitter'
 import { convertDimensionsWidthUnit, getEventName, getResourceStr } from '../../utils/utils'
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
+import dateUtils from '../../utils/dateUtils'
 
 @Component
 export struct IBestDateTimePicker {
@@ -20,11 +20,11 @@ export struct IBestDateTimePicker {
 	/**
 	 * 最小时间
 	 */
-	@Prop minDate: Date = dayjs(new Date().getFullYear() + '-01-01 00:00:00').subtract(10, 'year').toDate()
+	@Prop minDate: Date = dateUtils(new Date().getFullYear() + '-01-01 00:00:00').subtract(10, 'year').toDate()
 	/**
 	 * 最大时间
 	 */
-	@Prop maxDate: Date = dayjs(new Date().getFullYear() + '-01-01 00:00:00').add(10, 'year').toDate()
+	@Prop maxDate: Date = dateUtils(new Date().getFullYear() + '-01-01 00:00:00').add(10, 'year').toDate()
 	/**
 	 * 是否显示单位
 	 */
@@ -67,6 +67,31 @@ export struct IBestDateTimePicker {
 	 */
 	@Prop radius: Length | BorderRadiuses | LocalizedBorderRadiuses = 0
 	/**
+	 * 未选中字体颜色
+	 * @since 2.2.3
+	 */
+	@Prop fontColor: ResourceColor
+	/**
+	 * 未选中字体字重
+	 * @since 2.2.3
+	 */
+	@Prop fontWeight: FontWeight
+	/**
+	 * 选中字体大小
+	 * @since 2.2.3
+	 */
+	@Prop selectedFontSize: IBestStringNumber
+	/**
+	 * 选中文字颜色
+	 * @since 2.2.3
+	 */
+	@Prop selectedFontColor: ResourceColor
+	/**
+	 * 选项文字字重
+	 * @since 2.2.3
+	 */
+	@Prop selectedFontWeight: FontWeight
+	/**
 	 * 确认按钮点击事件
 	 */
 	onConfirm: (value: IBestDateTimePickerResult) => void = () => {}
@@ -79,9 +104,7 @@ export struct IBestDateTimePicker {
 	 */
 	onChange: (value: IBestDateTimePickerResult) => void = () => {}
 
-	// 唯一id
 	@State uniId: number = 0
-	// 选项列表
 	@State options: IBestPickerOption[][] = []
 	@State listType: string[] = []
 
@@ -89,13 +112,12 @@ export struct IBestDateTimePicker {
 		this.uniId = this.getUniqueId()
 		this.init()
 		if(this.groupId){
-			// 监听日期picker变化
-			emitter.on(getEventName(COMPONENT_NAME, DATE_TIME_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId),this.uniId, (uniId: number, selectedValues: string[]): void => this.handleGroupChange(uniId, selectedValues))
+			ibestEmitter.on(getEventName(COMPONENT_NAME, DATE_TIME_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId),this.uniId, (uniId: number, selectedValues: string[]): void => this.handleGroupChange(uniId, selectedValues))
 		}
 	}
 	aboutToDisappear(): void {
 		if(this.groupId) {
-			emitter.off(getEventName(COMPONENT_NAME, DATE_TIME_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId), this.uniId)
+			ibestEmitter.off(getEventName(COMPONENT_NAME, DATE_TIME_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId), this.uniId)
 		}
 	}
 	// 初始化
@@ -211,7 +233,7 @@ export struct IBestDateTimePicker {
 		let year = this.getValue("year")
 		let month = this.getValue("month")
 		let minDay = this.isMinYear(year) && this.isMinMonth(month) ? this.minDate.getDate() : 1
-		let maxDay = this.isMaxYear(year) && this.isMaxMonth(month) ? this.maxDate.getDate() : dayjs(year+"-"+month).daysInMonth()
+		let maxDay = this.isMaxYear(year) && this.isMaxMonth(month) ? this.maxDate.getDate() : dateUtils(year+"-"+month).daysInMonth()
 		for(let i = minDay; i <= maxDay; i++){
 			daysList.push({
 				value: this.formatValue(i),
@@ -278,7 +300,7 @@ export struct IBestDateTimePicker {
 		}
 		this.onChange(this.getResult())
 		if(this.groupId) {
-			emitter.emit(getEventName(COMPONENT_NAME, DATE_TIME_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId), this.uniId, this.value)
+			ibestEmitter.emit(getEventName(COMPONENT_NAME, DATE_TIME_PICKER_EVENT_NAME.COLUMN_CHANGE, this.groupId), this.uniId, this.value)
 		}
 	}
 	// 获取组件结果
@@ -296,7 +318,7 @@ export struct IBestDateTimePicker {
 	// 处理同组日期变化
 	handleGroupChange(uniId: number, selectedValues: string[]) {
 		if(this.uniId > uniId){
-			let selectDate = dayjs(selectedValues.slice(0, 3).join('-') + ' ' + selectedValues.slice(3).join(":")).toDate()
+			let selectDate = dateUtils(selectedValues.slice(0, 3).join('-') + ' ' + selectedValues.slice(3).join(":")).toDate()
 			this.minDate = selectDate
 			if(selectDate > this.maxDate || selectDate < this.minDate){
 				this.value = selectedValues
@@ -318,6 +340,11 @@ export struct IBestDateTimePicker {
 			cancelText: this.cancelText,
 			optionFontSize: this.optionFontSize,
 			radius: this.radius,
+			fontColor: this.fontColor,
+			fontWeight: this.fontWeight,
+			selectedFontSize: this.selectedFontSize,
+			selectedFontColor: this.selectedFontColor,
+			selectedFontWeight: this.selectedFontWeight,
 			onConfirm: () => {
 				this.onConfirm(this.getResult())
 			},

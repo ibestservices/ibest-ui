@@ -1,9 +1,9 @@
-import { IBestIcon } from "../../../../../Index"
 import { IBestAwaitable, IBestStorageKey, IBestStringNumber } from "../../model/Global.type"
 import { getDefaultBaseStyle } from "../../theme-chalk/src"
 import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
 import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
 import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit, handleBeforeFunction } from "../../utils/utils"
+import { IBestIcon } from "../icon"
 
 @Component
 export struct IBestReadMore{

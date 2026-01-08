@@ -18,7 +18,7 @@ import type {
     LabelPositionType,
     RequireAsteriskPositionType
 } from './index.type'
-import { emitter } from '../../utils/eventEmitter'
+import ibestEmitter from '../../utils/eventEmitter'
 import { runRuleValidator, runSyncRule } from './utils'
 import { clamp, convertDimensionsWidthUnit, getComponentsInfo, getEventName, getResourceStr, getSizeByUnit } from '../../utils/utils'
 import { IBestFieldColor } from './color'
@@ -660,7 +660,7 @@ export struct IBestField {
 		this.uniId = this.getUniqueId()
 		this.initValue()
 		if (this.formId && this.prop) {
-			emitter.on(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.RESEND_FORM_ITEM, this.formId), this.uniId, (): void => this.sendFormItemData())
+			ibestEmitter.on(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.RESEND_FORM_ITEM, this.formId), this.uniId, (): void => this.sendFormItemData())
 			this.sendFormItemData()
 		} else {
 			this.init()
@@ -668,9 +668,9 @@ export struct IBestField {
 	}
 	aboutToDisappear(): void {
 		if (this.formId && this.prop) {
-			emitter.off(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.RESEND_FORM_ITEM, this.formId), this.uniId)
-			emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.DELETE_FORM_ITEM, this.formId), this.uniId)
-			emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.RESEND_FORM_ITEM, this.formId))
+			ibestEmitter.off(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.RESEND_FORM_ITEM, this.formId), this.uniId)
+			ibestEmitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.DELETE_FORM_ITEM, this.formId), this.uniId)
+			ibestEmitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.RESEND_FORM_ITEM, this.formId))
 		}
 	}
 	// 获取左右边距
@@ -684,7 +684,7 @@ export struct IBestField {
 	}
 	// 发送表单子项信息
 	sendFormItemData() {
-		emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.SEND_FIELD, this.formId), {
+		ibestEmitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.SEND_FIELD, this.formId), {
 			uniId: this.uniId,
 			prop: this.prop,
 			validate: (): Promise<void | IBestFieldValidateInfo> => this.validate(),
@@ -830,7 +830,7 @@ export struct IBestField {
 		if (this.formId && this.prop) {
 			let rules: IBestFormRuleItem[] = this.getFilteredRule(trigger)
 			if (rules.length) {
-				emitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.VALIDATE_FIELD, this.formId), this.prop)
+				ibestEmitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.VALIDATE_FIELD, this.formId), this.prop)
 			}
 		}
 	}

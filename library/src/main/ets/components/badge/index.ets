@@ -1,4 +1,4 @@
-import { IBestIcon } from '../../../../../Index'
+import { IBestIcon } from '../icon'
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
@@ -44,7 +44,7 @@ export struct IBestBadge {
 	 * 徽标图标大小
 	 * @since 2.1.5
      */
-	@Prop iconSize: IBestStringNumber = convertDimensionsWidthUnit(12)
+	@Prop iconSize: IBestStringNumber = this.baseStyle.fontSizeSm as string
 	/**
 	 * 徽标图标颜色
 	 * @since 2.1.5
@@ -137,7 +137,7 @@ export struct IBestBadge {
 				Text(this.getContent())
 					.constraintSize({ minWidth: convertDimensionsWidthUnit(16) })
 					.fontColor(IBestBadgeColor.textColor)
-					.fontSize(convertDimensionsWidthUnit(12, true))
+					.fontSize(this.baseStyle.fontSizeMd)
 					.padding({ left: convertDimensionsWidthUnit(3), right: convertDimensionsWidthUnit(3) })
 					.backgroundColor(this.color)
 					.borderRadius(this.baseStyle.borderRadiusMax)

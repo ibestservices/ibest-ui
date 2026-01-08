@@ -31,7 +31,7 @@
 </div>
 
 ## 特性
-- 🚀 60+个高质量组件，覆盖移动端主流场景
+- 🚀 70+个高质量组件，覆盖移动端主流场景
 - 💪 单元测试覆盖率超过 90%，提供稳定性保障
 - 📖 提供丰富的中文文档和组件示例
 - 🍭 支持主题定制，内置 100+ 个主题变量
@@ -95,6 +95,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | Switch 开关             | 用于在打开和关闭状态之间进行切换。                                                              | <a href="https://ibestui.ibestservices.com/components/switch/" target="_blank">文档</a>         |
 | TimePicker 时间选择       | 日期选择器，用于选择年、月、日，通常与弹出层组件配合使用。                                                  | <a href="https://ibestui.ibestservices.com/components/timepicker/" target="_blank">文档</a>     |
 | Uploader 文件上传         | 用于将本地的图片或文件上传至服务器，并在上传过程中展示预览图和上传状态。目前 Uploader 组件不包含将文件上传至服务器的接口逻辑，该步骤需要自行实现。 | <a href="https://ibestui.ibestservices.com/components/uploader/" target="_blank">文档</a>       |
+| WeekPicker 周选择        | 周选择器，用于选择周，通常与弹出层组件配合使用。                                                       | <a href="https://ibestui.ibestservices.com/components/weekPicker/" target="_blank">文档</a>     |
 
 ### 反馈组件
 | 组件                | 介绍                                                   |                                                                                             |
@@ -114,6 +115,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 |:---------------------|:-----------------------------------|-----------------------------------------------------------------------------------------------|
 | Avatar 头像            | 用于展示用户头像。                          | <a href="https://ibestui.ibestservices.com/components/avatar/" target="_blank">文档</a>         |
 | Badge 徽标             | 在右上角展示徽标数字或小红点。                    | <a href="https://ibestui.ibestservices.com/components/badge/" target="_blank">文档</a>          |
+| Card 卡片              | 用于将内容展示在有阴影的容器中。                   | <a href="https://ibestui.ibestservices.com/components/card/" target="_blank">文档</a>           |
 | CircleProgress 环形进度条 | 圆环形的进度条组件。                         | <a href="https://ibestui.ibestservices.com/components/circleProgress/" target="_blank">文档</a> |
 | Collapse 折叠面板        | 将一组内容放置在多个折叠面板中，点击面板的标题可以展开或收缩其内容。 | <a href="https://ibestui.ibestservices.com/components/collapse/" target="_blank">文档</a>       |
 | CountDown 倒计时        | 用于实时展示倒计时数值，支持毫秒精度。                | <a href="https://ibestui.ibestservices.com/components/countDown/" target="_blank">文档</a>      |
@@ -122,6 +124,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | Empty 空状态            | 空状态时的占位提示。                         | <a href="https://ibestui.ibestservices.com/components/empty/" target="_blank">文档</a>          |
 | Highlight 高亮文本       | 高亮指定文本内容。                          | <a href="https://ibestui.ibestservices.com/components/highlight/" target="_blank">文档</a>      |
 | ImagePreview 图片预览    | 图片放大预览。                            | <a href="https://ibestui.ibestservices.com/components/imagepreview/" target="_blank">文档</a>   |
+| Mosaic 马赛克           | 用于将一块内容进行马赛克处理。                    | <a href="https://ibestui.ibestservices.com/components/mosaic/" target="_blank">文档</a>         |
 | NoticeBar 通知栏        | 用于循环播放展示一组消息通知。                    | <a href="https://ibestui.ibestservices.com/components/noticeBar/" target="_blank">文档</a>      |
 | Popover 气泡弹出框        | 弹出式的气泡菜单。                          | <a href="https://ibestui.ibestservices.com/components/popover/" target="_blank">文档</a>        |
 | Price 价格             | 用于展示价格。                            | <a href="https://ibestui.ibestservices.com/components/price/" target="_blank">文档</a>          |
@@ -152,7 +155,9 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | CanvasDrawer 画布绘制    | 用于绘制海报、图片加水印等场景。 | <a href="https://ibestui.ibestservices.com/components/canvasDrawer/" target="_blank">文档</a>   |
 | ColorPicker 颜色选择     | 用于选择颜色。          | <a href="https://ibestui.ibestservices.com/components/colorPicker/" target="_blank">文档</a>    |
 | ContactAddress 联系人地址 | 用于选择联系人地址，可粘贴识别。 | <a href="https://ibestui.ibestservices.com/components/contactAddress/" target="_blank">文档</a> |
+| GridsAlbum 九宫格相册     | 用于将图片分块展示在九宫格内。  | <a href="https://ibestui.ibestservices.com/components/gridsAlbum/" target="_blank">文档</a>     |
 | ImageCropper 图片裁剪    | 用于裁剪图片。          | <a href="https://ibestui.ibestservices.com/components/imageCropper/" target="_blank">文档</a>   |
+| InputTag 标签输入框       | 用于通过输入方式创建标签。    | <a href="https://ibestui.ibestservices.com/components/inputTag/" target="_blank">文档</a>       |
 
 ## 需要权限
 ohos.permission.INTERNET

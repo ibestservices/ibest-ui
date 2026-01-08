@@ -60,7 +60,7 @@ export function moveNodeById(treeData: IBestTreeData[], fromId: number, toId: nu
         (toNode as IBestTreeData).children = []
     }
     // 将源节点添加到目标节点的children中
-    (toNode as IBestTreeData).children!.push(fromNode)
+    (toNode as IBestTreeData).children!.push(new IBestTreeNodeData(fromNode))
     return data
 }
 

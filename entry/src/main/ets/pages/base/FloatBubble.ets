@@ -30,22 +30,17 @@ struct FloatBubblePage {
             name: "1"
         },
         {
-            label: "自由拖拽和磁吸",
-            name: "2"
-        },
-        {
             label: "自定颜色和内容",
-            name: "3"
+            name: "2"
         }
     ]
     @State bubbleShow: boolean = false
     @State bubbleShow1: boolean = false
-    @State bubbleShow2: boolean = false
 
-    @State isChecked: boolean = true
+    @State isMagnetic: boolean = true
+    @State autoHide: boolean = false
     @State group: string = "bubbleGroup"
     @State active: string = "1"
-    @State switchValue: boolean = true
     @State value: string = ''
     @Builder customBubble(){
         Column({space: 6}){
@@ -74,12 +69,12 @@ struct FloatBubblePage {
                     }
                 })
             }
-            ComponentShowContainer({ title: $r("app.string.component_checkbox") }) {
+            ComponentShowContainer({ title: "自动隐藏" }) {
                 IBestCheckbox({
-                    value: this.isChecked,
-                    label: $r("app.string.content"),
+                    value: this.autoHide,
+                    label: this.autoHide ? "开启" : "关闭",
                     onChange: checked => {
-                        this.isChecked = checked as boolean
+                        this.autoHide = checked as boolean
                     }
                 })
             }
@@ -89,10 +84,12 @@ struct FloatBubblePage {
                     IBestRadio({ group: this.group, label: $r("app.string.content"), name: '2' })
                 }
             }
-            ComponentShowContainer({ title: $r("app.string.component_switch") }) {
+            ComponentShowContainer({ title: "是否开启磁吸" }) {
                 Row() {
                     IBestSwitch({
-                        value: $switchValue
+                        value: $isMagnetic,
+                        activeText: "开",
+                        inactiveText: "关"
                     })
                 }
             }
@@ -113,16 +110,12 @@ struct FloatBubblePage {
     onTabChange(){
         this.bubbleShow = false
         this.bubbleShow1 = false
-        this.bubbleShow2 = false
         switch (this.curTabName){
             case "1":
                 this.bubbleShow = true
                 break
             case "2":
                 this.bubbleShow1 = true
-                break
-            case "3":
-                this.bubbleShow2 = true
                 break
         }
     }
@@ -140,21 +133,16 @@ struct FloatBubblePage {
             IBestFloatBubble({
                 show: this.bubbleShow,
                 icon: "chat",
+                dragAxis: "xy",
+                isMagnetic: this.isMagnetic,
+                autoHide: this.autoHide,
                 onBubbleClick: () => {
                     IBestToast.show("点击了气泡")
                 }
             })
             IBestFloatBubble({
                 show: this.bubbleShow1,
-                icon: "chat",
                 dragAxis: "xy",
-                autoHide: true,
-				onBubbleClick: () => {
-					IBestToast.show("点击了气泡")
-				}
-            })
-            IBestFloatBubble({
-                show: this.bubbleShow2,
                 bubbleSize: 54,
                 bgColor: "#ed4040",
                 pos: {right: 0, bottom: 100},
@@ -174,7 +162,6 @@ struct FloatBubblePage {
 		.onWillHide(() => {
 			this.bubbleShow = false
 			this.bubbleShow1 = false
-			this.bubbleShow2 = false
 		})
     }
 }

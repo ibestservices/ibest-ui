@@ -1,11 +1,17 @@
 import { IBestIconData } from './config'
 import { IBestIconDataType } from './index.type'
-import { convertDimensionsWidthUnit, getResourceStr, getSizeByUnit } from '../../utils/utils'
+import { getResourceStr, getSizeByUnit } from '../../utils/utils'
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { IBestGlobalConfig } from '../../model/GlobalConfig'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 
 @Component
 export struct IBestIcon {
+	/**
+	 * 全局公共样式
+	 */
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@StorageProp(IBestStorageKey.GLOBAL_CONFIG) config: IBestGlobalConfig = AppStorage.get(IBestStorageKey.GLOBAL_CONFIG)!
 	/**
 	 * 图标名称、unicode 编码、图片链接
@@ -18,7 +24,7 @@ export struct IBestIcon {
 	/**
 	 * 图标大小
 	 */
-	@Prop iconSize: IBestStringNumber = convertDimensionsWidthUnit(16)
+	@Prop iconSize: IBestStringNumber = this.baseStyle.fontSizeLg as string
 	/**
 	 * 图标圆角
 	 * @since 1.19.0

@@ -100,14 +100,14 @@ export struct IBestTag {
 		const tagSize = this.tagSize
 		switch (tagSize) {
 			case 'medium':
-				return new TagSizeData(convertDimensionsWidthUnit(6), convertDimensionsWidthUnit(20),
-					this.baseStyle.fontSizeSm as string, this.getBorderRadius(convertDimensionsWidthUnit(2)))
+				return new TagSizeData(this.baseStyle.spaceX as string, convertDimensionsWidthUnit(20),
+					this.baseStyle.fontSizeSm as string, this.getBorderRadius(this.baseStyle.borderRadiusSm as string))
 			case SIZE.LARGE:
 				return new TagSizeData(this.baseStyle.spaceXs as string, convertDimensionsWidthUnit(24),
-					this.baseStyle.fontSizeMd as string, this.getBorderRadius(convertDimensionsWidthUnit(4)))
+					this.baseStyle.fontSizeMd as string, this.getBorderRadius(this.baseStyle.borderRadiusMd as string))
 			default:
 				return new TagSizeData(this.baseStyle.spaceBase as string, convertDimensionsWidthUnit(17),
-					this.baseStyle.fontSizeSm as string, this.getBorderRadius(convertDimensionsWidthUnit(2)))
+					this.baseStyle.fontSizeSm as string, this.getBorderRadius(this.baseStyle.borderRadiusSm as string))
 		}
 	}
 	// 获取边框radius

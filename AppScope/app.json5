@@ -2,8 +2,8 @@
 	"app": {
 		"bundleName": "com.ibestservice.ibest_ui",
 		"vendor": "example",
-		"versionCode": 1000014,
-		"versionName": "1.1.4",
+		"versionCode": 1000015,
+		"versionName": "1.1.5",
 		"icon": "$media:layered_image",
 		"label": "$string:app_name"
 	}

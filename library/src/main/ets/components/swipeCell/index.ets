@@ -1,5 +1,5 @@
 import { IBestAwaitable } from '../../model/Global.type'
-import { emitter } from '../../utils/eventEmitter'
+import ibestEmitter from '../../utils/eventEmitter'
 import { clamp, getComponentsInfo, getEventName, handleBeforeFunction } from '../../utils/utils'
 import { COMPONENT_NAME, IBestSwipeCellSide, SWIPECELL_EVENT_NAME } from './index.type'
 
@@ -38,13 +38,13 @@ export struct IBestSwipeCell{
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
-		emitter.on(getEventName(COMPONENT_NAME, SWIPECELL_EVENT_NAME.SWIPECELL_TOUCH), this.uniId, (uniId: number): void => this.onSwipeCellTouch(uniId))
+		ibestEmitter.on(getEventName(COMPONENT_NAME, SWIPECELL_EVENT_NAME.SWIPECELL_TOUCH), this.uniId, (uniId: number): void => this.onSwipeCellTouch(uniId))
 	}
 	aboutToDisappear(): void {
-		emitter.off(getEventName(COMPONENT_NAME, SWIPECELL_EVENT_NAME.SWIPECELL_TOUCH), this.uniId)
+		ibestEmitter.off(getEventName(COMPONENT_NAME, SWIPECELL_EVENT_NAME.SWIPECELL_TOUCH), this.uniId)
 	}
 	emitTouch(){
-		emitter.emit(getEventName(COMPONENT_NAME, SWIPECELL_EVENT_NAME.SWIPECELL_TOUCH), this.uniId)
+		ibestEmitter.emit(getEventName(COMPONENT_NAME, SWIPECELL_EVENT_NAME.SWIPECELL_TOUCH), this.uniId)
 	}
 	onSwipeCellTouch(uniId: number){
 		if(uniId != this.uniId && this.isOpen){

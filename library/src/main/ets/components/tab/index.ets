@@ -6,7 +6,7 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container';
 import { debounce } from '../../utils/debounceThrottle'
 import { IBestTabColor } from './color';
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type';
-import { IBestIcon } from '../../../../../Index';
+import { IBestIcon } from '../icon';
 
 @Component
 export struct IBestTabs{

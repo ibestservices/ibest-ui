@@ -3,7 +3,7 @@
  */
 export const COMPONENT_NAME = 'RADIO';
 /**
- * radio group的emitter的事件
+ * radioGroup事件名称
  */
 export enum RADIO_GROUP_EVENT_NAME {
 	/**

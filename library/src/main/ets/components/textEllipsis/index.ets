@@ -2,14 +2,9 @@ import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
-import {
-    convertDimensionsWidthUnit,
-    getComponentsInfo,
-    getResourceStr,
-    getSizeByUnit,
-    measureTextSize
-} from '../../utils/utils'
+import { convertDimensionsWidthUnit, getResourceStr, getSizeByUnit, measureTextSize } from '../../utils/utils'
 import { IBestTextEllipsisColor } from './color'
+
 @Component
 export struct IBestTextEllipsis{
     /**
@@ -76,7 +71,6 @@ export struct IBestTextEllipsis{
      */
 	onActionClick: (isExpand: boolean) => void = () => {}
 
-    @State uniId: number = 0
     @State showText: string = ""
     @State isExpand: boolean = false
     @State textWidth: number = 0
@@ -91,10 +85,6 @@ export struct IBestTextEllipsis{
 			.fontWeight(this.textFontWeight)
     }
 
-    aboutToAppear(): void {
-        this.uniId = this.getUniqueId()
-        this.formatText()
-    }
     getTextString(){
         return getResourceStr(this.text)
     }
@@ -105,17 +95,14 @@ export struct IBestTextEllipsis{
         return getResourceStr(this.expandText)
     }
     formatText(){
-        setTimeout(() => {
-            let text = this.getTextString()
-            this.textWidth = getComponentsInfo(this.uiContext, `ibest_text_ellipsis_${this.uniId}`).width
-            this.textHeight = this.measureText(text)
-            this.maxLineHeight = this.measureText(text, this.rows)
-            if(this.textHeight > this.maxLineHeight){
-                this.getTextByWidth()
-            }else {
-                this.showText = this.getTextString()
-            }
-        }, 20)
+        let text = this.getTextString()
+        this.textHeight = this.measureText(text)
+        this.maxLineHeight = this.measureText(text, this.rows)
+        if(this.textHeight > this.maxLineHeight){
+            this.getTextByWidth()
+        }else {
+            this.showText = this.getTextString()
+        }
     }
     getTextByWidth(){
         let clipText = this.getTextString()
@@ -153,11 +140,9 @@ export struct IBestTextEllipsis{
             maxLines: rows
         }).height
     }
-    // 判断最后一个字符是否是emoji字符
     lastEmojiCharacter(lastChar: string): boolean {
         return lastChar >= '\uD800' && lastChar <= '\uDBFF'
     }
-    // 删除最后一个字符串
     deleteLastChar(position: 'start' | 'end', text: string){
         let lastChar = ''
         switch (position){
@@ -195,7 +180,12 @@ export struct IBestTextEllipsis{
         }
         .width(CONTAINER_SIZE.FULL)
         .lineHeight(getSizeByUnit(this.lineHeight))
-        .id(`ibest_text_ellipsis_${this.uniId}`)
         .visibility(this.showText ? Visibility.Visible : Visibility.Hidden)
+        .onAreaChange((oldVal: Area, newVal: Area) => {
+            if(newVal.width != oldVal.width){
+                this.textWidth = newVal.width as number
+                this.formatText()
+            }
+        })
     }
 }

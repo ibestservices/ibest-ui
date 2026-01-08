@@ -1,4 +1,5 @@
 import { IBestStringNumber } from "../../model/Global.type"
+import { generateId } from "../../utils/utils"
 
 export class IBestTreeData{
     $treeNodeId?: number
@@ -26,6 +27,7 @@ export class IBestTreeData{
 
 @Observed
 export class IBestTreeNodeData extends IBestTreeData{
+    dynamicId: string = ''
     groupId: string = ''
     firstLevelId: number = 0
     $treeNodeId: number
@@ -38,6 +40,7 @@ export class IBestTreeNodeData extends IBestTreeData{
     remove: () => void = () => {}
     constructor(data: IBestTreeData) {
         super()
+        this.dynamicId = data.label + '_' + generateId()
         this.label = data.label
         this.$treeNodeId = data.$treeNodeId ?? 0
         this.value = data.value ?? ''

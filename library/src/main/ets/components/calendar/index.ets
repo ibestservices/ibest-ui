@@ -1,5 +1,3 @@
-import dayjs, { Dayjs } from '@hview/dayjs'
-import { Lunar } from 'lunar'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { COLOR_TYPE, ColorType } from '../../theme-chalk/src/color.type'
@@ -7,30 +5,30 @@ import { GRAY_COLOR } from '../../theme-chalk/src/color'
 import {
     HeaderItemType,
     IBestCalendarConfirmResult,
+    IBestCalendarDataSource,
     IBestCalendarDay,
     IBestCalendarDayItem,
     SelectedStyleType,
     SelectType,
     WeekDayType
 } from './index.type'
-import { convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../../utils/utils'
-import { UIContext } from '@kit.ArkUI'
+import { convertDimensionsWidthUnit, getSizeByUnit } from '../../utils/utils'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { isBeforeToday, set16ToRgb } from './utils'
 import { IBestCalendarColor } from './color'
 import { IBestIcon } from '../icon'
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
-
+import dateUtils, { DateUtils } from '../../utils/dateUtils'
+import lunar from '../../utils/lunar'
 
 @Extend(Text) function ibestCalendarHeaderStyle(itemWidth: IBestStringNumber){
     .width(getSizeByUnit(itemWidth))
     .height(CONTAINER_SIZE.FULL)
     .textAlign(TextAlign.Center)
-    .fontSize(getDefaultBaseStyle().fontSizeSm)
     .fontColor(IBestCalendarColor.textColor)
 }
-@Extend(Text) function ibestCalendarClockStyle(fontColor: ResourceColor){
-    .fontSize(getDefaultBaseStyle().fontSizeSm)
+@Extend(Text) function ibestCalendarClockStyle(fontSize: IBestStringNumber, fontColor: ResourceColor){
+    .fontSize(fontSize)
     .fontColor(fontColor)
 }
 @Component
@@ -39,8 +37,9 @@ struct CalendarItem {
     @State fontColor: ResourceColor = IBestCalendarColor.textColor
     @State bgColor: ResourceColor = "transparent"
     @ObjectLink @Watch("itemChange") dayItem: IBestCalendarDay
-    @Consume daysList: IBestCalendarDay[]
     @Prop index: number
+    @Consume daysList: IBestCalendarDataSource
+    @Consume swiperIndex: number
     @Consume itemWidth: IBestStringNumber
     @Consume isShowLunar: boolean
     @Consume type: ColorType
@@ -58,7 +57,7 @@ struct CalendarItem {
         this.itemChange()
     }
     isToday(){
-        return this.dayItem.dateStr == dayjs().format('YYYY-MM-DD')
+        return this.dayItem.dateStr == dateUtils().format('YYYY-MM-DD')
     }
     itemChange(){
         let item = this.dayItem
@@ -88,8 +87,8 @@ struct CalendarItem {
     getMultipleBorderRadius (): Length | BorderRadiuses{
         let borderRadius = this.baseStyle.borderRadiusMd
         if (this.dayItem.isSelected) {
-            const prevDay = this.daysList[this.index - 1]
-            const nextDay = this.daysList[this.index + 1]
+            const prevDay = this.daysList.getData(this.swiperIndex)[this.index - 1]
+            const nextDay = this.daysList.getData(this.swiperIndex)[this.index + 1]
             const prevSelected = prevDay?.isSelected
             const nextSelected = nextDay?.isSelected
             if (prevSelected && nextSelected) {
@@ -113,8 +112,8 @@ struct CalendarItem {
     }
     getDisabledBorderRadius(): Length | BorderRadiuses{
         let borderRadius = this.baseStyle.borderRadiusMd
-        const prevDay = this.daysList[this.index - 1]
-        const nextDay = this.daysList[this.index + 1]
+        const prevDay = this.daysList.getData(this.swiperIndex)[this.index - 1]
+        const nextDay = this.daysList.getData(this.swiperIndex)[this.index + 1]
         const prevDisabled = prevDay?.isDisabled
         const nextDisabled = nextDay?.isDisabled
 
@@ -169,14 +168,14 @@ struct CalendarItem {
 						.fontColor(this.fontColor)
 					if (this.isShowLunar) {
 						Text(this.dayItem.lunarDay)
-							.ibestCalendarClockStyle(this.fontColor)
+							.ibestCalendarClockStyle(this.baseStyle.fontSizeSm as string, this.fontColor)
 					}else if(this.clock && this.dayItem.isCurMonthDay && isBeforeToday(this.dayItem.date)){
 						if(this.dayItem.isClock){
 							Text(this.clockSuccessText)
-								.ibestCalendarClockStyle(this.fontColor)
+								.ibestCalendarClockStyle(this.baseStyle.fontSizeSm as string, this.fontColor)
 						}else if(this.isShowUnClock){
 							Text(this.unClockText)
-								.ibestCalendarClockStyle(this.fontColor)
+								.ibestCalendarClockStyle(this.baseStyle.fontSizeSm as string, this.fontColor)
 						}
 					}
 				}
@@ -200,7 +199,6 @@ export struct IBestCalendar{
      * 全局公共样式
      */
     @StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-    // 是否横屏
     @StorageProp(IBestStorageKey.IS_LANDSCAPE) isLandscape: boolean = false
     /**
      * 默认选中日期
@@ -312,60 +310,53 @@ export struct IBestCalendar{
      */
     onConfirm: (value: IBestCalendarConfirmResult[]) => void = () => {}
 
-	// 唯一id
-	@State uniId: number = 0
-    // 当前所在年月份
-    @State @Watch("monthChange") curYearMonth: string = ''
-    // 当前月份
-    @State curMonth: string = ""
-    // 日历头部
+    @State curYearMonth: string = ''
     @State headerList: HeaderItemType[] = [
         {
-            text: $r("app.string.ibest_calendar_monday"),
+            text: $r("app.string.ibest_monday_omit"),
             key: 1
         },
         {
-            text: $r("app.string.ibest_calendar_tuesday"),
+            text: $r("app.string.ibest_tuesday_omit"),
             key: 2
         },
         {
-            text: $r("app.string.ibest_calendar_wednesday"),
+            text: $r("app.string.ibest_wednesday_omit"),
             key: 3
         },
         {
-            text: $r("app.string.ibest_calendar_thursday"),
+            text: $r("app.string.ibest_thursday_omit"),
             key: 4
         },
         {
-            text: $r("app.string.ibest_calendar_friday"),
+            text: $r("app.string.ibest_friday_omit"),
             key: 5
         },
         {
-            text: $r("app.string.ibest_calendar_saturday"),
+            text: $r("app.string.ibest_saturday_omit"),
             key: 6
         },
         {
-            text: $r("app.string.ibest_calendar_sunday"),
+            text: $r("app.string.ibest_sunday_omit"),
             key: 0
         }
     ]
-    // 列表日期
-    @Provide daysList: IBestCalendarDay[] = []
-    // 日期区域高度
     @State contentHeight: number = 0
-    // 已选的日期列表
+    @State swipeChangeLock: boolean = false
+    @Provide daysList: IBestCalendarDataSource = new IBestCalendarDataSource()
+    @Provide swiperIndex: number = 1
     @Provide selectedList: IBestCalendarDay[] = []
-    private context: UIContext = this.getUIContext()
+    private swiperController: SwiperController = new SwiperController()
 
-    @Builder contentBuilder(){
+    @Builder contentBuilder(daysList: IBestCalendarDay[]){
         Stack({alignContent: Alignment.Top}) {
-            Text(this.curMonth)
+            Text(this.getCurMonth(daysList))
                 .fontSize(convertDimensionsWidthUnit(150, true))
                 .height(convertDimensionsWidthUnit(this.contentHeight))
                 .fontColor(IBestCalendarColor.markTextColor)
                 .visibility(this.isShowMark ? Visibility.Visible : Visibility.Hidden)
             GridRow({ columns: 7, gutter: { x: 0, y: convertDimensionsWidthUnit(5) }}) {
-                ForEach(this.daysList, (item: IBestCalendarDay, index: number) => {
+                ForEach(daysList, (item: IBestCalendarDay, index: number) => {
                     GridCol() {
 						if(item.isCurMonthDay || this.showOtherMonthDate){
 							CalendarItem({
@@ -382,33 +373,28 @@ export struct IBestCalendar{
                 })
             }
             .width(CONTAINER_SIZE.FULL)
-            .id(`ibest_calender_${this.uniId}`)
+            .onAreaChange((oldVal, newVal) => {
+                if(newVal.height != oldVal.height){
+                    this.contentHeight = newVal.height as number
+                }
+            })
         }
         .padding(this.isLandscape ? undefined : {left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
     }
 
-    monthChange(){
-        this.curMonth = dayjs(this.curYearMonth).format('M')
-    }
-
     aboutToAppear(){
-        this.uniId = this.getUniqueId()
         this.init()
         this.initDaysList()
     }
-    // 初始化本地数据
     init(){
         if(this.clock){
             this.selectType = "range"
         }
         let index = this.headerList.findIndex(e => e.key == this.weekFirstDay)
         index = index == -1 ? 1 : index
-        this.monthChange()
-        // index 变更 headerList顺序
         this.headerList = this.headerList.slice(index).concat(this.headerList.slice(0, index))
         this.initSelectedList()
     }
-    // 初始化selectedList
     initSelectedList(){
         let list: IBestCalendarDay[] = []
         let dateList = this.value || this.defaultSelectedDate
@@ -416,20 +402,20 @@ export struct IBestCalendar{
             if(typeof dateList === 'string'){
                 dateList = [dateList]
             }
-            if(dateList.some(e => !dayjs(e).isValid())){
+            if(dateList.some(e => !dateUtils(e).isValid())){
                 return
             }
             dateList.forEach(e => {
-                if(dayjs(e).isValid() && !this.getIsDisabled(dayjs(e))){
+                if(!this.getIsDisabled(dateUtils(e))){
                     list.push(new IBestCalendarDay({
-                        date: dayjs(e),
+                        date: dateUtils(e).toDate(),
                         dateStr: e,
-                        weekNum: this.getWeekNum(dayjs(e)),
-                        lunarMonth: Lunar.fromDate(dayjs(e).toDate()).getMonthInChinese(),
-                        lunarDay: Lunar.fromDate(dayjs(e).toDate()).getDayInChinese(),
-                        year: dayjs(e).format('YYYY'),
-                        month: dayjs(e).format('MM'),
-                        day: dayjs(e).format('D'),
+                        weekNum: this.getWeekNum(dateUtils(e)),
+                        lunarMonth: lunar(dateUtils(e).toDate()).getMonthInChinese(),
+                        lunarDay: lunar(dateUtils(e).toDate()).getDayInChinese(),
+                        year: dateUtils(e).format('YYYY'),
+                        month: dateUtils(e).format('MM'),
+                        day: dateUtils(e).format('D'),
                         isCurMonthDay: true,
                         isSelected: true
                     }))
@@ -437,7 +423,7 @@ export struct IBestCalendar{
             })
         }
         if(!this.curYearMonth){
-            this.curYearMonth = dayjs(dateList[0] || new Date()).format('YYYY-MM')
+            this.curYearMonth = dateUtils(dateList[0] || new Date()).format('YYYY-MM')
         }
         this.selectedList = list
     }
@@ -446,40 +432,45 @@ export struct IBestCalendar{
     }
     selectedDateChange(){
         this.initSelectedList()
-        this.daysList.forEach(e => {
-            e.isSelected = this.clock ? isBeforeToday(e.date) && this.isSelect(e.dateStr) : this.isSelect(e.dateStr)
-            if(this.clock && e.isCurMonthDay){
-                e.isClock = isBeforeToday(e.date) ? this.isSelect(e.dateStr) : false
-            }
+        this.daysList.getAllList().forEach(e => {
+            e.forEach(f => {
+                f.isSelected = this.clock ? isBeforeToday(f.date) && this.isSelect(f.dateStr) : this.isSelect(f.dateStr)
+                if(this.clock && f.isCurMonthDay){
+                    f.isClock = isBeforeToday(f.date) ? this.isSelect(f.dateStr) : false
+                }
+            })
         })
     }
-    // 初始化日历列表
+    getCurMonth(daysList: IBestCalendarDay[]): string{
+        return dateUtils(daysList.find(e => e.isCurMonthDay)!.dateStr).format('M')
+    }
     initDaysList(){
-        this.daysList = []
+        this.daysList.setList([this.getDaysList(dateUtils(this.curYearMonth).subtract(1, 'month').format('YYYY-MM')), this.getDaysList(this.curYearMonth), this.getDaysList(dateUtils(this.curYearMonth).add(1, 'month').format('YYYY-MM'))])
+        this.selectedList = this.refreshListParam(this.selectedList)
+        this.swiperIndex = 1
+        this.swipeChangeLock = false
+    }
+    getDaysList(yearMonth: string): IBestCalendarDay[]{
         let list: IBestCalendarDay[] = []
-        // 获取当前月份1号是周几
-        let firstDayWeekNum = this.getWeekNum(dayjs(this.curYearMonth).date(1))
-        // 获取本月多少天
-        let curMonthDays = dayjs(this.curYearMonth).daysInMonth()
-        // 需补上月多少天
-        let preMonthDays: number = this.headerList.findIndex((item) => item.key == firstDayWeekNum)
-        // 需补下月多少天
-        let nextMonthDays: number = 42 - preMonthDays - curMonthDays
+        const date = dateUtils(yearMonth)
+        const firstDayWeekNum = this.getWeekNum(date.date(1))
+        const curMonthDays = date.daysInMonth()
+        const preMonthDays: number = this.headerList.findIndex((item) => item.key == firstDayWeekNum)
+        const nextMonthDays: number = 42 - preMonthDays - curMonthDays
         if(preMonthDays){
-            let day = dayjs(this.curYearMonth).subtract(1, 'month')
-            // 获取上月多少天
+            let day = dateUtils(yearMonth).subtract(1, 'month')
             let preMonthDaysNum = day.daysInMonth()
             for(let i = preMonthDaysNum - preMonthDays + 1; i <= preMonthDaysNum; i++){
                 let val = day.date(i)
                 let dateStr = val.format('YYYY-MM-DD')
-				let lunar = Lunar.fromDate(val.toDate())
-				let lunarMonth = lunar.getMonthInChinese() + '月'
+                let lunarDate = lunar(val.toDate())
+                let lunarMonth = lunarDate.getMonthInChinese() + '月'
                 let dayItem = new IBestCalendarDay({
-                    date: val,
+                    date: val.toDate(),
                     dateStr,
                     weekNum: this.getWeekNum(val),
                     lunarMonth,
-                    lunarDay: lunar.getDay() == 1 ? lunarMonth : lunar.getDayInChinese(),
+                    lunarDay: lunarDate.getDay() == 1 ? lunarMonth : lunarDate.getDayInChinese(),
                     year: val.format('YYYY'),
                     month: val.format('MM'),
                     day: val.format('D'),
@@ -491,16 +482,16 @@ export struct IBestCalendar{
             }
         }
         for (let i = 1; i <= curMonthDays; i++) {
-            let val = dayjs(this.curYearMonth).date(i)
+            let val = date.date(i)
             let dateStr = val.format('YYYY-MM-DD')
-			let lunar = Lunar.fromDate(val.toDate())
-			let lunarMonth = lunar.getMonthInChinese() + '月'
+            let lunarDate = lunar(val.toDate())
+            let lunarMonth = lunarDate.getMonthInChinese() + '月'
             let dayItem = new IBestCalendarDay({
-                date: val,
+                date: val.toDate(),
                 dateStr,
                 weekNum: this.getWeekNum(val),
-				lunarMonth,
-				lunarDay: lunar.getDay() == 1 ? lunarMonth : lunar.getDayInChinese(),
+                lunarMonth,
+                lunarDay: lunarDate.getDay() == 1 ? lunarMonth : lunarDate.getDayInChinese(),
                 year: val.format('YYYY'),
                 month: val.format('MM'),
                 day: val.format('D'),
@@ -512,16 +503,16 @@ export struct IBestCalendar{
             list.push(dayItem)
         }
         for (let i = 1; i <= nextMonthDays; i++) {
-            let val = dayjs(this.curYearMonth).add(1, 'month').date(i)
+            let val = dateUtils(yearMonth).add(1, 'month').date(i)
             let dateStr = val.format('YYYY-MM-DD')
-			let lunar = Lunar.fromDate(val.toDate())
-			let lunarMonth = lunar.getMonthInChinese() + '月'
+            let lunarDate = lunar(val.toDate())
+            let lunarMonth = lunarDate.getMonthInChinese() + '月'
             let dayItem = new IBestCalendarDay({
-                date: val,
+                date: val.toDate(),
                 dateStr,
                 weekNum: this.getWeekNum(val),
-				lunarMonth,
-				lunarDay: lunar.getDay() == 1 ? lunarMonth : lunar.getDayInChinese(),
+                lunarMonth,
+                lunarDay: lunarDate.getDay() == 1 ? lunarMonth : lunarDate.getDayInChinese(),
                 year: val.format('YYYY'),
                 month: val.format('MM'),
                 day: val.format('D'),
@@ -531,63 +522,79 @@ export struct IBestCalendar{
             })
             list.push(dayItem)
         }
-        this.daysList = list
-        this.selectedList = this.refreshListParam(this.selectedList)
-        this.getDateAreaHeight()
+        return list
     }
-    // 获取日期区域高度
-    getDateAreaHeight(){
-        setTimeout(()=>{
-            this.contentHeight = getComponentsInfo(this.context, `ibest_calender_${this.uniId}`).height
-        }, 50)
+    changeSwiperByDate(dateStr: string){
+        if(dateUtils(dateStr).isBefore(this.curYearMonth)){
+            this.changeYearMonth("preMonth")
+        }else{
+            this.changeYearMonth("nextMonth")
+        }
     }
-    // 刷新字段
+    changeSwiper(index: number){
+        this.swiperController.changeIndex(index, true)
+    }
+    onSwiperChange(index: number){
+        if(this.swipeChangeLock){
+            return
+        }
+        this.curYearMonth = this.daysList.getData(index).find((item) => item.isCurMonthDay)!.dateStr.slice(0, 7)
+        if(index == 0){
+            this.swipeChangeLock = true
+            this.daysList.unshiftData(this.getDaysList(dateUtils(this.curYearMonth).subtract(1, 'month').format('YYYY-MM')))
+            this.swiperIndex = 1
+            setTimeout(() => {
+                this.swipeChangeLock = false
+            }, 30)
+        }else if(index == this.daysList.totalCount() - 1){
+            this.swipeChangeLock = true
+            this.daysList.pushData(this.getDaysList(dateUtils(this.curYearMonth).add(1, 'month').format('YYYY-MM')))
+            this.swipeChangeLock = false
+        }
+    }
     refreshListParam(list: IBestCalendarDay[]): IBestCalendarDay[]{
         list.forEach((item: IBestCalendarDay) => {
-            item.isCurMonthDay = item.date.format('YYYY-MM') == this.curYearMonth
+            item.isCurMonthDay = item.dateStr == this.curYearMonth
         })
         return list
     }
-    // 获取日期是否禁用
-    getIsDisabled(day: Dayjs): boolean{
-        return this.minDate && dayjs(day).isBefore(this.minDate, 'day') || this.maxDate && dayjs(day).isAfter(this
-            .maxDate, 'day')
+    getIsDisabled(day: DateUtils): boolean{
+        return this.minDate && dateUtils(day).isBefore(this.minDate) || this.maxDate && dateUtils(day).isAfter(this.maxDate)
     }
-    // 获取日期是周几 0123456
-    getWeekNum(date?: string | Dayjs): number{
-        return dayjs(date).day()
+    getWeekNum(date?: string | DateUtils): number{
+        return dateUtils(date).day()
     }
-    // 切换年、月份
     changeYearMonth(type: string){
+        if(this.swipeChangeLock) return
         switch (type){
             case "preYear":
-                this.curYearMonth = dayjs(this.curYearMonth).subtract(1, 'year').format('YYYY-MM')
+                this.swipeChangeLock = true
+                this.curYearMonth = dateUtils(this.curYearMonth).subtract(1, 'year').format('YYYY-MM')
+                this.initDaysList()
                 break
             case "preMonth":
-                this.curYearMonth = dayjs(this.curYearMonth).subtract(1, 'month').format('YYYY-MM')
+                this.changeSwiper(this.swiperIndex - 1)
                 break
             case "nextYear":
-                this.curYearMonth = dayjs(this.curYearMonth).add(1, 'year').format('YYYY-MM')
+                this.swipeChangeLock = true
+                this.curYearMonth = dateUtils(this.curYearMonth).add(1, 'year').format('YYYY-MM')
+                this.initDaysList()
                 break
             case "nextMonth":
-                this.curYearMonth = dayjs(this.curYearMonth).add(1, 'month').format('YYYY-MM')
+                this.changeSwiper(this.swiperIndex + 1)
                 break
         }
-        this.initDaysList()
     }
-    // 点击选择日期
     selectDate(item: IBestCalendarDay){
         switch(this.selectType){
             case "single":
+                this.daysList.getData(this.swiperIndex).forEach(e => {
+                    e.isSelected = false
+                })
                 if(item.isCurMonthDay){
-                    this.daysList.forEach(e => {
-                        e.isSelected = false
-                    })
                     item.isSelected = true
-                    this.curYearMonth = dayjs(item.dateStr).format('YYYY-MM')
-                }else{
-                    this.curYearMonth = dayjs(item.dateStr).format('YYYY-MM')
-                    this.initDaysList()
+                }else {
+                    this.changeSwiperByDate(item.dateStr)
                 }
                 this.selectedList = [item]
                 this.value = item.dateStr
@@ -596,9 +603,6 @@ export struct IBestCalendar{
             case "multiple":
                 if(item.isCurMonthDay){
                     item.isSelected = !item.isSelected
-                    if(item.isSelected){
-                        this.curYearMonth = dayjs(item.dateStr).format('YYYY-MM')
-                    }
                     let index = this.selectedList.findIndex(e => e.dateStr == item.dateStr)
                     if(index == -1){
                         this.selectedList.push(item)
@@ -606,34 +610,31 @@ export struct IBestCalendar{
                         this.selectedList.splice(index, 1)
                     }
                 }else{
-                    this.curYearMonth = dayjs(item.dateStr).format('YYYY-MM')
+                    this.changeSwiperByDate(item.dateStr)
                     let index = this.selectedList.findIndex(e => e.dateStr == item.dateStr)
                     if(index == -1){
                         this.selectedList.push(item)
                     }else{
                         this.selectedList.splice(index, 1)
                     }
-                    this.initDaysList()
                 }
-                // 排序
                 this.selectedList.sort((a, b) => {
-                    return dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1
+                    return dateUtils(a.date).isBefore(b.date) ? -1 : 1
                 })
                 this.value = this.selectedList.map(e => e.dateStr)
                 !this.isShowConfirmBtn && this.confirm()
                 break
             case "range":
-                this.curYearMonth = dayjs(item.dateStr).format('YYYY-MM')
-                if(this.selectedList.length == 1){  // 已选起始日期 选择结束日期
+                if(this.selectedList.length == 1){
                     let days: IBestCalendarDay[] = []
                     let isOutRange = false
-                    if(item.date.isBefore(this.selectedList[0].date)){
+                    if(dateUtils(item.date).isBefore(this.selectedList[0].date)){
                         days = this.getDateListBetween(item.date, this.selectedList[0].date)
                         isOutRange = this.maxRange > 2 && days.length > this.maxRange
                         if(isOutRange){
                             days = days.slice(-this.maxRange)
                         }
-                    }else if(item.date.isAfter(this.selectedList[0].date)){
+                    }else if(dateUtils(item.date).isAfter(this.selectedList[0].date)){
                         days = this.getDateListBetween(this.selectedList[0].date, item.date)
                         isOutRange = this.maxRange > 2 && days.length > this.maxRange
                         if(isOutRange){
@@ -641,7 +642,7 @@ export struct IBestCalendar{
                         }
                     }
                     if(isOutRange){
-                        this.context.getPromptAction().showToast({
+                        this.getUIContext().getPromptAction().showToast({
                             message: $r("app.string.ibest_maximum_limit", this.maxRange),
                             duration: 2000
                         })
@@ -649,46 +650,45 @@ export struct IBestCalendar{
                     this.selectedList = days
                     this.value = this.selectedList.map(e => e.dateStr)
                     !this.isShowConfirmBtn && this.confirm()
-                }else{  // 已选结束日期  重选
+                }else{
                     item.isSelected = true
                     this.selectedList = [item]
                 }
-                this.daysList.forEach(e => e.isSelected = this.selectedList.some(f => f.dateStr == e.dateStr))
+                this.daysList.getAllList().forEach(e => {
+                    e.forEach(f => {
+                        f.isSelected = this.selectedList.some(g => g.dateStr == f.dateStr)
+                    })
+                })
                 if(!item.isCurMonthDay){
-                    this.initDaysList()
+                    this.changeSwiperByDate(item.dateStr)
                 }
                 break
             }
     }
-    // 获取两个日期之间的所有日期
-    getDateListBetween(startDayjs: Dayjs, endDayjs: Dayjs): IBestCalendarDay[]{
+    getDateListBetween(startDate: Date, endDate: Date): IBestCalendarDay[]{
         let dateArray: IBestCalendarDay[] = []
-        let start = dayjs(startDayjs)
-        let end = dayjs(endDayjs)
-        while (!start.isAfter(end, 'day')) {
-            // 将当前迭代的日期添加到数组中
+        let start = dateUtils(startDate)
+        while (!start.isAfter(endDate)) {
             dateArray.push(new IBestCalendarDay({
-                date: start,
+                date: start.toDate(),
                 dateStr: start.format('YYYY-MM-DD'),
                 weekNum: this.getWeekNum(start),
-                lunarMonth: Lunar.fromDate(start.toDate()).getMonthInChinese(),
-                lunarDay: Lunar.fromDate(start.toDate()).getDayInChinese(),
+                lunarMonth: lunar(start.toDate()).getMonthInChinese(),
+                lunarDay: lunar(start.toDate()).getDayInChinese(),
                 year: start.format('YYYY'),
                 month: start.format('MM'),
                 day: start.format('D'),
                 isCurMonthDay: start.format('YYYY-MM-DD') == this.curYearMonth,
                 isSelected: true
             }))
-            // 将开始日期增加一天
             start = start.add(1, 'day')
         }
         return dateArray
     }
-    // 提交
     confirm(){
          this.onConfirm(this.selectedList.map(e => {
             let obj: IBestCalendarConfirmResult = {
-                date: e.date.toDate(),
+                date: e.date,
                 dateStr: e.dateStr
             }
             if(this.isShowLunar){
@@ -746,22 +746,39 @@ export struct IBestCalendar{
             GridRow({ columns: 7 }) {
                 ForEach(this.headerList, (item: HeaderItemType) => {
                     GridCol() {
-                        Text(item.text).ibestCalendarHeaderStyle(this.itemWidth)
+                        Text(item.text)
+                            .fontSize(this.baseStyle.fontSizeSm)
+                            .ibestCalendarHeaderStyle(this.itemWidth)
                     }
-                }, (item: HeaderItemType, index: number) => index.toString())
+                }, (_: HeaderItemType, index: number) => index.toString())
             }
             .width(CONTAINER_SIZE.FULL)
             .height(convertDimensionsWidthUnit(30))
             .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
-            if(this.isLandscape){
-                Scroll() {
-                    this.contentBuilder()
-                }
-                .height('60%')
-                .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
-            }else{
-                this.contentBuilder()
+            Swiper(this.swiperController){
+                LazyForEach(this.daysList, (item: IBestCalendarDay[]) => {
+                    if(this.isLandscape){
+                        Scroll() {
+                            this.contentBuilder(item)
+                        }
+                        .height(CONTAINER_SIZE.FULL)
+                        .padding({left: this.baseStyle.spaceXs, right: this.baseStyle.spaceXs})
+                    }else {
+                        this.contentBuilder(item)
+                    }
+                }, (item: IBestCalendarDay[]) => item[0].dateStr)
             }
+            .width(CONTAINER_SIZE.FULL)
+            .height(this.isLandscape ? "60%" : '')
+            .index($$this.swiperIndex)
+            .indicator(false)
+            .loop(false)
+            .effectMode(EdgeEffect.None)
+            .cachedCount(3)
+            .disableSwipe(this.swipeChangeLock)
+            .onChange(index => {
+                this.onSwiperChange(index)
+            })
             if(this.isShowConfirmBtn && !this.clock){
                 Button(this.confirmBtnText)
                     .type(ButtonType.Capsule)

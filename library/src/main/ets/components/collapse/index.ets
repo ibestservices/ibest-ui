@@ -1,5 +1,5 @@
 import { IBestStringNumber } from '../../model/Global.type'
-import { emitter } from '../../utils/eventEmitter'
+import ibestEmitter from '../../utils/eventEmitter'
 import { getEventName } from '../../utils/utils'
 import { IBestCollapseColor } from './color'
 import {
@@ -46,8 +46,8 @@ export struct IBestCollapse {
     aboutToAppear(): void {
         this.uniId = this.getUniqueId()
         this.controller.toggleAll = (option?: boolean | ToggleOption): void => this.toggleAll(option)
-        emitter.on(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME, this.groupId), this.uniId, (name: IBestStringNumber, disabled: boolean): void => this.getAllNames(name, disabled))
-        emitter.on(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE, this.groupId), this.uniId, (name: IBestStringNumber, isExpand: boolean): void => this.setName(name, isExpand))
+        ibestEmitter.on(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME, this.groupId), this.uniId, (name: IBestStringNumber, disabled: boolean): void => this.getAllNames(name, disabled))
+        ibestEmitter.on(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE, this.groupId), this.uniId, (name: IBestStringNumber, isExpand: boolean): void => this.setName(name, isExpand))
     }
     onDidBuild(): void {
         setTimeout(() => {
@@ -55,12 +55,12 @@ export struct IBestCollapse {
         }, 0)
     }
     aboutToDisappear(): void {
-        emitter.off(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME, this.groupId), this.uniId)
-        emitter.off(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE, this.groupId), this.uniId)
+        ibestEmitter.off(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.GET_ALL_ITEM_NAME, this.groupId), this.uniId)
+        ibestEmitter.off(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.ITEM_STATE_CHANGE, this.groupId), this.uniId)
     }
 
     initItem(){
-        emitter.emit(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.INIT_ITEM, this.groupId), this.activeName)
+        ibestEmitter.emit(getEventName(COMPONENT_NAME, COLLAPSE_EVENT_NAME.INIT_ITEM, this.groupId), this.activeName)
     }
 
     getAllNames(name: IBestStringNumber, disabled: boolean){

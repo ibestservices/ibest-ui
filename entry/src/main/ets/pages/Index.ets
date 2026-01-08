@@ -155,6 +155,10 @@ struct Index {
 				{
 					name: $r("app.string.component_uploader"),
 					path: "Uploader"
+				},
+				{
+					name: $r("app.string.component_weekPicker"),
+					path: "WeekPicker"
 				}
 			]
 		},
@@ -211,6 +215,10 @@ struct Index {
 					path: "Badge"
 				},
 				{
+					name: $r("app.string.component_card"),
+					path: "Card"
+				},
+				{
 					name: $r("app.string.component_circleProgress"),
 					path: "CircleProgress"
 				},
@@ -241,6 +249,10 @@ struct Index {
 				{
 					name: $r("app.string.component_imagePreview"),
 					path: "ImagePreview"
+				},
+				{
+					name: $r("app.string.component_mosaic"),
+					path: "Mosaic"
 				},
 				{
 					name: $r("app.string.component_noticeBar"),
@@ -340,8 +352,16 @@ struct Index {
 			path: "ContactAddress"
 		},
 		{
+			name: $r("app.string.component_gridAlbum"),
+			path: "GridAlbum"
+		},
+		{
 			name: $r("app.string.component_imageCropper"),
 			path: "ImageCropper"
+		},
+		{
+			name: $r("app.string.component_inputTag"),
+			path: "InputTag"
 		}
 	]
 	@State chartsComponentList: ComponentItem[] = [
@@ -665,12 +685,13 @@ struct Index {
 	}
 
 	aboutToAppear(): void {
+		console.log("组件总数", this.baseComponentList.reduce((pre, cur) => pre + cur.list.length, 0) + this.extendComponentList.length)
 		RouterUtil.navPathStackList.push(this.navPathStack)
 		this.checkUpdate()
 		this.getUiVersion()
 		this.showCommentDialog()
 		// setTimeout(() => {
-		//     RouterUtil.push("Tree")
+		//     RouterUtil.push("InputTag")
 		// }, 100)
 	}
 	aboutToDisappear(): void {
@@ -780,8 +801,7 @@ struct Index {
 			Tabs({barPosition: BarPosition.End, index: $$this.currentTab}){
 				TabContent(){
 					this.tabContentBuilder(0)
-				}
-				.tabBar(this.tabBuilder(0))
+				}.tabBar(this.tabBuilder(0))
 				TabContent(){
 					this.tabContentBuilder(1)
 				}.tabBar(this.tabBuilder(1))

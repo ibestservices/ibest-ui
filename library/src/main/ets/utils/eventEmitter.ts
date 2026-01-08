@@ -1,9 +1,7 @@
 /**
  * 订阅发布模式
- * 为啥不用鸿蒙的？
- * 怕和业务影响 因为鸿蒙自带的是用事件id区分的。。。
  */
-class EventEmitter {
+class IBestEmitter {
 	//用于存储事件及其处理函数
 	events = {};
 	// 订阅事件
@@ -31,4 +29,5 @@ class EventEmitter {
 		this.events[event].forEach(e => e.listener.apply(this, args))
 	}
 }
-export const emitter = new EventEmitter()
+const ibestEmitter = new IBestEmitter()
+export default ibestEmitter

@@ -1,5 +1,6 @@
 import { ComponentContent, PromptAction } from '@kit.ArkUI'
 import { CONTAINER_SIZE } from '../theme-chalk/src/container'
+import { getDefaultBaseStyle } from '../theme-chalk/src'
 import { clamp, convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit } from '../utils/utils'
 import { IBestActionSheetColor } from './color'
 import { IBestStringNumber } from '../model/Global.type'
@@ -98,7 +99,7 @@ class IBestImagePreviewParams extends IBestImagePreviewOption {
 		this.indexPosition = params?.indexPosition || 'bottom'
 		this.indexOffset = params?.indexOffset || convertDimensionsWidthUnit(52)
 		this.indexFontColor = params?.indexFontColor || IBestActionSheetColor.whiteColor
-		this.indexFontSize = params?.indexFontSize || convertDimensionsWidthUnit(14, true)
+		this.indexFontSize = params?.indexFontSize || getDefaultBaseStyle().fontSizeMd as string
 		this.loop = params?.loop ?? true
 		this.doubleScale = params?.doubleScale ?? true
 		this.closeOnClickOverlay = params?.closeOnClickOverlay ?? true
@@ -112,21 +113,16 @@ class IBestImagePreviewParams extends IBestImagePreviewOption {
 
 class IBestImagePreviewDataSource implements IDataSource {
 	private list: IBestPreviewImgType[] = []
-
 	constructor(list: IBestPreviewImgType[]) {
 		this.list = list
 	}
-
 	totalCount(): number {
 		return this.list.length
 	}
-
 	getData(index: number): IBestPreviewImgType {
 		return this.list[index]
 	}
-
-	registerDataChangeListener(listener: DataChangeListener): void {}
-
+	registerDataChangeListener(): void {}
 	unregisterDataChangeListener() {}
 }
 
