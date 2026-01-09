@@ -68,27 +68,27 @@ export struct IBestDateTimePicker {
 	@Prop radius: Length | BorderRadiuses | LocalizedBorderRadiuses = 0
 	/**
 	 * 未选中字体颜色
-	 * @since 2.2.3
+	 * @since 2.2.4
 	 */
 	@Prop fontColor: ResourceColor
 	/**
 	 * 未选中字体字重
-	 * @since 2.2.3
+	 * @since 2.2.4
 	 */
 	@Prop fontWeight: FontWeight
 	/**
 	 * 选中字体大小
-	 * @since 2.2.3
+	 * @since 2.2.4
 	 */
 	@Prop selectedFontSize: IBestStringNumber
 	/**
 	 * 选中文字颜色
-	 * @since 2.2.3
+	 * @since 2.2.4
 	 */
 	@Prop selectedFontColor: ResourceColor
 	/**
 	 * 选项文字字重
-	 * @since 2.2.3
+	 * @since 2.2.4
 	 */
 	@Prop selectedFontWeight: FontWeight
 	/**

@@ -21,7 +21,7 @@ export struct IBestContactAddress {
 	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 省市区数据
-	 * @since 2.2.3
+	 * @since 2.2.4
 	 */
 	@Prop @Require regionData: IBestCascaderOption[]
 	/**
@@ -207,7 +207,7 @@ export struct IBestContactAddress {
 								color: this.identifyTagBgColor || this.baseStyle.primary,
 								btnBorderColor: this.identifyTagBgColor || this.baseStyle.primary,
 								onBtnClick: () => {
-									this.setFormValues(addressParse(this.addressText))
+									this.setFormValues(addressParse(this.regionData, this.addressText))
 								}
 							})
 						}

@@ -95,7 +95,7 @@ export struct IBestTable {
     summaryMethod?: (data: AnyType[], column: IBestTableColumnData) => IBestStringNumber[]
     /**
      * 合并行列计算方法
-     * @since 2.2.3
+     * @since 2.2.4
      */
     spanMethod: (row: AnyType, column: IBestTableColumnData, rowIndex: number, columnIndex: number) => number[] = () => [1,1]
     /**
