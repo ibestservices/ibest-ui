@@ -42,11 +42,6 @@ export interface IBestContactAddressFormResult {
 	 */
 	areaCode: string
 }
-export interface CascaderOption {
-	text: string
-	value: string
-	children?: Array<CascaderOption>
-}
 export interface AreaJsonBasicType {
 	code: string
 	name: string

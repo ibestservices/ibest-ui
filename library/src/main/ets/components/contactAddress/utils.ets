@@ -1,9 +1,9 @@
-import { provinceAndCityData, provinceData, regionData } from '@ibestservices/area-data'
+import { getResourceStr } from '../../utils/utils'
+import { IBestCascaderOption } from '../cascader/index.type'
 import {
     AddressParseConfigType,
     AddressParseResult_,
     AreaJsonBasicType,
-    CascaderOption,
     CityJsonType,
     DistrictJsonType,
     filterResult,
@@ -11,46 +11,6 @@ import {
 } from './index.type'
 import { surname } from './surname'
 
-const provincesJson: Array<AreaJsonBasicType> = provinceData.reduce((per: Array<AreaJsonBasicType>, cur: CascaderOption) => {
-		per.push({ code: cur.value, name: cur.text })
-		return per
-	}, [])
-const citiesJson: Array<CityJsonType> = provinceAndCityData.reduce((per: Array<CityJsonType>, cur: CascaderOption): Array<CityJsonType> => {
-		if (!cur.children) {
-			return per
-		}
-		const cityItems: Array<CityJsonType> = cur.children.map((child: CascaderOption): CityJsonType => {
-			return {
-				code: child.value,
-				name: child.text,
-				provinceCode: cur.value
-			}
-		})
-		return per.concat(cityItems)
-	}, [])
-const areasJson: Array<DistrictJsonType> = regionData.reduce((per: Array<DistrictJsonType>, cur: CascaderOption): Array<DistrictJsonType> => {
-		if (!cur.children) {
-			return per
-		}
-		const citiesData: Array<DistrictJsonType> = cur.children.reduce((cityResult: Array<DistrictJsonType>,
-			city: CascaderOption): Array<DistrictJsonType> => {
-			if (!city.children) {
-				return cityResult
-			}
-			const districtItems: Array<DistrictJsonType> =
-				city.children.map((district: CascaderOption): DistrictJsonType => ({
-					code: district.value,
-					name: district.text,
-					cityCode: city.value,
-					provinceCode: cur.value
-				}))
-			return [...cityResult, ...districtItems]
-		}, [] as Array<DistrictJsonType>)
-		return [...per, ...citiesData]
-	}, [])
-const provinceString = JSON.stringify(provincesJson)
-const cityString = JSON.stringify(citiesJson)
-const areaString = JSON.stringify(areasJson)
 const parseConfig: AddressParseConfigType = {
 	debug: false,
 	nameMaxLength: 4,
@@ -169,10 +129,49 @@ export function sortAddress(splitAddress: Array<string>): string[]{
 /**
  * 利用正则表达式解析
  */
-export function parseRegionWithRegexp(fragment: string, hasParseResult: AddressParseResult_): Partial<AddressParseResult_>{
+export function parseRegionWithRegexp(regionData: IBestCascaderOption[], fragment: string, hasParseResult: AddressParseResult_): Partial<AddressParseResult_>{
 	let province = hasParseResult.province || [], city = hasParseResult.city || [], area = hasParseResult.area || []
 	let detail: string[] = []
 	let matchStr = ''
+	const provincesJson: Array<AreaJsonBasicType> = regionData.reduce((per: Array<AreaJsonBasicType>, cur: IBestCascaderOption) => {
+		per.push({ code: cur.value.toString(), name: getResourceStr(cur.text) })
+		return per
+	}, [])
+	const citiesJson: Array<CityJsonType> = regionData.reduce((per: Array<CityJsonType>, cur: IBestCascaderOption): Array<CityJsonType> => {
+		if (!cur.children) {
+			return per
+		}
+		const cityItems: Array<CityJsonType> = cur.children.map((child: IBestCascaderOption): CityJsonType => {
+			return {
+				code: child.value.toString(),
+				name: getResourceStr(child.text),
+				provinceCode: cur.value.toString()
+			}
+		})
+		return per.concat(cityItems)
+	}, [])
+	const areasJson: Array<DistrictJsonType> = regionData.reduce((per: Array<DistrictJsonType>, cur: IBestCascaderOption): Array<DistrictJsonType> => {
+		if (!cur.children) {
+			return per
+		}
+		const citiesData: Array<DistrictJsonType> = cur.children.reduce((cityResult: Array<DistrictJsonType>, city: IBestCascaderOption): Array<DistrictJsonType> => {
+			if (!city.children) {
+				return cityResult
+			}
+			const districtItems: Array<DistrictJsonType> =
+				city.children.map((district: IBestCascaderOption): DistrictJsonType => ({
+					code: district.value.toString(),
+					name: getResourceStr(district.text),
+					cityCode: city.value.toString(),
+					provinceCode: cur.value.toString()
+				}))
+			return [...cityResult, ...districtItems]
+		}, [] as Array<DistrictJsonType>)
+		return [...per, ...citiesData]
+	}, [])
+	const provinceString = JSON.stringify(provincesJson)
+	const cityString = JSON.stringify(citiesJson)
+	const areaString = JSON.stringify(areasJson)
 	if (province.length === 0) {
 		for (let i = 1; i < fragment.length; i++) {
 			const str = fragment.substring(0, i + 1)
@@ -309,7 +308,7 @@ export function judgeIsName(text: string): boolean{
 /**
  * 解析
  */
-export function addressParse(address: string): IBestContactAddressFormResult{
+export function addressParse(regionData: IBestCascaderOption[], address: string): IBestContactAddressFormResult{
 	const parseResult: AddressParseResult_ = {
 		phone: '',
 		province: [],
@@ -337,10 +336,10 @@ export function addressParse(address: string): IBestContactAddressFormResult{
 	log('分割地址 --->', JSON.stringify(splitAddress))
 	const takeStartTime = new Date().getTime()
 	// 找省市区和详细地址
-	splitAddress.forEach((item, index) => {
+	splitAddress.forEach(item => {
 		// 识别地址
 		if (!parseResult.province[0] || !parseResult.city[0] || !parseResult.area[0]) {
-			let parse = parseRegionWithRegexp(item, parseResult)
+			let parse = parseRegionWithRegexp(regionData, item, parseResult)
 			parseResult.province = parse.province || []
 			parseResult.area = parse.area || []
 			parseResult.city = parse.city || []
