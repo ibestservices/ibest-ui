@@ -111,7 +111,6 @@ export struct IBestTable {
     @Provide columnWidthList: number[] = []
     @State headerHeight: number = 0
     @State footerHeight: number = 0
-    @State isReady: boolean = false
     private headerScroller: Scroller = new Scroller()
     private bodyHorizontalScroller: Scroller = new Scroller()
     private bodyVerticalScroller: Scroller = new Scroller()
@@ -169,7 +168,6 @@ export struct IBestTable {
         clearTimeout(this.timer)
         this.timer = setTimeout(() => {
             this.columnWidthList = Array(this.columnList.length).fill(0)
-            this.isReady = true
         }, 0)
     }
     updateColumn(column: IBestTableColumnInfo){
@@ -189,6 +187,9 @@ export struct IBestTable {
                 rightItem.show = column.show
             }
         }
+    }
+    getBodyShow(){
+        return this.columnWidthList.length && this.columnWidthList.every(e => e > 0) && this.rowHeightList.every(e => e > 0)
     }
 
     build() {
@@ -216,7 +217,7 @@ export struct IBestTable {
                     this.headerHeight = newValue.width as number
                 }
             })
-            if(this.isReady){
+            if(this.columnWidthList.length){
                 Row(){
                     Scroll(this.bodyVerticalScroller){
                         Scroll(this.bodyHorizontalScroller){
@@ -269,6 +270,8 @@ export struct IBestTable {
                 }
                 .width(CONTAINER_SIZE.FULL)
                 .layoutWeight(this.fixHeight ? 1 : undefined)
+                .visibility(this.getBodyShow() ? Visibility.Visible : Visibility.Hidden)
+                .animation({duration: this.baseStyle.animationDuration as number})
                 if(this.showSummary){
                     Row(){
                         Scroll(this.footerScroller){
@@ -288,6 +291,8 @@ export struct IBestTable {
                         }
                     }
                     .width(CONTAINER_SIZE.FULL)
+                    .visibility(this.getBodyShow() ? Visibility.Visible : Visibility.Hidden)
+                    .animation({duration: this.baseStyle.animationDuration as number})
                     .onAreaChange((_: Area, newValue: Area) => {
                         if(this.footerHeight == 0){
                             this.footerHeight = newValue.width as number
@@ -432,7 +437,7 @@ struct BodyCellRow{
 		}
         .alignItems(VerticalAlign.Top)
 		.onAreaChange((oldValue: Area, newValue: Area) => {
-			if(oldValue.height <= 0){
+            if(oldValue.height != newValue.height){
 				this.rowHeight = newValue.height as number
                 if(this.cellPosition == 'body'){
                     this.rowHeightList[this.rowIndex] = this.rowHeight
