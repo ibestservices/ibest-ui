@@ -95,7 +95,7 @@ export struct IBestTable {
     summaryMethod?: (data: AnyType[], column: IBestTableColumnData) => IBestStringNumber[]
     /**
      * 合并行列计算方法
-     * @since 2.2.4
+     * @since 2.2.5
      */
     spanMethod: (row: AnyType, column: IBestTableColumnData, rowIndex: number, columnIndex: number) => number[] = () => [1,1]
     /**
@@ -481,7 +481,7 @@ struct TableCell{
     }
     getSpanArr(){
         let arr = this.spanMethod(this.item, this.column, this.rowIndex, this.columnIndex)
-        if(arr.length != 2 || arr.some(item => item <= 0)){
+        if(arr.length != 2 || arr.some(item => item < 0)){
             arr = [1,1]
         }
         return arr

@@ -21,7 +21,7 @@ export struct IBestContactAddress {
 	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 省市区数据
-	 * @since 2.2.4
+	 * @since 2.2.5
 	 */
 	@Prop @Require regionData: IBestCascaderOption[]
 	/**
