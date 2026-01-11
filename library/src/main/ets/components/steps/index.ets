@@ -71,7 +71,7 @@ export struct IBestSteps{
 	@State percent: number = 0
 	allSteps: number[] = []
 	private uiContext = this.getUIContext()
-	private timer: number = 0
+	private timer: number = -1
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()

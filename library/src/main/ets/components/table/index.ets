@@ -117,7 +117,7 @@ export struct IBestTable {
     private leftFixedBodyScroller: Scroller = new Scroller()
     private rightFixedBodyScroller: Scroller = new Scroller()
     private footerScroller: Scroller = new Scroller()
-    private timer: number = 0
+    private timer: number = -1
 
     @Builder headerFooterCellBuilder(cellType: 'header' | 'footer', position: IBestCellPosition){
 		HeaderFooterCellRow({

@@ -131,7 +131,7 @@ class Toast{
 	private promptAction: PromptAction | null = null
 	private toastOption: ToastParams | null = null
 	private toastContent: ComponentContent<ToastParams> | null = null
-	private timer: number = 0
+	private timer: number = -1
 	private isLock: boolean = false
 
     set message(msg: ResourceStr){
@@ -209,7 +209,7 @@ class Toast{
 			return
 		}
 		clearTimeout(this.timer)
-		this.timer = 0
+		this.timer = -1
 		await this.promptAction.closeCustomDialog(this.toastContent)
 		this.toastContent.dispose()
 		this.toastContent = null

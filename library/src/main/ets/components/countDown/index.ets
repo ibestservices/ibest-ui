@@ -112,7 +112,7 @@ export struct IBestCountDown{
 	}
 	clearTimer(){
 		clearTimeout(this.timer)
-		this.timer = 0
+		this.timer = -1
 	}
 	getRemainSecond(){
 		return Math.max(this.endTime - Date.now(), 0)

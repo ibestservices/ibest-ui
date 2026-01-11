@@ -43,7 +43,7 @@ struct FloatBubbleComponent{
 	private maxX: number = 0
 	private minY: number = 0
 	private maxY: number = 0
-	private timer: number = 0
+	private timer: number = -1
 	private preX: number = 0
 
 	aboutToAppear(): void {

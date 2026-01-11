@@ -142,7 +142,7 @@ struct TablePage {
 				{ date: '2025-03-09', name: 'IBest-UI', desc: '一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库。' },
 				{ date: '2025-03-08', name: 'IBest-UI', desc: '一个轻量、简单易用、可定制主题、支持深色模式和浅色模式的鸿蒙开源UI组件库。' }
 			]
-		}, 1000)
+		}, 500)
 	}
 	build() {
 		NavDestination() {

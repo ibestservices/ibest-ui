@@ -124,7 +124,7 @@ struct defaultContent{
 class Notify{
 	private promptAction: PromptAction | null = null
 	private contentNode: ComponentContent<IBestNotifyParams> | null = null
-	private timer: number = 0
+	private timer: number = -1
 	private isLock: boolean = false
 	/**
 	 * 显示
@@ -164,9 +164,9 @@ class Notify{
 	 * 开启自动关闭
 	 */
 	private autoClose(params: IBestNotifyParams){
-		if(this.timer){
+		if(this.timer > -1){
 			clearTimeout(this.timer)
-			this.timer = 0
+			this.timer = -1
 		}
 		this.timer = setTimeout(() => {
 			this.close()
@@ -177,9 +177,9 @@ class Notify{
 	 */
 	public async close(){
 		if(this.contentNode && this.promptAction){
-			if(this.timer){
+			if(this.timer > -1){
 				clearTimeout(this.timer)
-				this.timer = 0
+				this.timer = -1
 			}
 			this.contentNode.reuse()
 			await sleep(220)

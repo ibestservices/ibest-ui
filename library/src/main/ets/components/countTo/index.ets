@@ -98,7 +98,7 @@ export struct IBestCountTo{
     // 暂停滚动
     clearTimer(){
         clearTimeout(this.timer)
-        this.timer = 0
+        this.timer = -1
     }
     // 重置滚动
     reset(){
