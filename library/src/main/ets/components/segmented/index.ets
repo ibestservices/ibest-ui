@@ -99,11 +99,11 @@ export struct IBestSegmented{
                     .borderRadius(this.getRadius())
                     .shadow(this.activeShadow)
                     .translate({ x: this.translateXList[this.getActiveIndex()] })
+                    .width(this.widthList[this.getActiveIndex()])
                     .animation({
-                        duration: this.isReady ? 300 : 0,
+                        duration: this.isReady ? this.baseStyle.animationDuration as number : 0,
                         curve: "cubic-bezier(0.645,0.045,0.355,1)"
                     })
-                    .width(this.widthList[this.getActiveIndex()])
             }
             Row(){
                 ForEach(this.options, (item: IBestStringNumber | IBestSegmentedItem, index: number) => {
