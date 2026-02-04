@@ -104,9 +104,9 @@ export struct IBestTable {
     @BuilderParam defaultBuilder: CustomBuilder
 
     @State uniId: number = 0
-    @Provide columnList: IBestTableColumnInfo[] = []
-    @Provide leftFixedColumnList: IBestTableColumnInfo[] = []
-    @Provide rightFixedColumnList: IBestTableColumnInfo[] = []
+    @State columnList: IBestTableColumnInfo[] = []
+    @State leftFixedColumnList: IBestTableColumnInfo[] = []
+    @State rightFixedColumnList: IBestTableColumnInfo[] = []
     @Provide rowHeightList: number[] = Array(this.data.length).fill(0)
     @Provide columnWidthList: number[] = []
     @State headerHeight: number = 0
@@ -119,27 +119,37 @@ export struct IBestTable {
     private footerScroller: Scroller = new Scroller()
     private timer: number = -1
 
-    @Builder headerFooterCellBuilder(cellType: 'header' | 'footer', position: IBestCellPosition){
-		HeaderFooterCellRow({
-            data: this.data,
-			cellType,
+    @Builder headerBuilder(position: IBestCellPosition){
+		HeaderCellRow({
 			cellPosition: position,
-			summaryMethod: this.summaryMethod
+            columnList: this.getColumnList(position),
+            isMultiLevelHeader: this.getIsMultiLevelHeader()
 		})
     }
-	@Builder cellBodyBuilder(position: IBestCellPosition){
+    @Builder bodyBuilder(position: IBestCellPosition){
         Column(){
             ForEach(this.data, (item: AnyType, index: number) => {
                 BodyCellRow({
                     cellPosition: position,
                     item,
                     rowIndex: index,
+                    columnList: this.getColumnList(position),
+                    isMultiLevelHeader: this.getIsMultiLevelHeader(),
                     spanMethod: this.spanMethod
                 })
             }, (_: AnyType, index: number) => `${generateId()}_${index}`)
         }
         .alignItems(HorizontalAlign.Start)
-	}
+    }
+    @Builder footerBuilder(position: IBestCellPosition){
+        FooterCellRow({
+            data: this.data,
+            cellPosition: position,
+            columnList: this.getColumnList(position),
+            isMultiLevelHeader: this.getIsMultiLevelHeader(),
+            summaryMethod: this.summaryMethod
+        })
+    }
     @Styles ibestTableFixBodyStyle(){
         .height(this.fixHeight ? CONTAINER_SIZE.FULL : '')
         .constraintSize({maxHeight: this.maxHeight ? `calc(${this.maxHeight} - ${this.headerHeight}vp - ${this.footerHeight}vp)` : undefined})
@@ -156,8 +166,12 @@ export struct IBestTable {
 		ibestEmitter.off(getEventName(COMPONENT_NAME, TABLE_EVENT_NAME.COLUMN_ITEM_CHANGE, this.tableId), this.uniId)
     }
     getColumn(column: IBestTableColumnInfo){
-        this.columnList.push(new IBestTableColumnInfo(column))
-        if(column.fixed){
+        if(column.parentProp){
+            this.insertDataByProp(this.columnList, column)
+        }else {
+            this.columnList.push(new IBestTableColumnInfo(column))
+        }
+        if(column.fixed && !column.parentProp){
             let fixed = column.fixed
             if(typeof fixed == 'string' && fixed == 'right'){
                 this.rightFixedColumnList.push(new IBestTableColumnInfo(column))
@@ -169,6 +183,36 @@ export struct IBestTable {
         this.timer = setTimeout(() => {
             this.columnWidthList = Array(this.columnList.length).fill(0)
         }, 0)
+    }
+    insertDataByProp(list: IBestTableColumnInfo[], data: IBestTableColumnInfo) {
+        let targetData: IBestTableColumnInfo | null = null
+        const findNodes = (node: IBestTableColumnInfo) => {
+            if (node.prop === data.parentProp) {
+                targetData = node
+            }
+            if(targetData){
+                return true
+            }
+            if (node.children && node.children.length) {
+                for (let i = 0; i < node.children.length; i++) {
+                    if (findNodes(node.children[i])) {
+                        return true
+                    }
+                }
+            }
+            return false
+        }
+        for (let i = 0; i < list.length; i++) {
+            if (findNodes(list[i])) {
+                break
+            }
+        }
+        if (!targetData) {
+            console.error(`未找到prop为${data.parentProp}的列`)
+            return data
+        }
+        (targetData as IBestTableColumnInfo).children!.push(new IBestTableColumnInfo(data))
+        return data
     }
     updateColumn(column: IBestTableColumnInfo){
         let item = this.columnList.find(e => e.prop == column.prop)
@@ -188,15 +232,21 @@ export struct IBestTable {
             }
         }
     }
+    getColumnList(position: IBestCellPosition){
+        return position == 'left' ? this.leftFixedColumnList : position == 'right' ? this.rightFixedColumnList : this.columnList
+    }
     getBodyShow(){
         return this.columnWidthList.length && this.columnWidthList.every(e => e > 0) && this.rowHeightList.every(e => e > 0)
+    }
+    getIsMultiLevelHeader(){
+        return this.columnList.some(e => e.children.length)
     }
 
     build() {
         Column(){
             Row(){
                 Scroll(this.headerScroller){
-					this.headerFooterCellBuilder("header", 'body')
+					this.headerBuilder('body')
                 }
                 .width(CONTAINER_SIZE.FULL)
                 .align(Alignment.Start)
@@ -205,23 +255,21 @@ export struct IBestTable {
                 .enableScrollInteraction(false)
                 .edgeEffect(EdgeEffect.None)
                 if(this.leftFixedColumnList.length){
-					this.headerFooterCellBuilder("header", 'left')
+					this.headerBuilder('left')
                 }
                 if(this.rightFixedColumnList.length){
-					this.headerFooterCellBuilder("header", 'right')
+					this.headerBuilder('right')
                 }
             }
             .width(CONTAINER_SIZE.FULL)
             .onAreaChange((_: Area, newValue: Area) => {
-                if(this.headerHeight == 0){
-                    this.headerHeight = newValue.width as number
-                }
+                this.headerHeight = newValue.width as number
             })
             if(this.columnWidthList.length){
                 Row(){
                     Scroll(this.bodyVerticalScroller){
                         Scroll(this.bodyHorizontalScroller){
-                            this.cellBodyBuilder('body')
+                            this.bodyBuilder('body')
                         }
                         .width(CONTAINER_SIZE.FULL)
                         .align(Alignment.Start)
@@ -255,14 +303,14 @@ export struct IBestTable {
                     })
                     if(this.leftFixedColumnList.length){
                         Scroll(this.leftFixedBodyScroller){
-                            this.cellBodyBuilder('left')
+                            this.bodyBuilder('left')
                         }
                         .ibestTableFixBodyStyle()
                         .ibestTableFixScrollStyle('left')
                     }
                     if(this.rightFixedColumnList.length){
                         Scroll(this.rightFixedBodyScroller) {
-                            this.cellBodyBuilder('right')
+                            this.bodyBuilder('right')
                         }
                         .ibestTableFixBodyStyle()
                         .ibestTableFixScrollStyle('right')
@@ -275,7 +323,7 @@ export struct IBestTable {
                 if(this.showSummary){
                     Row(){
                         Scroll(this.footerScroller){
-                            this.headerFooterCellBuilder('footer', 'body')
+                            this.footerBuilder('body')
                         }
                         .width(CONTAINER_SIZE.FULL)
                         .align(Alignment.Start)
@@ -284,19 +332,17 @@ export struct IBestTable {
                         .enableScrollInteraction(false)
                         .edgeEffect(EdgeEffect.None)
                         if(this.leftFixedColumnList.length){
-                            this.headerFooterCellBuilder('footer', 'left')
+                            this.footerBuilder('left')
                         }
                         if(this.rightFixedColumnList.length){
-                            this.headerFooterCellBuilder('header', 'right')
+                            this.footerBuilder('right')
                         }
                     }
                     .width(CONTAINER_SIZE.FULL)
                     .visibility(this.getBodyShow() ? Visibility.Visible : Visibility.Hidden)
                     .animation({duration: this.baseStyle.animationDuration as number})
                     .onAreaChange((_: Area, newValue: Area) => {
-                        if(this.footerHeight == 0){
-                            this.footerHeight = newValue.width as number
-                        }
+                        this.footerHeight = newValue.width as number
                     })
                 }
             }
@@ -308,7 +354,7 @@ export struct IBestTable {
         .height(getSizeByUnit(this.fixHeight))
         .border({
             width: {
-                left: this.showBorder ? 1 : 0,
+                left: this.showBorder || this.getIsMultiLevelHeader() ? 1 : 0,
                 top: 1
             },
             color: this.bdColor
@@ -318,82 +364,38 @@ export struct IBestTable {
 }
 
 @Component
-struct HeaderFooterCellRow{
-	@Prop @Require cellType: 'header' | 'footer'
+struct HeaderCellRow{
 	@Prop @Require cellPosition: IBestCellPosition
-    @Prop @Require data: AnyType[]
-	@Consume columnList: IBestTableColumnInfo[]
-	@Consume leftFixedColumnList: IBestTableColumnInfo[]
-	@Consume rightFixedColumnList: IBestTableColumnInfo[]
+    @ObjectLink columnList: IBestTableColumnInfo[]
+    @Prop @Require isMultiLevelHeader: boolean = false
 	@Consume bdColor: ResourceColor
 	@Consume headerBgColor: ResourceColor
-	@Consume sumText: ResourceStr
-	summaryMethod?: (data: AnyType[], column: IBestTableColumnData) => IBestStringNumber[]
 
 	@State rowHeight: number = 0
 
-    getColumnList(position: IBestCellPosition){
-		return position == 'left' ? this.leftFixedColumnList : position == 'right' ? this.rightFixedColumnList : this.columnList
-	}
-	getSummary(){
-		let sums: string[] = []
-		this.columnList.forEach((column, index) => {
-			if (index === 0) {
-				sums[index] = getResourceStr(this.sumText)
-				return
-			}
-			const values = this.data.map((item: AnyType) => Number(item[column.prop]))
-			const precisions: number[] = []
-			let notNumber = true
-			values.forEach((value) => {
-				if (!Number.isNaN(+value)) {
-					notNumber = false
-					const decimal = `${value}`.split('.')[1]
-					precisions.push(decimal ? decimal.length : 0)
-				}
-			})
-			const precision: number = Math.max(...precisions)
-			if (!notNumber) {
-				let sum = values.reduce((prev, curr) => {
-					const value = Number(curr)
-					if (!Number.isNaN(+value)) {
-						return Number.parseFloat(
-							(prev + curr).toFixed(Math.min(precision, 20))
-						)
-					} else {
-						return prev
-					}
-				}, 0)
-				sums[index] = sum.toString()
-			} else {
-				sums[index] = ''
-			}
-		})
-		return sums
-	}
-
 	build() {
-		Row(){
-			ForEach(this.getColumnList(this.cellPosition), (column: IBestTableColumnInfo, index: number) => {
-				TableCell({
-					cellType: this.cellType,
-					pos: this.cellPosition,
-					column: column,
-					columnIndex: index,
-					rowHeight: this.rowHeight,
-					summaryList: this.summaryMethod ? this.summaryMethod(this.data, column) : this.getSummary(),
-					headerBuilder: column.headerBuilder,
-					cellBuilder: column.cellBuilder
-				})
-			})
-		}
-		.backgroundColor(this.cellType == 'header' ? this.headerBgColor : IBestTableColor.footerBgColor)
-		.position(this.cellPosition == 'left' ? {left: 0, top: 0} : this.cellPosition == 'right' ? {right: 0, top: 0} : undefined)
-		.onAreaChange((oldValue: Area, newValue: Area) => {
-			if(oldValue.height <= 0){
-				this.rowHeight = newValue.height as number
-			}
-		})
+        Row(){
+            ForEach(this.columnList, (column: IBestTableColumnInfo, index: number) => {
+                TableCell({
+                    cellType: 'header',
+                    pos: this.cellPosition,
+                    column: column,
+                    columnIndex: index,
+                    isMultiLevelHeader: this.isMultiLevelHeader,
+                    rowHeight: this.rowHeight,
+                    headerBuilder: column.headerBuilder,
+                    cellBuilder: column.cellBuilder
+                })
+            })
+        }
+        .height(this.rowHeight || "auto")
+        .backgroundColor(this.headerBgColor)
+        .position(this.cellPosition == 'left' ? {left: 0, top: 0} : this.cellPosition == 'right' ? {right: 0, top: 0} : undefined)
+        .onAreaChange((oldValue: Area, newValue: Area) => {
+            if(newValue.height != oldValue.height){
+                this.rowHeight = newValue.height as number
+            }
+        })
 	}
 }
 
@@ -402,9 +404,8 @@ struct BodyCellRow{
 	@Prop @Require cellPosition: IBestCellPosition
 	@Require item: AnyType
 	@Prop @Require rowIndex: number
-	@Consume columnList: IBestTableColumnInfo[]
-	@Consume leftFixedColumnList: IBestTableColumnInfo[]
-	@Consume rightFixedColumnList: IBestTableColumnInfo[]
+    @ObjectLink columnList: IBestTableColumnInfo[]
+    @Prop @Require isMultiLevelHeader: boolean = false
     @Consume rowHeightList: number[]
 	@Consume bdColor: ResourceColor
 	@Consume stripe: boolean
@@ -414,13 +415,9 @@ struct BodyCellRow{
 
     @State rowHeight: number = 0
 
-	getColumnList(position: IBestCellPosition){
-		return position == 'left' ? this.leftFixedColumnList : position == 'right' ? this.rightFixedColumnList : this.columnList
-	}
-
 	build() {
 		Row(){
-			ForEach(this.getColumnList(this.cellPosition), (column: IBestTableColumnInfo, index1: number) => {
+			ForEach(this.columnList, (column: IBestTableColumnInfo, index1: number) => {
 				TableCell({
 					cellType: 'body',
 					pos: this.cellPosition,
@@ -428,6 +425,7 @@ struct BodyCellRow{
 					rowIndex: this.rowIndex,
 					column: column,
 					columnIndex: index1,
+                    isMultiLevelHeader: this.isMultiLevelHeader,
 					rowHeight: this.rowHeight,
 					headerBuilder: column.headerBuilder,
 					cellBuilder: column.cellBuilder,
@@ -448,6 +446,79 @@ struct BodyCellRow{
 }
 
 @Component
+struct FooterCellRow{
+    @Prop @Require cellPosition: IBestCellPosition
+    @Prop data: AnyType[]
+    @ObjectLink columnList: IBestTableColumnInfo[]
+    @Prop @Require isMultiLevelHeader: boolean = false
+    @Prop summaryList: IBestStringNumber[]
+    @Consume bdColor: ResourceColor
+    @Consume sumText: ResourceStr
+    summaryMethod?: (data: AnyType[], column: IBestTableColumnData) => IBestStringNumber[]
+
+    @State rowHeight: number = 0
+
+    getSummary(){
+        let sums: string[] = []
+        this.columnList.forEach((column, index) => {
+            if (index === 0) {
+                sums[index] = getResourceStr(this.sumText)
+                return
+            }
+            const values = this.data.map((item: AnyType) => Number(item[column.prop]))
+            const precisions: number[] = []
+            let notNumber = true
+            values.forEach((value) => {
+                if (!Number.isNaN(+value)) {
+                    notNumber = false
+                    const decimal = `${value}`.split('.')[1]
+                    precisions.push(decimal ? decimal.length : 0)
+                }
+            })
+            const precision: number = Math.max(...precisions)
+            if (!notNumber) {
+                let sum = values.reduce((prev, curr) => {
+                    const value = Number(curr)
+                    if (!Number.isNaN(+value)) {
+                        return Number.parseFloat(
+                            (prev + curr).toFixed(Math.min(precision, 20))
+                        )
+                    } else {
+                        return prev
+                    }
+                }, 0)
+                sums[index] = sum.toString()
+            } else {
+                sums[index] = ''
+            }
+        })
+        return sums
+    }
+    build() {
+        Row(){
+            ForEach(this.columnList, (column: IBestTableColumnInfo, index: number) => {
+                TableCell({
+                    cellType: 'footer',
+                    pos: this.cellPosition,
+                    column: column,
+                    columnIndex: index,
+                    isMultiLevelHeader: this.isMultiLevelHeader,
+                    rowHeight: this.rowHeight,
+                    summaryList: this.summaryList || (this.summaryMethod ? this.summaryMethod(this.data, column) : this.getSummary())
+                })
+            })
+        }
+        .backgroundColor(IBestTableColor.footerBgColor)
+        .position(this.cellPosition == 'left' ? {left: 0, top: 0} : this.cellPosition == 'right' ? {right: 0, top: 0} : undefined)
+        .onAreaChange((oldValue: Area, newValue: Area) => {
+            if(newValue.height != oldValue.height){
+                this.rowHeight = newValue.height as number
+            }
+        })
+    }
+}
+
+@Component
 struct TableCell{
     item: AnyType
 	@Prop @Require pos: IBestCellPosition
@@ -455,7 +526,7 @@ struct TableCell{
     @Prop rowIndex: number = 0
     @ObjectLink column: IBestTableColumnInfo
     @Prop @Require columnIndex: number = 0
-    @Consume columnList: IBestTableColumnInfo[]
+    @Prop isMultiLevelHeader: boolean = false
     @Consume @Watch("rowHeightChange") rowHeightList: number[]
     @Consume @Watch("columnWidthChange") columnWidthList: number[]
     @Consume headerFontSize: IBestStringNumber
@@ -474,8 +545,8 @@ struct TableCell{
     @BuilderParam headerBuilder: (column: IBestTableColumnData, columnIndex: number) => void
     @BuilderParam cellBuilder: (row: AnyType, column: IBestTableColumnData, rowIndex: number, columnIndex: number) => void
 
-    @State realWidth: number | string = 0
-    @State realHeight: number | string = 0
+    @State realWidth: IBestStringNumber = 0
+    @State realHeight: IBestStringNumber = 0
     @State rowSpan: number = 0
     @State colSpan: number = 0
 
@@ -498,7 +569,7 @@ struct TableCell{
                 return
             }
             let rowSpan = this.getSpanArr()[0]
-            if(rowSpan == 0){
+            if(rowSpan <= 1){
                 this.realHeight = 0
             }else {
                 this.realHeight = this.rowHeightList.slice(this.columnIndex, this.columnIndex + rowSpan).reduce((prev, curr) => {
@@ -553,47 +624,79 @@ struct TableCell{
     }
 
     build() {
-        Stack({alignContent: Alignment.TopStart}){
-            Row()
-                .width(CONTAINER_SIZE.FULL)
-                .height(this.getHeight())
-            Row(){
-                if(!(this.column.fixed && this.pos == 'body')){
-                    if(this.cellType == 'header' && this.headerBuilder){
-                        this.headerBuilder({title: this.column.title, prop: this.column.prop}, this.columnIndex)
-                    }else if(this.cellType == 'body' && this.cellBuilder){
-                        this.cellBuilder(this.item, {title: this.column.title, prop: this.column.prop}, this.rowIndex, this.columnIndex)
-                    }else{
-                        Text(this.getText())
+        Column(){
+            if(this.cellType == 'header' || !this.column.children.length){
+                Stack({alignContent: Alignment.TopStart}){
+                    if(this.cellType == 'body'){
+                        Row()
                             .width(CONTAINER_SIZE.FULL)
-                            .fontSize(this.cellType == 'header' ? this.headerFontSize : this.cellFontSize)
-                            .fontColor(this.cellType == 'header' ? this.headerTextColor : this.cellTextColor)
-                            .fontWeight(this.cellType == 'header' ? 600 : FontWeight.Normal)
-                            .textAlign(this.getTextAlign())
-                            .maxLines(1)
-                            .textOverflow({overflow: TextOverflow.Ellipsis})
+                            .height(this.getHeight())
                     }
+                    Row(){
+                        if(!(this.column.fixed && this.pos == 'body')){
+                            if(this.cellType == 'header' && this.headerBuilder){
+                                this.headerBuilder({title: this.column.title, prop: this.column.prop}, this.columnIndex)
+                            }else if(this.cellType == 'body' && this.cellBuilder){
+                                this.cellBuilder(this.item, {title: this.column.title, prop: this.column.prop}, this.rowIndex, this.columnIndex)
+                            }else{
+                                Text(this.getText())
+                                    .width(CONTAINER_SIZE.FULL)
+                                    .fontSize(this.cellType == 'header' ? this.headerFontSize : this.cellFontSize)
+                                    .fontColor(this.cellType == 'header' ? this.headerTextColor : this.cellTextColor)
+                                    .fontWeight(this.cellType == 'header' ? 600 : FontWeight.Normal)
+                                    .textAlign(this.getTextAlign())
+                                    .maxLines(1)
+                                    .textOverflow({overflow: TextOverflow.Ellipsis})
+                            }
+                        }
+                    }
+                    .width(this.getWidth())
+                    .height(this.cellType == 'body' ? this.realHeight || this.getHeight() : this.rowHeight && !this.column.children.length ? this.rowHeight : 'auto')
+                    .padding(getSizeByUnit(this.cellPadding))
+                    .border({
+                        width: {
+                            right: this.showBorder || this.isMultiLevelHeader ? 1 : 0,
+                            bottom: 1
+                        }, color: this.bdColor
+                    })
+                    .backgroundColor(this.getBgColor())
+                    .visibility(this.rowSpan > 0 && this.colSpan > 0 ? Visibility.Visible : Visibility.Hidden)
                 }
             }
-            .width(this.getWidth())
-            .height(this.realHeight || this.getHeight())
-            .padding(getSizeByUnit(this.cellPadding))
-            .border({
-                width: {
-                    right: this.showBorder ? 1 : 0,
-                    bottom: 1
-                }, color: this.bdColor
-            })
-            .backgroundColor(this.getBgColor())
-            .visibility(this.rowSpan > 0 && this.colSpan > 0 ? Visibility.Visible : Visibility.Hidden)
+            if(this.column.children.length){
+                if(this.cellType == 'header'){
+                    HeaderCellRow({
+                        cellPosition: this.pos,
+                        columnList: this.column.children,
+                        isMultiLevelHeader: true
+                    })
+                }else if(this.cellType == 'body'){
+                    BodyCellRow({
+                        cellPosition: this.pos,
+                        item: this.item,
+                        rowIndex: this.rowIndex,
+                        columnList: this.column.children,
+                        isMultiLevelHeader: true,
+                        spanMethod: this.spanMethod
+                    })
+                }else {
+                    FooterCellRow({
+                        cellPosition: this.pos,
+                        columnList: this.column.children,
+                        isMultiLevelHeader: true,
+                        summaryList: this.summaryList
+                    })
+                }
+            }
         }
         .width(this.pos == 'body' ? getSizeByUnit(this.column.cellWidth) : this.getWidth())
         .height(this.getHeight())
         .layoutWeight(!this.column.cellWidth ? 1 : 0)
+        .alignItems(HorizontalAlign.Start)
         .constraintSize({minWidth: getSizeByUnit(this.column.minWidth)})
         .visibility(this.column.show ? Visibility.Visible : Visibility.None)
         .onAreaChange((_: Area, newValue: Area) => {
-            if(this.cellType == 'body' && this.columnWidthList[this.columnIndex] == 0){
+            if(this.cellType == 'body' && !this.column.parentProp && this.columnWidthList[this.columnIndex] == 0){
                 this.columnWidthList[this.columnIndex] = newValue.width as number
             }
         })
@@ -638,6 +741,10 @@ export struct IBestTableColumn{
 	 * 列是否固定在左侧或者右侧。 true 表示固定在左侧
 	 */
 	@Prop fixed: boolean | 'left' | 'right' = false
+    /**
+     * 父标题属性, 多级表头时传入
+     */
+    @Prop parentProp: string = ""
 	/**
 	 * 格式化函数
 	 */
@@ -661,6 +768,7 @@ export struct IBestTableColumn{
 			cellAlign: this.cellAlign,
 			headerAlign: this.headerAlign || this.cellAlign,
 			fixed: this.fixed,
+            parentProp: this.parentProp,
 			formatter: this.formatter,
 			headerBuilder: this.headerBuilder,
 			cellBuilder: this.cellBuilder

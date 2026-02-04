@@ -48,23 +48,21 @@ struct CarInputPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '自定义样式' }) {
-						Column({space: SPACE.SM}){
-							IBestCarInput({
-								value: $value3,
-								bdColor: '#3d8af2',
-								textColor: '#3d8af2',
-								cursorPosition: "bottom",
-								cursorColor: "#3d8af2"
-							})
-							IBestCarInput({
-								value: $value3,
-								space: 6,
-								bgColor: "#1c1c1e",
-								textColor: "#fff",
-								highlightType: "shadow"
-							})
-						}
+					ComponentShowContainer({ title: '自定义样式', space: SPACE.SM }) {
+						IBestCarInput({
+							value: $value3,
+							bdColor: '#3d8af2',
+							textColor: '#3d8af2',
+							cursorPosition: "bottom",
+							cursorColor: "#3d8af2"
+						})
+						IBestCarInput({
+							value: $value3,
+							space: 6,
+							bgColor: "#1c1c1e",
+							textColor: "#fff",
+							highlightType: "shadow"
+						})
 					}
 				}
 			}

@@ -46,9 +46,7 @@ export struct IBestGridAlbum {
             return
         }
         let path = `${this.pageContext.cacheDir}/ibestGridAlbum_${this.getUniqueId()}.jpg`
-        await dealUrlToSandbox(this.pageContext, this.url, path, () => {
-            this.getImageInfo(path)
-        })
+        await dealUrlToSandbox(this.pageContext, this.url, path)
         this.getImageInfo(path)
     }
     async getImageInfo(path: string) {

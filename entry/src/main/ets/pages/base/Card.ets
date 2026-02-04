@@ -38,6 +38,8 @@ struct CardPage {
                     ComponentShowContainer({ title: '显示标题' }){
                         IBestCard({
                             title: '标题',
+                            leftIcon: $r('app.media.app_icon'),
+                            value: "内容",
                             titleClickable: true,
                             onTitleClick: () => {
                                 IBestToast.show('点击了标题')
@@ -50,7 +52,7 @@ struct CardPage {
                 ListItem() {
                     ComponentShowContainer({ title: '背景图片' }){
                         IBestCard({
-                            bgImage: "https://uploadfile.bizhizu.cn/2017/0731/20170731103322735.jpg"
+                            bgImage: "https://img.shetu66.com/2023/08/01/1690856871895889.png"
                         }){
                             this.cardContent()
                         }

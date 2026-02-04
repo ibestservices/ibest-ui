@@ -45,43 +45,41 @@ struct CountDownPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '手动控制' }) {
-						Column({space: SPACE.MD}){
-							IBestCountDown({
-								time: this.time1,
-								format: 'ss:SSS',
-								autoStart: false,
-								controller: this.controller,
-								onFinish: () => {
-									IBestToast.show("已结束")
+					ComponentShowContainer({ title: '手动控制', space: SPACE.MD }) {
+						IBestCountDown({
+							time: this.time1,
+							format: 'ss:SSS',
+							autoStart: false,
+							controller: this.controller,
+							onFinish: () => {
+								IBestToast.show("已结束")
+							}
+						})
+						Row(){
+							IBestButton({
+								type: 'primary',
+								text: "开始",
+								onBtnClick: () => {
+									this.controller.start()
 								}
 							})
-							Row(){
-								IBestButton({
-									type: 'primary',
-									text: "开始",
-									onBtnClick: () => {
-										this.controller.start()
-									}
-								})
-								IBestButton({
-									type: 'primary',
-									text: "暂停",
-									onBtnClick: () => {
-										this.controller.pause()
-									}
-								})
-								IBestButton({
-									type: 'primary',
-									text: "重置",
-									onBtnClick: () => {
-										this.controller.reset()
-									}
-								})
-							}
-							.width(CONTAINER_SIZE.FULL)
-							.justifyContent(FlexAlign.SpaceBetween)
+							IBestButton({
+								type: 'primary',
+								text: "暂停",
+								onBtnClick: () => {
+									this.controller.pause()
+								}
+							})
+							IBestButton({
+								type: 'primary',
+								text: "重置",
+								onBtnClick: () => {
+									this.controller.reset()
+								}
+							})
 						}
+						.width(CONTAINER_SIZE.FULL)
+						.justifyContent(FlexAlign.SpaceBetween)
 					}
 				}
 			}

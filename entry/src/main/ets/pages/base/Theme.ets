@@ -10,7 +10,8 @@ import {
 	IBestSwitch,
 	IBestTabs,
 	IBestTag,
-	IBestSetUIBaseStyle
+	IBestSetUIBaseStyle,
+	IBestTabItemType
 } from '@ibestservices/ibest-ui';
 import { FONT_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
@@ -26,6 +27,28 @@ export function ThemeBuilder(_: string, title: string){
 @Component
 struct ThemePage {
 	@State title: string = ''
+	@State tabLists: IBestTabItemType[] = [
+		{
+			label: $r("app.string.custom_option", 1),
+			name: "1"
+		},
+		{
+			label: $r("app.string.custom_option", 2),
+			name: "2"
+		},
+		{
+			label: $r("app.string.custom_option", 3),
+			name: "3"
+		},
+		{
+			label: $r("app.string.custom_option", 4),
+			name: "4"
+		},
+		{
+			label: $r("app.string.custom_option", 5),
+			name: "5"
+		}
+	]
 	@State curTabName: string = "1"
 	@State colorText: string = '#07c160'
 	@State group: string = "themeGroup"
@@ -34,7 +57,7 @@ struct ThemePage {
 	@State progressValue: number = 50
 	@State caliperValue: number = 0
 	@State segmentedValue: string = "选项1"
-	private segmentedOptions: string[] = ['选项1', '选项2', '选项3', '选项4']
+	@State segmentedOptions: string[] = ['选项1', '选项2', '选项3', '选项4']
 	aboutToDisappear() {
 		IBestSetUIBaseStyle({ primary: '#3D8AF2' })
 	}
@@ -116,28 +139,7 @@ struct ThemePage {
 				ListItem() {
 					ComponentShowContainer({ title: $r("app.string.component_tab") }) {
 						IBestTabs({
-							tabsList: [
-								{
-									label: $r("app.string.custom_option", 1),
-									name: "1"
-								},
-								{
-									label: $r("app.string.custom_option", 2),
-									name: "2"
-								},
-								{
-									label: $r("app.string.custom_option", 3),
-									name: "3"
-								},
-								{
-									label: $r("app.string.custom_option", 4),
-									name: "4"
-								},
-								{
-									label: $r("app.string.custom_option", 5),
-									name: "5"
-								}
-							],
+							tabsList: this.tabLists,
 							currentName: $curTabName
 						})
 					}

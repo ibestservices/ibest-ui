@@ -28,58 +28,56 @@ struct CircleProgressPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '样式定制' }) {
-                        Column(){
-                            Flex({wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(20), cross: LengthMetrics.vp(20) }}){
-                                IBestCircleProgress({
-                                    value: $value,
-                                    strokeWidth: 6,
-                                    text: "宽度定制"
-                                })
-                                IBestCircleProgress({
-                                    value: $value,
-                                    color: "#ee0a24",
-                                    bgColor: "#ebedf0",
-                                    text: "颜色定制"
-                                })
-                                IBestCircleProgress({
-                                    value: $value,
-                                    clockwise: false,
-                                    text: "逆时针",
-                                    color: "#07c160"
-                                })
-                                IBestCircleProgress({
-                                    value: $value,
-                                    diameter: 120,
-                                    clockwise: false,
-                                    text: "大小定制",
-                                    color: "#7232dd"
-                                })
-                            }
-                            Row({space: SPACE.SM}){
-                                IBestButton({
-                                    text: "增加",
-                                    type: "primary",
-                                    buttonSize: "small",
-                                    onBtnClick: () => {
-                                        this.value += 10
-                                    }
-                                })
-                                IBestButton({
-                                    text: "减少",
-                                    type: "danger",
-                                    buttonSize: "small",
-                                    onBtnClick: () => {
-                                        this.value -= 10
-                                    }
-                                })
-                            }
+                    ComponentShowContainer({ title: '样式定制', space: SPACE.SM }) {
+                        Flex({wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(14), cross: LengthMetrics.vp(14) }}){
+                            IBestCircleProgress({
+                                value: $value,
+                                strokeWidth: 6,
+                                text: "宽度定制"
+                            })
+                            IBestCircleProgress({
+                                value: $value,
+                                color: "#ee0a24",
+                                bgColor: "#ebedf0",
+                                text: "颜色定制"
+                            })
+                            IBestCircleProgress({
+                                value: $value,
+                                clockwise: false,
+                                text: "逆时针",
+                                color: "#07c160"
+                            })
+                            IBestCircleProgress({
+                                value: $value,
+                                diameter: 120,
+                                clockwise: false,
+                                text: "大小定制",
+                                color: "#7232dd"
+                            })
+                        }
+                        Row({space: SPACE.SM}){
+                            IBestButton({
+                                text: "增加",
+                                type: "primary",
+                                buttonSize: "small",
+                                onBtnClick: () => {
+                                    this.value += 10
+                                }
+                            })
+                            IBestButton({
+                                text: "减少",
+                                type: "danger",
+                                buttonSize: "small",
+                                onBtnClick: () => {
+                                    this.value -= 10
+                                }
+                            })
                         }
                     }
                 }
                 ListItem() {
                     ComponentShowContainer({ title: '起始位置' }) {
-                        Flex({wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(20), cross: LengthMetrics.vp(20) }}){
+                        Flex({wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(14), cross: LengthMetrics.vp(14) }}){
                             IBestCircleProgress({
                                 value: $value,
                                 startPosition: "left",

@@ -52,13 +52,14 @@ struct SearchPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '自定义背景色' }) {
+					ComponentShowContainer({ title: '自定义样式' }) {
 						IBestSearch({
 							value: $value,
 							placeholder: "请输入关键词",
 							isRound: true,
 							outBgColor: "#4fc08d",
 							innerBgColor: "#F29C73",
+							caretColor: "#ed4040",
 							textColor: "#ed4040"
 						})
 					}
@@ -86,21 +87,19 @@ struct SearchPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '自定义按钮' }) {
-						Column({ space: 20 }){
-							IBestSearch({
-								value: $value,
-								placeholder: "请输入关键词",
-								label: "地址",
-								showRightButton: true,
-								rightButtonText: "搜索"
-							})
-							IBestSearch({
-								value: $value,
-								label: "地址",
-								customRightButton: (): void => this.customBtn()
-							})
-						}
+					ComponentShowContainer({ title: '自定义按钮', space: SPACE.MD }) {
+						IBestSearch({
+							value: $value,
+							placeholder: "请输入关键词",
+							label: "地址",
+							showRightButton: true,
+							rightButtonText: "搜索"
+						})
+						IBestSearch({
+							value: $value,
+							label: "地址",
+							customRightButton: (): void => this.customBtn()
+						})
 					}
 				}
 				ListItem().height(50)

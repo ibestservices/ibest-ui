@@ -143,34 +143,32 @@ struct PopoverPage {
 			CustomNavBar({title: this.title})
             List() {
                 ListItem() {
-                    ComponentShowContainer({ title: '基础用法' }) {
-                        Column({space: SPACE.MD}){
-                            Row({space: SPACE.MD}){
-                                IBestPopover({
-                                    actions: this.actions,
-                                    triggerBuilder: (): void => this.triggerBuilder("button", "基础用法"),
-                                    onSelect: (action: IBestPopoverAction, index: number) => {
-                                        IBestToast.show(action.text)
-                                    }
-                                })
-                                IBestPopover({
-                                    actions: this.actions,
-                                    triggerBuilder: (): void => this.triggerBuilder("text", "文字触发")
-                                })
-                                IBestPopover({
-                                    actions: this.actions,
-                                    triggerBuilder: (): void => this.triggerBuilder("img")
-                                })
-                            }
+                    ComponentShowContainer({ title: '基础用法', space: SPACE.MD }) {
+                        Row({space: SPACE.MD}){
                             IBestPopover({
                                 actions: this.actions,
-                                popoverWidth: CONTAINER_SIZE.FULL,
-                                triggerBuilder: (): void => this.triggerBuilder("input", "输入框触发"),
+                                triggerBuilder: (): void => this.triggerBuilder("button", "基础用法"),
                                 onSelect: (action: IBestPopoverAction, index: number) => {
-                                    this.textValue = action.text
+                                    IBestToast.show(action.text)
                                 }
                             })
-                        }.width(CONTAINER_SIZE.FULL).alignItems(HorizontalAlign.Start)
+                            IBestPopover({
+                                actions: this.actions,
+                                triggerBuilder: (): void => this.triggerBuilder("text", "文字触发")
+                            })
+                            IBestPopover({
+                                actions: this.actions,
+                                triggerBuilder: (): void => this.triggerBuilder("img")
+                            })
+                        }
+                        IBestPopover({
+                            actions: this.actions,
+                            popoverWidth: CONTAINER_SIZE.FULL,
+                            triggerBuilder: (): void => this.triggerBuilder("input", "输入框触发"),
+                            onSelect: (action: IBestPopoverAction, index: number) => {
+                                this.textValue = action.text
+                            }
+                        })
                     }
                 }
                 ListItem() {
@@ -215,7 +213,7 @@ struct PopoverPage {
                 }
                 ListItem() {
                     ComponentShowContainer({ title: '自定义样式' }) {
-                        Flex({wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(20), cross: LengthMetrics.vp(20)}}){
+                        Flex({wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(14), cross: LengthMetrics.vp(14)}}){
                             IBestPopover({
                                 actions: this.actions,
                                 showArrow: false,
@@ -267,7 +265,7 @@ struct PopoverPage {
                 }
                 ListItem() {
                     ComponentShowContainer({ title: '自定义高度' }) {
-                        Flex({wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(20), cross: LengthMetrics.vp(20)}}){
+                        Flex({wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(14), cross: LengthMetrics.vp(14)}}){
                             IBestPopover({
                                 actions: this.actions4,
                                 fixHeight: 200,

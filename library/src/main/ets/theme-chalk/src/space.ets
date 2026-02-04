@@ -3,6 +3,7 @@ export enum SPACE {
 	BASE = 4,
 	X = 6,
 	XS = 8,
+	XSM = 10,
 	SM = 12,
 	MD = 16,
 	LG = 24,

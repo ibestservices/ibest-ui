@@ -143,26 +143,23 @@ struct AvatarPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '头像组' }){
-                        Column({space: SPACE.MD}){
-                            IBestAvatarGroup({
-                                urls: this.urls,
-                                onMoreClick: () => {
-                                    IBestToast.show('点击了更多')
-                                }
-                            })
-                            IBestAvatarGroup({
-                                urls: this.urls,
-                                shape: 'square',
-                                gap: 0.3,
-                                max: 7,
-                                moreText: '更多',
-                                onMoreClick: () => {
-                                    IBestToast.show('点击了更多')
-                                }
-                            })
-                        }
-                        .alignItems(HorizontalAlign.Start)
+                    ComponentShowContainer({ title: '头像组', space: SPACE.MD }){
+                        IBestAvatarGroup({
+                            urls: this.urls,
+                            onMoreClick: () => {
+                                IBestToast.show('点击了更多')
+                            }
+                        })
+                        IBestAvatarGroup({
+                            urls: this.urls,
+                            shape: 'square',
+                            gap: 0.3,
+                            max: 7,
+                            moreText: '更多',
+                            onMoreClick: () => {
+                                IBestToast.show('点击了更多')
+                            }
+                        })
                     }
                 }
                 ListItem().height(50)

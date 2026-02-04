@@ -44,28 +44,26 @@ struct WatermarkPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '图片水印', titlePaddingLeft: SPACE.XS }) {
-						Column({space: SPACE.SM}){
-							IBestWatermark({
-								imageUrl: $r("app.media.app_icon"),
-								waterMarkWidth: 40,
-								waterMarkHeight: 40,
-								gapX: 40,
-								gapY: 40,
-								rotateDeg: 0
-							}) {
-								this.content()
-							}
-							IBestWatermark({
-								imageUrl: 'https://fastly.jsdelivr.net/npm/@vant/assets/logo.png',
-								waterMarkWidth: 40,
-								waterMarkHeight: 40,
-								gapX: 40,
-								gapY: 40,
-								rotateDeg: 30
-							}) {
-								this.content()
-							}
+					ComponentShowContainer({ title: '图片水印', titlePaddingLeft: SPACE.XS, space: SPACE.SM }) {
+						IBestWatermark({
+							imageUrl: $r("app.media.app_icon"),
+							waterMarkWidth: 40,
+							waterMarkHeight: 40,
+							gapX: 40,
+							gapY: 40,
+							rotateDeg: 0
+						}) {
+							this.content()
+						}
+						IBestWatermark({
+							imageUrl: 'https://fastly.jsdelivr.net/npm/@vant/assets/logo.png',
+							waterMarkWidth: 40,
+							waterMarkHeight: 40,
+							gapX: 40,
+							gapY: 40,
+							rotateDeg: 30
+						}) {
+							this.content()
 						}
 					}
 				}

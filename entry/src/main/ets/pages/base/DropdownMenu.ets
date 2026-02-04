@@ -18,7 +18,7 @@ export function DropdownMenuBuilder(_: string, title: string){
 struct DropdownMenuPage{
     @State title: string = ''
     groupId: string = 'dropdown_menu'
-    @State value: number = 1
+    @State value: number = 10
     @State options: IBestDropdownMenuOption[] = [
         { text: '全部商品', value: 1 },
         { text: '第一个新款商品', value: 2 },
@@ -67,7 +67,7 @@ struct DropdownMenuPage{
     groupId3: string = 'dropdown_menu_3'
     groupId4: string = 'dropdown_menu_4'
     groupId5: string = 'dropdown_menu_5'
-    @State value2: string = ''
+    @State value2: string = '1'
     @State value3: string = ''
     @State options2: IBestDropdownMenuOption[] = [
         { text: '全部商品', icon: "star", value: '1' },
@@ -177,18 +177,18 @@ struct DropdownMenuPage{
                         }){
                             IBestDropdownItem({
                                 groupId: this.groupId2,
-                                value: this.value,
+                                value: this.value2,
                                 options: this.options2,
                                 onChange: value => {
-                                    this.value = value as number
+                                    this.value2 = value as string
                                 }
                             })
                             IBestDropdownItem({
                                 groupId: this.groupId2,
-                                value: this.value1,
+                                value: this.value3,
                                 options: this.options3,
                                 onChange: value => {
-                                    this.value1 = value as string
+                                    this.value3 = value as string
                                 }
                             })
                         }

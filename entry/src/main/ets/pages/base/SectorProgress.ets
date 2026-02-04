@@ -30,7 +30,7 @@ struct SectorProgressPage {
                 ListItem() {
                     ComponentShowContainer({ title: '样式定制' }) {
                         Column(){
-                            Flex({wrap: FlexWrap.Wrap, alignItems: ItemAlign.Center, space: { main: LengthMetrics.vp(20), cross: LengthMetrics.vp(20) }}){
+                            Flex({wrap: FlexWrap.Wrap, alignItems: ItemAlign.Center, space: { main: LengthMetrics.vp(14), cross: LengthMetrics.vp(14) }}){
                                 IBestSectorProgress({
                                     value: $value,
                                     diameter: 80,
@@ -68,7 +68,7 @@ struct SectorProgressPage {
                 }
                 ListItem() {
                     ComponentShowContainer({ title: '起始位置' }) {
-                        Flex({wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(20), cross: LengthMetrics.vp(20) }}){
+                        Flex({wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(14), cross: LengthMetrics.vp(14) }}){
                             IBestSectorProgress({
                                 value: $value,
                                 startPosition: "left",

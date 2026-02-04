@@ -357,6 +357,10 @@
 			"value": "Tab 标签页"
 		},
 		{
+			"name": "component_tabBar",
+			"value": "TabBar 标签栏"
+		},
+		{
 			"name": "component_canvasDrawer",
 			"value": "CanvasDrawer 画布绘制"
 		},

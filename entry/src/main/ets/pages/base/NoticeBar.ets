@@ -26,17 +26,15 @@ struct NoticeBarPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '滚动播放', titlePaddingLeft: SPACE.MD }) {
-						Column({space: SPACE.MD}){
-							IBestNoticeBar({
-								scrollable: true,
-								text: "今人不见古时月, 今月曾经照古人。"
-							})
-							IBestNoticeBar({
-								scrollable: false,
-								text: "不会回头的东西有四件：说出口的话、离弦的箭、逝去的生活和失去的机会。"
-							})
-						}
+					ComponentShowContainer({ title: '滚动播放', titlePaddingLeft: SPACE.MD, space: SPACE.MD }) {
+						IBestNoticeBar({
+							scrollable: true,
+							text: "今人不见古时月, 今月曾经照古人。"
+						})
+						IBestNoticeBar({
+							scrollable: false,
+							text: "不会回头的东西有四件：说出口的话、离弦的箭、逝去的生活和失去的机会。"
+						})
 					}
 				}
 				ListItem() {
@@ -48,20 +46,18 @@ struct NoticeBarPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '通知栏模式', titlePaddingLeft: SPACE.MD }) {
-						Column({space: SPACE.MD}){
-							IBestNoticeBar({
-								mode: "closeable",
-								text: "今人不见古时月, 今月曾经照古人。"
-							})
-							IBestNoticeBar({
-								mode: "link",
-								text: "今人不见古时月, 今月曾经照古人。",
-								onBarClick: () => {
-									IBestToast.show("点击了通知栏")
-								}
-							})
-						}
+					ComponentShowContainer({ title: '通知栏模式', titlePaddingLeft: SPACE.MD, space: SPACE.MD }) {
+						IBestNoticeBar({
+							mode: "closeable",
+							text: "今人不见古时月, 今月曾经照古人。"
+						})
+						IBestNoticeBar({
+							mode: "link",
+							text: "今人不见古时月, 今月曾经照古人。",
+							onBarClick: () => {
+								IBestToast.show("点击了通知栏")
+							}
+						})
 					}
 				}
 				ListItem() {

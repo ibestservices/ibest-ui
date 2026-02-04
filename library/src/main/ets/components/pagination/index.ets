@@ -178,7 +178,7 @@ export struct IBestPagination {
 				if (this.mode === 'simple') {
 					Text(`${this.currentPage}/${this.getCount()}`)
 						.fontSize(this.baseStyle.fontSizeSm)
-						.margin({ left: 10, right: 10 })
+						.margin({ left: this.baseStyle.spaceXsm, right: this.baseStyle.spaceXsm })
 						.flexGrow(1)
 						.flexShrink(1)
 						.textAlign(TextAlign.Center)

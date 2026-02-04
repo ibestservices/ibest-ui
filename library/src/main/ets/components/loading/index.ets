@@ -90,9 +90,7 @@ export struct IBestLoading {
 	 * 当前stack容器的尺寸
 	 */
 	@State sizeValue?: SizeOptions = undefined;
-	@Builder
-	LoadingContent() {
-		// loading图标
+	@Builder LoadingContent() {
 		if (this.loadingIconBuilder) {
 			this.loadingIconBuilder()
 		} else {
@@ -111,7 +109,6 @@ export struct IBestLoading {
 				})
 			}
 		}
-		// 加载的文案
 		if (this.loadingTextBuilder) {
 			this.loadingTextBuilder()
 		} else {
@@ -127,7 +124,6 @@ export struct IBestLoading {
 			if (this.defaultBuilder) {
 				this.defaultBuilder()
 			}
-			// 如果是竖直排列的loading
 			if (this.vertical) {
 				Column({space: getSizeByUnit(this.space)}) {
 					this.LoadingContent()
@@ -145,7 +141,7 @@ export struct IBestLoading {
 				.height(this.sizeValue?.height || 'auto')
 				.backgroundColor(this.loadingMaskColor)
 			}
-		}.onSizeChange((oldValue: SizeOptions, newValue: SizeOptions) => {
+		}.onSizeChange((_: SizeOptions, newValue: SizeOptions) => {
 			this.sizeValue = newValue
 		})
 	}

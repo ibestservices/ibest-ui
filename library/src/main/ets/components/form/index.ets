@@ -18,10 +18,16 @@ import {
     IBestFormValidateResult
 } from './index.type'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
-import { IBestStringNumber } from '../../model/Global.type'
+import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
+import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
+import { getDefaultBaseStyle } from '../../theme-chalk/src'
 
 @Component
 export struct IBestForm {
+	/**
+	 * 全局公共样式
+	 */
+	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
      * form id 用于验证
      */
@@ -33,7 +39,7 @@ export struct IBestForm {
 	/**
 	 * 表单项间距
   	 */
-	@Prop space: IBestStringNumber = convertDimensionsWidthUnit(10)
+	@Prop space: IBestStringNumber = this.baseStyle.spaceXsm as string
 	/**
      * 文本宽度
      */

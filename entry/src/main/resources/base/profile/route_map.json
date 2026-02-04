@@ -361,6 +361,11 @@
 			"buildFunction": "TabBuilder"
 		},
 		{
+			"name": "TabBar",
+			"pageSourceFile": "src/main/ets/pages/base/TabBar.ets",
+			"buildFunction": "TabBarBuilder"
+		},
+		{
 			"name": "CanvasDrawer",
 			"pageSourceFile": "src/main/ets/pages/extend/CanvasDrawer.ets",
 			"buildFunction": "CanvasDrawerBuilder"

@@ -45,9 +45,9 @@
 			{
 				"name": "default",
 				"signingConfig": "default",
-				"compatibleSdkVersion": "5.1.1(19)",
 				"runtimeOS": "HarmonyOS",
-				"targetSdkVersion": "6.0.1(21)",
+				"compatibleSdkVersion": "6.0.1(21)",
+				"targetSdkVersion": "6.0.2(22)",
 				"buildOption": {
 					"strictMode": {
 						"useNormalizedOHMUrl": true
