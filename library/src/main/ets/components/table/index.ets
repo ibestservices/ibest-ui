@@ -10,7 +10,6 @@ import { COMPONENT_NAME, IBestCellPosition, IBestTableColumnData, IBestTableColu
 
 @Extend(Scroll) function ibestTableFixScrollStyle(position: string){
     .scrollBar(BarState.Off)
-    .enableScrollInteraction(false)
     .edgeEffect(EdgeEffect.None)
     .position(position == 'left' ? {left: 0, top: 0} : {right: 0, top: 0})
 }
@@ -90,6 +89,11 @@ export struct IBestTable {
      */
     @Provide({allowOverride: 'sumText'}) sumText: ResourceStr = $r("app.string.ibest_text_sum")
     /**
+     * 滚动条状态
+     * @since 2.2.6
+     */
+    @Prop scrollBarState: BarState = BarState.Auto
+    /**
      * 自定义合计函数
      */
     summaryMethod?: (data: AnyType[], column: IBestTableColumnData) => IBestStringNumber[]
@@ -112,11 +116,19 @@ export struct IBestTable {
     @State headerHeight: number = 0
     @State footerHeight: number = 0
     private headerScroller: Scroller = new Scroller()
+    private headerScrollSource: ScrollSource = -1
     private bodyHorizontalScroller: Scroller = new Scroller()
+    private bodyHorScrollSource: ScrollSource = -1
     private bodyVerticalScroller: Scroller = new Scroller()
+    private bodyVerScrollSource: ScrollSource = -1
     private leftFixedBodyScroller: Scroller = new Scroller()
+    private leftFixedBodyScrollSource: ScrollSource = -1
     private rightFixedBodyScroller: Scroller = new Scroller()
+    private rightFixedBodyScrollSource: ScrollSource = -1
     private footerScroller: Scroller = new Scroller()
+    private footerScrollSource: ScrollSource = -1
+    private scrollSourceList: ScrollSource[] = [ScrollSource.DRAG, ScrollSource.FLING, ScrollSource.OTHER_USER_INPUT, ScrollSource.SCROLL_BAR, ScrollSource.SCROLL_BAR_FLING]
+    private scrollSourceList1: ScrollSource[] = [-1, ScrollSource.SCROLLER, ScrollSource.SCROLLER_ANIMATION]
     private timer: number = -1
 
     @Builder headerBuilder(position: IBestCellPosition){
@@ -125,7 +137,7 @@ export struct IBestTable {
             columnList: this.getColumnList(position),
             isMultiLevelHeader: this.getIsMultiLevelHeader(),
             headerHeight: this.headerHeight,
-            isFirstLevel: true,
+            isFirstLevel: true
 		})
     }
     @Builder bodyBuilder(position: IBestCellPosition){
@@ -137,6 +149,7 @@ export struct IBestTable {
                     rowIndex: index,
                     columnList: this.getColumnList(position),
                     isMultiLevelHeader: this.getIsMultiLevelHeader(),
+                    isFirstLevel: true,
                     spanMethod: this.spanMethod
                 })
             }, (_: AnyType, index: number) => `${generateId()}_${index}`)
@@ -237,6 +250,92 @@ export struct IBestTable {
     getIsMultiLevelHeader(){
         return this.columnList.some(e => e.children.length)
     }
+    setScrollSource(cellType: 'header' | 'left-body' | 'body-ver' | 'body-hor' | 'right-body' | 'footer', scrollSource: ScrollSource){
+        switch (cellType){
+            case 'header':
+                this.headerScrollSource = scrollSource
+                break
+            case 'left-body':
+                this.leftFixedBodyScrollSource = scrollSource
+                break
+            case 'body-ver':
+                this.bodyVerScrollSource = scrollSource
+                break
+            case 'body-hor':
+                this.bodyHorScrollSource = scrollSource
+                break
+            case 'right-body':
+                this.rightFixedBodyScrollSource = scrollSource
+                break
+            case 'footer':
+                this.footerScrollSource = scrollSource
+                break
+        }
+    }
+    onDidScroll(cellType: 'header' | 'left-body' | 'body-ver' | 'body-hor' | 'right-body' | 'footer', offset: number){
+        switch (cellType){
+            case 'header':
+                if(this.scrollSourceList.includes(this.headerScrollSource)){
+                    if(this.scrollSourceList1.includes(this.bodyHorScrollSource)){
+                        this.bodyHorizontalScroller.scrollBy(offset, 0)
+                    }
+                    if(this.showSummary && this.scrollSourceList1.includes(this.footerScrollSource)) {
+                        this.footerScroller.scrollBy(offset, 0)
+                    }
+                }
+                break
+            case 'left-body':
+                if(this.scrollSourceList.includes(this.leftFixedBodyScrollSource)){
+                    if(this.scrollSourceList1.includes(this.bodyVerScrollSource)){
+                        this.bodyVerticalScroller.scrollBy(0, offset)
+                    }
+                    if(this.rightFixedColumnList.length && this.scrollSourceList1.includes(this.rightFixedBodyScrollSource)){
+                        this.rightFixedBodyScroller.scrollBy(0, offset)
+                    }
+                }
+                break
+            case 'body-ver':
+                if(this.scrollSourceList.includes(this.bodyVerScrollSource)) {
+                    if(this.leftFixedColumnList.length && this.scrollSourceList1.includes(this.leftFixedBodyScrollSource)) {
+                        this.leftFixedBodyScroller.scrollBy(0, offset)
+                    }
+                    if(this.rightFixedColumnList.length && this.scrollSourceList1.includes(this.rightFixedBodyScrollSource)) {
+                        this.rightFixedBodyScroller.scrollBy(0, offset)
+                    }
+                }
+                break
+            case 'body-hor':
+                if(this.scrollSourceList.includes(this.bodyHorScrollSource)) {
+                    if(this.scrollSourceList1.includes(this.headerScrollSource)){
+                        this.headerScroller.scrollBy(offset, 0)
+                    }
+                    if(this.showSummary && this.scrollSourceList1.includes(this.footerScrollSource)) {
+                        this.footerScroller.scrollBy(offset, 0)
+                    }
+                }
+                break
+            case 'right-body':
+                if(this.scrollSourceList.includes(this.rightFixedBodyScrollSource)) {
+                    if(this.leftFixedColumnList.length && this.scrollSourceList1.includes(this.leftFixedBodyScrollSource)) {
+                        this.leftFixedBodyScroller.scrollBy(0, offset)
+                    }
+                    if(this.scrollSourceList1.includes(this.bodyVerScrollSource)){
+                        this.bodyVerticalScroller.scrollBy(0, offset)
+                    }
+                }
+                break
+            case 'footer':
+                if(this.scrollSourceList.includes(this.footerScrollSource)){
+                    if(this.scrollSourceList1.includes(this.headerScrollSource)){
+                        this.headerScroller.scrollBy(offset, 0)
+                    }
+                    if(this.scrollSourceList1.includes(this.bodyHorScrollSource)){
+                        this.bodyHorizontalScroller.scrollBy(offset, 0)
+                    }
+                }
+                break
+        }
+    }
 
     build() {
         Column(){
@@ -248,8 +347,16 @@ export struct IBestTable {
                 .align(Alignment.Start)
                 .scrollable(ScrollDirection.Horizontal)
                 .scrollBar(BarState.Off)
-                .enableScrollInteraction(false)
                 .edgeEffect(EdgeEffect.None)
+                .onWillScroll((_: number, _yOffset: number, _scrollState: ScrollState, scrollSource: ScrollSource) => {
+                    this.setScrollSource('header', scrollSource)
+                })
+                .onDidScroll((xOffset: number) => {
+                    this.onDidScroll('header', xOffset)
+                })
+                .onScrollStop(() => {
+                    this.setScrollSource('header', -1)
+                })
                 if(this.leftFixedColumnList.length){
 					this.headerBuilder('left')
                 }
@@ -269,33 +376,39 @@ export struct IBestTable {
                         }
                         .width(CONTAINER_SIZE.FULL)
                         .align(Alignment.Start)
+                        .scrollBar(this.scrollBarState)
                         .scrollable(ScrollDirection.Horizontal)
                         .edgeEffect(EdgeEffect.None)
                         .nestedScroll({
                             scrollForward: NestedScrollMode.SELF_FIRST,
                             scrollBackward: NestedScrollMode.SELF_FIRST
                         })
+                        .onWillScroll((_: number, _yOffset: number, _scrollState: ScrollState, scrollSource: ScrollSource) => {
+                            this.setScrollSource('body-hor', scrollSource)
+                        })
                         .onDidScroll((xOffset: number) => {
-                            this.headerScroller.scrollBy(xOffset, 0)
-                            if(this.showSummary){
-                                this.footerScroller.scrollBy(xOffset, 0)
-                            }
+                            this.onDidScroll('body-hor', xOffset)
+                        })
+                        .onScrollStop(() => {
+                            this.setScrollSource('body-hor', -1)
                         })
                     }
                     .ibestTableFixBodyStyle()
+                    .scrollBar(this.scrollBarState)
                     .scrollable(this.fixHeight || this.maxHeight ? ScrollDirection.Vertical : ScrollDirection.None)
                     .edgeEffect(EdgeEffect.None)
                     .nestedScroll({
                         scrollForward: NestedScrollMode.SELF_FIRST,
                         scrollBackward: NestedScrollMode.SELF_FIRST
                     })
-                    .onDidScroll((_: number, yOffset: number) => {
-                        if(this.leftFixedColumnList.length){
-                            this.leftFixedBodyScroller.scrollBy(0, yOffset)
-                        }
-                        if(this.rightFixedColumnList.length){
-                            this.rightFixedBodyScroller.scrollBy(0, yOffset)
-                        }
+                    .onWillScroll((_: number, _yOffset: number, _scrollState: ScrollState, scrollSource: ScrollSource) => {
+                        this.setScrollSource('body-ver', scrollSource)
+                    })
+                    .onDidScroll((_xOffset: number, yOffset: number) => {
+                        this.onDidScroll('body-ver', yOffset)
+                    })
+                    .onScrollStop(() => {
+                        this.setScrollSource('body-ver', -1)
                     })
                     if(this.leftFixedColumnList.length){
                         Scroll(this.leftFixedBodyScroller){
@@ -303,6 +416,15 @@ export struct IBestTable {
                         }
                         .ibestTableFixBodyStyle()
                         .ibestTableFixScrollStyle('left')
+                        .onWillScroll((_: number, _yOffset: number, _scrollState: ScrollState, scrollSource: ScrollSource) => {
+                            this.setScrollSource('left-body', scrollSource)
+                        })
+                        .onDidScroll((_xOffset: number, yOffset: number) => {
+                            this.onDidScroll('left-body', yOffset)
+                        })
+                        .onScrollStop(() => {
+                            this.setScrollSource('left-body', -1)
+                        })
                     }
                     if(this.rightFixedColumnList.length){
                         Scroll(this.rightFixedBodyScroller) {
@@ -310,6 +432,15 @@ export struct IBestTable {
                         }
                         .ibestTableFixBodyStyle()
                         .ibestTableFixScrollStyle('right')
+                        .onWillScroll((_: number, _yOffset: number, _scrollState: ScrollState, scrollSource: ScrollSource) => {
+                            this.setScrollSource('right-body', scrollSource)
+                        })
+                        .onDidScroll((_xOffset: number, yOffset: number) => {
+                            this.onDidScroll('right-body', yOffset)
+                        })
+                        .onScrollStop(() => {
+                            this.setScrollSource('right-body', -1)
+                        })
                     }
                 }
                 .width(CONTAINER_SIZE.FULL)
@@ -325,8 +456,16 @@ export struct IBestTable {
                         .align(Alignment.Start)
                         .scrollable(ScrollDirection.Horizontal)
                         .scrollBar(BarState.Off)
-                        .enableScrollInteraction(false)
                         .edgeEffect(EdgeEffect.None)
+                        .onWillScroll((_: number, _yOffset: number, _scrollState: ScrollState, scrollSource: ScrollSource) => {
+                            this.setScrollSource('footer', scrollSource)
+                        })
+                        .onDidScroll((xOffset: number) => {
+                            this.onDidScroll('footer', xOffset)
+                        })
+                        .onScrollStop(() => {
+                            this.setScrollSource('footer', -1)
+                        })
                         if(this.leftFixedColumnList.length){
                             this.footerBuilder('left')
                         }
@@ -386,7 +525,7 @@ struct HeaderCellRow{
                 })
             })
         }
-        .height(this.rowHeight || "auto")
+        .height(this.headerHeight || "auto")
         .backgroundColor(this.headerBgColor)
         .position(!this.isFirstLevel || this.cellPosition == 'body' ? undefined : this.cellPosition == 'left' ? {left: 0, top: 0} : {right: 0, top: 0})
         .onAreaChange((oldValue: Area, newValue: Area) => {
@@ -402,8 +541,10 @@ struct BodyCellRow{
 	@Prop @Require cellPosition: IBestCellPosition
 	@Require item: AnyType
 	@Prop @Require rowIndex: number
+    @Prop columnIndex: number
     @ObjectLink columnList: IBestTableColumnInfo[]
     @Prop @Require isMultiLevelHeader: boolean = false
+    @Prop isFirstLevel: boolean = false
     @Consume rowHeightList: number[]
 	@Consume bdColor: ResourceColor
 	@Consume stripe: boolean
@@ -415,14 +556,14 @@ struct BodyCellRow{
 
 	build() {
 		Row(){
-			ForEach(this.columnList, (column: IBestTableColumnInfo, index1: number) => {
+			ForEach(this.columnList, (column: IBestTableColumnInfo, index: number) => {
 				TableCell({
 					cellType: 'body',
 					pos: this.cellPosition,
 					item: this.item,
 					rowIndex: this.rowIndex,
 					column: column,
-					columnIndex: index1,
+					columnIndex: this.columnIndex ?? index,
                     isMultiLevelHeader: this.isMultiLevelHeader,
 					rowHeight: this.rowHeight,
 					headerBuilder: column.headerBuilder,
@@ -436,7 +577,7 @@ struct BodyCellRow{
 		.onAreaChange((oldValue: Area, newValue: Area) => {
             if(oldValue.height != newValue.height){
 				this.rowHeight = newValue.height as number
-                if(this.cellPosition == 'body'){
+                if(this.cellPosition == 'body' && this.isFirstLevel){
                     this.rowHeightList[this.rowIndex] = this.rowHeight
                 }
 			}
@@ -632,21 +773,19 @@ struct TableCell{
                             .height(this.getHeight())
                     }
                     Row(){
-                        if(!(this.column.fixed && this.cellType == 'body' && this.pos == 'body')) {
-                            if(this.cellType == 'header' && this.headerBuilder){
-                                this.headerBuilder({title: this.column.title, prop: this.column.prop}, this.columnIndex)
-                            }else if(this.cellType == 'body' && this.cellBuilder){
-                                this.cellBuilder(this.item, {title: this.column.title, prop: this.column.prop}, this.rowIndex, this.columnIndex)
-                            }else{
-                                Text(this.getText())
-                                    .width(CONTAINER_SIZE.FULL)
-                                    .fontSize(this.cellType == 'header' ? this.headerFontSize : this.cellFontSize)
-                                    .fontColor(this.cellType == 'header' ? this.headerTextColor : this.cellTextColor)
-                                    .fontWeight(this.cellType == 'header' ? 600 : FontWeight.Normal)
-                                    .textAlign(this.getTextAlign())
-                                    .maxLines(1)
-                                    .textOverflow({overflow: TextOverflow.Ellipsis})
-                            }
+                        if(this.cellType == 'header' && this.headerBuilder){
+                            this.headerBuilder({title: this.column.title, prop: this.column.prop}, this.columnIndex)
+                        }else if(this.cellType == 'body' && this.cellBuilder){
+                            this.cellBuilder(this.item, {title: this.column.title, prop: this.column.prop}, this.rowIndex, this.columnIndex)
+                        }else{
+                            Text(this.getText())
+                                .width(CONTAINER_SIZE.FULL)
+                                .fontSize(this.cellType == 'header' ? this.headerFontSize : this.cellFontSize)
+                                .fontColor(this.cellType == 'header' ? this.headerTextColor : this.cellTextColor)
+                                .fontWeight(this.cellType == 'header' ? 600 : FontWeight.Normal)
+                                .textAlign(this.getTextAlign())
+                                .maxLines(1)
+                                .textOverflow({overflow: TextOverflow.Ellipsis})
                         }
                     }
                     .width(this.getWidth())
@@ -674,6 +813,7 @@ struct TableCell{
                         cellPosition: this.pos,
                         item: this.item,
                         rowIndex: this.rowIndex,
+                        columnIndex: this.columnIndex,
                         columnList: this.column.children,
                         isMultiLevelHeader: true,
                         spanMethod: this.spanMethod
