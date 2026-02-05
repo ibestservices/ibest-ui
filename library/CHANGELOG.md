@@ -9,7 +9,7 @@
 5. IBestCard 新增 leftIcon、leftIconColor、leftIconSize、value、valueColor、valueFontSize;
 6. IBestTabs、IBestSegmented 选项支持动态更新;
 7. IBestSegmented options 新增 IBestSegmentedItem 类型;
-8. IBestTable 支持设置多级表头.
+8. IBestTable 新增 scrollBarState 属性, 支持设置多级表头.
 
 #### 优化:
 1. IBestCaliper 性能优化;

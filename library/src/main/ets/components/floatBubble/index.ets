@@ -36,7 +36,8 @@ struct FloatBubbleComponent{
     private positionX: number = 0
     private positionY: number = 0
     private boxWidth: number = 0
-    private bubbleSize: number = 0
+    private bubbleWidth: number = 0
+	private bubbleHeight: number = 0
 	private uiContext: UIContext = this.getUIContext()
 	private panOption: PanGestureOptions = new PanGestureOptions({ distance: 1 })
 	private minX: number = 0
@@ -59,21 +60,23 @@ struct FloatBubbleComponent{
         this.defaultBuilder = this.option.defaultBuilder
         this.setDirection()
 		setTimeout(() => {
-			let boxSize = getComponentsInfo(this.uiContext, `ibest_float_bubble_box_${this.uniId}`)
-			this.bubbleSize = getComponentsInfo(this.uiContext, `ibest_float_bubble_${this.uniId}`).width
+			const boxSize = getComponentsInfo(this.uiContext, `ibest_float_bubble_box_${this.uniId}`)
+			const bubbleSize = getComponentsInfo(this.uiContext, `ibest_float_bubble_${this.uniId}`)
+			this.bubbleWidth = bubbleSize.width
+			this.bubbleHeight = bubbleSize.height
             this.boxWidth = boxSize.width
 			this.minX = this.option.gap ?? 0
-			this.maxX = boxSize.width - this.bubbleSize - this.option.gap
+			this.maxX = boxSize.width - this.bubbleWidth - this.option.gap
 			this.minY = this.option.gap ?? 0
-			this.maxY = boxSize.height - this.bubbleSize - this.option.gap
+			this.maxY = boxSize.height - this.bubbleHeight - this.option.gap
             if(this.option.pos){
                 if(this.option.pos.right != undefined){
-                    this.offsetX = boxSize.width - this.bubbleSize - Math.max(this.option.pos.right, this.option.gap)
+                    this.offsetX = boxSize.width - this.bubbleWidth - Math.max(this.option.pos.right, this.option.gap)
                 }else if(this.option.pos.left != undefined){
                     this.offsetX = Math.max(this.option.pos.left, this.option.gap)
                 }
                 if(this.option.pos.bottom != undefined){
-                    this.offsetY = boxSize.height - this.bubbleSize - Math.max(this.option.pos.bottom, this.option.gap)
+                    this.offsetY = boxSize.height - this.bubbleHeight - Math.max(this.option.pos.bottom, this.option.gap)
                 }else if(this.option.pos.top != undefined){
                     this.offsetY = Math.max(this.option.pos.top, this.option.gap)
                 }
@@ -87,7 +90,7 @@ struct FloatBubbleComponent{
                 this.isReady = true
                 this.autoHide()
             }, 300)
-		}, 50)
+		}, 200)
 	}
 	optionChange(option: Partial<IBestFloatBubbleOption>){
 		mergeObject(this.option, option)
@@ -144,7 +147,7 @@ struct FloatBubbleComponent{
             clearTimeout(this.timer)
             this.timer = setTimeout(() => {
                 this.preX = this.offsetX
-                this.offsetX = this.offsetX < this.maxX/2 ? -this.bubbleSize + this.option.remainSize : this.boxWidth - this.option.remainSize
+                this.offsetX = this.offsetX < this.maxX/2 ? -this.bubbleWidth + this.option.remainSize : this.boxWidth - this.option.remainSize
                 this.isHide = true
                 this.panOption.setDirection(PanDirection.None)
             }, this.option.hideDelay)
@@ -180,8 +183,8 @@ struct FloatBubbleComponent{
                     })
                 }
 			}
-				.width(getSizeByUnit(this.option.bubbleSize))
-				.aspectRatio(1)
+				.width(this.defaultBuilder ? "auto" : getSizeByUnit(this.option.bubbleSize))
+				.aspectRatio(this.defaultBuilder ? undefined : 1)
                 .justifyContent(FlexAlign.Center)
 				.backgroundColor(this.option.bgColor)
 				.position({x: this.offsetX, y: this.offsetY})
