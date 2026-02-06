@@ -221,7 +221,7 @@ export struct IBestFloatBubble{
 	 */
 	@Prop @Require @Watch("showChange") show: boolean = false
 	/**
-	 * 气泡尺寸
+	 * 气泡尺寸, 仅使用非自定义内容时有效
 	 */
 	@Prop bubbleSize: IBestStringNumber = convertDimensionsWidthUnit(48)
 	/**
