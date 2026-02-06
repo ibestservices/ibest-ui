@@ -87,7 +87,7 @@ export struct IBestTable {
     /**
      * 显示摘要行第一列的文本
      */
-    @Provide({allowOverride: 'sumText'}) sumText: ResourceStr = $r("app.string.ibest_text_sum")
+    @Prop sumText: ResourceStr = $r("app.string.ibest_text_sum")
     /**
      * 滚动条状态
      * @since 2.2.6
@@ -96,7 +96,7 @@ export struct IBestTable {
     /**
      * 自定义合计函数
      */
-    summaryMethod?: (data: AnyType[], column: IBestTableColumnData) => IBestStringNumber[]
+    summaryMethod?: (data: AnyType[], column: IBestTableColumnData[]) => IBestStringNumber[]
     /**
      * 合并行列计算方法
      * @since 2.2.5
@@ -111,6 +111,7 @@ export struct IBestTable {
     @State columnList: IBestTableColumnInfo[] = []
     @State leftFixedColumnList: IBestTableColumnInfo[] = []
     @State rightFixedColumnList: IBestTableColumnInfo[] = []
+    @State summaryList: IBestStringNumber[] = []
     @Provide rowHeightList: number[] = Array(this.data.length).fill(0)
     @Provide columnWidthList: number[] = []
     @State headerHeight: number = 0
@@ -162,7 +163,7 @@ export struct IBestTable {
             cellPosition: position,
             columnList: this.getColumnList(position),
             isMultiLevelHeader: this.getIsMultiLevelHeader(),
-            summaryMethod: this.summaryMethod
+            summaryList: this.summaryList
         })
     }
     @Styles ibestTableFixBodyStyle(){
@@ -184,13 +185,14 @@ export struct IBestTable {
         if(column.parentProp){
             this.insertDataByProp(this.columnList, column)
         }else {
-            this.columnList.push(new IBestTableColumnInfo(column))
+            this.columnList.push(new IBestTableColumnInfo(column, this.columnList.length))
         }
         clearTimeout(this.timer)
         this.timer = setTimeout(() => {
             this.leftFixedColumnList = this.columnList.filter(e => (typeof e.fixed == 'boolean' && e.fixed || e.fixed == 'left') && !column.parentProp)
             this.rightFixedColumnList = this.columnList.filter(e => typeof e.fixed == 'string' && e.fixed == 'right' && !column.parentProp)
             this.columnWidthList = Array(this.columnList.length).fill(0)
+            this.getSummaryList()
         }, 0)
     }
     insertDataByProp(list: IBestTableColumnInfo[], data: IBestTableColumnInfo) {
@@ -243,6 +245,55 @@ export struct IBestTable {
     }
     getColumnList(position: IBestCellPosition){
         return position == 'left' ? this.leftFixedColumnList : position == 'right' ? this.rightFixedColumnList : this.columnList
+    }
+    getSummaryList(){
+        if(this.summaryMethod){
+            this.summaryList = this.summaryMethod(this.data, this.columnList.map(e => {
+                const obj: IBestTableColumnData = {
+                    title: e.title,
+                    prop: e.prop
+                }
+                return obj
+            }))
+        }else {
+            this.summaryList = this.getSummary()
+        }
+    }
+    getSummary(){
+        let sums: string[] = []
+        this.columnList.forEach((column, index) => {
+            if (index === 0) {
+                sums[index] = getResourceStr(this.sumText)
+                return
+            }
+            const values = this.data.map((item: AnyType) => Number(item[column.prop]))
+            const precisions: number[] = []
+            let notNumber = true
+            values.forEach((value) => {
+                if (!Number.isNaN(+value)) {
+                    notNumber = false
+                    const decimal = `${value}`.split('.')[1]
+                    precisions.push(decimal ? decimal.length : 0)
+                }
+            })
+            const precision: number = Math.max(...precisions)
+            if (!notNumber) {
+                let sum = values.reduce((prev, curr) => {
+                    const value = Number(curr)
+                    if (!Number.isNaN(+value)) {
+                        return Number.parseFloat(
+                            (prev + curr).toFixed(Math.min(precision, 20))
+                        )
+                    } else {
+                        return prev
+                    }
+                }, 0)
+                sums[index] = sum.toString()
+            } else {
+                sums[index] = ''
+            }
+        })
+        return sums
     }
     getBodyShow(){
         return this.columnWidthList.length && this.columnWidthList.every(e => e > 0) && this.rowHeightList.every(e => e > 0)
@@ -589,51 +640,14 @@ struct BodyCellRow{
 struct FooterCellRow{
     @Prop @Require cellPosition: IBestCellPosition
     @Prop data: AnyType[]
+    @Prop columnIndex: number
     @ObjectLink columnList: IBestTableColumnInfo[]
     @Prop @Require isMultiLevelHeader: boolean = false
-    @Prop summaryList: IBestStringNumber[]
+    @Prop summaryList: IBestStringNumber[] = []
     @Consume bdColor: ResourceColor
-    @Consume sumText: ResourceStr
-    summaryMethod?: (data: AnyType[], column: IBestTableColumnData) => IBestStringNumber[]
 
     @State rowHeight: number = 0
 
-    getSummary(){
-        let sums: string[] = []
-        this.columnList.forEach((column, index) => {
-            if (index === 0) {
-                sums[index] = getResourceStr(this.sumText)
-                return
-            }
-            const values = this.data.map((item: AnyType) => Number(item[column.prop]))
-            const precisions: number[] = []
-            let notNumber = true
-            values.forEach((value) => {
-                if (!Number.isNaN(+value)) {
-                    notNumber = false
-                    const decimal = `${value}`.split('.')[1]
-                    precisions.push(decimal ? decimal.length : 0)
-                }
-            })
-            const precision: number = Math.max(...precisions)
-            if (!notNumber) {
-                let sum = values.reduce((prev, curr) => {
-                    const value = Number(curr)
-                    if (!Number.isNaN(+value)) {
-                        return Number.parseFloat(
-                            (prev + curr).toFixed(Math.min(precision, 20))
-                        )
-                    } else {
-                        return prev
-                    }
-                }, 0)
-                sums[index] = sum.toString()
-            } else {
-                sums[index] = ''
-            }
-        })
-        return sums
-    }
     build() {
         Row(){
             ForEach(this.columnList, (column: IBestTableColumnInfo, index: number) => {
@@ -641,10 +655,10 @@ struct FooterCellRow{
                     cellType: 'footer',
                     pos: this.cellPosition,
                     column: column,
-                    columnIndex: index,
+                    columnIndex: column.index ?? index,
                     isMultiLevelHeader: this.isMultiLevelHeader,
                     rowHeight: this.rowHeight,
-                    summaryList: this.summaryList || (this.summaryMethod ? this.summaryMethod(this.data, column) : this.getSummary())
+                    summaryList: this.summaryList
                 })
             })
         }
@@ -667,6 +681,8 @@ struct TableCell{
     @ObjectLink column: IBestTableColumnInfo
     @Prop @Require columnIndex: number = 0
     @Prop isMultiLevelHeader: boolean = false
+    @Prop summaryList: IBestStringNumber[] = []
+	@Prop @Require rowHeight: number
     @Consume @Watch("rowHeightChange") rowHeightList: number[]
     @Consume @Watch("columnWidthChange") columnWidthList: number[]
     @Consume headerFontSize: IBestStringNumber
@@ -679,8 +695,6 @@ struct TableCell{
     @Consume stripe: boolean
     @Consume stripeBgColor: ResourceColor
     @Consume cellBgColor: ResourceColor
-    @Prop summaryList: IBestStringNumber[]
-	@Prop @Require rowHeight: number
     spanMethod: (row: AnyType, column: IBestTableColumnData, rowIndex: number, columnIndex: number) => number[] = () => [1,1]
     @BuilderParam headerBuilder: (column: IBestTableColumnData, columnIndex: number) => void
     @BuilderParam cellBuilder: (row: AnyType, column: IBestTableColumnData, rowIndex: number, columnIndex: number) => void
@@ -821,6 +835,7 @@ struct TableCell{
                 }else {
                     FooterCellRow({
                         cellPosition: this.pos,
+                        columnIndex: this.columnIndex,
                         columnList: this.column.children,
                         isMultiLevelHeader: true,
                         summaryList: this.summaryList

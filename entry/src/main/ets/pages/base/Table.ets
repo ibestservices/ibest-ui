@@ -257,7 +257,7 @@ struct TablePage {
 							IBestTableColumn({ tableId: this.tableId7, title: "数量2", prop: "amount2", cellWidth: 100 })
 							IBestTableColumn({ tableId: this.tableId7, title: "数量3", prop: "amount3", cellWidth: 100 })
 							IBestTableColumn({ tableId: this.tableId7, title: "数量4", prop: "amount4", cellWidth: 100 })
-							IBestTableColumn({ tableId: this.tableId7, title: "数量5", prop: "amount5", cellWidth: 100 })
+							IBestTableColumn({ tableId: this.tableId7, title: "数量5", prop: "amount5", cellWidth: 100, fixed: "right" })
 						}
 					}
 				}
