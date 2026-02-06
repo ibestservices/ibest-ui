@@ -162,11 +162,8 @@ struct FloatBubblePage {
             IBestFloatBubble({
                 show: this.bubbleShow1,
                 dragAxis: "xy",
-                pos: {right: 0, bottom: 100},
-                bubbleShadow: {
-                    radius: 14,
-                    color: "#333"
-                }
+                bgColor: Color.Transparent,
+                pos: {right: 0, bottom: 100}
             }){
                 this.customBubble()
             }

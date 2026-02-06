@@ -81,7 +81,7 @@ export struct IBestTabBar{
     /**
      * 图标大小
      */
-    @Provide({'allowOverride': 'iconSize'}) iconSize: IBestStringNumber = 22
+    @Provide({'allowOverride': 'iconSize'}) iconSize: IBestStringNumber = convertDimensionsWidthUnit(22)
     /**
      * 文字大小
      */
@@ -105,7 +105,7 @@ export struct IBestTabBar{
     /**
      * 切换标签前的回调函数
      */
-    beforeChange?: (name: IBestStringNumber) => IBestAwaitable
+    beforeChange?: (active: IBestStringNumber) => IBestAwaitable
     /**
      * 切换事件
      */

@@ -188,7 +188,7 @@ struct FloatBubbleComponent{
                 .justifyContent(FlexAlign.Center)
 				.backgroundColor(this.option.bgColor)
 				.position({x: this.offsetX, y: this.offsetY})
-				.borderRadius(this.option.shape == 'circle' ? this.baseStyle.borderRadiusMax : getSizeByUnit(this.option.radius))
+				.borderRadius(!this.defaultBuilder && this.option.shape == 'circle' ? this.baseStyle.borderRadiusMax : getSizeByUnit(this.option.radius))
                 .shadow(this.option.bubbleShadow)
                 .visibility(this.isReady ? Visibility.Visible : Visibility.Hidden)
 				.id(`ibest_float_bubble_${this.uniId}`)
@@ -225,7 +225,7 @@ export struct IBestFloatBubble{
 	 */
 	@Prop bubbleSize: IBestStringNumber = convertDimensionsWidthUnit(48)
 	/**
-	 * 气泡样式类型
+	 * 气泡样式类型, 仅使用非自定义内容时有效
 	 */
 	@Prop shape: IBestShape = "circle"
 	/**

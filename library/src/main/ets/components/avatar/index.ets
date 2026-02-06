@@ -104,12 +104,12 @@ export struct IBestAvatar{
      * 徽标水平方向偏移量
      * @since 2.2.6
      */
-    @Prop xOffset: number = 0
+    @Prop xOffset: Dimension = 0
     /**
      * 徽标垂直方向偏移量
      * @since 2.2.6
      */
-    @Prop yOffset: number = 0
+    @Prop yOffset: Dimension = 0
     /**
      * 头像点击事件
      */
