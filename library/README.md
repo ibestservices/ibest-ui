@@ -19,7 +19,7 @@
 ## 介绍
 
 <a href="https://ibestui.ibestservices.com/" target="_blank">IBest-UI</a>
-由 <a href="https://www.ibestservices.com" target="_blank">安徽百得思维信息科技有限公司</a> 开源，是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库，包含 Button、Calendar、Form、Field、Picker、Popup、Toast、Dialog、ImageCropper 等60+个优质组件，上手简单，使用方便，可大大提高鸿蒙开发者的开发效率。
+由 <a href="https://www.ibestservices.com" target="_blank">安徽百得思维信息科技有限公司</a> 开源，是一个**轻量、简单易用、可定制主题、支持深色模式和浅色模式**的鸿蒙开源UI组件库，包含 Button、Calendar、Form、Field、Picker、Popup、Toast、Dialog、ImageCropper 等70+个优质组件，上手简单，使用方便，可大大提高鸿蒙开发者的开发效率。
 
 目前 <a href="https://www.ibestservices.com" target="_blank" title="安徽百得思维信息科技有限公司">ibestservices 官方</a> 提供了 <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui')">V1</a> 和 <a style="color:#0366d6;" onclick="openPage('https://ohpm.openharmony.cn/#/cn/detail/@ibestservices%2Fibest-ui-v2')">V2</a> 版本，当前为状态管理 **V1** 版本，开发者可根据自己项目使用的**状态管理版本**选择对应的版本进行开发，官方推荐使用V2。
 
@@ -54,6 +54,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 ## 组件库版本与编辑器版本对应关系
 | 组件库版本     | 编辑器版本          |
 |:----------|:---------------|
+| v2.2.6及以上 | `6.0.1(21)` 以上 |
 | v2.2.0及以上 | `5.1.1(19)` 以上 |
 | v2.1.4及以上 | `5.0.5(17)` 以上 |
 | v2.0.8及以上 | `5.0.3(15)` 以上 |
@@ -148,6 +149,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 | Pagination 分页 | 数据量过多时，采用分页的形式将数据分隔，每次只加载一个页面。 | <a href="https://ibestui.ibestservices.com/components/pagination/" target="_blank">文档</a> |
 | SideBar 侧边导航  | 垂直展示的导航栏，用于在不同的内容区域之间进行切换。     | <a href="https://ibestui.ibestservices.com/components/sideBar/" target="_blank">文档</a>    |
 | Tab 标签页       | 选项卡组件，用于在不同的内容区域之间进行切换。        | <a href="https://ibestui.ibestservices.com/components/tab/" target="_blank">文档</a>        |
+| Tabbar 标签栏    | 底部导航栏，用于在不同页面之间进行切换。           | <a href="https://ibestui.ibestservices.com/components/tabBar/" target="_blank">文档</a>     |
 
 ### 业务组件
 | 组件                   | 介绍                |                                                                                               |

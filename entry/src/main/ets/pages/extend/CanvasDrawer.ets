@@ -82,85 +82,79 @@ struct CanvasDrawerPage {
 			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '基础用法' }) {
-						Column({space: SPACE.SM}){
-							Image(this.pixelMap)
-								.width(this.canvasWidth)
-								.height(160)
-							if(this.pixelMap){
-								Row({space: SPACE.XS}){
-									SaveButton({
-										text: SaveDescription.SAVE_IMAGE,
-										buttonType: ButtonType.Capsule
-									}).onClick((event: ClickEvent, result: SaveButtonOnClickResult) => {
-										if (result == SaveButtonOnClickResult.SUCCESS) {
-											this.saveImg(this.pixelMap)
-										}
-									})
-									IBestButton({
-										text: "分享",
-										btnWidth: 100,
-										btnHeight: 40,
-										round: true,
-										onBtnClick: () => {
-											shareImage(this.context, this.pixelMap!)
-										}
-									})
-								}
-							}
-						}
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '自定义背景' }) {
-						Column({space: SPACE.XS}){
-							Image(this.pixelMap1)
-								.width(this.canvasWidth)
-								.height(100)
-							Image(this.pixelMap2)
-								.width(this.canvasWidth)
-								.height(100)
-							Image(this.pixelMap3)
-								.width(this.canvasWidth)
-								.height(100)
-						}
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '图片样式' }) {
-						Column({space: SPACE.XS}){
-							Image(this.pixelMap4)
-								.width(this.canvasWidth)
-								.height(this.canvasHeight)
-							if(this.pixelMap5){
-								Image(this.pixelMap5)
-									.width(this.canvasWidth)
-									.height(this.canvasHeight)
-							}
-							if(!this.imgList.length){
-								Row(){
-									IBestUploader({
-										fileList: $imgList,
-										max: 1,
-										onChange: (fileList: IBestUploaderFile[]) => {
-											this.contentList2 = [
-												{type: "image", url: fileList[0].previewUri, width: 100, height: 120, left: 20, top: 20},
-												{type: "text", text: $r("app.string.app_name"), left: 70, top: 80, fontColor: "#ed4040"}
-											]
-											this.canvasShow5 = true
-										}
-									})
-								}.padding(SPACE.XS).backgroundColor(modeColor.bg2)
-							}else{
+					ComponentShowContainer({ title: '基础用法', space: SPACE.SM }) {
+						Image(this.pixelMap)
+							.width(this.canvasWidth)
+							.height(160)
+						if(this.pixelMap){
+							Row({space: SPACE.XS}){
+								SaveButton({
+									text: SaveDescription.SAVE_IMAGE,
+									buttonType: ButtonType.Capsule
+								}).onClick((event: ClickEvent, result: SaveButtonOnClickResult) => {
+									if (result == SaveButtonOnClickResult.SUCCESS) {
+										this.saveImg(this.pixelMap)
+									}
+								})
 								IBestButton({
-									text: "重选",
-									type: "primary",
+									text: "分享",
+									btnWidth: 100,
+									btnHeight: 40,
+									round: true,
 									onBtnClick: () => {
-										this.imgList = []
-										this.pixelMap5 = null
+										shareImage(this.context, this.pixelMap!)
 									}
 								})
 							}
+						}
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '自定义背景', space: SPACE.XS }) {
+						Image(this.pixelMap1)
+							.width(this.canvasWidth)
+							.height(100)
+						Image(this.pixelMap2)
+							.width(this.canvasWidth)
+							.height(100)
+						Image(this.pixelMap3)
+							.width(this.canvasWidth)
+							.height(100)
+					}
+				}
+				ListItem() {
+					ComponentShowContainer({ title: '图片样式', space: SPACE.XS }) {
+						Image(this.pixelMap4)
+							.width(this.canvasWidth)
+							.height(this.canvasHeight)
+						if(this.pixelMap5){
+							Image(this.pixelMap5)
+								.width(this.canvasWidth)
+								.height(this.canvasHeight)
+						}
+						if(!this.imgList.length){
+							Row(){
+								IBestUploader({
+									fileList: $imgList,
+									max: 1,
+									onChange: (fileList: IBestUploaderFile[]) => {
+										this.contentList2 = [
+											{type: "image", url: fileList[0].previewUri, width: 100, height: 120, left: 20, top: 20},
+											{type: "text", text: $r("app.string.app_name"), left: 70, top: 80, fontColor: "#ed4040"}
+										]
+										this.canvasShow5 = true
+									}
+								})
+							}.padding(SPACE.XS).backgroundColor(modeColor.bg2)
+						}else{
+							IBestButton({
+								text: "重选",
+								type: "primary",
+								onBtnClick: () => {
+									this.imgList = []
+									this.pixelMap5 = null
+								}
+							})
 						}
 					}
 				}

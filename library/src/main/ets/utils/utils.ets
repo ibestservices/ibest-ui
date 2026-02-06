@@ -5,10 +5,10 @@ import GlobalStore from './globalStore'
 import { util } from '@kit.ArkTS'
 import { image } from '@kit.ImageKit'
 import { IBestGlobalConfig } from '../model/GlobalConfig'
-import { request } from "@kit.BasicServicesKit"
 import { buffer } from "@kit.ArkTS"
 import fs from '@ohos.file.fs'
 import { common } from '@kit.AbilityKit'
+import { http } from '@kit.NetworkKit'
 
 /**
  * 休眠
@@ -247,13 +247,13 @@ export function convertDimensionsWidthUnit(val: number, isFont?: boolean): strin
 /**
  * base64 转 pixelMap
  */
-export async function base64ToPixelMap(base64: string): Promise<PixelMap> {
+export async function base64ToPixelMap(base64: string, options?: image.DecodingOptions): Promise<PixelMap> {
 	const reg = new RegExp('data:image/\\w+;base64,')
 	const base64Str = base64.replace(reg, '')
-	let base64Helper = new util.Base64Helper()
-	let arrayBuffer = base64Helper.decodeSync(base64Str).buffer as ArrayBuffer
-	let imageSource = image.createImageSource(arrayBuffer)
-	return await imageSource.createPixelMap()
+	const base64Helper = new util.Base64Helper()
+	const arrayBuffer = base64Helper.decodeSync(base64Str).buffer as ArrayBuffer
+	const imageSource = image.createImageSource(arrayBuffer)
+	return await imageSource.createPixelMap(options)
 }
 /**
  * 获取Resource字符串
@@ -287,23 +287,18 @@ export async function handleBeforeFunction(fn?: (...funArgs: AnyType[]) => IBest
 /**
  * 处理地址并写入沙箱
  */
-export async function dealUrlToSandbox(context: common.UIAbilityContext, url: ResourceStr, path: string, cb?: () => void) {
+export async function dealUrlToSandbox(context: common.UIAbilityContext, url: ResourceStr, path: string) {
 	try {
 		fs.unlinkSync(path)
 	}catch(e){}
 	if (typeof url == 'string') {
 		if (url.startsWith("http")) { // 网络图片
-			let task = await request.agent.create(context, {
-				action: request.agent.Action.DOWNLOAD,
-				url,
-				overwrite: true,
-				saveas: path
+			const data = await http.createHttp().request(url, {
+				method: http.RequestMethod.GET,
+				expectDataType: http.HttpDataType.ARRAY_BUFFER,
+				maxLimit: 100*1024*1024
 			})
-			task.on('completed', () => {
-				cb && cb()
-			})
-			await task.start()
-			return
+			writeBufferToSandBox(path, data.result as ArrayBuffer)
 		}else if(url.startsWith("data:image")) { // base64
 			let base64 = url.replace(/^data:image\/\w+;base64,/, "")
 			let dataBuffer = buffer.from(base64, 'base64')

@@ -119,109 +119,106 @@ struct ImageCropperPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '在线图片' }) {
-						Column({ space: 20 }) {
-							IBestImageCropper({
-								componentHeight: 300,
-								url: this.initImg1,
-								controller: this.controller1
-							})
-							IBestButton({
-								type: "primary",
-								text: "获取结果",
-								onBtnClick: () => {
-									this.controller1.getResult(res => {
-										this.previewUrl = res
-										this.showResult()
-									})
-								}
-							})
-						}
+					ComponentShowContainer({ title: '在线图片', space: SPACE.MD }) {
+						IBestImageCropper({
+							componentHeight: 300,
+							url: this.initImg1,
+							controller: this.controller1
+						})
+						IBestButton({
+							type: "primary",
+							text: "获取结果",
+							onBtnClick: () => {
+								this.controller1.getResult(res => {
+									this.previewUrl = res
+									this.showResult()
+								})
+							}
+						})
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '其他操作' }) {
-						Column({ space: 20 }) {
-							IBestImageCropper({
-								componentHeight: 500,
-								url: this.initImg2,
-								centerWidth: 260,
-								centerHeight: 260,
-								maxScale: 3,
-								enableRotate: this.enableRotate,
-								maxAngle: 45,
-								controller: this.controller2
-							})
-							Row({ space: 14 }){
-								Text("缩放比例")
-								Row(){
-									IBestSlider({
-										value: $curScale,
-										min: 1,
-										max: 3,
-										step: 0.01,
-										onTouchMove: (value) => {
-											this.controller2.setScale(value as number)
-										}
-									})
-								}.layoutWeight(1)
-							}
-							Row({ space: 14 }){
-								Text("开启旋转")
-								IBestSwitch({
-									value: $enableRotate,
-									onChange: () => {
-										this.curAngle = 0
+					ComponentShowContainer({ title: '其他操作', space: SPACE.MD }) {
+						IBestImageCropper({
+							componentHeight: 500,
+							url: this.initImg2,
+							centerWidth: 260,
+							centerHeight: 260,
+							maxScale: 3,
+							enableRotate: this.enableRotate,
+							maxAngle: 45,
+							controller: this.controller2
+						})
+						Row({ space: 14 }){
+							Text("缩放比例")
+							Row(){
+								IBestSlider({
+									value: $curScale,
+									min: 1,
+									max: 3,
+									step: 0.01,
+									onTouchMove: (value) => {
+										this.controller2.setScale(value as number)
+									},
+									onChange: (value) => {
+										this.controller2.setScale(value as number)
 									}
 								})
-							}.width("100%")
-							Row({ space: 14 }){
-								Text("旋转角度")
-								Row() {
-									IBestSlider({
-										value: $curAngle,
-										min: -45,
-										max: 45,
-										step: 1,
-										onTouchMove: (value) => {
-											this.controller2.setAngle(value as number)
-										}
-									})
-								}.layoutWeight(1)
-							}
-							.visibility(this.enableRotate ? Visibility.Visible : Visibility.None)
-							IBestButton({
-								type: "primary",
-								text: "获取结果",
-								onBtnClick: () => {
-									this.controller2.getResult(res => {
-										this.previewUrl = res
-										this.showResult()
-									})
+							}.layoutWeight(1)
+						}
+						Row({ space: 14 }){
+							Text("开启旋转")
+							IBestSwitch({
+								value: $enableRotate,
+								onChange: () => {
+									this.curAngle = 0
 								}
 							})
+						}.width("100%")
+						Row({ space: 14 }){
+							Text("旋转角度")
+							Row() {
+								IBestSlider({
+									value: $curAngle,
+									min: -45,
+									max: 45,
+									step: 1,
+									onTouchMove: (value) => {
+										this.controller2.setAngle(value as number)
+									}
+								})
+							}.layoutWeight(1)
 						}
+						.visibility(this.enableRotate ? Visibility.Visible : Visibility.None)
+						IBestButton({
+							type: "primary",
+							text: "获取结果",
+							onBtnClick: () => {
+								this.controller2.getResult(res => {
+									this.previewUrl = res
+									this.showResult()
+								})
+							}
+						})
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '自定义样式' }) {
-						Column({ space: 20 }) {
-							IBestImageCropper({
-								componentHeight: 500,
-								url: this.initImg3,
-								controller: this.controller3,
-								shape: 'circle',
-								centerWidth: 260
-							})
-							IBestButton({
-								type: "primary",
-								text: "获取结果",
-								onBtnClick: async () => {
-									this.previewUrl = await this.controller3.getResult()
-									this.showResult()
-								}
-							})
-						}
+					ComponentShowContainer({ title: '自定义样式', space: SPACE.MD }) {
+						IBestImageCropper({
+							componentHeight: 500,
+							url: this.initImg3,
+							controller: this.controller3,
+							shape: 'circle',
+							centerWidth: 260
+						})
+						IBestButton({
+							type: "primary",
+							text: "获取结果",
+							onBtnClick: async () => {
+								this.previewUrl = await this.controller3.getResult()
+								this.showResult()
+							}
+						})
 					}
 				}
 				ListItem().height(50)

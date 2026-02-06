@@ -334,6 +334,10 @@ struct Index {
 				{
 					name: $r("app.string.component_tab"),
 					path: "Tab"
+				},
+				{
+					name: $r("app.string.component_tabBar"),
+					path: "TabBar"
 				}
 			]
 		}
@@ -691,7 +695,7 @@ struct Index {
 		this.getUiVersion()
 		this.showCommentDialog()
 		// setTimeout(() => {
-		//     RouterUtil.push("InputTag")
+		//     RouterUtil.push("Table")
 		// }, 100)
 	}
 	aboutToDisappear(): void {
@@ -736,7 +740,7 @@ struct Index {
 			RouterUtil.push("Doc")
 		} else {
 			let res = type == 'ucharts' ? $r("app.string.ucharts_url") : $r("app.string.company_url")
-			let url = this.context.resourceManager.getStringSync(res)
+			let url = this.context.resourceManager.getStringSync(res.id)
 			let want: Want = {
 				action: "ohos.want.action.viewData",
 				entities: ["entity.system.browsable"],

@@ -9,6 +9,9 @@ import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 
 @Component
 export struct IBestPullRefresh {
+	/**
+	 * 全局公共样式
+	 */
 	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	/**
 	 * 是否处于加载状态
@@ -131,7 +134,6 @@ export struct IBestPullRefresh {
   	 */
 	scroller: Scroller = new Scroller()
 
-	@State uniId: number = 0
 	@State scrollTop: number = 0
 	@State isAtEnd: boolean = false
 	@Provide transY: number = 0
@@ -139,7 +141,6 @@ export struct IBestPullRefresh {
 	@Provide refreshStatus: PullRefreshStatus = "normal"
 	@State headSize: number = 0
 	@State bottomSize: number = 0
-	private uiContext = this.getUIContext()
 	private flag: boolean = false
 
 	@Builder textTip(){
@@ -155,16 +156,6 @@ export struct IBestPullRefresh {
 		}
 	}
 
-	aboutToAppear(): void {
-		this.uniId = this.getUniqueId()
-		setTimeout(() => {
-			this.headSize = getComponentsInfo(this.uiContext, `ibest_pull_up_${this.uniId}`).height
-			this.bottomSize = getComponentsInfo(this.uiContext, `ibest_pull_down_${this.uniId}`).height
-			if(this.loading){
-				this.autoPull()
-			}
-		}, 50)
-	}
 	autoPull(){
 		this.setRefreshStatus(this.headSize, true)
 		this.onRefresh("pull")
@@ -184,7 +175,6 @@ export struct IBestPullRefresh {
 		}
 		return distance > 0 ? Math.round(absValue) : -Math.round(absValue)
 	}
-	// 设置刷新状态
 	setRefreshStatus(distance: number, isLoading?: boolean){
 		let absValue = Math.abs(distance)
 		this.transY = distance
@@ -264,81 +254,88 @@ export struct IBestPullRefresh {
 	build() {
 		Column(){
 			Column(){
-				Row({ space: 10 }){
+				Row({ space: this.baseStyle.spaceXsm }){
 					Row(){
 						if(this.pullingContent){
 							this.pullingContent({ distance: this.transY })
 						}else{
 							this.textTip()
 						}
-					}.visibility(this.refreshStatus == "pulling" ? Visibility.Visible : Visibility.None)
+					}.visibility(this.actionType == "pull" && this.refreshStatus == "pulling" ? Visibility.Visible : Visibility.None)
 					Row(){
 						if(this.loosingContent){
 							this.loosingContent({ distance: this.transY })
 						}else{
 							this.textTip()
 						}
-					}.visibility(this.refreshStatus == "loosing" ? Visibility.Visible : Visibility.None)
+					}.visibility(this.actionType == "pull" && this.refreshStatus == "loosing" ? Visibility.Visible : Visibility.None)
 					Row(){
 						if(this.loadingContent){
 							this.loadingContent()
 						}else{
 							this.textTip()
 						}
-					}.visibility(this.refreshStatus == "loading" ? Visibility.Visible : Visibility.None)
+					}.visibility(this.actionType == "pull" && this.refreshStatus == "loading" ? Visibility.Visible : Visibility.None)
 					Row(){
 						if(this.successContent){
 							this.successContent()
 						}else{
 							this.textTip()
 						}
-					}.visibility(this.refreshStatus == "success" ? Visibility.Visible : Visibility.None)
+					}.visibility(this.actionType == "pull" && this.refreshStatus == "success" ? Visibility.Visible : Visibility.None)
 				}
 				.width(CONTAINER_SIZE.FULL)
 				.height(getSizeByUnit(this.headHeight))
 				.justifyContent(FlexAlign.Center)
 				.position({ x: 0, y: 0 })
-				.translate({ y: "-100%" })
-				.id(`ibest_pull_up_${this.uniId}`)
+				.translate({ y: "-" + CONTAINER_SIZE.FULL })
+				.onAreaChange((oldVal: Area, newVal: Area) => {
+					this.headSize = newVal.height as number
+					if(oldVal.height <= 0 && this.loading){
+						this.autoPull()
+					}
+				})
 				if(this.defaultContent){
 					this.defaultContent()
 				}
-				Row({ space: 10 }){
+				Row({ space: this.baseStyle.spaceXsm }){
 					Row(){
 						if(this.slidingUpContent){
 							this.slidingUpContent({ distance: Math.abs(this.transY) })
 						}else{
 							this.textTip()
 						}
-					}.visibility(this.refreshStatus == "pulling" ? Visibility.Visible : Visibility.None)
+					}.visibility(this.actionType == "slideUp" && this.refreshStatus == "pulling" ? Visibility.Visible : Visibility.None)
 					Row(){
 						if(this.slideUpLoosingContent){
 							this.slideUpLoosingContent({ distance: Math.abs(this.transY) })
 						}else{
 							this.textTip()
 						}
-					}.visibility(this.refreshStatus == "loosing" ? Visibility.Visible : Visibility.None)
+					}.visibility(this.actionType == "slideUp" && this.refreshStatus == "loosing" ? Visibility.Visible : Visibility.None)
 					Row(){
 						if(this.slideUpLoadingContent){
 							this.slideUpLoadingContent()
 						}else{
 							this.textTip()
 						}
-					}.visibility(this.refreshStatus == "loading" ? Visibility.Visible : Visibility.None)
+					}.visibility(this.actionType == "slideUp" && this.refreshStatus == "loading" ? Visibility.Visible : Visibility.None)
 					Row(){
 						if(this.slideUpSuccessContent){
 							this.slideUpSuccessContent()
 						}else{
 							this.textTip()
 						}
-					}.visibility(this.refreshStatus == "success" ? Visibility.Visible : Visibility.None)
+					}.visibility(this.actionType == "slideUp" && this.refreshStatus == "success" ? Visibility.Visible : Visibility.None)
 				}
 				.width(CONTAINER_SIZE.FULL)
 				.height(getSizeByUnit(this.bottomHeight))
 				.justifyContent(FlexAlign.Center)
 				.position({ left: 0, bottom: 0 })
-				.translate({ y: "100%" })
-				.id(`ibest_pull_down_${this.uniId}`)
+				.translate({ y: CONTAINER_SIZE.FULL })
+				.onAreaChange((_: Area, newVal: Area) => {
+					this.bottomSize = newVal.height as number
+				})
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.translate({ y: this.transY })
@@ -359,7 +356,6 @@ export struct IBestPullRefresh {
 			)
 		}
 		.width(CONTAINER_SIZE.FULL)
-		.height(CONTAINER_SIZE.FULL)
 		.clip(true)
 	}
 }

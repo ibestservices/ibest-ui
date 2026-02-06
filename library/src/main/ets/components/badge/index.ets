@@ -51,6 +51,16 @@ export struct IBestBadge {
      */
 	@Prop iconColor: ResourceColor
 	/**
+	 * 徽标水平方向偏移量
+	 * @since 2.2.6
+	 */
+	@Prop xOffset: Dimension = 0
+	/**
+	 * 徽标垂直方向偏移量
+	 * @since 2.2.6
+     */
+	@Prop yOffset: Dimension = 0
+	/**
 	 * 自定义内容
 	 */
 	@BuilderParam defaultBuilder: CustomBuilder
@@ -68,23 +78,23 @@ export struct IBestBadge {
 		switch (this.badgePosition){
 			case 'top-left':
 				return {
-					left: 0,
-					top: 0
+					left: this.xOffset,
+					top: this.yOffset
 				}
 			case 'top-right':
 				return {
-					right: 0,
-					top: 0
+					right: this.xOffset,
+					top: this.yOffset
 				}
 			case 'bottom-left':
 				return {
-					left: 0,
-					bottom: 0
+					left: this.xOffset,
+					bottom: this.yOffset
 				}
 			case 'bottom-right':
 				return {
-					right: 0,
-					bottom: 0
+					right: this.xOffset,
+					bottom: this.yOffset
 				}
 		}
 	}
@@ -114,10 +124,10 @@ export struct IBestBadge {
 	}
 	build() {
 		Row() {
-			if (this.defaultBuilder) {
+			if(this.defaultBuilder) {
 				this.defaultBuilder()
 			}
-			if(this.icon){
+			if(this.icon) {
 				IBestIcon({
 					name: this.icon,
 					iconSize: this.iconSize,
@@ -125,7 +135,7 @@ export struct IBestBadge {
 				})
 					.position(this.getPosition())
 					.translate(this.getTranslate())
-			} else if (this.dot) {
+			}else if(this.dot) {
 				Text()
 					.width(convertDimensionsWidthUnit(8))
 					.aspectRatio(1)
@@ -133,7 +143,7 @@ export struct IBestBadge {
 					.backgroundColor(this.color)
 					.position(this.getPosition())
 					.translate(this.getTranslate())
-			} else if(this.isShow()) {
+			}else if(this.isShow()) {
 				Text(this.getContent())
 					.constraintSize({ minWidth: convertDimensionsWidthUnit(16) })
 					.fontColor(IBestBadgeColor.textColor)

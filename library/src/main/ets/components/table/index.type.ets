@@ -36,6 +36,10 @@ export class IBestTableColumnData {
 }
 class IBestTableColumnType extends IBestTableColumnData {
 	/**
+	 * 列索引
+     */
+	index?: number = undefined
+	/**
 	 * 列是否显示
 	 */
 	show: boolean = true
@@ -60,6 +64,14 @@ class IBestTableColumnType extends IBestTableColumnData {
 	 */
 	fixed: boolean | 'left' | 'right' = false
 	/**
+	 * 父标题属性
+     */
+	parentProp: string = ""
+	/**
+	 * 子列
+     */
+	children: IBestTableColumnInfo[] = []
+	/**
 	 * 格式化函数
 	 */
 	formatter?: (row: AnyType, column: IBestTableColumnData, rowIndex: number, columnIndex: number) => string
@@ -74,8 +86,9 @@ class IBestTableColumnType extends IBestTableColumnData {
 }
 @Observed
 export class IBestTableColumnInfo extends IBestTableColumnType {
-	constructor(value: IBestTableColumnType) {
+	constructor(value: IBestTableColumnType, index?: number) {
 		super()
+		this.index = index
 		this.show = value.show
 		this.title = value.title
 		this.prop = value.prop
@@ -84,6 +97,7 @@ export class IBestTableColumnInfo extends IBestTableColumnType {
 		this.cellAlign = value.cellAlign
 		this.headerAlign = value.headerAlign
 		this.fixed = value.fixed
+		this.parentProp = value.parentProp
 		this.formatter = value.formatter
 		this.headerBuilder = value.headerBuilder
 		this.cellBuilder = value.cellBuilder

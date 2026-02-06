@@ -89,7 +89,7 @@ struct PullRefreshPage {
 			}.height("100%")
 		}else if(type == 3){
 			Column(){
-				ForEach(this.arr.slice(0, 7), (item: string) => {
+				ForEach(this.arr.slice(0, 4), (item: string) => {
 					Text('' + item)
 						.width('70%')
 						.height(80)

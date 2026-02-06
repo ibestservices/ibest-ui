@@ -1,5 +1,20 @@
 # 版本记录
 
+## 2.2.6 - 6.0.1(21)
+#### 新增:
+1. 新增 IBestTabBar 标签栏 组件;
+2. IBestCell 新增 valueFontSize 属性;
+3. IBestSearch 新增 caretColor属性;
+4. IBestBadge、IBestAvatar 新增 xOffset、yOffset 属性;
+5. IBestCard 新增 leftIcon、leftIconColor、leftIconSize、value、valueColor、valueFontSize;
+6. IBestTabs、IBestSegmented 选项支持动态更新;
+7. IBestSegmented options 新增 IBestSegmentedItem 类型;
+8. IBestTable 新增 scrollBarState 属性, 支持设置多级表头.
+
+#### 优化:
+1. IBestCaliper 性能优化;
+2. IBestPullRefresh 内容高度优化.
+
 ## 2.2.5
 #### 新增:
 1. 新增 IBestWeekPicker 周选择 组件;

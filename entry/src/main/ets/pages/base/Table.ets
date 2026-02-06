@@ -38,6 +38,13 @@ class TableData2{
 		this.number = number
 	}
 }
+interface TableData3{
+	name: string
+	info1: string
+	info3: string
+	info4: string
+	info5: string
+}
 
 @Entry
 @Component
@@ -66,6 +73,11 @@ struct TablePage {
 		UIUtils.makeObserved(new TableData2("数据1", 10)),
 		UIUtils.makeObserved(new TableData2("数据2", 20))
 	]
+	@State data4: TableData3[] = [
+		{ name: 'IBest-UI', info1: '开源', info3: '轻量', info4: "易用", info5: "主题定制" },
+		{ name: 'IBest-UI', info1: '开源', info3: '轻量', info4: "易用", info5: "主题定制" },
+		{ name: 'IBest-UI', info1: '开源', info3: '轻量', info4: "易用", info5: "主题定制" }
+	]
 
 	@State tableId1: string = "table1"
 	@State tableId2: string = "table2"
@@ -77,6 +89,7 @@ struct TablePage {
 	@State tableId7: string = "table7"
 	@State tableId8: string = "table8"
 	@State tableId9: string = "table9"
+	@State tableId10: string = "table10"
 	@Builder headerBuilder(column: IBestTableColumnData, columnIndex: number){
 		Row({space: SPACE.BASE}){
 			Text(column.title).fontSize(14)
@@ -125,7 +138,7 @@ struct TablePage {
 				return [0, 0]
 			}
 		}
-		// 合并奇数行的第三列和第四列
+		// 合并偶数行的第三列和第四列
 		if (rowIndex % 2 === 0) {
 			if (columnIndex === 2) {
 				return [1, 2]
@@ -185,20 +198,18 @@ struct TablePage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '动态显示列' }) {
-						Column({space: SPACE.SM}){
-							IBestButton({
-								type: "primary",
-								text: "切换日期列显示",
-								onBtnClick: () => {
-									this.showDate = !this.showDate
-								}
-							})
-							IBestTable({ tableId: this.tableId4, data: this.data }){
-								IBestTableColumn({ tableId: this.tableId4, title: "日期", prop: "date", cellWidth: 100, show: this.showDate })
-								IBestTableColumn({ tableId: this.tableId4, title: "名称", prop: "name", cellWidth: 70 })
-								IBestTableColumn({ tableId: this.tableId4, title: "描述", prop: "desc" })
+					ComponentShowContainer({ title: '动态显示列', space: SPACE.SM }) {
+						IBestButton({
+							type: "primary",
+							text: "切换日期列显示",
+							onBtnClick: () => {
+								this.showDate = !this.showDate
 							}
+						})
+						IBestTable({ tableId: this.tableId4, data: this.data }){
+							IBestTableColumn({ tableId: this.tableId4, title: "日期", prop: "date", cellWidth: 100, show: this.showDate })
+							IBestTableColumn({ tableId: this.tableId4, title: "名称", prop: "name", cellWidth: 70 })
+							IBestTableColumn({ tableId: this.tableId4, title: "描述", prop: "desc" })
 						}
 					}
 				}
@@ -246,7 +257,7 @@ struct TablePage {
 							IBestTableColumn({ tableId: this.tableId7, title: "数量2", prop: "amount2", cellWidth: 100 })
 							IBestTableColumn({ tableId: this.tableId7, title: "数量3", prop: "amount3", cellWidth: 100 })
 							IBestTableColumn({ tableId: this.tableId7, title: "数量4", prop: "amount4", cellWidth: 100 })
-							IBestTableColumn({ tableId: this.tableId7, title: "数量5", prop: "amount5", cellWidth: 100 })
+							IBestTableColumn({ tableId: this.tableId7, title: "数量5", prop: "amount5", cellWidth: 100, fixed: "right" })
 						}
 					}
 				}
@@ -290,7 +301,26 @@ struct TablePage {
 						}
 					}
 				}
-				ListItem().height(50)
+				ListItem() {
+					ComponentShowContainer({ title: '多级表头' }) {
+						IBestTable({ tableId: this.tableId10, data: this.data4 }){
+							IBestTableColumn({ tableId: this.tableId10, title: "名称", prop: "name", cellWidth: 70, fixed: true })
+							IBestTableColumn({
+								tableId: this.tableId10,
+								title: "详细信息",
+								prop: "detail",
+								cellWidth: 150,
+								headerBuilder: (column: IBestTableColumnData, columnIndex: number): void => this.headerBuilder(column, columnIndex),
+							})
+							IBestTableColumn({ tableId: this.tableId10, title: "信息1", prop: "info1", parentProp: "detail", cellWidth: 50 })
+							IBestTableColumn({ tableId: this.tableId10, title: "信息2", prop: "info2", parentProp: "detail" })
+							IBestTableColumn({ tableId: this.tableId10, title: "信息3", prop: "info3", parentProp: "info2", cellWidth: 50 })
+							IBestTableColumn({ tableId: this.tableId10, title: "信息4", prop: "info4", parentProp: "info2" })
+							IBestTableColumn({ tableId: this.tableId10, title: "信息5", prop: "info5", cellWidth: 200 })
+						}
+					}
+				}
+				ListItem().height(100)
 			}
 			.layoutWeight(1)
 			.padding({ left: SPACE.SM, right: SPACE.SM })

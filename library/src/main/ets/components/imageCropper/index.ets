@@ -133,9 +133,7 @@ export struct IBestImageCropper {
 		}
 		this.resetParams()
 		let path = `${this.pageContext.cacheDir}/ibestImageCropper_${this.uniId}.jpg`
-		await dealUrlToSandbox(this.pageContext, this.url, path, () => {
-			this.getImageInfo(path)
-		})
+		await dealUrlToSandbox(this.pageContext, this.url, path)
 		this.getImageInfo(path)
 	}
 	// 获取图片信息

@@ -168,7 +168,7 @@ export { IBestRollingTextController } from './src/main/ets/components/rollingTex
 export { IBestSectorProgress } from './src/main/ets/components/sectorProgress/index'
 
 export { IBestSegmented } from './src/main/ets/components/segmented/index'
-export { IBestSegmentedOption } from './src/main/ets/components/segmented/index.type'
+export { IBestSegmentedOption, IBestSegmentedItem } from './src/main/ets/components/segmented/index.type'
 
 export { IBestSkeleton, IBestSkeletonParagraph } from './src/main/ets/components/skeleton/index'
 export { IBestSkeletonType } from './src/main/ets/components/skeleton/index.type'
@@ -196,6 +196,8 @@ export { IBestSideBarItem } from './src/main/ets/components/sideBarItem/index'
 
 export { IBestTabs } from './src/main/ets/components/tab/index'
 export { IBestTabItem, IBestTabItemType } from './src/main/ets/components/tab/index.type'
+
+export { IBestTabBar, IBestTabBarItem } from './src/main/ets/components/tabBar/index'
 
 export { IBestCanvasDrawer } from './src/main/ets/components/canvasDrawer/index'
 export { IBestCanvasContent } from './src/main/ets/components/canvasDrawer/index.type'

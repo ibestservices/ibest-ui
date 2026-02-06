@@ -2,13 +2,9 @@ import { IBestStorageKey, IBestStringNumber } from "../../model/Global.type"
 import { getDefaultBaseStyle } from "../../theme-chalk/src"
 import { CONTAINER_SIZE } from "../../theme-chalk/src/container"
 import { IBestUIBaseStyleObjType } from "../../theme-chalk/src/index.type"
-import { addNumber, convertDimensionsWidthUnit, getComponentsInfo, getSizeByUnit, measureTextSize } from "../../utils/utils"
+import { addNumber, convertDimensionsWidthUnit, getSizeByUnit, measureTextSize } from "../../utils/utils"
 import { IBestCaliperColor } from "./color"
-import { IBestCaliperScale } from "./index.type"
-
-const MOMENTUM_TIME = 300
-const MOMENTUM_DISTANCE = 15
-const swipeDuration = 150
+import { IBestCaliperScale, IBestCaliperScaleSource } from "./index.type"
 
 @Component
 export struct IBestCaliper{
@@ -87,166 +83,66 @@ export struct IBestCaliper{
     /**
      * 刻度间距
      */
-    @Prop scaleSpace: IBestStringNumber = convertDimensionsWidthUnit(10)
+    @Prop scaleSpace: IBestStringNumber = this.baseStyle.spaceXsm as string
     /**
      * 刻度变化回调
      */
     onChange: (value: number) => void = () => {}
 
-    @State scaleList: IBestCaliperScale[] = []
-    @State contentWidth: number = 0
     @State realActiveWidth: number = 0
-    @State transX: number = 0
-    @State isReady: boolean = false
-    private uniId: number = 0
+    @State scaleList: IBestCaliperScaleSource = new IBestCaliperScaleSource([])
     private uiContext = this.getUIContext()
-    private touchStartTime: number = 0
-    private startOffset: number = 0
-    private momentumOffset: number = 0
+    private listScroller: ListScroller = new ListScroller()
+    private panOption: PanGestureOptions = new PanGestureOptions({ direction: PanDirection.Left | PanDirection.Right })
     private flag: boolean = false
 
     aboutToAppear(): void {
-        this.uniId = this.getUniqueId()
-        this.init()
-    }
-    init(){
         this.initScaleList()
-        setTimeout(() => {
-            this.realActiveWidth = getComponentsInfo(this.uiContext, `ibest_caliper_active_width_${this.uniId}`).width
-            this.getScaleLeftList()
-        }, 100)
     }
-    // 初始化刻度列表
     initScaleList(){
         let list: IBestCaliperScale[] = []
         const scaleSize = this.scales * this.scaleSize
         for (let i = this.startNum; i <= this.endNum; i = addNumber(i, this.scaleSize)) {
             list.push({
                 value: i,
-                isBig: i % scaleSize === 0,
-                localLeft: 0
+                isBig: i % scaleSize === 0
             })
         }
-        this.scaleList = list
+        this.scaleList = new IBestCaliperScaleSource(list)
+        if(this.value != this.startNum){
+            setTimeout(() => {
+                this.updateIndex()
+            })
+        }
     }
-    // 获取刻度左边距列表
-    getScaleLeftList() {
-        this.scaleList.forEach(e => {
-            let info = getComponentsInfo(this.uiContext, `ibest_caliper_item_${this.uniId}_${e.value}`)
-            e.localLeft = info.localLeft
-        })
-        this.updateTransX()
-        setTimeout(() => {
-            this.isReady = true
-        }, swipeDuration)
-    }
-    // value变化
     valueChange(){
-        if(this.flag){  // 内部更新
-            this.flag = false
-        }else { // 外部更新
-            this.updateTransX()
+        if(!this.flag){
+            this.updateIndex()
         }
     }
-    // 更新transX
-    updateTransX() {
-        let info = this.scaleList.find(item => item.value === this.value)
-        if(info){
-            this.transX = -info.localLeft
-        }
-    }
-    // 获取字体高度
     getFontHeight() {
         return measureTextSize(this.uiContext, {
             textContent: "0",
             fontSize: this.fontSize
         }).height
     }
-    // 通过偏移量获取索引
-    getIndexByOffset(offset: number) {
-        const arr = this.scaleList.map(item => item.localLeft)
-        const n = this.scaleList.length
-        if (offset <= arr[0]) return 0
-        if (offset >= arr[n - 1]) return n - 1
-        // 二分查找找插入位置
-        let left = 0
-        let right = n - 1
-        while (left < right - 1) {
-            const mid = Math.floor((left + right) / 2)
-            if (arr[mid] < offset) {
-                left = mid
-            } else {
-                right = mid
-            }
-        }
-        // 此时 left 和 right 相邻，比较两个位置哪个更接近
-        const leftDiff = Math.abs(arr[left] - offset)
-        const rightDiff = Math.abs(arr[right] - offset)
-        return leftDiff <= rightDiff ? left : right
-    }
-    // 手指接触屏幕
-    onTouchStart(){
-        this.startOffset = this.transX
-        this.touchStartTime = Date.now()
-        this.momentumOffset = this.startOffset
-    }
-    // 手指移动
-    onTouchMove(event: GestureEvent): void {
-        let bl = event.offsetX
-        let newOffset = this.startOffset + bl
-        let list = this.scaleList
-        if(bl > 0 && newOffset > list[0].localLeft){    // 右滑
-            newOffset = list[0].localLeft
-        }else if(bl < 0 && newOffset < - list[list.length-1].localLeft){// 左滑
-            newOffset = - list[list.length-1].localLeft
-        }
-        const now = Date.now()
-        if (now - this.touchStartTime > MOMENTUM_TIME) {
-            this.touchStartTime = now
-            this.momentumOffset = newOffset
-        }
-        this.transX = newOffset
-        const index = this.getIndexByOffset(Math.abs(newOffset))
-        const value = list[index].value
-        if(value !== this.value){
-            this.flag = true
-            this.value = value
+    updateIndex() {
+        let index = this.scaleList.getAll().findIndex(item => item.value === this.value)
+        if(index > -1){
+            this.listScroller.scrollToIndex(index, true, ScrollAlign.CENTER)
         }
     }
-    // 手指离开
-    onTouchEnd(): void {
-        let offset = this.transX
-        const list = this.scaleList
-        const distance = offset - this.momentumOffset
-        const duration = Date.now() - this.touchStartTime
-        const startMomentum = duration < MOMENTUM_TIME && Math.abs(distance) > MOMENTUM_DISTANCE
-        if (startMomentum) {	// 惯性滑动
-            const speed = Math.abs(distance / duration)
-            offset = offset + (speed / 0.3) * (distance < 0 ? -1 : 1)
-        }
-        const index = this.getIndexByOffset(Math.abs(offset))
-        const value = list[index].value
-        this.transX = -this.scaleList[index].localLeft
-        if(this.value !== value){
-            this.flag = true
-            this.value = value
-            setTimeout(() => {
-                this.onChange(this.value)
-            }, swipeDuration)
+    onScroll(index: number){
+        if(this.flag){
+            const i = index < 0 ? 0 : index > this.scaleList.totalCount() - 1 ? this.scaleList.totalCount() - 1 : index
+            this.value = this.scaleList.getData(i).value
         }
     }
 
     build() {
-        Scroll(){
-            Row({space: getSizeByUnit(this.scaleSpace)}) {
-                Row()
-                    .width(getSizeByUnit(this.activeScaleWidth))
-                    .height(1)
-                    .position({left: 0, top: 0})
-                    .opacity(0)
-                    .zIndex(-1)
-                    .id(`ibest_caliper_active_width_${this.uniId}`)
-                ForEach(this.scaleList, (item: IBestCaliperScale) => {
+        List({ space: getSizeByUnit(this.scaleSpace), scroller: this.listScroller }) {
+            LazyForEach(this.scaleList, (item: IBestCaliperScale, index: number) => {
+                ListItem() {
                     Row(){
                         Row()
                             .width(getSizeByUnit(this.value === item.value ? this.activeScaleWidth : item.isBig ? this.bigScaleWidth : this.smallScaleWidth))
@@ -259,44 +155,45 @@ export struct IBestCaliper{
                                 .fontSize(getSizeByUnit(this.fontSize, true))
                                 .fontWeight(this.value === item.value ? this.activeFontWeight : "")
                                 .position({left: this.value === item.value ? this.realActiveWidth / 2 : 0, bottom: -5})
-                                .translate({x: "-50%", y: "100%"})
+                                .translate({x: "-50%", y: CONTAINER_SIZE.FULL})
+                        }
+                        if(index == 0){
+                            Row()
+                                .width(getSizeByUnit(this.activeScaleWidth))
+                                .height(1)
+                                .position({left: 0, top: 0})
+                                .opacity(0)
+                                .zIndex(-1)
+                                .onAreaChange((_, newVal) => {
+                                    this.realActiveWidth = newVal.width as number
+                                })
                         }
                     }
-                    .id(`ibest_caliper_item_${this.uniId}_${item.value}`)
-                })
-            }
-            .translate({ x: this.transX + this.contentWidth/2 })
-            .alignItems(this.scaleAlign == 'top' ? VerticalAlign.Top : this.scaleAlign == 'bottom' ? VerticalAlign.Bottom : VerticalAlign.Center)
-            .padding({bottom: this.getFontHeight() + 5})
-            .animation({
-                duration: this.isReady ? swipeDuration : 0,
-                curve: Curve.Ease
-            })
-            .gesture(
-                PanGesture({
-                    fingers: 1,
-                    direction: PanDirection.Horizontal,
-                    distance: 1
-                })
-                    .onActionStart(() => {
-                        this.onTouchStart()
-                    })
-                    .onActionUpdate((event: GestureEvent) => {
-                        this.onTouchMove(event)
-                    })
-                    .onActionEnd(() => {
-                        this.onTouchEnd()
-                    })
-            )
+                    .padding({bottom: this.getFontHeight() + 5})
+                }
+            }, (item: IBestCaliperScale) => item.value.toString())
         }
         .width(CONTAINER_SIZE.FULL)
-        .scrollable(ScrollDirection.None)
-        .enableScrollInteraction(false)
-        .clip(true)
         .backgroundColor(this.bgColor)
-        .opacity(this.isReady ? 1 : 0)
-        .onAreaChange((_, newVal) => {
-            this.contentWidth = newVal.width as number
+        .scrollBar(BarState.Off)
+        .chainAnimation(true)
+        .edgeEffect(EdgeEffect.None)
+        .listDirection(Axis.Horizontal)
+        .scrollSnapAlign(ScrollSnapAlign.CENTER)
+        .alignListItem(this.scaleAlign == 'center' ? ListItemAlign.Center : this.scaleAlign == 'bottom' ? ListItemAlign.End : ListItemAlign.Start)
+        // api22 更新
+        // .scrollSnapAnimationSpeed(ScrollSnapAnimationSpeed.SLOW)
+        .onScrollIndex((_start: number, _: number, centerIndex: number) => {
+            this.onScroll(centerIndex)
         })
+        .onScrollStop(() => {
+            this.flag = false
+        })
+        .parallelGesture(
+            PanGesture(this.panOption)
+                .onActionUpdate(() => {
+                    this.flag = true
+                })
+        )
     }
 }

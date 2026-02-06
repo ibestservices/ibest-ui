@@ -473,6 +473,14 @@
 			"value": "$color:ibest_text_color"
 		},
 		{
+			"name": "ibest_tabBar_background",
+			"value": "$color:ibest_background_2"
+		},
+		{
+			"name": "ibest_tabBar_text_color",
+			"value": "$color:ibest_text_color"
+		},
+		{
 			"name": "ibest_table_header_background",
 			"value": "$color:ibest_background_2"
 		},

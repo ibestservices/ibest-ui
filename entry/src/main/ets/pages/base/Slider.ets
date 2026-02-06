@@ -37,41 +37,37 @@ struct SliderPage {
 			CustomNavBar({title: this.title})
 			List() {
 				ListItem() {
-					ComponentShowContainer({ title: '基础用法' }) {
-						Column({ space: 20 }){
-							IBestSlider({
-								value: $value,
-								onChange: (val) => {
-									IBestToast.show(val.toString())
-								}
-							})
-							IBestSlider({
-								value: $value,
-								reverse: true,
-								onChange: (val) => {
-									IBestToast.show(val.toString())
-								}
-							})
-						}
+					ComponentShowContainer({ title: '基础用法', space: SPACE.MD }) {
+						IBestSlider({
+							value: $value,
+							onChange: (val) => {
+								IBestToast.show(val.toString())
+							}
+						})
+						IBestSlider({
+							value: $value,
+							reverse: true,
+							onChange: (val) => {
+								IBestToast.show(val.toString())
+							}
+						})
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '双滑块' }) {
-						Column({ space: 20 }){
-							IBestSlider({
-								value: $value1,
-								onChange: (val) => {
-									IBestToast.show(val.toString())
-								}
-							})
-							IBestSlider({
-								value: $value1,
-								reverse: true,
-								onChange: (val) => {
-									IBestToast.show(val.toString())
-								}
-							})
-						}
+					ComponentShowContainer({ title: '双滑块', space: SPACE.MD }) {
+						IBestSlider({
+							value: $value1,
+							onChange: (val) => {
+								IBestToast.show(val.toString())
+							}
+						})
+						IBestSlider({
+							value: $value1,
+							reverse: true,
+							onChange: (val) => {
+								IBestToast.show(val.toString())
+							}
+						})
 					}
 				}
 				ListItem() {

@@ -102,48 +102,47 @@ struct CalendarPage {
                 ListItem() {
                     ComponentShowContainer({ title: '自定义日历', titlePaddingLeft: SPACE.XS }) {
                         IBestCellGroup() {
-                            Column() {
-                                IBestCell({
-                                    title: '自定义颜色',
-                                    value: this.customColorDate.join(","),
-                                    isLink: true,
-                                    onCellClick: () => {
-                                        this.customColorVisible = true
-                                    }
-                                })
-                                IBestCell({
-                                    title: '显示农历',
-                                    value: this.lunarDate,
-                                    isLink: true,
-                                    onCellClick: () => {
-                                        this.lunarVisible = true
-                                    }
-                                })
-                                IBestCell({
-                                    title: '自定义日期范围',
-                                    value: this.customRangeDate.join(","),
-                                    isLink: true,
-                                    onCellClick: () => {
-                                        this.customRangeVisible = true
-                                    }
-                                })
-                                IBestCell({
-                                    title: '日期区间最大范围',
-                                    value: this.rangeNumDate.length ? this.rangeNumDate[0] + " - " + this.rangeNumDate[this.rangeNumDate.length-1] : "",
-                                    isLink: true,
-                                    onCellClick: () => {
-                                        this.rangeNumVisible = true
-                                    }
-                                })
-                                IBestCell({
-                                    title: '自定义周起始日期',
-                                    value: this.customWeekDate,
-                                    isLink: true,
-                                    onCellClick: () => {
-                                        this.customWeekVisible = true
-                                    }
-                                })
-                                IBestCell({
+                            IBestCell({
+                                title: '自定义颜色',
+                                value: this.customColorDate.join(","),
+                                isLink: true,
+                                onCellClick: () => {
+                                    this.customColorVisible = true
+                                }
+                            })
+                            IBestCell({
+                                title: '显示农历',
+                                value: this.lunarDate,
+                                isLink: true,
+                                onCellClick: () => {
+                                    this.lunarVisible = true
+                                }
+                            })
+                            IBestCell({
+                                title: '自定义日期范围',
+                                value: this.customRangeDate.join(","),
+                                isLink: true,
+                                onCellClick: () => {
+                                    this.customRangeVisible = true
+                                }
+                            })
+                            IBestCell({
+                                title: '日期区间最大范围',
+                                value: this.rangeNumDate.length ? this.rangeNumDate[0] + " - " + this.rangeNumDate[this.rangeNumDate.length-1] : "",
+                                isLink: true,
+                                onCellClick: () => {
+                                    this.rangeNumVisible = true
+                                }
+                            })
+                            IBestCell({
+                                title: '自定义周起始日期',
+                                value: this.customWeekDate,
+                                isLink: true,
+                                onCellClick: () => {
+                                    this.customWeekVisible = true
+                                }
+                            })
+                            IBestCell({
                                     title: '显示月份背景水印',
                                     value: this.waterBgDate,
                                     isLink: true,
@@ -152,7 +151,6 @@ struct CalendarPage {
                                         this.waterBgVisible = true
                                     }
                                 })
-                            }
                         }
                     }
                 }

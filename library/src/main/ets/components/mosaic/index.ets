@@ -64,14 +64,10 @@ export struct IBestMosaic {
     getMskPixel(){
         this.uiContext.getComponentSnapshot().createFromBuilder(() => {
             this.mskContent()
-        }, this.delay, true, { waitUntilRenderFinished: true }).then((pixmap: PixelMap) => {
-            this.mskPixelMap = applyMosaicToImage(pixmap, this.blockSize)
+        }, this.delay, true, { waitUntilRenderFinished: true }).then(async (pixmap: PixelMap) => {
+            this.mskPixelMap = await applyMosaicToImage(pixmap, this.blockSize)
             this.isReady = true
-        }).catch(() => {
-            setTimeout(() => {
-                this.getMskPixel()
-            }, 50)
-        })
+        }).catch(() => {})
     }
 
     build() {
@@ -80,6 +76,7 @@ export struct IBestMosaic {
             Image(this.mskPixelMap)
                 .width(this.contentWidth)
                 .height(this.contentHeight)
+                .draggable(false)
                 .objectFit(ImageFit.Fill)
                 .borderRadius(this.radius)
                 .visibility(this.showMosaic ? Visibility.Visible : Visibility.None)

@@ -10,8 +10,23 @@ export interface IBestCaliperScale {
      * 是否是大刻度
      */
     isBig: boolean
-    /**
-     * 左边距
-     */
-    localLeft: number
+}
+
+export class IBestCaliperScaleSource implements IDataSource {
+    private list: IBestCaliperScale[] = []
+
+    constructor(list: IBestCaliperScale[]) {
+        this.list = list
+    }
+    totalCount(): number {
+        return this.list.length
+    }
+    getData(index: number) {
+        return this.list[index]
+    }
+    getAll(){
+        return this.list
+    }
+    registerDataChangeListener(): void {}
+    unregisterDataChangeListener(): void {}
 }

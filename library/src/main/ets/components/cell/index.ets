@@ -23,6 +23,11 @@ export struct IBestCell {
 	 */
 	@Prop titleColor: ResourceColor = IBestCellColor.titleColor
 	/**
+	 * 标题文字大小
+	 * @since 2.1.2
+	 */
+	@Prop titleFontSize: IBestStringNumber = ""
+	/**
 	 * 右侧内容
 	 */
 	@Prop value: ResourceStr = ''
@@ -31,6 +36,11 @@ export struct IBestCell {
 	 */
 	@Prop valueColor: ResourceColor = IBestCellColor.valueColor
 	/**
+	 * 内容的文字大小
+	 * @since 2.2.6
+     */
+	@Prop valueFontSize: IBestStringNumber = ""
+	/**
 	 * 标题下方的描述信息
 	 */
 	@Prop label: ResourceStr = ''
@@ -38,6 +48,11 @@ export struct IBestCell {
 	 * 描述的文字颜色 默认 #969799
 	 */
 	@Prop labelColor: ResourceColor = IBestCellColor.labelColor
+	/**
+	 * 标题下方的描述信息文字大小
+	 * @since 2.1.2
+	 */
+	@Prop labelFontSize: IBestStringNumber = ""
 	/**
 	 * 是否显示底部边框
 	 */
@@ -147,16 +162,6 @@ export struct IBestCell {
 	 */
 	@Prop disabled: boolean = false
 	/**
-	 * 标题文字大小
-	 * @since 2.1.2
-     */
-	@Prop titleFontSize: IBestStringNumber = ""
-	/**
-	 * 标题下方的描述信息文字大小
-	 * @since 2.1.2
-     */
-	@Prop labelFontSize: IBestStringNumber = ""
-	/**
 	 * 单元格padding
 	 * @since 2.1.3
      */
@@ -190,7 +195,6 @@ export struct IBestCell {
 	onCellClick: () => void = () => {}
 
 	@State borderRight: number = 0
-	// 根据arrow direction获取图标旋转角度
 	private arrowDirection2RotateDegMap: Record<string, number> = {
 		[ARROW_DIRECTION.RIGHT]: 0,
 		[ARROW_DIRECTION.TOP]: -90,
@@ -219,15 +223,13 @@ export struct IBestCell {
 		let rightInfo = getComponentsInfo(this.uiContext, `ibest_cell_right_${this.uniId}`)
 		this.borderRight = fullWidth - rightInfo.width - rightInfo.localLeft
 	}
-
-	// 根据size获取单元格的尺寸
 	getCellSize() {
 		const cellSize = this.cellSize;
 		switch (cellSize) {
 			case SIZE.LARGE:
-				return new CellSizeData(convertDimensionsWidthUnit(14), this.titleFontSize || this.baseStyle.fontSizeLg as string, this.labelFontSize || this.baseStyle.fontSizeMd as string)
+				return new CellSizeData(convertDimensionsWidthUnit(14), this.titleFontSize || this.baseStyle.fontSizeLg as string, this.labelFontSize || this.baseStyle.fontSizeMd as string, this.valueFontSize || this.baseStyle.fontSizeLg as string)
 			default:
-				return new CellSizeData(this.baseStyle.spaceSm as string, this.titleFontSize || this.baseStyle.fontSizeMd as string, this.labelFontSize || this.baseStyle.fontSizeSm as string)
+				return new CellSizeData(this.baseStyle.spaceSm as string, this.titleFontSize || this.baseStyle.fontSizeMd as string, this.labelFontSize || this.baseStyle.fontSizeSm as string, this.valueFontSize || this.baseStyle.fontSizeMd as string)
 		}
 	}
 	getArrowRotateAngle() {
@@ -293,7 +295,7 @@ export struct IBestCell {
 						} else {
 							Text(this.value)
 								.textAlign(TextAlign.Start)
-								.fontSize(getSizeByUnit(this.getCellSize().fontSize, true))
+								.fontSize(getSizeByUnit(this.getCellSize().valueFontSize, true))
 								.fontColor(this.valueColor)
 						}
 					}.justifyContent(FlexAlign.End).layoutWeight(1)

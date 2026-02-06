@@ -52,7 +52,7 @@ export class IBestDropdownMenuContentType{
     index?: number = 0
     value?: IBestStringNumber = ''
     title?: ResourceStr = ''
-    options?: IBestDropdownMenuOption[] = []
+    options: IBestDropdownMenuOption[] = []
     maxHeight?: IBestStringNumber = ''
     disabled?: boolean = false
     defaultBuilder?: CustomBuilder
@@ -69,7 +69,7 @@ export class IBestDropdownMenuContentParams extends IBestDropdownMenuContentType
         if(val){
             this.value = val.value
             this.title = val.title
-            this.options = val.options
+            this.options = val.options || []
             this.maxHeight = val.maxHeight
             this.disabled = val.disabled
             this.defaultBuilder = val.defaultBuilder
@@ -88,4 +88,21 @@ export class IBestDropdownMenuController {
      * 关闭所有菜单
      */
     close: () => void = () => {}
+}
+export class IBestDropdownMenuSource implements IDataSource {
+    private list: IBestDropdownMenuOption[] = []
+    constructor(list: IBestDropdownMenuOption[]) {
+        this.list = list
+    }
+    totalCount(): number {
+        return this.list.length
+    }
+    getData(index: number) {
+        return this.list[index]
+    }
+    getAll(){
+        return this.list
+    }
+    registerDataChangeListener(): void {}
+    unregisterDataChangeListener(): void {}
 }

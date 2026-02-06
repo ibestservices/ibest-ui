@@ -357,6 +357,10 @@
 			"value": "Tab"
 		},
 		{
+			"name": "component_tabBar",
+			"value": "TabBar"
+		},
+		{
 			"name": "component_canvasDrawer",
 			"value": "CanvasDrawer"
 		},

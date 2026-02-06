@@ -36,27 +36,24 @@ struct SkeletonPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '展示子组件' }){
-						Column({ space: SPACE.SM}){
-							IBestSwitch({
-								value: $loading
-							})
-							IBestSkeleton({
-								avatar: true,
-								loading: this.loading
-							}){
-								Row({space: SPACE.SM}){
-									Image($r("app.media.app_icon")).width(32).aspectRatio(1)
-									Column({space: SPACE.SM}){
-										Text("关于IBest-UI")
-										Text($r("app.string.app_desc"))
-									}
-									.layoutWeight(1)
-									.alignItems(HorizontalAlign.Start)
-								}.alignItems(VerticalAlign.Top)
-							}
+					ComponentShowContainer({ title: '展示子组件', space: SPACE.SM }){
+						IBestSwitch({
+							value: $loading
+						})
+						IBestSkeleton({
+							avatar: true,
+							loading: this.loading
+						}){
+							Row({space: SPACE.SM}){
+								Image($r("app.media.app_icon")).width(32).aspectRatio(1)
+								Column({space: SPACE.SM}){
+									Text("关于IBest-UI")
+									Text($r("app.string.app_desc"))
+								}
+								.layoutWeight(1)
+								.alignItems(HorizontalAlign.Start)
+							}.alignItems(VerticalAlign.Top)
 						}
-						.alignItems(HorizontalAlign.Start)
 					}
 				}
 				ListItem() {

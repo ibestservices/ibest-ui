@@ -1,16 +1,20 @@
 import { buffer } from '@kit.ArkTS'
 import { image } from '@kit.ImageKit'
+import { base64ToPixelMap } from '../../utils/utils'
 
-export function applyMosaicToImage(pixel: PixelMap, blockSize: number): PixelMap {
+export async function applyMosaicToImage(pixel: PixelMap, blockSize: number) {
     const imageInfo = pixel.getImageInfoSync()
-    const mosaicPixelMap = applyMosaic(pixel, imageInfo, blockSize)
+    const mosaicPixelMap = await applyMosaic(pixel, imageInfo, blockSize)
     return mosaicPixelMap
 }
 
-function applyMosaic(pixelMap: image.PixelMap, imageInfo: image.ImageInfo, blockSize: number): PixelMap {
-    const mosaicPixelMap = image.createPixelMapSync({
-        size: imageInfo.size
-    })
+async function applyMosaic(pixelMap: image.PixelMap, imageInfo: image.ImageInfo, blockSize: number) {
+    const decodingOpts: image.DecodingOptions = {
+        editable: true,
+        desiredSize: imageInfo.size,
+        desiredPixelFormat: image.PixelMapFormat.RGBA_8888
+    }
+    const mosaicPixelMap = await base64ToPixelMap('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAANSURBVBhXY/j/fw8DAwAA/wD/b6y2ZgAAAABJRU5ErkJggg==', decodingOpts)
     const bufferSize = pixelMap.getPixelBytesNumber()
     const readBuffer = new ArrayBuffer(bufferSize)
     pixelMap.readPixelsToBufferSync(readBuffer)

@@ -13,10 +13,6 @@ export struct IBestSearch {
 	 * 全局公共样式
 	 */
 	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
-	// 是否聚焦
-	@State isFocus: boolean = false
-	// 清除锁
-	@State clearLock: boolean = false
 	/**
 	 * 左侧文本
 	 */
@@ -128,6 +124,11 @@ export struct IBestSearch {
      */
 	@Prop outPadding: Padding | Length | LocalizedPadding
 	/**
+	 * 光标颜色
+	 * @since 2.2.6
+	 */
+	@Prop caretColor: ResourceColor = ""
+	/**
 	 * 自定义右侧按钮
 	 */
 	@BuilderParam customRightButton: CustomBuilder
@@ -155,6 +156,9 @@ export struct IBestSearch {
 	 * 右侧按钮点击回调
 	 */
 	onRightButtonClick: () => void = () => {}
+
+	@State isFocus: boolean = false
+	@State clearLock: boolean = false
 
 	clear(){
 		this.clearLock = true
@@ -190,6 +194,7 @@ export struct IBestSearch {
 							size: this.textFontSize
 						})
 						.placeholderColor(this.placeholderColor)
+						.caretColor(this.caretColor)
 						.backgroundColor("transparent")
 						.enableAutoFill(false)
 						.defaultFocus(this.autoFocus)
@@ -261,8 +266,8 @@ export struct IBestSearch {
 		.padding(this.outPadding ? getSizeByUnit(this.outPadding) : {
 			left: this.baseStyle.spaceSm,
 			right: this.customRightButton || this.showRightButton ? 0 : this.baseStyle.spaceSm,
-			top: convertDimensionsWidthUnit(10),
-			bottom: convertDimensionsWidthUnit(10)
+			top: this.baseStyle.spaceXsm,
+			bottom: this.baseStyle.spaceXsm
 		})
 		.backgroundColor(this.outBgColor)
 		.enabled(!this.disabled)

@@ -5,7 +5,6 @@ import { getDefaultBaseStyle } from '../../theme-chalk/src'
 import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { convertDimensionsWidthUnit, getSizeByUnit, random } from '../../utils/utils'
-import { IBestBadgeColor } from '../badge/color'
 import { IBestBadgePosition } from '../badge/index.type'
 import { IBestIcon } from '../icon'
 import { IBestAvatarColor } from './color'
@@ -72,7 +71,7 @@ export struct IBestAvatar{
     /**
      * 徽标背景色
      */
-    @Prop badgeColor: ResourceColor = IBestBadgeColor.badgeBgColor
+    @Prop badgeColor: ResourceColor
     /**
      * 是否展示为小红点
      */
@@ -102,6 +101,16 @@ export struct IBestAvatar{
      */
     @Prop badgeIconColor: ResourceColor
     /**
+     * 徽标水平方向偏移量
+     * @since 2.2.6
+     */
+    @Prop xOffset: Dimension = 0
+    /**
+     * 徽标垂直方向偏移量
+     * @since 2.2.6
+     */
+    @Prop yOffset: Dimension = 0
+    /**
      * 头像点击事件
      */
     onAvatarClick: () => void = () => {}
@@ -114,7 +123,6 @@ export struct IBestAvatar{
     srcChange(){
         this.isError = !this.src
     }
-    // 获取背景色
     getBgColor(){
         return (this.text || this.icon) ? this.randomBgColor ? this.colors[random(0, 19)] : this.bgColor : ''
     }
@@ -129,7 +137,9 @@ export struct IBestAvatar{
             badgePosition: this.badgePosition,
             icon: this.badgeIcon,
             iconSize: this.badgeIconSize,
-            iconColor: this.badgeIconColor
+            iconColor: this.badgeIconColor,
+            xOffset: this.xOffset,
+            yOffset: this.yOffset
         }){
             Row(){
                 if(this.icon){

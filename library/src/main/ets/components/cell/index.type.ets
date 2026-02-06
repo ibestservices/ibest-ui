@@ -10,9 +10,11 @@ export class CellSizeData {
 	padding: IBestStringNumber
 	fontSize: IBestStringNumber
 	labelFontSize: IBestStringNumber
-	constructor(padding: IBestStringNumber, fontSize: IBestStringNumber, labelFontSize: IBestStringNumber) {
-		this.padding = padding;
-		this.fontSize = fontSize;
+	valueFontSize: IBestStringNumber
+	constructor(padding: IBestStringNumber, fontSize: IBestStringNumber, labelFontSize: IBestStringNumber, valueFontSize: IBestStringNumber) {
+		this.padding = padding
+		this.fontSize = fontSize
 		this.labelFontSize = labelFontSize
+		this.valueFontSize = valueFontSize
 	}
 }

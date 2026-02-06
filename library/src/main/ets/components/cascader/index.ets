@@ -216,7 +216,7 @@ export struct IBestCascaderContent{
 	}
 
 	build() {
-		Column({space: 10}){
+		Column({space: this.baseStyle.spaceXsm}){
 			Row(){
 				IBestTabs({
 					tabsList: this.tabList,

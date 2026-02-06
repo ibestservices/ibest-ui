@@ -51,21 +51,19 @@ struct ProgressPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '自定义样式' }){
-						Column({space: SPACE.MD}){
-							IBestProgress({
-								value: $value,
-								color: "#ee0a24"
-							})
-							IBestProgress({
-								value: $value,
-								linearGradientColor:{
-									angle: 90,
-									colors: [['#be99ff', 0], ['#7232dd', 1]]
-								},
-								format: (value: number): string => this.format(value)
-							})
-						}
+					ComponentShowContainer({ title: '自定义样式', space: SPACE.MD }){
+						IBestProgress({
+							value: $value,
+							color: "#ee0a24"
+						})
+						IBestProgress({
+							value: $value,
+							linearGradientColor:{
+								angle: 90,
+								colors: [['#be99ff', 0], ['#7232dd', 1]]
+							},
+							format: (value: number): string => this.format(value)
+						})
 					}
 				}
 				ListItem() {
@@ -77,24 +75,22 @@ struct ProgressPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '不确定进度' }){
-						Column({space: SPACE.MD}){
-							IBestProgress({
-								value: $value2,
-								indeterminate: true
-							})
-							IBestProgress({
-								value: $value3,
-								indeterminate: true,
-								format: (value: number): string => this.format(value)
-							})
-							IBestProgress({
-								value: $value3,
-								indeterminate: true,
-								duration: 1,
-								color: "#DB3131"
-							})
-						}
+					ComponentShowContainer({ title: '不确定进度', space: SPACE.MD }){
+						IBestProgress({
+							value: $value2,
+							indeterminate: true
+						})
+						IBestProgress({
+							value: $value3,
+							indeterminate: true,
+							format: (value: number): string => this.format(value)
+						})
+						IBestProgress({
+							value: $value3,
+							indeterminate: true,
+							duration: 1,
+							color: "#DB3131"
+						})
 					}
 				}
 				ListItem() {

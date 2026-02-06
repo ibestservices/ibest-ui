@@ -113,17 +113,15 @@ struct UploaderPage {
 					}
 				}
 				ListItem() {
-					ComponentShowContainer({ title: '自定义上传触发器' }) {
-						Column({ space: 20 }){
-							IBestUploader({
-								fileList: $imgList5,
-								uploaderIcon: $r("app.media.icon_plus")
-							})
-							IBestUploader({
-								fileList: $imgList6,
-								customUploader: (): void => this.customUploader()
-							})
-						}
+					ComponentShowContainer({ title: '自定义上传触发器', space: SPACE.MD }) {
+						IBestUploader({
+							fileList: $imgList5,
+							uploaderIcon: $r("app.media.icon_plus")
+						})
+						IBestUploader({
+							fileList: $imgList6,
+							customUploader: (): void => this.customUploader()
+						})
 					}
 				}
 				ListItem() {

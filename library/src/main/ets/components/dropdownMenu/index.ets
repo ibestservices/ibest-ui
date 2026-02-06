@@ -15,6 +15,7 @@ import {
     IBestDropdownMenuContentType,
     IBestDropdownMenuController,
     IBestDropdownMenuOption,
+    IBestDropdownMenuSource,
     MenuContentController
 } from './index.type'
 
@@ -143,7 +144,6 @@ export struct IBestDropdownMenu{
         ibestEmitter.off(getEventName(COMPONENT_NAME, DROPDOWN_MENU_EVENT_NAME.OPTION_CHANGE, this.groupId), this.uniId)
         this.manualClose()
     }
-    // 更新选项
     updateOption(type: string, option: IBestDropdownMenuContentType, callBack?: (index: number) => void) {
         switch (type) {
             case 'init':
@@ -167,20 +167,16 @@ export struct IBestDropdownMenu{
                 break
         }
     }
-    // 获取遮罩层顶部距离
     getMaskTop() {
         let info = getComponentsInfo(this.uiContext, `ibest_dropdown_menu_${this.uniId}`)
         return info.screenTop + info.height
     }
-    // 是否有打开的选项
     getOpenIndex() {
         return this.menuList.findIndex(item => item.dialogId !== '')
     }
-    // 获取当前选项信息
     getOption(): IBestDropdownMenuContentParams{
         return this.activeIndex !=='' ? this.menuList[this.activeIndex] : new IBestDropdownMenuContentParams()
     }
-    // 打开筛选
     async openMenu(index: number) {
         if(this.isOpening){
             return
@@ -234,7 +230,6 @@ export struct IBestDropdownMenu{
             this.isOpening = false
         })
     }
-    // 关闭
     close(index: number) {
         return new Promise<void>((resolve) => {
             this.baseController.hide()
@@ -249,7 +244,6 @@ export struct IBestDropdownMenu{
             }, hideDuration)
         })
     }
-    // 手动关闭
     manualClose(){
         let i = this.getOpenIndex()
         if (i > -1) {
@@ -295,7 +289,7 @@ struct IBestDropdownMenuOptionItem{
     getShowText(){
         if(this.option.options?.length){
             let value = this.option.value
-            let option = this.option.options?.find(item => item.value == value)
+            let option = this.option.options?.find(item => item.value === value)
             return option?.text || this.option.title
         }else {
             return this.option.title
@@ -330,7 +324,7 @@ struct IBestDropdownMenuContent{
     @StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
     @Prop groupId: IBestStringNumber
     @Prop maxHeight: number
-    @Prop option: IBestDropdownMenuContentParams
+    @Prop @Watch("optionChange") option: IBestDropdownMenuContentParams
     @Consume activeColor: ResourceColor
     @Consume dropDownFontSize: IBestStringNumber
     @Consume dropDownIconSize: IBestStringNumber
@@ -338,7 +332,9 @@ struct IBestDropdownMenuContent{
     controller: MenuContentController = new MenuContentController()
     @BuilderParam defaultBuilder: CustomBuilder
 
+    @State options: IBestDropdownMenuSource = new IBestDropdownMenuSource([])
     @State transY: IBestStringNumber = "-100%"
+    @State initialIndex: number = -1
 
     @Builder cellTitleBuilder(option: IBestDropdownMenuOption){
         Row({space: this.baseStyle.spaceBase}){
@@ -363,21 +359,31 @@ struct IBestDropdownMenuContent{
     }
 
     aboutToAppear(): void {
-        this.controller.hide = (): void => this.init()
+        this.controller.hide = (): void => this.close()
         this.init()
     }
-    // 初始化
     init(){
-        this.transY = "-100%"
         this.defaultBuilder = this.option.defaultBuilder
+        this.optionChange()
+        if(this.options.totalCount()){
+            this.initialIndex = this.options.getAll().findIndex(item => item.value === this.option.value)
+        }
+    }
+    optionChange(){
+        if(this.option.options?.length){
+            this.options = new IBestDropdownMenuSource(this.option.options)
+        }
+    }
+    close(){
+        this.transY = "-100%"
     }
     build(){
-        Scroll(){
-            Column(){
-                if(this.defaultBuilder){
-                    this.defaultBuilder()
-                }else {
-                    ForEach(this.option.options, (option: IBestDropdownMenuOption, index: number) => {
+        if(this.defaultBuilder){
+            this.defaultBuilder()
+        }else if(this.options.totalCount()) {
+            List({initialIndex: this.initialIndex}){
+                LazyForEach(this.options, (option: IBestDropdownMenuOption, index: number) => {
+                    ListItem(){
                         IBestCell({
                             titleBuilder: () => this.cellTitleBuilder(option),
                             rightIcon: this.option.value == option.value ? this.selectedIcon : "",
@@ -389,23 +395,23 @@ struct IBestDropdownMenuContent{
                                 this.option.onChange!(option.value)
                             }
                         })
-                    }, (_: IBestDropdownMenuOption, index: number) => index.toString())
-                }
+                    }
+                })
             }
             .width(CONTAINER_SIZE.FULL)
+            .backgroundColor(this.baseStyle.default)
+            .constraintSize({ maxHeight: this.option.maxHeight ? getSizeByUnit(this.option.maxHeight) : this.maxHeight * 0.9 })
+            .translate({ y: this.transY })
+            .border({ width: { top: 1 }, color: IBestDropdownMenuColor.borderColor })
+            .opacity(this.transY == 0 ? 1 : 0)
+            .animation({ duration: popupDuration, curve: Curve.EaseInOut })
+            .edgeEffect(EdgeEffect.None)
+            .onAppear(() => {
+                setTimeout(() => {
+                    this.transY = 0
+                }, 100)
+            })
         }
-        .width(CONTAINER_SIZE.FULL)
-        .backgroundColor(this.baseStyle.default)
-        .constraintSize({ maxHeight: this.option.maxHeight ? getSizeByUnit(this.option.maxHeight) : this.maxHeight*0.9 })
-        .translate({ y: this.transY })
-        .border({ width:{ top:1 }, color: IBestDropdownMenuColor.borderColor })
-        .opacity(this.transY == 0 ? 1 : 0)
-        .animation({ duration: popupDuration, curve: Curve.EaseInOut })
-        .onAppear(() => {
-            setTimeout(() => {
-                this.transY = 0
-            }, 100)
-        })
     }
 }
 

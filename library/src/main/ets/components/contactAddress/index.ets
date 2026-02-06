@@ -220,7 +220,7 @@ export struct IBestContactAddress {
 					.width(CONTAINER_SIZE.FULL)
 					.backgroundColor(IBestContactAddressColor.bgColor)
 				}
-				.borderRadius(10)
+				.borderRadius(this.baseStyle.borderRadiusXl)
 				.clip(true)
 			}
 			IBestForm({
@@ -302,7 +302,7 @@ export struct IBestContactAddress {
 						hasBorder: false,
 					})
 				}
-				.borderRadius(10)
+				.borderRadius(this.baseStyle.borderRadiusXl)
 				.clip(true)
 			}
 			IBestCascader({

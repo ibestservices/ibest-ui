@@ -33,21 +33,19 @@ struct TextEllipsisPage {
                     }
                 }
                 ListItem() {
-                    ComponentShowContainer({ title: '自定义展示行数' }) {
-                        Column({space: SPACE.SM}){
+                    ComponentShowContainer({ title: '自定义展示行数', space: SPACE.SM }) {
+                        IBestTextEllipsis({
+                            text: this.text1,
+                            showAction: true,
+                            rows: 3
+                        })
+                        Row(){
                             IBestTextEllipsis({
                                 text: this.text1,
                                 showAction: true,
                                 rows: 3
                             })
-                            Row(){
-                                IBestTextEllipsis({
-                                    text: this.text1,
-                                    showAction: true,
-                                    rows: 3
-                                })
-                            }.width(200)
-                        }
+                        }.width(200)
                     }
                 }
                 ListItem() {
