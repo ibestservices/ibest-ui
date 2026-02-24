@@ -19,12 +19,12 @@
 //				"type": "HarmonyOS",
 //				"material": {
 //					"certpath": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.cer",
-//					"storePassword": "0000001BBC0BC4FA393E00A811C5A2EB1307DB9811C0B8A35C7D16B4ECA08884E8AFB971687B3E256B37CC",
 //					"keyAlias": "debugKey",
-//					"keyPassword": "0000001B09EFB63CAE99ECC53194AE4DED8CF1666BED5177FB6F83142B124B4897A86AF0230301FF0D4A1B",
+//					"keyPassword": "0000001A31A0C8E47E20C6BE70BD05034E9C916992880B8F6C640BD7E738E51398775C43B7B6E922E0ED",
 //					"profile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p7b",
 //					"signAlg": "SHA256withECDSA",
-//					"storeFile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p12"
+//					"storeFile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p12",
+//					"storePassword": "0000001A829F735888835BA9E7F12C8754970726195682A6446152620200EF615B25504825AF70A1C0BB"
 //				}
 //			},
 			{
