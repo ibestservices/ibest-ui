@@ -47,21 +47,13 @@ export struct IBestLoadingCircular {
 	 */
 	@Prop strokeWidth: Length = 2
 
-	@State uniId: number = 0
 	@State rotateAngle: number = 0
 	@State maxPerimeter: number = 0
 	@State strokeDashArray: Point = new Point(0, 0)
 	@State strokeDashOffset: number = 0
 	@StorageProp(IBestStorageKey.GLOBAL_CONFIG) globalConfig: IBestGlobalConfig = new IBestGlobalConfig()
 	private uiContext: UIContext = this.getUIContext()
-	aboutToAppear() {
-		this.uniId = this.getUniqueId()
-		setTimeout(() => {
-			let width = getComponentsInfo(this.uiContext, `ibest_circle_${this.uniId}`).width
-			this.maxPerimeter = Math.floor(Math.PI * (width + (this.globalConfig.unit == "vp" ? 20 : 0)))
-			this.strokeDashArray = new Point(0, this.maxPerimeter)
-		}, 50)
-	}
+
 	keyframeAnimateTo() {
 		this.uiContext?.keyframeAnimateTo({ iterations: -1 }, [
 			{
@@ -119,6 +111,11 @@ export struct IBestLoadingCircular {
 		.width(getSizeByUnit(this.circularSize))
 		.aspectRatio(1)
 		.padding(1)
-		.id(`ibest_circle_${this.uniId}`)
+		.onAreaChange((oldVal: Area, newVal: Area) => {
+			if(newVal.width != oldVal.width){
+				this.maxPerimeter = Math.floor(Math.PI * (newVal.width as number + (this.globalConfig.unit == "vp" ? 20 : 0)))
+				this.strokeDashArray = new Point(0, this.maxPerimeter)
+			}
+		})
 	}
 }
