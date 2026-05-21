@@ -268,6 +268,11 @@ export struct IBestField {
 	 */
 	@Prop prefixSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
 	/**
+	 * 前缀内容字重
+	 * @since 2.2.7
+     */
+	@Prop prefixFontWeight: IBestStringNumber | FontWeight = FontWeight.Normal
+	/**
 	 * 后缀内容
 	 * @since 2.0.7
 	 */
@@ -287,6 +292,11 @@ export struct IBestField {
 	 * @since 2.1.7
 	 */
 	@Prop suffixSize: IBestStringNumber = this.baseStyle.fontSizeMd as string
+	/**
+	 * 后缀内容字重
+	 * @since 2.2.7
+     */
+	@Prop suffixFontWeight: IBestStringNumber | FontWeight = FontWeight.Normal
 	/**
 	 * 底部边框线尺寸类型
 	 * @since 2.1.7
@@ -322,6 +332,11 @@ export struct IBestField {
 	 * @since 2.2.0
      */
 	@Prop inputFilter: ResourceStr
+	/**
+	 * 点击后缀时是否聚焦
+	 * @since 2.2.7
+     */
+	@Prop focusOnClickSuffix: boolean = false
 	/**
 	 * 右侧按钮插槽
 	 */
@@ -370,6 +385,7 @@ export struct IBestField {
 	@State validateMessage: ResourceStr = ""
 	@State borderRight: number = 0
 	private uiContext = this.getUIContext()
+	private focusController = this.uiContext.getFocusController()
 
 	@Builder fieldLabelAsterisk() {
 		Text("*")
@@ -445,7 +461,7 @@ export struct IBestField {
 					Text(this.prefix)
 						.fontSize(getSizeByUnit(this.prefixSize, true))
 						.fontColor(this.prefixFontColor)
-						.fontWeight(this.inputFontWeight)
+						.fontWeight(this.prefixFontWeight)
 						.margin({ right: this.baseStyle.spaceBase })
 				}
 				if (this.customRightContent) {
@@ -473,6 +489,7 @@ export struct IBestField {
 							// })
 							.enableAutoFill(false)
 							.type(this.getTextAreaType())
+							.id(`ibest_field_input_${this.uniId}`)
 							.onChange((value: string) => {
 								this.formatValue(value, "onchange")
 								this.onChange(this.value)
@@ -513,6 +530,7 @@ export struct IBestField {
 								// })
 								.selectionMenuHidden(true)
 								.type(this.getInputType())
+								.id(`ibest_field_input_${this.uniId}`)
 								.onChange((value: string) => {
 									this.formatValue(value, "onchange")
 									this.onChange(this.value)
@@ -572,14 +590,20 @@ export struct IBestField {
 					IBestIcon({
 						name: this.suffixIcon,
 						iconSize: this.suffixSize,
-						color: this.suffixFontColor
+						color: this.suffixFontColor,
+						onIconClick: () => {
+							this.focusOnClickSuffix && this.focusInput()
+						}
 					}).margin({ left: this.baseStyle.spaceBase })
 				} else if (this.suffix) {
 					Text(this.suffix)
 						.fontSize(getSizeByUnit(this.suffixSize, true))
 						.fontColor(this.suffixFontColor)
-						.fontWeight(this.inputFontWeight)
+						.fontWeight(this.suffixFontWeight)
 						.margin({ left: this.baseStyle.spaceBase })
+						.onClick(() => {
+							this.focusOnClickSuffix && this.focusInput()
+						})
 				}
 				// link箭头
 				if (this.isLink) {
@@ -673,7 +697,6 @@ export struct IBestField {
 			ibestEmitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.RESEND_FORM_ITEM, this.formId))
 		}
 	}
-	// 获取左右边距
 	initBorderSize(){
 		if(this.borderLeft === undefined){
 			this.borderLeft = getComponentsInfo(this.uiContext, `ibest_field_label_${this.uniId}`).localLeft
@@ -682,7 +705,6 @@ export struct IBestField {
 		let rightInfo = getComponentsInfo(this.uiContext, `ibest_field_content_${this.uniId}`)
 		this.borderRight = fullWidth - rightInfo.width - rightInfo.localLeft
 	}
-	// 发送表单子项信息
 	sendFormItemData() {
 		ibestEmitter.emit(getEventName(COMPONENT_NAME, FORM_EVENT_NAME.SEND_FIELD, this.formId), {
 			uniId: this.uniId,
@@ -693,7 +715,6 @@ export struct IBestField {
 			setValue: (value: IBestFieldValueType): void => this.setValue(value)
 		}, (result: IBestFormSendFieldCallResult): void => this.init(result))
 	}
-	// 初始化参数
 	init(results?: IBestFormSendFieldCallResult) {
 		if (results && !this.rules.length) {
 			this.rules = results?.rules || []
@@ -732,12 +753,10 @@ export struct IBestField {
 			this.setValue("")
 		}
 	}
-	// 重置验证
 	resetValidation() {
 		this.status = 'unvalidated'
 		this.validateMessage = ""
 	}
-	// 验证
 	validate(): Promise<IBestFieldValidateInfo | void> {
 		return new Promise<IBestFieldValidateInfo | void>((resolve) => {
 			this.resetValidation()
@@ -759,7 +778,6 @@ export struct IBestField {
 			}
 		})
 	}
-	// 执行规则
 	async runRules(value: IBestFieldValueType) {
 		for (const rule of this.rules) {
 			if(rule.required && this.required === false){
@@ -785,7 +803,6 @@ export struct IBestField {
 			}
 		}
 	}
-	// 通过trigger 判断rules中是否有可触发项
 	getFilteredRule(trigger: 'blur' | 'change') {
 		return this.rules.filter((rule) => {
 			if (!rule.trigger) {
@@ -794,11 +811,9 @@ export struct IBestField {
 			return rule.trigger === trigger
 		})
 	}
-	// value 变化 执行验证
 	valueChange() {
 		this.sendValidate("change")
 	}
-	// 格式化值
 	formatValue(value: string, trigger: string) {
 		if (this.formatter && this.formatTrigger == trigger) {
 			this.setValue(this.formatter(value))
@@ -820,12 +835,10 @@ export struct IBestField {
 			}
 		}
 	}
-	// 失焦执行
 	handleBlur() {
 		this.onFieldBlur()
 		this.sendValidate("blur")
 	}
-	// 发送单个验证
 	sendValidate(trigger: 'blur' | 'change') {
 		if (this.formId && this.prop) {
 			let rules: IBestFormRuleItem[] = this.getFilteredRule(trigger)
@@ -845,7 +858,6 @@ export struct IBestField {
 		return this.messageTextAlign == 'center' ? TextAlign.Center :
 			this.messageTextAlign == 'right' ? TextAlign.End : TextAlign.Start
 	}
-	// 获取输入框类型
 	getInputType(): InputType {
 		switch (this.type) {
 			case "password":
@@ -868,7 +880,6 @@ export struct IBestField {
 				return InputType.Normal
 		}
 	}
-	// 获取textarea类型
 	getTextAreaType(): TextAreaType {
 		switch (this.type) {
 			case "number":
@@ -883,14 +894,15 @@ export struct IBestField {
 				return TextAreaType.NORMAL
 		}
 	}
-	// field点击
 	fieldClick() {
 		this.onFieldClick()
 		if ((this.disabled || this.readOnly || this.isLink) && !this.customRightContent) {
-			this.uiContext.getFocusController().requestFocus(`ibest_field_focus_text_${this.uniId}`)
+			this.focusController.requestFocus(`ibest_field_focus_text_${this.uniId}`)
 		}
 	}
-	// 设置值
+	focusInput(){
+		this.focusController.requestFocus(`ibest_field_input_${this.uniId}`)
+	}
 	setValue(value: IBestFieldValueType) {
 		if (typeof value == "number" && !this.customRightContent) {
 			value = value.toString()

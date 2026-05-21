@@ -226,6 +226,13 @@ export class DateUtils {
         return this._date.getDay()
     }
     /**
+     * 设置当前月份
+     */
+    month(value: number){
+        this._date.setMonth(value - 1)
+        return this
+    }
+    /**
      * 设置当前日期
      */
     date(value: number){

@@ -1,7 +1,7 @@
 import { IBestCaliper } from '@ibestservices/ibest-ui';
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import BasePage from '../../components/BasePage';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import CustomNavBar from '../../components/CustomNavBar';
 
 @Builder
 export function CaliperBuilder(_: string, title: string){
@@ -21,81 +21,85 @@ struct CaliperPage {
     @State value6: number = 0
 
     build() {
-        NavDestination() {
-            CustomNavBar({title: this.title})
-            List() {
-                ListItem() {
-                    ComponentShowContainer({ title: '基础用法', space: SPACE.BASE }){
-                        Text(this.value.toString())
-                        IBestCaliper({
-                            value: $value
-                        })
+        Column(){
+            BasePage({ title: this.title, bgColor: modeColor.bg2 }) {
+                List() {
+                    ListItem().height(84)
+                    ListItem() {
+                        ComponentShowContainer({ title: '基础用法', space: SPACE.BASE }) {
+                            Text(this.value.toString())
+                            IBestCaliper({
+                                value: $value
+                            })
+                        }
                     }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: '设置开始结尾数', space: SPACE.BASE }){
-                        Text(this.value1.toString())
-                        IBestCaliper({
-                            value: $value1,
-                            startNum: 50,
-                            endNum: 200
-                        })
+
+                    ListItem() {
+                        ComponentShowContainer({ title: '设置开始结尾数', space: SPACE.BASE }) {
+                            Text(this.value1.toString())
+                            IBestCaliper({
+                                value: $value1,
+                                startNum: 50,
+                                endNum: 200
+                            })
+                        }
                     }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: '自定义刻度', space: SPACE.MD }){
-                        Text(this.value2.toString())
-                        IBestCaliper({
-                            value: $value2,
-                            scaleSize: 2
-                        })
-                        Text(this.value3.toString())
-                        IBestCaliper({
-                            value: $value3,
-                            scales: 5,
-                            scaleSize: 2
-                        })
-                        Text(this.value4.toString())
-                        IBestCaliper({
-                            value: $value4,
-                            endNum: 5,
-                            scaleSize: 0.1
-                        })
+
+                    ListItem() {
+                        ComponentShowContainer({ title: '自定义刻度', space: SPACE.MD }) {
+                            Text(this.value2.toString())
+                            IBestCaliper({
+                                value: $value2,
+                                scaleSize: 2
+                            })
+                            Text(this.value3.toString())
+                            IBestCaliper({
+                                value: $value3,
+                                scales: 5,
+                                scaleSize: 2
+                            })
+                            Text(this.value4.toString())
+                            IBestCaliper({
+                                value: $value4,
+                                endNum: 5,
+                                scaleSize: 0.1
+                            })
+                        }
                     }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: '自定义样式', space: SPACE.BASE }){
-                        Text(this.value5.toString())
-                        IBestCaliper({
-                            value: $value5,
-                            bgColor: "#d8e9f6",
-                            fontColor: "#038cfd",
-                            bigScaleHeight: 50,
-                            smallScaleHeight: 40,
-                            activeScaleColor: "red",
-                            activeFontWeight: FontWeight.Bold
-                        })
+
+                    ListItem() {
+                        ComponentShowContainer({ title: '自定义样式', space: SPACE.BASE }) {
+                            Text(this.value5.toString())
+                            IBestCaliper({
+                                value: $value5,
+                                bgColor: "#d8e9f6",
+                                fontColor: "#038cfd",
+                                bigScaleHeight: 50,
+                                smallScaleHeight: 40,
+                                activeScaleColor: "red",
+                                activeFontWeight: FontWeight.Bold
+                            })
+                        }
                     }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: '刻度对齐方式', space: SPACE.SM }){
-                        Text(this.value6.toString())
-                        IBestCaliper({
-                            value: $value6,
-                            scaleAlign: "center"
-                        })
-                        IBestCaliper({
-                            value: $value6,
-                            scaleAlign: "bottom"
-                        })
+
+                    ListItem() {
+                        ComponentShowContainer({ title: '刻度对齐方式', space: SPACE.SM }) {
+                            Text(this.value6.toString())
+                            IBestCaliper({
+                                value: $value6,
+                                scaleAlign: "center"
+                            })
+                            IBestCaliper({
+                                value: $value6,
+                                scaleAlign: "bottom"
+                            })
+                        }
                     }
+
+                    ListItem().height(50)
                 }
-                ListItem().height(50)
+                .padding({ left: SPACE.SM, right: SPACE.SM })
             }
-            .layoutWeight(1)
-            .padding({ left: SPACE.SM, right: SPACE.SM })
         }
-        .hideTitleBar(true)
-        .backgroundColor(modeColor.bg2)
     }
 }

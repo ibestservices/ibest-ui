@@ -93,7 +93,7 @@ struct GuidePage {
                 data: this.guideData,
                 controller: this.controller
             }) {
-                CustomNavBar({ title: this.title })
+                CustomNavBar({ title: this.title, isShowStatusBar: false })
                 List() {
                     ListItem() {
                         ComponentShowContainer({ title: $r("app.string.custom_type", $r("app.string.button")) }) {

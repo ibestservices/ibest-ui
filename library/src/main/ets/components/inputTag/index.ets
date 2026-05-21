@@ -162,9 +162,9 @@ export struct IBestInputTag {
                     })
             }
             .width(CONTAINER_SIZE.FULL)
-            .onAreaChange((_: Area, newVal: Area) => {
-                this.contentWidth = newVal.width as number
-                if(this.isInit){
+            .onAreaChange((oldVal: Area, newVal: Area) => {
+                if(oldVal.width != newVal.width){
+                    this.contentWidth = newVal.width as number
                     this.init()
                 }
             })

@@ -1,8 +1,8 @@
 import { IBestButton, IBestCell, IBestCellGroup, IBestIcon, IBestPopup, IBestToast } from '@ibestservices/ibest-ui'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
-import CustomNavBar from '../../components/CustomNavBar'
 import RouterUtil from '../../utils/routerUtil'
+import BasePage from '../../components/BasePage'
 
 @Builder
 export function PopupBuilder(_: string, title: string){
@@ -109,290 +109,306 @@ struct PopupPage {
 	}
 
 	build() {
-		NavDestination(){
-			CustomNavBar({title: this.title})
-			List() {
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.basic_usage"), titlePaddingLeft: SPACE.MD }) {
-						IBestCellGroup({ inset: true }) {
-							IBestCell({
-								title: $r("app.string.show_popup"),
-								isLink: true,
-								hasBorder: false,
-								onCellClick: () => {
-									this.baseVisible = true
-								}
-							})
-						}
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.position"), titlePaddingLeft: SPACE.MD }) {
-						IBestCellGroup({ inset: true }) {
-							Row(){
-								Column({space: 8}){
-									IBestIcon({
-										name: "arrow-up",
-										iconSize: 25
-									})
-									Text($r("app.string.custom_popup_direction", $r("app.string.top")))
-										.fontSize(12)
-								}
-								.positionColStyle()
-								.onClick(() => {
-									this.upVisible = true
-								})
-								Column({space: 8}){
-									IBestIcon({
-										name: "arrow-down",
-										iconSize: 25
-									})
-									Text($r("app.string.custom_popup_direction", $r("app.string.bottom")))
-										.fontSize(12)
-								}
-								.positionColStyle(true)
-								.onClick(() => {
-									this.downVisible = true
-								})
-								Column({space: 8}){
-									IBestIcon({
-										name: "arrow-left",
-										iconSize: 25
-									})
-									Text($r("app.string.custom_popup_direction", $r("app.string.left")))
-										.fontSize(12)
-								}
-								.positionColStyle(true)
-								.onClick(() => {
-									this.leftVisible = true
-								})
-								Column({space: 8}){
-									IBestIcon({
-										name: "arrow",
-										iconSize: 25
-									})
-									Text($r("app.string.custom_popup_direction", $r("app.string.right")))
-										.fontSize(12)
-								}
-								.positionColStyle(true)
-								.onClick(() => {
-									this.rightVisible = true
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg, comId: "main" }) {
+				List() {
+					ListItem().height(84)
+					ListItem() {
+						ComponentShowContainer({ title: $r("app.string.basic_usage"), titlePaddingLeft: SPACE.MD }) {
+							IBestCellGroup({ inset: true }) {
+								IBestCell({
+									title: $r("app.string.show_popup"),
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										this.baseVisible = true
+									}
 								})
 							}
-							.width(CONTAINER_SIZE.FULL)
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.title"), titlePaddingLeft: SPACE.MD }) {
-						IBestCellGroup({ inset: true }) {
-							IBestCell({
-								title: $r("app.string.title"),
-								isLink: true,
-								onCellClick: () => {
-									this.showHeaderVisible = true
+
+					ListItem() {
+						ComponentShowContainer({ title: $r("app.string.position"), titlePaddingLeft: SPACE.MD }) {
+							IBestCellGroup({ inset: true }) {
+								Row() {
+									Column({ space: 8 }) {
+										IBestIcon({
+											name: "arrow-up",
+											iconSize: 25
+										})
+										Text($r("app.string.custom_popup_direction", $r("app.string.top")))
+											.fontSize(12)
+									}
+									.positionColStyle()
+									.onClick(() => {
+										this.upVisible = true
+									})
+
+									Column({ space: 8 }) {
+										IBestIcon({
+											name: "arrow-down",
+											iconSize: 25
+										})
+										Text($r("app.string.custom_popup_direction", $r("app.string.bottom")))
+											.fontSize(12)
+									}
+									.positionColStyle(true)
+									.onClick(() => {
+										this.downVisible = true
+									})
+
+									Column({ space: 8 }) {
+										IBestIcon({
+											name: "arrow-left",
+											iconSize: 25
+										})
+										Text($r("app.string.custom_popup_direction", $r("app.string.left")))
+											.fontSize(12)
+									}
+									.positionColStyle(true)
+									.onClick(() => {
+										this.leftVisible = true
+									})
+
+									Column({ space: 8 }) {
+										IBestIcon({
+											name: "arrow",
+											iconSize: 25
+										})
+										Text($r("app.string.custom_popup_direction", $r("app.string.right")))
+											.fontSize(12)
+									}
+									.positionColStyle(true)
+									.onClick(() => {
+										this.rightVisible = true
+									})
 								}
-							})
-							IBestCell({
-								title: $r("app.string.custom_custom", $r("app.string.icon")),
-								isLink: true,
-								hasBorder: false,
-								onCellClick: () => {
-									this.cusCloseIconVisible = true
-								}
-							})
+								.width(CONTAINER_SIZE.FULL)
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.radius"), titlePaddingLeft: SPACE.MD }) {
-						IBestCellGroup({ inset: true }) {
-							IBestCell({
-								title: $r("app.string.center"),
-								isLink: true,
-								onCellClick: () => {
-									this.centerCornerVisible = true
-								}
-							})
-							IBestCell({
-								title: $r("app.string.bottom"),
-								isLink: true,
-								hasBorder: false,
-								onCellClick: () => {
-									this.bottomCornerVisible = true
-								}
-							})
+
+					ListItem() {
+						ComponentShowContainer({ title: $r("app.string.title"), titlePaddingLeft: SPACE.MD }) {
+							IBestCellGroup({ inset: true }) {
+								IBestCell({
+									title: $r("app.string.title"),
+									isLink: true,
+									onCellClick: () => {
+										this.showHeaderVisible = true
+									}
+								})
+								IBestCell({
+									title: $r("app.string.custom_custom", $r("app.string.icon")),
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										this.cusCloseIconVisible = true
+									}
+								})
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.background_image"), titlePaddingLeft: SPACE.MD }) {
-						IBestCellGroup({ inset: true }) {
-							IBestCell({
-								title: $r("app.string.background_image"),
-								isLink: true,
-								hasBorder: false,
-								onCellClick: () => {
-									this.bgImageVisible = true
-								}
-							})
+
+					ListItem() {
+						ComponentShowContainer({ title: $r("app.string.radius"), titlePaddingLeft: SPACE.MD }) {
+							IBestCellGroup({ inset: true }) {
+								IBestCell({
+									title: $r("app.string.center"),
+									isLink: true,
+									onCellClick: () => {
+										this.centerCornerVisible = true
+									}
+								})
+								IBestCell({
+									title: $r("app.string.bottom"),
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										this.bottomCornerVisible = true
+									}
+								})
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.custom_dynamics", $r("app.string.size")), titlePaddingLeft: SPACE.MD }) {
-						IBestCellGroup({ inset: true }) {
-							IBestCell({
-								title: $r("app.string.custom_dynamics", $r("app.string.size")),
-								isLink: true,
-								hasBorder: false,
-								onCellClick: () => {
-									this.cusHeightVisible = true
-								}
-							})
+
+					ListItem() {
+						ComponentShowContainer({
+							title: $r("app.string.background_image"),
+							titlePaddingLeft: SPACE.MD
+						}) {
+							IBestCellGroup({ inset: true }) {
+								IBestCell({
+									title: $r("app.string.background_image"),
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										this.bgImageVisible = true
+									}
+								})
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.inner_jump"), titlePaddingLeft: SPACE.MD }) {
-						IBestCellGroup({ inset: true }) {
-							IBestCell({
-								title: $r("app.string.inner_jump"),
-								isLink: true,
-								hasBorder: false,
-								onCellClick: () => {
-									this.innerVisible = true
-								}
-							})
+
+					ListItem() {
+						ComponentShowContainer({
+							title: $r("app.string.custom_dynamics", $r("app.string.size")),
+							titlePaddingLeft: SPACE.MD
+						}) {
+							IBestCellGroup({ inset: true }) {
+								IBestCell({
+									title: $r("app.string.custom_dynamics", $r("app.string.size")),
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										this.cusHeightVisible = true
+									}
+								})
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.event"), titlePaddingLeft: SPACE.MD }) {
-						IBestCellGroup({ inset: true }) {
-							IBestCell({
-								title: $r("app.string.event"),
-								isLink: true,
-								hasBorder: false,
-								onCellClick: () => {
-									this.eventVisible = true
-								}
-							})
+
+					ListItem() {
+						ComponentShowContainer({ title: $r("app.string.inner_jump"), titlePaddingLeft: SPACE.MD }) {
+							IBestCellGroup({ inset: true }) {
+								IBestCell({
+									title: $r("app.string.inner_jump"),
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										this.innerVisible = true
+									}
+								})
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.safe_area"), titlePaddingLeft: SPACE.MD }) {
-						IBestCellGroup({ inset: true }) {
-							IBestCell({
-								title: $r("app.string.safe_area"),
-								isLink: true,
-								hasBorder: false,
-								onCellClick: () => {
-									this.safeAreaVisible = true
-								}
-							})
+
+					ListItem() {
+						ComponentShowContainer({ title: $r("app.string.event"), titlePaddingLeft: SPACE.MD }) {
+							IBestCellGroup({ inset: true }) {
+								IBestCell({
+									title: $r("app.string.event"),
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										this.eventVisible = true
+									}
+								})
+							}
 						}
 					}
+
+					ListItem() {
+						ComponentShowContainer({ title: $r("app.string.safe_area"), titlePaddingLeft: SPACE.MD }) {
+							IBestCellGroup({ inset: true }) {
+								IBestCell({
+									title: $r("app.string.safe_area"),
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										this.safeAreaVisible = true
+									}
+								})
+							}
+						}
+					}
+
+					ListItem().height(50)
 				}
-				ListItem().height(50)
+				// 基础展示
+				IBestPopup({
+					visible: $baseVisible,
+					popupWidth: 300,
+					contentBuilder: (): void => this.centerBuilder()
+				})
+				// 弹框位置
+				IBestPopup({
+					visible: $upVisible,
+					popupAlign: "top"
+				})
+				IBestPopup({
+					visible: $downVisible,
+					popupAlign: "bottom"
+				})
+				IBestPopup({
+					visible: $leftVisible,
+					popupAlign: "left"
+				})
+				IBestPopup({
+					visible: $rightVisible,
+					popupAlign: "right"
+				})
+				// 关闭图标
+				IBestPopup({
+					visible: $showHeaderVisible,
+					popupWidth: 300,
+					isShowHeader: true,
+					title: $r("app.string.title"),
+					contentBuilder: (): void => this.centerBuilder()
+				})
+				IBestPopup({
+					visible: $cusCloseIconVisible,
+					popupAlign: "bottom",
+					isShowHeader: true,
+					title: $r("app.string.title"),
+					closeIcon: "https://ibestui.ibestservices.com/favicon.ico"
+				})
+				// 圆角弹窗
+				IBestPopup({
+					visible: $centerCornerVisible,
+					popupWidth: 300,
+					cornerRadius: 10,
+					contentBuilder: (): void => this.centerBuilder()
+				})
+				IBestPopup({
+					visible: $bottomCornerVisible,
+					popupAlign: "bottom",
+					cornerRadius: 30
+				})
+				// 背景图片
+				IBestPopup({
+					visible: $bgImageVisible,
+					popupWidth: 300,
+					popupHeight: 200,
+					bgImage: "https://img1.baidu.com/it/u=1502587040,2600645085&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800",
+					contentBuilder: (): void => this.centerBuilder()
+				})
+				// 动态高度
+				IBestPopup({
+					visible: $cusHeightVisible,
+					popupWidth: this.popupWidth,
+					popupHeight: this.popupHeight,
+					contentBuilder: (): void => this.cusHeightBuilder()
+				})
+				// 内部跳转
+				IBestPopup({
+					visible: $innerVisible,
+					popupAlign: "bottom",
+					levelMode: 1,
+					levelUniqueId: this.uniId,
+					contentBuilder: (): void => this.innerBuilder()
+				})
+				// 事件监听
+				IBestPopup({
+					visible: $eventVisible,
+					popupAlign: "bottom",
+					onOpen: () => {
+						IBestToast.show("open")
+					},
+					onClose: () => {
+						IBestToast.show("close")
+					}
+				})
+				// 安全区域适配
+				IBestPopup({
+					visible: $safeAreaVisible,
+					popupAlign: "left",
+					contentBuilder: (): void => this.safeBuilder(),
+					safeAreaInsetTop: true,
+					safeAreaInsetBottom: true
+				})
 			}
-			.layoutWeight(1)
-			// 基础展示
-			IBestPopup({
-				visible: $baseVisible,
-				popupWidth: 300,
-				contentBuilder: (): void => this.centerBuilder()
-			})
-			// 弹框位置
-			IBestPopup({
-				visible: $upVisible,
-				popupAlign: "top"
-			})
-			IBestPopup({
-				visible: $downVisible,
-				popupAlign: "bottom"
-			})
-			IBestPopup({
-				visible: $leftVisible,
-				popupAlign: "left"
-			})
-			IBestPopup({
-				visible: $rightVisible,
-				popupAlign: "right"
-			})
-			// 关闭图标
-			IBestPopup({
-				visible: $showHeaderVisible,
-				popupWidth: 300,
-				isShowHeader: true,
-				title: $r("app.string.title"),
-				contentBuilder: (): void => this.centerBuilder()
-			})
-			IBestPopup({
-				visible: $cusCloseIconVisible,
-				popupAlign: "bottom",
-				isShowHeader: true,
-				title: $r("app.string.title"),
-				closeIcon: "https://ibestui.ibestservices.com/favicon.ico"
-			})
-			// 圆角弹窗
-			IBestPopup({
-				visible: $centerCornerVisible,
-				popupWidth: 300,
-				cornerRadius: 10,
-				contentBuilder: (): void => this.centerBuilder()
-			})
-			IBestPopup({
-				visible: $bottomCornerVisible,
-				popupAlign: "bottom",
-				cornerRadius: 30
-			})
-			// 背景图片
-			IBestPopup({
-				visible: $bgImageVisible,
-				popupWidth: 300,
-				popupHeight: 200,
-				bgImage: "https://img1.baidu.com/it/u=1502587040,2600645085&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800",
-				contentBuilder: (): void => this.centerBuilder()
-			})
-			// 动态高度
-			IBestPopup({
-				visible: $cusHeightVisible,
-				popupWidth: this.popupWidth,
-				popupHeight: this.popupHeight,
-				contentBuilder: (): void => this.cusHeightBuilder()
-			})
-			// 内部跳转
-			IBestPopup({
-				visible: $innerVisible,
-				popupAlign: "bottom",
-				levelMode: 1,
-				levelUniqueId: this.uniId,
-				contentBuilder: (): void => this.innerBuilder()
-			})
-			// 事件监听
-			IBestPopup({
-				visible: $eventVisible,
-				popupAlign: "bottom",
-				onOpen: () => {
-					IBestToast.show("open")
-				},
-				onClose: () => {
-					IBestToast.show("close")
-				}
-			})
-			// 安全区域适配
-			IBestPopup({
-				visible: $safeAreaVisible,
-				popupAlign: "left",
-				contentBuilder: (): void => this.safeBuilder(),
-				safeAreaInsetTop: true,
-				safeAreaInsetBottom: true
-			})
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg)
-		.id("main")
 	}
 }

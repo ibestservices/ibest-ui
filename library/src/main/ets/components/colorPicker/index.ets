@@ -98,7 +98,6 @@ export struct IBestColorPicker{
 			this.getFormatPredefineColor()
 		}
 	}
-	// 初始化尺寸
 	initSize(){
 		let panelInfo = getComponentsInfo(this.uiContext, `ibest_colorpicker_panel_${this.uniId}`)
 		this.realPanelWidth = panelInfo.width
@@ -115,7 +114,6 @@ export struct IBestColorPicker{
 			this.alphaSliderX = this.realPanelWidth / 2
 		}
 	}
-	// 初始化 colorFormat
 	initColorFormat(){
 		if(this.value.startsWith("#") && this.colorFormat != 'hex'){
 			this.colorFormat = "hex"
@@ -123,7 +121,6 @@ export struct IBestColorPicker{
 			this.colorFormat = "rgb"
 		}
 	}
-	// 格式化 预设颜色
 	getFormatPredefineColor(){
 		let colors = this.predefineColors.filter(e => e.startsWith("#") || e.startsWith("rgb"))
 		this.formatPredefineColor = colors.map((e) => {
@@ -147,7 +144,6 @@ export struct IBestColorPicker{
 			this.init()
 		}
 	}
-	// 记录hsv
 	init(){
 		let hsva = color2Hsva(this.value, this.enableAlpha)
 		this.hsva.h = hsva.h
@@ -163,12 +159,10 @@ export struct IBestColorPicker{
 		this.cursorY = cursorY
 		this.alphaSliderX = alphaX
 	}
-	// 获取面板背景颜色
 	getPanelBgColor(): string{
 		let h = this.hueSliderY / (this.realPanelHeight - this.realHueSliderHeight / 2)
 		return getRgbaStr(hsva2RgbColor({h, s: 1, v: 1, a: 1}), false)
 	}
-	// 获取透明度面板渐变色
 	getAlphaLinearGradient(): [string, number][]{
 		let rgb = hsva2RgbColor(this.hsva)
 		return [[`rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0)`, 0], [`rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`, 1]]
@@ -207,7 +201,6 @@ export struct IBestColorPicker{
 		this.value = value
 		this.onChange(value)
 	}
-	// 选择预设颜色
 	choosePredefineColor(item: IBestFormatPredefineColor){
 		if(this.value != item.format){
 			this.flag = true
@@ -365,15 +358,8 @@ export struct IBestColorPicker{
 		.width(CONTAINER_SIZE.FULL)
 		.alignItems(HorizontalAlign.Start)
 		.backgroundColor(this.bgColor)
-		.onAppear(() => {
-			setTimeout(() => {
-				this.initSize()
-			}, 50)
-		})
-		.onVisibleAreaChange([0,1], (isExpanding: boolean) => {
-			if(isExpanding && !this.realPanelWidth){
-				this.initSize()
-			}
+		.onAreaChange(() => {
+			this.initSize()
 		})
 	}
 }

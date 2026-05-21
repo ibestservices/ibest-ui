@@ -106,6 +106,11 @@ export struct IBestPullRefresh {
 	 */
 	@Prop bottomHeight: IBestStringNumber = convertDimensionsWidthUnit(50)
 	/**
+	 * 自动加载方向
+	 * @since 2.2.7
+     */
+	@Prop autoDirection: 'pull' | 'slideUp' = 'pull'
+	/**
 	 * 自定义上滑过程内容
 	 * @since 2.0.4
 	 */
@@ -125,6 +130,11 @@ export struct IBestPullRefresh {
 	 * @since 2.0.4
 	 */
 	@BuilderParam slideUpSuccessContent: CustomBuilder
+	/**
+	 * 准备完毕回调
+	 * @since 2.2.7
+     */
+	onReady: () => void = () => {}
 	/**
 	 * 触发下拉刷新/上滑加载时的回调
 	 */
@@ -157,8 +167,11 @@ export struct IBestPullRefresh {
 	}
 
 	autoPull(){
-		this.setRefreshStatus(this.headSize, true)
-		this.onRefresh("pull")
+		this.setRefreshStatus(this.autoDirection == 'pull' ? this.headSize : -this.bottomSize, true)
+		if(this.autoDirection == 'slideUp'){
+			this.scroller.scrollEdge(Edge.Bottom)
+		}
+		this.onRefresh(this.autoDirection)
 	}
 	isTouchable(){
 		return this.refreshStatus != "loading" && this.refreshStatus != "success"
@@ -289,10 +302,10 @@ export struct IBestPullRefresh {
 				.justifyContent(FlexAlign.Center)
 				.position({ x: 0, y: 0 })
 				.translate({ y: "-" + CONTAINER_SIZE.FULL })
-				.onAreaChange((oldVal: Area, newVal: Area) => {
+				.onAreaChange((_: Area, newVal: Area) => {
 					this.headSize = newVal.height as number
-					if(oldVal.height <= 0 && this.loading){
-						this.autoPull()
+					if(this.autoDirection == 'pull'){
+						this.onReady()
 					}
 				})
 				if(this.defaultContent){
@@ -335,6 +348,9 @@ export struct IBestPullRefresh {
 				.translate({ y: CONTAINER_SIZE.FULL })
 				.onAreaChange((_: Area, newVal: Area) => {
 					this.bottomSize = newVal.height as number
+					if(this.autoDirection == 'slideUp'){
+						this.onReady()
+					}
 				})
 			}
 			.width(CONTAINER_SIZE.FULL)

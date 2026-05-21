@@ -1,7 +1,8 @@
 import { IBestPickerOption, IBestTimePicker, IBestToast } from '@ibestservices/ibest-ui'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
-import CustomNavBar from '../../components/CustomNavBar'
+import BasePage from '../../components/BasePage'
+
 @Builder
 export function TimePickerBuilder(_: string, title: string) {
 	TimePickerPage({title})
@@ -22,89 +23,93 @@ struct TimePickerPage {
         return options
     }
     build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-            List() {
-                ListItem() {
-                    ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SM, card: true }) {
-                        IBestTimePicker({
-                            title: "选择时间",
-                            value: $selectValue,
-                            onConfirm: (value: string[]) => {
-                                IBestToast.show(value.join(":"))
-                            },
-                            onChange: (value: string[]) => {
-                                IBestToast.show(value.join(":"))
-                            }
-                        })
+        Column(){
+            BasePage({ title: this.title, bgColor: modeColor.bg }) {
+                List() {
+                    ListItem().height(84)
+                    ListItem() {
+                        ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SM, card: true }) {
+                            IBestTimePicker({
+                                title: "选择时间",
+                                value: $selectValue,
+                                onConfirm: (value: string[]) => {
+                                    IBestToast.show(value.join(":"))
+                                },
+                                onChange: (value: string[]) => {
+                                    IBestToast.show(value.join(":"))
+                                }
+                            })
+                        }
                     }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: "选项类型", titlePaddingLeft: SPACE.SM, card: true }) {
-                        IBestTimePicker({
-                            title: "选择时分",
-                            listType: ["hour", "minute"],
-                            value: $selectValue1,
-                            onConfirm: (value: string[]) => {
-                                IBestToast.show(value.join(":"))
-                            },
-                            onChange: (value: string[]) => {
-                                IBestToast.show(value.join(":"))
-                            }
-                        })
+
+                    ListItem() {
+                        ComponentShowContainer({ title: "选项类型", titlePaddingLeft: SPACE.SM, card: true }) {
+                            IBestTimePicker({
+                                title: "选择时分",
+                                listType: ["hour", "minute"],
+                                value: $selectValue1,
+                                onConfirm: (value: string[]) => {
+                                    IBestToast.show(value.join(":"))
+                                },
+                                onChange: (value: string[]) => {
+                                    IBestToast.show(value.join(":"))
+                                }
+                            })
+                        }
                     }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: '时间范围', titlePaddingLeft: SPACE.SM, card: true }) {
-                        IBestTimePicker({
-                            title: "选择时间",
-                            minTime: "08:30:00",
-                            maxTime: "18:00:00",
-                            value: $selectValue2,
-                            onConfirm: (value: string[]) => {
-                                IBestToast.show(value.join(":"))
-                            },
-                            onChange: (value: string[]) => {
-                                IBestToast.show(value.join(":"))
-                            }
-                        })
+
+                    ListItem() {
+                        ComponentShowContainer({ title: '时间范围', titlePaddingLeft: SPACE.SM, card: true }) {
+                            IBestTimePicker({
+                                title: "选择时间",
+                                minTime: "08:30:00",
+                                maxTime: "18:00:00",
+                                value: $selectValue2,
+                                onConfirm: (value: string[]) => {
+                                    IBestToast.show(value.join(":"))
+                                },
+                                onChange: (value: string[]) => {
+                                    IBestToast.show(value.join(":"))
+                                }
+                            })
+                        }
                     }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: "显示单位", titlePaddingLeft: SPACE.SM, card: true }) {
-                        IBestTimePicker({
-                            title: "选择时间",
-                            showUnit: true,
-                            value: $selectValue3,
-                            onConfirm: (value: string[]) => {
-                                IBestToast.show(value.join(":"))
-                            },
-                            onChange: (value: string[]) => {
-                                IBestToast.show(value.join(":"))
-                            }
-                        })
+
+                    ListItem() {
+                        ComponentShowContainer({ title: "显示单位", titlePaddingLeft: SPACE.SM, card: true }) {
+                            IBestTimePicker({
+                                title: "选择时间",
+                                showUnit: true,
+                                value: $selectValue3,
+                                onConfirm: (value: string[]) => {
+                                    IBestToast.show(value.join(":"))
+                                },
+                                onChange: (value: string[]) => {
+                                    IBestToast.show(value.join(":"))
+                                }
+                            })
+                        }
                     }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: "过滤选项", titlePaddingLeft: SPACE.SM, card: true }) {
-                        IBestTimePicker({
-                            title: "选择时间",
-                            filter: this.filter,
-                            value: $selectValue4,
-                            onConfirm: (value: string[]) => {
-                                IBestToast.show(value.join(":"))
-                            },
-                            onChange: (value: string[]) => {
-                                IBestToast.show(value.join(":"))
-                            }
-                        })
+
+                    ListItem() {
+                        ComponentShowContainer({ title: "过滤选项", titlePaddingLeft: SPACE.SM, card: true }) {
+                            IBestTimePicker({
+                                title: "选择时间",
+                                filter: this.filter,
+                                value: $selectValue4,
+                                onConfirm: (value: string[]) => {
+                                    IBestToast.show(value.join(":"))
+                                },
+                                onChange: (value: string[]) => {
+                                    IBestToast.show(value.join(":"))
+                                }
+                            })
+                        }
                     }
+
+                    ListItem().height(50)
                 }
-				ListItem().height(50)
             }
-            .layoutWeight(1)
         }
-        .hideTitleBar(true)
-        .backgroundColor(modeColor.bg)
     }
 }

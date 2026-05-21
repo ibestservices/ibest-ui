@@ -1,7 +1,7 @@
 import { IBestTag } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, FONT_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import BasePage from '../../components/BasePage';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import CustomNavBar from '../../components/CustomNavBar';
 
 @Builder
 export function TagBuilder(_: string, title: string){
@@ -30,157 +30,171 @@ struct TagPage {
 	@State title: string = ''
 	@State showTag: boolean = true
 	build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-			List() {
-				ListItem() {
-					ComponentShowContainer({ title: '基础用法' }) {
-						Column() {
-							Row() {
-								Text('primary 类型').fontSize(FONT_SIZE.MD)
-								IBestTag({
-									text: '标签',
-									type: 'primary'
-								})
-							}.rowStyles()
-							Row() {
-								Text('success 类型').fontSize(FONT_SIZE.MD)
-								IBestTag({
-									text: '标签',
-									type: 'success'
-								})
-							}.rowStyles()
-							Row() {
-								Text('warning 类型').fontSize(FONT_SIZE.MD)
-								IBestTag({
-									text: '标签',
-									type: 'warning'
-								})
-							}.rowStyles()
-							Row() {
-								Text('danger 类型').fontSize(FONT_SIZE.MD)
-								IBestTag({
-									text: '标签',
-									type: 'danger'
-								})
-							}.rowStyles()
-							Row() {
-								Text('default 类型').fontSize(FONT_SIZE.MD)
-								IBestTag({
-									text: '标签',
-									type: 'default'
-								})
-							}.rowStyles(false)
-						}.blockStyles()
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg }) {
+				List() {
+					ListItem().height(84)
+					ListItem() {
+						ComponentShowContainer({ title: '基础用法' }) {
+							Column() {
+								Row() {
+									Text('primary 类型').fontSize(FONT_SIZE.MD)
+									IBestTag({
+										text: '标签',
+										type: 'primary'
+									})
+								}.rowStyles()
+
+								Row() {
+									Text('success 类型').fontSize(FONT_SIZE.MD)
+									IBestTag({
+										text: '标签',
+										type: 'success'
+									})
+								}.rowStyles()
+
+								Row() {
+									Text('warning 类型').fontSize(FONT_SIZE.MD)
+									IBestTag({
+										text: '标签',
+										type: 'warning'
+									})
+								}.rowStyles()
+
+								Row() {
+									Text('danger 类型').fontSize(FONT_SIZE.MD)
+									IBestTag({
+										text: '标签',
+										type: 'danger'
+									})
+								}.rowStyles()
+
+								Row() {
+									Text('default 类型').fontSize(FONT_SIZE.MD)
+									IBestTag({
+										text: '标签',
+										type: 'default'
+									})
+								}.rowStyles(false)
+							}.blockStyles()
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '样式风格' }) {
-						Column() {
-							Row() {
-								Text('空心样式').fontSize(FONT_SIZE.MD)
-								IBestTag({
-									text: '标签',
-									type: 'primary',
-									plain: true
-								})
-							}.rowStyles()
-							Row() {
-								Text('圆角样式').fontSize(FONT_SIZE.MD)
-								IBestTag({
-									text: '标签',
-									type: 'primary',
-									round: true
-								})
-							}.rowStyles()
-							Row() {
-								Text('标记样式').fontSize(FONT_SIZE.MD)
-								IBestTag({
-									text: '标签',
-									type: 'primary',
-									mark: true
-								})
-							}.rowStyles()
-							Row() {
-								Text('可关闭标签').fontSize(FONT_SIZE.MD)
-								IBestTag({
-									text: '标签',
-									type: 'primary',
-									closeable: true,
-									show: this.showTag,
-									onClose: () => {
-										this.showTag = false;
-									}
-								})
-							}.rowStyles(false)
-						}.blockStyles()
+
+					ListItem() {
+						ComponentShowContainer({ title: '样式风格' }) {
+							Column() {
+								Row() {
+									Text('空心样式').fontSize(FONT_SIZE.MD)
+									IBestTag({
+										text: '标签',
+										type: 'primary',
+										plain: true
+									})
+								}.rowStyles()
+
+								Row() {
+									Text('圆角样式').fontSize(FONT_SIZE.MD)
+									IBestTag({
+										text: '标签',
+										type: 'primary',
+										round: true
+									})
+								}.rowStyles()
+
+								Row() {
+									Text('标记样式').fontSize(FONT_SIZE.MD)
+									IBestTag({
+										text: '标签',
+										type: 'primary',
+										mark: true
+									})
+								}.rowStyles()
+
+								Row() {
+									Text('可关闭标签').fontSize(FONT_SIZE.MD)
+									IBestTag({
+										text: '标签',
+										type: 'primary',
+										closeable: true,
+										show: this.showTag,
+										onClose: () => {
+											this.showTag = false;
+										}
+									})
+								}.rowStyles(false)
+							}.blockStyles()
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '标签大小' }) {
-						Column() {
-							Row() {
-								Text('小号标签').fontSize(FONT_SIZE.MD)
-								IBestTag({
-									type: 'primary',
-									text: '标签',
-								})
-							}.rowStyles()
-							Row() {
-								Text('中号标签').fontSize(FONT_SIZE.MD)
-								IBestTag({
-									type: 'primary',
-									text: '标签',
-									tagSize: 'medium'
-								})
-							}.rowStyles()
-							Row() {
-								Text('大号标签').fontSize(FONT_SIZE.MD)
-								IBestTag({
-									type: 'primary',
-									text: '标签',
-									tagSize: 'large'
-								})
-							}.rowStyles(false)
-						}.blockStyles()
+
+					ListItem() {
+						ComponentShowContainer({ title: '标签大小' }) {
+							Column() {
+								Row() {
+									Text('小号标签').fontSize(FONT_SIZE.MD)
+									IBestTag({
+										type: 'primary',
+										text: '标签',
+									})
+								}.rowStyles()
+
+								Row() {
+									Text('中号标签').fontSize(FONT_SIZE.MD)
+									IBestTag({
+										type: 'primary',
+										text: '标签',
+										tagSize: 'medium'
+									})
+								}.rowStyles()
+
+								Row() {
+									Text('大号标签').fontSize(FONT_SIZE.MD)
+									IBestTag({
+										type: 'primary',
+										text: '标签',
+										tagSize: 'large'
+									})
+								}.rowStyles(false)
+							}.blockStyles()
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '自定义颜色' }) {
-						Column() {
-							Row() {
-								Text('背景颜色').fontSize(FONT_SIZE.MD)
-								IBestTag({
-									text: '标签',
-									type: 'primary',
-									color: "#7232dd"
-								})
-							}.rowStyles()
-							Row() {
-								Text('文字颜色').fontSize(FONT_SIZE.MD)
-								IBestTag({
-									text: '标签',
-									color: "#ffe1e1",
-									textColor: '#ad0000'
-								})
-							}.rowStyles()
-							Row() {
-								Text('空心颜色').fontSize(FONT_SIZE.MD)
-								IBestTag({
-									text: '标签',
-									color: "#7232dd",
-									plain: true
-								})
-							}.rowStyles(false)
-						}.blockStyles()
+
+					ListItem() {
+						ComponentShowContainer({ title: '自定义颜色' }) {
+							Column() {
+								Row() {
+									Text('背景颜色').fontSize(FONT_SIZE.MD)
+									IBestTag({
+										text: '标签',
+										type: 'primary',
+										color: "#7232dd"
+									})
+								}.rowStyles()
+
+								Row() {
+									Text('文字颜色').fontSize(FONT_SIZE.MD)
+									IBestTag({
+										text: '标签',
+										color: "#ffe1e1",
+										textColor: '#ad0000'
+									})
+								}.rowStyles()
+
+								Row() {
+									Text('空心颜色').fontSize(FONT_SIZE.MD)
+									IBestTag({
+										text: '标签',
+										color: "#7232dd",
+										plain: true
+									})
+								}.rowStyles(false)
+							}.blockStyles()
+						}
 					}
+
+					ListItem().height(50)
 				}
-				ListItem().height(50)
+				.padding({ left: SPACE.SM, right: SPACE.SM })
 			}
-			.layoutWeight(1)
-			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg)
 	}
 }

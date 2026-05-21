@@ -1,7 +1,8 @@
 import { IBestWeekPicker, IBestToast, IBestPickerOption } from '@ibestservices/ibest-ui'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
-import CustomNavBar from '../../components/CustomNavBar'
+import BasePage from '../../components/BasePage'
+
 @Builder
 export function WeekPickerBuilder(_: string, title: string) {
     WeekPickerPage({title})
@@ -23,44 +24,45 @@ struct WeekPickerPage {
     ]
 
     build() {
-        NavDestination() {
-            CustomNavBar({title: this.title})
-            List() {
-                ListItem() {
-                    ComponentShowContainer({ title: '基础用法' }) {
-                        IBestWeekPicker({
-                            title: "选择周",
-                            value: $selectValue,
-                            onConfirm: (value, text) => {
-                                IBestToast.show(value.toString() + " " + text)
-                            },
-                            onChange: (value, text) => {
-                                IBestToast.show(value.toString() + " " + text)
-                            }
-                        })
+        Column(){
+            BasePage({ title: this.title, bgColor: modeColor.bg }) {
+                List() {
+                    ListItem().height(84)
+                    ListItem() {
+                        ComponentShowContainer({ title: '基础用法' }) {
+                            IBestWeekPicker({
+                                title: "选择周",
+                                value: $selectValue,
+                                onConfirm: (value, text) => {
+                                    IBestToast.show(value.toString() + " " + text)
+                                },
+                                onChange: (value, text) => {
+                                    IBestToast.show(value.toString() + " " + text)
+                                }
+                            })
+                        }
                     }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: "自定义选项" }) {
-                        IBestWeekPicker({
-                            title: "选择星期",
-                            value: $selectValue1,
-                            options: this.options,
-                            onConfirm: (value, text) => {
-                                IBestToast.show(value.toString() + " " + text)
-                            },
-                            onChange: (value, text) => {
-                                IBestToast.show(value.toString() + " " + text)
-                            }
-                        })
+
+                    ListItem() {
+                        ComponentShowContainer({ title: "自定义选项" }) {
+                            IBestWeekPicker({
+                                title: "选择星期",
+                                value: $selectValue1,
+                                options: this.options,
+                                onConfirm: (value, text) => {
+                                    IBestToast.show(value.toString() + " " + text)
+                                },
+                                onChange: (value, text) => {
+                                    IBestToast.show(value.toString() + " " + text)
+                                }
+                            })
+                        }
                     }
+
+                    ListItem().height(50)
                 }
-                ListItem().height(50)
+                .padding({ left: SPACE.SM, right: SPACE.SM })
             }
-            .layoutWeight(1)
-            .padding({left: SPACE.SM, right: SPACE.SM})
         }
-        .hideTitleBar(true)
-        .backgroundColor(modeColor.bg)
     }
 }

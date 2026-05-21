@@ -1,6 +1,6 @@
 import { IBestCell, IBestCellGroup, IBestCarKeyboard } from '@ibestservices/ibest-ui';
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
-import CustomNavBar from '../../components/CustomNavBar';
+import BasePage from '../../components/BasePage';
 
 @Builder
 export function CarKeyboardBuilder(_:string, title: string){
@@ -19,58 +19,59 @@ struct CarKeyboardPage {
 	@State value2: string = ''
 
 	build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-			List() {
-				ListItem() {
-					IBestCellGroup({ inset: true }) {
-						IBestCell({
-							title: '默认键盘',
-							value: this.value,
-							clickable: true,
-							onCellClick: () => {
-								this.visible = true
-							}
-						})
-						IBestCell({
-							title: '最大长度',
-							value: this.value1,
-							clickable: true,
-							onCellClick: () => {
-								this.visible1 = true
-							}
-						})
-						IBestCell({
-							title: '自定义样式',
-							value: this.value2,
-							clickable: true,
-							hasBorder: false,
-							onCellClick: () => {
-								this.visible2 = true
-							}
-						})
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg }) {
+				List() {
+					ListItem().height(84)
+					ListItem() {
+						IBestCellGroup({ inset: true }) {
+							IBestCell({
+								title: '默认键盘',
+								value: this.value,
+								clickable: true,
+								onCellClick: () => {
+									this.visible = true
+								}
+							})
+							IBestCell({
+								title: '最大长度',
+								value: this.value1,
+								clickable: true,
+								onCellClick: () => {
+									this.visible1 = true
+								}
+							})
+							IBestCell({
+								title: '自定义样式',
+								value: this.value2,
+								clickable: true,
+								hasBorder: false,
+								onCellClick: () => {
+									this.visible2 = true
+								}
+							})
+						}
 					}
 				}
+				.layoutWeight(1)
+				.padding({ top: SPACE.SM, bottom: SPACE.SM })
+
+				IBestCarKeyboard({
+					visible: $visible,
+					value: $value
+				})
+				IBestCarKeyboard({
+					visible: $visible1,
+					value: $value1,
+					maxLength: 7
+				})
+				IBestCarKeyboard({
+					visible: $visible2,
+					value: $value2,
+					title: "车牌键盘",
+					keyHeight: 36
+				})
 			}
-			.layoutWeight(1)
-			.padding({ top: SPACE.SM, bottom: SPACE.SM })
-			IBestCarKeyboard({
-				visible: $visible,
-				value: $value
-			})
-			IBestCarKeyboard({
-				visible: $visible1,
-				value: $value1,
-				maxLength: 7
-			})
-			IBestCarKeyboard({
-				visible: $visible2,
-				value: $value2,
-				title: "车牌键盘",
-				keyHeight: 36
-			})
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg)
 	}
 }

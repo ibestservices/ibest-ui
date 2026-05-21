@@ -379,7 +379,9 @@ export struct IBestPopup{
 			close: (): void => this.close()
 		})
 	}
-
+	aboutToAppear(){
+		this.visibleChange()
+	}
 	async visibleChange(){
 		if(this.visible){
 			this.open()
@@ -447,7 +449,6 @@ export struct IBestPopup{
 			}
 		})
 	}
-	// 关闭弹框
 	close() {
 		this.visible = false
 	}

@@ -1,7 +1,7 @@
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import { IBestStepper } from '@ibestservices/ibest-ui';
-import CustomNavBar from '../../components/CustomNavBar';
+import BasePage from '../../components/BasePage';
 
 @Builder
 export function StepperBuilder(_: string, title: string){
@@ -23,88 +23,93 @@ struct StepperPage {
 	@State value7: number = 1
 	@State value8: number = 1
 
-
 	build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-			List() {
-				ListItem() {
-					ComponentShowContainer({ title: '基础用法' }) {
-						IBestStepper({
-							value: $value
-						})
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg2 }) {
+				List() {
+					ListItem().height(84)
+					ListItem() {
+						ComponentShowContainer({ title: '基础用法' }) {
+							IBestStepper({
+								value: $value
+							})
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '步长设置' }) {
+							IBestStepper({
+								value: $value1,
+								step: 2
+							})
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '限制输入范围' }) {
+							IBestStepper({
+								value: $value2,
+								min: 5,
+								max: 8
+							})
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '禁用状态' }) {
+							IBestStepper({
+								value: $value4,
+								disabled: true
+							})
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '禁用输入框' }) {
+							IBestStepper({
+								value: $value5,
+								disableInput: true
+							})
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '固定小数位数' }) {
+							IBestStepper({
+								value: $value6,
+								step: 0.2,
+								decimalLength: 1
+							})
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '自定义大小' }) {
+							IBestStepper({
+								value: $value7,
+								inputWidth: 40,
+								buttonSize: 32
+							})
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '自定义样式' }) {
+							IBestStepper({
+								value: $value8,
+								buttonRadius: 999,
+								minusBtnBgColor: "#fff",
+								minusBtnIconColor: "#1989fa",
+								minusBtnBorderColor: "#1989fa",
+								plusBtnBgColor: "#1989fa",
+								plusBtnIconColor: "#fff",
+								inputBgColor: "transparent"
+							})
+						}
 					}
 				}
-				ListItem() {
-					ComponentShowContainer({ title: '步长设置' }) {
-						IBestStepper({
-							value: $value1,
-							step: 2
-						})
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '限制输入范围' }) {
-						IBestStepper({
-							value: $value2,
-							min: 5,
-							max: 8
-						})
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '禁用状态' }) {
-						IBestStepper({
-							value: $value4,
-							disabled: true
-						})
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '禁用输入框' }) {
-						IBestStepper({
-							value: $value5,
-							disableInput: true
-						})
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '固定小数位数' }) {
-						IBestStepper({
-							value: $value6,
-							step: 0.2,
-							decimalLength: 1
-						})
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '自定义大小' }) {
-						IBestStepper({
-							value: $value7,
-							inputWidth: 40,
-							buttonSize: 32
-						})
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '自定义样式' }) {
-						IBestStepper({
-							value: $value8,
-							buttonRadius: 999,
-							minusBtnBgColor: "#fff",
-							minusBtnIconColor: "#1989fa",
-							minusBtnBorderColor: "#1989fa",
-							plusBtnBgColor: "#1989fa",
-							plusBtnIconColor: "#fff",
-							inputBgColor: "transparent"
-						})
-					}
-				}
+				.padding({ left: SPACE.SM, right: SPACE.SM })
 			}
-			.layoutWeight(1)
-			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg2)
 	}
 }

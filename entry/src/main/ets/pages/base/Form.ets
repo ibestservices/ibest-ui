@@ -26,8 +26,8 @@ import {
 import ComponentShowContainer from '../../components/ComponentShowContainer'
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
 import { generateId } from '../../utils/utils'
-import CustomNavBar from '../../components/CustomNavBar'
 import { LengthMetrics } from '@kit.ArkUI'
+import BasePage from '../../components/BasePage'
 
 @Builder
 export function FormBuilder(_: string, title: string){
@@ -322,343 +322,350 @@ struct FormPage {
 		this.list.splice(index, 1)
 	}
 	build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-			List() {
-				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
-						IBestForm({
-							formId: this.formId1,
-							controller: this.controller1
-						}){
-							IBestCellGroup({hasBorder: false}) {
-								IBestField({
-									formId: this.formId1,
-									prop: 'name',
-									value: $name,
-									label: "姓名",
-									placeholder: "请输入姓名",
-									rules:[
-										{ required: true, message: '请输入姓名' },
-										{ min: 2, max: 10, message: '姓名长度在2-10个字符之间' }
-									]
-								})
-								IBestField({
-									formId: this.formId1,
-									type: "number",
-									prop: 'phone',
-									value: $phone,
-									label: "手机号",
-									placeholder: "请输入手机号",
-									hasBorder: false,
-									rules: [
-										{ required: true, message: '请输入手机号' }
-									]
-								})
-							}
-							IBestButton({
-								text: "设置值",
-								type: 'primary',
-								buttonSize: 'large',
-								onBtnClick: () => {
-									this.controller1.setFormValues({
-										"name": "测试",
-										"phone": 123456
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg }) {
+				List() {
+					ListItem().height(84)
+					ListItem() {
+						ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
+							IBestForm({
+								formId: this.formId1,
+								controller: this.controller1
+							}) {
+								IBestCellGroup({ hasBorder: false }) {
+									IBestField({
+										formId: this.formId1,
+										prop: 'name',
+										value: $name,
+										label: "姓名",
+										placeholder: "请输入姓名",
+										rules: [
+											{ required: true, message: '请输入姓名' },
+											{ min: 2, max: 10, message: '姓名长度在2-10个字符之间' }
+										]
+									})
+									IBestField({
+										formId: this.formId1,
+										type: "number",
+										prop: 'phone',
+										value: $phone,
+										label: "手机号",
+										placeholder: "请输入手机号",
+										hasBorder: false,
+										rules: [
+											{ required: true, message: '请输入手机号' }
+										]
 									})
 								}
-							})
-							IBestButton({
-								text: "验证姓名",
-								type: 'primary',
-								buttonSize: 'large',
-								onBtnClick: () => {
-									this.controller1.validateField("name").then(res => {
-										if(res.valid){
-											IBestToast.show("验证成功")
-										} else {
-											IBestToast.show({
-												message: `${res.field.label}验证失败`
-											})
-										}
-									})
-								}
-							})
-							IBestButton({
-								text: "提交",
-								type: 'primary',
-								buttonSize: 'large',
-								onBtnClick: () => {
-									this.controller1.validate().then(res => {
-										if(res.valid){
-											IBestToast.show("验证成功")
-										} else {
-											let labels: string[] = res.fields.map(item => item.label)
-											IBestToast.show({
-												message: `${labels.join(',')}验证失败`
-											})
-										}
-									})
-								}
-							})
-						}
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '自定义校验规则', titlePaddingLeft: SPACE.MD }) {
-						IBestForm({
-							formId: this.formId2,
-							rules: this.rules2,
-							controller: this.controller2
-						}){
-							IBestCellGroup({hasBorder: false}) {
-								IBestField({
-									formId: this.formId2,
-									prop: 'value1',
-									value: $value1,
-									label: "正则校验",
-									placeholder: "正则校验"
-								})
-								IBestField({
-									formId: this.formId2,
-									prop: 'value2',
-									value: $value2,
-									label: "函数校验",
-									placeholder: "返回true/false"
-								})
-								IBestField({
-									formId: this.formId2,
-									prop: 'value3',
-									value: $value3,
-									label: "函数校验",
-									placeholder: "返回验证信息"
-								})
-								IBestField({
-									formId: this.formId2,
-									prop: 'value4',
-									value: $value4,
-									label: "异步校验",
-									placeholder: "异步函数校验",
-									hasBorder: false
-								})
-							}
-							IBestButton({
-								text: "提交",
-								type: 'primary',
-								buttonSize: 'large',
-								onBtnClick: () => {
-									this.controller2.validate((valid) => {
-										if (valid) {
-											IBestToast.show("验证成功")
-										}
-									})
-								}
-							})
-						}
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '自定义表单项类型', titlePaddingLeft: SPACE.MD }) {
-						IBestForm({
-							formId: this.formId3,
-							rules: this.rules3,
-							controller: this.controller3
-						}){
-							IBestCellGroup({hasBorder: false}) {
-								IBestField({
-									formId: this.formId3,
-									prop: 'value5',
-									value: $value5,
-									label: "开关",
-									customRightContent: (): void => this.switchContent()
-								})
-								IBestField({
-									formId: this.formId3,
-									prop: 'value6',
-									value: $value6,
-									label: "复选框",
-									rules: this.value5 ? [{required: true, message: '请选择'}] : [],
-									customRightContent: (): void => this.checkboxContent()
-								})
-								IBestField({
-									formId: this.formId3,
-									prop: 'value7',
-									value: $value7,
-									label: "复选框组",
-									required: this.value5,
-									customRightContent: (): void => this.checkboxGroupContent()
-								})
-								IBestField({
-									formId: this.formId3,
-									prop: 'value8',
-									value: $value8,
-									label: "单选框",
-									customRightContent: (): void => this.radioContent()
-								})
-								IBestField({
-									formId: this.formId3,
-									prop: 'value9',
-									value: $value9,
-									label: "步进器",
-									customRightContent: (): void => this.stepperContent()
-								})
-								IBestField({
-									formId: this.formId3,
-									prop: 'value10',
-									value: $value10,
-									showValue: this.selectValue,
-									label: "选择城市",
-									placeholder: "请选择城市",
-									isLink: true,
-									onFieldClick: () => {
-										this.visible = true
+
+								IBestButton({
+									text: "设置值",
+									type: 'primary',
+									buttonSize: 'large',
+									onBtnClick: () => {
+										this.controller1.setFormValues({
+											"name": "测试",
+											"phone": 123456
+										})
 									}
 								})
-								IBestField({
-									formId: this.formId3,
-									prop: 'value11',
-									value: $value11,
-									label: "日历",
-									placeholder: "请选择日期",
-									isLink: true,
-									onFieldClick: () => {
-										this.visible1 = true
+								IBestButton({
+									text: "验证姓名",
+									type: 'primary',
+									buttonSize: 'large',
+									onBtnClick: () => {
+										this.controller1.validateField("name").then(res => {
+											if (res.valid) {
+												IBestToast.show("验证成功")
+											} else {
+												IBestToast.show({
+													message: `${res.field.label}验证失败`
+												})
+											}
+										})
 									}
 								})
-								IBestField({
-									formId: this.formId3,
-									prop: 'value12',
-									value: $value12,
-									label: "上传图片",
-									hasBorder: false,
-									customRightContent: (): void => this.uploadImg()
+								IBestButton({
+									text: "提交",
+									type: 'primary',
+									buttonSize: 'large',
+									onBtnClick: () => {
+										this.controller1.validate().then(res => {
+											if (res.valid) {
+												IBestToast.show("验证成功")
+											} else {
+												let labels: string[] = res.fields.map(item => item.label)
+												IBestToast.show({
+													message: `${labels.join(',')}验证失败`
+												})
+											}
+										})
+									}
 								})
 							}
-							IBestButton({
-								text: "设置值",
-								type: 'primary',
-								buttonSize: 'large',
-								onBtnClick: () => {
-									this.controller3.setFormValues({
-										"value5": true,
-										"value6": true,
-										"value7": ['1'],
-										"value8": true,
-										"value9": 3,
-										"value10": ["320000","320500","320583"],
-										"value11": '2025-08-25'
-									})
-									this.selectValue = "江苏省,苏州市,昆山市"
-								}
-							})
-							IBestButton({
-								text: "提交",
-								type: 'primary',
-								buttonSize: 'large',
-								onBtnClick: () => {
-									this.controller3.validate((valid) => {
-										if (valid) {
-											IBestDialogUtil.open({
-												title: "表单值",
-												message: JSON.stringify(this.controller3.getFormValues())
-											})
-										}
-									})
-								}
-							})
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '动态表单验证', titlePaddingLeft: SPACE.MD }) {
-						IBestForm({
-							formId: this.formId4,
-							rules: this.rules4,
-							controller: this.controller4
-						}){
-							IBestCellGroup({hasBorder: false}){
-								IBestField({
-									formId: this.formId4,
-									prop: 'sex',
-									value: $sex,
-									label: "性别",
-									hasBorder: this.sex != 0,
-									customRightContent: (): void => this.radioContent1()
-								})
-								if(this.sex == 1){
+
+					ListItem() {
+						ComponentShowContainer({ title: '自定义校验规则', titlePaddingLeft: SPACE.MD }) {
+							IBestForm({
+								formId: this.formId2,
+								rules: this.rules2,
+								controller: this.controller2
+							}) {
+								IBestCellGroup({ hasBorder: false }) {
 									IBestField({
-										formId: this.formId4,
-										prop: 'info1',
-										value: $info1,
-										label: "男生信息",
-										placeholder: "请输入男生信息",
-										hasBorder: false
+										formId: this.formId2,
+										prop: 'value1',
+										value: $value1,
+										label: "正则校验",
+										placeholder: "正则校验"
 									})
-								}else if(this.sex == 2){
 									IBestField({
-										formId: this.formId4,
-										prop: 'info2',
-										value: $info2,
-										label: "女生信息",
-										placeholder: "请输入女生信息",
+										formId: this.formId2,
+										prop: 'value2',
+										value: $value2,
+										label: "函数校验",
+										placeholder: "返回true/false"
+									})
+									IBestField({
+										formId: this.formId2,
+										prop: 'value3',
+										value: $value3,
+										label: "函数校验",
+										placeholder: "返回验证信息"
+									})
+									IBestField({
+										formId: this.formId2,
+										prop: 'value4',
+										value: $value4,
+										label: "异步校验",
+										placeholder: "异步函数校验",
 										hasBorder: false
 									})
 								}
-								ForEach(this.list, (item: Subject, index) => {
-									subjectItem({
-										item: item,
-										index: index,
-										formId: this.formId4,
-										delete: (): void => this.deleteContent(index)
-									})
-								}, (item: Subject) => item.id)
+
+								IBestButton({
+									text: "提交",
+									type: 'primary',
+									buttonSize: 'large',
+									onBtnClick: () => {
+										this.controller2.validate((valid) => {
+											if (valid) {
+												IBestToast.show("验证成功")
+											}
+										})
+									}
+								})
 							}
-							IBestButton({
-								text: "添加学科",
-								type: "primary",
-								buttonSize: 'large',
-								onBtnClick: () => {
-									this.list.push(new Subject())
-								}
-							})
-							IBestButton({
-								text: "提交",
-								type: 'primary',
-								buttonSize: 'large',
-								onBtnClick: () => {
-									this.controller4.validate((valid) => {
-										if (valid) {
-											IBestDialogUtil.open({
-												title: "表单值",
-												message: JSON.stringify(this.controller4.getFormValues())
-											})
-										}
-									})
-								}
-							})
 						}
 					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '自定义表单项类型', titlePaddingLeft: SPACE.MD }) {
+							IBestForm({
+								formId: this.formId3,
+								rules: this.rules3,
+								controller: this.controller3
+							}) {
+								IBestCellGroup({ hasBorder: false }) {
+									IBestField({
+										formId: this.formId3,
+										prop: 'value5',
+										value: $value5,
+										label: "开关",
+										customRightContent: (): void => this.switchContent()
+									})
+									IBestField({
+										formId: this.formId3,
+										prop: 'value6',
+										value: $value6,
+										label: "复选框",
+										rules: this.value5 ? [{ required: true, message: '请选择' }] : [],
+										customRightContent: (): void => this.checkboxContent()
+									})
+									IBestField({
+										formId: this.formId3,
+										prop: 'value7',
+										value: $value7,
+										label: "复选框组",
+										required: this.value5,
+										customRightContent: (): void => this.checkboxGroupContent()
+									})
+									IBestField({
+										formId: this.formId3,
+										prop: 'value8',
+										value: $value8,
+										label: "单选框",
+										customRightContent: (): void => this.radioContent()
+									})
+									IBestField({
+										formId: this.formId3,
+										prop: 'value9',
+										value: $value9,
+										label: "步进器",
+										customRightContent: (): void => this.stepperContent()
+									})
+									IBestField({
+										formId: this.formId3,
+										prop: 'value10',
+										value: $value10,
+										showValue: this.selectValue,
+										label: "选择城市",
+										placeholder: "请选择城市",
+										isLink: true,
+										onFieldClick: () => {
+											this.visible = true
+										}
+									})
+									IBestField({
+										formId: this.formId3,
+										prop: 'value11',
+										value: $value11,
+										label: "日历",
+										placeholder: "请选择日期",
+										isLink: true,
+										onFieldClick: () => {
+											this.visible1 = true
+										}
+									})
+									IBestField({
+										formId: this.formId3,
+										prop: 'value12',
+										value: $value12,
+										label: "上传图片",
+										hasBorder: false,
+										customRightContent: (): void => this.uploadImg()
+									})
+								}
+
+								IBestButton({
+									text: "设置值",
+									type: 'primary',
+									buttonSize: 'large',
+									onBtnClick: () => {
+										this.controller3.setFormValues({
+											"value5": true,
+											"value6": true,
+											"value7": ['1'],
+											"value8": true,
+											"value9": 3,
+											"value10": ["320000", "320500", "320583"],
+											"value11": '2025-08-25'
+										})
+										this.selectValue = "江苏省,苏州市,昆山市"
+									}
+								})
+								IBestButton({
+									text: "提交",
+									type: 'primary',
+									buttonSize: 'large',
+									onBtnClick: () => {
+										this.controller3.validate((valid) => {
+											if (valid) {
+												IBestDialogUtil.open({
+													title: "表单值",
+													message: JSON.stringify(this.controller3.getFormValues())
+												})
+											}
+										})
+									}
+								})
+							}
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '动态表单验证', titlePaddingLeft: SPACE.MD }) {
+							IBestForm({
+								formId: this.formId4,
+								rules: this.rules4,
+								controller: this.controller4
+							}) {
+								IBestCellGroup({ hasBorder: false }) {
+									IBestField({
+										formId: this.formId4,
+										prop: 'sex',
+										value: $sex,
+										label: "性别",
+										hasBorder: this.sex != 0,
+										customRightContent: (): void => this.radioContent1()
+									})
+									if (this.sex == 1) {
+										IBestField({
+											formId: this.formId4,
+											prop: 'info1',
+											value: $info1,
+											label: "男生信息",
+											placeholder: "请输入男生信息",
+											hasBorder: false
+										})
+									} else if (this.sex == 2) {
+										IBestField({
+											formId: this.formId4,
+											prop: 'info2',
+											value: $info2,
+											label: "女生信息",
+											placeholder: "请输入女生信息",
+											hasBorder: false
+										})
+									}
+									ForEach(this.list, (item: Subject, index) => {
+										subjectItem({
+											item: item,
+											index: index,
+											formId: this.formId4,
+											delete: (): void => this.deleteContent(index)
+										})
+									}, (item: Subject) => item.id)
+								}
+
+								IBestButton({
+									text: "添加学科",
+									type: "primary",
+									buttonSize: 'large',
+									onBtnClick: () => {
+										this.list.push(new Subject())
+									}
+								})
+								IBestButton({
+									text: "提交",
+									type: 'primary',
+									buttonSize: 'large',
+									onBtnClick: () => {
+										this.controller4.validate((valid) => {
+											if (valid) {
+												IBestDialogUtil.open({
+													title: "表单值",
+													message: JSON.stringify(this.controller4.getFormValues())
+												})
+											}
+										})
+									}
+								})
+							}
+						}
+					}
+
+					ListItem().height(50)
 				}
-				ListItem().height(50)
+				.padding({ left: SPACE.MD, right: SPACE.MD })
+				// 选择城市
+				IBestCascader({
+					visible: this.visible,
+					options: this.options,
+					value: $value10,
+					onConfirm: value => {
+						this.selectValue = value.map(item => item.text).join(',')
+					}
+				})
+				// 日历
+				IBestCalendarDialog({
+					visible: $visible1,
+					value: $value11
+				})
 			}
-			.layoutWeight(1)
-			.padding({ left: SPACE.MD, right: SPACE.MD })
-			// 选择城市
-			IBestCascader({
-				visible: this.visible,
-				options: this.options,
-				value: $value10,
-				onConfirm: value => {
-					this.selectValue = value.map(item => item.text).join(',')
-				}
-			})
-			// 日历
-			IBestCalendarDialog({
-				visible: $visible1,
-				value: $value11
-			})
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg)
 	}
 }
 

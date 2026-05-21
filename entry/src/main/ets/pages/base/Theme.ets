@@ -14,8 +14,8 @@ import {
 	IBestTabItemType
 } from '@ibestservices/ibest-ui';
 import { FONT_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import BasePage from '../../components/BasePage';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import CustomNavBar from '../../components/CustomNavBar';
 import { getRandomColor } from '../../utils/utils';
 
 @Builder
@@ -62,117 +62,131 @@ struct ThemePage {
 		IBestSetUIBaseStyle({ primary: '#3D8AF2' })
 	}
 	build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-			List() {
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.custom_switch", $r("app.string.color")) }) {
-						Row() {
-							TextInput({ placeholder: $r("app.string.custom_placeholder", $r("app.string.custom_legal_color")), text: $$this.colorText })
-								.fontSize(FONT_SIZE.SM)
-								.layoutWeight(1)
-								.margin({
-									right: SPACE.SM
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg2 }) {
+				List() {
+					ListItem().height(84)
+					ListItem() {
+						ComponentShowContainer({ title: $r("app.string.custom_switch", $r("app.string.color")) }) {
+							Row() {
+								TextInput({
+									placeholder: $r("app.string.custom_placeholder",
+										$r("app.string.custom_legal_color")),
+									text: $$this.colorText
 								})
+									.fontSize(FONT_SIZE.SM)
+									.layoutWeight(1)
+									.margin({
+										right: SPACE.SM
+									})
+								IBestButton({
+									type: 'primary',
+									text: $r("app.string.confirm"),
+									round: true,
+									buttonSize: 'small',
+									onBtnClick: () => {
+										IBestSetUIBaseStyle({ primary: this.colorText || '#3D8AF2' })
+										this.colorText = getRandomColor()
+									}
+								})
+							}
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: $r("app.string.component_button") }) {
 							IBestButton({
 								type: 'primary',
-								text: $r("app.string.confirm"),
-								round: true,
-								buttonSize: 'small',
-								onBtnClick: () => {
-									IBestSetUIBaseStyle({ primary: this.colorText || '#3D8AF2' })
-									this.colorText = getRandomColor()
-								}
+								text: $r("app.string.button")
 							})
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.component_button") }) {
-						IBestButton({
-							type: 'primary',
-							text: $r("app.string.button")
-						})
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.component_checkbox") }) {
-						IBestCheckbox({
-							value: true,
-							name: '1',
-							label: $r("app.string.content")
-						})
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.component_radio") }) {
-						IBestRadioGroup({ group: this.group, active: $active }) {
-							IBestRadio({ group: this.group, label: $r("app.string.content"), name: '1' })
-							IBestRadio({ group: this.group, label: $r("app.string.content"), name: '2' })
-						}
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.component_switch") }) {
-						Row() {
-							IBestSwitch({
-								value: $switchValue
+
+					ListItem() {
+						ComponentShowContainer({ title: $r("app.string.component_checkbox") }) {
+							IBestCheckbox({
+								value: true,
+								name: '1',
+								label: $r("app.string.content")
 							})
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.component_circleProgress") }) {
-						IBestCircleProgress({
-							value: $progressValue,
-							text: `50%`
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: $r("app.string.component_radio") }) {
+							IBestRadioGroup({ group: this.group, active: $active }) {
+								IBestRadio({ group: this.group, label: $r("app.string.content"), name: '1' })
+								IBestRadio({ group: this.group, label: $r("app.string.content"), name: '2' })
+							}
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.component_progress") }) {
-						IBestProgress({
-							value: $progressValue
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: $r("app.string.component_switch") }) {
+							Row() {
+								IBestSwitch({
+									value: $switchValue
+								})
+							}
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.component_tab") }) {
-						IBestTabs({
-							tabsList: this.tabLists,
-							currentName: $curTabName
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: $r("app.string.component_circleProgress") }) {
+							IBestCircleProgress({
+								value: $progressValue,
+								text: `50%`
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: $r("app.string.component_tag") }) {
-						IBestTag({
-							type: 'primary',
-							text: $r("app.string.tag")
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: $r("app.string.component_progress") }) {
+							IBestProgress({
+								value: $progressValue
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: "卡尺" }) {
-						IBestCaliper({
-							value: $caliperValue
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: $r("app.string.component_tab") }) {
+							IBestTabs({
+								tabsList: this.tabLists,
+								currentName: $curTabName
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: "分段控制器" }) {
-						IBestSegmented({
-							value: $segmentedValue,
-							options: this.segmentedOptions
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: $r("app.string.component_tag") }) {
+							IBestTag({
+								type: 'primary',
+								text: $r("app.string.tag")
+							})
+						}
 					}
+
+					ListItem() {
+						ComponentShowContainer({ title: "卡尺" }) {
+							IBestCaliper({
+								value: $caliperValue
+							})
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: "分段控制器" }) {
+							IBestSegmented({
+								value: $segmentedValue,
+								options: this.segmentedOptions
+							})
+						}
+					}
+
+					ListItem().height(50)
 				}
-				ListItem().height(50)
+				.padding({ left: SPACE.SM, right: SPACE.SM })
 			}
-			.layoutWeight(1)
-			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg2)
 	}
 }

@@ -1,7 +1,7 @@
 import { IBestButton, IBestMosaic } from '@ibestservices/ibest-ui'
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import BasePage from '../../components/BasePage'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
-import CustomNavBar from '../../components/CustomNavBar'
 
 @Builder
 export function MosaicBuilder(_: string, title: string){
@@ -30,50 +30,54 @@ struct Mosaic {
     }
 
     build() {
-        NavDestination(){
-            CustomNavBar({title: this.title})
-            List(){
-                ListItem() {
-                    ComponentShowContainer({ title: "基础用法" }) {
-                        IBestMosaic({radius: 10}){
-                            this.imgMosaicBuilder()
-                        }
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: "自定义马赛克块大小" }) {
-                        IBestMosaic({ blockSize: 30 }){
-                            this.imgMosaicBuilder()
-                        }
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: "模糊文字" }) {
-                        IBestMosaic(){
-                            this.otherContentBuilder()
-                        }
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: "动态显示", space: SPACE.SM }) {
-                        IBestMosaic({ showMosaic: this.showMosaic }){
-                            this.imgMosaicBuilder()
-                        }
-                        IBestButton({
-                            type: "primary",
-                            text: `切换: ${this.showMosaic ? "显示" : "隐藏"}`,
-                            onBtnClick: () => {
-                                this.showMosaic = !this.showMosaic
+        Column(){
+            BasePage({ title: this.title, bgColor: modeColor.bg2 }) {
+                List() {
+                    ListItem().height(84)
+                    ListItem() {
+                        ComponentShowContainer({ title: "基础用法" }) {
+                            IBestMosaic({ radius: 10 }) {
+                                this.imgMosaicBuilder()
                             }
-                        })
+                        }
                     }
+
+                    ListItem() {
+                        ComponentShowContainer({ title: "自定义马赛克块大小" }) {
+                            IBestMosaic({ blockSize: 30 }) {
+                                this.imgMosaicBuilder()
+                            }
+                        }
+                    }
+
+                    ListItem() {
+                        ComponentShowContainer({ title: "模糊文字" }) {
+                            IBestMosaic() {
+                                this.otherContentBuilder()
+                            }
+                        }
+                    }
+
+                    ListItem() {
+                        ComponentShowContainer({ title: "动态显示", space: SPACE.SM }) {
+                            IBestMosaic({ showMosaic: this.showMosaic }) {
+                                this.imgMosaicBuilder()
+                            }
+
+                            IBestButton({
+                                type: "primary",
+                                text: `切换: ${this.showMosaic ? "显示" : "隐藏"}`,
+                                onBtnClick: () => {
+                                    this.showMosaic = !this.showMosaic
+                                }
+                            })
+                        }
+                    }
+
+                    ListItem().height(50)
                 }
-                ListItem().height(50)
+                .padding({ left: SPACE.SM, right: SPACE.SM })
             }
-            .layoutWeight(1)
-            .padding({ left: SPACE.SM, right: SPACE.SM })
         }
-        .hideTitleBar(true)
-        .backgroundColor(modeColor.bg2)
     }
 }

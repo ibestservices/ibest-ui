@@ -24,16 +24,16 @@ const LUNAR_INFO = [
 ]
 
 // 农历月份中文名称
-const LUNAR_MONTH_NAMES = ['正', '二', '三', '四', '五', '六', '七', '八', '九', '十', '冬', '腊']
+export const LUNAR_MONTH_NAMES = ['正', '二', '三', '四', '五', '六', '七', '八', '九', '十', '冬', '腊']
 
 // 农历日期中文名称
-const LUNAR_DAY_NAMES = [
+export const LUNAR_DAY_NAMES = [
     '初一', '初二', '初三', '初四', '初五', '初六', '初七', '初八', '初九', '初十',
     '十一', '十二', '十三', '十四', '十五', '十六', '十七', '十八', '十九', '二十',
     '廿一', '廿二', '廿三', '廿四', '廿五', '廿六', '廿七', '廿八', '廿九', '三十'
 ]
 
-class Lunar {
+export class Lunar {
     private year: number
     private month: number
     private day: number
@@ -122,6 +122,18 @@ class Lunar {
         return info & 0x0F
     }
     /**
+     * 获取农历年的某月总天数
+     */
+    getLunarMonthDays() {
+        const info = LUNAR_INFO[this.year - 1900]
+        const leapMonth = info & 0x0F
+        if (this.isLeapMonth && this.month === leapMonth) {
+            return (info >> 16) & 0x01 ? 30 : 29
+        }
+        const bitPosition = 16 - this.month
+        return (info >> bitPosition) & 0x01 ? 30 : 29
+    }
+    /**
      * 获取农历月份的中文名称
      * @returns {string} 月份中文名称
      */
@@ -166,7 +178,7 @@ class Lunar {
             totalDays += Lunar._getLunarMonthDays(this.year, this.month, false)
         }
         totalDays += (this.day - 1)
-        const baseDate = new Date(1900, 0, 31)
+        const baseDate = new Date(Date.UTC(1900, 0, 31))
         const resultDate = new Date(baseDate.getTime() + totalDays * 24 * 60 * 60 * 1000)
         return resultDate
     }

@@ -539,10 +539,7 @@ export struct IBestTable {
         .width(CONTAINER_SIZE.FULL)
         .height(getSizeByUnit(this.fixHeight))
         .border({
-            width: {
-                left: this.showBorder || this.getIsMultiLevelHeader() ? 1 : 0,
-                top: 1
-            },
+            width: { left: this.showBorder || this.getIsMultiLevelHeader() ? 1 : 0 },
             color: this.bdColor
         })
         .constraintSize({maxHeight: getSizeByUnit(this.maxHeight)})
@@ -577,6 +574,7 @@ struct HeaderCellRow{
             })
         }
         .height(this.headerHeight || "auto")
+        .border({ width: { top: this.isFirstLevel ? 1 : 0 }, color: this.bdColor })
         .backgroundColor(this.headerBgColor)
         .position(!this.isFirstLevel || this.cellPosition == 'body' ? undefined : this.cellPosition == 'left' ? {left: 0, top: 0} : {right: 0, top: 0})
         .onAreaChange((oldValue: Area, newValue: Area) => {

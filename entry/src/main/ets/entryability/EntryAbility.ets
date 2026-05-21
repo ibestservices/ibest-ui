@@ -13,7 +13,7 @@ export default class EntryAbility extends UIAbility {
 	}
 	onWindowStageCreate(windowStage: window.WindowStage): void {
 		let mainWindow = windowStage.getMainWindowSync()
-		mainWindow.setWindowLayoutFullScreen(true)
+		// mainWindow.setWindowLayoutFullScreen(true)
 		windowStage.loadContent('pages/Splash', (err, data) => {
 			GlobalStore.init(windowStage, this.context)
 			// 组件库初始化

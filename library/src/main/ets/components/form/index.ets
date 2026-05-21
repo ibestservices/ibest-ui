@@ -101,8 +101,8 @@ export struct IBestForm {
 	}
 	// 初始化
 	init(data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void){
-		let standardProp = data.prop.split(".")[0]
-		let index = this.formItems.findIndex((item: IBestFieldItem) => item.prop === data.prop)
+		const standardProp = data.prop.split(".")[0]
+		const index = this.formItems.findIndex((item: IBestFieldItem) => item.prop === data.prop)
 		if(index == -1){
 			this.formItems.push(data)
 		}else{
@@ -159,7 +159,7 @@ export struct IBestForm {
 	}
 	// 重置表单
 	resetValidation(prop?: string | string[]) {
-		let names = prop ? (Array.isArray(prop) ? prop : [prop]) : this.formItems.map((item: IBestFieldItem) => item.prop)
+		const names = prop ? (Array.isArray(prop) ? prop : [prop]) : this.formItems.map((item: IBestFieldItem) => item.prop)
 		names.forEach((name: string) => {
 			const item = this.formItems.find((item: IBestFieldItem) => item.prop === name)
 			if (item) {
@@ -169,7 +169,7 @@ export struct IBestForm {
 	}
 	// 获取表单值
 	getValues(){
-		let result: Record<string, IBestFieldValueType> = {}
+		const result: Record<string, IBestFieldValueType> = {}
 		this.formItems.forEach((item: IBestFieldItem) => {
 			result[item.prop] = item.getValue()
 		})
@@ -177,7 +177,7 @@ export struct IBestForm {
 	}
 	// 获取表单值
 	getFormValues(){
-		let result: Record<string, IBestFieldValueType> = {}
+		const result: Record<string, IBestFieldValueType> = {}
 		this.formItems.forEach((item: IBestFieldItem) => {
 			result[item.prop] = item.getValue()
 		})
@@ -185,7 +185,7 @@ export struct IBestForm {
 	}
 	// 设置表单值
 	setFormValues(values: Record<string, IBestFieldValueType>){
-		let keys = Object.keys(values)
+		const keys = Object.keys(values)
 		this.formItems.forEach((item: IBestFieldItem) => {
 			if(keys.includes(item.prop)){
 				item.setValue(values[item.prop])
@@ -193,12 +193,12 @@ export struct IBestForm {
 		})
 	}
 	build() {
-		Column({ space: getSizeByUnit(this.space) }){
-			if(this.defaultBuilder){
+		if(this.defaultBuilder){
+			Column({ space: getSizeByUnit(this.space) }){
 				this.defaultBuilder()
 			}
+			.width(CONTAINER_SIZE.FULL)
+			.alignItems(HorizontalAlign.Start)
 		}
-		.width(CONTAINER_SIZE.FULL)
-		.alignItems(HorizontalAlign.Start)
 	}
 }

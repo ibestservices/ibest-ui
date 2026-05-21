@@ -33,11 +33,11 @@
 				"material": {
 					"certpath": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.cer",
 					"keyAlias": "debugKey",
-					"keyPassword": "0000001B6008D0F17327B9D82D883CB2210C81E3E05DE012C31C04B6CD3CFCD50730F3E6150EED196B318A",
+					"keyPassword": "0000001ACAA38FBF36D68A3E3A1140ABC019666945ECE44B8E4E805C591CFB88B6A37096C5853261B25D",
 					"profile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p7b",
 					"signAlg": "SHA256withECDSA",
 					"storeFile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p12",
-					"storePassword": "0000001B16EA2FB7095C50A7BA1FB4CC9E2C7DD5E6C37ACDB052D5D0A10D027EE5F3D68C6994C5A8C3CFA2"
+					"storePassword": "0000001A3222558C0173FA0DAC5CE98D33EAF699693346225144F8C2F95E8E37B1529B8BE1E7612AD99C"
 				}
 			}
 		],
@@ -47,7 +47,7 @@
 				"signingConfig": "default",
 				"runtimeOS": "HarmonyOS",
 				"compatibleSdkVersion": "6.0.1(21)",
-				"targetSdkVersion": "6.0.2(22)",
+				"targetSdkVersion": "6.1.0(23)",
 				"buildOption": {
 					"strictMode": {
 						"useNormalizedOHMUrl": true

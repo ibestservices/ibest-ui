@@ -1,7 +1,7 @@
 import { CONTAINER_SIZE, modeColor, SPACE } from "../../assets/styles/BaseStyle"
 import ComponentShowContainer from "../../components/ComponentShowContainer"
-import CustomNavBar from "../../components/CustomNavBar"
 import { ChartOptions, UCharts, UChartsController } from '@ibestservices/ucharts'
+import BasePage from "../../components/BasePage"
 
 @Builder
 export function RoseBuilder(_: string, title: string) {
@@ -155,63 +155,62 @@ struct RosePage {
     }
 
     build() {
-        NavDestination() {
-            CustomNavBar({ title: this.title })
-            List() {
-                ListItem() {
-                    ComponentShowContainer({ title: '面积玫瑰图' }) {
-                        UCharts({
-                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
-                            controller: this.controller,
-                            onReady: () => {
-                                this.controller.updateData(this.opts)
-                            }
-                        })
+        Column(){
+            BasePage({ title: this.title, bgColor: modeColor.bg2 }) {
+                List() {
+                    ListItem().height(84)
+                    ListItem() {
+                        ComponentShowContainer({ title: '面积玫瑰图' }) {
+                            UCharts({
+                                contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                                controller: this.controller,
+                                onReady: () => {
+                                    this.controller.updateData(this.opts)
+                                }
+                            })
+                        }
                     }
-                }
 
-                ListItem() {
-                    ComponentShowContainer({ title: '半径玫瑰图+分割线+渐变色' }) {
-                        UCharts({
-                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
-                            controller: this.controller1,
-                            onReady: () => {
-                                this.controller1.updateData(this.opts1)
-                            }
-                        })
+                    ListItem() {
+                        ComponentShowContainer({ title: '半径玫瑰图+分割线+渐变色' }) {
+                            UCharts({
+                                contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                                controller: this.controller1,
+                                onReady: () => {
+                                    this.controller1.updateData(this.opts1)
+                                }
+                            })
+                        }
                     }
-                }
 
-                ListItem() {
-                    ComponentShowContainer({ title: '自定义标签内容' }) {
-                        UCharts({
-                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
-                            controller: this.controller2,
-                            onReady: () => {
-                                this.controller2.updateData(this.opts2)
-                            }
-                        })
+                    ListItem() {
+                        ComponentShowContainer({ title: '自定义标签内容' }) {
+                            UCharts({
+                                contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                                controller: this.controller2,
+                                onReady: () => {
+                                    this.controller2.updateData(this.opts2)
+                                }
+                            })
+                        }
                     }
-                }
 
-                ListItem() {
-                    ComponentShowContainer({ title: '自定义标签隐藏' }) {
-                        UCharts({
-                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
-                            controller: this.controller3,
-                            onReady: () => {
-                                this.controller3.updateData(this.opts3)
-                            }
-                        })
+                    ListItem() {
+                        ComponentShowContainer({ title: '自定义标签隐藏' }) {
+                            UCharts({
+                                contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                                controller: this.controller3,
+                                onReady: () => {
+                                    this.controller3.updateData(this.opts3)
+                                }
+                            })
+                        }
                     }
-                }
 
-                ListItem().height(50)
+                    ListItem().height(50)
+                }
+                .padding({ left: SPACE.SM, right: SPACE.SM })
             }
-            .layoutWeight(1)
-            .padding({ left: SPACE.SM, right: SPACE.SM })
         }
-        .hideTitleBar(true)
-        .backgroundColor(modeColor.bg2)
     }
 }

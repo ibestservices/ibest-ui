@@ -2,6 +2,7 @@
 	"src": [
 		"pages/Splash",
 		"pages/Index",
+		"pages/Index1",
 		"pages/PrivacyPolicy"
 	]
 }

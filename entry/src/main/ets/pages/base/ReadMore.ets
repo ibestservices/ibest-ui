@@ -1,7 +1,7 @@
 import { IBestDialogUtil, IBestReadMore } from '@ibestservices/ibest-ui';
 import { FONT_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import BasePage from '../../components/BasePage';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import CustomNavBar from '../../components/CustomNavBar';
 
 @Builder
 export function ReadMoreBuilder(_: string, title: string){
@@ -32,75 +32,78 @@ struct ReadMorePage {
     }
 
     build() {
-        NavDestination() {
-            CustomNavBar({title: this.title})
-            List() {
-                ListItem() {
-                    ComponentShowContainer({ title: "基本用法" }) {
-                        IBestReadMore({
-                            value: $isExpand
-                        }){
-                            this.textBuilder()
-                        }
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: "自定义高度" }) {
-                        IBestReadMore({
-                            value: $isExpand1,
-                            collapseHeight: 150
-                        }){
-                            this.imgBuilder()
-                        }
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: "一次性展开" }) {
-                        IBestReadMore({
-                            value: $isExpand2,
-                            once: true
-                        }){
-                            this.textBuilder()
-                        }
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: "异步展开" }) {
-                        IBestReadMore({
-                            value: $isExpand3,
-                            inactive: !this.isVip,
-                            expandText: this.isVip ? "展开" : "付费解锁",
-                            expandIcon: this.isVip ? "arrow-down" : "lock",
-                            beforeExpand: () => {
-                                if(this.isVip){
-                                    return true
-                                }
-                                return new Promise((resolve, reject) => {
-                                    IBestDialogUtil.open({
-                                        title: "提示",
-                                        message: "需开通VIP才能解锁全部内容，是否继续？",
-                                        showCancelButton: true,
-                                        onConfirm: () => {
-                                            this.isVip = true
-                                            resolve(true)
-                                        },
-                                        onCancel: () => {
-                                            reject(false)
-                                        }
-                                    })
-                                })
+        Column(){
+            BasePage({ title: this.title, bgColor: modeColor.bg }) {
+                List() {
+                    ListItem().height(84)
+                    ListItem() {
+                        ComponentShowContainer({ title: "基本用法" }) {
+                            IBestReadMore({
+                                value: $isExpand
+                            }) {
+                                this.textBuilder()
                             }
-                        }){
-                            this.textBuilder()
                         }
                     }
+
+                    ListItem() {
+                        ComponentShowContainer({ title: "自定义高度" }) {
+                            IBestReadMore({
+                                value: $isExpand1,
+                                collapseHeight: 150
+                            }) {
+                                this.imgBuilder()
+                            }
+                        }
+                    }
+
+                    ListItem() {
+                        ComponentShowContainer({ title: "一次性展开" }) {
+                            IBestReadMore({
+                                value: $isExpand2,
+                                once: true
+                            }) {
+                                this.textBuilder()
+                            }
+                        }
+                    }
+
+                    ListItem() {
+                        ComponentShowContainer({ title: "异步展开" }) {
+                            IBestReadMore({
+                                value: $isExpand3,
+                                inactive: !this.isVip,
+                                expandText: this.isVip ? "展开" : "付费解锁",
+                                expandIcon: this.isVip ? "arrow-down" : "lock",
+                                beforeExpand: () => {
+                                    if (this.isVip) {
+                                        return true
+                                    }
+                                    return new Promise((resolve, reject) => {
+                                        IBestDialogUtil.open({
+                                            title: "提示",
+                                            message: "需开通VIP才能解锁全部内容，是否继续？",
+                                            showCancelButton: true,
+                                            onConfirm: () => {
+                                                this.isVip = true
+                                                resolve(true)
+                                            },
+                                            onCancel: () => {
+                                                reject(false)
+                                            }
+                                        })
+                                    })
+                                }
+                            }) {
+                                this.textBuilder()
+                            }
+                        }
+                    }
+
+                    ListItem().height(50)
                 }
-                ListItem().height(50)
+                .padding({ left: SPACE.SM, right: SPACE.SM })
             }
-            .layoutWeight(1)
-            .padding({ left: SPACE.SM, right: SPACE.SM })
         }
-        .hideTitleBar(true)
-        .backgroundColor(modeColor.bg)
     }
 }

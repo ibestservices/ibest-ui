@@ -13,7 +13,7 @@ export struct IBestTabs{
      * 全局公共样式
      */
     @StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle();
-    @StorageProp(IBestStorageKey.IS_LANDSCAPE) @Watch("onDidBuild") isLandscape: boolean = false
+    @StorageProp(IBestStorageKey.IS_LANDSCAPE) @Watch("initSize") isLandscape: boolean = false
 	/**
 	 * 当前激活的tab的name
 	 */
@@ -206,9 +206,6 @@ export struct IBestTabs{
         this.uniId = this.getUniqueId()
         this.tabController.changeTab = (name: IBestStringNumber): void => this.changeTab(name)
     }
-    onDidBuild(): void {
-        this.initSize()
-    }
     initSize() {
         if (this.tabsList.length) {
             setTimeout(() => {
@@ -348,6 +345,9 @@ export struct IBestTabs{
         .opacity(this.tabsList.length ? 1 : 0)
         .animation({duration: this.baseStyle.animationDuration as number})
         .clip(true)
+        .onAreaChange(() => {
+            this.initSize()
+        })
     }
 }
 

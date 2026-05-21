@@ -61,20 +61,40 @@
 			"value": "基础组件"
 		},
 		{
+			"name": "basic_component_desc",
+			"value": "构成用户界面的最小独立单元，提供核心的交互与展示能力。"
+		},
+		{
 			"name": "form_component",
 			"value": "表单组件"
+		},
+		{
+			"name": "form_component_desc",
+			"value": "用于收集、验证和编辑用户输入信息，实现人机交互的数据录入。"
 		},
 		{
 			"name": "action_component",
 			"value": "反馈组件"
 		},
 		{
+			"name": "action_component_desc",
+			"value": "向用户传达系统状态、操作结果或引导用户进行下一步操作。"
+		},
+		{
 			"name": "display_component",
 			"value": "展示组件"
 		},
 		{
+			"name": "display_component_desc",
+			"value": "用于呈现和布局各类信息内容，提升界面的可读性与美观度。"
+		},
+		{
 			"name": "navigation_component",
 			"value": "导航组件"
+		},
+		{
+			"name": "navigation_component_desc",
+			"value": "帮助用户在应用或网站的不同页面与模块之间进行定位和跳转。"
 		},
 		{
 			"name": "component_button",
@@ -365,24 +385,48 @@
 			"value": "CanvasDrawer 画布绘制"
 		},
 		{
+			"name": "component_canvasDrawer_desc",
+			"value": "用于动态绘制海报、图片添加水印等需要canvas的场景。"
+		},
+		{
 			"name": "component_colorPicker",
 			"value": "ColorPicker 颜色选取"
+		},
+		{
+			"name": "component_colorPicker_desc",
+			"value": "用于选择颜色。"
 		},
 		{
 			"name": "component_contactAddress",
 			"value": "ContactAddress 联系人地址"
 		},
 		{
+			"name": "component_contactAddress_desc",
+			"value": "用于选择联系人地址, 可粘贴识别。"
+		},
+		{
 			"name": "component_gridAlbum",
 			"value": "GridAlbum 九宫格相册"
+		},
+		{
+			"name": "component_gridAlbum_desc",
+			"value": "用于将图片分块展示在九宫格内。"
 		},
 		{
 			"name": "component_imageCropper",
 			"value": "ImageCropper 图片裁剪"
 		},
 		{
+			"name": "component_imageCropper_desc",
+			"value": "用于头像截取、图片裁剪。"
+		},
+		{
 			"name": "component_inputTag",
 			"value": "InputTag 标签输入框"
+		},
+		{
+			"name": "component_inputTag_desc",
+			"value": "用于通过输入方式创建标签。"
 		},
 		{
 			"name": "primary",

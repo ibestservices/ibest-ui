@@ -15,9 +15,10 @@ import {
 	IBestUploaderFile
 } from '@ibestservices/ibest-ui'
 import { FONT_SIZE, modeColor, SPACE } from '../assets/styles/BaseStyle'
-import CustomNavBar from '../components/CustomNavBar'
 import { generateId, savePixelMap, shareImage } from '../utils/utils'
 import { common } from '@kit.AbilityKit'
+import BasePage from '../components/BasePage'
+
 @Builder
 export function MakePosterBuilder(){
 	MakePosterPage()
@@ -165,132 +166,135 @@ struct MakePosterPage {
 	}
 
 	build() {
-		NavDestination(){
-			CustomNavBar({title: "制作海报"})
-			Scroll(){
-				Column({space: SPACE.MD}){
-					IBestForm({
-						formId: this.formId,
-						labelWidth: 100,
-						rules: this.rules,
-						controller: this.formController
-					}){
-						Row().height(1)
-						IBestCellGroup({inset: true}){
-							IBestField({
-								formId: this.formId,
-								prop: "canvasWidth",
-								label: "海报宽度",
-								value: $canvasWidth,
-								type: "number",
-								placeholder: "请输入海报宽度, 最小为100",
-								min: 100
-							})
-							IBestField({
-								formId: this.formId,
-								prop: "canvasHeight",
-								label: "海报高度",
-								value: $canvasHeight,
-								type: "number",
-								placeholder: "请输入海报高度, 最小为100",
-								min: 100
-							})
-							IBestField({
-								formId: this.formId,
-								prop: "radius",
-								label: "海报圆角",
-								value: $radius,
-								type: "number",
-								placeholder: "请输入海报圆角"
-							})
-							IBestField({
-								formId: this.formId,
-								prop: "canvasBgType",
-								label: "海报背景类型",
-								value: $canvasBgType,
-								hasBorder: this.canvasBgType !== "",
-								customRightContent: (): void => this.bgTypeBuilder()
-							})
-							if(this.canvasBgType === "color"){
+		Column(){
+			BasePage({ title: "制作海报", bgColor: modeColor.bg }) {
+				Row().width("100%").height(84)
+				Scroll() {
+					Column({ space: SPACE.MD }) {
+						IBestForm({
+							formId: this.formId,
+							labelWidth: 100,
+							rules: this.rules,
+							controller: this.formController
+						}) {
+							Row().height(1)
+							IBestCellGroup({ inset: true }) {
 								IBestField({
 									formId: this.formId,
-									prop: "canvasBgColor",
-									label: "海报背景颜色",
-									value: $canvasBgColor,
-									placeholder: "请输入海报背景颜色, 例如 #fff",
-									hasBorder: false
+									prop: "canvasWidth",
+									label: "海报宽度",
+									value: $canvasWidth,
+									type: "number",
+									placeholder: "请输入海报宽度, 最小为100",
+									min: 100
 								})
-							} else if(this.canvasBgType === "img"){
 								IBestField({
 									formId: this.formId,
-									prop: "canvasBgImg",
-									label: "海报背景图片",
-									value: $canvasBgImg,
-									hasBorder: false,
-									customRightContent: (): void => this.selectImgBuilder()
+									prop: "canvasHeight",
+									label: "海报高度",
+									value: $canvasHeight,
+									type: "number",
+									placeholder: "请输入海报高度, 最小为100",
+									min: 100
+								})
+								IBestField({
+									formId: this.formId,
+									prop: "radius",
+									label: "海报圆角",
+									value: $radius,
+									type: "number",
+									placeholder: "请输入海报圆角"
+								})
+								IBestField({
+									formId: this.formId,
+									prop: "canvasBgType",
+									label: "海报背景类型",
+									value: $canvasBgType,
+									hasBorder: this.canvasBgType !== "",
+									customRightContent: (): void => this.bgTypeBuilder()
+								})
+								if (this.canvasBgType === "color") {
+									IBestField({
+										formId: this.formId,
+										prop: "canvasBgColor",
+										label: "海报背景颜色",
+										value: $canvasBgColor,
+										placeholder: "请输入海报背景颜色, 例如 #fff",
+										hasBorder: false
+									})
+								} else if (this.canvasBgType === "img") {
+									IBestField({
+										formId: this.formId,
+										prop: "canvasBgImg",
+										label: "海报背景图片",
+										value: $canvasBgImg,
+										hasBorder: false,
+										customRightContent: (): void => this.selectImgBuilder()
+									})
+								}
+							}
+
+							ForEach(this.contentList, (item: canvasContent, index: number) => {
+								contentItem({
+									item: item,
+									formId: this.formId,
+									index: index,
+									delete: (): void => this.deleteContent(index)
+								})
+							}, (item: canvasContent) => item.id)
+						}
+
+						IBestButton({
+							text: "添加内容",
+							type: "primary",
+							round: true,
+							btnWidth: "90%",
+							onBtnClick: () => {
+								this.contentList.push(new canvasContent())
+							}
+						})
+						IBestButton({
+							text: "生成海报",
+							type: "primary",
+							round: true,
+							btnWidth: "90%",
+							onBtnClick: () => {
+								this.formController.validate((valid, field) => {
+									if (valid) {
+										console.log("海报内容", JSON.stringify(this.contentList))
+										this.canvasShow = true
+									} else {
+										console.log("校验失败", JSON.stringify(field))
+									}
 								})
 							}
-						}
-						ForEach(this.contentList, (item: canvasContent, index: number) => {
-							contentItem({
-								item: item,
-								formId: this.formId,
-								index: index,
-								delete: (): void => this.deleteContent(index)
-							})
-						}, (item: canvasContent) => item.id)
+						})
 					}
-					IBestButton({
-						text: "添加内容",
-						type: "primary",
-						round: true,
-						btnWidth: "90%",
-						onBtnClick: () => {
-							this.contentList.push(new canvasContent())
-						}
-					})
-					IBestButton({
-						text: "生成海报",
-						type: "primary",
-						round: true,
-						btnWidth: "90%",
-						onBtnClick: () => {
-							this.formController.validate((valid, field) => {
-								if(valid){
-									console.log("海报内容", JSON.stringify(this.contentList))
-									this.canvasShow = true
-								}else{
-									console.log("校验失败", JSON.stringify(field))
-								}
-							})
+				}
+				.layoutWeight(1)
+				.align(Alignment.Top)
+
+				if (this.canvasShow) {
+					IBestCanvasDrawer({
+						canvasWidth: Number(this.canvasWidth),
+						canvasHeight: Number(this.canvasHeight),
+						canvasBgColor: this.canvasBgColor,
+						canvasBgImg: this.canvasBgImg[0]?.previewUri,
+						radius: this.getRadius(),
+						contentList: this.contentList,
+						onDrawFinish: pixelMap => {
+							this.pixelMap = pixelMap
+							this.canvasShow = false
+							this.imgVisible = true
 						}
 					})
 				}
-			}
-			.layoutWeight(1)
-			.align(Alignment.Top)
-			if(this.canvasShow){
-				IBestCanvasDrawer({
-					canvasWidth: Number(this.canvasWidth),
-					canvasHeight: Number(this.canvasHeight),
-					canvasBgColor: this.canvasBgColor,
-					canvasBgImg: this.canvasBgImg[0]?.previewUri,
-					radius: this.getRadius(),
-					contentList: this.contentList,
-					onDrawFinish: pixelMap => {
-						this.pixelMap = pixelMap
-						this.canvasShow = false
-						this.imgVisible = true
-					}
+				IBestDialog({
+					visible: $imgVisible,
+					defaultBuilder: (): void => this.imgBuilder()
 				})
 			}
-			IBestDialog({
-				visible: $imgVisible,
-				defaultBuilder: (): void => this.imgBuilder()
-			})
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg)
 	}
 }
 

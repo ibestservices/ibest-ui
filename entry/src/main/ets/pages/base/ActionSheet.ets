@@ -1,6 +1,6 @@
 import { IBestActionSheet, IBestButton, IBestDialogUtil, IBestToast } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
-import CustomNavBar from '../../components/CustomNavBar';
+import BasePage from '../../components/BasePage';
 
 @Builder
 export function ActionSheetBuilder(_: string, title: string){
@@ -53,176 +53,175 @@ struct ActionSheetPage {
 	}
 
 	build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-			Column({ space: 20 }){
-				IBestButton({
-					text: '基础用法',
-					onBtnClick: () => {
-						IBestActionSheet.show({
-							actions: ["选项一", "选项二", "选项三"],
-							beforeClose: (index: number, name?: string | number) => {
-								return new Promise((resolve, reject) => {
-									IBestDialogUtil.open({
-										title: "提示",
-										message: `确定选择${name}？`,
-										showCancelButton: true,
-										onConfirm: () => {
-											resolve(true)
-										},
-										onCancel: () => {
-											reject(false)
-										}
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg }){
+				Column({ space: 20 }){
+					IBestButton({
+						text: '基础用法',
+						onBtnClick: () => {
+							IBestActionSheet.show({
+								actions: ["选项一", "选项二", "选项三"],
+								beforeClose: (index: number, name?: string | number) => {
+									return new Promise((resolve, reject) => {
+										IBestDialogUtil.open({
+											title: "提示",
+											message: `确定选择${name}？`,
+											showCancelButton: true,
+											onConfirm: () => {
+												resolve(true)
+											},
+											onCancel: () => {
+												reject(false)
+											}
+										})
 									})
-								})
-							},
-							onSelect: (index: number, name?: string | number) => {
-								IBestToast.show(`点击了第${index}个选项，名称为${name}`)
-							}
-						})
-					}
-				})
-				IBestButton({
-					text: '展示图标',
-					onBtnClick: () => {
-						IBestActionSheet.show({
-							actions: [
-								{ name: '选项一', icon: $r("app.media.icon_like") },
-								{ name: '选项二', icon: "https://ibestui.ibestservices.com/favicon.ico" },
-								{ name: '选项三', icon: $r("app.media.ibest_icon_star_o") }
-							],
-							onSelect: (index: number, name?: string | number) => {
-								IBestToast.show(`点击了第${index}个选项，名称为${name}`)
-							}
-						})
-					}
-				})
-				IBestButton({
-					text: '展示取消按钮',
-					onBtnClick: () => {
-						IBestActionSheet.show({
-							actions: [
-								{ name: '选项一' },
-								{ name: '选项二' },
-								{ name: '选项三' }
-							],
-							cancelText: '取消',
-							onSelect: (index: number, name?: string | number) => {
-								IBestToast.show(`点击了第${index}个选项，名称为${name}`)
-							},
-							onCancel: () => {
-								IBestToast.show(`取消`)
-							}
-						})
-					}
-				})
-				IBestButton({
-					text: '展示标题、描述信息',
-					onBtnClick: () => {
-						IBestActionSheet.show({
-							customTitle: $r("app.string.app_name"),
-							description: $r("app.string.app_desc"),
-							actions: [
-								{ name: $r("app.string.app_name") },
-								{ name: '选项二', subName: $r("app.string.app_doc_url") },
-								{ name: '选项三', icon: $r("app.media.app_icon") }
-							],
-							cancelText: '取消'
-						})
-					}
-				})
-				IBestButton({
-					text: '选项状态',
-					onBtnClick: () => {
-						IBestActionSheet.show({
-							description: '这是一段描述信息',
-							actions: [
-								{ name: '正常选项', color: '#ff0000' },
-								{ name: '禁用选项', isDisabled: true },
-								{ name: '只读选项', readonly: true }
-							],
-							itemHeight: 60,
-							cancelText: '取消',
-							cancelTextColor: '#3d8af2'
-						})
-					}
-				})
-				IBestButton({
-					text: '指定选项标识',
-					onBtnClick: () => {
-						IBestActionSheet.show({
-							actions: [
-								{ name: '选项一', value: '1' },
-								{ name: '选项二', value: '2' },
-								{ name: '选项三', value: '3' }
-							],
-							onSelect: (index: number, value?: string | number, name?: string | number) => {
-								IBestToast.show(`点击了第${index}个选项，标识为${value}，名称为${name}`)
-							}
-						})
-					}
-				})
-				IBestButton({
-					text: '多行选项',
-					onBtnClick: () => {
-						IBestActionSheet.show({
-							actions: [
-								[
-									{ name: '选项一', value: '1', icon: "https://img1.baidu.com/it/u=626427719,3451396095&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500", isDisabled: true },
-									{ name: '选项二', value: '2', icon: "https://img1.baidu.com/it/u=700838104,4078529388&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" },
-									{ name: '选项三', value: '3', icon: "https://img2.baidu.com/it/u=4065465253,912770067&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=800" },
-									{ name: '选项四', value: '4', icon: "https://img1.baidu.com/it/u=2725751717,2191296050&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" },
-									{ name: '选项五', value: '5', icon: "https://img1.baidu.com/it/u=3680872223,3132467302&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" },
-									{ name: '选项六', value: '6', icon: "https://img2.baidu.com/it/u=2265290985,2435372066&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" },
-									{ name: '选项七', value: '7', icon: "https://img2.baidu.com/it/u=2400134426,605051231&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=800" }
+								},
+								onSelect: (index: number, name?: string | number) => {
+									IBestToast.show(`点击了第${index}个选项，名称为${name}`)
+								}
+							})
+						}
+					})
+					IBestButton({
+						text: '展示图标',
+						onBtnClick: () => {
+							IBestActionSheet.show({
+								actions: [
+									{ name: '选项一', icon: $r("app.media.icon_like") },
+									{ name: '选项二', icon: "https://ibestui.ibestservices.com/favicon.ico" },
+									{ name: '选项三', icon: $r("app.media.ibest_icon_star_o") }
 								],
-								[
-									{ name: '选项八', value: '8', icon: "https://img0.baidu.com/it/u=4206081356,667300244&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" },
-									{ name: '选项九', value: '9', icon: "https://img0.baidu.com/it/u=2290976380,3655879079&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=500" },
-									{ name: '选项十', value: '10', icon: "https://img0.baidu.com/it/u=1901164914,2143836773&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=500" }
-								]
-							],
-							cancelText: '取消',
-							onSelect: (index1: number, index2?: number | string, value?: number | string, name?: string | number) => {
-								IBestToast.show(`点击了第${index1}行第${index2}个选项，标识为${value}，名称为${name}`)
-							}
-						})
-					}
-				})
-				IBestButton({
-					text: '展示自定义内容',
-					onBtnClick: () => {
-						IBestActionSheet.show({
-							customTitle: '琵琶行',
-							height: 500,
-							customContent: (): void => this.defaultContent()
-						})
-					}
-				})
-				IBestButton({
-					text: '展示原生标题',
-					onBtnClick: () => {
-						IBestActionSheet.show({
-							title: {
-								title: "原生标题",
-								subtitle: "原生副标题"
-							},
-							actions: [
-								{ name: '选项一' },
-								{ name: '选项二' },
-								{ name: '选项三' }
-							],
-							cancelText: '取消'
-						})
-					}
-				})
+								onSelect: (index: number, name?: string | number) => {
+									IBestToast.show(`点击了第${index}个选项，名称为${name}`)
+								}
+							})
+						}
+					})
+					IBestButton({
+						text: '展示取消按钮',
+						onBtnClick: () => {
+							IBestActionSheet.show({
+								actions: [
+									{ name: '选项一' },
+									{ name: '选项二' },
+									{ name: '选项三' }
+								],
+								cancelText: '取消',
+								onSelect: (index: number, name?: string | number) => {
+									IBestToast.show(`点击了第${index}个选项，名称为${name}`)
+								},
+								onCancel: () => {
+									IBestToast.show(`取消`)
+								}
+							})
+						}
+					})
+					IBestButton({
+						text: '展示标题、描述信息',
+						onBtnClick: () => {
+							IBestActionSheet.show({
+								customTitle: $r("app.string.app_name"),
+								description: $r("app.string.app_desc"),
+								actions: [
+									{ name: $r("app.string.app_name") },
+									{ name: '选项二', subName: $r("app.string.app_doc_url") },
+									{ name: '选项三', icon: $r("app.media.app_icon") }
+								],
+								cancelText: '取消'
+							})
+						}
+					})
+					IBestButton({
+						text: '选项状态',
+						onBtnClick: () => {
+							IBestActionSheet.show({
+								description: '这是一段描述信息',
+								actions: [
+									{ name: '正常选项', color: '#ff0000' },
+									{ name: '禁用选项', isDisabled: true },
+									{ name: '只读选项', readonly: true }
+								],
+								itemHeight: 60,
+								cancelText: '取消',
+								cancelTextColor: '#3d8af2'
+							})
+						}
+					})
+					IBestButton({
+						text: '指定选项标识',
+						onBtnClick: () => {
+							IBestActionSheet.show({
+								actions: [
+									{ name: '选项一', value: '1' },
+									{ name: '选项二', value: '2' },
+									{ name: '选项三', value: '3' }
+								],
+								onSelect: (index: number, value?: string | number, name?: string | number) => {
+									IBestToast.show(`点击了第${index}个选项，标识为${value}，名称为${name}`)
+								}
+							})
+						}
+					})
+					IBestButton({
+						text: '多行选项',
+						onBtnClick: () => {
+							IBestActionSheet.show({
+								actions: [
+									[
+										{ name: '选项一', value: '1', icon: "https://img1.baidu.com/it/u=626427719,3451396095&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500", isDisabled: true },
+										{ name: '选项二', value: '2', icon: "https://img1.baidu.com/it/u=700838104,4078529388&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" },
+										{ name: '选项三', value: '3', icon: "https://img2.baidu.com/it/u=4065465253,912770067&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=800" },
+										{ name: '选项四', value: '4', icon: "https://img1.baidu.com/it/u=2725751717,2191296050&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" },
+										{ name: '选项五', value: '5', icon: "https://img1.baidu.com/it/u=3680872223,3132467302&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" },
+										{ name: '选项六', value: '6', icon: "https://img2.baidu.com/it/u=2265290985,2435372066&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" },
+										{ name: '选项七', value: '7', icon: "https://img2.baidu.com/it/u=2400134426,605051231&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=800" }
+									],
+									[
+										{ name: '选项八', value: '8', icon: "https://img0.baidu.com/it/u=4206081356,667300244&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" },
+										{ name: '选项九', value: '9', icon: "https://img0.baidu.com/it/u=2290976380,3655879079&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=500" },
+										{ name: '选项十', value: '10', icon: "https://img0.baidu.com/it/u=1901164914,2143836773&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=500" }
+									]
+								],
+								cancelText: '取消',
+								onSelect: (index1: number, index2?: number | string, value?: number | string, name?: string | number) => {
+									IBestToast.show(`点击了第${index1}行第${index2}个选项，标识为${value}，名称为${name}`)
+								}
+							})
+						}
+					})
+					IBestButton({
+						text: '展示自定义内容',
+						onBtnClick: () => {
+							IBestActionSheet.show({
+								customTitle: '琵琶行',
+								height: 500,
+								customContent: (): void => this.defaultContent()
+							})
+						}
+					})
+					IBestButton({
+						text: '展示原生标题',
+						onBtnClick: () => {
+							IBestActionSheet.show({
+								title: {
+									title: "原生标题",
+									subtitle: "原生副标题"
+								},
+								actions: [
+									{ name: '选项一' },
+									{ name: '选项二' },
+									{ name: '选项三' }
+								],
+								cancelText: '取消'
+							})
+						}
+					})
+				}
+				.width(CONTAINER_SIZE.FULL)
+				.height(CONTAINER_SIZE.FULL)
+				.justifyContent(FlexAlign.Center)
+				.padding({ top: SPACE.SM, left: SPACE.SM, right: SPACE.SM })
 			}
-			.width(CONTAINER_SIZE.FULL)
-			.justifyContent(FlexAlign.Center)
-			.layoutWeight(1)
-			.padding({ top: SPACE.SM, left: SPACE.SM, right: SPACE.SM })
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg)
 	}
 }
