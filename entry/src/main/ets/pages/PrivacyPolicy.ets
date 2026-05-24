@@ -14,12 +14,11 @@ struct PrivacyPolicy {
 	build() {
 		Column(){
 			BasePage({ title: "隐私政策" }) {
-				Row().width(CONTAINER_SIZE.FULL).height(84)
+				Row().width(CONTAINER_SIZE.FULL).height(90)
 				Web({
-					src: "https://ibestservices.github.io/ibest-ui/PrivacyPolicy.html",
+					src: $rawfile("PrivacyPolicy.html"),
 					controller: this.webController
 				})
-					.cacheMode(CacheMode.Online)
 					.layoutWeight(1)
 			}
 		}
