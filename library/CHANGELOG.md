@@ -1,5 +1,20 @@
 # 版本记录
 
+## 2.2.7
+#### 新增:
+1. IBestCell 新增 bgColor 属性;
+2. IBestCarInput 新增 bdWidth 属性;
+3. IBestField 新增 prefixFontWeight、suffixFontWeight、focusOnClickSuffix 属性;
+4. IBestPasswordInput 新增 bdWidth 属性;
+5. IBestPullRefresh 新增 autoDirection 属性, onReady 事件.
+
+#### bug修复:
+1. IBestDatePicker 切换农历时日期不对应问题.
+
+#### 优化:
+1. IBestImageCropper 图片默认填满裁剪框;
+2. 全面适配折叠屏.
+
 ## 2.2.6 - 6.0.1(21)
 #### 新增:
 1. 新增 IBestTabBar 标签栏 组件;

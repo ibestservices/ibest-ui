@@ -92,6 +92,11 @@ export struct IBestCarInput {
 	 */
 	@Provide({allowOverride: "fontSize"}) fontSize: IBestStringNumber = this.baseStyle.fontSizeXl as string
 	/**
+	 * 边框宽度, 仅有间距时有效
+	 * @since 2.2.7
+	 */
+	@Provide({allowOverride: "bdWidth"}) bdWidth: Length | EdgeWidths | LocalizedEdgeWidths = 1
+	/**
 	 * 完成
 	 */
 	onConfirm: (value: string) => void = () => {}
@@ -200,6 +205,7 @@ struct InputField {
 	@Consume showCursor: boolean
 	@Consume cursorPosition: 'center' | 'bottom'
 	@Consume cursorColor: ResourceColor
+	@Consume bdWidth: Length | EdgeWidths | LocalizedEdgeWidths
 	@Prop item: IBestCarInputModel
 	@Prop index: number = 0
 	@Prop focused: boolean
@@ -259,7 +265,7 @@ struct InputField {
 		.justifyContent(FlexAlign.Center)
 		.backgroundColor(this.bgColor)
 		.border(this.space ? {
-			width: this.isShowBorder ? 1 : 0,
+			width: this.isShowBorder ? this.bdWidth : 0,
 			color: this.getIsFocus() ? this.highlightType == 'border' ? this.highlightColor || this.baseStyle.primary : '' : this.bdColor
 		} : {
 			width: { left: this.index > 0 && this.isShowBorder ? 1 : 0 },

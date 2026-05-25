@@ -125,6 +125,11 @@ export struct IBestPasswordInput {
      */
 	@Provide({allowOverride: "highlightType"}) highlightType: IBestInputHighlightType = "border"
 	/**
+	 * 边框宽度, 仅有间距时有效
+	 * @since 2.2.7
+     */
+	@Provide({allowOverride: "bdWidth"}) bdWidth: Length | EdgeWidths | LocalizedEdgeWidths = 1
+	/**
 	 * 区域点击
 	 */
 	onFieldClick: () => void = () => {}
@@ -136,9 +141,7 @@ export struct IBestPasswordInput {
 
 	@State uniId: number = 0
 	@State inputList: IBestPasswordInputModel[] = []
-	// 当前聚焦的输入框下标
 	@State currentFocusIndex: number = 0
-	// 输入框是否聚焦
 	@State focused: boolean = false
 	private textInputController: TextInputController = new TextInputController()
 	private focusController: FocusController = this.getUIContext().getFocusController()
@@ -252,6 +255,7 @@ struct InputField {
 	@Consume highlightType: IBestInputHighlightType
 	@Consume highlightColor: ResourceColor
 	@Consume isShowBorder: boolean
+	@Consume bdWidth: Length | EdgeWidths | LocalizedEdgeWidths
 	@Consume bdColor: ResourceColor
 	@Consume cellBgColor: ResourceColor
 	@Consume cellTextColor: ResourceColor
@@ -311,7 +315,7 @@ struct InputField {
 		.justifyContent(FlexAlign.Center)
 		.backgroundColor(this.cellBgColor)
 		.border(this.space ? {
-			width: this.isShowBorder ? 1 : 0,
+			width: this.isShowBorder ? this.bdWidth : 0,
 			color: this.getIsFocus() ? this.highlightType == 'border' ? this.highlightColor || this.baseStyle.primary : '' : this.bdColor
 		} : {
 			width: { left: this.index > 0 && this.isShowBorder ? 1 : 0 },

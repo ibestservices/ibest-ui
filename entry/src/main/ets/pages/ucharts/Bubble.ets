@@ -1,7 +1,7 @@
 import { CONTAINER_SIZE, modeColor, SPACE } from "../../assets/styles/BaseStyle"
 import ComponentShowContainer from "../../components/ComponentShowContainer"
-import CustomNavBar from "../../components/CustomNavBar"
 import { ChartOptions, UCharts, UChartsController } from '@ibestservices/ucharts'
+import BasePage from "../../components/BasePage"
 
 @Builder
 export function BubbleBuilder(_: string, title: string) {
@@ -55,25 +55,24 @@ struct BubblePage {
     }
 
     build() {
-        NavDestination() {
-            CustomNavBar({ title: this.title })
-            List() {
-                ListItem() {
-                    ComponentShowContainer({ title: '气泡图' }) {
-                        UCharts({
-                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
-                            controller: this.controller,
-                            onReady: () => {
-                                this.controller.updateData(this.opts)
-                            }
-                        })
+        Column(){
+            BasePage({ title: this.title, bgColor: modeColor.bg2 }) {
+                List() {
+                    ListItem().height(84)
+                    ListItem() {
+                        ComponentShowContainer({ title: '气泡图' }) {
+                            UCharts({
+                                contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                                controller: this.controller,
+                                onReady: () => {
+                                    this.controller.updateData(this.opts)
+                                }
+                            })
+                        }
                     }
                 }
+                .padding({ left: SPACE.SM, right: SPACE.SM })
             }
-            .layoutWeight(1)
-            .padding({ left: SPACE.SM, right: SPACE.SM })
         }
-        .hideTitleBar(true)
-        .backgroundColor(modeColor.bg2)
     }
 }

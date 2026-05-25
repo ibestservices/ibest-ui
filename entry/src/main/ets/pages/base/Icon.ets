@@ -1,5 +1,6 @@
 import { IBestIcon, IBestIconClassify, IBestTabItemType, IBestTabs } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, FONT_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import BasePage from '../../components/BasePage';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import CustomNavBar from '../../components/CustomNavBar';
 
@@ -106,28 +107,28 @@ struct IconsPage {
 		.borderRadius(SPACE.SM)
 	}
 	build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-			IBestTabs({
-				tabsList: this.tabsList,
-				currentName: $curTabName
-			})
-			Column() {
-				if (this.curTabName === '1') {
-					this.example()
-				} else if (this.curTabName === '2') {
-					this.iconShowList(IBestIconClassify.basic)
-				} else if (this.curTabName === '3') {
-					this.iconShowList(IBestIconClassify.outline)
-				} else if (this.curTabName === '4') {
-					this.iconShowList(IBestIconClassify.filled)
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg }) {
+				Row().width(CONTAINER_SIZE.FULL).height(96).backgroundColor(modeColor.bg2)
+				IBestTabs({
+					tabsList: this.tabsList,
+					currentName: $curTabName
+				})
+				Column() {
+					if (this.curTabName === '1') {
+						this.example()
+					} else if (this.curTabName === '2') {
+						this.iconShowList(IBestIconClassify.basic)
+					} else if (this.curTabName === '3') {
+						this.iconShowList(IBestIconClassify.outline)
+					} else if (this.curTabName === '4') {
+						this.iconShowList(IBestIconClassify.filled)
+					}
 				}
+				.layoutWeight(1)
+				.padding({ left: SPACE.SM, right: SPACE.SM, bottom: SPACE.SM })
+				.margin({ top: SPACE.SM })
 			}
-			.layoutWeight(1)
-			.padding({ left: SPACE.SM, right: SPACE.SM, bottom: SPACE.SM })
-			.margin({ top: SPACE.SM })
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg)
 	}
 }

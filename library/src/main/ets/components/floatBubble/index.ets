@@ -21,9 +21,6 @@ function bubbleDefaultBuilder(option: IBestFloatBubbleParams) {
 
 @Component
 struct FloatBubbleComponent{
-	/**
-	 * 全局公共样式
-	 */
 	@StorageProp(IBestStorageKey.BASE_STYLE) baseStyle: IBestUIBaseStyleObjType = getDefaultBaseStyle()
 	@Prop option: IBestFloatBubbleParams
     @BuilderParam defaultBuilder: CustomBuilder
@@ -38,7 +35,6 @@ struct FloatBubbleComponent{
     private boxWidth: number = 0
     private bubbleWidth: number = 0
 	private bubbleHeight: number = 0
-	private uiContext: UIContext = this.getUIContext()
 	private panOption: PanGestureOptions = new PanGestureOptions({ distance: 1 })
 	private minX: number = 0
 	private maxX: number = 0
@@ -49,48 +45,42 @@ struct FloatBubbleComponent{
 
 	aboutToAppear(): void {
 		this.uniId = this.getUniqueId()
-		this.init()
+		this.defaultBuilder = this.option.defaultBuilder
+		this.setDirection()
 		ibestEmitter.on(getEventName(COMPONENT_NAME, FLOAT_BUBBLE_EVENT_NAME.CONFIG_UPDATE, this.option.groupId), this.uniId, (option: Partial<IBestFloatBubbleOption>): void => this.optionChange(option))
 	}
 	aboutToDisappear(): void {
 		ibestEmitter.off(getEventName(COMPONENT_NAME, FLOAT_BUBBLE_EVENT_NAME.CONFIG_UPDATE, this.option.groupId), this.uniId)
 	}
-	// 初始化位置
-	init(){
-        this.defaultBuilder = this.option.defaultBuilder
-        this.setDirection()
+	init(newVal: Area){
+		const boxWidth = newVal.width as number
+		const boxHeight = newVal.height as number
+		this.boxWidth = boxWidth
+		this.minX = this.option.gap ?? 0
+		this.maxX = boxWidth - this.bubbleWidth - this.option.gap
+		this.minY = this.option.gap ?? 0
+		this.maxY = boxHeight - this.bubbleHeight - this.option.gap
+		if(this.option.pos){
+			if(this.option.pos.right != undefined){
+				this.offsetX = boxWidth - this.bubbleWidth - Math.max(this.option.pos.right, this.option.gap)
+			}else if(this.option.pos.left != undefined){
+				this.offsetX = Math.max(this.option.pos.left, this.option.gap)
+			}
+			if(this.option.pos.bottom != undefined){
+				this.offsetY = boxHeight - this.bubbleHeight - Math.max(this.option.pos.bottom, this.option.gap)
+			}else if(this.option.pos.top != undefined){
+				this.offsetY = Math.max(this.option.pos.top, this.option.gap)
+			}
+		}else{
+			this.offsetX = this.maxX
+			this.offsetY = this.maxY
+		}
+		this.positionX = this.preX = this.offsetX
+		this.positionY = this.offsetY
 		setTimeout(() => {
-			const boxSize = getComponentsInfo(this.uiContext, `ibest_float_bubble_box_${this.uniId}`)
-			const bubbleSize = getComponentsInfo(this.uiContext, `ibest_float_bubble_${this.uniId}`)
-			this.bubbleWidth = bubbleSize.width
-			this.bubbleHeight = bubbleSize.height
-            this.boxWidth = boxSize.width
-			this.minX = this.option.gap ?? 0
-			this.maxX = boxSize.width - this.bubbleWidth - this.option.gap
-			this.minY = this.option.gap ?? 0
-			this.maxY = boxSize.height - this.bubbleHeight - this.option.gap
-            if(this.option.pos){
-                if(this.option.pos.right != undefined){
-                    this.offsetX = boxSize.width - this.bubbleWidth - Math.max(this.option.pos.right, this.option.gap)
-                }else if(this.option.pos.left != undefined){
-                    this.offsetX = Math.max(this.option.pos.left, this.option.gap)
-                }
-                if(this.option.pos.bottom != undefined){
-                    this.offsetY = boxSize.height - this.bubbleHeight - Math.max(this.option.pos.bottom, this.option.gap)
-                }else if(this.option.pos.top != undefined){
-                    this.offsetY = Math.max(this.option.pos.top, this.option.gap)
-                }
-            }else{
-                this.offsetX = this.maxX
-                this.offsetY = this.maxY
-            }
-            this.positionX = this.preX = this.offsetX
-            this.positionY = this.offsetY
-            setTimeout(() => {
-                this.isReady = true
-                this.autoHide()
-            }, 300)
-		}, 200)
+			this.isReady = true
+			this.autoHide()
+		}, 300)
 	}
 	optionChange(option: Partial<IBestFloatBubbleOption>){
 		mergeObject(this.option, option)
@@ -100,7 +90,6 @@ struct FloatBubbleComponent{
 			this.autoHide()
 		}
 	}
-    // 设置拖动方向
     setDirection(){
         switch (this.option.dragAxis){
             case 'x':
@@ -117,14 +106,12 @@ struct FloatBubbleComponent{
                 break
         }
     }
-	// 拖动中
 	onActionUpdate(event: GestureEvent){
 		let offsetX = this.positionX + event.offsetX
 		let offsetY = this.positionY + event.offsetY
 		this.offsetX = offsetX < this.minX ? this.minX : offsetX > this.maxX ? this.maxX : offsetX
 		this.offsetY = offsetY < this.minY ? this.minY : offsetY > this.maxY ? this.maxY : offsetY
 	}
-	// 拖动结束
 	onActionEnd(){
         this.enableAnimation = true
 		if(this.option.isMagnetic){
@@ -138,7 +125,6 @@ struct FloatBubbleComponent{
 		this.positionX = this.offsetX
 		this.positionY = this.offsetY
 	}
-	// 自动隐藏
 	autoHide(){
 		if(!this.option.isMagnetic){
 			return
@@ -157,7 +143,6 @@ struct FloatBubbleComponent{
 			this.setDirection()
 		}
 	}
-	// 气泡点击
 	onBubbleClick(){
 		clearTimeout(this.timer)
 		if(this.isHide){
@@ -191,7 +176,6 @@ struct FloatBubbleComponent{
 				.borderRadius(!this.defaultBuilder && this.option.shape == 'circle' ? this.baseStyle.borderRadiusMax : getSizeByUnit(this.option.radius))
                 .shadow(this.option.bubbleShadow)
                 .visibility(this.isReady ? Visibility.Visible : Visibility.Hidden)
-				.id(`ibest_float_bubble_${this.uniId}`)
 				.animation({
 					duration: this.enableAnimation ? 300 : 0
 				})
@@ -205,12 +189,18 @@ struct FloatBubbleComponent{
 				.onClick(() => {
 					this.onBubbleClick()
 				})
+				.onAreaChange((_: Area, newVal: Area) => {
+					this.bubbleWidth = newVal.width as number
+					this.bubbleHeight = newVal.height as number
+				})
 				.monopolizeEvents(true)
 		}
 		.width(CONTAINER_SIZE.FULL)
 		.height(CONTAINER_SIZE.FULL)
 		.clip(true)
-		.id(`ibest_float_bubble_box_${this.uniId}`)
+		.onAreaChange((_: Area, newVal: Area) => {
+			this.init(newVal)
+		})
 	}
 }
 

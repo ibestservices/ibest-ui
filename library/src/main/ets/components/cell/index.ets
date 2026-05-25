@@ -167,6 +167,11 @@ export struct IBestCell {
      */
 	@Prop cellPadding: Length | Padding | LocalizedPadding = 0
 	/**
+	 * 背景色
+	 * @since 2.2.7
+     */
+	@Prop bgColor: ResourceColor = IBestCellColor.bgColor
+	/**
 	 * title的插槽 优先级大于 title
 	 */
 	@BuilderParam titleBuilder: CustomBuilder
@@ -194,6 +199,7 @@ export struct IBestCell {
 	onClickCell: () => void = () => {}
 	onCellClick: () => void = () => {}
 
+	@State uniId: number = 0
 	@State borderRight: number = 0
 	private arrowDirection2RotateDegMap: Record<string, number> = {
 		[ARROW_DIRECTION.RIGHT]: 0,
@@ -202,7 +208,6 @@ export struct IBestCell {
 		[ARROW_DIRECTION.LEFT]: 180,
 	}
 	private uiContext = this.getUIContext()
-	private uniId: number = 0
 
 	@Builder cellDividerBuilder(){
 		Divider()
@@ -346,10 +351,10 @@ export struct IBestCell {
 		}
 		.stateStyles({
 			normal: {
-				.backgroundColor(IBestCellColor.bgColor)
+				.backgroundColor(this.bgColor)
 			},
 			pressed: {
-				.backgroundColor(this.isLink || this.clickable ? IBestCellColor.activeBgColor : IBestCellColor.bgColor)
+				.backgroundColor(this.isLink || this.clickable ? IBestCellColor.activeBgColor : this.bgColor)
 			}
 		})
 		.animation({

@@ -108,24 +108,19 @@ export struct IBestImageCropper {
 		this.controller.setAngle = (angle: number): void => this.setAngle(angle)
 		this.controller.reset = (): void => this.reset()
 		this.controller.getResult = (callBack?: (result: PixelMap) => void): Promise<PixelMap> => this.getResult(callBack)
-		this.getCenterSize()
 	}
 	enableRotateChange(){
 		this.pinchAngle = this.angle = 0
 		this.positionX = this.positionY = this.offsetX = this.offsetY = 0
 	}
-	// 获取透镜尺寸
 	getCenterSize(){
-		setTimeout(() => {
-			let size = getComponentsInfo(this.uiContext, this.getId())
-			this.realCenterWidth = size.width
-			this.realCenterHeight = this.shape == 'circle' ? size.width : size.height
-			if (this.url) {
-				this.init()
-			}
-		}, 50)
+		let size = getComponentsInfo(this.uiContext, this.getId())
+		this.realCenterWidth = size.width
+		this.realCenterHeight = this.shape == 'circle' ? size.width : size.height
+		if (this.url) {
+			this.init()
+		}
 	}
-	// 根据图片信息初始化参数
 	async init() {
 		if(!this.url){
 			this.imgModel = null
@@ -136,24 +131,34 @@ export struct IBestImageCropper {
 		await dealUrlToSandbox(this.pageContext, this.url, path)
 		this.getImageInfo(path)
 	}
-	// 获取图片信息
 	async getImageInfo(path: string) {
-		let imageSource = image.createImageSource(path)
+		const imageSource = image.createImageSource(path)
 		this.imgModel = await imageSource.createPixelMap()
-		let imageInfo = await imageSource.getImageInfo()
-		let width = this.uiContext.px2vp(imageInfo.size.width)
-		let height = this.uiContext.px2vp(imageInfo.size.height)
-		let aspect = width / height
+		const imageInfo = await imageSource.getImageInfo()
+		const width = this.uiContext.px2vp(imageInfo.size.width)
+		const height = this.uiContext.px2vp(imageInfo.size.height)
+		const aspect = width / height
 		if (width > height) { // 横向图片
-			this.imgInitHeight = this.realCenterHeight
-			this.imgInitWidth = this.imgInitHeight * aspect
+			const imgInitWidth = this.realCenterHeight * aspect
+			if(imgInitWidth > this.realCenterWidth){
+				this.imgInitWidth = imgInitWidth
+				this.imgInitHeight = this.realCenterHeight
+			}else {
+				this.imgInitWidth = this.realCenterWidth
+				this.imgInitHeight = this.imgInitWidth / aspect
+			}
 		} else { // 纵向图片
-			this.imgInitWidth = this.realCenterWidth
-			this.imgInitHeight = this.imgInitWidth / aspect
+			const imgInitHeight = this.realCenterWidth / aspect
+			if(imgInitHeight > this.realCenterHeight){
+				this.imgInitWidth = this.realCenterWidth
+				this.imgInitHeight = imgInitHeight
+			}else {
+				this.imgInitHeight = this.realCenterHeight
+				this.imgInitWidth = this.imgInitHeight * aspect
+			}
 		}
 		this.setParams()
 	}
-	// 设置参数
 	setParams() {
 		this.setImgSize()
 		this.offsetMaxX = Math.abs(Number(((this.imgWidth - this.realCenterWidth) / 2).toFixed()))
@@ -163,12 +168,10 @@ export struct IBestImageCropper {
 		this.positionX = this.offsetX
 		this.positionY = this.offsetY
 	}
-	// 设置图片动态尺寸
 	setImgSize() {
 		this.imgWidth = Number((this.imgInitWidth * this.scaleValue).toFixed())
 		this.imgHeight = Number((this.imgInitHeight * this.scaleValue).toFixed())
 	}
-	// 重置参数
 	resetParams(){
 		this.scaleValue = 1
 		this.pinchScaleValue = 1
@@ -188,7 +191,6 @@ export struct IBestImageCropper {
 	getId(){
 		return `ibest_imagecrop_${this.uniId}`
 	}
-	// 绘制
 	drawImg(){
 		this.context.clearRect(0, 0, this.realCenterWidth, this.realCenterHeight)
 		this.context.reset()
@@ -196,13 +198,11 @@ export struct IBestImageCropper {
 		this.context.rotate(this.angle * Math.PI / 180)
 		this.context.drawImage(this.imgModel, this.offsetX - this.imgWidth / 2, this.offsetY - this.imgHeight / 2, this.imgWidth, this.imgHeight)
 	}
-	// 设置比例
 	setScale(scale: number){
 		scale = scale < 1 ? 1 : scale > this.maxScale ? this.maxScale : scale
 		this.pinchScaleValue = this.scaleValue = scale
 		this.setParams()
 	}
-	// 设置角度
 	setAngle(angle: number){
 		if(this.enableRotate){
 			angle = angle < -this.maxAngle ? -this.maxAngle : angle > this.maxAngle ? this.maxAngle : angle
@@ -211,12 +211,10 @@ export struct IBestImageCropper {
 			console.warn('旋转功能未启用')
 		}
 	}
-	// 重置
 	reset(){
 		this.resetParams()
 		this.setParams()
 	}
-	// 获取最终截取结果
 	getResult(callBack?: (result: PixelMap) => void): Promise<PixelMap> {
 		return new Promise((resolve, reject) => {
 			this.drawImg()
@@ -301,8 +299,12 @@ export struct IBestImageCropper {
 		.height(getSizeByUnit(this.componentHeight))
 		.backgroundColor(this.bgColor)
 		.clip(true)
+		.onAreaChange((oldVal: Area, newVal: Area) => {
+			if(oldVal.width != newVal.width || oldVal.height != newVal.height){
+				this.getCenterSize()
+			}
+		})
 		.gesture(
-			// 移动
 			PanGesture(this.panOption)
 				.onActionUpdate((event: GestureEvent) => {
 					let x = Number((this.positionX + event.offsetX).toFixed())
@@ -317,7 +319,6 @@ export struct IBestImageCropper {
 		)
 		.gesture(
 			GestureGroup(GestureMode.Parallel,
-				// 缩放
 				PinchGesture({ fingers: 2 })
 					.onActionUpdate((event: GestureEvent) => {
 						let scale = Number((this.pinchScaleValue * event.scale).toFixed(1))
@@ -329,7 +330,6 @@ export struct IBestImageCropper {
 						this.pinchScaleValue = this.scaleValue
 						this.setParams()
 					}),
-				// 旋转
 				RotationGesture({ fingers: 2 })
 					.onActionUpdate((event: GestureEvent) => {
 						let angle = this.pinchAngle + event.angle

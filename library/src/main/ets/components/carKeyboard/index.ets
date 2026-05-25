@@ -35,7 +35,6 @@ export struct IBestCarKeyboardContent{
     onClose: () => void = () => {}
 	onConfirm: () => void = () => {}
 
-	@State uniId: number = 0
     private provinceKeys: string[][] = [
 		['京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑'],
 		['湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂'],
@@ -53,7 +52,6 @@ export struct IBestCarKeyboardContent{
 	@State numKeysList: IBestCarKeyboardKey[][] = []
 	@State space: number = 0
 	@State space1: number = 0
-	private uiContext = this.getUIContext()
 
 	@Builder deleteButton(){
 		Row(){
@@ -74,7 +72,6 @@ export struct IBestCarKeyboardContent{
 		this.init()
     }
 	init(){
-		this.uniId = this.getUniqueId()
 		this.provinceKeysList = this.provinceKeys.map(e => {
 			return e.map(f => new IBestCarKeyboardKey("text", f))
 		})
@@ -84,13 +81,11 @@ export struct IBestCarKeyboardContent{
 		if(this.value){
 			this.switchDisabled()
 		}
-		setTimeout(() => {
-			let width = getComponentsInfo(this.uiContext, `ibest_car_keyboard_${this.uniId}`).width
-			this.space = (width - width * keyWidth * 9 ) / 8
-			this.space1 = (width - width * keyWidth * 10) / 9
-		}, 100)
 	}
-    // 按键点击
+	initSpace(width: number){
+		this.space = (width - width * keyWidth * 9 ) / 8
+		this.space1 = (width - width * keyWidth * 10) / 9
+	}
     selectKey(key: IBestCarKeyboardKey): void {
         switch (key.type){
             case "delete":
@@ -105,7 +100,6 @@ export struct IBestCarKeyboardContent{
                 break
         }
     }
-	// 切换禁用
 	switchDisabled(){
 		const valueLength = this.value.length
 		if(valueLength == 1) {
@@ -197,7 +191,9 @@ export struct IBestCarKeyboardContent{
 				.width(CONTAINER_SIZE.FULL)
 				.visibility(this.value.length ? Visibility.Visible : Visibility.None)
 			}
-			.id(`ibest_car_keyboard_${this.uniId}`)
+			.onAreaChange((_, newVal: Area) => {
+				this.initSpace(newVal.width as number)
+			})
         }
         .width(CONTAINER_SIZE.FULL)
         .backgroundColor(IBestCarKeyboardColor.bg)

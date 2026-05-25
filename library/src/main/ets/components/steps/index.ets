@@ -80,41 +80,43 @@ export struct IBestSteps{
 	aboutToDisappear(): void {
 		ibestEmitter.off(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.INIT_STEPS, this.groupId), this.uniId)
 	}
-	onDidBuild() {
-		if(this.allSteps.length){
-			ibestEmitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_CONFIG, this.groupId), this.active, {
-				placeDirection: this.placeDirection,
-				type: this.type,
-				dotSize: this.dotSize,
-				inactiveIcon: this.inactiveIcon,
-				activeIcon: this.activeIcon,
-				iconSize: this.iconSize,
-				activeColor: this.activeColor,
-				inactiveColor: this.inactiveColor,
-				bgColor: this.bgColor
-			})
-			this.percent = this.active / (this.allSteps.length - 1) * 100
-			setTimeout(() => {
-				let arr: number[] = []
-				this.allSteps.forEach((_, index) => {
-					arr.push(getComponentsInfo(this.uiContext, `ibest_steps_mark_${this.groupId}_${index}`).width)
+	init() {
+		clearTimeout(this.timer)
+		this.timer = setTimeout(() => {
+			if(this.allSteps.length){
+				ibestEmitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_CONFIG, this.groupId), this.active, {
+					placeDirection: this.placeDirection,
+					type: this.type,
+					dotSize: this.dotSize,
+					inactiveIcon: this.inactiveIcon,
+					activeIcon: this.activeIcon,
+					iconSize: this.iconSize,
+					activeColor: this.activeColor,
+					inactiveColor: this.inactiveColor,
+					bgColor: this.bgColor
 				})
-				this.percentContentSize = Math.max(...arr)
-				ibestEmitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_MAX_MARK_SIZE, this.groupId), this.percentContentSize)
-				if(this.placeDirection == Axis.Vertical){
-					let stepHeightArr: number[] = []
-					for (let i = 0; i < this.allSteps.length - 1; i++) {
-						stepHeightArr.push(getComponentsInfo(this.uiContext, `ibest_step_item_${this.groupId}_${i}`).height)
+				this.percent = this.active / (this.allSteps.length - 1) * 100
+				setTimeout(() => {
+					let arr: number[] = []
+					this.allSteps.forEach((_, index) => {
+						arr.push(getComponentsInfo(this.uiContext, `ibest_steps_mark_${this.groupId}_${index}`).width)
+					})
+					this.percentContentSize = Math.max(...arr)
+					ibestEmitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_MAX_MARK_SIZE, this.groupId), this.percentContentSize)
+					if(this.placeDirection == Axis.Vertical){
+						let stepHeightArr: number[] = []
+						for (let i = 0; i < this.allSteps.length - 1; i++) {
+							stepHeightArr.push(getComponentsInfo(this.uiContext, `ibest_step_item_${this.groupId}_${i}`).height)
+						}
+						this.percentContentHeight = stepHeightArr.reduce((a, b) => a + b, 0)
+					}else {
+						let width = getComponentsInfo(this.uiContext, `ibest_steps_content_${this.uniId}`).width / (this.allSteps.length - 1)
+						ibestEmitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_STEP_ITEM_WIDTH, this.groupId), width)
 					}
-					this.percentContentHeight = stepHeightArr.reduce((a, b) => a + b, 0)
-				}else {
-					let width = getComponentsInfo(this.uiContext, `ibest_steps_content_${this.uniId}`).width / (this.allSteps.length - 1)
-					ibestEmitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.GET_STEP_ITEM_WIDTH, this.groupId), width)
-				}
-			}, 20)
-		}
+				}, 20)
+			}
+		}, 0)
 	}
-	// 保存步骤id
 	initSteps(type: string, uniId: number){
 		if(type == 'add'){
 			this.allSteps.push(uniId)
@@ -122,12 +124,8 @@ export struct IBestSteps{
 			this.allSteps = this.allSteps.filter(item => item != uniId)
 		}
 		ibestEmitter.emit(getEventName(COMPONENT_NAME, STEPS_EVENT_NAME.SAVE_STEPS, this.groupId), this.allSteps)
-		clearTimeout(this.timer)
-		this.timer = setTimeout(() => {
-			this.onDidBuild()
-		}, 0)
+		this.init()
 	}
-	// 索引变化
 	activeChange(){
 		let percent = this.active / (this.allSteps.length - 1) * 100
 		let oldPercent = this.percent
@@ -162,6 +160,9 @@ export struct IBestSteps{
 			}
 			.width(CONTAINER_SIZE.FULL)
 			.backgroundColor(this.bgColor)
+			.onAreaChange(() => {
+				this.init()
+			})
 		}else {
 			Stack({alignContent: Alignment.Top}){
 				Row(){
@@ -187,6 +188,9 @@ export struct IBestSteps{
 			.backgroundColor(this.bgColor)
 			.opacity(this.percentContentSize ? 1 : 0)
 			.id(`ibest_steps_content_${this.uniId}`)
+			.onAreaChange(() => {
+				this.init()
+			})
 		}
 	}
 }
@@ -335,7 +339,6 @@ export struct IBestStep{
 	saveSteps(steps: number[]){
 		this.allSteps = steps
 	}
-	// 保存配置信息
 	saveConfig(active: number, data: IBestStepConfig){
 		this.active = active
 		this.index = this.allSteps.indexOf(this.uniId)
@@ -351,27 +354,21 @@ export struct IBestStep{
 			bgColor: data.bgColor
 		}
 	}
-	// 获取是否是第一个
 	isFirstStep(): boolean{
 		return this.uniId == this.allSteps[0]
 	}
-	// 获取是否是最后一个步骤
 	isLastStep(): boolean{
 		return this.uniId == this.allSteps[this.allSteps.length - 1]
 	}
-	// 当前是否激活
 	isActive(): boolean{
 		return this.active >= this.index
 	}
-	// 是否是竖向排列
 	isVertical(): boolean{
 		return this.config.placeDirection == Axis.Vertical
 	}
-	// 获取激活颜色
 	getActiveColor(){
 		return this.isActive() ? this.config.activeColor || this.baseStyle.primary : this.config.inactiveColor
 	}
-	// 生成id
 	getMarkId(){
 		return `ibest_steps_mark_${this.groupId}_${this.index}`
 	}

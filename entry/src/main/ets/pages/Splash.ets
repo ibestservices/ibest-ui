@@ -22,7 +22,7 @@ struct Splash {
 	}
 	enterIndex(){
 		this.router.replaceUrl({
-			url: 'pages/Index'
+			url: 'pages/Index1'
 		})
 	}
 	viewPrivacyPolicy(){

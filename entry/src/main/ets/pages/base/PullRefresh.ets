@@ -1,5 +1,6 @@
-import { IBestPullRefresh, IBestRefreshContentParams, IBestTabItemType, IBestTabs, IBestToast } from '@ibestservices/ibest-ui'
-import CustomNavBar from '../../components/CustomNavBar'
+import { IBestPullRefresh, IBestRefreshContentParams, IBestTabItemType, IBestTabs } from '@ibestservices/ibest-ui'
+import { CONTAINER_SIZE, modeColor } from '../../assets/styles/BaseStyle'
+import BasePage from '../../components/BasePage'
 
 @Builder
 export function PullRefreshBuilder(_: string, title: string){
@@ -118,7 +119,7 @@ struct PullRefreshPage {
 	}
 
 	onRefresh(direction: string){
-		console.log('下拉刷新', direction)
+		console.log('刷新', direction)
 		// 此处模拟请求 延时关闭
 		setTimeout(() => {
 			this.isLoading = false
@@ -126,65 +127,65 @@ struct PullRefreshPage {
 	}
 
 	build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-			IBestTabs({
-				tabsList: this.tabsList,
-				currentName: $currentTab,
-				tabWidthType: "auto",
-				onChange: (name: string | number) => {
-					if(name == 4){
-						this.isLoading = true
+		Column(){
+			BasePage({ title: this.title }) {
+				Row().width(CONTAINER_SIZE.FULL).height(96).backgroundColor(modeColor.bg2)
+				IBestTabs({
+					tabsList: this.tabsList,
+					currentName: $currentTab,
+					tabWidthType: "auto"
+				})
+				Column() {
+					if (this.currentTab == 0) {
+						IBestPullRefresh({
+							loading: $isLoading,
+							scroller: this.listScroller,
+							defaultContent: (): void => this.customContent(0),
+							onRefresh: (direction): void => this.onRefresh(direction)
+						})
+					}
+					if (this.currentTab == 1) {
+						IBestPullRefresh({
+							loading: $isLoading,
+							scroller: this.scroller,
+							successText: "加载成功",
+							defaultContent: (): void => this.customContent(1),
+							onRefresh: (direction): void => this.onRefresh(direction)
+						})
+					}
+					if (this.currentTab == 2) {
+						IBestPullRefresh({
+							loading: $isLoading,
+							scroller: this.scroller1,
+							defaultContent: (): void => this.customContent(2),
+							pullingContent: this.customPullingContent,
+							loosingContent: this.customLoosingContent,
+							loadingContent: (): void => this.customLoadingContent(),
+							onRefresh: (direction): void => this.onRefresh(direction)
+						})
+					}
+					if (this.currentTab == 3) {
+						IBestPullRefresh({
+							loading: $isLoading,
+							defaultContent: (): void => this.customContent(3),
+							onRefresh: (direction): void => this.onRefresh(direction)
+						})
+					}
+					if (this.currentTab == 4) {
+						IBestPullRefresh({
+							loading: $isLoading,
+							scroller: this.listScroller,
+							autoDirection: 'slideUp',
+							defaultContent: (): void => this.customContent(0),
+							onReady: () => {
+								this.isLoading = true
+							},
+							onRefresh: (direction): void => this.onRefresh(direction)
+						})
 					}
 				}
-			})
-			Column(){
-				if(this.currentTab == 0){
-					IBestPullRefresh({
-						loading: $isLoading,
-						scroller: this.listScroller,
-						defaultContent: (): void => this.customContent(0),
-						onRefresh: (direction): void => this.onRefresh(direction)
-					})
-				}
-				if(this.currentTab == 1){
-					IBestPullRefresh({
-						loading: $isLoading,
-						scroller: this.scroller,
-						successText: "加载成功",
-						defaultContent: (): void => this.customContent(1),
-						onRefresh: (direction): void => this.onRefresh(direction)
-					})
-				}
-				if(this.currentTab == 2){
-					IBestPullRefresh({
-						loading: $isLoading,
-						scroller: this.scroller1,
-						defaultContent: (): void => this.customContent(2),
-						pullingContent: this.customPullingContent,
-						loosingContent: this.customLoosingContent,
-						loadingContent: (): void => this.customLoadingContent(),
-						onRefresh: (direction): void => this.onRefresh(direction)
-					})
-				}
-				if(this.currentTab == 3){
-					IBestPullRefresh({
-						loading: $isLoading,
-						defaultContent: (): void => this.customContent(3),
-						onRefresh: (direction): void => this.onRefresh(direction)
-					})
-				}
-				if(this.currentTab == 4){
-					IBestPullRefresh({
-						loading: $isLoading,
-						scroller: this.listScroller,
-						defaultContent: (): void => this.customContent(0),
-						onRefresh: (direction): void => this.onRefresh(direction)
-					})
-				}
+				.layoutWeight(1)
 			}
-			.layoutWeight(1)
 		}
-		.hideTitleBar(true)
 	}
 }

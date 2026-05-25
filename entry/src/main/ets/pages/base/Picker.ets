@@ -1,7 +1,7 @@
 import { IBestField, IBestPicker, IBestPickerOption, IBestPopup, IBestToast } from '@ibestservices/ibest-ui'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
-import CustomNavBar from '../../components/CustomNavBar'
+import BasePage from '../../components/BasePage'
 
 @Builder
 export function PickerBuilder(_: string, title: string){
@@ -129,112 +129,117 @@ struct PickerPage {
 	@State selectValue4: string[] = []
 
 	build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-			List() {
-				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SM, card: true }) {
-						IBestPicker({
-							options: this.options1,
-							title: "标题",
-							value: $selectValue,
-							onConfirm: (selectedValues, selectTexts) => {
-								IBestToast.show(JSON.stringify(this.selectValue))
-							},
-							onChange: (selectedValues, selectTexts) => {
-								IBestToast.show(JSON.stringify(this.selectValue))
-							}
-						})
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg }) {
+				List() {
+					ListItem().height(84)
+					ListItem() {
+						ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.SM, card: true }) {
+							IBestPicker({
+								options: this.options1,
+								title: "标题",
+								value: $selectValue,
+								onConfirm: (selectedValues, selectTexts) => {
+									IBestToast.show(JSON.stringify(this.selectValue))
+								},
+								onChange: (selectedValues, selectTexts) => {
+									IBestToast.show(JSON.stringify(this.selectValue))
+								}
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '横向滚动', titlePaddingLeft: SPACE.SM, card: true }) {
-						IBestPicker({
-							options: this.options1,
-							title: "标题",
-							value: $selectValue,
-							horizontal: true,
-							onConfirm: (selectedValues, selectTexts) => {
-								IBestToast.show(selectTexts.join('-'))
-							},
-							onChange: (selectedValues, selectTexts) => {
-								IBestToast.show(selectTexts.join('-'))
-							}
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '横向滚动', titlePaddingLeft: SPACE.SM, card: true }) {
+							IBestPicker({
+								options: this.options1,
+								title: "标题",
+								value: $selectValue,
+								horizontal: true,
+								onConfirm: (selectedValues, selectTexts) => {
+									IBestToast.show(selectTexts.join('-'))
+								},
+								onChange: (selectedValues, selectTexts) => {
+									IBestToast.show(selectTexts.join('-'))
+								}
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '搭配弹出层使用', titlePaddingLeft: SPACE.SM, card: true }) {
-						IBestField({
-							label: '城市',
-							value: $filedValue,
-							placeholder: "请选择城市",
-							isLink: true,
-							hasBorder: false,
-							onFieldClick: () => {
-								this.visible = true
-							}
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '搭配弹出层使用', titlePaddingLeft: SPACE.SM, card: true }) {
+							IBestField({
+								label: '城市',
+								value: $filedValue,
+								placeholder: "请选择城市",
+								isLink: true,
+								hasBorder: false,
+								onFieldClick: () => {
+									this.visible = true
+								}
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '自定义样式', titlePaddingLeft: SPACE.SM, card: true }) {
-						IBestPicker({
-							options: this.options1,
-							title: "标题",
-							value: $selectValue2,
-							selectedFontColor: "#1989fa",
-							selectedFontWeight: FontWeight.Bold,
-							onConfirm: (selectedValues, selectTexts) => {
-								IBestToast.show(selectTexts.join('-'))
-							},
-							onChange: (selectedValues, selectTexts) => {
-								IBestToast.show(selectTexts.join('-'))
-							}
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '自定义样式', titlePaddingLeft: SPACE.SM, card: true }) {
+							IBestPicker({
+								options: this.options1,
+								title: "标题",
+								value: $selectValue2,
+								selectedFontColor: "#1989fa",
+								selectedFontWeight: FontWeight.Bold,
+								onConfirm: (selectedValues, selectTexts) => {
+									IBestToast.show(selectTexts.join('-'))
+								},
+								onChange: (selectedValues, selectTexts) => {
+									IBestToast.show(selectTexts.join('-'))
+								}
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '多列选择', titlePaddingLeft: SPACE.SM, card: true }) {
-						IBestPicker({
-							options: this.options3,
-							title: "标题",
-							value: $selectValue3,
-							onConfirm: (selectedValues, selectTexts) => {
-								IBestToast.show(selectTexts.join('-'))
-							},
-							onChange: (selectedValues, selectTexts) => {
-								IBestToast.show(selectTexts.join('-'))
-							}
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '多列选择', titlePaddingLeft: SPACE.SM, card: true }) {
+							IBestPicker({
+								options: this.options3,
+								title: "标题",
+								value: $selectValue3,
+								onConfirm: (selectedValues, selectTexts) => {
+									IBestToast.show(selectTexts.join('-'))
+								},
+								onChange: (selectedValues, selectTexts) => {
+									IBestToast.show(selectTexts.join('-'))
+								}
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '级联选择', titlePaddingLeft: SPACE.SM, card: true }) {
-						IBestPicker({
-							options: this.options4,
-							title: "标题",
-							value: $selectValue4,
-							onConfirm: (selectedValues, selectTexts) => {
-								IBestToast.show(selectTexts.join('-'))
-							},
-							onChange: (selectedValues, selectTexts) => {
-								IBestToast.show(selectTexts.join('-'))
-							}
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '级联选择', titlePaddingLeft: SPACE.SM, card: true }) {
+							IBestPicker({
+								options: this.options4,
+								title: "标题",
+								value: $selectValue4,
+								onConfirm: (selectedValues, selectTexts) => {
+									IBestToast.show(selectTexts.join('-'))
+								},
+								onChange: (selectedValues, selectTexts) => {
+									IBestToast.show(selectTexts.join('-'))
+								}
+							})
+						}
 					}
+
+					ListItem().height(50)
 				}
-				ListItem().height(50)
+				// 弹出层
+				IBestPopup({
+					visible: $visible,
+					popupAlign: "bottom",
+					contentBuilder: (): void => this.pickerBuilder()
+				})
 			}
-			.layoutWeight(1)
-			// 弹出层
-			IBestPopup({
-				visible: $visible,
-				popupAlign: "bottom",
-				contentBuilder: (): void => this.pickerBuilder()
-			})
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg)
 	}
 }

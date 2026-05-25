@@ -1,5 +1,5 @@
 import { webview } from '@kit.ArkWeb'
-import CustomNavBar from '../components/CustomNavBar'
+import BasePage from '../components/BasePage'
 
 @Builder
 export function DocBuilder(){
@@ -11,14 +11,15 @@ export function DocBuilder(){
 struct DocPage {
 	private controller: webview.WebviewController = new webview.WebviewController()
 	build() {
-		NavDestination(){
-			CustomNavBar({title: "文档"})
-			Web({
-				src: $r("app.string.app_doc_url"),
-				controller: this.controller
-			})
-				.layoutWeight(1)
+		Column(){
+			BasePage({ title: "文档" }) {
+				Row().height(84)
+				Web({
+					src: $r("app.string.app_doc_url"),
+					controller: this.controller
+				})
+					.layoutWeight(1)
+			}
 		}
-		.hideTitleBar(true)
 	}
 }

@@ -1,8 +1,9 @@
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import { IBestButton, IBestCell, IBestCellGroup, IBestDialog, IBestDialogUtil } from '@ibestservices/ibest-ui';
-import CustomNavBar from '../../components/CustomNavBar';
 import RouterUtil from '../../utils/routerUtil';
+import BasePage from '../../components/BasePage';
+
 export interface TextData {
 	title: string,
 	code: string,
@@ -85,201 +86,205 @@ struct DialogPage {
 	}
 
 	build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-			// 使用组件
-			IBestDialog({
-				visible: $dialogVisible,
-				title: textData.title,
-				dialogWidth: this.dialogWidth,
-				showCancelButton: true,
-				defaultBuilder: (): void => this.formInputContain(),
-				beforeClose: (action) => {
-					if (action === 'cancel') {
-						return true
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg, comId: "dialogMain" }) {
+				// 使用组件
+				IBestDialog({
+					visible: $dialogVisible,
+					title: textData.title,
+					dialogWidth: this.dialogWidth,
+					showCancelButton: true,
+					defaultBuilder: (): void => this.formInputContain(),
+					beforeClose: (action) => {
+						if (action === 'cancel') {
+							return true
+						}
+						const valueLength = this.inputValue.trim().length;
+						this.formInputError = !valueLength;
+						return !this.formInputError
 					}
-					const valueLength = this.inputValue.trim().length;
-					this.formInputError = !valueLength;
-					return !this.formInputError
-				}
-			})
-			List() {
-				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
-						IBestCellGroup({ inset: true }) {
-							IBestCell({
-								title: '提示弹窗',
-								isLink: true,
-								onCellClick: () => {
-									IBestDialogUtil.open({
-										title: textData.title,
-										message: textData.code,
-										confirmButtonFontWeight: FontWeight.Bold,
-										dialogWidth: "90%"
-									})
-								}
-							})
-							IBestCell({
-								title: '提示弹窗（无标题）',
-								isLink: true,
-								onCellClick: () => {
-									IBestDialogUtil.open({
-										message: textData.life
-									})
-								}
-							})
-							IBestCell({
-								title: '确认弹窗',
-								isLink: true,
-								hasBorder: false,
-								onCellClick: () => {
-									IBestDialogUtil.open({
-										title: textData.title,
-										message: textData.life,
-										showCancelButton: true
-									})
-								}
-							})
+				})
+				List() {
+					ListItem().height(84)
+					ListItem() {
+						ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
+							IBestCellGroup({ inset: true }) {
+								IBestCell({
+									title: '提示弹窗',
+									isLink: true,
+									onCellClick: () => {
+										IBestDialogUtil.open({
+											title: textData.title,
+											message: textData.code,
+											confirmButtonFontWeight: FontWeight.Bold,
+											dialogWidth: "90%"
+										})
+									}
+								})
+								IBestCell({
+									title: '提示弹窗（无标题）',
+									isLink: true,
+									onCellClick: () => {
+										IBestDialogUtil.open({
+											message: textData.life
+										})
+									}
+								})
+								IBestCell({
+									title: '确认弹窗',
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										IBestDialogUtil.open({
+											title: textData.title,
+											message: textData.life,
+											showCancelButton: true
+										})
+									}
+								})
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '圆角按钮样式', titlePaddingLeft: SPACE.MD }) {
-						IBestCellGroup({ inset: true }) {
-							IBestCell({
-								title: '提示弹窗',
-								isLink: true,
-								onCellClick: () => {
-									IBestDialogUtil.open({
-										title: textData.title,
-										message: textData.life,
-										theme: "round-button"
-									})
-								}
-							})
-							IBestCell({
-								title: '确认弹窗(无标题)',
-								isLink: true,
-								onCellClick: () => {
-									IBestDialogUtil.open({
-										message: textData.life,
-										showCancelButton: true,
-										theme: "round-button"
-									})
-								}
-							})
-							IBestCell({
-								title: '按钮带间距确认弹窗',
-								isLink: true,
-								hasBorder: false,
-								onCellClick: () => {
-									IBestDialogUtil.open({
-										message: textData.life,
-										showCancelButton: true,
-										theme: "round-button",
-										buttonSpace: 20
-									})
-								}
-							})
+
+					ListItem() {
+						ComponentShowContainer({ title: '圆角按钮样式', titlePaddingLeft: SPACE.MD }) {
+							IBestCellGroup({ inset: true }) {
+								IBestCell({
+									title: '提示弹窗',
+									isLink: true,
+									onCellClick: () => {
+										IBestDialogUtil.open({
+											title: textData.title,
+											message: textData.life,
+											theme: "round-button"
+										})
+									}
+								})
+								IBestCell({
+									title: '确认弹窗(无标题)',
+									isLink: true,
+									onCellClick: () => {
+										IBestDialogUtil.open({
+											message: textData.life,
+											showCancelButton: true,
+											theme: "round-button"
+										})
+									}
+								})
+								IBestCell({
+									title: '按钮带间距确认弹窗',
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										IBestDialogUtil.open({
+											message: textData.life,
+											showCancelButton: true,
+											theme: "round-button",
+											buttonSpace: 20
+										})
+									}
+								})
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '背景图片', titlePaddingLeft: SPACE.MD }) {
-						IBestCellGroup({ inset: true }) {
-							IBestCell({
-								title: '背景图片',
-								isLink: true,
-								hasBorder: false,
-								onCellClick: () => {
-									IBestDialogUtil.open({
-										bgImage: "https://img0.baidu.com/it/u=3217812679,2585737758&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500",
-										showConfirmButton: false,
-										defaultBuilder: () => this.imageBgBuilder(),
-										closeOnClickOverlay: true
-									})
-								}
-							})
+
+					ListItem() {
+						ComponentShowContainer({ title: '背景图片', titlePaddingLeft: SPACE.MD }) {
+							IBestCellGroup({ inset: true }) {
+								IBestCell({
+									title: '背景图片',
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										IBestDialogUtil.open({
+											bgImage: "https://img0.baidu.com/it/u=3217812679,2585737758&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500",
+											showConfirmButton: false,
+											defaultBuilder: () => this.imageBgBuilder(),
+											closeOnClickOverlay: true
+										})
+									}
+								})
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '异步关闭', titlePaddingLeft: SPACE.MD }) {
-						IBestCellGroup({ inset: true }) {
-							IBestCell({
-								title: '异步关闭',
-								isLink: true,
-								hasBorder: false,
-								onCellClick: () => {
-									IBestDialogUtil.open({
-										title: textData.title,
-										message: textData.life,
-										showCancelButton: true,
-										beforeClose: (action) => {
-											if (action == "confirm") {
-												return new Promise(resolve => {
-													IBestDialogUtil.open({
-														title: "提示",
-														message: "确认关闭？",
-														showCancelButton: true,
-														onConfirm: () => {
-															resolve(true)
-														},
-														onCancel: () => {
-															resolve(false)
-														}
+
+					ListItem() {
+						ComponentShowContainer({ title: '异步关闭', titlePaddingLeft: SPACE.MD }) {
+							IBestCellGroup({ inset: true }) {
+								IBestCell({
+									title: '异步关闭',
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										IBestDialogUtil.open({
+											title: textData.title,
+											message: textData.life,
+											showCancelButton: true,
+											beforeClose: (action) => {
+												if (action == "confirm") {
+													return new Promise(resolve => {
+														IBestDialogUtil.open({
+															title: "提示",
+															message: "确认关闭？",
+															showCancelButton: true,
+															onConfirm: () => {
+																resolve(true)
+															},
+															onCancel: () => {
+																resolve(false)
+															}
+														})
 													})
-												})
+												}
+												return true
 											}
-											return true
-										}
-									})
-								}
-							})
+										})
+									}
+								})
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '内部跳转', titlePaddingLeft: SPACE.MD }) {
-						IBestCellGroup({ inset: true }) {
-							IBestCell({
-								title: '内部跳转',
-								isLink: true,
-								hasBorder: false,
-								onCellClick: () => {
-									IBestDialogUtil.open({
-										title: textData.title,
-										message: textData.life,
-										showCancelButton: true,
-										levelMode: 1,
-										levelUniqueId: this.uniId,
-										defaultBuilder: (): void => this.customComponentContent()
-									})
-								}
-							})
+
+					ListItem() {
+						ComponentShowContainer({ title: '内部跳转', titlePaddingLeft: SPACE.MD }) {
+							IBestCellGroup({ inset: true }) {
+								IBestCell({
+									title: '内部跳转',
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										IBestDialogUtil.open({
+											title: textData.title,
+											message: textData.life,
+											showCancelButton: true,
+											levelMode: 1,
+											levelUniqueId: this.uniId,
+											defaultBuilder: (): void => this.customComponentContent()
+										})
+									}
+								})
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '使用组件', titlePaddingLeft: SPACE.MD }) {
-						IBestCellGroup({ inset: true }) {
-							IBestCell({
-								title: '使用组件',
-								isLink: true,
-								hasBorder: false,
-								onCellClick: () => {
-									this.dialogVisible = true
-								}
-							})
+
+					ListItem() {
+						ComponentShowContainer({ title: '使用组件', titlePaddingLeft: SPACE.MD }) {
+							IBestCellGroup({ inset: true }) {
+								IBestCell({
+									title: '使用组件',
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										this.dialogVisible = true
+									}
+								})
+							}
 						}
 					}
+
+					ListItem().height(50)
 				}
-				ListItem().height(50)
 			}
-			.layoutWeight(1)
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg)
-		.id("dialogMain")
 	}
 }

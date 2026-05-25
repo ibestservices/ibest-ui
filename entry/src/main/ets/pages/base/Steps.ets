@@ -1,7 +1,7 @@
 import { IBestButton, IBestStep, IBestSteps } from '@ibestservices/ibest-ui'
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import BasePage from '../../components/BasePage'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
-import CustomNavBar from '../../components/CustomNavBar'
 
 @Builder
 export function StepsBuilder(_: string, title: string){
@@ -35,120 +35,133 @@ struct StepsPage {
 		}, 500)
 	}
 	build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-			List() {
-				ListItem() {
-					ComponentShowContainer({ title: '基础用法' }){
-						IBestSteps({
-							groupId: this.groupId,
-							active: this.active
-						}){
-							ForEach(this.list, (item: number) => {
-								IBestStep({groupId: this.groupId, title: `步骤${item}`})
-							})
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg2 }) {
+				List() {
+					ListItem().height(84)
+					ListItem() {
+						ComponentShowContainer({ title: '基础用法' }) {
+							IBestSteps({
+								groupId: this.groupId,
+								active: this.active
+							}) {
+								ForEach(this.list, (item: number) => {
+									IBestStep({ groupId: this.groupId, title: `步骤${item}` })
+								})
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '标记类型' }){
-						IBestSteps({
-							groupId: this.groupId1,
-							active: this.active,
-							type: 'dot'
-						}){
-							ForEach(this.list, (item: number) => {
-								IBestStep({groupId: this.groupId1, title: `步骤${item}`})
-							})
+
+					ListItem() {
+						ComponentShowContainer({ title: '标记类型' }) {
+							IBestSteps({
+								groupId: this.groupId1,
+								active: this.active,
+								type: 'dot'
+							}) {
+								ForEach(this.list, (item: number) => {
+									IBestStep({ groupId: this.groupId1, title: `步骤${item}` })
+								})
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '自定义样式' }){
-						IBestSteps({
-							groupId: this.groupId2,
-							active: this.active,
-							type: 'icon',
-							inactiveIcon: "passed",
-							activeIcon: "checked",
-							activeColor: "#07c160"
-						}){
-							ForEach(this.list, (item: number) => {
-								IBestStep({groupId: this.groupId2, title: `步骤${item}`, description: "一些描述信息"})
-							})
+
+					ListItem() {
+						ComponentShowContainer({ title: '自定义样式' }) {
+							IBestSteps({
+								groupId: this.groupId2,
+								active: this.active,
+								type: 'icon',
+								inactiveIcon: "passed",
+								activeIcon: "checked",
+								activeColor: "#07c160"
+							}) {
+								ForEach(this.list, (item: number) => {
+									IBestStep({
+										groupId: this.groupId2,
+										title: `步骤${item}`,
+										description: "一些描述信息"
+									})
+								})
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '异步' }){
-						IBestSteps({
-							groupId: this.groupId3,
-							active: this.active
-						}){
-							ForEach(this.list1, (item: number) => {
-								IBestStep({groupId: this.groupId3, title: `步骤${item}`, description: "一些描述信息"})
-							})
+
+					ListItem() {
+						ComponentShowContainer({ title: '异步' }) {
+							IBestSteps({
+								groupId: this.groupId3,
+								active: this.active
+							}) {
+								ForEach(this.list1, (item: number) => {
+									IBestStep({
+										groupId: this.groupId3,
+										title: `步骤${item}`,
+										description: "一些描述信息"
+									})
+								})
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '竖向步骤条' }){
-						IBestSteps({
-							groupId: this.groupId4,
-							dotSize: 8,
-							active: this.active,
-							placeDirection: Axis.Vertical
-						}){
-							ForEach(this.list, (item: number, index: number) => {
-								IBestStep({
-									groupId: this.groupId4,
-									type: index == 1 ? "dot" : "icon",
-									inactiveIcon: index == 0 ? "like-o" : "passed",
-									activeIcon: index == 0 ? "like" : "checked"
-								}){
-									this.customStepContent(item)
-								}
-							})
-						}
-					}
-				}
-				ListItem() {
-					ComponentShowContainer(){
-						Row({space: SPACE.MD}){
-							IBestButton({
-								text: "添加",
-								onBtnClick: () => {
-									this.list.push(this.list.length + 1)
-								}
-							})
-							IBestButton({
-								text: "删除",
-								onBtnClick: () => {
-									this.list.pop()
-								}
-							})
-							IBestButton({
-								text: "切换",
-								onBtnClick: () => {
-									this.list = [5, 6, 7, 8]
-								}
-							})
-							IBestButton({
-								text: "下一步",
-								onBtnClick: () => {
-									if (this.active++ >= this.list.length-1) {
-										this.active = 0
+
+					ListItem() {
+						ComponentShowContainer({ title: '竖向步骤条' }) {
+							IBestSteps({
+								groupId: this.groupId4,
+								dotSize: 8,
+								active: this.active,
+								placeDirection: Axis.Vertical
+							}) {
+								ForEach(this.list, (item: number, index: number) => {
+									IBestStep({
+										groupId: this.groupId4,
+										type: index == 1 ? "dot" : "icon",
+										inactiveIcon: index == 0 ? "like-o" : "passed",
+										activeIcon: index == 0 ? "like" : "checked"
+									}) {
+										this.customStepContent(item)
 									}
-								}
-							})
+								})
+							}
 						}
 					}
+
+					ListItem() {
+						ComponentShowContainer() {
+							Row({ space: SPACE.MD }) {
+								IBestButton({
+									text: "添加",
+									onBtnClick: () => {
+										this.list.push(this.list.length + 1)
+									}
+								})
+								IBestButton({
+									text: "删除",
+									onBtnClick: () => {
+										this.list.pop()
+									}
+								})
+								IBestButton({
+									text: "切换",
+									onBtnClick: () => {
+										this.list = [5, 6, 7, 8]
+									}
+								})
+								IBestButton({
+									text: "下一步",
+									onBtnClick: () => {
+										if (this.active++ >= this.list.length - 1) {
+											this.active = 0
+										}
+									}
+								})
+							}
+						}
+					}
+					ListItem().height(50)
 				}
+				.padding({ left: SPACE.SM, right: SPACE.SM })
 			}
-			.layoutWeight(1)
-			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg2)
 	}
 }

@@ -8,8 +8,8 @@ import {
 	IBestTableColumnData,
 	IBestToast
 } from '@ibestservices/ibest-ui';
-import CustomNavBar from '../../components/CustomNavBar';
 import { UIUtils } from '@kit.ArkUI'
+import BasePage from '../../components/BasePage';
 
 @Builder
 export function TableBuilder(_: string, title: string){
@@ -158,174 +158,366 @@ struct TablePage {
 		}, 500)
 	}
 	build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-			List() {
-				ListItem() {
-					ComponentShowContainer({ title: '基础用法' }) {
-						IBestTable({ tableId: this.tableId, data: this.data }){
-                            IBestTableColumn({ tableId: this.tableId, title: "日期", prop: "date", cellWidth: 100 })
-							IBestTableColumn({ tableId: this.tableId, title: "名称", prop: "name", cellWidth: 70 })
-							IBestTableColumn({ tableId: this.tableId, title: "描述", prop: "desc" })
-						}
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '斑马纹' }) {
-						IBestTable({ tableId: this.tableId1, data: this.data, stripe: true }){
-							IBestTableColumn({ tableId: this.tableId1, title: "日期", prop: "date", cellWidth: 100 })
-							IBestTableColumn({ tableId: this.tableId1, title: "名称", prop: "name", cellWidth: 70 })
-							IBestTableColumn({ tableId: this.tableId1, title: "描述", prop: "desc" })
-						}
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '边框' }) {
-						IBestTable({ tableId: this.tableId2, data: this.data, showBorder: true }){
-							IBestTableColumn({ tableId: this.tableId2, title: "日期", prop: "date", cellWidth: 100 })
-							IBestTableColumn({ tableId: this.tableId2, title: "名称", prop: "name", cellWidth: 70 })
-							IBestTableColumn({ tableId: this.tableId2, title: "描述", prop: "desc" })
-						}
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '固定列和表头' }) {
-						IBestTable({ tableId: this.tableId3, data: this.data1, fixHeight: 140 }){
-							IBestTableColumn({ tableId: this.tableId3, title: "日期", prop: "date", fixed: true, cellWidth: 100 })
-							IBestTableColumn({ tableId: this.tableId3, title: "名称", prop: "name", cellWidth: 70 })
-							IBestTableColumn({ tableId: this.tableId3, title: "描述", prop: "desc", cellWidth: 500 })
-						}
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '动态显示列', space: SPACE.SM }) {
-						IBestButton({
-							type: "primary",
-							text: "切换日期列显示",
-							onBtnClick: () => {
-								this.showDate = !this.showDate
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg }) {
+				List() {
+					ListItem().height(84)
+					ListItem() {
+						ComponentShowContainer({ title: '基础用法' }) {
+							IBestTable({ tableId: this.tableId, data: this.data }) {
+								IBestTableColumn({
+									tableId: this.tableId,
+									title: "日期",
+									prop: "date",
+									cellWidth: 100
+								})
+								IBestTableColumn({
+									tableId: this.tableId,
+									title: "名称",
+									prop: "name",
+									cellWidth: 70
+								})
+								IBestTableColumn({ tableId: this.tableId, title: "描述", prop: "desc" })
 							}
-						})
-						IBestTable({ tableId: this.tableId4, data: this.data }){
-							IBestTableColumn({ tableId: this.tableId4, title: "日期", prop: "date", cellWidth: 100, show: this.showDate })
-							IBestTableColumn({ tableId: this.tableId4, title: "名称", prop: "name", cellWidth: 70 })
-							IBestTableColumn({ tableId: this.tableId4, title: "描述", prop: "desc" })
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '格式化单元格内容' }) {
-						IBestTable({ tableId: this.tableId5, data: this.data }){
-							IBestTableColumn({
-								tableId: this.tableId5,
-								title: "日期",
-								prop: "date",
-								cellWidth: 100,
-								formatter: (row: TableData, column, rowIndex, columnIndex): string => this.formatDate(row, column, rowIndex, columnIndex)
-							})
-							IBestTableColumn({ tableId: this.tableId5, title: "名称", prop: "name", cellWidth: 70 })
-							IBestTableColumn({ tableId: this.tableId5, title: "描述", prop: "desc" })
+
+					ListItem() {
+						ComponentShowContainer({ title: '斑马纹' }) {
+							IBestTable({ tableId: this.tableId1, data: this.data, stripe: true }) {
+								IBestTableColumn({
+									tableId: this.tableId1,
+									title: "日期",
+									prop: "date",
+									cellWidth: 100
+								})
+								IBestTableColumn({
+									tableId: this.tableId1,
+									title: "名称",
+									prop: "name",
+									cellWidth: 70
+								})
+								IBestTableColumn({ tableId: this.tableId1, title: "描述", prop: "desc" })
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '自定义单元格内容' }) {
-						IBestTable({ tableId: this.tableId6, data: this.data, showBorder: true }){
-							IBestTableColumn({
-								tableId: this.tableId6,
-								title: "日期",
-								prop: "date",
-								cellWidth: 130,
-								cellBuilder: (row: TableData, column: IBestTableColumnData, rowIndex: number, columnIndex: number): void => this.customCell(row, column, rowIndex, columnIndex)
-							})
-							IBestTableColumn({ tableId: this.tableId6, title: "名称", prop: "name" })
-							IBestTableColumn({
-								tableId: this.tableId6,
-								title: "操作",
-								cellWidth: 90,
-								headerBuilder: (column: IBestTableColumnData, columnIndex: number): void => this.headerBuilder(column, columnIndex),
-								cellBuilder: (row: TableData, column: IBestTableColumnData, rowIndex: number, columnIndex: number): void => this.customCell(row, column, rowIndex, columnIndex)
-							})
+
+					ListItem() {
+						ComponentShowContainer({ title: '边框' }) {
+							IBestTable({ tableId: this.tableId2, data: this.data, showBorder: true }) {
+								IBestTableColumn({
+									tableId: this.tableId2,
+									title: "日期",
+									prop: "date",
+									cellWidth: 100
+								})
+								IBestTableColumn({
+									tableId: this.tableId2,
+									title: "名称",
+									prop: "name",
+									cellWidth: 70
+								})
+								IBestTableColumn({ tableId: this.tableId2, title: "描述", prop: "desc" })
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '表尾合计行' }) {
-						IBestTable({ tableId: this.tableId7, data: this.data2, showSummary: true }){
-							IBestTableColumn({ tableId: this.tableId7, title: "名称", prop: "name", cellWidth: 70, fixed: true })
-							IBestTableColumn({ tableId: this.tableId7, title: "数量1", prop: "amount1", cellWidth: 100 })
-							IBestTableColumn({ tableId: this.tableId7, title: "数量2", prop: "amount2", cellWidth: 100 })
-							IBestTableColumn({ tableId: this.tableId7, title: "数量3", prop: "amount3", cellWidth: 100 })
-							IBestTableColumn({ tableId: this.tableId7, title: "数量4", prop: "amount4", cellWidth: 100 })
-							IBestTableColumn({ tableId: this.tableId7, title: "数量5", prop: "amount5", cellWidth: 100, fixed: "right" })
+
+					ListItem() {
+						ComponentShowContainer({ title: '固定列和表头' }) {
+							IBestTable({ tableId: this.tableId3, data: this.data1, fixHeight: 140 }) {
+								IBestTableColumn({
+									tableId: this.tableId3,
+									title: "日期",
+									prop: "date",
+									fixed: true,
+									cellWidth: 100
+								})
+								IBestTableColumn({
+									tableId: this.tableId3,
+									title: "名称",
+									prop: "name",
+									cellWidth: 70
+								})
+								IBestTableColumn({
+									tableId: this.tableId3,
+									title: "描述",
+									prop: "desc",
+									cellWidth: 500
+								})
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '合并行列', space: SPACE.SM }) {
-						IBestTable({ tableId: this.tableId8, data: this.data2, stripe: true, showBorder: true, spanMethod: this.arraySpanMethod}){
-							IBestTableColumn({ tableId: this.tableId8, title: "ID", prop: "id", cellWidth: 80, fixed: true })
-							IBestTableColumn({ tableId: this.tableId8, title: "名称", prop: "name", cellWidth: 50 })
-							IBestTableColumn({ tableId: this.tableId8, title: "数量1", prop: "amount1", cellWidth: 50 })
-							IBestTableColumn({ tableId: this.tableId8, title: "数量2", prop: "amount2", cellWidth: 50 })
-							IBestTableColumn({ tableId: this.tableId8, title: "数量3", prop: "amount3", cellWidth: 50 })
-							IBestTableColumn({ tableId: this.tableId8, title: "数量4", prop: "amount4", cellWidth: 50 })
-							IBestTableColumn({ tableId: this.tableId8, title: "数量5", prop: "amount5", cellWidth: 50 })
-						}
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '动态修改数据', space: SPACE.SM }) {
-						IBestTable({ tableId: this.tableId9, data: this.data3 }){
-							IBestTableColumn({ tableId: this.tableId9, title: "名称", prop: "name", cellWidth: 100 })
-							IBestTableColumn({ tableId: this.tableId9, title: "数量", prop: "number"})
-						}
-						Row({space: SPACE.SM}){
+
+					ListItem() {
+						ComponentShowContainer({ title: '动态显示列', space: SPACE.SM }) {
 							IBestButton({
 								type: "primary",
-								text: "修改数量",
+								text: "切换日期列显示",
 								onBtnClick: () => {
-									this.data3[0].number += 10
+									this.showDate = !this.showDate
 								}
 							})
-							IBestButton({
-								type: "primary",
-								text: "修改整个数据",
-								onBtnClick: () => {
-									this.data3 = [
-										UIUtils.makeObserved(new TableData2("数据3", 30)),
-										UIUtils.makeObserved(new TableData2("数据4", 40))
-									]
-								}
-							})
+							IBestTable({ tableId: this.tableId4, data: this.data }) {
+								IBestTableColumn({
+									tableId: this.tableId4,
+									title: "日期",
+									prop: "date",
+									cellWidth: 100,
+									show: this.showDate
+								})
+								IBestTableColumn({
+									tableId: this.tableId4,
+									title: "名称",
+									prop: "name",
+									cellWidth: 70
+								})
+								IBestTableColumn({ tableId: this.tableId4, title: "描述", prop: "desc" })
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '多级表头' }) {
-						IBestTable({ tableId: this.tableId10, data: this.data4 }){
-							IBestTableColumn({ tableId: this.tableId10, title: "名称", prop: "name", cellWidth: 70, fixed: true })
-							IBestTableColumn({
-								tableId: this.tableId10,
-								title: "详细信息",
-								prop: "detail",
-								cellWidth: 150,
-								headerBuilder: (column: IBestTableColumnData, columnIndex: number): void => this.headerBuilder(column, columnIndex),
-							})
-							IBestTableColumn({ tableId: this.tableId10, title: "信息1", prop: "info1", parentProp: "detail", cellWidth: 50 })
-							IBestTableColumn({ tableId: this.tableId10, title: "信息2", prop: "info2", parentProp: "detail" })
-							IBestTableColumn({ tableId: this.tableId10, title: "信息3", prop: "info3", parentProp: "info2", cellWidth: 50 })
-							IBestTableColumn({ tableId: this.tableId10, title: "信息4", prop: "info4", parentProp: "info2" })
-							IBestTableColumn({ tableId: this.tableId10, title: "信息5", prop: "info5", cellWidth: 200 })
+
+					ListItem() {
+						ComponentShowContainer({ title: '格式化单元格内容' }) {
+							IBestTable({ tableId: this.tableId5, data: this.data }) {
+								IBestTableColumn({
+									tableId: this.tableId5,
+									title: "日期",
+									prop: "date",
+									cellWidth: 100,
+									formatter: (row: TableData, column, rowIndex,
+										columnIndex): string => this.formatDate(row, column, rowIndex, columnIndex)
+								})
+								IBestTableColumn({
+									tableId: this.tableId5,
+									title: "名称",
+									prop: "name",
+									cellWidth: 70
+								})
+								IBestTableColumn({ tableId: this.tableId5, title: "描述", prop: "desc" })
+							}
 						}
 					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '自定义单元格内容' }) {
+							IBestTable({ tableId: this.tableId6, data: this.data, showBorder: true }) {
+								IBestTableColumn({
+									tableId: this.tableId6,
+									title: "日期",
+									prop: "date",
+									cellWidth: 130,
+									cellBuilder: (row: TableData, column: IBestTableColumnData, rowIndex: number,
+										columnIndex: number): void => this.customCell(row, column, rowIndex,
+										columnIndex)
+								})
+								IBestTableColumn({ tableId: this.tableId6, title: "名称", prop: "name" })
+								IBestTableColumn({
+									tableId: this.tableId6,
+									title: "操作",
+									cellWidth: 90,
+									headerBuilder: (column: IBestTableColumnData,
+										columnIndex: number): void => this.headerBuilder(column, columnIndex),
+									cellBuilder: (row: TableData, column: IBestTableColumnData, rowIndex: number,
+										columnIndex: number): void => this.customCell(row, column, rowIndex,
+										columnIndex)
+								})
+							}
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '表尾合计行' }) {
+							IBestTable({ tableId: this.tableId7, data: this.data2, showSummary: true }) {
+								IBestTableColumn({
+									tableId: this.tableId7,
+									title: "名称",
+									prop: "name",
+									cellWidth: 70,
+									fixed: true
+								})
+								IBestTableColumn({
+									tableId: this.tableId7,
+									title: "数量1",
+									prop: "amount1",
+									cellWidth: 100
+								})
+								IBestTableColumn({
+									tableId: this.tableId7,
+									title: "数量2",
+									prop: "amount2",
+									cellWidth: 100
+								})
+								IBestTableColumn({
+									tableId: this.tableId7,
+									title: "数量3",
+									prop: "amount3",
+									cellWidth: 100
+								})
+								IBestTableColumn({
+									tableId: this.tableId7,
+									title: "数量4",
+									prop: "amount4",
+									cellWidth: 100
+								})
+								IBestTableColumn({
+									tableId: this.tableId7,
+									title: "数量5",
+									prop: "amount5",
+									cellWidth: 100,
+									fixed: "right"
+								})
+							}
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '合并行列', space: SPACE.SM }) {
+							IBestTable({
+								tableId: this.tableId8,
+								data: this.data2,
+								stripe: true,
+								showBorder: true,
+								spanMethod: this.arraySpanMethod
+							}) {
+								IBestTableColumn({
+									tableId: this.tableId8,
+									title: "ID",
+									prop: "id",
+									cellWidth: 80,
+									fixed: true
+								})
+								IBestTableColumn({
+									tableId: this.tableId8,
+									title: "名称",
+									prop: "name",
+									cellWidth: 50
+								})
+								IBestTableColumn({
+									tableId: this.tableId8,
+									title: "数量1",
+									prop: "amount1",
+									cellWidth: 50
+								})
+								IBestTableColumn({
+									tableId: this.tableId8,
+									title: "数量2",
+									prop: "amount2",
+									cellWidth: 50
+								})
+								IBestTableColumn({
+									tableId: this.tableId8,
+									title: "数量3",
+									prop: "amount3",
+									cellWidth: 50
+								})
+								IBestTableColumn({
+									tableId: this.tableId8,
+									title: "数量4",
+									prop: "amount4",
+									cellWidth: 50
+								})
+								IBestTableColumn({
+									tableId: this.tableId8,
+									title: "数量5",
+									prop: "amount5",
+									cellWidth: 50
+								})
+							}
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '动态修改数据', space: SPACE.SM }) {
+							IBestTable({ tableId: this.tableId9, data: this.data3 }) {
+								IBestTableColumn({
+									tableId: this.tableId9,
+									title: "名称",
+									prop: "name",
+									cellWidth: 100
+								})
+								IBestTableColumn({ tableId: this.tableId9, title: "数量", prop: "number" })
+							}
+
+							Row({ space: SPACE.SM }) {
+								IBestButton({
+									type: "primary",
+									text: "修改数量",
+									onBtnClick: () => {
+										this.data3[0].number += 10
+									}
+								})
+								IBestButton({
+									type: "primary",
+									text: "修改整个数据",
+									onBtnClick: () => {
+										this.data3 = [
+											UIUtils.makeObserved(new TableData2("数据3", 30)),
+											UIUtils.makeObserved(new TableData2("数据4", 40))
+										]
+									}
+								})
+							}
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '多级表头' }) {
+							IBestTable({ tableId: this.tableId10, data: this.data4 }) {
+								IBestTableColumn({
+									tableId: this.tableId10,
+									title: "名称",
+									prop: "name",
+									cellWidth: 70,
+									fixed: true
+								})
+								IBestTableColumn({
+									tableId: this.tableId10,
+									title: "详细信息",
+									prop: "detail",
+									cellWidth: 150,
+									headerBuilder: (column: IBestTableColumnData,
+										columnIndex: number): void => this.headerBuilder(column, columnIndex),
+								})
+								IBestTableColumn({
+									tableId: this.tableId10,
+									title: "信息1",
+									prop: "info1",
+									parentProp: "detail",
+									cellWidth: 50
+								})
+								IBestTableColumn({
+									tableId: this.tableId10,
+									title: "信息2",
+									prop: "info2",
+									parentProp: "detail"
+								})
+								IBestTableColumn({
+									tableId: this.tableId10,
+									title: "信息3",
+									prop: "info3",
+									parentProp: "info2",
+									cellWidth: 50
+								})
+								IBestTableColumn({
+									tableId: this.tableId10,
+									title: "信息4",
+									prop: "info4",
+									parentProp: "info2"
+								})
+								IBestTableColumn({
+									tableId: this.tableId10,
+									title: "信息5",
+									prop: "info5",
+									cellWidth: 200
+								})
+							}
+						}
+					}
+
+					ListItem().height(100)
 				}
-				ListItem().height(100)
+				.padding({ left: SPACE.SM, right: SPACE.SM })
 			}
-			.layoutWeight(1)
-			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg)
 	}
 }

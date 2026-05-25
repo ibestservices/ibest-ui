@@ -1,7 +1,7 @@
 import { IBestSlider, IBestToast } from '@ibestservices/ibest-ui'
 import { COLOR_BLUE, CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import BasePage from '../../components/BasePage'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
-import CustomNavBar from '../../components/CustomNavBar'
 
 @Builder
 export function SliderBuilder(_: string, title: string){
@@ -33,147 +33,155 @@ struct SliderPage {
 	}
 
 	build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-			List() {
-				ListItem() {
-					ComponentShowContainer({ title: '基础用法', space: SPACE.MD }) {
-						IBestSlider({
-							value: $value,
-							onChange: (val) => {
-								IBestToast.show(val.toString())
-							}
-						})
-						IBestSlider({
-							value: $value,
-							reverse: true,
-							onChange: (val) => {
-								IBestToast.show(val.toString())
-							}
-						})
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '双滑块', space: SPACE.MD }) {
-						IBestSlider({
-							value: $value1,
-							onChange: (val) => {
-								IBestToast.show(val.toString())
-							}
-						})
-						IBestSlider({
-							value: $value1,
-							reverse: true,
-							onChange: (val) => {
-								IBestToast.show(val.toString())
-							}
-						})
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '指定选择范围' }) {
-						IBestSlider({
-							value: $value2,
-							min: -50,
-							max: 50,
-							onChange: (val) => {
-								IBestToast.show(val.toString())
-							}
-						})
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '禁用' }) {
-						IBestSlider({
-							value: $value3,
-							disabled: true
-						})
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '指定步长' }) {
-						IBestSlider({
-							value: $value4,
-							step: 10,
-							ticks: true,
-							onChange: (val) => {
-								IBestToast.show(val.toString())
-							}
-						})
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '自定义样式' }) {
-						IBestSlider({
-							value: $value5,
-							barHeight: 8,
-							activeColor: "#ee0a24",
-							onChange: (val) => {
-								IBestToast.show(val.toString())
-							}
-						})
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '自定义按钮' }) {
-						IBestSlider({
-							value: $value6,
-							customButton: (): void => this.customBtn(),
-							onChange: (val) => {
-								IBestToast.show(val.toString())
-							}
-						})
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '垂直方向' }) {
-						Row({ space: 80 }){
-							Row({ space: 30 }){
-								IBestSlider({
-									value: $value7,
-									vertical: true,
-									onChange: (val) => {
-										IBestToast.show(val.toString())
-									}
-								})
-								IBestSlider({
-									value: $value7,
-									vertical: true,
-									reverse: true,
-									onChange: (val) => {
-										IBestToast.show(val.toString())
-									}
-								})
-							}
-							Row({ space: 30 }){
-								IBestSlider({
-									value: $value8,
-									vertical: true,
-									onChange: (val) => {
-										IBestToast.show(val.toString())
-									}
-								})
-								IBestSlider({
-									value: $value8,
-									vertical: true,
-									reverse: true,
-									onChange: (val) => {
-										IBestToast.show(val.toString())
-									}
-								})
-							}
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg }) {
+				List() {
+					ListItem().height(84)
+					ListItem() {
+						ComponentShowContainer({ title: '基础用法', space: SPACE.MD }) {
+							IBestSlider({
+								value: $value,
+								onChange: (val) => {
+									IBestToast.show(val.toString())
+								}
+							})
+							IBestSlider({
+								value: $value,
+								reverse: true,
+								onChange: (val) => {
+									IBestToast.show(val.toString())
+								}
+							})
 						}
-						.width(CONTAINER_SIZE.FULL)
-						.height(300)
-						.justifyContent(FlexAlign.Center)
 					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '双滑块', space: SPACE.MD }) {
+							IBestSlider({
+								value: $value1,
+								onChange: (val) => {
+									IBestToast.show(val.toString())
+								}
+							})
+							IBestSlider({
+								value: $value1,
+								reverse: true,
+								onChange: (val) => {
+									IBestToast.show(val.toString())
+								}
+							})
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '指定选择范围' }) {
+							IBestSlider({
+								value: $value2,
+								min: -50,
+								max: 50,
+								onChange: (val) => {
+									IBestToast.show(val.toString())
+								}
+							})
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '禁用' }) {
+							IBestSlider({
+								value: $value3,
+								disabled: true
+							})
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '指定步长' }) {
+							IBestSlider({
+								value: $value4,
+								step: 10,
+								ticks: true,
+								onChange: (val) => {
+									IBestToast.show(val.toString())
+								}
+							})
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '自定义样式' }) {
+							IBestSlider({
+								value: $value5,
+								barHeight: 8,
+								activeColor: "#ee0a24",
+								onChange: (val) => {
+									IBestToast.show(val.toString())
+								}
+							})
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '自定义按钮' }) {
+							IBestSlider({
+								value: $value6,
+								customButton: (): void => this.customBtn(),
+								onChange: (val) => {
+									IBestToast.show(val.toString())
+								}
+							})
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '垂直方向' }) {
+							Row({ space: 80 }) {
+								Row({ space: 30 }) {
+									IBestSlider({
+										value: $value7,
+										vertical: true,
+										onChange: (val) => {
+											IBestToast.show(val.toString())
+										}
+									})
+									IBestSlider({
+										value: $value7,
+										vertical: true,
+										reverse: true,
+										onChange: (val) => {
+											IBestToast.show(val.toString())
+										}
+									})
+								}
+
+								Row({ space: 30 }) {
+									IBestSlider({
+										value: $value8,
+										vertical: true,
+										onChange: (val) => {
+											IBestToast.show(val.toString())
+										}
+									})
+									IBestSlider({
+										value: $value8,
+										vertical: true,
+										reverse: true,
+										onChange: (val) => {
+											IBestToast.show(val.toString())
+										}
+									})
+								}
+							}
+							.width(CONTAINER_SIZE.FULL)
+							.height(300)
+							.justifyContent(FlexAlign.Center)
+						}
+					}
+
+					ListItem().height(50)
 				}
-				ListItem().height(50)
+				.padding({ left: SPACE.XS, right: SPACE.XS })
 			}
-			.layoutWeight(1)
-			.padding({ left: SPACE.XS, right: SPACE.XS })
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg)
 	}
 }

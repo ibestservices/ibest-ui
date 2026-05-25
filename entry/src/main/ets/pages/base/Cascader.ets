@@ -8,7 +8,8 @@ import {
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
 import { regionData } from '@ibestservices/area-data'
-import CustomNavBar from '../../components/CustomNavBar'
+import BasePage from '../../components/BasePage'
+
 @Builder
 export function CascaderBuilder(_: string, title: string){
 	CascaderPage({title})
@@ -229,164 +230,172 @@ struct CascaderPage {
 	@State fieldValue6: string = ''
 
 	build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-			List() {
-				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
-						IBestCell({
-							title: '地区',
-							value: this.fieldValue,
-							isLink: true,
-							hasBorder: false,
-							onCellClick: () => {
-								this.visible = true
-							}
-						})
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg }) {
+				List() {
+					ListItem().height(84)
+					ListItem() {
+						ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
+							IBestCell({
+								title: '地区',
+								value: this.fieldValue,
+								isLink: true,
+								hasBorder: false,
+								onCellClick: () => {
+									this.visible = true
+								}
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '自定义颜色', titlePaddingLeft: SPACE.XS }) {
-						IBestCell({
-							title: '地区',
-							value: this.fieldValue1,
-							isLink: true,
-							hasBorder: false,
-							onCellClick: () => {
-								this.visible1 = true
-							}
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '自定义颜色', titlePaddingLeft: SPACE.XS }) {
+							IBestCell({
+								title: '地区',
+								value: this.fieldValue1,
+								isLink: true,
+								hasBorder: false,
+								onCellClick: () => {
+									this.visible1 = true
+								}
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '自定义单项高度', titlePaddingLeft: SPACE.XS }) {
-						IBestCell({
-							title: '地区',
-							value: this.fieldValue2,
-							isLink: true,
-							hasBorder: false,
-							onCellClick: () => {
-								this.visible2 = true
-							}
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '自定义单项高度', titlePaddingLeft: SPACE.XS }) {
+							IBestCell({
+								title: '地区',
+								value: this.fieldValue2,
+								isLink: true,
+								hasBorder: false,
+								onCellClick: () => {
+									this.visible2 = true
+								}
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '选择任意一级', titlePaddingLeft: SPACE.XS }) {
-						IBestCell({
-							title: '地区',
-							value: this.fieldValue3,
-							isLink: true,
-							hasBorder: false,
-							onCellClick: () => {
-								this.visible3 = true
-							}
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '选择任意一级', titlePaddingLeft: SPACE.XS }) {
+							IBestCell({
+								title: '地区',
+								value: this.fieldValue3,
+								isLink: true,
+								hasBorder: false,
+								onCellClick: () => {
+									this.visible3 = true
+								}
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '异步加载选项', titlePaddingLeft: SPACE.XS }) {
-						IBestCell({
-							title: '地区',
-							value: this.fieldValue4,
-							isLink: true,
-							hasBorder: false,
-							onCellClick: () => {
-								this.visible4 = true
-							}
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '异步加载选项', titlePaddingLeft: SPACE.XS }) {
+							IBestCell({
+								title: '地区',
+								value: this.fieldValue4,
+								isLink: true,
+								hasBorder: false,
+								onCellClick: () => {
+									this.visible4 = true
+								}
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '禁用选项', titlePaddingLeft: SPACE.XS }) {
-						IBestCell({
-							title: '地区',
-							value: this.fieldValue5,
-							isLink: true,
-							hasBorder: false,
-							onCellClick: () => {
-								this.visible5 = true
-							}
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '禁用选项', titlePaddingLeft: SPACE.XS }) {
+							IBestCell({
+								title: '地区',
+								value: this.fieldValue5,
+								isLink: true,
+								hasBorder: false,
+								onCellClick: () => {
+									this.visible5 = true
+								}
+							})
+						}
 					}
-				}
-				ListItem(){
-					ComponentShowContainer({ title: '平铺展示', titlePaddingLeft: SPACE.XS }) {
-						Text("当前选择:" + this.fieldValue6).margin({bottom: SPACE.SM})
-						IBestCascaderContent({
-							value: $selectValue6,
-							options: regionData,
-							onChange: (value: string | number, selectedOptions: IBestCascaderOption[]) => {
-								this.fieldValue6 = selectedOptions.map(item => item.text).join(',')
-							}
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '平铺展示', titlePaddingLeft: SPACE.XS }) {
+							Text("当前选择:" + this.fieldValue6).margin({ bottom: SPACE.SM })
+							IBestCascaderContent({
+								value: $selectValue6,
+								options: regionData,
+								onChange: (value: string | number, selectedOptions: IBestCascaderOption[]) => {
+									this.fieldValue6 = selectedOptions.map(item => item.text).join(',')
+								}
+							})
+						}
 					}
+
+					ListItem().height(50)
 				}
-				ListItem().height(50)
+				.layoutWeight(1)
+				.padding({ left: SPACE.SM, right: SPACE.SM })
+
+				// 基础用法
+				IBestCascader({
+					visible: $visible,
+					options: regionData,
+					value: $selectValue,
+					onConfirm: (value: IBestCascaderOption[]) => {
+						this.fieldValue = value.map(item => item.text).join(',')
+					}
+				})
+				// 自定义颜色
+				IBestCascader({
+					visible: $visible1,
+					options: regionData,
+					activeColor: '#ee0a24',
+					value: $selectValue1,
+					onConfirm: (value: IBestCascaderOption[]) => {
+						this.fieldValue1 = value.map(item => item.text).join(',')
+					}
+				})
+				// 自定义高度
+				IBestCascader({
+					visible: $visible2,
+					options: regionData,
+					value: $selectValue2,
+					itemHeight: 50,
+					onConfirm: (value: IBestCascaderOption[]) => {
+						this.fieldValue2 = value.map(item => item.text).join(',')
+					}
+				})
+				// 选择任意一级
+				IBestCascader({
+					visible: $visible3,
+					options: this.data,
+					value: $selectValue3,
+					selectAnyLevel: true,
+					onConfirm: (value: IBestCascaderOption[]) => {
+						this.fieldValue3 = value.map(item => item.text).join(',')
+					}
+				})
+				// 异步加载
+				IBestCascader({
+					visible: $visible4,
+					options: this.data1,
+					value: $selectValue4,
+					lazy: true,
+					lazyLoad: this.lazyLoad,
+					onConfirm: (value: IBestCascaderOption[]) => {
+						this.fieldValue4 = value.map(item => item.text).join(',')
+					}
+				})
+				// 禁用选项
+				IBestCascader({
+					visible: $visible5,
+					options: this.data2,
+					value: $selectValue5,
+					onConfirm: (value: IBestCascaderOption[]) => {
+						this.fieldValue5 = value.map(item => item.text).join(',')
+					}
+				})
 			}
-			.layoutWeight(1)
-			.padding({ left: SPACE.SM, right: SPACE.SM })
-			// 基础用法
-			IBestCascader({
-				visible: $visible,
-				options: regionData,
-				value: $selectValue,
-				onConfirm: (value: IBestCascaderOption[]) => {
-					this.fieldValue = value.map(item => item.text).join(',')
-				}
-			})
-			// 自定义颜色
-			IBestCascader({
-				visible: $visible1,
-				options: regionData,
-				activeColor: '#ee0a24',
-				value: $selectValue1,
-				onConfirm: (value: IBestCascaderOption[]) => {
-					this.fieldValue1 = value.map(item => item.text).join(',')
-				}
-			})
-			// 自定义高度
-			IBestCascader({
-				visible: $visible2,
-				options: regionData,
-				value: $selectValue2,
-				itemHeight: 50,
-				onConfirm: (value: IBestCascaderOption[]) => {
-					this.fieldValue2 = value.map(item => item.text).join(',')
-				}
-			})
-			// 选择任意一级
-			IBestCascader({
-				visible: $visible3,
-				options: this.data,
-				value: $selectValue3,
-				selectAnyLevel: true,
-				onConfirm: (value: IBestCascaderOption[]) => {
-					this.fieldValue3 = value.map(item => item.text).join(',')
-				}
-			})
-			// 异步加载
-			IBestCascader({
-				visible: $visible4,
-				options: this.data1,
-				value: $selectValue4,
-				lazy: true,
-				lazyLoad: this.lazyLoad,
-				onConfirm: (value: IBestCascaderOption[]) => {
-					this.fieldValue4 = value.map(item => item.text).join(',')
-				}
-			})
-			// 禁用选项
-			IBestCascader({
-				visible: $visible5,
-				options: this.data2,
-				value: $selectValue5,
-				onConfirm: (value: IBestCascaderOption[]) => {
-					this.fieldValue5 = value.map(item => item.text).join(',')
-				}
-			})
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg)
 	}
 }

@@ -3,10 +3,11 @@ import RouterUtil from '../utils/routerUtil'
 @Component
 export default struct CustomNavBar {
 	@Prop title: ResourceStr = ""
+	@Prop isShowStatusBar: boolean = true
 	build() {
 		IBestNavBar({
 			title: this.title,
-			isShowStatusBar: true,
+			isShowStatusBar: this.isShowStatusBar,
 			onLeftClick: () => {
 				RouterUtil.pop()
 			}

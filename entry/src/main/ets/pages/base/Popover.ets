@@ -8,7 +8,7 @@ import {
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import { LengthMetrics } from '@kit.ArkUI';
-import CustomNavBar from '../../components/CustomNavBar';
+import BasePage from '../../components/BasePage';
 
 @Builder
 export function PopoverBuilder(_: string, title: string){
@@ -139,153 +139,165 @@ struct PopoverPage {
     }
 
     build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-            List() {
-                ListItem() {
-                    ComponentShowContainer({ title: '基础用法', space: SPACE.MD }) {
-                        Row({space: SPACE.MD}){
-                            IBestPopover({
-                                actions: this.actions,
-                                triggerBuilder: (): void => this.triggerBuilder("button", "基础用法"),
-                                onSelect: (action: IBestPopoverAction, index: number) => {
-                                    IBestToast.show(action.text)
-                                }
-                            })
-                            IBestPopover({
-                                actions: this.actions,
-                                triggerBuilder: (): void => this.triggerBuilder("text", "文字触发")
-                            })
-                            IBestPopover({
-                                actions: this.actions,
-                                triggerBuilder: (): void => this.triggerBuilder("img")
-                            })
-                        }
-                        IBestPopover({
-                            actions: this.actions,
-                            popoverWidth: CONTAINER_SIZE.FULL,
-                            triggerBuilder: (): void => this.triggerBuilder("input", "输入框触发"),
-                            onSelect: (action: IBestPopoverAction, index: number) => {
-                                this.textValue = action.text
+        Column(){
+            BasePage({ title: this.title, bgColor: modeColor.bg }) {
+                List() {
+                    ListItem().height(84)
+                    ListItem() {
+                        ComponentShowContainer({ title: '基础用法', space: SPACE.MD }) {
+                            Row({ space: SPACE.MD }) {
+                                IBestPopover({
+                                    actions: this.actions,
+                                    triggerBuilder: (): void => this.triggerBuilder("button", "基础用法"),
+                                    onSelect: (action: IBestPopoverAction, index: number) => {
+                                        IBestToast.show(action.text)
+                                    }
+                                })
+                                IBestPopover({
+                                    actions: this.actions,
+                                    triggerBuilder: (): void => this.triggerBuilder("text", "文字触发")
+                                })
+                                IBestPopover({
+                                    actions: this.actions,
+                                    triggerBuilder: (): void => this.triggerBuilder("img")
+                                })
                             }
-                        })
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: '弹出位置' }) {
-                        Row({space: SPACE.MD}){
-                            IBestPopover({
-                                actions: this.actions1,
-                                placement: Placement.Right,
-                                triggerBuilder: (): void => this.triggerBuilder("button", "右侧")
-                            })
-                            IBestPopover({
-                                actions: this.actions1,
-                                placement: Placement.TopLeft,
-                                triggerBuilder: (): void => this.triggerBuilder("button", "上左侧")
-                            })
-                            IBestPopover({
-                                actions: this.actions1,
-                                placement: Placement.TopRight,
-                                triggerBuilder: (): void => this.triggerBuilder("button", "上右侧")
-                            })
-                            IBestPopover({
-                                actions: this.actions1,
-                                placement: Placement.Left,
-                                triggerBuilder: (): void => this.triggerBuilder("button", "左侧")
-                            })
-                        }
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: '选项配置' }) {
-                        Row({space: SPACE.MD}){
-                            IBestPopover({
-                                actions: this.actions2,
-                                triggerBuilder: (): void => this.triggerBuilder("button", "展示图标")
-                            })
-                            IBestPopover({
-                                actions: this.actions3,
-                                triggerBuilder: (): void => this.triggerBuilder("button", "选项禁用")
-                            })
-                        }
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: '自定义样式' }) {
-                        Flex({wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(14), cross: LengthMetrics.vp(14)}}){
+
                             IBestPopover({
                                 actions: this.actions,
-                                showArrow: false,
-                                triggerBuilder: (): void => this.triggerBuilder("button", "隐藏箭头")
-                            })
-                            IBestPopover({
-                                actions: this.actions,
-                                space: 12,
-                                triggerBuilder: (): void => this.triggerBuilder("button", "间距")
-                            })
-                            IBestPopover({
-                                actions: this.actions,
-                                radius: 16,
-                                triggerBuilder: (): void => this.triggerBuilder("button", "圆角")
-                            })
-                            IBestPopover({
-                                actions: this.actions,
-                                bgColor: '#4a4a4a',
-                                textColor: '#fff',
-                                dividerColor: "#646566",
-                                triggerBuilder: (): void => this.triggerBuilder("button", "背景色")
-                            })
-                            IBestPopover({
-                                actions: this.actions,
-                                popoverWidth: 200,
-                                triggerBuilder: (): void => this.triggerBuilder("button", "宽度")
-                            })
-                        }
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: '自定义内容' }) {
-                        Row({space: SPACE.MD}){
-                            IBestButton({
-                                type: "primary",
-                                text: "打开popover",
-                                onBtnClick: () => {
-                                    this.controller.open()
+                                popoverWidth: CONTAINER_SIZE.FULL,
+                                triggerBuilder: (): void => this.triggerBuilder("input", "输入框触发"),
+                                onSelect: (action: IBestPopoverAction, index: number) => {
+                                    this.textValue = action.text
                                 }
                             })
-                            IBestPopover({
-                                controller: this.controller,
-                                actions: this.actions,
-                                triggerBuilder: (): void => this.triggerBuilder("button", "自定义内容"),
-                                popoverContentBuilder: (): void => this.popoverContent()
-                            })
                         }
                     }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: '自定义高度' }) {
-                        Flex({wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(14), cross: LengthMetrics.vp(14)}}){
-                            IBestPopover({
-                                actions: this.actions4,
-                                fixHeight: 200,
-                                triggerBuilder: (): void => this.triggerBuilder("button", "固定高度")
-                            })
-                            IBestPopover({
-                                actions: this.actions4,
-                                maxHeight: 300,
-                                scrollBarState: BarState.Off,
-                                triggerBuilder: (): void => this.triggerBuilder("button", "最大高度")
-                            })
+
+                    ListItem() {
+                        ComponentShowContainer({ title: '弹出位置' }) {
+                            Row({ space: SPACE.MD }) {
+                                IBestPopover({
+                                    actions: this.actions1,
+                                    placement: Placement.Right,
+                                    triggerBuilder: (): void => this.triggerBuilder("button", "右侧")
+                                })
+                                IBestPopover({
+                                    actions: this.actions1,
+                                    placement: Placement.TopLeft,
+                                    triggerBuilder: (): void => this.triggerBuilder("button", "上左侧")
+                                })
+                                IBestPopover({
+                                    actions: this.actions1,
+                                    placement: Placement.TopRight,
+                                    triggerBuilder: (): void => this.triggerBuilder("button", "上右侧")
+                                })
+                                IBestPopover({
+                                    actions: this.actions1,
+                                    placement: Placement.Left,
+                                    triggerBuilder: (): void => this.triggerBuilder("button", "左侧")
+                                })
+                            }
                         }
                     }
+
+                    ListItem() {
+                        ComponentShowContainer({ title: '选项配置' }) {
+                            Row({ space: SPACE.MD }) {
+                                IBestPopover({
+                                    actions: this.actions2,
+                                    triggerBuilder: (): void => this.triggerBuilder("button", "展示图标")
+                                })
+                                IBestPopover({
+                                    actions: this.actions3,
+                                    triggerBuilder: (): void => this.triggerBuilder("button", "选项禁用")
+                                })
+                            }
+                        }
+                    }
+
+                    ListItem() {
+                        ComponentShowContainer({ title: '自定义样式' }) {
+                            Flex({
+                                wrap: FlexWrap.Wrap,
+                                space: { main: LengthMetrics.vp(14), cross: LengthMetrics.vp(14) }
+                            }) {
+                                IBestPopover({
+                                    actions: this.actions,
+                                    showArrow: false,
+                                    triggerBuilder: (): void => this.triggerBuilder("button", "隐藏箭头")
+                                })
+                                IBestPopover({
+                                    actions: this.actions,
+                                    space: 12,
+                                    triggerBuilder: (): void => this.triggerBuilder("button", "间距")
+                                })
+                                IBestPopover({
+                                    actions: this.actions,
+                                    radius: 16,
+                                    triggerBuilder: (): void => this.triggerBuilder("button", "圆角")
+                                })
+                                IBestPopover({
+                                    actions: this.actions,
+                                    bgColor: '#4a4a4a',
+                                    textColor: '#fff',
+                                    dividerColor: "#646566",
+                                    triggerBuilder: (): void => this.triggerBuilder("button", "背景色")
+                                })
+                                IBestPopover({
+                                    actions: this.actions,
+                                    popoverWidth: 200,
+                                    triggerBuilder: (): void => this.triggerBuilder("button", "宽度")
+                                })
+                            }
+                        }
+                    }
+
+                    ListItem() {
+                        ComponentShowContainer({ title: '自定义内容' }) {
+                            Row({ space: SPACE.MD }) {
+                                IBestButton({
+                                    type: "primary",
+                                    text: "打开popover",
+                                    onBtnClick: () => {
+                                        this.controller.open()
+                                    }
+                                })
+                                IBestPopover({
+                                    controller: this.controller,
+                                    actions: this.actions,
+                                    triggerBuilder: (): void => this.triggerBuilder("button", "自定义内容"),
+                                    popoverContentBuilder: (): void => this.popoverContent()
+                                })
+                            }
+                        }
+                    }
+
+                    ListItem() {
+                        ComponentShowContainer({ title: '自定义高度' }) {
+                            Flex({
+                                wrap: FlexWrap.Wrap,
+                                space: { main: LengthMetrics.vp(14), cross: LengthMetrics.vp(14) }
+                            }) {
+                                IBestPopover({
+                                    actions: this.actions4,
+                                    fixHeight: 200,
+                                    triggerBuilder: (): void => this.triggerBuilder("button", "固定高度")
+                                })
+                                IBestPopover({
+                                    actions: this.actions4,
+                                    maxHeight: 300,
+                                    scrollBarState: BarState.Off,
+                                    triggerBuilder: (): void => this.triggerBuilder("button", "最大高度")
+                                })
+                            }
+                        }
+                    }
+
+                    ListItem().height(50)
                 }
-				ListItem().height(50)
+                .padding({ left: SPACE.SM, right: SPACE.SM })
             }
-            .layoutWeight(1)
-            .padding({ left: SPACE.SM, right: SPACE.SM })
         }
-        .hideTitleBar(true)
-        .backgroundColor(modeColor.bg)
     }
 }

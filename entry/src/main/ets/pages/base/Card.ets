@@ -1,7 +1,7 @@
 import { IBestCard, IBestToast } from '@ibestservices/ibest-ui'
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle'
+import BasePage from '../../components/BasePage'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
-import CustomNavBar from '../../components/CustomNavBar'
 
 @Builder
 export function CardBuilder(_: string, title: string){
@@ -24,46 +24,48 @@ struct CardPage {
     }
 
     build() {
-        NavDestination() {
-            CustomNavBar({title: this.title})
-            List() {
-                ListItem() {
-                    ComponentShowContainer({ title: '基础用法' }){
-                        IBestCard(){
-                            this.cardContent()
-                        }
-                    }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: '显示标题' }){
-                        IBestCard({
-                            title: '标题',
-                            leftIcon: $r('app.media.app_icon'),
-                            value: "内容",
-                            titleClickable: true,
-                            onTitleClick: () => {
-                                IBestToast.show('点击了标题')
+        Column(){
+            BasePage({ title: this.title, bgColor: modeColor.bg2 }) {
+                List() {
+                    ListItem().height(84)
+                    ListItem() {
+                        ComponentShowContainer({ title: '基础用法' }) {
+                            IBestCard() {
+                                this.cardContent()
                             }
-                        }){
-                            this.cardContent()
                         }
                     }
-                }
-                ListItem() {
-                    ComponentShowContainer({ title: '背景图片' }){
-                        IBestCard({
-                            bgImage: "https://img.shetu66.com/2023/08/01/1690856871895889.png"
-                        }){
-                            this.cardContent()
+
+                    ListItem() {
+                        ComponentShowContainer({ title: '显示标题' }) {
+                            IBestCard({
+                                title: '标题',
+                                leftIcon: $r('app.media.app_icon'),
+                                value: "内容",
+                                titleClickable: true,
+                                onTitleClick: () => {
+                                    IBestToast.show('点击了标题')
+                                }
+                            }) {
+                                this.cardContent()
+                            }
                         }
                     }
+
+                    ListItem() {
+                        ComponentShowContainer({ title: '背景图片' }) {
+                            IBestCard({
+                                bgImage: "https://img.shetu66.com/2023/08/01/1690856871895889.png"
+                            }) {
+                                this.cardContent()
+                            }
+                        }
+                    }
+
+                    ListItem().height(50)
                 }
-                ListItem().height(50)
+                .padding({ left: SPACE.SM, right: SPACE.SM })
             }
-            .layoutWeight(1)
-            .padding({ left: SPACE.SM, right: SPACE.SM })
         }
-        .hideTitleBar(true)
-        .backgroundColor(modeColor.bg2)
     }
 }

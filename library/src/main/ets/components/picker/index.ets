@@ -24,7 +24,7 @@ import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type';
 
 const MOMENTUM_TIME = 300
 const MOMENTUM_DISTANCE = 30
-const swipeDuration = 300
+const swipeDuration = 150
 
 @Component
 export struct IBestPicker{
@@ -40,11 +40,11 @@ export struct IBestPicker{
 	/**
 	 * 当前选中的值
 	 */
-	@Link value: IBestStringNumber[]
+	@Link @Watch("initOffset") value: IBestStringNumber[]
 	/**
 	 * 选项列表
 	 */
-	@Prop @Watch("init") options: IBestPickerOption[] | IBestPickerOption[][] = []
+	@Prop @Watch("init") @Watch("initOffset") options: IBestPickerOption[] | IBestPickerOption[][] = []
 	/**
 	 * 标题
 	 */
@@ -425,7 +425,8 @@ export struct IBestPicker{
 	}
 	// 初始化多列位置
 	initOffset(){
-		if(this.value.length) {
+		const value: IBestStringNumber[] = this.value.length ? this.value : Array(this.options.length).fill(0)
+		if(value.length) {
 			this.isReady = false
 			this.columnType = this.getColumnType()
 			if (this.columnType == "cascade") {
@@ -433,10 +434,10 @@ export struct IBestPicker{
 			} else {
 				let options = this.options as IBestPickerOption[][]
 				if (!this.offsetList.length) {
-					this.offsetList = Array(this.value.length).fill(0)
+					this.offsetList = Array(value.length).fill(0)
 				}
 				options.forEach((item, index) => {
-					let i = item.findIndex(e => e.value == this.value[index])
+					let i = item.findIndex(e => e.value == value[index])
 					this.updateOffsetByIndex(index, i > -1 ? i : 0)
 				})
 			}

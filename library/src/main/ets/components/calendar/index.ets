@@ -402,6 +402,7 @@ export struct IBestCalendar{
             if(typeof dateList === 'string'){
                 dateList = [dateList]
             }
+            dateList = dateList.filter(e => e)
             if(dateList.some(e => !dateUtils(e).isValid())){
                 return
             }

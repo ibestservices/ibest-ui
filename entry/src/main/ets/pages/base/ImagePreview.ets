@@ -1,7 +1,7 @@
 import ComponentShowContainer from '../../components/ComponentShowContainer';
 import { IBestCell, IBestCellGroup, IBestImagePreview, IBestToast } from '@ibestservices/ibest-ui';
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
-import CustomNavBar from '../../components/CustomNavBar';
+import BasePage from '../../components/BasePage';
 
 @Builder
 export function ImagePreviewBuilder(_: string, title: string){
@@ -22,86 +22,86 @@ struct ImagePreviewPage {
 	]
 
 	build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-			List() {
-				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
-						IBestCellGroup({ inset: true }) {
-							IBestCell({
-								title: '预览图片',
-								isLink: true,
-								hasBorder: false,
-								onCellClick: () => {
-									IBestImagePreview.show(this.imageList)
-								}
-							})
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg }) {
+				List() {
+					ListItem().height(84)
+					ListItem() {
+						ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.MD }) {
+							IBestCellGroup({ inset: true }) {
+								IBestCell({
+									title: '预览图片',
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										IBestImagePreview.show(this.imageList)
+									}
+								})
+							}
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '传入配置项', titlePaddingLeft: SPACE.MD }) {
-						IBestCellGroup({ inset: true }) {
-							IBestCell({
-								title: '自定义遮罩颜色',
-								isLink: true,
-								onCellClick: () => {
-									IBestImagePreview.show(this.imageList, {
-										maskColor: '#fff',
-										indexFontColor: "#000"
-									})
-								}
-							})
-							IBestCell({
-								title: '指定初始索引',
-								isLink: true,
-								onCellClick: () => {
-									IBestImagePreview.show(this.imageList, {
-										startIndex: 1
-									})
-								}
-							})
-							IBestCell({
-								title: '指定页码位置',
-								isLink: true,
-								onCellClick: () => {
-									IBestImagePreview.show(this.imageList, {
-										indexPosition: 'top'
-									})
-								}
-							})
-							IBestCell({
-								title: '禁止循环',
-								isLink: true,
-								onCellClick: () => {
-									IBestImagePreview.show(this.imageList, {
-										loop: false
-									})
-								}
-							})
-							IBestCell({
-								title: '监听事件',
-								isLink: true,
-								hasBorder: false,
-								onCellClick: () => {
-									IBestImagePreview.show(this.imageList, {
-										closeOnClickImage: false,
-										onImgClick: (index) => {
-											IBestToast.show('点击了第' + index + '张图片')
-										},
-										onImgLongPress: (index) => {
-											IBestToast.show('长按了第' + index + '张图片')
-										}
-									})
-								}
-							})
+
+					ListItem() {
+						ComponentShowContainer({ title: '传入配置项', titlePaddingLeft: SPACE.MD }) {
+							IBestCellGroup({ inset: true }) {
+								IBestCell({
+									title: '自定义遮罩颜色',
+									isLink: true,
+									onCellClick: () => {
+										IBestImagePreview.show(this.imageList, {
+											maskColor: '#fff',
+											indexFontColor: "#000"
+										})
+									}
+								})
+								IBestCell({
+									title: '指定初始索引',
+									isLink: true,
+									onCellClick: () => {
+										IBestImagePreview.show(this.imageList, {
+											startIndex: 1
+										})
+									}
+								})
+								IBestCell({
+									title: '指定页码位置',
+									isLink: true,
+									onCellClick: () => {
+										IBestImagePreview.show(this.imageList, {
+											indexPosition: 'top'
+										})
+									}
+								})
+								IBestCell({
+									title: '禁止循环',
+									isLink: true,
+									onCellClick: () => {
+										IBestImagePreview.show(this.imageList, {
+											loop: false
+										})
+									}
+								})
+								IBestCell({
+									title: '监听事件',
+									isLink: true,
+									hasBorder: false,
+									onCellClick: () => {
+										IBestImagePreview.show(this.imageList, {
+											closeOnClickImage: false,
+											onImgClick: (index) => {
+												IBestToast.show('点击了第' + index + '张图片')
+											},
+											onImgLongPress: (index) => {
+												IBestToast.show('长按了第' + index + '张图片')
+											}
+										})
+									}
+								})
+							}
 						}
 					}
 				}
 			}
-			.layoutWeight(1)
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg)
 	}
 }

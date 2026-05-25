@@ -10,10 +10,10 @@ import {
 	IBestToast
 } from '@ibestservices/ibest-ui';
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
-import CustomNavBar from '../../components/CustomNavBar';
 import { getRandomColor } from '../../utils/utils';
 import { pasteboard } from '@kit.BasicServicesKit';
 import { regionData } from "@ibestservices/area-data"
+import BasePage from '../../components/BasePage';
 
 @Builder
 export function ContactAddressBuilder(_: string, title: string) {
@@ -83,151 +83,156 @@ struct ContactAddressPage {
 		})
 	}
 	build() {
-		NavDestination() {
-			CustomNavBar({ title: this.title })
-			List() {
-				ListItem() {
-					IBestContactAddress({
-						regionData,
-						controller: this.controller,
-						showIdentifyInputBox: this.showInputBox,
-						labelColor: this.labelColor,
-						inputFontSize: this.inputFontSize,
-						hasBorder: this.hasBorder,
-						identifyPlaceholder: this.identifyPlaceholder,
-						identifyTagText: this.identifyTagText,
-						identifyTagBgColor: this.identifyTagBgColor
-					})
-				}
-				ListItem().height(15)
-				ListItem() {
-					IBestDivider({ text: "操作表单", hairline: false, lineColor: Color.Red })
-				}
-				ListItem().height(10)
-				ListItem() {
-					Row({ space: 5 }) {
-						IBestButton({
-							text: "验证表单",
-							type: "primary",
-							buttonSize: "small",
-							onBtnClick: () => {
-								this.controller.validateForm().then(res => {
-									if (res.valid) {
-										IBestToast.show("验证成功")
-									} else {
-										let labels: string[] = res.fields.map(item => item.label)
-										IBestToast.show({
-											message: `${labels.join(',')}验证失败`
-										})
-									}
-								})
-							}
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg }) {
+				List() {
+					ListItem().height(84)
+					ListItem() {
+						IBestContactAddress({
+							regionData,
+							controller: this.controller,
+							showIdentifyInputBox: this.showInputBox,
+							labelColor: this.labelColor,
+							inputFontSize: this.inputFontSize,
+							hasBorder: this.hasBorder,
+							identifyPlaceholder: this.identifyPlaceholder,
+							identifyTagText: this.identifyTagText,
+							identifyTagBgColor: this.identifyTagBgColor
 						})
-						IBestButton({
-							text: "获取数据",
-							type: "primary",
-							buttonSize: "small",
-							onBtnClick: () => {
-								IBestDialogUtil.open({
-									message: JSON.stringify(this.controller.getFormValues(), null, 2),
-									messageTextAlign: "left"
-								})
-							}
-						})
-						IBestButton({
-							text: "清空表单",
-							type: "primary",
-							buttonSize: "small",
-							onBtnClick: () => {
-								this.controller.cleanFormValues()
-							}
-						})
-						IBestButton({
-							text: "随机数据",
-							type: "primary",
-							buttonSize: "small",
-							onBtnClick: () => {
-								let getRandomItem: (arr: string[]) => string = (arr: string[]) => {
-									const randomIndex = Math.floor(Math.random() * arr.length)
-									return arr[randomIndex]
+					}
+
+					ListItem().height(15)
+					ListItem() {
+						IBestDivider({ text: "操作表单", hairline: false, lineColor: Color.Red })
+					}
+
+					ListItem().height(10)
+					ListItem() {
+						Row({ space: 5 }) {
+							IBestButton({
+								text: "验证表单",
+								type: "primary",
+								buttonSize: "small",
+								onBtnClick: () => {
+									this.controller.validateForm().then(res => {
+										if (res.valid) {
+											IBestToast.show("验证成功")
+										} else {
+											let labels: string[] = res.fields.map(item => item.label)
+											IBestToast.show({
+												message: `${labels.join(',')}验证失败`
+											})
+										}
+									})
 								}
-								const text = getRandomItem(this.testList)
-								IBestDialogUtil.open({
-									message: text,
-									messageTextAlign: "left",
-									confirmButtonText: "复制",
-									onConfirm: () => {
-										const pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, text)
-										const systemPasteboard = pasteboard.getSystemPasteboard()
-										systemPasteboard.setData(pasteData)
-										IBestToast.show("复制成功")
+							})
+							IBestButton({
+								text: "获取数据",
+								type: "primary",
+								buttonSize: "small",
+								onBtnClick: () => {
+									IBestDialogUtil.open({
+										message: JSON.stringify(this.controller.getFormValues(), null, 2),
+										messageTextAlign: "left"
+									})
+								}
+							})
+							IBestButton({
+								text: "清空表单",
+								type: "primary",
+								buttonSize: "small",
+								onBtnClick: () => {
+									this.controller.cleanFormValues()
+								}
+							})
+							IBestButton({
+								text: "随机数据",
+								type: "primary",
+								buttonSize: "small",
+								onBtnClick: () => {
+									let getRandomItem: (arr: string[]) => string = (arr: string[]) => {
+										const randomIndex = Math.floor(Math.random() * arr.length)
+										return arr[randomIndex]
 									}
-								})
-							}
-						})
+									const text = getRandomItem(this.testList)
+									IBestDialogUtil.open({
+										message: text,
+										messageTextAlign: "left",
+										confirmButtonText: "复制",
+										onConfirm: () => {
+											const pasteData =
+												pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, text)
+											const systemPasteboard = pasteboard.getSystemPasteboard()
+											systemPasteboard.setData(pasteData)
+											IBestToast.show("复制成功")
+										}
+									})
+								}
+							})
+						}
 					}
-				}
-				ListItem().height(10)
-				ListItem() {
-					IBestDivider({ text: "测试属性", hairline: false, lineColor: Color.Red })
-				}
-				ListItem().height(10)
-				ListItem() {
-					Column(){
-						IBestField({
-							value: this.showInputBox,
-							label: "识别输入框",
-							labelWidth: this.labelWidth,
-							customRightContent: () => this.showInputBoxBuilder()
-						})
-						IBestField({
-							value: this.identifyPlaceholder,
-							label: "识别框占位提示",
-							labelWidth: this.labelWidth,
-							autosize: true,
-							disabled: !this.showInputBox
-						})
-						IBestField({
-							value: this.identifyTagText,
-							label: "识别框顶部提示",
-							labelWidth: this.labelWidth,
-							autosize: true,
-							disabled: !this.showInputBox
-						})
-						IBestField({
-							value: this.identifyTagBgColor,
-							label: "识别框主题颜色",
-							labelWidth: this.labelWidth,
-							buttonBuilder: () => this.tagColorChangeBuilder(),
-							disabled: !this.showInputBox,
-						})
-						IBestField({
-							value: this.labelColor,
-							label: "左侧字体颜色",
-							labelWidth: this.labelWidth,
-							buttonBuilder: () => this.labelColorChangeBuilder()
-						})
-						IBestField({
-							value: this.inputFontSize,
-							label: "输入框文字大小",
-							labelWidth: this.labelWidth,
-							customRightContent: () => this.stepperBuilder()
-						})
-						IBestField({
-							value: this.hasBorder,
-							label: "表单分隔线",
-							labelWidth: this.labelWidth,
-							customRightContent: () => this.showHasBorderBuilder(),
-							hasBorder: false
-						})
+
+					ListItem().height(10)
+					ListItem() {
+						IBestDivider({ text: "测试属性", hairline: false, lineColor: Color.Red })
 					}
+
+					ListItem().height(10)
+					ListItem() {
+						Column() {
+							IBestField({
+								value: this.showInputBox,
+								label: "识别输入框",
+								labelWidth: this.labelWidth,
+								customRightContent: () => this.showInputBoxBuilder()
+							})
+							IBestField({
+								value: this.identifyPlaceholder,
+								label: "识别框占位提示",
+								labelWidth: this.labelWidth,
+								autosize: true,
+								disabled: !this.showInputBox
+							})
+							IBestField({
+								value: this.identifyTagText,
+								label: "识别框顶部提示",
+								labelWidth: this.labelWidth,
+								autosize: true,
+								disabled: !this.showInputBox
+							})
+							IBestField({
+								value: this.identifyTagBgColor,
+								label: "识别框主题颜色",
+								labelWidth: this.labelWidth,
+								buttonBuilder: () => this.tagColorChangeBuilder(),
+								disabled: !this.showInputBox,
+							})
+							IBestField({
+								value: this.labelColor,
+								label: "左侧字体颜色",
+								labelWidth: this.labelWidth,
+								buttonBuilder: () => this.labelColorChangeBuilder()
+							})
+							IBestField({
+								value: this.inputFontSize,
+								label: "输入框文字大小",
+								labelWidth: this.labelWidth,
+								customRightContent: () => this.stepperBuilder()
+							})
+							IBestField({
+								value: this.hasBorder,
+								label: "表单分隔线",
+								labelWidth: this.labelWidth,
+								customRightContent: () => this.showHasBorderBuilder(),
+								hasBorder: false
+							})
+						}
+					}
+
+					ListItem().height(50)
 				}
-				ListItem().height(50)
+				.padding(SPACE.MD)
 			}
-			.layoutWeight(1)
-			.padding(SPACE.MD)
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg)
 	}
 }

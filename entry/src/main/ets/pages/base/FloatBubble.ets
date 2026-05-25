@@ -12,7 +12,7 @@ import { IBestButton, IBestCheckbox,
 } from '@ibestservices/ibest-ui'
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
-import CustomNavBar from '../../components/CustomNavBar'
+import { hdsMaterial, HdsNavDestination, ScrollEffectType } from '@kit.UIDesignKit'
 
 @Builder
 export function FloatBubbleBuilder(_: string, title: string) {
@@ -139,8 +139,8 @@ struct FloatBubblePage {
         }
     }
     build() {
-        NavDestination() {
-            CustomNavBar({ title: this.title })
+        HdsNavDestination() {
+            Row().width(CONTAINER_SIZE.FULL).height(96).backgroundColor(modeColor.bg2)
             IBestTabs({
                 tabsList: this.tabsList,
                 currentName: $curTabName,
@@ -168,8 +168,49 @@ struct FloatBubblePage {
                 this.customBubble()
             }
         }
-        .hideTitleBar(true)
         .backgroundColor(modeColor.bg)
+        .titleBar({
+            content: {
+                title: {
+                    mainTitle: this.title
+                }
+            },
+            style: {
+                scrollEffectOpts: {
+                    scrollEffectType: ScrollEffectType.IMMERSIVE_GRADIENT_BLUR
+                },
+                originalStyle: {
+                    contentStyle: {
+                        titleStyle: {
+                            mainTitleColor: "#000"
+                        },
+                        backIconStyle: {
+                            backgroundColor: "#fff",
+                            iconColor: "#000"
+                        }
+                    },
+                },
+                scrollEffectStyle: {
+                    backgroundStyle: {
+                        backgroundColor: "#99000000"
+                    },
+                    contentStyle: {
+                        titleStyle: {
+                            mainTitleColor: "#fff"
+                        },
+                        backIconStyle: {
+                            backgroundColor: $r('sys.color.comp_background_tertiary'),
+                            iconColor: "#fff"
+                        }
+                    }
+                },
+                systemMaterialEffect: {
+                    materialType: hdsMaterial.MaterialType.IMMERSIVE,
+                    materialLevel: hdsMaterial.MaterialLevel.ADAPTIVE
+                }
+            }
+        })
+        .ignoreLayoutSafeArea([LayoutSafeAreaType.SYSTEM], [LayoutSafeAreaEdge.TOP, LayoutSafeAreaEdge.BOTTOM])
         .onShown(() => {
             this.bubbleShow = true
         })

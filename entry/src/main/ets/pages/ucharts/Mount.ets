@@ -1,7 +1,7 @@
 import { CONTAINER_SIZE, modeColor, SPACE } from "../../assets/styles/BaseStyle"
 import ComponentShowContainer from "../../components/ComponentShowContainer"
-import CustomNavBar from "../../components/CustomNavBar"
 import { ChartOptions, UCharts, UChartsController } from '@ibestservices/ucharts'
+import BasePage from "../../components/BasePage"
 
 @Builder
 export function MountBuilder(_: string, title: string) {
@@ -256,87 +256,86 @@ struct MountPage {
     }
 
     build() {
-        NavDestination() {
-            CustomNavBar({ title: this.title })
-            List() {
-                ListItem() {
-                    ComponentShowContainer({ title: '圆角山峰图' }) {
-                        UCharts({
-                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
-                            controller: this.controller,
-                            onReady: () => {
-                                this.controller.updateData(this.opts)
-                            }
-                        })
+        Column(){
+            BasePage({ title: this.title, bgColor: modeColor.bg2 }) {
+                List() {
+                    ListItem().height(84)
+                    ListItem() {
+                        ComponentShowContainer({ title: '圆角山峰图' }) {
+                            UCharts({
+                                contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                                controller: this.controller,
+                                onReady: () => {
+                                    this.controller.updateData(this.opts)
+                                }
+                            })
+                        }
                     }
-                }
 
-                ListItem() {
-                    ComponentShowContainer({ title: '三角山峰图' }) {
-                        UCharts({
-                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
-                            controller: this.controller1,
-                            onReady: () => {
-                                this.controller1.updateData(this.opts1)
-                            }
-                        })
+                    ListItem() {
+                        ComponentShowContainer({ title: '三角山峰图' }) {
+                            UCharts({
+                                contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                                controller: this.controller1,
+                                onReady: () => {
+                                    this.controller1.updateData(this.opts1)
+                                }
+                            })
+                        }
                     }
-                }
 
-                ListItem() {
-                    ComponentShowContainer({ title: '正负山峰图无边渐变色' }) {
-                        UCharts({
-                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
-                            controller: this.controller2,
-                            onReady: () => {
-                                this.controller2.updateData(this.opts2)
-                            }
-                        })
+                    ListItem() {
+                        ComponentShowContainer({ title: '正负山峰图无边渐变色' }) {
+                            UCharts({
+                                contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                                controller: this.controller2,
+                                onReady: () => {
+                                    this.controller2.updateData(this.opts2)
+                                }
+                            })
+                        }
                     }
-                }
 
-                ListItem() {
-                    ComponentShowContainer({ title: '山峰图有边透明渐变+滚动条' }) {
-                        UCharts({
-                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
-                            controller: this.controller3,
-                            onReady: () => {
-                                this.controller3.updateData(this.opts3)
-                            }
-                        })
+                    ListItem() {
+                        ComponentShowContainer({ title: '山峰图有边透明渐变+滚动条' }) {
+                            UCharts({
+                                contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                                controller: this.controller3,
+                                onReady: () => {
+                                    this.controller3.updateData(this.opts3)
+                                }
+                            })
+                        }
                     }
-                }
 
-                ListItem() {
-                    ComponentShowContainer({ title: '山峰图有边渐变+标记线' }) {
-                        UCharts({
-                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
-                            controller: this.controller4,
-                            onReady: () => {
-                                this.controller4.updateData(this.opts4)
-                            }
-                        })
+                    ListItem() {
+                        ComponentShowContainer({ title: '山峰图有边渐变+标记线' }) {
+                            UCharts({
+                                contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                                controller: this.controller4,
+                                onReady: () => {
+                                    this.controller4.updateData(this.opts4)
+                                }
+                            })
+                        }
                     }
-                }
 
-                ListItem() {
-                    ComponentShowContainer({ title: '山峰图圆角渐变色柱状图' }) {
-                        UCharts({
-                            contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
-                            controller: this.controller5,
-                            onReady: () => {
-                                this.controller5.updateData(this.opts5)
-                            }
-                        })
+                    ListItem() {
+                        ComponentShowContainer({ title: '山峰图圆角渐变色柱状图' }) {
+                            UCharts({
+                                contentHeight: CONTAINER_SIZE.CHART_HEIGHT,
+                                controller: this.controller5,
+                                onReady: () => {
+                                    this.controller5.updateData(this.opts5)
+                                }
+                            })
+                        }
                     }
-                }
 
-                ListItem().height(50)
+                    ListItem().height(50)
+                }
+                .padding({ left: SPACE.SM, right: SPACE.SM })
             }
-            .layoutWeight(1)
-            .padding({ left: SPACE.SM, right: SPACE.SM })
         }
-        .hideTitleBar(true)
-        .backgroundColor(modeColor.bg2)
     }
 }

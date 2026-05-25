@@ -61,20 +61,40 @@
 			"value": "Basic Components"
 		},
 		{
+			"name": "basic_component_desc",
+			"value": "The smallest independent unit that constitutes a user interface, providing core interaction and display capabilities."
+		},
+		{
 			"name": "form_component",
 			"value": "Form Components"
+		},
+		{
+			"name": "form_component_desc",
+			"value": "Used for collecting, verifying, and editing user input information to facilitate data entry in human-machine interaction."
 		},
 		{
 			"name": "action_component",
 			"value": "Action Components"
 		},
 		{
+			"name": "action_component_desc",
+			"value": "Convey system status, operation results, or guide users to proceed with the next steps."
+		},
+		{
 			"name": "display_component",
 			"value": "Display Components"
 		},
 		{
+			"name": "display_component_desc",
+			"value": "Used to present and layout various types of information content, improving the readability and aesthetics of the interface."
+		},
+		{
 			"name": "navigation_component",
 			"value": "Navigation Components"
+		},
+		{
+			"name": "navigation_component_desc",
+			"value": "Assist users in locating and redirecting between different pages and modules of an application or website."
 		},
 		{
 			"name": "component_button",
@@ -365,24 +385,48 @@
 			"value": "CanvasDrawer"
 		},
 		{
+			"name": "component_canvasDrawer_desc",
+			"value": "Used for dynamically drawing posters, adding watermarks to images, and other scenes that require canvas."
+		},
+		{
 			"name": "component_colorPicker",
 			"value": "ColorPicker"
+		},
+		{
+			"name": "component_colorPicker_desc",
+			"value": "Used for selecting colors."
 		},
 		{
 			"name": "component_contactAddress",
 			"value": "ContactAddress"
 		},
 		{
+			"name": "component_contactAddress_desc",
+			"value": "Used to select contact address, can be pasted and recognized."
+		},
+		{
 			"name": "component_gridAlbum",
 			"value": "GridAlbum"
+		},
+		{
+			"name": "component_gridAlbum_desc",
+			"value": "Used to display images in blocks within the Nine Palaces grid."
 		},
 		{
 			"name": "component_imageCropper",
 			"value": "ImageCropper"
 		},
 		{
+			"name": "component_imageCropper_desc",
+			"value": "Used for avatar capture and image cropping."
+		},
+		{
 			"name": "component_inputTag",
 			"value": "InputTag"
+		},
+		{
+			"name": "component_inputTag_desc",
+			"value": "Used to create labels through input methods."
 		},
 		{
 			"name": "primary",

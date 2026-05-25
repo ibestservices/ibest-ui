@@ -9,8 +9,8 @@ import {
 	IBestIcon
 } from '@ibestservices/ibest-ui';
 import { CONTAINER_SIZE, modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import BasePage from '../../components/BasePage';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import CustomNavBar from '../../components/CustomNavBar';
 
 @Builder
 export function CheckboxBuilder(_: string, title: string){
@@ -68,375 +68,394 @@ struct CheckboxPage {
 		}
 	}
 	build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-			List() {
-				ListItem() {
-					ComponentShowContainer({ title: '基础用法' }) {
-						IBestCheckbox({
-							value: this.isChecked,
-							label: this.isChecked + "",
-							onChange: checked => {
-								this.isChecked = checked as boolean
-							}
-						})
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg }) {
+				List() {
+					ListItem().height(84)
+					ListItem() {
+						ComponentShowContainer({ title: '基础用法' }) {
+							IBestCheckbox({
+								value: this.isChecked,
+								label: this.isChecked + "",
+								onChange: checked => {
+									this.isChecked = checked as boolean
+								}
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '禁用状态', space: SPACE.SM }) {
-						IBestCheckbox({
-							value: false,
-							disabled: true,
-							label: '复选框'
-						})
-						IBestCheckbox({
-							value: true,
-							disabled: true,
-							label: '复选框'
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '禁用状态', space: SPACE.SM }) {
+							IBestCheckbox({
+								value: false,
+								disabled: true,
+								label: '复选框'
+							})
+							IBestCheckbox({
+								value: true,
+								disabled: true,
+								label: '复选框'
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '自定义形状' }) {
-						IBestCheckbox({
-							value: this.isChecked,
-							shape: 'square',
-							radius: 4,
-							label: '自定义形状',
-							onChange: checked => {
-								this.isChecked = checked as boolean
-							}
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '自定义形状' }) {
+							IBestCheckbox({
+								value: this.isChecked,
+								shape: 'square',
+								radius: 4,
+								label: '自定义形状',
+								onChange: checked => {
+									this.isChecked = checked as boolean
+								}
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '自定义颜色', space: SPACE.SM }) {
-						IBestCheckbox({
-							value: this.isChecked,
-							checkedColor: '#ee0a24',
-							label: '自定义颜色',
-							onChange: checked => {
-								this.isChecked = checked as boolean
-							}
-						})
-						IBestCheckbox({
-							value: this.isChecked,
-							bdColor: '#ee0a24',
-							bgColor: "#fff",
-							label: '自定义背景色',
-							onChange: checked => {
-								this.isChecked = checked as boolean
-							}
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '自定义颜色', space: SPACE.SM }) {
+							IBestCheckbox({
+								value: this.isChecked,
+								checkedColor: '#ee0a24',
+								label: '自定义颜色',
+								onChange: checked => {
+									this.isChecked = checked as boolean
+								}
+							})
+							IBestCheckbox({
+								value: this.isChecked,
+								bdColor: '#ee0a24',
+								bgColor: "#fff",
+								label: '自定义背景色',
+								onChange: checked => {
+									this.isChecked = checked as boolean
+								}
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '自定义大小' }) {
-						IBestCheckbox({
-							value: this.isChecked,
-							iconSize: 30,
-							label: '自定义大小',
-							onChange: checked => {
-								this.isChecked = checked as boolean
-							}
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '自定义大小' }) {
+							IBestCheckbox({
+								value: this.isChecked,
+								iconSize: 30,
+								label: '自定义大小',
+								onChange: checked => {
+									this.isChecked = checked as boolean
+								}
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '自定义内容', space: SPACE.SM }) {
-						IBestCheckbox({
-							value: this.isChecked,
-							iconBuilder: this.iconBuilder,
-							label: '自定义图标',
-							onChange: checked => {
-								this.isChecked = checked as boolean
-							}
-						})
-						IBestCheckbox({
-							value: this.isChecked,
-							defaultBuilder: this.labelBuilder,
-							onChange: checked => {
-								this.isChecked = checked as boolean
-							}
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '自定义内容', space: SPACE.SM }) {
+							IBestCheckbox({
+								value: this.isChecked,
+								iconBuilder: this.iconBuilder,
+								label: '自定义图标',
+								onChange: checked => {
+									this.isChecked = checked as boolean
+								}
+							})
+							IBestCheckbox({
+								value: this.isChecked,
+								defaultBuilder: this.labelBuilder,
+								onChange: checked => {
+									this.isChecked = checked as boolean
+								}
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '左侧文本' }) {
-						IBestCheckbox({
-							value: this.isChecked,
-							labelPosition: 'left',
-							label: '左侧文本',
-							onChange: checked => {
-								this.isChecked = checked as boolean
-							}
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '左侧文本' }) {
+							IBestCheckbox({
+								value: this.isChecked,
+								labelPosition: 'left',
+								label: '左侧文本',
+								onChange: checked => {
+									this.isChecked = checked as boolean
+								}
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '禁用文本点击' }) {
-						IBestCheckbox({
-							value: this.isChecked,
-							label: '复选框',
-							labelDisabled: true,
-							onChange: checked => {
-								this.isChecked = checked as boolean
-							}
-						})
+
+					ListItem() {
+						ComponentShowContainer({ title: '禁用文本点击' }) {
+							IBestCheckbox({
+								value: this.isChecked,
+								label: '复选框',
+								labelDisabled: true,
+								onChange: checked => {
+									this.isChecked = checked as boolean
+								}
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '异步切换' }) {
-						IBestCheckbox({
-							value: this.isChecked,
-							label: '复选框',
-							beforeChange: () => {
-								return new Promise((resolve, reject) => {
-									IBestDialogUtil.open({
-										title: "提示",
-										message: "确定更改状态?",
-										showCancelButton: true,
-										onConfirm: () => {
-											resolve(true)
-										},
-										onCancel: () => {
-											reject(false)
-										}
+
+					ListItem() {
+						ComponentShowContainer({ title: '异步切换' }) {
+							IBestCheckbox({
+								value: this.isChecked,
+								label: '复选框',
+								beforeChange: () => {
+									return new Promise((resolve, reject) => {
+										IBestDialogUtil.open({
+											title: "提示",
+											message: "确定更改状态?",
+											showCancelButton: true,
+											onConfirm: () => {
+												resolve(true)
+											},
+											onCancel: () => {
+												reject(false)
+											}
+										})
 									})
+								},
+								onChange: checked => {
+									this.isChecked = checked as boolean
+								}
+							})
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '其他类型', space: SPACE.SM }) {
+							IBestCheckbox({
+								value: this.isChecked1,
+								label: "string：" + this.isChecked1,
+								trueValue: "1",
+								falseValue: "2",
+								onChange: checked => {
+									this.isChecked1 = checked as string
+								}
+							})
+							IBestCheckbox({
+								value: this.isChecked2,
+								label: "number：" + this.isChecked2.toString(),
+								trueValue: 1,
+								falseValue: 0,
+								onChange: checked => {
+									this.isChecked2 = checked as number
+								}
+							})
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '复选框组', space: SPACE.SM }) {
+							Text("选中标识 " + this.activeList.join(',')).fontSize(14)
+							IBestCheckboxGroup({
+								group: this.group, activeList: $activeList, beforeChange: () => {
+									return new Promise((resolve, reject) => {
+										IBestDialogUtil.open({
+											title: "提示",
+											message: "确定更改状态?",
+											showCancelButton: true,
+											onConfirm: () => {
+												resolve(true)
+											},
+											onCancel: () => {
+												reject(false)
+											}
+										})
+									})
+								}
+							}) {
+								IBestCheckbox({
+									group: this.group,
+									label: '复选框1',
+									name: '1'
 								})
-							},
-							onChange: checked => {
-								this.isChecked = checked as boolean
+								IBestCheckbox({
+									group: this.group,
+									label: '复选框2',
+									name: '2'
+								})
 							}
-						})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '其他类型', space: SPACE.SM }) {
-						IBestCheckbox({
-							value: this.isChecked1,
-							label: "string：" + this.isChecked1,
-							trueValue: "1",
-							falseValue: "2",
-							onChange: checked => {
-								this.isChecked1 = checked as string
+
+					ListItem() {
+						ComponentShowContainer({ title: '水平排列', space: SPACE.SM }) {
+							Text("选中标识 " + this.activeList1.join(',')).fontSize(14)
+							IBestCheckboxGroup({
+								group: this.group1,
+								activeList: $activeList1,
+								placeDirection: Axis.Horizontal
+							}) {
+								IBestCheckbox({
+									group: this.group1,
+									label: '复选框1',
+									name: 1
+								})
+								IBestCheckbox({
+									group: this.group1,
+									label: '复选框2',
+									name: 2
+								})
 							}
-						})
-						IBestCheckbox({
-							value: this.isChecked2,
-							label: "number：" + this.isChecked2.toString(),
-							trueValue: 1,
-							falseValue: 0,
-							onChange: checked => {
-								this.isChecked2 = checked as number
-							}
-						})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '复选框组', space: SPACE.SM }) {
-						Text("选中标识 " + this.activeList.join(',')).fontSize(14)
-						IBestCheckboxGroup({ group: this.group, activeList: $activeList, beforeChange: () => {
-							return new Promise((resolve, reject) => {
-								IBestDialogUtil.open({
-									title: "提示",
-									message: "确定更改状态?",
-									showCancelButton: true,
-									onConfirm: () => {
-										resolve(true)
-									},
-									onCancel: () => {
-										reject(false)
+
+					ListItem() {
+						ComponentShowContainer({ title: '限制最大可选数', space: SPACE.SM }) {
+							Text("选中标识 " + this.activeList2.join(',')).fontSize(14)
+							IBestCheckboxGroup({ group: this.group2, activeList: $activeList2, max: 2 }) {
+								IBestCheckbox({
+									group: this.group2,
+									label: '复选框1',
+									name: '1'
+								})
+								IBestCheckbox({
+									group: this.group2,
+									label: '复选框2',
+									name: '2'
+								})
+								IBestCheckbox({
+									group: this.group2,
+									label: '复选框3',
+									name: '3'
+								})
+							}
+						}
+					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '全选与反选', space: SPACE.SM }) {
+							Text("选中标识 " + this.activeList3.join(',')).fontSize(14)
+							IBestCheckboxGroup({
+								group: this.group3,
+								activeList: $activeList3,
+								controller: this.controller
+							}) {
+								IBestCheckbox({
+									group: this.group3,
+									label: '复选框1',
+									name: '1'
+								})
+								IBestCheckbox({
+									group: this.group3,
+									label: '复选框2',
+									name: '2'
+								})
+								IBestCheckbox({
+									group: this.group3,
+									label: '复选框3',
+									name: '3'
+								})
+							}
+
+							Row({ space: SPACE.SM }) {
+								IBestButton({
+									text: '全选',
+									type: 'primary',
+									onBtnClick: () => {
+										this.controller.toggleAll(true)
 									}
 								})
-							})
-						}}) {
-							IBestCheckbox({
-								group: this.group,
-								label: '复选框1',
-								name: '1'
-							})
-							IBestCheckbox({
-								group: this.group,
-								label: '复选框2',
-								name: '2'
-							})
-						}
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '水平排列', space: SPACE.SM }) {
-						Text("选中标识 " + this.activeList1.join(',')).fontSize(14)
-						IBestCheckboxGroup({
-							group: this.group1,
-							activeList: $activeList1,
-							placeDirection: Axis.Horizontal
-						}) {
-							IBestCheckbox({
-								group: this.group1,
-								label: '复选框1',
-								name: 1
-							})
-							IBestCheckbox({
-								group: this.group1,
-								label: '复选框2',
-								name: 2
-							})
-						}
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '限制最大可选数', space: SPACE.SM }) {
-						Text("选中标识 " + this.activeList2.join(',')).fontSize(14)
-						IBestCheckboxGroup({ group: this.group2, activeList: $activeList2, max: 2 }) {
-							IBestCheckbox({
-								group: this.group2,
-								label: '复选框1',
-								name: '1'
-							})
-							IBestCheckbox({
-								group: this.group2,
-								label: '复选框2',
-								name: '2'
-							})
-							IBestCheckbox({
-								group: this.group2,
-								label: '复选框3',
-								name: '3'
-							})
-						}
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '全选与反选', space: SPACE.SM }) {
-						Text("选中标识 " + this.activeList3.join(',')).fontSize(14)
-						IBestCheckboxGroup({
-							group: this.group3,
-							activeList: $activeList3,
-							controller: this.controller
-						}) {
-							IBestCheckbox({
-								group: this.group3,
-								label: '复选框1',
-								name: '1'
-							})
-							IBestCheckbox({
-								group: this.group3,
-								label: '复选框2',
-								name: '2'
-							})
-							IBestCheckbox({
-								group: this.group3,
-								label: '复选框3',
-								name: '3'
-							})
-						}
-						Row({ space: SPACE.SM }) {
-							IBestButton({
-								text: '全选',
-								type: 'primary',
-								onBtnClick: () => {
-									this.controller.toggleAll(true)
-								}
-							})
-							IBestButton({
-								text: '反选',
-								type: 'warning',
-								onBtnClick: () => {
-									this.controller.toggleAll()
-								}
-							})
-							IBestButton({
-								text: '取消选中',
-								onBtnClick: () => {
-									this.controller.toggleAll(false)
-								}
-							})
-						}
-					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '不确定状态', space: SPACE.SM }) {
-						Column({space: SPACE.SM}) {
-							Text("选中标识 " + this.activeList4.join(',')).fontSize(14)
-							IBestCheckbox({
-								value: this.isIndeterminateCheckAll,
-								label: '全选',
-								indeterminate: this.isIndeterminate,
-								onChange: checked => {
-									this.controller1.toggleAll(checked as boolean)
-								}
-							})
-						}
-						.alignItems(HorizontalAlign.Start)
-						.width(CONTAINER_SIZE.FULL)
-						.padding({ bottom: SPACE.SM })
-						.border({ width: { bottom: 1 }, color: "#ccc" })
-						IBestCheckboxGroup({
-							group: this.group4,
-							activeList: $activeList4,
-							controller: this.controller1,
-							onChange: checkedNames => {
-								const length = checkedNames.length
-								this.isIndeterminate = length < 2 && length > 0
-								this.isIndeterminateCheckAll = length === 2
+								IBestButton({
+									text: '反选',
+									type: 'warning',
+									onBtnClick: () => {
+										this.controller.toggleAll()
+									}
+								})
+								IBestButton({
+									text: '取消选中',
+									onBtnClick: () => {
+										this.controller.toggleAll(false)
+									}
+								})
 							}
-						}) {
-							IBestCheckbox({
-								group: this.group4,
-								label: '复选框1',
-								name: '1'
-							})
-							IBestCheckbox({
-								group: this.group4,
-								label: '复选框2',
-								name: '2'
-							})
 						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '搭配单元格组件使用', }) {
-						IBestCheckboxGroup({
-							group: this.group5,
-							activeList: $activeList5,
-							max: this.cellCheckedMaxNum,
-							space: 0
-						}) {
-							IBestCell({
-								clickable: true,
-								title: '复选框1',
-								disabled: this.activeList5.length >= this.cellCheckedMaxNum &&
-									!this.activeList5.includes('1'),
-								rightIconBuilder: (): void => this.CellCheckbox('1', this.group5),
-								onCellClick: (): void => this.handleClickCell('1')
-							})
-							IBestCell({
-								clickable: true,
-								title: '复选框2',
-								disabled: this.activeList5.length >= this.cellCheckedMaxNum &&
-									!this.activeList5.includes('2'),
-								rightIconBuilder: (): void => this.CellCheckbox('2', this.group5),
-								onCellClick: (): void => this.handleClickCell('2')
-							})
-							IBestCell({
-								clickable: true,
-								title: '复选框3',
-								disabled: this.activeList5.length >= this.cellCheckedMaxNum &&
-									!this.activeList5.includes('3'),
-								hasBorder: false,
-								rightIconBuilder: (): void => this.CellCheckbox('3', this.group5),
-								onCellClick: (): void => this.handleClickCell('3')
-							})
+
+					ListItem() {
+						ComponentShowContainer({ title: '不确定状态', space: SPACE.SM }) {
+							Column({ space: SPACE.SM }) {
+								Text("选中标识 " + this.activeList4.join(',')).fontSize(14)
+								IBestCheckbox({
+									value: this.isIndeterminateCheckAll,
+									label: '全选',
+									indeterminate: this.isIndeterminate,
+									onChange: checked => {
+										this.controller1.toggleAll(checked as boolean)
+									}
+								})
+							}
+							.alignItems(HorizontalAlign.Start)
+							.width(CONTAINER_SIZE.FULL)
+							.padding({ bottom: SPACE.SM })
+							.border({ width: { bottom: 1 }, color: "#ccc" })
+
+							IBestCheckboxGroup({
+								group: this.group4,
+								activeList: $activeList4,
+								controller: this.controller1,
+								onChange: checkedNames => {
+									const length = checkedNames.length
+									this.isIndeterminate = length < 2 && length > 0
+									this.isIndeterminateCheckAll = length === 2
+								}
+							}) {
+								IBestCheckbox({
+									group: this.group4,
+									label: '复选框1',
+									name: '1'
+								})
+								IBestCheckbox({
+									group: this.group4,
+									label: '复选框2',
+									name: '2'
+								})
+							}
 						}
 					}
+
+					ListItem() {
+						ComponentShowContainer({ title: '搭配单元格组件使用', }) {
+							IBestCheckboxGroup({
+								group: this.group5,
+								activeList: $activeList5,
+								max: this.cellCheckedMaxNum,
+								space: 0
+							}) {
+								IBestCell({
+									clickable: true,
+									title: '复选框1',
+									disabled: this.activeList5.length >= this.cellCheckedMaxNum &&
+										!this.activeList5.includes('1'),
+									rightIconBuilder: (): void => this.CellCheckbox('1', this.group5),
+									onCellClick: (): void => this.handleClickCell('1')
+								})
+								IBestCell({
+									clickable: true,
+									title: '复选框2',
+									disabled: this.activeList5.length >= this.cellCheckedMaxNum &&
+										!this.activeList5.includes('2'),
+									rightIconBuilder: (): void => this.CellCheckbox('2', this.group5),
+									onCellClick: (): void => this.handleClickCell('2')
+								})
+								IBestCell({
+									clickable: true,
+									title: '复选框3',
+									disabled: this.activeList5.length >= this.cellCheckedMaxNum &&
+										!this.activeList5.includes('3'),
+									hasBorder: false,
+									rightIconBuilder: (): void => this.CellCheckbox('3', this.group5),
+									onCellClick: (): void => this.handleClickCell('3')
+								})
+							}
+						}
+					}
+
+					ListItem().height(50)
 				}
-				ListItem().height(50)
+				.padding({ left: SPACE.SM, right: SPACE.SM })
 			}
-			.layoutWeight(1)
-			.padding({ left: SPACE.SM, right: SPACE.SM })
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg)
 	}
 }

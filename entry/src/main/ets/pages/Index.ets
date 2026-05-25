@@ -695,7 +695,7 @@ struct Index {
 		this.getUiVersion()
 		this.showCommentDialog()
 		// setTimeout(() => {
-		//     RouterUtil.push("Table")
+		//     RouterUtil.push("DatePicker")
 		// }, 100)
 	}
 	aboutToDisappear(): void {

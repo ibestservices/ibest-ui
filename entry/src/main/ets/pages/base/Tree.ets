@@ -1,7 +1,7 @@
 import { IBestButton, IBestDialogUtil, IBestTree, IBestTreeController, IBestTreeData, IBestTreeNodeData } from '@ibestservices/ibest-ui'
 import { modeColor } from '../../assets/styles/BaseStyle'
+import BasePage from '../../components/BasePage'
 import ComponentShowContainer from '../../components/ComponentShowContainer'
-import CustomNavBar from '../../components/CustomNavBar'
 
 @Builder
 export function TreeBuilder(_: string, title: string) {
@@ -368,127 +368,136 @@ struct TreePage {
         }, 1000)
     }
     build() {
-        NavDestination(){
-            CustomNavBar({title: this.title})
-            List(){
-                ListItem(){
-                    ComponentShowContainer({ title: "基础用法" }) {
-                        IBestTree({
-                            data: $data,
-                            onNodeClick: (data: IBestTreeData, level: number) => {
-                                console.log('onNodeClick', JSON.stringify(data), level)
-                            }
-                        })
-                    }
-                }
-                ListItem(){
-                    ComponentShowContainer({ title: "可选择" }) {
-                        Column(){
-                            Text("单选")
+        Column(){
+            BasePage({ title: this.title, bgColor: modeColor.bg2 }) {
+                List() {
+                    ListItem().height(84)
+                    ListItem() {
+                        ComponentShowContainer({ title: "基础用法" }) {
                             IBestTree({
-                                data: $data1,
-                                selectType: "single",
-                                selectOnClickNode: true,
-                                defaultExpandKeys: ['2', '3'],
-                                onSelectChange: (data: IBestTreeData, level: number) => {
-                                    console.log('onSelectChange', data.label, level)
-                                }
-                            })
-                        }.alignItems(HorizontalAlign.Start)
-                        Column() {
-                            Text("多选")
-                            IBestTree({
-                                data: $data1,
-                                selectType: "multiple",
-                                defaultExpandKeys: ['2', '3'],
-                                onSelectChange: (data: IBestTreeData, level: number, selected?: boolean, indeterminate?: boolean) => {
-                                    console.log('onSelectChange', data.label, level, selected, indeterminate)
-                                }
-                            })
-                        }.margin({top: 12}).alignItems(HorizontalAlign.Start)
-                    }
-                }
-                ListItem(){
-                    ComponentShowContainer({ title: "懒加载节点" }) {
-                        IBestTree({
-                            data: $data2,
-                            lazyLoad: (nodeData: IBestTreeData, level: number, cb: (arr: IBestTreeData[]) => void): void => this.lazyLoad(nodeData, level, cb)
-                        })
-                    }
-                }
-                ListItem(){
-                    ComponentShowContainer({ title: "手风琴" }) {
-                        IBestTree({
-                            data: $data,
-                            accordion: true
-                        })
-                    }
-                }
-                ListItem(){
-                    ComponentShowContainer({ title: "可拖拽" }) {
-                        IBestTree({
-                            data: $data3,
-                            enableDrag: true,
-                            onNodeDrop: (dragNode: IBestTreeNodeData, dropNode: IBestTreeNodeData) => {
-                                // IBestDialogUtil.open({
-                                //     message: `拖拽节点为${dragNode.label}, 拖入节点为${dropNode.label}`
-                                // })
-                            }
-                        })
-                    }
-                }
-                ListItem(){
-                    ComponentShowContainer({ title: "自定义节点" }) {
-                        IBestTree({
-                            data: $data4,
-                            defaultExpandAll: true,
-                            nodeBuilder: (node: IBestTreeNodeData): void => this.customNodeBuilder(node)
-                        })
-                    }
-                }
-                ListItem(){
-                    ComponentShowContainer({ title: "组件方法" }) {
-                        IBestTree({
-                            data: $data4,
-                            selectType: "multiple",
-                            defaultExpandAll: true,
-                            controller: this.controller
-                        })
-                        Row({space: 12}){
-                            IBestButton({
-                                type: "primary",
-                                text: "设置选中节点",
-                                onBtnClick: () => {
-                                    this.controller.setCheckedNodes([5, 6, 9])
-                                }
-                            })
-                            IBestButton({
-                                type: "primary",
-                                text: "获取选中节点",
-                                onBtnClick: () => {
-                                    const nodes = this.controller.getCheckedNodes()
-                                    IBestDialogUtil.open({
-                                        message: `选中节点为${nodes.map(e => e.label).join("、")}`
-                                    })
-                                }
-                            })
-                            IBestButton({
-                                type: "primary",
-                                text: "重置",
-                                onBtnClick: () => {
-                                    this.controller.reset()
+                                data: $data,
+                                onNodeClick: (data: IBestTreeData, level: number) => {
+                                    console.log('onNodeClick', JSON.stringify(data), level)
                                 }
                             })
                         }
-                        .margin({top: 12})
                     }
+
+                    ListItem() {
+                        ComponentShowContainer({ title: "可选择" }) {
+                            Column() {
+                                Text("单选")
+                                IBestTree({
+                                    data: $data1,
+                                    selectType: "single",
+                                    selectOnClickNode: true,
+                                    defaultExpandKeys: ['2', '3'],
+                                    onSelectChange: (data: IBestTreeData, level: number) => {
+                                        console.log('onSelectChange', data.label, level)
+                                    }
+                                })
+                            }.alignItems(HorizontalAlign.Start)
+
+                            Column() {
+                                Text("多选")
+                                IBestTree({
+                                    data: $data1,
+                                    selectType: "multiple",
+                                    defaultExpandKeys: ['2', '3'],
+                                    onSelectChange: (data: IBestTreeData, level: number, selected?: boolean,
+                                        indeterminate?: boolean) => {
+                                        console.log('onSelectChange', data.label, level, selected, indeterminate)
+                                    }
+                                })
+                            }.margin({ top: 12 }).alignItems(HorizontalAlign.Start)
+                        }
+                    }
+
+                    ListItem() {
+                        ComponentShowContainer({ title: "懒加载节点" }) {
+                            IBestTree({
+                                data: $data2,
+                                lazyLoad: (nodeData: IBestTreeData, level: number,
+                                    cb: (arr: IBestTreeData[]) => void): void => this.lazyLoad(nodeData, level, cb)
+                            })
+                        }
+                    }
+
+                    ListItem() {
+                        ComponentShowContainer({ title: "手风琴" }) {
+                            IBestTree({
+                                data: $data,
+                                accordion: true
+                            })
+                        }
+                    }
+
+                    ListItem() {
+                        ComponentShowContainer({ title: "可拖拽" }) {
+                            IBestTree({
+                                data: $data3,
+                                enableDrag: true,
+                                onNodeDrop: (dragNode: IBestTreeNodeData, dropNode: IBestTreeNodeData) => {
+                                    // IBestDialogUtil.open({
+                                    //     message: `拖拽节点为${dragNode.label}, 拖入节点为${dropNode.label}`
+                                    // })
+                                }
+                            })
+                        }
+                    }
+
+                    ListItem() {
+                        ComponentShowContainer({ title: "自定义节点" }) {
+                            IBestTree({
+                                data: $data4,
+                                defaultExpandAll: true,
+                                nodeBuilder: (node: IBestTreeNodeData): void => this.customNodeBuilder(node)
+                            })
+                        }
+                    }
+
+                    ListItem() {
+                        ComponentShowContainer({ title: "组件方法" }) {
+                            IBestTree({
+                                data: $data4,
+                                selectType: "multiple",
+                                defaultExpandAll: true,
+                                controller: this.controller
+                            })
+                            Row({ space: 12 }) {
+                                IBestButton({
+                                    type: "primary",
+                                    text: "设置选中节点",
+                                    onBtnClick: () => {
+                                        this.controller.setCheckedNodes([5, 6, 9])
+                                    }
+                                })
+                                IBestButton({
+                                    type: "primary",
+                                    text: "获取选中节点",
+                                    onBtnClick: () => {
+                                        const nodes = this.controller.getCheckedNodes()
+                                        IBestDialogUtil.open({
+                                            message: `选中节点为${nodes.map(e => e.label).join("、")}`
+                                        })
+                                    }
+                                })
+                                IBestButton({
+                                    type: "primary",
+                                    text: "重置",
+                                    onBtnClick: () => {
+                                        this.controller.reset()
+                                    }
+                                })
+                            }
+                            .margin({ top: 12 })
+                        }
+                    }
+
+                    ListItem().height(100)
                 }
-                ListItem().height(100)
+                .padding({ left: 20, right: 20 })
             }
-            .layoutWeight(1)
-            .padding({left: 20, right: 20})
         }
-        .hideTitleBar(true)
-        .backgroundColor(modeColor.bg2)
     }
 }

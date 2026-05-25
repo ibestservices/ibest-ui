@@ -1,7 +1,7 @@
 import { IBestButton, IBestCell, IBestDialogUtil, IBestSwipeCell, IBestToast } from '@ibestservices/ibest-ui';
 import { modeColor, SPACE } from '../../assets/styles/BaseStyle';
+import BasePage from '../../components/BasePage';
 import ComponentShowContainer from '../../components/ComponentShowContainer';
-import CustomNavBar from '../../components/CustomNavBar';
 
 @Builder
 export function SwipeCellBuilder(_: string, title: string){
@@ -49,47 +49,47 @@ struct SwipeCellPage {
 	}
 
 	build() {
-		NavDestination() {
-			CustomNavBar({title: this.title})
-			List() {
-				ListItem() {
-					ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
-						IBestSwipeCell({
-							defaultContent: (): void => this.cellContent(),
-							leftContent: (): void => this.leftContent(),
-							rightContent: (): void => this.rightContent()
-						})
+		Column(){
+			BasePage({ title: this.title, bgColor: modeColor.bg }) {
+				List() {
+					ListItem().height(84)
+					ListItem() {
+						ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
+							IBestSwipeCell({
+								defaultContent: (): void => this.cellContent(),
+								leftContent: (): void => this.leftContent(),
+								rightContent: (): void => this.rightContent()
+							})
+						}
 					}
-				}
-				ListItem() {
-					ComponentShowContainer({ title: '异步关闭', titlePaddingLeft: SPACE.XS }) {
-						IBestSwipeCell({
-							defaultContent: (): void => this.cellContent(),
-							rightContent: (): void => this.rightContent(),
-							beforeClose: (position) => {
-								if(position == 'center'){
-									return true
-								}
-								return new Promise((resolve) => {
-									IBestDialogUtil.open({
-										message: '确定删除吗?',
-										showCancelButton: true,
-										onConfirm: () => {
-											resolve(true)
-										},
-										onCancel: () => {
-											resolve(false)
-										}
+
+					ListItem() {
+						ComponentShowContainer({ title: '异步关闭', titlePaddingLeft: SPACE.XS }) {
+							IBestSwipeCell({
+								defaultContent: (): void => this.cellContent(),
+								rightContent: (): void => this.rightContent(),
+								beforeClose: (position) => {
+									if (position == 'center') {
+										return true
+									}
+									return new Promise((resolve) => {
+										IBestDialogUtil.open({
+											message: '确定删除吗?',
+											showCancelButton: true,
+											onConfirm: () => {
+												resolve(true)
+											},
+											onCancel: () => {
+												resolve(false)
+											}
+										})
 									})
-								})
-							}
-						})
+								}
+							})
+						}
 					}
 				}
 			}
-			.layoutWeight(1)
 		}
-		.hideTitleBar(true)
-		.backgroundColor(modeColor.bg)
 	}
 }

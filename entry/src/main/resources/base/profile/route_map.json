@@ -6,6 +6,11 @@
 			"buildFunction": "DocBuilder"
 		},
 		{
+			"name": "PrivacyPolicy",
+			"pageSourceFile": "src/main/ets/pages/PrivacyPolicy.ets",
+			"buildFunction": "PrivacyPolicyBuilder"
+		},
+		{
 			"name": "MakePoster",
 			"pageSourceFile": "src/main/ets/pages/MakePoster.ets",
 			"buildFunction": "MakePosterBuilder"
