@@ -338,6 +338,11 @@ export struct IBestField {
      */
 	@Prop focusOnClickSuffix: boolean = false
 	/**
+	 * 是否隐藏文本选择菜单
+	 * @since 2.2.8
+	 */
+	@Prop selectionMenuHidden: boolean = true
+	/**
 	 * 右侧按钮插槽
 	 */
 	@BuilderParam buttonBuilder: CustomBuilder
@@ -488,6 +493,7 @@ export struct IBestField {
 							//     highlightBorder: false
 							// })
 							.enableAutoFill(false)
+							.selectionMenuHidden(this.selectionMenuHidden)
 							.type(this.getTextAreaType())
 							.id(`ibest_field_input_${this.uniId}`)
 							.onChange((value: string) => {
@@ -528,7 +534,7 @@ export struct IBestField {
 								//     thresholdPercentage: 1,
 								//     highlightBorder: false
 								// })
-								.selectionMenuHidden(true)
+								.selectionMenuHidden(this.selectionMenuHidden)
 								.type(this.getInputType())
 								.id(`ibest_field_input_${this.uniId}`)
 								.onChange((value: string) => {
