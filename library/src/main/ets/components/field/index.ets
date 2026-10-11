@@ -338,6 +338,11 @@ export struct IBestField {
      */
 	@Prop focusOnClickSuffix: boolean = false
 	/**
+	 * 是否隐藏文本选择菜单
+	 * @since 2.2.8
+	 */
+	@Prop selectionMenuHidden: boolean = true
+	/**
 	 * 右侧按钮插槽
 	 */
 	@BuilderParam buttonBuilder: CustomBuilder
@@ -384,6 +389,7 @@ export struct IBestField {
 	@State status: 'passed' | 'failed' | 'unvalidated' = 'unvalidated'
 	@State validateMessage: ResourceStr = ""
 	@State borderRight: number = 0
+	@State labelHeight: number = 0
 	private uiContext = this.getUIContext()
 	private focusController = this.uiContext.getFocusController()
 
@@ -421,13 +427,13 @@ export struct IBestField {
 				}
 				.fontSize(getSizeByUnit(this.labelFontSize, true))
 				.fontColor(this.labelColor)
-				.constraintSize({ minHeight: convertDimensionsWidthUnit(20) })
-				.lineHeight(this.baseStyle.lineHeightMd)
+				.lineHeight(this.autosize ? this.baseStyle.lineHeightMd : "")
 				if (this.requireAsteriskPosition == "right") {
 					this.fieldLabelAsterisk()
 				}
 			}
 			.width(this.labelPosition == "left" ? getSizeByUnit(this.labelWidth) : CONTAINER_SIZE.FULL)
+			.height(this.labelHeight || "auto")
 			.alignItems(VerticalAlign.Center)
 			.justifyContent(this.labelAlign == "left" ? FlexAlign.Start : this.labelAlign == "center" ? FlexAlign.Center : FlexAlign.End)
 			.id(`ibest_field_label_${this.uniId}`)
@@ -488,6 +494,7 @@ export struct IBestField {
 							//     highlightBorder: false
 							// })
 							.enableAutoFill(false)
+							.selectionMenuHidden(this.selectionMenuHidden)
 							.type(this.getTextAreaType())
 							.id(`ibest_field_input_${this.uniId}`)
 							.onChange((value: string) => {
@@ -519,8 +526,6 @@ export struct IBestField {
 								})
 								.placeholderColor(this.placeholderColor)
 								.showPasswordIcon(this.showPasswordIcon)
-								.height(this.baseStyle.lineHeightMd)
-								.lineHeight(this.baseStyle.lineHeightMd)
 								.textAlign(this.getInputAlign())
 								.maxLength(this.maxlength)
 								.inputFilter(this.inputFilter)
@@ -528,9 +533,12 @@ export struct IBestField {
 								//     thresholdPercentage: 1,
 								//     highlightBorder: false
 								// })
-								.selectionMenuHidden(true)
+								.selectionMenuHidden(this.selectionMenuHidden)
 								.type(this.getInputType())
 								.id(`ibest_field_input_${this.uniId}`)
+								.onAreaChange((_: Area, newVal: Area) => {
+									this.labelHeight = newVal.height as number
+								})
 								.onChange((value: string) => {
 									this.formatValue(value, "onchange")
 									this.onChange(this.value)

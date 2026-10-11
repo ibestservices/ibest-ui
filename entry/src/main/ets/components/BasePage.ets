@@ -25,7 +25,7 @@ export default struct BasePage {
                 originalStyle: {
                     contentStyle: {
                         titleStyle: {
-                            mainTitleColor: "#000"
+                            mainTitleColor: $r('sys.color.font_primary')
                         },
                         backIconStyle: {
                             backgroundColor: "#fff",
@@ -39,7 +39,7 @@ export default struct BasePage {
                     },
                     contentStyle: {
                         titleStyle: {
-                            mainTitleColor: "#fff"
+                            mainTitleColor: $r('sys.color.font_on_primary')
                         },
                         backIconStyle: {
                             backgroundColor: $r('sys.color.comp_background_tertiary'),

@@ -1,5 +1,18 @@
 # 版本记录
 
+## 2.2.8 - 26.0.0
+#### 新增:
+1. IBestField 新增 selectionMenuHidden 属性;
+2. IBestSwipeCell 支持点击外部关闭;
+3. IBestPopover 新增 trigger 属性.
+
+#### 优化:
+1. 适配PC IBestPopup、IBestDropdownMenu、IBestDialog;
+2. 优化 getFormValues 返回结果.
+
+#### bug修复:
+1. IBestField 字体较大时被遮挡问题.
+
 ## 2.2.7
 #### 新增:
 1. IBestCell 新增 bgColor 属性;

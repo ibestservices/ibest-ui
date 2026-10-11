@@ -749,7 +749,7 @@ struct Index {
 					},
 					contentStyle: {
 						titleStyle: {
-							mainTitleColor: "#000"
+							mainTitleColor: $r('sys.color.font_primary')
 						}
 					}
 				},
@@ -759,7 +759,7 @@ struct Index {
 					},
 					contentStyle: {
 						titleStyle: {
-							mainTitleColor: "#fff"
+							mainTitleColor: $r('sys.color.font_on_primary')
 						}
 					}
 				},

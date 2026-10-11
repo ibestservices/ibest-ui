@@ -1,43 +1,43 @@
 {
 	"app": {
 		"signingConfigs": [
-//			{
-//				"name": "default",
-//				"type": "HarmonyOS",
-//				"material": {
-//					"storePassword": "0000001DA1DDFADC7FCD4003DD09F84F49A1AC838DEECB3A787AB9D759D24CC841F0A92BA5ED6777CEBAE2EAE6",
-//					"certpath": "/Users/damengbuxing/Desktop/IBest-UI应用文件/ibest_ui_release.cer",
-//					"keyAlias": "ibest_ui_p12",
-//					"keyPassword": "0000001D0AC1868A4F028144400BB55194A7B0887F04949FFF9B52AC83A798463AC8C0B8E4FDDC752A8F4A7BED",
-//					"profile": "/Users/damengbuxing/Desktop/IBest-UI应用文件/ibest_ui_profileRelease.p7b",
-//					"signAlg": "SHA256withECDSA",
-//					"storeFile": "/Users/damengbuxing/Desktop/IBest-UI应用文件/ibest_ui_p12.p12"
-//				}
-//			},
-//			{
-//				"name": "default",
-//				"type": "HarmonyOS",
-//				"material": {
-//					"certpath": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.cer",
-//					"keyAlias": "debugKey",
-//					"keyPassword": "0000001A31A0C8E47E20C6BE70BD05034E9C916992880B8F6C640BD7E738E51398775C43B7B6E922E0ED",
-//					"profile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p7b",
-//					"signAlg": "SHA256withECDSA",
-//					"storeFile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p12",
-//					"storePassword": "0000001A829F735888835BA9E7F12C8754970726195682A6446152620200EF615B25504825AF70A1C0BB"
-//				}
-//			},
+			//			{
+			//				"name": "default",
+			//				"type": "HarmonyOS",
+			//				"material": {
+			//					"storePassword": "0000001DA1DDFADC7FCD4003DD09F84F49A1AC838DEECB3A787AB9D759D24CC841F0A92BA5ED6777CEBAE2EAE6",
+			//					"certpath": "/Users/damengbuxing/Desktop/IBest-UI应用文件/ibest_ui_release.cer",
+			//					"keyAlias": "ibest_ui_p12",
+			//					"keyPassword": "0000001D0AC1868A4F028144400BB55194A7B0887F04949FFF9B52AC83A798463AC8C0B8E4FDDC752A8F4A7BED",
+			//					"profile": "/Users/damengbuxing/Desktop/IBest-UI应用文件/ibest_ui_profileRelease.p7b",
+			//					"signAlg": "SHA256withECDSA",
+			//					"storeFile": "/Users/damengbuxing/Desktop/IBest-UI应用文件/ibest_ui_p12.p12"
+			//				}
+			//			},
+			//			{
+			//				"name": "default",
+			//				"type": "HarmonyOS",
+			//				"material": {
+			//					"certpath": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.cer",
+			//					"keyAlias": "debugKey",
+			//					"keyPassword": "0000001A31A0C8E47E20C6BE70BD05034E9C916992880B8F6C640BD7E738E51398775C43B7B6E922E0ED",
+			//					"profile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p7b",
+			//					"signAlg": "SHA256withECDSA",
+			//					"storeFile": "/Users/damengbuxing/.ohos/config/default_ibest-ui_qzHZnpS8B3WNkigHkqN8qbontGrJYWI-hS_1sfoGHYM=.p12",
+			//					"storePassword": "0000001A829F735888835BA9E7F12C8754970726195682A6446152620200EF615B25504825AF70A1C0BB"
+			//				}
+			//			}
 			{
 				"name": "default",
 				"type": "HarmonyOS",
 				"material": {
 					"certpath": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.cer",
 					"keyAlias": "debugKey",
-					"keyPassword": "0000001ACAA38FBF36D68A3E3A1140ABC019666945ECE44B8E4E805C591CFB88B6A37096C5853261B25D",
+					"keyPassword": "0000001BCE5DFD730AA248E283A0A239B35D31DBA1419DC6E2EB589128A3FFD5F565D1863E12CF0715B983",
 					"profile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p7b",
 					"signAlg": "SHA256withECDSA",
 					"storeFile": "C:\\Users\\Administrator\\.ohos\\config\\default_ibest-ui_xXJLqStmQDl9P_6bRKkoHbj-HILGKBG46C6yaRfgFhQ=.p12",
-					"storePassword": "0000001A3222558C0173FA0DAC5CE98D33EAF699693346225144F8C2F95E8E37B1529B8BE1E7612AD99C"
+					"storePassword": "0000001B8DFEBD3CA9339E9E2477CFCF64DF4B30113DFE5C4341B00F7D45713EC4F98BC326B9EA80F6259C"
 				}
 			}
 		],
@@ -46,8 +46,8 @@
 				"name": "default",
 				"signingConfig": "default",
 				"runtimeOS": "HarmonyOS",
-				"compatibleSdkVersion": "6.0.1(21)",
-				"targetSdkVersion": "6.1.0(23)",
+				"compatibleSdkVersion": "26.0.0",
+				"targetSdkVersion": "26.0.0",
 				"buildOption": {
 					"strictMode": {
 						"useNormalizedOHMUrl": true

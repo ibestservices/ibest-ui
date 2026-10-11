@@ -8,11 +8,11 @@ import GlobalStore from '../utils/global';
 
 export default class EntryAbility extends UIAbility {
 	onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
-		let applicationContext = this.context.getApplicationContext()
+		const applicationContext = this.context.getApplicationContext()
 		applicationContext.setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET)
 	}
 	onWindowStageCreate(windowStage: window.WindowStage): void {
-		let mainWindow = windowStage.getMainWindowSync()
+		const mainWindow = windowStage.getMainWindowSync()
 		// mainWindow.setWindowLayoutFullScreen(true)
 		windowStage.loadContent('pages/Splash', (err, data) => {
 			GlobalStore.init(windowStage, this.context)

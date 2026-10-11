@@ -12,11 +12,11 @@ export function SwipeCellBuilder(_: string, title: string){
 @Component
 struct SwipeCellPage {
 	@State title: string = ''
-	@Builder cellContent(){
+	@Builder cellContent(bd: boolean = true){
 		IBestCell({
 			title: '单元格',
 			value: '内容',
-			hasBorder: false
+			hasBorder: bd
 		})
 	}
 	@Builder leftContent(){
@@ -57,6 +57,26 @@ struct SwipeCellPage {
 						ComponentShowContainer({ title: '基础用法', titlePaddingLeft: SPACE.XS }) {
 							IBestSwipeCell({
 								defaultContent: (): void => this.cellContent(),
+								leftContent: (): void => this.leftContent(),
+								rightContent: (): void => this.rightContent()
+							})
+							IBestSwipeCell({
+								defaultContent: (): void => this.cellContent(),
+								leftContent: (): void => this.leftContent(),
+								rightContent: (): void => this.rightContent()
+							})
+							IBestSwipeCell({
+								defaultContent: (): void => this.cellContent(),
+								leftContent: (): void => this.leftContent(),
+								rightContent: (): void => this.rightContent()
+							})
+							IBestSwipeCell({
+								defaultContent: (): void => this.cellContent(),
+								leftContent: (): void => this.leftContent(),
+								rightContent: (): void => this.rightContent()
+							})
+							IBestSwipeCell({
+								defaultContent: (): void => this.cellContent(false),
 								leftContent: (): void => this.leftContent(),
 								rightContent: (): void => this.rightContent()
 							})

@@ -106,7 +106,6 @@ struct DropdownMenuPage{
                                     groupId: this.groupId,
                                     value: this.value,
                                     options: this.options,
-                                    maxHeight: 500,
                                     onChange: value => {
                                         this.value = value as number
                                         IBestToast.show("选项为：" + value)
