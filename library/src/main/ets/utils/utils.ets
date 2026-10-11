@@ -1,4 +1,4 @@
-import { componentUtils, LengthUnit, MeasureOptions } from '@kit.ArkUI'
+import { LengthUnit, MeasureOptions } from '@kit.ArkUI'
 import { IBestComInfoType, IBestAwaitable, IBestStorageKey, IBestStringNumber } from '../model/Global.type'
 import { AnyType } from '../model/AnyType'
 import GlobalStore from './globalStore'
@@ -139,7 +139,20 @@ export function mergeObject(target: AnyType, source: AnyType) {
  * @param {key} 组件id
  * */
 export const getComponentsInfo = (context: UIContext, key: string): IBestComInfoType => {
-	let info: componentUtils.ComponentInfo = context.getComponentUtils().getRectangleById(key)
+	const util = context.getComponentUtils()
+	if (!util) {
+		return {
+			width: 0,
+			height: 0,
+			localLeft: 0,
+			localTop: 0,
+			screenLeft: 0,
+			screenTop: 0,
+			windowTop: 0,
+			windowLeft: 0
+		}
+	}
+	const info = util.getRectangleById(key)
 	return {
 		width: context.px2vp(info.size.width),
 		height: context.px2vp(info.size.height),
@@ -257,18 +270,12 @@ export async function base64ToPixelMap(base64: string, options?: image.DecodingO
 }
 /**
  * 获取Resource字符串
- * TODO $r("app.string.ibest_week_prefix", $r("app.string.ibest_monday")) 这种形式params有值 无法处理
  */
 export function getResourceStr(res: ResourceStr): string {
 	if(typeof res == 'string'){
 		return res
 	}
-	if(res.id == -1){
-		let params: string[] = res.params || []
-		return GlobalStore.context.resourceManager.getStringByNameSync(params[0].split('.')[2])
-	}else {
-		return GlobalStore.context.resourceManager.getStringSync(res.id)
-	}
+	return GlobalStore.context.resourceManager.getStringSync(res.id)
 }
 /**
  * 处理异步函数

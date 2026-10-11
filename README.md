@@ -54,6 +54,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 ## 组件库版本与编辑器版本对应关系
 | 组件库版本     | 编辑器版本          |
 |:----------|:---------------|
+| v2.2.8及以上 | `26.0.0` 以上    |
 | v2.2.6及以上 | `6.0.1(21)` 以上 |
 | v2.2.0及以上 | `5.1.1(19)` 以上 |
 | v2.1.4及以上 | `5.0.5(17)` 以上 |
@@ -192,22 +193,22 @@ ohos.permission.INTERNET
 ## 约束与限制
 在下述版本验证通过：
 ```text
-DevEco Studio 5.1.1 Release
-Build #DS-233.14475.28.36.511823
-构建版本：5.1.1.823，built on July 12，2025
-Runtime version: 17.0.12+1-b1087.25 x86_64
+DevEco Studio 26.0.0 Release
+内部版本号 #26.0.0.821, built on August 27, 2026
+Source revision: 8ba78943e6cbc
+Runtime version: 25.0.2+1-b329.117 amd64122.1.9
 VM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.
-macOS 15.5
-GC: G1 Young Generation，G1 Old Generation
+Toolkit: sun.awt.windows.WToolkit
+Windows 11.0
+异常报告器 ID: 3009251623d2553-f6cc-45b9-8569-7e7f73358732
+GC: G1 Young Generation, G1 Concurrent GC, G1 Old Generation
 Memory: 2048M
-Cores: 12
-Metal Rendering is ON
+Cores: 20
 Registry:
-  idea.plugins.compatible.build=IC-233.14475.28
+  ds.ide.experimental.ui=false
+  idea.plugins.compatible.build=IC-261.23567.138
 Non-Bundled Plugins:
-  com.harmonyos.cases (1.0.10-Alpha)
-  com.huawei.agc.ecomarket.component.plugin (233.14475.28)
-  com.alibabacloud.intellij.cosy (2.5.15)
+  com.alibabacloud.intellij.cosy (3.3.4)
 ```
 
 ## 开源协议

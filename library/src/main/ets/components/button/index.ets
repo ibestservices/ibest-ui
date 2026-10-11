@@ -189,8 +189,8 @@ export struct IBestButton {
 		if (this.btnWidth || this.btnHeight) {
 			return {
 				width: this.btnWidth || "auto",
-				height: this.btnHeight || 44,
-				padding: 15,
+				height: this.btnHeight || convertDimensionsWidthUnit(44),
+				padding: convertDimensionsWidthUnit(15),
 				fontSize: this.btnFontSize || this.baseStyle.fontSizeMd as string
 			}
 		}
@@ -199,29 +199,29 @@ export struct IBestButton {
 			case SIZE.MINI:
 				return {
 					width: "auto",
-					height: 24,
+					height: convertDimensionsWidthUnit(24),
 					padding: this.baseStyle.spaceBase as string,
 					fontSize: this.btnFontSize || this.baseStyle.fontSizeXs as string
 				}
 			case SIZE.SMALL:
 				return {
 					width: "auto",
-					height: 32,
+					height: convertDimensionsWidthUnit(32),
 					padding: this.baseStyle.spaceXs as string,
 					fontSize: this.btnFontSize || this.baseStyle.fontSizeSm as string
 				}
 			case SIZE.LARGE:
 				return {
 					width: CONTAINER_SIZE.FULL,
-					height: 50,
+					height: convertDimensionsWidthUnit(50),
 					padding: this.baseStyle.spaceXs as string,
 					fontSize: this.btnFontSize || this.baseStyle.fontSizeLg as string
 				}
 			default:
 				return {
 					width: "auto",
-					height: 44,
-					padding: 15,
+					height: convertDimensionsWidthUnit(44),
+					padding: convertDimensionsWidthUnit(15),
 					fontSize: this.btnFontSize || this.baseStyle.fontSizeMd as string
 				}
 		}

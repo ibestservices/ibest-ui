@@ -109,6 +109,11 @@ export struct IBestPopover{
      */
     @Provide({allowOverride: "scrollBarState"}) scrollBarState: BarState = BarState.Auto
     /**
+     * popover 触发方式
+     * @since 2.2.8
+     */
+    @Prop trigger: 'click' | 'hover'  = 'click'
+    /**
      * 默认内容
      */
     @BuilderParam triggerBuilder: CustomBuilder
@@ -205,12 +210,17 @@ export struct IBestPopover{
                 this.triggerBuilder()
             }
         }
-        .parallelGesture(
-            TapGesture({fingers: 1})
-                .onAction(() => {
-                    this.isShow = !this.isShow
-                })
-        )
+        .hitTestBehavior(HitTestMode.Transparent)
+        .onTouch((event: TouchEvent) => {
+            if(event.type == TouchType.Up && this.trigger == 'click'){
+                this.isShow = !this.isShow
+            }
+        })
+        .onHover((isHover: boolean) => {
+            if(this.trigger == 'hover'){
+                this.isShow = isHover
+            }
+        })
         .bindPopup(this.isShow, {
             builder: (): void => this.popoverContent(),
             width: getSizeByUnit(this.popoverWidth) as Dimension,

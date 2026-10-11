@@ -21,6 +21,7 @@ import { CONTAINER_SIZE } from '../../theme-chalk/src/container'
 import { IBestStorageKey, IBestStringNumber } from '../../model/Global.type'
 import { IBestUIBaseStyleObjType } from '../../theme-chalk/src/index.type'
 import { getDefaultBaseStyle } from '../../theme-chalk/src'
+import { AnyType } from '../../model/AnyType'
 
 @Component
 export struct IBestForm {
@@ -101,7 +102,8 @@ export struct IBestForm {
 	}
 	// 初始化
 	init(data: IBestFieldItem, callBack: (result: IBestFormSendFieldCallResult) => void){
-		const standardProp = data.prop.split(".")[0]
+		const arr = data.prop.split(".")
+		const standardProp = arr.length > 2 ? arr[1] : arr[0]
 		const index = this.formItems.findIndex((item: IBestFieldItem) => item.prop === data.prop)
 		if(index == -1){
 			this.formItems.push(data)
@@ -177,9 +179,24 @@ export struct IBestForm {
 	}
 	// 获取表单值
 	getFormValues(){
-		const result: Record<string, IBestFieldValueType> = {}
+		const result: Record<string, AnyType> = {}
 		this.formItems.forEach((item: IBestFieldItem) => {
-			result[item.prop] = item.getValue()
+			const value = item.getValue()
+			const arr = item.prop.split(".")
+			if(arr.length > 2){
+				const prop1 = arr[0]
+				const prop2 = arr[1]
+				const index = Number(arr[2])
+				if(!result[prop1]){
+					result[prop1] = []
+				}
+				if(!result[prop1][index]){
+					result[prop1][index] = {}
+				}
+				result[prop1][index][prop2] = value
+			}else {
+				result[item.prop] = value
+			}
 		})
 		return result
 	}

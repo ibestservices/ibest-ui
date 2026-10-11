@@ -422,7 +422,7 @@ export struct IBestPopup{
 				this.defaultContentBuilder()
 			},
 			width: CONTAINER_SIZE.FULL,
-			height: GlobalStore.screenHeight,
+			height: this.topAvoidHeight ? GlobalStore.windowHeight : CONTAINER_SIZE.FULL,
 			backgroundBlurStyle: BlurStyle.NONE,
 			cornerRadius: 0,
 			alignment: this.getAlignment(),

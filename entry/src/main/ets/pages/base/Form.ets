@@ -357,7 +357,6 @@ struct FormPage {
 										]
 									})
 								}
-
 								IBestButton({
 									text: "设置值",
 									type: 'primary',
@@ -444,7 +443,6 @@ struct FormPage {
 										hasBorder: false
 									})
 								}
-
 								IBestButton({
 									text: "提交",
 									type: 'primary',
@@ -538,7 +536,6 @@ struct FormPage {
 										customRightContent: (): void => this.uploadImg()
 									})
 								}
-
 								IBestButton({
 									text: "设置值",
 									type: 'primary',
@@ -619,7 +616,6 @@ struct FormPage {
 										})
 									}, (item: Subject) => item.id)
 								}
-
 								IBestButton({
 									text: "添加学科",
 									type: "primary",
@@ -706,7 +702,7 @@ struct subjectItem{
 		IBestCellGroup({title: `学科${this.index+1}(左滑删除)`, hasBorder: false}){
 			IBestField({
 				formId: this.formId,
-				prop: `type.${this.index}`,
+				prop: `list.type.${this.index}`,
 				label: '学科',
 				value: this.name,
 				placeholder: "请选择学科",
@@ -717,7 +713,7 @@ struct subjectItem{
 			})
 			IBestField({
 				formId: this.formId,
-				prop: `score.${this.index}`,
+				prop: `list.score.${this.index}`,
 				label: "分数",
 				value: $score,
 				type: "number",
