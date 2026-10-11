@@ -11,7 +11,10 @@
 	],
 	"license": "MIT",
 	"dependencies": {},
-	"author": "ibestservices",
+	"author": {
+		"name": "ibestservices",
+		"email": "1982605744@qq.com"
+	},
 	"ibestservices": {
 		"org": "opensource"
 	},
