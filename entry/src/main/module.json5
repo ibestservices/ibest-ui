@@ -6,7 +6,7 @@
 		"mainElement": "EntryAbility",
 		"deviceTypes": [
 			"phone",
-//			"tablet",
+			"tablet",
 			"2in1"
 		],
 		"deliveryWithInstall": true,
